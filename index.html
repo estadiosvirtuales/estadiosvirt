@@ -246,47 +246,42 @@
 
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
 <script>
-        // 1. Pegá acá tu link CSV entre las comillas
-        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    
+    <script>
+        // 1. Pegá acá tu link CSV de Google Sheets
+        const urlCSV = "https://docs.google.com/spreadsheets/d/1WaYLqkV1Lur6PDIuYeBTvBXjv05fqNm7T6YGGrpDoBA/edit?gid=0#gid=0"; 
 
-        // 2. Función para leer y mostrar los estadios
-        async function cargarEstadios() {
-            try {
-                const respuesta = await fetch(urlCSV);
-                const datos = await respuesta.text();
-                
-                // Convertir texto a filas y borrar la primera (los títulos)
-                const filas = datos.split('\n').slice(1);
+        // 2. Motor a prueba de errores
+        Papa.parse(urlCSV, {
+            download: true,
+            header: true, // Lee automáticamente los nombres de tus columnas
+            complete: function(results) {
+                const datos = results.data;
                 const grilla = document.querySelector('.grid');
-                grilla.innerHTML = ''; // Borramos los 3 estadios falsos de ejemplo
+                grilla.innerHTML = ''; // Borramos los de prueba
                 
-                filas.forEach(fila => {
-                    // Separamos las columnas (suponiendo que no usaste comas adentro del texto)
-                    const columnas = fila.split(',');
-                    if(columnas.length > 7 && columnas[1]) {
-                        const estadio = columnas[1];
-                        const club = columnas[2];
-                        const linkVideo = columnas[7];
-                        const datoCurioso = columnas[8] || '';
-                        
+                datos.forEach(fila => {
+                    // Evitamos filas vacías
+                    if(fila.Estadio && fila.Club) {
                         const tarjeta = `
                         <article class="card">
-                            <div class="card-img" style="background-color: #2a2a2a; display:flex; align-items:center; justify-content:center; color:#555;">(Foto del Estadio)</div>
+                            <div class="card-img" style="background-color: #2a2a2a; display:flex; align-items:center; justify-content:center; color:#555;">(Foto)</div>
                             <div class="card-content">
-                                <h2 class="card-title">${estadio}</h2>
-                                <p class="card-subtitle">${club}</p>
-                                <p style="font-size: 0.8rem; color: #b3b3b3; margin-bottom: 15px;">${datoCurioso}</p>
-                                <a href="${linkVideo}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
+                                <h2 class="card-title">${fila.Estadio}</h2>
+                                <p class="card-subtitle">${fila.Club}</p>
+                                <p style="font-size: 0.8rem; color: #b3b3b3; margin-bottom: 15px;">${fila['Dato Curioso'] || ''}</p>
+                                <a href="${fila['Link del Video']}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
                             </div>
                         </article>`;
                         grilla.innerHTML += tarjeta;
                     }
                 });
-            } catch (error) {
-                console.error("Error cargando los datos:", error);
+            },
+            error: function(err) {
+                document.querySelector('.grid').innerHTML = '<h2 style="color:white; text-align:center;">Error al conectar con Google Sheets. Revisá que el link termine en pub?output=csv</h2>';
             }
-        }
-        cargarEstadios();
+        });
     </script>
 </body>
 </html>
