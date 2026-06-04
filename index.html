@@ -7,10 +7,10 @@
     <style>
         /* Variables de colores (Estilo Modo Oscuro Premium) */
         :root {
-            --bg-color: #121212;
-            --card-bg: #181818;
+            --bg-color: #0c0c0c;
+            --card-bg: #161616;
             --text-main: #ffffff;
-            --text-muted: #b3b3b3;
+            --text-muted: #aaaaaa;
             --accent-color: #1db954; /* Verde estilo Spotify */
             --accent-hover: #1ed760;
             --danger-color: #e50914; /* Rojo estilo Netflix */
@@ -29,48 +29,127 @@
             padding-bottom: 50px;
         }
 
-        /* Cabecera y Buscador */
-        .header {
-            padding: 30px 20px;
+        /* PORTADA CINEMÁTICA (Estilo Banner Netflix/Gaming) */
+        .hero-section {
+            position: relative;
+            padding: 80px 20px 60px 20px;
             text-align: center;
-            background: linear-gradient(180deg, #282828 0%, var(--bg-color) 100%);
+            /* Degradado premium simulando iluminación de estadio de noche */
+            background: linear-gradient(180deg, rgba(29, 185, 84, 0.15) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
+                        radial-gradient(circle at top, #1a3a21 0%, #0c0c0c 70%);
+            border-bottom: 1px solid #1a1a1a;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .search-container {
-            max-width: 600px;
+        .hero-content {
+            max-width: 800px;
             margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(29, 185, 84, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero-section h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: -1.5px;
+            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Buscador Modernizado dentro de la Portada */
+        .search-container {
+            max-width: 550px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border-radius: 30px;
         }
 
         .search-bar {
             width: 100%;
-            padding: 15px 20px;
+            padding: 18px 25px;
             border-radius: 30px;
-            border: none;
-            background-color: #2a2a2a;
+            border: 1px solid #2a2a2a;
+            background-color: rgba(30, 30, 30, 0.85);
             color: white;
             font-size: 1.1rem;
             outline: none;
-            transition: background-color 0.3s;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .search-bar:focus {
-            background-color: #333333;
+            background-color: #222222;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
         }
 
-        /* Pestañas de Ligas */
+        /* Stats Rápidos de la Portada */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .stat-item strong {
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        /* SECCIÓN DE FILTROS Y LIGAS */
+        .section-ligas {
+            max-width: 1200px;
+            margin: 40px auto 20px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            color: #f5f5f5;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+        }
+
         .tabs-container {
             display: flex;
             overflow-x: auto;
-            gap: 10px;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+            gap: 12px;
+            padding: 5px 0 15px 0;
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -79,20 +158,23 @@
         }
 
         .tab {
-            background-color: #2a2a2a;
+            background-color: #1c1c1c;
             color: var(--text-main);
-            border: none;
-            padding: 10px 24px;
-            border-radius: 20px;
+            border: 1px solid #252525;
+            padding: 12px 26px;
+            border-radius: 25px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             white-space: nowrap;
-            transition: background 0.3s, color 0.3s;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
         .tab.active, .tab:hover {
             background-color: var(--accent-color);
+            border-color: var(--accent-color);
             color: #000;
+            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
         }
 
         /* Grilla de Estadios */
@@ -115,11 +197,13 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
+            border: 1px solid #1f1f1f;
         }
 
         .card:hover {
-            background-color: #282828;
+            background-color: #1f1f1f;
             transform: translateY(-5px);
+            border-color: #2d2d2d;
         }
 
         .estadio-foto-container {
@@ -130,7 +214,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            padding: 20px;
+            padding: 25px;
             transition: filter 0.3s;
         }
 
@@ -142,7 +226,7 @@
             max-height: 85%;
             max-width: 85%;
             object-fit: contain;
-            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.65));
+            filter: drop-shadow(0px 12px 18px rgba(0,0,0,0.7));
             transition: transform 0.3s ease-out;
             z-index: 2;
         }
@@ -158,12 +242,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(0deg, rgba(24,24,24,0.8) 0%, rgba(0,0,0,0.2) 100%);
+            background: linear-gradient(0deg, rgba(22,22,22,0.9) 0%, rgba(0,0,0,0.2) 100%);
             z-index: 1;
         }
 
         .placeholder-text {
-            color: rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.15);
             font-weight: 900;
             font-size: 1.3rem;
             text-transform: uppercase;
@@ -225,7 +309,7 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
             transition: transform 0.2s;
             z-index: 1000;
         }
@@ -237,22 +321,36 @@
 </head>
 <body>
 
-    <header class="header">
-        <h1>Estadios 3D</h1>
-        <div class="search-container">
-            <input type="text" class="search-bar" placeholder="Buscá un club o estadio...">
-        </div>
-    </header>
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="hero-badge">Exploración Interactiva 3D</span>
+            <h1>ESTADIOS VIRTUALES</h1>
+            <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Buscá tu club, estadio o país...">
+            </div>
 
-    <div class="tabs-container">
-        <button class="tab active" data-gid="0">Primera División</button>
-        <button class="tab" data-gid="861264971">Primera Nacional</button>
-        <button class="tab" data-gid="554922783">Premier League</button>
-        <button class="tab" data-gid="88250864">La Liga</button>
-        <button class="tab" data-gid="2013531070">Serie A</button>
-        <button class="tab" data-gid="165565330">Ligue 1</button>
-        <button class="tab" data-gid="96716546">Bundesliga</button>
-    </div>
+            <div class="hero-stats">
+                <span class="stat-item">⚡ <strong>Vuelos 3D</strong> Inmediatos</span>
+                <span class="stat-item">🌍 <strong>+150 Canchas</strong> Mapeadas</span>
+                <span class="stat-item">🏆 <strong>5 Ligas Top</strong> + Ascenso</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-ligas">
+        <h2 class="section-title">Seleccioná una Categoría</h2>
+        <div class="tabs-container">
+            <button class="tab active" data-gid="0">Primera División</button>
+            <button class="tab" data-gid="861264971">Primera Nacional</button>
+            <button class="tab" data-gid="554922783">Premier League</button>
+            <button class="tab" data-gid="88250864">La Liga</button>
+            <button class="tab" data-gid="2013531070">Serie A</button>
+            <button class="tab" data-gid="165565330">Ligue 1</button>
+            <button class="tab" data-gid="96716546">Bundesliga</button>
+        </div>
+    </section>
 
     <main class="grid">
     </main>
@@ -264,9 +362,7 @@
     <script>
         const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
 
-        // Diccionario Maestro de Colores Inyectado Automáticamente (Modo Oscuro Premium)
         const coloresClubes = {
-            // ARGENTINA - PRIMERA DIVISIÓN
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
             "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
@@ -297,8 +393,6 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-
-            // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -336,8 +430,6 @@
             "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
             "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
-
-            // INGLATERRA - PREMIER LEAGUE
             "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
             "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
             "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
@@ -358,8 +450,6 @@
             "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
             "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
             "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
-
-            // ESPAÑA - LA LIGA
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
@@ -380,8 +470,6 @@
             "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
             "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
             "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
-
-            // ITALIA - SERIE A
             "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
             "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
@@ -402,8 +490,6 @@
             "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
             "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
             "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
-
-            // FRANCIA - LIGUE 1
             "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
             "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
             "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
@@ -422,8 +508,6 @@
             "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
             "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
             "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
-
-            // ALEMANIA - BUNDESLIGA
             "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
             "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
             "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
@@ -449,7 +533,6 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-        // Función central para cargar cualquier pestaña usando su GID
         function cargarLiga(gid) {
             const grilla = document.querySelector('.grid');
             grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
@@ -497,7 +580,6 @@
             });
         }
 
-        // Lógica para escuchar los clics en los botones de las pestañas
         document.querySelectorAll('.tab').forEach(boton => {
             boton.addEventListener('click', function() {
                 document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
@@ -508,7 +590,6 @@
             });
         });
 
-        // Carga inicial por defecto (Primera División con el primer GID)
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
         cargarLiga(primerGid);
     </script>
