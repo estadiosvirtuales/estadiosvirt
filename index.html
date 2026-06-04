@@ -1,665 +1,665 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadios Virtuales | El Mundo Desde el Aire</title>
-    <style>
-        /* Variables de colores (Estilo Modo Oscuro Premium) */
-        :root {
-            --bg-color: #0c0c0c;
-            --card-bg: #161616;
-            --text-main: #ffffff;
-            --text-muted: #aaaaaa;
-            --accent-color: #1db954; /* Verde estilo Spotify */
-            --accent-hover: #1ed760;
-            --danger-color: #e50914; /* Rojo estilo Netflix */
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadios Virtuales | El Mundo Desde el Aire</title>
+    <style>
+        /* Variables de colores (Estilo Modo Oscuro Premium) */
+        :root {
+            --bg-color: #0c0c0c;
+            --card-bg: #161616;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --accent-color: #1db954; /* Verde estilo Spotify */
+            --accent-hover: #1ed760;
+            --danger-color: #e50914; /* Rojo estilo Netflix */
+        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 50px;
-        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 50px;
+        }
 
-        /* PORTADA CINEMÁTICA (Estilo Banner Netflix/Gaming) */
-        .hero-section {
-            position: relative;
-            padding: 80px 20px 60px 20px;
-            text-align: center;
-            /* Degradado premium simulando iluminación de estadio de noche */
-            background: linear-gradient(180deg, rgba(29, 185, 84, 0.15) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
-                        radial-gradient(circle at top, #1a3a21 0%, #0c0c0c 70%);
-            border-bottom: 1px solid #1a1a1a;
-        }
+        /* PORTADA CINEMÁTICA (Estilo Banner Netflix/Gaming) */
+        .hero-section {
+            position: relative;
+            padding: 80px 20px 60px 20px;
+            text-align: center;
+            /* Degradado premium simulando iluminación de estadio de noche */
+            background: linear-gradient(180deg, rgba(29, 185, 84, 0.15) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
+                        radial-gradient(circle at top, #1a3a21 0%, #0c0c0c 70%);
+            border-bottom: 1px solid #1a1a1a;
+        }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-        .hero-badge {
-            display: inline-block;
-            background-color: rgba(29, 185, 84, 0.1);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
-        }
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(29, 185, 84, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
 
-        .hero-section h1 {
-            font-size: 3.2rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            letter-spacing: -1.5px;
-            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .hero-section h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            letter-spacing: -1.5px;
+            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 35px;
-            font-weight: 400;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 400;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
 
-        /* Buscador Modernizado dentro de la Portada */
-        .search-container {
-            max-width: 550px;
-            margin: 0 auto 30px auto;
-            position: relative;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border-radius: 30px;
-        }
+        /* Buscador Modernizado dentro de la Portada */
+        .search-container {
+            max-width: 550px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border-radius: 30px;
+        }
 
-        .search-bar {
-            width: 100%;
-            padding: 18px 25px;
-            border-radius: 30px;
-            border: 1px solid #2a2a2a;
-            background-color: rgba(30, 30, 30, 0.85);
-            color: white;
-            font-size: 1.1rem;
-            outline: none;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
+        .search-bar {
+            width: 100%;
+            padding: 18px 25px;
+            border-radius: 30px;
+            border: 1px solid #2a2a2a;
+            background-color: rgba(30, 30, 30, 0.85);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
 
-        .search-bar:focus {
-            background-color: #222222;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
-        }
+        .search-bar:focus {
+            background-color: #222222;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
+        }
 
-        /* Stats Rápidos de la Portada */
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
+        /* Stats Rápidos de la Portada */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
 
-        .stat-item {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        .stat-item {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
-        .stat-item strong {
-            color: var(--text-main);
-            font-size: 1.1rem;
-        }
+        .stat-item strong {
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
 
-        /* SECCIÓN DE FILTROS Y LIGAS */
-        .section-ligas {
-            max-width: 1200px;
-            margin: 40px auto 20px auto;
-            padding: 0 20px;
-        }
+        /* SECCIÓN DE FILTROS Y LIGAS */
+        .section-ligas {
+            max-width: 1200px;
+            margin: 40px auto 20px auto;
+            padding: 0 20px;
+        }
 
-        .section-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-            color: #f5f5f5;
-            border-left: 4px solid var(--accent-color);
-            padding-left: 12px;
-        }
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            color: #f5f5f5;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+        }
 
-        .tabs-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 5px 0 15px 0;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .tabs-container::-webkit-scrollbar {
-            display: none;
-        }
+        .tabs-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 5px 0 15px 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
 
-        .tab {
-            background-color: #1c1c1c;
-            color: var(--text-main);
-            border: 1px solid #252525;
-            padding: 12px 26px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 700;
-            white-space: nowrap;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
+        .tab {
+            background-color: #1c1c1c;
+            color: var(--text-main);
+            border: 1px solid #252525;
+            padding: 12px 26px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            white-space: nowrap;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
 
-        .tab.active, .tab:hover {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: #000;
-            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
-        }
+        .tab.active, .tab:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #000;
+            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
+        }
 
-        /* Grilla de Estadios */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            padding: 0 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        /* Grilla de Estadios */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-        /* Tarjeta de Estadio */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s, background-color 0.3s;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #1f1f1f;
-        }
+        /* Tarjeta de Estadio */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #1f1f1f;
+        }
 
-        .card:hover {
-            background-color: #1f1f1f;
-            transform: translateY(-5px);
-            border-color: #2d2d2d;
-        }
+        .card:hover {
+            background-color: #1f1f1f;
+            transform: translateY(-5px);
+            border-color: #2d2d2d;
+        }
 
-        .estadio-foto-container {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 25px;
-            transition: filter 0.3s;
-        }
+        .estadio-foto-container {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 25px;
+            transition: filter 0.3s;
+        }
 
-        .card:hover .estadio-foto-container {
-            filter: brightness(1.15);
-        }
+        .card:hover .estadio-foto-container {
+            filter: brightness(1.15);
+        }
 
-        .card-img-logo {
-            max-height: 85%;
-            max-width: 85%;
-            object-fit: contain;
-            filter: drop-shadow(0px 12px 18px rgba(0,0,0,0.7));
-            transition: transform 0.3s ease-out;
-            z-index: 2;
-        }
+        .card-img-logo {
+            max-height: 85%;
+            max-width: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0px 12px 18px rgba(0,0,0,0.7));
+            transition: transform 0.3s ease-out;
+            z-index: 2;
+        }
 
-        .card:hover .card-img-logo {
-            transform: scale(1.08) rotate(2deg);
-        }
+        .card:hover .card-img-logo {
+            transform: scale(1.08) rotate(2deg);
+        }
 
-        .estadio-foto-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(0deg, rgba(22,22,22,0.9) 0%, rgba(0,0,0,0.2) 100%);
-            z-index: 1;
-        }
+        .estadio-foto-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(22,22,22,0.9) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
 
-        .placeholder-text {
-            color: rgba(255,255,255,0.15);
-            font-weight: 900;
-            font-size: 1.3rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-align: center;
-            padding: 0 10px;
-            z-index: 2;
-        }
+        .placeholder-text {
+            color: rgba(255,255,255,0.15);
+            font-weight: 900;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            padding: 0 10px;
+            z-index: 2;
+        }
 
-        .card-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            z-index: 2;
-        }
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            z-index: 2;
+        }
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            letter-spacing: -0.3px;
-        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -0.3px;
+        }
 
-        .card-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
 
-        .btn-view {
-            display: inline-block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--accent-color);
-            color: #000;
-            text-align: center;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s;
-            margin-top: auto;
-        }
+        .btn-view {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: #000;
+            text-align: center;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: auto;
+        }
 
-        .btn-view:hover {
-            background-color: var(--accent-hover);
-        }
+        .btn-view:hover {
+            background-color: var(--accent-hover);
+        }
 
-        /* Botón Ruleta Flotante */
-        .btn-random {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
-            transition: transform 0.2s;
-            z-index: 1000;
-        }
+        /* Botón Ruleta Flotante */
+        .btn-random {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+            transition: transform 0.2s;
+            z-index: 1000;
+        }
 
-        .btn-random:hover {
-            transform: scale(1.05);
-        }
-    </style>
+        .btn-random:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 
-    <section class="hero-section">
-        <div class="hero-content">
-            <span class="hero-badge">Exploración Interactiva 3D</span>
-            <h1>ESTADIOS VIRTUALES</h1>
-            <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
-            
-            <div class="search-container">
-                <input type="text" class="search-bar" id="global-search" placeholder="Buscá tu club, estadio o país...">
-            </div>
+    <section class="hero-section">
+        <div class="hero-content">
+            <span class="hero-badge">Exploración Interactiva 3D</span>
+            <h1>ESTADIOS VIRTUALES</h1>
+            <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-bar" id="global-search" placeholder="Buscá tu club, estadio o país...">
+            </div>
 
-            <div class="hero-stats">
-                <span class="stat-item">⚡ <strong>Vuelos 3D</strong> Inmediatos</span>
-                <span class="stat-item">🌍 <strong>+150 Canchas</strong> Mapeadas</span>
-                <span class="stat-item">🏆 <strong>Ligas Top</strong> Internacionales</span>
-            </div>
-        </div>
-    </section>
+            <div class="hero-stats">
+                <span class="stat-item">⚡ <strong>Vuelos 3D</strong> Inmediatos</span>
+                <span class="stat-item">🌍 <strong>+150 Canchas</strong> Mapeadas</span>
+                <span class="stat-item">🏆 <strong>Ligas Top</strong> Internacionales</span>
+            </div>
+        </div>
+    </section>
 
-    <section class="section-ligas">
-        <h2 class="section-title">Seleccioná una Categoría</h2>
-        <div class="tabs-container">
-            <button class="tab active" data-gid="0">Primera División</button>
-            <button class="tab" data-gid="861264971">Primera Nacional</button>
-            <button class="tab" data-gid="554922783">Premier League</button>
-            <button class="tab" data-gid="88250864">La Liga</button>
-            <button class="tab" data-gid="2013531070">Serie A</button>
-            <button class="tab" data-gid="165565330">Ligue 1</button>
-            <button class="tab" data-gid="96716546">Bundesliga</button>
-        </div>
-    </section>
+    <section class="section-ligas">
+        <h2 class="section-title">Seleccioná una Categoría</h2>
+        <div class="tabs-container">
+            <button class="tab active" data-gid="0">Primera División</button>
+            <button class="tab" data-gid="861264971">Primera Nacional</button>
+            <button class="tab" data-gid="554922783">Premier League</button>
+            <button class="tab" data-gid="88250864">La Liga</button>
+            <button class="tab" data-gid="2013531070">Serie A</button>
+            <button class="tab" data-gid="165565330">Ligue 1</button>
+            <button class="tab" data-gid="96716546">Bundesliga</button>
+        </div>
+    </section>
 
-    <main class="grid">
-    </main>
+    <main class="grid">
+    </main>
 
-    <button class="btn-random">🎲 Vuelo Aleatorio</button>
+    <button class="btn-random">🎲 Vuelo Aleatorio</button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    
-    <script>
-        const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    
+    <script>
+        const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
 
-        // Memoria interna global de la solapa activa
-        let estadiosCargados = [];
+        // Memoria interna global de la solapa activa
+        let estadiosCargados = [];
 
-        // Diccionario Maestro de Colores Inyectado Automáticamente (Modo Oscuro Premium)
-        const coloresClubes = {
-            // ARGENTINA - PRIMERA DIVISIÓN
-            "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
-            "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
-            "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Independiente": "linear-gradient(135deg, #b30000, #1a1a1a)",
-            "San Lorenzo": "linear-gradient(135deg, #0f2042, #a61c32)",
-            "Huracán": "linear-gradient(135deg, #ffffff, #e60000)",
-            "Estudiantes de La Plata": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
-            "Gimnasia y Esgrima LP": "linear-gradient(135deg, #ffffff, #002060)",
-            "Rosario Central": "linear-gradient(135deg, #002060, #ffcc00)",
-            "Newell's Old Boys": "linear-gradient(135deg, #000000, #cc0000)",
-            "Vélez Sarsfield": "linear-gradient(135deg, #ffffff, #0000ff)",
-            "Lanús": "linear-gradient(135deg, #5c061e, #2e030f)",
-            "Argentinos Juniors": "linear-gradient(135deg, #e60000, #ffffff)",
-            "Belgrano de Córdoba": "linear-gradient(135deg, #5cb8e4, #ffffff)",
-            "Talleres": "linear-gradient(135deg, #002060, #ffffff, #002060)",
-            "Atlético Tucumán": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Defensa y Justicia": "linear-gradient(135deg, #008000, #ffff00)",
-            "Banfield": "linear-gradient(135deg, #006400, #ffffff)",
-            "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
-            "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
-            "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
-            "Deportivo Riestra": "linear-gradient(135deg, #000000, #333333)",
-            "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
-            "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
-            "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+        // Diccionario Maestro de Colores Inyectado Automáticamente (Modo Oscuro Premium)
+        const coloresClubes = {
+            // ARGENTINA - PRIMERA DIVISIÓN
+            "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
+            "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
+            "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Independiente": "linear-gradient(135deg, #b30000, #1a1a1a)",
+            "San Lorenzo": "linear-gradient(135deg, #0f2042, #a61c32)",
+            "Huracán": "linear-gradient(135deg, #ffffff, #e60000)",
+            "Estudiantes de La Plata": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
+            "Gimnasia y Esgrima LP": "linear-gradient(135deg, #ffffff, #002060)",
+            "Rosario Central": "linear-gradient(135deg, #002060, #ffcc00)",
+            "Newell's Old Boys": "linear-gradient(135deg, #000000, #cc0000)",
+            "Vélez Sarsfield": "linear-gradient(135deg, #ffffff, #0000ff)",
+            "Lanús": "linear-gradient(135deg, #5c061e, #2e030f)",
+            "Argentinos Juniors": "linear-gradient(135deg, #e60000, #ffffff)",
+            "Belgrano de Córdoba": "linear-gradient(135deg, #5cb8e4, #ffffff)",
+            "Talleres": "linear-gradient(135deg, #002060, #ffffff, #002060)",
+            "Atlético Tucumán": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Defensa y Justicia": "linear-gradient(135deg, #008000, #ffff00)",
+            "Banfield": "linear-gradient(135deg, #006400, #ffffff)",
+            "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
+            "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
+            "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
+            "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
+            "Deportivo Riestra": "linear-gradient(135deg, #000000, #333333)",
+            "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
+            "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
+            "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
 
-            // ARGENTINA - PRIMERA NACIONAL
-            "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
-            "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
-            "Almagro": "linear-gradient(135deg, #75aadb, #000000, #ffffff)",
-            "Almirante Brown": "linear-gradient(135deg, #ffff00, #000000)",
-            "Atlanta": "linear-gradient(135deg, #002060, #ffcc00)",
-            "Atlético de Rafaela": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Central Norte": "linear-gradient(135deg, #000000, #333333)",
-            "Chacarita Juniors": "linear-gradient(135deg, #ff0000, #000000, #ffffff)",
-            "Chaco For Ever": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ciudad de Bolívar": "linear-gradient(135deg, #75aadb, #004d00)",
-            "Colegiales": "linear-gradient(135deg, #0000ff, #ff0000, #ffff00)",
-            "Colón": "linear-gradient(135deg, #ff0000, #000000)",
-            "Defores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
-            "Defensores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
-            "Deportivo Madryn": "linear-gradient(135deg, #ffff00, #000000)",
-            "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
-            "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
-            "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Güemes (SdE)": "linear-gradient(135deg, #0000ff, #ff0000)",
-            "Los Andes": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Midland": "linear-gradient(135deg, #ffffff, #0000ff)",
-            "Mitre (SdE)": "linear-gradient(135deg, #ffff00, #000000)",
-            "Nueva Chicago": "linear-gradient(135deg, #004d00, #000000)",
-            "Patronato": "linear-gradient(135deg, #ff0000, #000000)",
-            "Quilmes": "linear-gradient(135deg, #ffffff, #000066)",
-            "Racing (CBA)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "San Martín (SJ)": "linear-gradient(135deg, #004d00, #000000)",
-            "San Martín (T)": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "San Miguel": "linear-gradient(135deg, #004d00, #ffffff, #0000ff)",
-            "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
-            "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
+            // ARGENTINA - PRIMERA NACIONAL
+            "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
+            "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
+            "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
+            "Almagro": "linear-gradient(135deg, #75aadb, #000000, #ffffff)",
+            "Almirante Brown": "linear-gradient(135deg, #ffff00, #000000)",
+            "Atlanta": "linear-gradient(135deg, #002060, #ffcc00)",
+            "Atlético de Rafaela": "linear-gradient(135deg, #ffffff, #75aadb)",
+            "Central Norte": "linear-gradient(135deg, #000000, #333333)",
+            "Chacarita Juniors": "linear-gradient(135deg, #ff0000, #000000, #ffffff)",
+            "Chaco For Ever": "linear-gradient(135deg, #000000, #ffffff)",
+            "Ciudad de Bolívar": "linear-gradient(135deg, #75aadb, #004d00)",
+            "Colegiales": "linear-gradient(135deg, #0000ff, #ff0000, #ffff00)",
+            "Colón": "linear-gradient(135deg, #ff0000, #000000)",
+            "Defores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
+            "Defensores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
+            "Deportivo Madryn": "linear-gradient(135deg, #ffff00, #000000)",
+            "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
+            "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
+            "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
+            "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
+            "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
+            "Güemes (SdE)": "linear-gradient(135deg, #0000ff, #ff0000)",
+            "Los Andes": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Midland": "linear-gradient(135deg, #ffffff, #0000ff)",
+            "Mitre (SdE)": "linear-gradient(135deg, #ffff00, #000000)",
+            "Nueva Chicago": "linear-gradient(135deg, #004d00, #000000)",
+            "Patronato": "linear-gradient(135deg, #ff0000, #000000)",
+            "Quilmes": "linear-gradient(135deg, #ffffff, #000066)",
+            "Racing (CBA)": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "San Martín (SJ)": "linear-gradient(135deg, #004d00, #000000)",
+            "San Martín (T)": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "San Miguel": "linear-gradient(135deg, #004d00, #ffffff, #0000ff)",
+            "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
+            "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
 
-            // INGLATERRA - PREMIER LEAGUE
-            "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
-            "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
-            "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
-            "Brentford": "linear-gradient(135deg, #e30613, #ffffff, #fbcc04)",
-            "Brighton & Hove Albion": "linear-gradient(135deg, #0057b8, #ffffff)",
-            "Chelsea": "linear-gradient(135deg, #034694, #ee242c)",
-            "Coventry City": "linear-gradient(135deg, #84bbf0, #ffffff)",
-            "Crystal Palace": "linear-gradient(135deg, #1b458f, #c4122e)",
-            "Everton": "linear-gradient(135deg, #004a97, #ffffff)",
-            "Fulham": "linear-gradient(135deg, #ffffff, #000000)",
-            "Hull City": "linear-gradient(135deg, #ff9f05, #000000)",
-            "Ipswich Town": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Leeds United": "linear-gradient(135deg, #ffffff, #ffcd00, #003399)",
-            "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
-            "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
-            "Manchester United": "linear-gradient(135deg, #da291c, #000000)",
-            "Newcastle United": "linear-gradient(135deg, #000000, #ffffff)",
-            "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
-            "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
+            // INGLATERRA - PREMIER LEAGUE
+            "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
+            "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
+            "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
+            "Brentford": "linear-gradient(135deg, #e30613, #ffffff, #fbcc04)",
+            "Brighton & Hove Albion": "linear-gradient(135deg, #0057b8, #ffffff)",
+            "Chelsea": "linear-gradient(135deg, #034694, #ee242c)",
+            "Coventry City": "linear-gradient(135deg, #84bbf0, #ffffff)",
+            "Crystal Palace": "linear-gradient(135deg, #1b458f, #c4122e)",
+            "Everton": "linear-gradient(135deg, #004a97, #ffffff)",
+            "Fulham": "linear-gradient(135deg, #ffffff, #000000)",
+            "Hull City": "linear-gradient(135deg, #ff9f05, #000000)",
+            "Ipswich Town": "linear-gradient(135deg, #0000ff, #ffffff)",
+            "Leeds United": "linear-gradient(135deg, #ffffff, #ffcd00, #003399)",
+            "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
+            "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
+            "Manchester United": "linear-gradient(135deg, #da291c, #000000)",
+            "Newcastle United": "linear-gradient(135deg, #000000, #ffffff)",
+            "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
+            "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
+            "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
 
-            // ESPAÑA - LA LIGA
-            "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
-            "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
-            "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
-            "Athletic Club": "linear-gradient(135deg, #ee2524, #ffffff, #000000)",
-            "Real Betis": "linear-gradient(135deg, #00954c, #ffffff)",
-            "Valencia CF": "linear-gradient(135deg, #ffffff, #000000, #ff8200)",
-            "Real Sociedad": "linear-gradient(135deg, #0066bb, #ffffff)",
-            "Sevilla FC": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Villarreal CF": "linear-gradient(135deg, #ffdf1b, #005094)",
-            "CA Osasuna": "linear-gradient(135deg, #ab192d, #1a2f54)",
-            "RC Celta de Vigo": "linear-gradient(135deg, #87adde, #ffffff)",
-            "Deportivo Alavés": "linear-gradient(135deg, #00569e, #ffffff)",
-            "Getafe CF": "linear-gradient(135deg, #004bc0, #ffffff)",
-            "RCD Mallorca": "linear-gradient(135deg, #e2001a, #000000)",
-            "UD Las Palmas": "linear-gradient(135deg, #ffe600, #00529f)",
-            "Rayo Vallecano": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Girona FC": "linear-gradient(135deg, #e2001a, #ffffff)",
-            "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
-            "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
+            // ESPAÑA - LA LIGA
+            "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
+            "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
+            "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
+            "Athletic Club": "linear-gradient(135deg, #ee2524, #ffffff, #000000)",
+            "Real Betis": "linear-gradient(135deg, #00954c, #ffffff)",
+            "Valencia CF": "linear-gradient(135deg, #ffffff, #000000, #ff8200)",
+            "Real Sociedad": "linear-gradient(135deg, #0066bb, #ffffff)",
+            "Sevilla FC": "linear-gradient(135deg, #ffffff, #e2001a)",
+            "Villarreal CF": "linear-gradient(135deg, #ffdf1b, #005094)",
+            "CA Osasuna": "linear-gradient(135deg, #ab192d, #1a2f54)",
+            "RC Celta de Vigo": "linear-gradient(135deg, #87adde, #ffffff)",
+            "Deportivo Alavés": "linear-gradient(135deg, #00569e, #ffffff)",
+            "Getafe CF": "linear-gradient(135deg, #004bc0, #ffffff)",
+            "RCD Mallorca": "linear-gradient(135deg, #e2001a, #000000)",
+            "UD Las Palmas": "linear-gradient(135deg, #ffe600, #00529f)",
+            "Rayo Vallecano": "linear-gradient(135deg, #ffffff, #e2001a)",
+            "Girona FC": "linear-gradient(135deg, #e2001a, #ffffff)",
+            "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
+            "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
+            "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
 
-            // ITALIA - SERIE A
-            "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
-            "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
-            "AS Roma": "linear-gradient(135deg, #8e1a2f, #f0bc42)",
-            "SS Lazio": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Napoli": "linear-gradient(135deg, #12a0da, #ffffff)",
-            "Fiorentina": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Atalanta": "linear-gradient(135deg, #00529f, #000000)",
-            "Bologna": "linear-gradient(135deg, #1a2f54, #ab192d)",
-            "Torino": "linear-gradient(135deg, #8a1538, #ffffff)",
-            "Udinese": "linear-gradient(135deg, #000000, #ffffff)",
-            "Genoa": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Hellas Verona": "linear-gradient(135deg, #0b2c6c, #ffcc00)",
-            "Empoli": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Lecce": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Monza": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Cagliari": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-            "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
-            "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
+            // ITALIA - SERIE A
+            "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+            "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
+            "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
+            "AS Roma": "linear-gradient(135deg, #8e1a2f, #f0bc42)",
+            "SS Lazio": "linear-gradient(135deg, #87d3f8, #ffffff)",
+            "Napoli": "linear-gradient(135deg, #12a0da, #ffffff)",
+            "Fiorentina": "linear-gradient(135deg, #4c2384, #ffffff)",
+            "Atalanta": "linear-gradient(135deg, #00529f, #000000)",
+            "Bologna": "linear-gradient(135deg, #1a2f54, #ab192d)",
+            "Torino": "linear-gradient(135deg, #8a1538, #ffffff)",
+            "Udinese": "linear-gradient(135deg, #000000, #ffffff)",
+            "Genoa": "linear-gradient(135deg, #a51c30, #0b2240)",
+            "Hellas Verona": "linear-gradient(135deg, #0b2c6c, #ffcc00)",
+            "Empoli": "linear-gradient(135deg, #00529f, #ffffff)",
+            "Lecce": "linear-gradient(135deg, #ffcc00, #e30613)",
+            "Monza": "linear-gradient(135deg, #e30613, #ffffff)",
+            "Cagliari": "linear-gradient(135deg, #a51c30, #0b2240)",
+            "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
+            "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
+            "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
 
-            // FRANCIA - LIGUE 1
-            "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
-            "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
-            "Lille": "linear-gradient(135deg, #e30613, #1b458f, #ffffff)",
-            "Monaco": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lens": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Nice": "linear-gradient(135deg, #e30613, #000000)",
-            "Rennes": "linear-gradient(135deg, #e30613, #000000)",
-            "Strasbourg": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Toulouse": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Le Havre": "linear-gradient(135deg, #204060, #87d3f8)",
-            "Angers": "linear-gradient(135deg, #000000, #ffffff)",
-            "Auxerre": "linear-gradient(135deg, #ffffff, #00529f)",
-            "Brest": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lorient": "linear-gradient(135deg, #ff6600, #ffffff, #004d00)",
-            "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
-            "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
-            "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
+            // FRANCIA - LIGUE 1
+            "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
+            "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
+            "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
+            "Lille": "linear-gradient(135deg, #e30613, #1b458f, #ffffff)",
+            "Monaco": "linear-gradient(135deg, #e30613, #ffffff)",
+            "Lens": "linear-gradient(135deg, #ffcc00, #e30613)",
+            "Nice": "linear-gradient(135deg, #e30613, #000000)",
+            "Rennes": "linear-gradient(135deg, #e30613, #000000)",
+            "Strasbourg": "linear-gradient(135deg, #00529f, #ffffff)",
+            "Toulouse": "linear-gradient(135deg, #4c2384, #ffffff)",
+            "Le Havre": "linear-gradient(135deg, #204060, #87d3f8)",
+            "Angers": "linear-gradient(135deg, #000000, #ffffff)",
+            "Auxerre": "linear-gradient(135deg, #ffffff, #00529f)",
+            "Brest": "linear-gradient(135deg, #e30613, #ffffff)",
+            "Lorient": "linear-gradient(135deg, #ff6600, #ffffff, #004d00)",
+            "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
+            "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
+            "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
 
-            // ALEMANIA - BUNDESLIGA
-            "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
-            "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
-            "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
-            "RB Leipzig": "linear-gradient(135deg, #ffffff, #dd013f, #0c2340)",
-            "VfB Stuttgart": "linear-gradient(135deg, #ffffff, #e30613, #ffffff)",
-            "Eintracht Frankfurt": "linear-gradient(135deg, #e30613, #000000, #ffffff)",
-            "SC Freiburg": "linear-gradient(135deg, #e30613, #ffffff)",
-            "TSG Hoffenheim": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Werder Bremen": "linear-gradient(135deg, #008f5d, #ffffff)",
-            "Borussia Mönchengladbach": "linear-gradient(135deg, #ffffff, #000000, #00a651)",
-            "Mainz 05": "linear-gradient(135deg, #e30613, #ffffff)",
-            "FC Augsburg": "linear-gradient(135deg, #ffffff, #ba9b65, #008f5d)",
-            "Union Berlin": "linear-gradient(135deg, #e30613, #ffffff)",
-            "1. FC Köln": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
-            "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
-            "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
-            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)"
-        };
+            // ALEMANIA - BUNDESLIGA
+            "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
+            "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
+            "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
+            "RB Leipzig": "linear-gradient(135deg, #ffffff, #dd013f, #0c2340)",
+            "VfB Stuttgart": "linear-gradient(135deg, #ffffff, #e30613, #ffffff)",
+            "Eintracht Frankfurt": "linear-gradient(135deg, #e30613, #000000, #ffffff)",
+            "SC Freiburg": "linear-gradient(135deg, #e30613, #ffffff)",
+            "TSG Hoffenheim": "linear-gradient(135deg, #00529f, #ffffff)",
+            "Werder Bremen": "linear-gradient(135deg, #008f5d, #ffffff)",
+            "Borussia Mönchengladbach": "linear-gradient(135deg, #ffffff, #000000, #00a651)",
+            "Mainz 05": "linear-gradient(135deg, #e30613, #ffffff)",
+            "FC Augsburg": "linear-gradient(135deg, #ffffff, #ba9b65, #008f5d)",
+            "Union Berlin": "linear-gradient(135deg, #e30613, #ffffff)",
+            "1. FC Köln": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
+            "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
+            "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
+            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)"
+        };
 
-        function obtenerFondoClub(nombreClub) {
-            if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
-            return "linear-gradient(135deg, #1f1f1f, #333333)";
-        }
+        function obtenerFondoClub(nombreClub) {
+            if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
+            return "linear-gradient(135deg, #1f1f1f, #333333)";
+        }
 
-        // Función unificada para pintar las tarjetas en la grilla
-        function renderizarTarjetas(listaEstadios) {
-            const grilla = document.querySelector('.grid');
-            grilla.innerHTML = ''; 
+        // Función unificada para pintar las tarjetas en la grilla
+        function renderizarTarjetas(listaEstadios) {
+            const grilla = document.querySelector('.grid');
+            grilla.innerHTML = ''; 
 
-            if (listaEstadios.length === 0) {
-                grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
-                return;
-            }
-            
-            listaEstadios.forEach(fila => {
-                const urlFoto = fila.Foto ? fila.Foto.trim() : '';
-                const clubNombre = fila.Club.trim();
-                const fondoGradiente = obtenerFondoClub(clubNombre);
-                
-                const tarjeta = `
-                <article class="card">
-                    <div class="estadio-foto-container" style="background: ${fondoGradiente};">
-                        ${urlFoto ? 
-                            `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
-                            ''
-                        }
-                        <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
-                            ${clubNombre}
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">${fila.Estadio}</h2>
-                        <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
-                        <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
-                        <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
-                    </div>
-                </article>`;
-                grilla.innerHTML += tarjeta;
-            });
-        }
+            if (listaEstadios.length === 0) {
+                grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
+                return;
+            }
+            
+            listaEstadios.forEach(fila => {
+                const urlFoto = fila.Foto ? fila.Foto.trim() : '';
+                const clubNombre = fila.Club.trim();
+                const fondoGradiente = obtenerFondoClub(clubNombre);
+                
+                const tarjeta = `
+                <article class="card">
+                    <div class="estadio-foto-container" style="background: ${fondoGradiente};">
+                        ${urlFoto ? 
+                            `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
+                            ''
+                        }
+                        <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
+                            ${clubNombre}
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h2 class="card-title">${fila.Estadio}</h2>
+                        <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
+                        <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
+                        <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
+                    </div>
+                </article>`;
+                grilla.innerHTML += tarjeta;
+            });
+        }
 
-        // Función central para cargar e indexar cualquier pestaña usando su GID
-        function cargarLiga(gid) {
-            const grilla = document.querySelector('.grid');
-            grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
-            
-            // Limpiamos la barra de búsqueda al cambiar de liga
-            document.getElementById('global-search').value = '';
+        // Función central para cargar e indexar cualquier pestaña usando su GID
+        function cargarLiga(gid) {
+            const grilla = document.querySelector('.grid');
+            grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
+            
+            // Limpiamos la barra de búsqueda al cambiar de liga
+            document.getElementById('global-search').value = '';
 
-            const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
+            const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
 
-            Papa.parse(urlCompleta, {
-                download: true,
-                header: true, 
-                complete: function(results) {
-                    // Guardamos en memoria interna solo las filas válidas
-                    estadiosCargados = results.data.filter(fila => fila.Estadio && fila.Club);
-                    renderizarTarjetas(estadiosCargados);
-                },
-                error: function(err) {
-                    grilla.innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con esta liga. Verificá el GID de la pestaña.</h2>';
-                }
-            });
-        }
+            Papa.parse(urlCompleta, {
+                download: true,
+                header: true, 
+                complete: function(results) {
+                    // Guardamos en memoria interna solo las filas válidas
+                    estadiosCargados = results.data.filter(fila => fila.Estadio && fila.Club);
+                    renderizarTarjetas(estadiosCargados);
+                },
+                error: function(err) {
+                    grilla.innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con esta liga. Verificá el GID de la pestaña.</h2>';
+                }
+            });
+        }
 
-        // MOTOR DE BÚSQUEDA: Filtro dinámico en tiempo real
-        document.getElementById('global-search').addEventListener('input', function(e) {
-            const terminoBusqueda = e.target.value.toLowerCase().trim();
-            
-            const estadiosFiltrados = estadiosCargados.filter(fila => {
-                const estadio = (fila.Estadio || '').toLowerCase();
-                const club = (fila.Club || '').toLowerCase();
-                return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda);
-            });
+        // MOTOR DE BÚSQUEDA: Filtro dinámico en tiempo real
+        document.getElementById('global-search').addEventListener('input', function(e) {
+            const terminoBusqueda = e.target.value.toLowerCase().trim();
+            
+            const estadiosFiltrados = estadiosCargados.filter(fila => {
+                const estadio = (fila.Estadio || '').toLowerCase();
+                const club = (fila.Club || '').toLowerCase();
+                return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda);
+            });
 
-            renderizarTarjetas(estadiosFiltrados);
-        });
+            renderizarTarjetas(estadiosFiltrados);
+        });
 
-        // MOTOR DE RULETA: Vuelo Aleatorio de la pestaña activa
-        document.querySelector('.btn-random').addEventListener('click', function() {
-            if (estadiosCargados.length === 0) return;
+        // MOTOR DE RULETA: Vuelo Aleatorio de la pestaña activa
+        document.querySelector('.btn-random').addEventListener('click', function() {
+            if (estadiosCargados.length === 0) return;
 
-            // Filtramos estadios que tengan links de video válidos y no vacíos
-            const estadiosConVideo = estadiosCargados.filter(fila => {
-                const link = fila['Link del Video'];
-                return link && link.trim() !== '' && !link.includes('[Pegá tu link');
-            });
+            // Filtramos estadios que tengan links de video válidos y no vacíos
+            const estadiosConVideo = estadiosCargados.filter(fila => {
+                const link = fila['Link del Video'];
+                return link && link.trim() !== '' && !link.includes('[Pegá tu link');
+            });
 
-            if (estadiosConVideo.length === 0) {
-                alert('Aún no hay links de videos disponibles en esta liga para simular el vuelo aleatorio.');
-                return;
-            }
+            if (estadiosConVideo.length === 0) {
+                alert('Aún no hay links de videos disponibles en esta liga para simular el vuelo aleatorio.');
+                return;
+            }
 
-            const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
-            const estadioElegido = estadiosConVideo[indiceAzar];
+            const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
+            const estadioElegido = estadiosConVideo[indiceAzar];
 
-            window.open(estadioElegido['Link del Video'].trim(), '_blank');
-        });
+            window.open(estadioElegido['Link del Video'].trim(), '_blank');
+        });
 
-        // Eventos de interacción de las pestañas
-        document.querySelectorAll('.tab').forEach(boton => {
-            boton.addEventListener('click', function() {
-                document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const gidId = this.getAttribute('data-gid');
-                cargarLiga(gidId);
-            });
-        });
+        // Eventos de interacción de las pestañas
+        document.querySelectorAll('.tab').forEach(boton => {
+            boton.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const gidId = this.getAttribute('data-gid');
+                cargarLiga(gidId);
+            });
+        });
 
-        // Carga inicial automática (Primera División)
-        const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
-        cargarLiga(primerGid);
-    </script>
+        // Carga inicial automática (Primera División)
+        const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
+        cargarLiga(primerGid);
+    </script>
 </body>
 </html>
