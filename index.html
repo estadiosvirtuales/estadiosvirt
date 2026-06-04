@@ -114,6 +114,8 @@
             transition: transform 0.3s, background-color 0.3s;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
@@ -121,15 +123,46 @@
             transform: translateY(-5px);
         }
 
-        .card-img {
+        /* Contenedor Premium de la imagen/escudo */
+        .estadio-foto-container {
             width: 100%;
             height: 180px;
-            background-color: #333;
-            object-fit: cover;
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        .card-img-logo {
+            max-height: 85%;
+            max-width: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.6));
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-img-logo {
+            transform: scale(1.05);
+        }
+
+        .placeholder-text {
+            color: #444;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 0 10px;
         }
 
         .card-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .card-title {
@@ -163,6 +196,7 @@
             text-decoration: none;
             font-weight: bold;
             transition: background 0.3s;
+            margin-top: auto; /* Empuja el botón al fondo de la tarjeta */
         }
 
         .btn-view:hover {
@@ -184,6 +218,7 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
             transition: transform 0.2s;
+            z-index: 1000;
         }
 
         .btn-random:hover {
@@ -209,68 +244,48 @@
     </div>
 
     <main class="grid">
-        <!-- Tarjeta de Ejemplo 1 -->
-        <article class="card">
-            <!-- Imagen de placeholder gris por ahora -->
-            <div class="card-img"></div>
-            <div class="card-content">
-                <h2 class="card-title">Mâs Monumental</h2>
-                <p class="card-subtitle">River Plate • Argentina</p>
-                <div class="rating">★★★★★ <span>(9.8)</span></div>
-                <a href="#" class="btn-view">Ver Vuelo 3D</a>
-            </div>
-        </article>
-
-        <!-- Tarjeta de Ejemplo 2 -->
-        <article class="card">
-            <div class="card-img"></div>
-            <div class="card-content">
-                <h2 class="card-title">La Bombonera</h2>
-                <p class="card-subtitle">Boca Juniors • Argentina</p>
-                <div class="rating">★★★★★ <span>(9.7)</span></div>
-                <a href="#" class="btn-view">Ver Vuelo 3D</a>
-            </div>
-        </article>
-        
-        <!-- Tarjeta de Ejemplo 3 -->
-        <article class="card">
-            <div class="card-img"></div>
-            <div class="card-content">
-                <h2 class="card-title">El Cilindro</h2>
-                <p class="card-subtitle">Racing Club • Argentina</p>
-                <div class="rating">★★★★☆ <span>(8.9)</span></div>
-                <a href="#" class="btn-view">Ver Vuelo 3D</a>
-            </div>
-        </article>
+        <!-- El contenido se inyecta dinámicamente desde el motor JS de abajo -->
     </main>
 
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <script>
-        // 1. Pegá acá tu link CSV de Google Sheets
+        // 1. URL CSV de Google Sheets
         const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv"; 
 
-        // 2. Motor a prueba de errores
+        // 2. Motor de renderizado dinámico
         Papa.parse(urlCSV, {
             download: true,
-            header: true, // Lee automáticamente los nombres de tus columnas
+            header: true, 
             complete: function(results) {
                 const datos = results.data;
                 const grilla = document.querySelector('.grid');
-                grilla.innerHTML = ''; // Borramos los de prueba
+                grilla.innerHTML = ''; 
                 
                 datos.forEach(fila => {
-                    // Evitamos filas vacías
                     if(fila.Estadio && fila.Club) {
+                        // Verificamos si existe link en la columna Foto, si no dejamos vacío
+                        const urlFoto = fila.Foto ? fila.Foto.trim() : '';
+                        
+                        // Renderizado de la tarjeta estructurada con validación de imagen
                         const tarjeta = `
                         <article class="card">
-                            <div class="card-img" style="background-color: #2a2a2a; display:flex; align-items:center; justify-content:center; color:#555;">(Foto)</div>
+                            <div class="estadio-foto-container">
+                                ${urlFoto ? 
+                                    `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${fila.Club}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
+                                    ''
+                                }
+                                <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
+                                    ${fila.Club}
+                                </div>
+                            </div>
                             <div class="card-content">
                                 <h2 class="card-title">${fila.Estadio}</h2>
-                                <p class="card-subtitle">${fila.Club}</p>
-                                <p style="font-size: 0.8rem; color: #b3b3b3; margin-bottom: 15px;">${fila['Dato Curioso'] || ''}</p>
-                                <a href="${fila['Link del Video']}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
+                                <p class="card-subtitle">${fila.Club} • ${fila.País || 'Argentina'}</p>
+                                <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4;">${fila['Dato Curioso'] || ''}</p>
+                                <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
                             </div>
                         </article>`;
                         grilla.innerHTML += tarjeta;
@@ -278,7 +293,7 @@
                 });
             },
             error: function(err) {
-                document.querySelector('.grid').innerHTML = '<h2 style="color:white; text-align:center;">Error al conectar con Google Sheets. Revisá que el link termine en pub?output=csv</h2>';
+                document.querySelector('.grid').innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con Google Sheets. Revisá que el archivo esté publicado en la Web como CSV.</h2>';
             }
         });
     </script>
