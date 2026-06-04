@@ -87,7 +87,7 @@
             cursor: pointer;
             font-weight: 600;
             white-space: nowrap;
-            transition: background 0.3s;
+            transition: background 0.3s, color 0.3s;
         }
 
         .tab.active, .tab:hover {
@@ -122,7 +122,6 @@
             transform: translateY(-5px);
         }
 
-        /* Contenedor Dinámico con Colores del Club */
         .estadio-foto-container {
             width: 100%;
             height: 180px;
@@ -135,7 +134,6 @@
             transition: filter 0.3s;
         }
 
-        /* Efecto de brillo sutil al pasar el mouse por la tarjeta */
         .card:hover .estadio-foto-container {
             filter: brightness(1.15);
         }
@@ -144,7 +142,6 @@
             max-height: 85%;
             max-width: 85%;
             object-fit: contain;
-            /* Sombra profunda para que el escudo despegue del fondo */
             filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.65));
             transition: transform 0.3s ease-out;
             z-index: 2;
@@ -154,7 +151,6 @@
             transform: scale(1.08) rotate(2deg);
         }
 
-        /* Capa oscura superior interna para mantener la estética Modo Oscuro */
         .estadio-foto-container::after {
             content: '';
             position: absolute;
@@ -198,7 +194,6 @@
             margin-bottom: 15px;
         }
 
-        /* Sistema de Acción */
         .btn-view {
             display: inline-block;
             width: 100%;
@@ -250,27 +245,28 @@
     </header>
 
     <div class="tabs-container">
-        <button class="tab active">Primera División</button>
-        <button class="tab">Primera Nacional</button>
-        <button class="tab">Premier League</button>
-        <button class="tab">La Liga</button>
-        <button class="tab">Mundial 2026</button>
+        <button class="tab active" data-gid="0">Primera División</button>
+        <button class="tab" data-gid="861264971#gid=861264971">Primera Nacional</button>
+        <button class="tab" data-gid="554922783">Premier League</button>
+        <button class="tab" data-gid="88250864">La Liga</button>
+        <button class="tab" data-gid="2013531070">Serie A</button>
+        <button class="tab" data-gid="165565330">Ligue 1</button>
+        <button class="tab" data-gid="96716546">Bundesliga</button>
     </div>
 
     <main class="grid">
-        <!-- Contenido dinámico -->
-    </main>
+        </main>
 
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <script>
-        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv"; 
+        // ID base de tu documento de Google Sheets (quitando el parámetro de la pestaña)
+        const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
 
-        // Diccionario de Colores Oficiales para los Fondos Estéticos Estilo Camiseta
+        // Diccionario de Colores Oficiales para los Fondos Estéticos
         const coloresClubes = {
-            // Argentina - Primera
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
             "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
@@ -299,67 +295,84 @@
             "Deportivo Riestra": "linear-gradient(135deg, #000000, #333333)",
             "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
-
-            // España (Ejemplos top)
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #6c5ce7)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
-
-            // Inglaterra (Ejemplos top)
             "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
             "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
             "Manchester United": "linear-gradient(135deg, #da291c, #000000)"
         };
 
-        // Función auxiliar para obtener el fondo estético según el club
         function obtenerFondoClub(nombreClub) {
-            if (coloresClubes[nombreClub]) {
-                return coloresClubes[nombreClub];
-            }
-            // Fondo por defecto sofisticado si el club no está mapeado aún
+            if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-        Papa.parse(urlCSV, {
-            download: true,
-            header: true, 
-            complete: function(results) {
-                const datos = results.data;
-                const grilla = document.querySelector('.grid');
-                grilla.innerHTML = ''; 
-                
-                datos.forEach(fila => {
-                    if(fila.Estadio && fila.Club) {
-                        const urlFoto = fila.Foto ? fila.Foto.trim() : '';
-                        const clubNombre = fila.Club.trim();
-                        const fondoGradiente = obtenerFondoClub(clubNombre);
-                        
-                        const tarjeta = `
-                        <article class="card">
-                            <div class="estadio-foto-container" style="background: ${fondoGradiente};">
-                                ${urlFoto ? 
-                                    `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
-                                    ''
-                                }
-                                <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
-                                    ${clubNombre}
+        // Función central para cargar cualquier pestaña usando su GID
+        function cargarLiga(gid) {
+            const grilla = document.querySelector('.grid');
+            grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
+            
+            // Construimos la URL agregando el parámetro de la pestaña específica
+            const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
+
+            Papa.parse(urlCompleta, {
+                download: true,
+                header: true, 
+                complete: function(results) {
+                    const datos = results.data;
+                    grilla.innerHTML = ''; 
+                    
+                    datos.forEach(fila => {
+                        if(fila.Estadio && fila.Club) {
+                            const urlFoto = fila.Foto ? fila.Foto.trim() : '';
+                            const clubNombre = fila.Club.trim();
+                            const fondoGradiente = obtenerFondoClub(clubNombre);
+                            
+                            const tarjeta = `
+                            <article class="card">
+                                <div class="estadio-foto-container" style="background: ${fondoGradiente};">
+                                    ${urlFoto ? 
+                                        `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
+                                        ''
+                                    }
+                                    <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
+                                        ${clubNombre}
                                 </div>
-                            </div>
-                            <div class="card-content">
-                                <h2 class="card-title">${fila.Estadio}</h2>
-                                <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
-                                <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
-                                <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
-                            </div>
-                        </article>`;
-                        grilla.innerHTML += tarjeta;
-                    }
-                });
-            },
-            error: function(err) {
-                document.querySelector('.grid').innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con Google Sheets.</h2>';
-            }
+                                </div>
+                                <div class="card-content">
+                                    <h2 class="card-title">${fila.Estadio}</h2>
+                                    <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
+                                    <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
+                                    <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
+                                </div>
+                            </article>`;
+                            grilla.innerHTML += tarjeta;
+                        }
+                    });
+                },
+                error: function(err) {
+                    grilla.innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con esta liga. Verificá el GID de la pestaña.</h2>';
+                }
+            });
+        }
+
+        // Lógica para escuchar los clics en los botones de las pestañas
+        document.querySelectorAll('.tab').forEach(boton => {
+            boton.addEventListener('click', function() {
+                // Quitamos el diseño activo de todos los botones y se lo ponemos al que clickeamos
+                document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Leemos el GID guardado en el botón y disparamos la carga de datos
+                const gidId = this.getAttribute('data-gid');
+                cargarLiga(gidId);
+            });
         });
+
+        // Carga inicial por defecto (Primera División con el primer GID)
+        const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
+        cargarLiga(primerGid);
     </script>
 </body>
 </html>
