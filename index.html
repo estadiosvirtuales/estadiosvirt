@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadios 3D | El Mundo Desde el Aire</title>
+    <style>
+        /* Variables de colores (Estilo Modo Oscuro Premium) */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #181818;
+            --text-main: #ffffff;
+            --text-muted: #b3b3b3;
+            --accent-color: #1db954; /* Verde estilo Spotify */
+            --accent-hover: #1ed760;
+            --danger-color: #e50914; /* Rojo estilo Netflix */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 50px;
+        }
+
+        /* Cabecera y Buscador */
+        .header {
+            padding: 30px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #282828 0%, var(--bg-color) 100%);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 30px;
+            border: none;
+            background-color: #2a2a2a;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar:focus {
+            background-color: #333333;
+        }
+
+        /* Pestañas de Ligas */
+        .tabs-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            /* Ocultar scrollbar */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            background-color: #2a2a2a;
+            color: var(--text-main);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.3s;
+        }
+
+        .tab.active, .tab:hover {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        /* Grilla de Estadios */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Tarjeta de Estadio */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .card:hover {
+            background-color: #282828;
+            transform: translateY(-5px);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            background-color: #333;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        /* Sistema de Estrellas */
+        .rating {
+            color: #f5c518; /* Amarillo IMDb */
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Botón de Acción */
+        .btn-view {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: #000;
+            text-align: center;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-view:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Botón Ruleta Flotante */
+        .btn-random {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-random:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Estadios 3D</h1>
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Buscá un club o estadio...">
+        </div>
+    </header>
+
+    <div class="tabs-container">
+        <button class="tab active">Primera División</button>
+        <button class="tab">Primera Nacional</button>
+        <button class="tab">Premier League</button>
+        <button class="tab">La Liga</button>
+        <button class="tab">Mundial 2026</button>
+    </div>
+
+    <main class="grid">
+        <!-- Tarjeta de Ejemplo 1 -->
+        <article class="card">
+            <!-- Imagen de placeholder gris por ahora -->
+            <div class="card-img"></div>
+            <div class="card-content">
+                <h2 class="card-title">Mâs Monumental</h2>
+                <p class="card-subtitle">River Plate • Argentina</p>
+                <div class="rating">★★★★★ <span>(9.8)</span></div>
+                <a href="#" class="btn-view">Ver Vuelo 3D</a>
+            </div>
+        </article>
+
+        <!-- Tarjeta de Ejemplo 2 -->
+        <article class="card">
+            <div class="card-img"></div>
+            <div class="card-content">
+                <h2 class="card-title">La Bombonera</h2>
+                <p class="card-subtitle">Boca Juniors • Argentina</p>
+                <div class="rating">★★★★★ <span>(9.7)</span></div>
+                <a href="#" class="btn-view">Ver Vuelo 3D</a>
+            </div>
+        </article>
+        
+        <!-- Tarjeta de Ejemplo 3 -->
+        <article class="card">
+            <div class="card-img"></div>
+            <div class="card-content">
+                <h2 class="card-title">El Cilindro</h2>
+                <p class="card-subtitle">Racing Club • Argentina</p>
+                <div class="rating">★★★★☆ <span>(8.9)</span></div>
+                <a href="#" class="btn-view">Ver Vuelo 3D</a>
+            </div>
+        </article>
+    </main>
+
+    <button class="btn-random">🎲 Vuelo Aleatorio</button>
+
+</body>
+</html>
