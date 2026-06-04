@@ -114,6 +114,7 @@
             justify-content: center;
             gap: 40px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .stat-item {
@@ -328,13 +329,13 @@
             <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
             
             <div class="search-container">
-                <input type="text" class="search-bar" placeholder="Buscá tu club, estadio o país...">
+                <input type="text" class="search-bar" id="global-search" placeholder="Buscá tu club, estadio o país...">
             </div>
 
             <div class="hero-stats">
                 <span class="stat-item">⚡ <strong>Vuelos 3D</strong> Inmediatos</span>
                 <span class="stat-item">🌍 <strong>+150 Canchas</strong> Mapeadas</span>
-                <span class="stat-item">🏆 <strong>5 Ligas Top</strong> + Ascenso</span>
+                <span class="stat-item">🏆 <strong>Ligas Top</strong> Internacionales</span>
             </div>
         </div>
     </section>
@@ -362,7 +363,12 @@
     <script>
         const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
 
+        // Memoria interna global de la solapa activa
+        let estadiosCargados = [];
+
+        // Diccionario Maestro de Colores Inyectado Automáticamente (Modo Oscuro Premium)
         const coloresClubes = {
+            // ARGENTINA - PRIMERA DIVISIÓN
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
             "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
@@ -393,6 +399,8 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+
+            // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -430,6 +438,8 @@
             "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
             "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
+
+            // INGLATERRA - PREMIER LEAGUE
             "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
             "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
             "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
@@ -450,6 +460,8 @@
             "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
             "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
             "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
+
+            // ESPAÑA - LA LIGA
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
@@ -470,6 +482,8 @@
             "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
             "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
             "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
+
+            // ITALIA - SERIE A
             "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
             "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
@@ -490,6 +504,8 @@
             "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
             "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
             "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
+
+            // FRANCIA - LIGUE 1
             "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
             "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
             "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
@@ -508,6 +524,8 @@
             "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
             "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
             "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
+
+            // ALEMANIA - BUNDESLIGA
             "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
             "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
             "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
@@ -533,46 +551,60 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
+        // Función unificada para pintar las tarjetas en la grilla
+        function renderizarTarjetas(listaEstadios) {
+            const grilla = document.querySelector('.grid');
+            grilla.innerHTML = ''; 
+
+            if (listaEstadios.length === 0) {
+                grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
+                return;
+            }
+            
+            listaEstadios.forEach(fila => {
+                const urlFoto = fila.Foto ? fila.Foto.trim() : '';
+                const clubNombre = fila.Club.trim();
+                const fondoGradiente = obtenerFondoClub(clubNombre);
+                
+                const tarjeta = `
+                <article class="card">
+                    <div class="estadio-foto-container" style="background: ${fondoGradiente};">
+                        ${urlFoto ? 
+                            `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
+                            ''
+                        }
+                        <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
+                            ${clubNombre}
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h2 class="card-title">${fila.Estadio}</h2>
+                        <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
+                        <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
+                        <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
+                    </div>
+                </article>`;
+                grilla.innerHTML += tarjeta;
+            });
+        }
+
+        // Función central para cargar e indexar cualquier pestaña usando su GID
         function cargarLiga(gid) {
             const grilla = document.querySelector('.grid');
             grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
             
+            // Limpiamos la barra de búsqueda al cambiar de liga
+            document.getElementById('global-search').value = '';
+
             const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
 
             Papa.parse(urlCompleta, {
                 download: true,
                 header: true, 
                 complete: function(results) {
-                    const datos = results.data;
-                    grilla.innerHTML = ''; 
-                    
-                    datos.forEach(fila => {
-                        if(fila.Estadio && fila.Club) {
-                            const urlFoto = fila.Foto ? fila.Foto.trim() : '';
-                            const clubNombre = fila.Club.trim();
-                            const fondoGradiente = obtenerFondoClub(clubNombre);
-                            
-                            const tarjeta = `
-                            <article class="card">
-                                <div class="estadio-foto-container" style="background: ${fondoGradiente};">
-                                    ${urlFoto ? 
-                                        `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
-                                        ''
-                                    }
-                                    <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
-                                        ${clubNombre}
-                                    </div>
-                                </div>
-                                <div class="card-content">
-                                    <h2 class="card-title">${fila.Estadio}</h2>
-                                    <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
-                                    <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
-                                    <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
-                                </div>
-                            </article>`;
-                            grilla.innerHTML += tarjeta;
-                        }
-                    });
+                    // Guardamos en memoria interna solo las filas válidas
+                    estadiosCargados = results.data.filter(fila => fila.Estadio && fila.Club);
+                    renderizarTarjetas(estadiosCargados);
                 },
                 error: function(err) {
                     grilla.innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con esta liga. Verificá el GID de la pestaña.</h2>';
@@ -580,6 +612,41 @@
             });
         }
 
+        // MOTOR DE BÚSQUEDA: Filtro dinámico en tiempo real
+        document.getElementById('global-search').addEventListener('input', function(e) {
+            const terminoBusqueda = e.target.value.toLowerCase().trim();
+            
+            const estadiosFiltrados = estadiosCargados.filter(fila => {
+                const estadio = (fila.Estadio || '').toLowerCase();
+                const club = (fila.Club || '').toLowerCase();
+                return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda);
+            });
+
+            renderizarTarjetas(estadiosFiltrados);
+        });
+
+        // MOTOR DE RULETA: Vuelo Aleatorio de la pestaña activa
+        document.querySelector('.btn-random').addEventListener('click', function() {
+            if (estadiosCargados.length === 0) return;
+
+            // Filtramos estadios que tengan links de video válidos y no vacíos
+            const estadiosConVideo = estadiosCargados.filter(fila => {
+                const link = fila['Link del Video'];
+                return link && link.trim() !== '' && !link.includes('[Pegá tu link');
+            });
+
+            if (estadiosConVideo.length === 0) {
+                alert('Aún no hay links de videos disponibles en esta liga para simular el vuelo aleatorio.');
+                return;
+            }
+
+            const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
+            const estadioElegido = estadiosConVideo[indiceAzar];
+
+            window.open(estadioElegido['Link del Video'].trim(), '_blank');
+        });
+
+        // Eventos de interacción de las pestañas
         document.querySelectorAll('.tab').forEach(boton => {
             boton.addEventListener('click', function() {
                 document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
@@ -590,6 +657,7 @@
             });
         });
 
+        // Carga inicial automática (Primera División)
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
         cargarLiga(primerGid);
     </script>
