@@ -71,7 +71,6 @@
             gap: 10px;
             padding: 10px 20px;
             margin-bottom: 20px;
-            /* Ocultar scrollbar */
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -123,39 +122,59 @@
             transform: translateY(-5px);
         }
 
-        /* Contenedor Premium de la imagen/escudo */
+        /* Contenedor Dinámico con Colores del Club */
         .estadio-foto-container {
             width: 100%;
             height: 180px;
-            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            padding: 15px;
+            padding: 20px;
+            transition: filter 0.3s;
+        }
+
+        /* Efecto de brillo sutil al pasar el mouse por la tarjeta */
+        .card:hover .estadio-foto-container {
+            filter: brightness(1.15);
         }
 
         .card-img-logo {
             max-height: 85%;
             max-width: 85%;
             object-fit: contain;
-            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.6));
-            transition: transform 0.3s;
+            /* Sombra profunda para que el escudo despegue del fondo */
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.65));
+            transition: transform 0.3s ease-out;
+            z-index: 2;
         }
 
         .card:hover .card-img-logo {
-            transform: scale(1.05);
+            transform: scale(1.08) rotate(2deg);
+        }
+
+        /* Capa oscura superior interna para mantener la estética Modo Oscuro */
+        .estadio-foto-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(24,24,24,0.8) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
         }
 
         .placeholder-text {
-            color: #444;
-            font-weight: 800;
-            font-size: 1.1rem;
+            color: rgba(255,255,255,0.2);
+            font-weight: 900;
+            font-size: 1.3rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-align: center;
             padding: 0 10px;
+            z-index: 2;
         }
 
         .card-content {
@@ -163,12 +182,14 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+            z-index: 2;
         }
 
         .card-title {
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 5px;
+            letter-spacing: -0.3px;
         }
 
         .card-subtitle {
@@ -177,14 +198,7 @@
             margin-bottom: 15px;
         }
 
-        /* Sistema de Estrellas */
-        .rating {
-            color: #f5c518; /* Amarillo IMDb */
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        /* Botón de Acción */
+        /* Sistema de Acción */
         .btn-view {
             display: inline-block;
             width: 100%;
@@ -196,7 +210,7 @@
             text-decoration: none;
             font-weight: bold;
             transition: background 0.3s;
-            margin-top: auto; /* Empuja el botón al fondo de la tarjeta */
+            margin-top: auto;
         }
 
         .btn-view:hover {
@@ -244,7 +258,7 @@
     </div>
 
     <main class="grid">
-        <!-- El contenido se inyecta dinámicamente desde el motor JS de abajo -->
+        <!-- Contenido dinámico -->
     </main>
 
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
@@ -252,10 +266,60 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <script>
-        // 1. URL CSV de Google Sheets
         const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv"; 
 
-        // 2. Motor de renderizado dinámico
+        // Diccionario de Colores Oficiales para los Fondos Estéticos Estilo Camiseta
+        const coloresClubes = {
+            // Argentina - Primera
+            "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
+            "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
+            "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Independiente": "linear-gradient(135deg, #b30000, #1a1a1a)",
+            "San Lorenzo": "linear-gradient(135deg, #0f2042, #a61c32)",
+            "Huracán": "linear-gradient(135deg, #ffffff, #e60000)",
+            "Estudiantes de La Plata": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
+            "Gimnasia y Esgrima LP": "linear-gradient(135deg, #ffffff, #002060)",
+            "Rosario Central": "linear-gradient(135deg, #002060, #ffcc00)",
+            "Newell's Old Boys": "linear-gradient(135deg, #000000, #cc0000)",
+            "Vélez Sarsfield": "linear-gradient(135deg, #ffffff, #0000ff)",
+            "Lanús": "linear-gradient(135deg, #5c061e, #2e030f)",
+            "Argentinos Juniors": "linear-gradient(135deg, #e60000, #ffffff)",
+            "Belgrano de Córdoba": "linear-gradient(135deg, #5cb8e4, #ffffff)",
+            "Talleres": "linear-gradient(135deg, #002060, #ffffff, #002060)",
+            "Atlético Tucumán": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Defensa y Justicia": "linear-gradient(135deg, #008000, #ffff00)",
+            "Banfield": "linear-gradient(135deg, #006400, #ffffff)",
+            "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
+            "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
+            "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
+            "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
+            "Deportivo Riestra": "linear-gradient(135deg, #000000, #333333)",
+            "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
+            "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
+
+            // España (Ejemplos top)
+            "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #6c5ce7)",
+            "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
+            "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
+
+            // Inglaterra (Ejemplos top)
+            "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
+            "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
+            "Manchester United": "linear-gradient(135deg, #da291c, #000000)"
+        };
+
+        // Función auxiliar para obtener el fondo estético según el club
+        function obtenerFondoClub(nombreClub) {
+            if (coloresClubes[nombreClub]) {
+                return coloresClubes[nombreClub];
+            }
+            // Fondo por defecto sofisticado si el club no está mapeado aún
+            return "linear-gradient(135deg, #1f1f1f, #333333)";
+        }
+
         Papa.parse(urlCSV, {
             download: true,
             header: true, 
@@ -266,25 +330,25 @@
                 
                 datos.forEach(fila => {
                     if(fila.Estadio && fila.Club) {
-                        // Verificamos si existe link en la columna Foto, si no dejamos vacío
                         const urlFoto = fila.Foto ? fila.Foto.trim() : '';
+                        const clubNombre = fila.Club.trim();
+                        const fondoGradiente = obtenerFondoClub(clubNombre);
                         
-                        // Renderizado de la tarjeta estructurada con validación de imagen
                         const tarjeta = `
                         <article class="card">
-                            <div class="estadio-foto-container">
+                            <div class="estadio-foto-container" style="background: ${fondoGradiente};">
                                 ${urlFoto ? 
-                                    `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${fila.Club}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
+                                    `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
                                     ''
                                 }
                                 <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
-                                    ${fila.Club}
+                                    ${clubNombre}
                                 </div>
                             </div>
                             <div class="card-content">
                                 <h2 class="card-title">${fila.Estadio}</h2>
-                                <p class="card-subtitle">${fila.Club} • ${fila.País || 'Argentina'}</p>
-                                <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4;">${fila['Dato Curioso'] || ''}</p>
+                                <p class="card-subtitle">${clubNombre} • ${fila.País || 'Argentina'}</p>
+                                <p style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 15px; line-height: 1.4; flex-grow: 1;">${fila['Dato Curioso'] || ''}</p>
                                 <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
                             </div>
                         </article>`;
@@ -293,7 +357,7 @@
                 });
             },
             error: function(err) {
-                document.querySelector('.grid').innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con Google Sheets. Revisá que el archivo esté publicado en la Web como CSV.</h2>';
+                document.querySelector('.grid').innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con Google Sheets.</h2>';
             }
         });
     </script>
