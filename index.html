@@ -29,13 +29,12 @@
             padding-bottom: 50px;
         }
 
-        /* PORTADA CINEMÁTICA (Estilo Banner Netflix/Gaming) */
+        /* PORTADA CINEMÁTICA CON IDENTIDAD INTEGRADA */
         .hero-section {
             position: relative;
-            padding: 80px 20px 60px 20px;
+            padding: 50px 20px 40px 20px;
             text-align: center;
-            /* Degradado premium simulando iluminación de estadio de noche */
-            background: linear-gradient(180deg, rgba(29, 185, 84, 0.15) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
+            background: linear-gradient(180deg, rgba(29, 185, 84, 0.12) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
                         radial-gradient(circle at top, #1a3a21 0%, #0c0c0c 70%);
             border-bottom: 1px solid #1a1a1a;
         }
@@ -45,34 +44,28 @@
             margin: 0 auto;
         }
 
-        .hero-badge {
-            display: inline-block;
-            background-color: rgba(29, 185, 84, 0.1);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
+        .brand-logo {
+            max-height: 90px;
+            object-fit: contain;
+            filter: drop-shadow(0px 8px 20px rgba(29, 185, 84, 0.3));
+            border-radius: 14px;
+            margin-bottom: 15px;
         }
 
         .hero-section h1 {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 900;
             margin-bottom: 15px;
-            letter-spacing: -1.5px;
+            letter-spacing: -1px;
             background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--text-muted);
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             font-weight: 400;
             max-width: 600px;
             margin-left: auto;
@@ -83,7 +76,7 @@
         /* Buscador Modernizado dentro de la Portada */
         .search-container {
             max-width: 550px;
-            margin: 0 auto 30px auto;
+            margin: 0 auto 25px auto;
             position: relative;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             border-radius: 30px;
@@ -91,12 +84,12 @@
 
         .search-bar {
             width: 100%;
-            padding: 18px 25px;
+            padding: 16px 25px;
             border-radius: 30px;
             border: 1px solid #2a2a2a;
             background-color: rgba(30, 30, 30, 0.85);
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             outline: none;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
@@ -113,30 +106,30 @@
             display: flex;
             justify-content: center;
             gap: 40px;
-            margin-top: 20px;
+            margin-top: 15px;
             flex-wrap: wrap;
         }
 
         .stat-item {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             font-weight: 500;
         }
 
         .stat-item strong {
             color: var(--text-main);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         /* SECCIÓN DE FILTROS Y LIGAS */
         .section-ligas {
             max-width: 1200px;
-            margin: 40px auto 20px auto;
+            margin: 35px auto 20px auto;
             padding: 0 20px;
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
             margin-bottom: 15px;
             letter-spacing: -0.5px;
@@ -324,7 +317,7 @@
 
     <section class="hero-section">
         <div class="hero-content">
-            <span class="hero-badge">Exploración Interactiva 3D</span>
+            <img class="brand-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo Estadios Virtuales" onerror="this.style.display='none';">
             <h1>ESTADIOS VIRTUALES</h1>
             <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
             
@@ -545,7 +538,47 @@
             "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
             "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
             "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
-            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)"
+            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
+
+            // BRASIL - BRASILEIRAO
+            "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
+            "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
+            "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
+            "Corinthians": "linear-gradient(135deg, #ffffff, #d5d5d5, #000000)",
+            "Santos": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+            "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
+            "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
+            "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+            "Atlético Mineiro": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+            "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
+            "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
+            "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
+            "Athletico Paranaense": "linear-gradient(135deg, #cc0000, #000000)",
+            "Bahía": "linear-gradient(135deg, #0033a0, #ffffff, #e20e0e)",
+            "Bragantino": "linear-gradient(135deg, #ffffff, #e2001a)",
+            "Coritiba": "linear-gradient(135deg, #006437, #ffffff, #006437)",
+            "Chapecoense": "linear-gradient(135deg, #006437, #ffffff)",
+            "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
+            "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
+            "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
+
+            // CHILE - PRIMERA DIVISIÓN
+            "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
+            "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
+            "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
+            "Everton CD": "linear-gradient(135deg, #0033a0, #ffea00, #0033a0)",
+            "Huachipato": "linear-gradient(135deg, #0033a0, #000000, #0055ff)",
+            "Deportes Limache": "linear-gradient(135deg, #ff3300, #000000, #0033a0)",
+            "Palestino": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
+            "Ñublense": "linear-gradient(135deg, #e20e0e, #ffffff)",
+            "Universidad de Chile": "linear-gradient(135deg, #002244, #0033a0, #e20e0e)",
+            "O'Higgins": "linear-gradient(135deg, #75aadb, #ffffff)",
+            "Universidad de Concepción": "linear-gradient(135deg, #ffea00, #0033a0)",
+            "La Serena": "linear-gradient(135deg, #83142c, #ffffff)",
+            "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
+            "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
+            "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
+            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
         function obtenerFondoClub(nombreClub) {
