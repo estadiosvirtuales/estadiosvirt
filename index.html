@@ -29,10 +29,10 @@
             padding-bottom: 50px;
         }
 
-        /* PORTADA CINEMÁTICA CON IDENTIDAD INTEGRADA */
+        /* PORTADA CINEMÁTICA CON IDENTIDAD OPTIMIZADA */
         .hero-section {
             position: relative;
-            padding: 50px 20px 40px 20px;
+            padding: 60px 20px 40px 20px;
             text-align: center;
             background: linear-gradient(180deg, rgba(29, 185, 84, 0.12) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
                         radial-gradient(circle at top, #1a3a21 0%, #0c0c0c 70%);
@@ -42,21 +42,33 @@
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
+        /* Logo optimizado: circular, simétrico y con marco sutil */
         .brand-logo {
-            max-height: 90px;
-            object-fit: contain;
-            filter: drop-shadow(0px 8px 20px rgba(29, 185, 84, 0.3));
-            border-radius: 14px;
-            margin-bottom: 15px;
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--accent-color);
+            filter: drop-shadow(0px 8px 24px rgba(29, 185, 84, 0.35));
+            margin-bottom: 18px;
+            transition: transform 0.3s ease;
         }
 
+        .brand-logo:hover {
+            transform: scale(1.04) rotate(2deg);
+        }
+
+        /* Título balanceado y de menor tamaño */
         .hero-section h1 {
-            font-size: 2.8rem;
+            font-size: 2.3rem;
             font-weight: 900;
             margin-bottom: 15px;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
             background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -68,13 +80,12 @@
             margin-bottom: 30px;
             font-weight: 400;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
             line-height: 1.6;
         }
 
         /* Buscador Modernizado dentro de la Portada */
         .search-container {
+            width: 100%;
             max-width: 550px;
             margin: 0 auto 25px auto;
             position: relative;
@@ -121,7 +132,7 @@
             font-size: 1.05rem;
         }
 
-        /* SECCIÓN DE FILTROS Y LIGAS */
+        /* SECCIÓN DE FILTROS Y LIGAS AUTO-ADAPTABLES */
         .section-ligas {
             max-width: 1200px;
             margin: 35px auto 20px auto;
@@ -139,28 +150,25 @@
             padding-left: 12px;
         }
 
+        /* Contenedor flexible que rompe en múltiples filas de forma fluida */
         .tabs-container {
             display: flex;
-            overflow-x: auto;
-            gap: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
             padding: 5px 0 15px 0;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .tabs-container::-webkit-scrollbar {
-            display: none;
+            justify-content: center;
         }
 
         .tab {
             background-color: #1c1c1c;
             color: var(--text-main);
             border: 1px solid #252525;
-            padding: 12px 26px;
+            padding: 10px 22px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: 700;
             white-space: nowrap;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
         }
 
@@ -322,19 +330,19 @@
             <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
             
             <div class="search-container">
-                <input type="text" class="search-bar" id="global-search" placeholder="Buscá tu club, estadio o país...">
+                <input type="text" class="search-bar" id="global-search" placeholder="Buscá en todo el catálogo de estadios, clubes o países...">
             </div>
 
             <div class="hero-stats">
                 <span class="stat-item">⚡ <strong>Vuelos 3D</strong> Inmediatos</span>
-                <span class="stat-item">🌍 <strong>+150 Canchas</strong> Mapeadas</span>
+                <span class="stat-item">🌍 <strong>Buscador Global</strong> Activo</span>
                 <span class="stat-item">🏆 <strong>Ligas Top</strong> Internacionales</span>
             </div>
         </div>
     </section>
 
     <section class="section-ligas">
-        <h2 class="section-title">Seleccioná una Categoría</h2>
+        <h2 class="section-title" id="titulo-grilla">Seleccioná una Categoría</h2>
         <div class="tabs-container">
             <button class="tab active" data-gid="0">Primera División</button>
             <button class="tab" data-gid="861264971">Primera Nacional</button>
@@ -358,10 +366,14 @@
     <script>
         const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
 
-        // Memoria interna global de la solapa activa
+        // Estructuras de memoria interna
         let estadiosCargados = [];
+        let catalogoGlobal = [];
 
-        // Diccionario Maestro de Colores Inyectado Automáticamente (Modo Oscuro Premium)
+        // Matriz automatizada con todos tus GIDs cargados en Sheets
+        const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071"];
+
+        // Diccionario Maestro de Colores Inyectado Automáticamente
         const coloresClubes = {
             // ARGENTINA - PRIMERA DIVISIÓN
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
@@ -647,17 +659,44 @@
             });
         }
 
-        // MOTOR DE BÚSQUEDA: Filtro dinámico en tiempo real
+        // MOTOR DE PRE-CARGA SILENCIOSA: Indexa todas las pestañas al arrancar la app
+        function indexarCatalogoMasivo() {
+            todosLosGids.forEach(gid => {
+                const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
+                Papa.parse(urlCompleta, {
+                    download: true,
+                    header: true,
+                    complete: function(results) {
+                        const datosValidos = results.data.filter(fila => fila.Estadio && fila.Club);
+                        datosValidos.forEach(estadio => {
+                            // Evitamos meter duplicados si el usuario cambia rápido entre solapas
+                            const yaExiste = catalogoGlobal.some(e => e.Estadio === estadio.Estadio && e.Club === estadio.Club);
+                            if (!yaExiste) catalogoGlobal.push(estadio);
+                        });
+                    }
+                });
+            });
+        }
+
+        // MOTOR DE BÚSQUEDA INTEGRAL GLOBAL (Indexación masiva)
         document.getElementById('global-search').addEventListener('input', function(e) {
             const terminoBusqueda = e.target.value.toLowerCase().trim();
             
-            const estadiosFiltrados = estadiosCargados.filter(fila => {
-                const estadio = (fila.Estadio || '').toLowerCase();
-                const club = (fila.Club || '').toLowerCase();
-                return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda);
-            });
-
-            renderizarTarjetas(estadiosFiltrados);
+            if (terminoBusqueda === '') {
+                // Al limpiar el buscador, restauramos el título de solapa y la grilla por defecto de la liga activa
+                document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+                renderizarTarjetas(estadiosCargados);
+            } else {
+                // Al escribir, se activa el motor cruzado sobre el catálogo masivo completo
+                document.getElementById('titulo-grilla').innerText = "Resultados del Catálogo Masivo";
+                const estadiosFiltrados = catalogoGlobal.filter(fila => {
+                    const estadio = (fila.Estadio || '').toLowerCase();
+                    const club = (fila.Club || '').toLowerCase();
+                    const pais = (fila.País || '').toLowerCase();
+                    return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda) || pais.includes(terminoBusqueda);
+                });
+                renderizarTarjetas(estadiosFiltrados);
+            }
         });
 
         // MOTOR DE RULETA: Vuelo Aleatorio de la pestaña activa
@@ -684,6 +723,10 @@
         // Eventos de interacción de las pestañas
         document.querySelectorAll('.tab').forEach(boton => {
             boton.addEventListener('click', function() {
+                // Al presionar un botón manual de liga limpiamos el buscador global para evitar confusiones
+                document.getElementById('global-search').value = '';
+                document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+
                 document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 
@@ -692,7 +735,8 @@
             });
         });
 
-        // Carga inicial automática (Primera División)
+        // Cargas iniciales asíncronas
+        indexarCatalogoMasivo(); // Disparamos indexación global en segundo plano
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
         cargarLiga(primerGid);
     </script>
