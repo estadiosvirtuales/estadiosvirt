@@ -420,6 +420,91 @@
         .btn-random:hover {
             transform: scale(1.05);
         }
+
+        /* =========================================
+           DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Portada más compacta */
+            .hero-section {
+                padding: 40px 15px 25px 15px;
+            }
+            
+            .brand-logo {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 12px;
+            }
+
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+
+            .search-bar {
+                padding: 14px 20px;
+                font-size: 1rem;
+            }
+
+            .hero-stats {
+                gap: 15px;
+                flex-direction: column; /* Apila las stats en celu */
+                align-items: center;
+            }
+
+            /* Pestañas de ligas adaptables */
+            .tab {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                flex-grow: 1; /* Hace que los botones ocupen el ancho disponible */
+                text-align: center;
+            }
+
+            /* Grilla a 1 sola columna para que las tarjetas respiren */
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 15px;
+            }
+
+            .estadio-foto-container {
+                height: 200px; /* Un poco más de altura en móvil para lucir la foto/mapa */
+            }
+
+            /* Ajustes del globo interno para pantallas chicas */
+            .trivia-balloon {
+                padding: 8px;
+            }
+
+            .b-tab {
+                font-size: 0.75rem;
+                padding: 4px 0;
+            }
+
+            .b-content {
+                font-size: 0.8rem;
+            }
+
+            /* Botón Ruleta Flotante Centrado */
+            .btn-random {
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%); /* Lo centra matemáticamente */
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                width: max-content;
+                box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
+            }
+
+            .btn-random:hover {
+                /* Mantenemos el centrado al hacer el efecto de escala */
+                transform: translateX(50%) scale(1.05);
+            }
+        }
     </style>
 </head>
 <body>
@@ -734,7 +819,7 @@
                 const pais = fila.País || 'Argentina';
                 const estadio = fila.Estadio || 'Estadio';
                 
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
 
                 const tarjeta = `
                 <article class="card">
