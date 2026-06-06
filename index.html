@@ -47,14 +47,14 @@
             align-items: center;
         }
 
-        /* Logo optimizado: circular, simétrico y con marco sutil */
+        /* Logo optimizado: circular, simétrico y con sombreado limpio */
         .brand-logo {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             border-radius: 50%;
             border: 2px solid var(--accent-color);
-            filter: drop-shadow(0px 8px 24px rgba(29, 185, 84, 0.35));
+            box-shadow: 0 4px 25px rgba(29, 185, 84, 0.25);
             margin-bottom: 18px;
             transition: transform 0.3s ease;
         }
@@ -259,7 +259,7 @@
             z-index: 2;
         }
 
-        /* DISEÑO DE GLOBO FLOTANTE PARA DATO CURIOSO */
+        /* DISEÑO PREMIUM DEL GLOBO DE TRIVIA INTERACTIVO */
         .trivia-hint {
             position: absolute;
             top: 10px;
@@ -660,7 +660,7 @@
         // Función unificada para pintar las tarjetas en la grilla
         function renderizarTarjetas(listaEstadios) {
             const grilla = document.querySelector('.grid');
-            grilla.innerHTML = ''; 
+            grilla.innerHTML = ''; 
 
             if (listaEstadios.length === 0) {
                 grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
