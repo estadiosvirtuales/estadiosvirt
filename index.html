@@ -885,7 +885,8 @@
                 const estadio = fila.Estadio || 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
+                // ACÁ ESTABA EL ERROR DE LAS COMILLAS
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
 
                 const tarjeta = `
                 <article class="card">
@@ -1005,7 +1006,6 @@
             });
         });
 
-        // La ruleta ahora también usa el Reproductor Inteligente
         document.querySelector('.btn-random').addEventListener('click', function(e) {
             if (estadiosCargados.length === 0) return;
 
@@ -1022,7 +1022,6 @@
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
             const estadioElegido = estadiosConVideo[indiceAzar];
 
-            // Disparamos la misma función del modal
             abrirModalVideo(e, estadioElegido['Link del Video'].trim());
         });
 
