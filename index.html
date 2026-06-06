@@ -47,7 +47,7 @@
             align-items: center;
         }
 
-        /* Logo optimizado: caja de sombra limpia, sin drop-shadows ruidosos */
+        /* Logo optimizado */
         .brand-logo {
             width: 120px;
             height: 120px;
@@ -351,7 +351,6 @@
             display: flex;
         }
 
-        /* Filtro mágico para forzar el iframe de Google Maps a Dark Mode */
         .b-mapa iframe {
             width: 100%;
             height: 100%;
@@ -381,6 +380,7 @@
             margin-bottom: 15px;
         }
 
+        /* Transformamos la etiqueta <a> en un <button> nativo */
         .btn-view {
             display: inline-block;
             width: 100%;
@@ -391,6 +391,9 @@
             border-radius: 25px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
             transition: background 0.3s;
             margin-top: auto;
         }
@@ -419,6 +422,101 @@
 
         .btn-random:hover {
             transform: scale(1.05);
+        }
+
+        /* =========================================
+           DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
+           ========================================= */
+        @media (max-width: 768px) {
+            .hero-section { padding: 40px 15px 25px 15px; }
+            .brand-logo { width: 90px; height: 90px; margin-bottom: 12px; }
+            .hero-section h1 { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 1rem; margin-bottom: 20px; }
+            .search-bar { padding: 14px 20px; font-size: 1rem; }
+            .hero-stats { gap: 15px; flex-direction: column; align-items: center; }
+            .tab { padding: 8px 14px; font-size: 0.8rem; flex-grow: 1; text-align: center; }
+            .grid { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
+            .estadio-foto-container { height: 200px; }
+            .trivia-balloon { padding: 8px; }
+            .b-tab { font-size: 0.75rem; padding: 4px 0; }
+            .b-content { font-size: 0.8rem; }
+            .btn-random {
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%);
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                width: max-content;
+                box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
+            }
+            .btn-random:hover { transform: translateX(50%) scale(1.05); }
+        }
+
+        /* =========================================
+           ESTILOS DEL REPRODUCTOR INTELIGENTE (MODAL)
+           ========================================= */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 400px; /* Tamaño ideal para videos verticales */
+            height: 80vh;
+            background: #000;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(29, 185, 84, 0.4);
+            border: 1px solid var(--accent-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 35px;
+            height: 35px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2010;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1);
+            background: #ff0f1f;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -461,6 +559,13 @@
     </main>
 
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
+
+    <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="cerrarModalVideo()">✕</button>
+            <div id="modal-video-container" class="video-container"></div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
@@ -523,7 +628,7 @@
             "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
             "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
             "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Resistencia Central": "linear-gradient(135deg, #004d00, #ffffff)",
+            "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
             "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
             "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
@@ -694,21 +799,66 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-        // Nueva función para manejar el cambio de pestañas dentro del globo
+        // LÓGICA DEL REPRODUCTOR INTELIGENTE
+        function abrirModalVideo(event, link) {
+            event.preventDefault(); // Evita que recargue la página o salte arriba
+            
+            if (!link || link === '#' || link.includes('[Pegá tu link')) {
+                alert("El video de este estadio todavía no está disponible.");
+                return;
+            }
+
+            const modal = document.getElementById('video-modal');
+            const container = document.getElementById('modal-video-container');
+            container.innerHTML = ''; // Limpiamos el contenedor por si había otro video cargado
+
+            // Si es un archivo nativo .mp4 (directo de Drive o nube)
+            if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
+                container.innerHTML = `
+                    <video controls autoplay style="width: 100%; height: 100%; object-fit: cover;">
+                        <source src="${link}" type="video/mp4">
+                        Tu navegador no soporta videos HTML5.
+                    </video>
+                `;
+            } 
+            // Si es de TikTok u otra URL externa, lo metemos en un iframe
+            else {
+                let urlIncrustar = link;
+                
+                // Intenta forzar la versión "embed" si es una URL estándar de TikTok
+                if (link.includes('tiktok.com') && !link.includes('/embed/')) {
+                    const matchId = link.match(/video\/(\d+)/);
+                    if (matchId && matchId[1]) {
+                        urlIncrustar = `https://www.tiktok.com/embed/v2/${matchId[1]}`;
+                    }
+                }
+
+                container.innerHTML = `
+                    <iframe src="${urlIncrustar}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen; encrypted-media"></iframe>
+                `;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModalVideo() {
+            const modal = document.getElementById('video-modal');
+            const container = document.getElementById('modal-video-container');
+            modal.style.display = 'none';
+            container.innerHTML = ''; // Vacía el contenido para cortar el audio al instante
+        }
+
         function switchTab(event, btn, type, estadio = '', pais = '') {
-            event.stopPropagation(); // Evita que se cierre el globo
+            event.stopPropagation();
             const balloon = btn.closest('.trivia-balloon');
             
-            // Reiniciar botones y contenidos
             balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
             balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
             
-            // Activar selección
             btn.classList.add('active');
             const content = balloon.querySelector('.b-' + type);
             content.classList.add('active');
 
-            // Carga perezosa (Lazy Load) del mapa solo si no se cargó antes
             if (type === 'mapa' && !content.innerHTML.trim()) {
                 content.innerHTML = '<span style="color:var(--text-muted); font-size: 0.8rem;">Cargando mapa en modo oscuro...</span>';
                 const query = encodeURIComponent(estadio + ' stadium ' + pais);
@@ -733,8 +883,9 @@
                 const fondoGradiente = obtenerFondoClub(clubNombre);
                 const pais = fila.País || 'Argentina';
                 const estadio = fila.Estadio || 'Estadio';
+                const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
 
                 const tarjeta = `
                 <article class="card">
@@ -764,7 +915,7 @@
                     <div class="card-content">
                         <h2 class="card-title">${estadio}</h2>
                         <p class="card-subtitle">${clubNombre} • ${pais}</p>
-                        <a href="${fila['Link del Video'] || '#'}" target="_blank" class="btn-view">Ver Vuelo 3D</a>
+                        <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
                     </div>
                 </article>`;
                 grilla.innerHTML += tarjeta;
@@ -832,12 +983,10 @@
             const globoActual = elementoContainer.querySelector('.trivia-balloon');
             const yaEstaAbierto = globoActual.classList.contains('active');
 
-            // Cierra otros globos abiertos y reinicia su estado a la pestaña Trivia
             document.querySelectorAll('.trivia-balloon').forEach(g => {
                 g.classList.remove('active');
                 const tabTrivia = g.querySelector('.b-tab:first-child');
                 if (tabTrivia) {
-                    // Forzamos silenciosamente el reinicio a trivia
                     g.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
                     g.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
                     tabTrivia.classList.add('active');
@@ -856,7 +1005,8 @@
             });
         });
 
-        document.querySelector('.btn-random').addEventListener('click', function() {
+        // La ruleta ahora también usa el Reproductor Inteligente
+        document.querySelector('.btn-random').addEventListener('click', function(e) {
             if (estadiosCargados.length === 0) return;
 
             const estadiosConVideo = estadiosCargados.filter(fila => {
@@ -872,7 +1022,8 @@
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
             const estadioElegido = estadiosConVideo[indiceAzar];
 
-            window.open(estadioElegido['Link del Video'].trim(), '_blank');
+            // Disparamos la misma función del modal
+            abrirModalVideo(e, estadioElegido['Link del Video'].trim());
         });
 
         document.querySelectorAll('.tab').forEach(boton => {
