@@ -914,13 +914,14 @@
         }
 
         function lanzarRondaGuessr() {
-            // Filtrar estadios que tengan videos y coordenadas válidas
+           // FILTRO ESTRICTO: Solo estadios con videos reales de YouTube y coordenadas cargadas
             const estadiosDisponibles = catalogoGlobal.filter(f => {
-                const link = f['Link del Video'];
+                const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
+                const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
                 const tieneLat = f.Latitud && f.Latitud.toString().trim() !== '';
                 const tieneLng = f.Longitud && f.Longitud.toString().trim() !== '';
                 const yaJugado = guessrEstadiosJugados.includes(f.Estadio);
-                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá') && tieneLat && tieneLng && !yaJugado;
+                return esYouTube && tieneLat && tieneLng && !yaJugado;
             });
 
             if (estadiosDisponibles.length === 0) {
