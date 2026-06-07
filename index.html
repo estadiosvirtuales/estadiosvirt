@@ -957,8 +957,8 @@
                     zoomControl: false
                 }).setView([20, 0], 1);
 
-                // Capa de mapa mudo en modo oscuro (CartoDB Dark Matter)
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+               // Capa de mapa mudo limpia sin el error del {r}
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
                     maxZoom: 18
                 }).addTo(guessrMapInstance);
 
