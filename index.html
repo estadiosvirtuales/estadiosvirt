@@ -449,7 +449,7 @@
             background-color: var(--accent-hover);
         }
 
-        /* Estilos del panel del minijuego GeoGuessr */
+        /* Estilos del contenedor del minijuego GeoGuessr */
         #game-ui {
             display: none;
             width: 100%;
@@ -468,11 +468,12 @@
         }
         #map-guess-container {
             width: 100%;
-            height: 250px;
-            background-color: #0c0c0c;
+            height: 280px; /* Tamaño forzado inicial */
+            background-color: #1a1a1a;
             border-radius: 8px;
             border: 1px solid #222;
             margin-bottom: 12px;
+            position: relative;
         }
 
         /* Modificaciones del Modal para Pantalla Dividida en Juego */
@@ -501,7 +502,7 @@
             border: 1px solid var(--accent-color);
             display: flex;
             flex-direction: column;
-            transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: max-width 0.4s ease;
         }
 
         /* Clase dinámica para modo GeoGuessr extendido */
@@ -558,7 +559,7 @@
             }
         }
 
-        /* Split screen solo en pantallas grandes en modo juego */
+        /* Split screen en PC: Obligamos a que el mapa tenga el 100% de alto de su sección */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row;
@@ -577,10 +578,12 @@
                 flex-direction: column;
                 justify-content: space-between;
                 border-radius: 0 12px 12px 0;
+                padding: 20px;
             }
             .modal-content.stadium-guessr-layout #map-guess-container {
                 flex-grow: 1;
-                height: auto;
+                height: 100%;
+                min-height: 320px;
             }
         }
     </style>
@@ -681,7 +684,7 @@
             "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
             "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
             "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Central Córdoba (SdE)": "linear-gradient(135deg, #0 black, #ffffff)",
+            "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
             "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
             "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
             "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
@@ -735,7 +738,6 @@
                      videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
                 }
 
-                // Ocultar barras de información de YouTube en modo juego
                 const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
                 if (videoId) {
                     urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
@@ -807,7 +809,7 @@
                 const estadio = fila.Estadio || 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
 
                 const tarjeta = `
                 <article class="card">
@@ -898,7 +900,7 @@
         });
 
         // =========================================================================
-        // 🌍 MOTOR DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (5 RONDAS CON MAPA)
+        // 🌍 MOTOR REPARADO DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (SÓLO YOUTUBE)
         // =========================================================================
         function iniciarTrivia() {
             if (catalogoGlobal.length === 0) {
@@ -914,18 +916,19 @@
         }
 
         function lanzarRondaGuessr() {
-            // Filtrar estadios que tengan videos y coordenadas válidas
+            // FILTRO ESTRICTO: Solo estadios con videos reales de YouTube y coordenadas cargadas
             const estadiosDisponibles = catalogoGlobal.filter(f => {
-                const link = f['Link del Video'];
+                const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
+                const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
                 const tieneLat = f.Latitud && f.Latitud.toString().trim() !== '';
                 const tieneLng = f.Longitud && f.Longitud.toString().trim() !== '';
                 const yaJugado = guessrEstadiosJugados.includes(f.Estadio);
-                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá') && tieneLat && tieneLng && !yaJugado;
+                return esYouTube && tieneLat && tieneLng && !yaJugado;
             });
 
             if (estadiosDisponibles.length === 0) {
-                alert('¡Georreferencias completadas en este set!');
-                finalizarJuegoGuessr();
+                alert('No hay suficientes estadios con videos de YouTube y coordenadas válidas en esta categoría.');
+                cerrarModalVideo();
                 return;
             }
 
@@ -944,20 +947,20 @@
             // Abrir el modal y desplegar video
             abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
-            // Inicializar mapa interactivo Leaflet con delay para evitar errores de renderizado de cajas DOM
+            // REPARACIÓN DEL MAPA: Forzar dimensiones exactas y quitar el bug del parámetro de retina inválido ({r})
             setTimeout(() => {
                 if (guessrMapInstance) {
                     guessrMapInstance.remove();
                 }
 
-                // Generar mapa centrado globalmente
+                // Generar mapa centrado globalmente con caja DOM calculada en tiempo real
                 guessrMapInstance = L.map('map-guess-container', {
                     attributionControl: false,
                     zoomControl: false
                 }).setView([20, 0], 1);
 
-                // Capa de mapa mudo en modo oscuro (CartoDB Dark Matter)
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                // Capa de mapa mudo limpia sin el error del {r}
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
                     maxZoom: 18
                 }).addTo(guessrMapInstance);
 
@@ -979,9 +982,9 @@
                     actionBtn.disabled = false;
                 });
 
-                // Forzar refresco de Leaflet por si cargó desfasado el contenedor responsivo
+                // Forzar el redibujado de las teselas una vez abierto el modal
                 guessrMapInstance.invalidateSize();
-            }, 300);
+            }, 400);
 
             actionBtn.setAttribute('data-estado', 'juego');
             actionBtn.onclick = function() {
@@ -1007,7 +1010,7 @@
             // Calcular distancia matemática exacta
             const distanciaKm = calcularDistanciaHaversine(userLat, userLng, targetLat, targetLng);
 
-            // Fórmula de asignación de puntaje exponencial estilo GeoGuessr (Máximo 5000 puntos)
+            // Asignación de puntaje exponencial estilo GeoGuessr (Máximo 5000 puntos)
             const puntosRonda = Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
             guessrPuntosTotales += puntosRonda;
 
@@ -1039,7 +1042,6 @@
         }
 
         function avanzarDeRondaGuessr() {
-            // Remover capas del mapa previo
             if (guessrUserMarker) guessrUserMarker.remove();
             if (guessrTargetMarker) guessrTargetMarker.remove();
             if (guessrPolyline) guessrPolyline.remove();
@@ -1081,9 +1083,9 @@
             `;
         }
 
-        // Función matemática del Haversine (Métrica de distancia sobre arco geodésico)
+        // Función matemática del Haversine
         function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radio medio de la Tierra en kilómetros
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
