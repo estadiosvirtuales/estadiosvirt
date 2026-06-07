@@ -424,6 +424,76 @@
             transform: scale(1.05);
         }
 
+        /* Botón Flotante de Trivia */
+        .btn-game {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: var(--accent-color);
+            color: black;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.4);
+            transition: transform 0.2s;
+            z-index: 1000;
+        }
+        .btn-game:hover {
+            transform: scale(1.05);
+            background-color: var(--accent-hover);
+        }
+
+        /* Estilos del contenedor del minijuego */
+        #game-ui {
+            display: none;
+            width: 100%;
+            background: rgba(16, 16, 16, 0.98);
+            padding: 15px;
+            border-top: 2px solid var(--accent-color);
+            text-align: center;
+            z-index: 2010;
+        }
+        #game-title {
+            font-size: 1.05rem;
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+        .game-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+        .game-btn {
+            background-color: #222;
+            border: 1px solid #333;
+            color: white;
+            padding: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .game-btn:hover {
+            background-color: #2b2b2b;
+            border-color: var(--accent-color);
+        }
+        .game-btn.correct {
+            background-color: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+        .game-btn.wrong {
+            background-color: var(--danger-color);
+            color: #fff;
+            border-color: var(--danger-color);
+        }
+
         /* =========================================
            DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
            ========================================= */
@@ -450,6 +520,20 @@
                 box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
             }
             .btn-random:hover { transform: translateX(50%) scale(1.05); }
+            
+            .btn-game {
+                bottom: 75px;
+                right: 50%;
+                left: auto;
+                transform: translateX(50%);
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                width: max-content;
+            }
+            .game-options {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
         }
 
         /* =========================================
@@ -558,12 +642,18 @@
     <main class="grid">
     </main>
 
+    <button class="btn-game" onclick="iniciarTrivia()">🎮 Jugar Trivia</button>
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
 
     <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="cerrarModalVideo()">✕</button>
             <div id="modal-video-container" class="video-container"></div>
+            
+            <div id="game-ui">
+                <h3 id="game-title">¿De qué club es este estadio?</h3>
+                <div class="game-options" id="game-options"></div>
+            </div>
         </div>
     </div>
 
@@ -800,8 +890,8 @@
         }
 
         // LÓGICA DEL REPRODUCTOR INTELIGENTE ACTUALIZADA (YouTube + mp4 + TikTok)
-        function abrirModalVideo(event, link) {
-            event.preventDefault(); // Evita que recargue la página o salte arriba
+        function abrirModalVideo(event, link, esJuego = false) {
+            if (event) event.preventDefault(); // Evita que recargue la página o salte arriba
             
             if (!link || link === '#' || link.includes('[Pegá tu link')) {
                 alert("El video de este estadio todavía no está disponible.");
@@ -811,6 +901,16 @@
             const modal = document.getElementById('video-modal');
             const container = document.getElementById('modal-video-container');
             container.innerHTML = ''; // Limpiamos el contenedor por si había otro video cargado
+
+            // Control visual del espacio de la Trivia
+            const gameUi = document.getElementById('game-ui');
+            if (esJuego) {
+                gameUi.style.display = 'block';
+                container.style.height = 'calc(100% - 170px)';
+            } else {
+                gameUi.style.display = 'none';
+                container.style.height = '100%';
+            }
 
             let urlIncrustar = link;
 
@@ -866,6 +966,7 @@
             const container = document.getElementById('modal-video-container');
             modal.style.display = 'none';
             container.innerHTML = ''; // Vacía el contenido para cortar el audio al instante
+            document.getElementById('game-ui').style.display = 'none'; // Asegura ocultar el juego al cerrar
         }
 
         function switchTab(event, btn, type, estadio = '', pais = '') {
@@ -905,7 +1006,7 @@
                 const estadio = fila.Estadio || 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                // ESTA LÍNEA ES LA QUE ROMPÍA TU CÓDIGO POR LAS COMILLAS (AHORA REPARADA CON ENTIDADES HTML)
+                // REPARADO CON ENTIDADES HTML PARA QUE NUNCA SE ROMPA EL SCRIPT
                 const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&#39;").replace(/"/g, "&quot;");
 
                 const tarjeta = `
@@ -1057,6 +1158,74 @@
                 cargarLiga(gidId);
             });
         });
+
+        // --- SISTEMA DEL MINIJUEGO INTERACTIVO (TRIVIA) ---
+        function iniciarTrivia() {
+            if (catalogoGlobal.length < 4) {
+                alert('Esperá un segundo a que se cargue por completo el catálogo masivo...');
+                return;
+            }
+
+            // Filtramos únicamente estadios que contengan videos válidos para adivinar
+            const estadiosConVideo = catalogoGlobal.filter(fila => {
+                const link = fila['Link del Video'];
+                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá tu link');
+            });
+
+            if (estadiosConVideo.length === 0) {
+                alert('No se encontraron suficientes videos en el catálogo para iniciar el juego.');
+                return;
+            }
+
+            // Seleccionamos la respuesta correcta al azar
+            const estadioCorrecto = estadiosConVideo[Math.floor(Math.random() * estadiosConVideo.length)];
+            
+            // Generamos las otras 3 respuestas incorrectas sin duplicar clubes
+            let opciones = [estadioCorrecto];
+            while (opciones.length < 4) {
+                const opcionAleatoria = catalogoGlobal[Math.floor(Math.random() * catalogoGlobal.length)];
+                if (!opciones.some(o => o.Club === opcionAleatoria.Club)) {
+                    opciones.push(opcionAleatoria);
+                }
+            }
+
+            // Mezclamos el array para que la opción correcta no quede siempre primera
+            opciones.sort(() => Math.random() - 0.5);
+
+            // Configuramos los textos del panel de la trivia
+            document.getElementById('game-title').innerText = '¿De qué club es este estadio?';
+            const contenedorOpciones = document.getElementById('game-options');
+            contenedorOpciones.innerHTML = '';
+
+            // Renderizamos los botones interactivos
+            opciones.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'game-btn';
+                btn.innerText = opt.Club;
+                
+                btn.onclick = function() {
+                    // Desactivamos todas las opciones para que no sigan clickeando
+                    document.querySelectorAll('.game-btn').forEach(b => b.disabled = true);
+                    
+                    if (opt.Club === estadioCorrecto.Club) {
+                        btn.classList.add('correct');
+                        document.getElementById('game-title').innerHTML = `¡CORRECTO! 🎉 Es de <strong>${estadioCorrecto.Club}</strong> (${estadioCorrecto.Estadio})`;
+                    } else {
+                        btn.classList.add('wrong');
+                        document.getElementById('game-title').innerHTML = `¡INCORRECTO! ❌ Era el de <strong>${estadioCorrecto.Club}</strong> (${estadioCorrecto.Estadio})`;
+                        
+                        // Iluminamos la correcta en verde para guiar al usuario
+                        document.querySelectorAll('.game-btn').forEach(b => {
+                            if (b.innerText === estadioCorrecto.Club) b.classList.add('correct');
+                        });
+                    }
+                };
+                contenedorOpciones.appendChild(btn);
+            });
+
+            // Abrimos el modal forzando el modo minijuego (parámetro true)
+            abrirModalVideo(null, estadioCorrecto['Link del Video'].trim(), true);
+        }
 
         indexarCatalogoMasivo();
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
