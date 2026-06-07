@@ -461,6 +461,7 @@
             color: #ffffff;
             margin-bottom: 12px;
             font-weight: bold;
+            line-height: 1.4;
         }
         .game-options {
             display: grid;
@@ -665,6 +666,12 @@
         let estadiosCargados = [];
         let catalogoGlobal = [];
         const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071"];
+
+        // Variables de estado del Minijuego (Rondas y Score)
+        let triviaRondaActual = 0;
+        let triviaPuntos = 0;
+        let triviaEstadioCorrecto = null;
+        let triviaEstadiosJugados = [];
 
         const coloresClubes = {
             // ARGENTINA - PRIMERA DIVISIÓN
@@ -1159,29 +1166,40 @@
             });
         });
 
-        // --- SISTEMA DEL MINIJUEGO INTERACTIVO (TRIVIA) ---
+        // --- SISTEMA DEL MINIJUEGO INTERACTIVO (TRIVIA DE 5 RONDAS CON PUNTAJE) ---
         function iniciarTrivia() {
             if (catalogoGlobal.length < 4) {
                 alert('Esperá un segundo a que se cargue por completo el catálogo masivo...');
                 return;
             }
+            // Inicializar o reiniciar variables del juego
+            triviaRondaActual = 1;
+            triviaPuntos = 0;
+            triviaEstadiosJugados = [];
+            
+            jugarRondaTrivia();
+        }
 
-            // Filtramos únicamente estadios que contengan videos válidos para adivinar
-            const estadiosConVideo = catalogoGlobal.filter(fila => {
+        function jugarRondaTrivia() {
+            // Filtramos únicamente estadios que contengan videos válidos y que no hayamos jugado en esta partida
+            const estadiosDisponibles = catalogoGlobal.filter(fila => {
                 const link = fila['Link del Video'];
-                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá tu link');
+                const yaJugado = triviaEstadiosJugados.includes(fila.Estadio);
+                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá tu link') && !yaJugado;
             });
 
-            if (estadiosConVideo.length === 0) {
-                alert('No se encontraron suficientes videos en el catálogo para iniciar el juego.');
+            if (estadiosDisponibles.length === 0) {
+                alert('¡Completaste todos los estadios con video del catálogo!');
+                finalizarTrivia();
                 return;
             }
 
-            // Seleccionamos la respuesta correcta al azar
-            const estadioCorrecto = estadiosConVideo[Math.floor(Math.random() * estadiosConVideo.length)];
+            // Seleccionamos el estadio correcto de esta ronda
+            triviaEstadioCorrecto = estadiosDisponibles[Math.floor(Math.random() * estadiosDisponibles.length)];
+            triviaEstadiosJugados.push(triviaEstadioCorrecto.Estadio);
             
             // Generamos las otras 3 respuestas incorrectas sin duplicar clubes
-            let opciones = [estadioCorrecto];
+            let opciones = [triviaEstadioCorrecto];
             while (opciones.length < 4) {
                 const opcionAleatoria = catalogoGlobal[Math.floor(Math.random() * catalogoGlobal.length)];
                 if (!opciones.some(o => o.Club === opcionAleatoria.Club)) {
@@ -1189,42 +1207,90 @@
                 }
             }
 
-            // Mezclamos el array para que la opción correcta no quede siempre primera
+            // Mezclamos las opciones
             opciones.sort(() => Math.random() - 0.5);
 
-            // Configuramos los textos del panel de la trivia
-            document.getElementById('game-title').innerText = '¿De qué club es este estadio?';
+            // Configuramos los textos e inyectamos el indicador de ronda y score actual
+            document.getElementById('game-title').innerHTML = `
+                <span style="color: var(--accent-color); font-size: 0.85rem; display: block; margin-bottom: 4px; font-weight: 800; letter-spacing: 0.5px;">
+                    RONDA ${triviaRondaActual} DE 5 • SCORE: ${triviaPuntos} PTS
+                </span>
+                ¿De qué club es este estadio?
+            `;
+            
             const contenedorOpciones = document.getElementById('game-options');
             contenedorOpciones.innerHTML = '';
 
-            // Renderizamos los botones interactivos
+            // Renderizamos los botones interactivos de las opciones
             opciones.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'game-btn';
                 btn.innerText = opt.Club;
                 
                 btn.onclick = function() {
-                    // Desactivamos todas las opciones para que no sigan clickeando
+                    // Desactivamos todas las opciones al hacer clic
                     document.querySelectorAll('.game-btn').forEach(b => b.disabled = true);
                     
-                    if (opt.Club === estadioCorrecto.Club) {
+                    if (opt.Club === triviaEstadioCorrecto.Club) {
                         btn.classList.add('correct');
-                        document.getElementById('game-title').innerHTML = `¡CORRECTO! 🎉 Es de <strong>${estadioCorrecto.Club}</strong> (${estadioCorrecto.Estadio})`;
+                        triviaPuntos += 100;
+                        document.getElementById('game-title').innerHTML = `
+                            <span style="color: var(--accent-color); font-size: 0.85rem; display: block; margin-bottom: 4px; font-weight: 800;">
+                                RONDA ${triviaRondaActual} DE 5 • SCORE: ${triviaPuntos} PTS
+                            </span>
+                            ¡CORRECTO! 🎉 +100 pts<br><span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Cargando siguiente vuelo...</span>
+                        `;
                     } else {
                         btn.classList.add('wrong');
-                        document.getElementById('game-title').innerHTML = `¡INCORRECTO! ❌ Era el de <strong>${estadioCorrecto.Club}</strong> (${estadioCorrecto.Estadio})`;
+                        document.getElementById('game-title').innerHTML = `
+                            <span style="color: var(--accent-color); font-size: 0.85rem; display: block; margin-bottom: 4px; font-weight: 800;">
+                                RONDA ${triviaRondaActual} DE 5 • SCORE: ${triviaPuntos} PTS
+                            </span>
+                            ¡INCORRECTO! ❌ Era de <strong>${triviaEstadioCorrecto.Club}</strong><br><span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Cargando siguiente vuelo...</span>
+                        `;
                         
                         // Iluminamos la correcta en verde para guiar al usuario
                         document.querySelectorAll('.game-btn').forEach(b => {
-                            if (b.innerText === estadioCorrecto.Club) b.classList.add('correct');
+                            if (b.innerText === triviaEstadioCorrecto.Club) b.classList.add('correct');
                         });
                     }
+
+                    // Espera 2.5 segundos para que el usuario asimile la respuesta y pasa de ronda
+                    setTimeout(() => {
+                        triviaRondaActual++;
+                        if (triviaRondaActual <= 5) {
+                            jugarRondaTrivia();
+                        } else {
+                            finalizarTrivia();
+                        }
+                    }, 2500);
                 };
                 contenedorOpciones.appendChild(btn);
             });
 
             // Abrimos el modal forzando el modo minijuego (parámetro true)
-            abrirModalVideo(null, estadioCorrecto['Link del Video'].trim(), true);
+            abrirModalVideo(null, triviaEstadioCorrecto['Link del Video'].trim(), true);
+        }
+
+        function finalizarTrivia() {
+            const container = document.getElementById('modal-video-container');
+            const gameUi = document.getElementById('game-ui');
+            
+            // Ocultamos las opciones abajo y expandimos el contenedor para mostrar el resumen de campeonato
+            gameUi.style.display = 'none';
+            container.style.height = '100%';
+            
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 VUELO COMPLETADO 🏆</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5;">Terminaste las 5 rondas de la Trivia Aérea.</p>
+                    <div style="background: #111; border: 1px solid #222; padding: 20px 40px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 5px;">Puntaje Final</span>
+                        <strong style="font-size: 2.2rem; color: #ffffff; font-weight: 900;">${triviaPuntos} <span style="font-size: 1.2rem; color: var(--accent-color);">Pts</span></strong>
+                    </div>
+                    <button onclick="iniciarTrivia()" class="btn-view" style="max-width: 220px; padding: 14px 28px; font-size: 1rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);">Jugar Otra Vez 🎮</button>
+                </div>
+            `;
         }
 
         indexarCatalogoMasivo();
