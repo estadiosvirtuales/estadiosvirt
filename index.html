@@ -475,7 +475,7 @@
             margin-bottom: 12px;
         }
 
-        /* Modificaciones del Modal para Pantalla Dividida en Juego */
+        /* Estilos del Modal Reconfigurados (OPTIMIZADO Y MÁS GRANDE) */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -493,7 +493,7 @@
         .modal-content {
             position: relative;
             width: 90%;
-            max-width: 400px;
+            max-width: 550px; /* REPRODUCTOR ESTÁNDAR MÁS ANCHO */
             height: 80vh;
             background: #000;
             border-radius: 12px;
@@ -501,12 +501,13 @@
             border: 1px solid var(--accent-color);
             display: flex;
             flex-direction: column;
-            transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
-        /* Clase dinámica para modo GeoGuessr extendido */
+        /* DISEÑO DE PANTALLA DIVIDIDA GIGANTE PARA EL MODO JUEGO */
         .modal-content.stadium-guessr-layout {
-            max-width: 850px;
+            width: 85% !important;
+            max-width: 1100px !important; /* AHORA SE VE MUCHO MÁS GRANDE EN PC */
         }
 
         .video-container {
@@ -520,14 +521,32 @@
             align-items: center;
         }
 
-        /* Estilos específicos de marcadores Leaflet */
-        .leaflet-popup-content-wrapper {
-            background: #161616 !important;
-            color: #ffffff !important;
-            border: 1px solid var(--accent-color);
-        }
-        .leaflet-popup-tip {
-            background: #161616 !important;
+        /* Split screen equilibrado en PC */
+        @media (min-width: 769px) {
+            .modal-content.stadium-guessr-layout {
+                flex-direction: row !important;
+            }
+            .modal-content.stadium-guessr-layout .video-container {
+                width: 50% !important;
+                height: 100% !important;
+                border-radius: 12px 0 0 12px !important;
+            }
+            .modal-content.stadium-guessr-layout #game-ui {
+                width: 50% !important;
+                height: 100% !important;
+                border-top: none !important;
+                border-left: 2px solid var(--accent-color) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                border-radius: 0 12px 12px 0 !important;
+                padding: 20px !important;
+            }
+            .modal-content.stadium-guessr-layout #map-guess-container {
+                flex-grow: 1 !important;
+                height: 100% !important;
+                min-height: 350px !important;
+            }
         }
 
         /* RESPONSIVE OPTIMIZADO */
@@ -556,31 +575,11 @@
                 font-size: 0.95rem;
                 width: max-content;
             }
-        }
-
-        /* Split screen solo en pantallas grandes en modo juego */
-        @media (min-width: 769px) {
-            .modal-content.stadium-guessr-layout {
-                flex-direction: row;
-            }
             .modal-content.stadium-guessr-layout .video-container {
-                width: 50%;
-                height: 100%;
-                border-radius: 12px 0 0 12px;
+                height: 45% !important;
             }
             .modal-content.stadium-guessr-layout #game-ui {
-                width: 50%;
-                height: 100%;
-                border-top: none;
-                border-left: 2px solid var(--accent-color);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                border-radius: 0 12px 12px 0;
-            }
-            .modal-content.stadium-guessr-layout #map-guess-container {
-                flex-grow: 1;
-                height: auto;
+                height: 55% !important;
             }
         }
     </style>
@@ -681,7 +680,7 @@
             "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
             "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
             "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Central Córdoba (SdE)": "linear-gradient(135deg, #0 black, #ffffff)",
+            "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
             "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
             "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
             "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
@@ -714,9 +713,6 @@
             if (esJuego) {
                 card.classList.add('stadium-guessr-layout');
                 gameUi.style.display = 'block';
-                if (window.innerWidth <= 768) {
-                    container.style.height = '40%';
-                }
             } else {
                 card.classList.remove('stadium-guessr-layout');
                 gameUi.style.display = 'none';
@@ -735,7 +731,6 @@
                      videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
                 }
 
-                // Ocultar barras de información de YouTube en modo juego
                 const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
                 if (videoId) {
                     urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
@@ -807,7 +802,7 @@
                 const estadio = fila.Estadio || 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
 
                 const tarjeta = `
                 <article class="card">
@@ -849,7 +844,9 @@
             });
         }
 
+        // REPARACIÓN EN LAS PESTAÑAS: INDEXACIÓN SIMULTÁNEA DE LIGAS SIN PISAR VARIABLES
         function indexarCatalogoMasivo() {
+            catalogoGlobal = []; // Limpiar antes de poblar
             todosLosGids.forEach(gid => {
                 Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`, {
                     download: true,
@@ -897,8 +894,40 @@
             document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
         });
 
+        document.querySelector('.btn-random').addEventListener('click', function(e) {
+            if (estadiosCargados.length === 0) return;
+
+            const estadiosConVideo = estadiosCargados.filter(fila => {
+                const link = fila['Link del Video'];
+                return link && link.trim() !== '' && !link.includes('[Pegá tu link');
+            });
+
+            if (estadiosConVideo.length === 0) {
+                alert('Aún no hay links de videos disponibles en esta liga para simular el vuelo aleatorio.');
+                return;
+            }
+
+            const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
+            const estadioElegido = estadiosConVideo[indiceAzar];
+
+            abrirModalVideo(e, estadioElegido['Link del Video'].trim());
+        });
+
+        document.querySelectorAll('.tab').forEach(boton => {
+            boton.addEventListener('click', function() {
+                document.getElementById('global-search').value = '';
+                document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+
+                document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const gidId = this.getAttribute('data-gid');
+                cargarLiga(gidId);
+            });
+        });
+
         // =========================================================================
-        // 🌍 MOTOR DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (5 RONDAS CON MAPA)
+        // 🌍 MOTOR CORREGIDO DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (SÓLO YOUTUBE)
         // =========================================================================
         function iniciarTrivia() {
             if (catalogoGlobal.length === 0) {
@@ -914,18 +943,19 @@
         }
 
         function lanzarRondaGuessr() {
-            // Filtrar estadios que tengan videos y coordenadas válidas
+            // FILTRO ESTRICTO: Solo estadios con videos reales de YouTube y coordenadas cargadas
             const estadiosDisponibles = catalogoGlobal.filter(f => {
-                const link = f['Link del Video'];
+                const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
+                const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
                 const tieneLat = f.Latitud && f.Latitud.toString().trim() !== '';
                 const tieneLng = f.Longitud && f.Longitud.toString().trim() !== '';
                 const yaJugado = guessrEstadiosJugados.includes(f.Estadio);
-                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá') && tieneLat && tieneLng && !yaJugado;
+                return esYouTube && tieneLat && tieneLng && !yaJugado;
             });
 
             if (estadiosDisponibles.length === 0) {
-                alert('¡Georreferencias completadas en este set!');
-                finalizarJuegoGuessr();
+                alert('No hay suficientes estadios cargados con videos de YouTube y coordenadas válidas para jugar.');
+                cerrarModalVideo();
                 return;
             }
 
@@ -944,20 +974,19 @@
             // Abrir el modal y desplegar video
             abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
-            // Inicializar mapa interactivo Leaflet con delay para evitar errores de renderizado de cajas DOM
+            // REPARACIÓN DEL MAPA: Quitar el bug de retina ({r}) para que el planisferio cargue perfectamente
             setTimeout(() => {
                 if (guessrMapInstance) {
                     guessrMapInstance.remove();
                 }
 
-                // Generar mapa centrado globalmente
                 guessrMapInstance = L.map('map-guess-container', {
                     attributionControl: false,
                     zoomControl: false
                 }).setView([20, 0], 1);
 
-                // Capa de mapa mudo en modo oscuro (CartoDB Dark Matter)
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                // Capa de mapa mudo limpia sin el error del {r}
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
                     maxZoom: 18
                 }).addTo(guessrMapInstance);
 
@@ -979,9 +1008,9 @@
                     actionBtn.disabled = false;
                 });
 
-                // Forzar refresco de Leaflet por si cargó desfasado el contenedor responsivo
+                // Forzar el redibujado de las teselas una vez abierto el modal
                 guessrMapInstance.invalidateSize();
-            }, 300);
+            }, 400);
 
             actionBtn.setAttribute('data-estado', 'juego');
             actionBtn.onclick = function() {
@@ -1007,7 +1036,7 @@
             // Calcular distancia matemática exacta
             const distanciaKm = calcularDistanciaHaversine(userLat, userLng, targetLat, targetLng);
 
-            // Fórmula de asignación de puntaje exponencial estilo GeoGuessr (Máximo 5000 puntos)
+            // Asignación de puntaje exponencial estilo GeoGuessr (Máximo 5000 puntos)
             const puntosRonda = Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
             guessrPuntosTotales += puntosRonda;
 
@@ -1039,7 +1068,6 @@
         }
 
         function avanzarDeRondaGuessr() {
-            // Remover capas del mapa previo
             if (guessrUserMarker) guessrUserMarker.remove();
             if (guessrTargetMarker) guessrTargetMarker.remove();
             if (guessrPolyline) guessrPolyline.remove();
@@ -1081,9 +1109,9 @@
             `;
         }
 
-        // Función matemática del Haversine (Métrica de distancia sobre arco geodésico)
+        // Función matemática del Haversine
         function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radio medio de la Tierra en kilómetros
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -1092,7 +1120,6 @@
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             return R * c; 
         }
-        // =========================================================================
 
         indexarCatalogoMasivo();
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
