@@ -799,7 +799,7 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-        // LÓGICA DEL REPRODUCTOR INTELIGENTE (Adaptado para YouTube, .mp4 y TikTok)
+        // LÓGICA DEL REPRODUCTOR INTELIGENTE (Adaptado para YouTube y .mp4 nativo)
         function abrirModalVideo(event, link) {
             event.preventDefault(); // Evita que recargue la página o salte arriba
             
@@ -815,6 +815,7 @@
             let urlIncrustar = link;
 
             // 1. Detectar si es un video de YouTube
+            // Soporta links tipo: https://www.youtube.com/watch?v=ID, https://youtu.be/ID, y los Shorts
             if (link.includes('youtube.com') || link.includes('youtu.be')) {
                 let videoId = '';
                 
