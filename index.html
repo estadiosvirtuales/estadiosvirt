@@ -799,7 +799,7 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-        // LÓGICA DEL REPRODUCTOR INTELIGENTE (Adaptado para YouTube y .mp4 nativo)
+        // LÓGICA DEL REPRODUCTOR INTELIGENTE
         function abrirModalVideo(event, link) {
             event.preventDefault(); // Evita que recargue la página o salte arriba
             
@@ -812,32 +812,8 @@
             const container = document.getElementById('modal-video-container');
             container.innerHTML = ''; // Limpiamos el contenedor por si había otro video cargado
 
-            let urlIncrustar = link;
-
-            // 1. Detectar si es un video de YouTube
-            // Soporta links tipo: https://www.youtube.com/watch?v=ID, https://youtu.be/ID, y los Shorts
-            if (link.includes('youtube.com') || link.includes('youtu.be')) {
-                let videoId = '';
-                
-                if (link.includes('youtu.be/')) {
-                    videoId = link.split('youtu.be/')[1].split('?')[0];
-                } else if (link.includes('youtube.com/watch')) {
-                    const urlParams = new URLSearchParams(new URL(link).search);
-                    videoId = urlParams.get('v');
-                } else if (link.includes('youtube.com/shorts/')) {
-                     videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
-                }
-
-                if (videoId) {
-                    urlIncrustar = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
-                }
-                
-                container.innerHTML = `
-                    <iframe src="${urlIncrustar}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
-                `;
-            } 
-            // 2. Si es un archivo nativo .mp4
-            else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
+            // Si es un archivo nativo .mp4 (directo de Drive o nube)
+            if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
                 container.innerHTML = `
                     <video controls autoplay style="width: 100%; height: 100%; object-fit: cover;">
                         <source src="${link}" type="video/mp4">
@@ -845,8 +821,11 @@
                     </video>
                 `;
             } 
-            // 3. Fallback genérico para otros links (como TikTok)
+            // Si es de TikTok u otra URL externa, lo metemos en un iframe
             else {
+                let urlIncrustar = link;
+                
+                // Intenta forzar la versión "embed" si es una URL estándar de TikTok
                 if (link.includes('tiktok.com') && !link.includes('/embed/')) {
                     const matchId = link.match(/video\/(\d+)/);
                     if (matchId && matchId[1]) {
@@ -906,7 +885,8 @@
                 const estadio = fila.Estadio || 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
+                // ACÁ ESTABA EL ERROR DE LAS COMILLAS
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&apos;").replace(/"/g, "&quot;");
 
                 const tarjeta = `
                 <article class="card">
