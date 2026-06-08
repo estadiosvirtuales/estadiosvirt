@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadios Virtuales | El Mundo Desde el Aire</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
         /* Variables de colores (Estilo Modo Oscuro Premium) */
         :root {
@@ -351,14 +355,6 @@
             display: flex;
         }
 
-        .b-mapa iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 4px;
-            filter: invert(100%) hue-rotate(180deg) contrast(90%) sepia(20%);
-        }
-
         .card-content {
             padding: 20px;
             display: flex;
@@ -380,7 +376,6 @@
             margin-bottom: 15px;
         }
 
-        /* Transformamos la etiqueta <a> en un <button> nativo */
         .btn-view {
             display: inline-block;
             width: 100%;
@@ -424,7 +419,7 @@
             transform: scale(1.05);
         }
 
-        /* Botón Flotante de Trivia */
+        /* Botón Flotante de Juego */
         .btn-game {
             position: fixed;
             bottom: 30px;
@@ -446,11 +441,11 @@
             background-color: var(--accent-hover);
         }
 
-        /* Estilos del contenedor del minijuego */
+        /* Estilos del panel del minijuego GeoGuessr */
         #game-ui {
             display: none;
             width: 100%;
-            background: rgba(16, 16, 16, 0.98);
+            background: #111;
             padding: 15px;
             border-top: 2px solid var(--accent-color);
             text-align: center;
@@ -461,84 +456,18 @@
             color: #ffffff;
             margin-bottom: 12px;
             font-weight: bold;
+            line-height: 1.4;
         }
-        .game-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        #map-guess-container {
             width: 100%;
-        }
-        .game-btn {
-            background-color: #222;
-            border: 1px solid #333;
-            color: white;
-            padding: 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-        .game-btn:hover {
-            background-color: #2b2b2b;
-            border-color: var(--accent-color);
-        }
-        .game-btn.correct {
-            background-color: var(--accent-color);
-            color: #000;
-            border-color: var(--accent-color);
-        }
-        .game-btn.wrong {
-            background-color: var(--danger-color);
-            color: #fff;
-            border-color: var(--danger-color);
+            height: 250px;
+            background-color: #0c0c0c;
+            border-radius: 8px;
+            border: 1px solid #222;
+            margin-bottom: 12px;
         }
 
-        /* =========================================
-           DISEÑO RESPONSIVE (MÓVILES Y TABLETS)
-           ========================================= */
-        @media (max-width: 768px) {
-            .hero-section { padding: 40px 15px 25px 15px; }
-            .brand-logo { width: 90px; height: 90px; margin-bottom: 12px; }
-            .hero-section h1 { font-size: 1.8rem; }
-            .hero-subtitle { font-size: 1rem; margin-bottom: 20px; }
-            .search-bar { padding: 14px 20px; font-size: 1rem; }
-            .hero-stats { gap: 15px; flex-direction: column; align-items: center; }
-            .tab { padding: 8px 14px; font-size: 0.8rem; flex-grow: 1; text-align: center; }
-            .grid { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
-            .estadio-foto-container { height: 200px; }
-            .trivia-balloon { padding: 8px; }
-            .b-tab { font-size: 0.75rem; padding: 4px 0; }
-            .b-content { font-size: 0.8rem; }
-            .btn-random {
-                bottom: 20px;
-                right: 50%;
-                transform: translateX(50%);
-                padding: 12px 25px;
-                font-size: 0.95rem;
-                width: max-content;
-                box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
-            }
-            .btn-random:hover { transform: translateX(50%) scale(1.05); }
-            
-            .btn-game {
-                bottom: 75px;
-                right: 50%;
-                left: auto;
-                transform: translateX(50%);
-                padding: 12px 25px;
-                font-size: 0.95rem;
-                width: max-content;
-            }
-            .game-options {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-        }
-
-        /* =========================================
-           ESTILOS DEL REPRODUCTOR INTELIGENTE (MODAL)
-           ========================================= */
+        /* Estilos del Modal Reconfigurados (CINEMÁTICO Y PREMIUM) */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -556,7 +485,7 @@
         .modal-content {
             position: relative;
             width: 90%;
-            max-width: 400px; /* Tamaño ideal para videos verticales */
+            max-width: 550px; 
             height: 80vh;
             background: #000;
             border-radius: 12px;
@@ -564,32 +493,13 @@
             border: 1px solid var(--accent-color);
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
         }
 
-        .close-btn {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 35px;
-            height: 35px;
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 2010;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .close-btn:hover {
-            transform: scale(1.1);
-            background: #ff0f1f;
+        /* DISEÑO DE PANTALLA DIVIDIDA INTERACTIVA PARA EL MODO JUEGO */
+        .modal-content.stadium-guessr-layout {
+            width: 85% !important;
+            max-width: 1100px !important; 
         }
 
         .video-container {
@@ -601,6 +511,68 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        /* Split-screen inteligente para computadoras */
+        @media (min-width: 769px) {
+            .modal-content.stadium-guessr-layout {
+                flex-direction: row !important;
+            }
+            .modal-content.stadium-guessr-layout .video-container {
+                width: 55% !important;
+                height: 100% !important;
+                border-radius: 12px 0 0 12px !important;
+            }
+            .modal-content.stadium-guessr-layout #game-ui {
+                width: 45% !important;
+                height: 100% !important;
+                border-top: none !important;
+                border-left: 2px solid var(--accent-color) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                border-radius: 0 12px 12px 0 !important;
+                padding: 20px !important;
+            }
+            .modal-content.stadium-guessr-layout #map-guess-container {
+                flex-grow: 1 !important;
+                height: 100% !important;
+                min-height: 350px !important;
+            }
+        }
+
+        /* Adaptación táctil balanceada para celulares */
+        @media (max-width: 768px) {
+            .hero-section { padding: 40px 15px 25px 15px; }
+            .brand-logo { width: 90px; height: 90px; margin-bottom: 12px; }
+            .hero-section h1 { font-size: 1.8rem; }
+            .hero-subtitle { font-size: 1rem; margin-bottom: 20px; }
+            .grid { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
+            .estadio-foto-container { height: 200px; }
+            .btn-random {
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%);
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                width: max-content;
+            }
+            .btn-random:hover { transform: translateX(50%) scale(1.05); }
+            .btn-game {
+                bottom: 75px;
+                right: 50%;
+                left: auto;
+                transform: translateX(50%);
+                padding: 12px 25px;
+                font-size: 0.95rem;
+                width: max-content;
+            }
+            .modal-content.stadium-guessr-layout .video-container {
+                height: 45% !important;
+            }
+            .modal-content.stadium-guessr-layout #game-ui {
+                height: 55% !important;
+            }
         }
     </style>
 </head>
@@ -642,17 +614,18 @@
     <main class="grid">
     </main>
 
-    <button class="btn-game" onclick="iniciarTrivia()">🎮 Jugar Trivia</button>
+    <button class="btn-game" onclick="iniciarTrivia()">🌍 Jugar StadiumGuessr</button>
     <button class="btn-random">🎲 Vuelo Aleatorio</button>
 
     <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="cerrarModalVideo()">✕</button>
+        <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer;" onclick="cerrarModalVideo()">✕</button>
             <div id="modal-video-container" class="video-container"></div>
             
             <div id="game-ui">
-                <h3 id="game-title">¿De qué club es este estadio?</h3>
-                <div class="game-options" id="game-options"></div>
+                <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
+                <div id="map-guess-container"></div>
+                <button id="game-action-btn" class="btn-view" style="margin-top: 5px;">Clavá un pin en el mapa 📍</button>
             </div>
         </div>
     </div>
@@ -666,8 +639,18 @@
         let catalogoGlobal = [];
         const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071"];
 
+        // Variables globales del motor de juego
+        let guessrRondaActual = 0;
+        let guessrPuntosTotales = 0;
+        let guessrEstadioCorrecto = null;
+        let guessrEstadiosJugados = [];
+        let guessrMapInstance = null;
+        let guessrUserMarker = null;
+        let guessrTargetMarker = null;
+        let guessrPolyline = null;
+        let guessrSelectedLatLng = null;
+
         const coloresClubes = {
-            // ARGENTINA - PRIMERA DIVISIÓN
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
             "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
@@ -697,191 +680,7 @@
             "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-
-            // ARGENTINA - PRIMERA NACIONAL
-            "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
-            "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
-            "Almagro": "linear-gradient(135deg, #75aadb, #000000, #ffffff)",
-            "Almirante Brown": "linear-gradient(135deg, #ffff00, #000000)",
-            "Atlanta": "linear-gradient(135deg, #002060, #ffcc00)",
-            "Atlético de Rafaela": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Central Norte": "linear-gradient(135deg, #000000, #333333)",
-            "Chacarita Juniors": "linear-gradient(135deg, #ff0000, #000000, #ffffff)",
-            "Chaco For Ever": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ciudad de Bolívar": "linear-gradient(135deg, #75aadb, #004d00)",
-            "Colegiales": "linear-gradient(135deg, #0000ff, #ff0000, #ffff00)",
-            "Colón": "linear-gradient(135deg, #ff0000, #000000)",
-            "Defensores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
-            "Deportivo Madryn": "linear-gradient(135deg, #ffff00, #000000)",
-            "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
-            "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
-            "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Güemes (SdE)": "linear-gradient(135deg, #0000ff, #ff0000)",
-            "Los Andes": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Midland": "linear-gradient(135deg, #ffffff, #0000ff)",
-            "Mitre (SdE)": "linear-gradient(135deg, #ffff00, #000000)",
-            "Nueva Chicago": "linear-gradient(135deg, #004d00, #000000)",
-            "Patronato": "linear-gradient(135deg, #ff0000, #000000)",
-            "Quilmes": "linear-gradient(135deg, #ffffff, #000066)",
-            "Racing (CBA)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "San Martín (SJ)": "linear-gradient(135deg, #004d00, #000000)",
-            "San Martín (T)": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "San Miguel": "linear-gradient(135deg, #004d00, #ffffff, #0000ff)",
-            "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
-            "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
-
-            // INGLATERRA - PREMIER LEAGUE
-            "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
-            "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
-            "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
-            "Brentford": "linear-gradient(135deg, #e30613, #ffffff, #fbcc04)",
-            "Brighton & Hove Albion": "linear-gradient(135deg, #0057b8, #ffffff)",
-            "Chelsea": "linear-gradient(135deg, #034694, #ee242c)",
-            "Coventry City": "linear-gradient(135deg, #84bbf0, #ffffff)",
-            "Crystal Palace": "linear-gradient(135deg, #1b458f, #c4122e)",
-            "Everton": "linear-gradient(135deg, #004a97, #ffffff)",
-            "Fulham": "linear-gradient(135deg, #ffffff, #000000)",
-            "Hull City": "linear-gradient(135deg, #ff9f05, #000000)",
-            "Ipswich Town": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Leeds United": "linear-gradient(135deg, #ffffff, #ffcd00, #003399)",
-            "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
-            "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
-            "Manchester United": "linear-gradient(135deg, #da291c, #000000)",
-            "Newcastle United": "linear-gradient(135deg, #000000, #ffffff)",
-            "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
-            "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
-
-            // ESPAÑA - LA LIGA
-            "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
-            "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
-            "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
-            "Athletic Club": "linear-gradient(135deg, #ee2524, #ffffff, #000000)",
-            "Real Betis": "linear-gradient(135deg, #00954c, #ffffff)",
-            "Valencia CF": "linear-gradient(135deg, #ffffff, #000000, #ff8200)",
-            "Real Sociedad": "linear-gradient(135deg, #0066bb, #ffffff)",
-            "Sevilla FC": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Villarreal CF": "linear-gradient(135deg, #ffdf1b, #005094)",
-            "CA Osasuna": "linear-gradient(135deg, #ab192d, #1a2f54)",
-            "RC Celta de Vigo": "linear-gradient(135deg, #87adde, #ffffff)",
-            "Deportivo Alavés": "linear-gradient(135deg, #00569e, #ffffff)",
-            "Getafe CF": "linear-gradient(135deg, #004bc0, #ffffff)",
-            "RCD Mallorca": "linear-gradient(135deg, #e2001a, #000000)",
-            "UD Las Palmas": "linear-gradient(135deg, #ffe600, #00529f)",
-            "Rayo Vallecano": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Girona FC": "linear-gradient(135deg, #e2001a, #ffffff)",
-            "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
-            "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
-
-            // ITALIA - SERIE A
-            "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
-            "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
-            "AS Roma": "linear-gradient(135deg, #8e1a2f, #f0bc42)",
-            "SS Lazio": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Napoli": "linear-gradient(135deg, #12a0da, #ffffff)",
-            "Fiorentina": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Atalanta": "linear-gradient(135deg, #00529f, #000000)",
-            "Bologna": "linear-gradient(135deg, #1a2f54, #ab192d)",
-            "Torino": "linear-gradient(135deg, #8a1538, #ffffff)",
-            "Udinese": "linear-gradient(135deg, #000000, #ffffff)",
-            "Genoa": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Hellas Verona": "linear-gradient(135deg, #0b2c6c, #ffcc00)",
-            "Empoli": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Lecce": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Monza": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Cagliari": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-            "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
-            "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
-
-            // FRANCIA - LIGUE 1
-            "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
-            "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
-            "Lille": "linear-gradient(135deg, #e30613, #1b458f, #ffffff)",
-            "Monaco": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lens": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Nice": "linear-gradient(135deg, #e30613, #000000)",
-            "Rennes": "linear-gradient(135deg, #e30613, #000000)",
-            "Strasbourg": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Toulouse": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Le Havre": "linear-gradient(135deg, #204060, #87d3f8)",
-            "Angers": "linear-gradient(135deg, #000000, #ffffff)",
-            "Auxerre": "linear-gradient(135deg, #ffffff, #00529f)",
-            "Brest": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lorient": "linear-gradient(135deg, #ff6600, #ffffff, #004d00)",
-            "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
-            "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
-            "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
-
-            // ALEMANIA - BUNDESLIGA
-            "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
-            "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
-            "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
-            "RB Leipzig": "linear-gradient(135deg, #ffffff, #dd013f, #0c2340)",
-            "VfB Stuttgart": "linear-gradient(135deg, #ffffff, #e30613, #ffffff)",
-            "Eintracht Frankfurt": "linear-gradient(135deg, #e30613, #000000, #ffffff)",
-            "SC Freiburg": "linear-gradient(135deg, #e30613, #ffffff)",
-            "TSG Hoffenheim": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Werder Bremen": "linear-gradient(135deg, #008f5d, #ffffff)",
-            "Borussia Mönchengladbach": "linear-gradient(135deg, #ffffff, #000000, #00a651)",
-            "Mainz 05": "linear-gradient(135deg, #e30613, #ffffff)",
-            "FC Augsburg": "linear-gradient(135deg, #ffffff, #ba9b65, #008f5d)",
-            "Union Berlin": "linear-gradient(135deg, #e30613, #ffffff)",
-            "1. FC Köln": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
-            "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
-            "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
-            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-
-            // BRASIL - BRASILEIRAO
-            "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
-            "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
-            "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Corinthians": "linear-gradient(135deg, #ffffff, #d5d5d5, #000000)",
-            "Santos": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-            "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
-            "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
-            "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Atlético Mineiro": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
-            "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
-            "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
-            "Athletico Paranaense": "linear-gradient(135deg, #cc0000, #000000)",
-            "Bahía": "linear-gradient(135deg, #0033a0, #ffffff, #e20e0e)",
-            "Bragantino": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Coritiba": "linear-gradient(135deg, #006437, #ffffff, #006437)",
-            "Chapecoense": "linear-gradient(135deg, #006437, #ffffff)",
-            "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
-            "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
-            "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
-
-            // CHILE - PRIMERA DIVISIÓN
-            "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
-            "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
-            "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
-            "Everton CD": "linear-gradient(135deg, #0033a0, #ffea00, #0033a0)",
-            "Huachipato": "linear-gradient(135deg, #0033a0, #000000, #0055ff)",
-            "Deportes Limache": "linear-gradient(135deg, #ff3300, #000000, #0033a0)",
-            "Palestino": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
-            "Ñublense": "linear-gradient(135deg, #e20e0e, #ffffff)",
-            "Universidad de Chile": "linear-gradient(135deg, #002244, #0033a0, #e20e0e)",
-            "O'Higgins": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Universidad de Concepción": "linear-gradient(135deg, #ffea00, #0033a0)",
-            "La Serena": "linear-gradient(135deg, #83142c, #ffffff)",
-            "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
-            "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
-            "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
-            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
+            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)"
         };
 
         function obtenerFondoClub(nombreClub) {
@@ -889,9 +688,8 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-        // LÓGICA DEL REPRODUCTOR INTELIGENTE ACTUALIZADA (YouTube + mp4 + TikTok)
         function abrirModalVideo(event, link, esJuego = false) {
-            if (event) event.preventDefault(); // Evita que recargue la página o salte arriba
+            if (event) event.preventDefault();
             
             if (!link || link === '#' || link.includes('[Pegá tu link')) {
                 alert("El video de este estadio todavía no está disponible.");
@@ -899,77 +697,68 @@
             }
 
             const modal = document.getElementById('video-modal');
+            const card = document.getElementById('modal-card');
             const container = document.getElementById('modal-video-container');
-            container.innerHTML = ''; // Limpiamos el contenedor por si había otro video cargado
+            container.innerHTML = ''; 
 
-            // Control visual del espacio de la Trivia
             const gameUi = document.getElementById('game-ui');
             if (esJuego) {
+                card.classList.add('stadium-guessr-layout');
                 gameUi.style.display = 'block';
-                container.style.height = 'calc(100% - 170px)';
             } else {
+                card.classList.remove('stadium-guessr-layout');
                 gameUi.style.display = 'none';
                 container.style.height = '100%';
             }
 
             let urlIncrustar = link;
 
-            // 1. Detectar si es un video de YouTube
             if (link.includes('youtube.com') || link.includes('youtu.be')) {
                 let videoId = '';
-                
                 if (link.includes('youtu.be/')) {
                     videoId = link.split('youtu.be/')[1].split('?')[0];
                 } else if (link.includes('youtube.com/watch')) {
-                    const urlParams = new URLSearchParams(new URL(link).search);
-                    videoId = urlParams.get('v');
+                    videoId = new URLSearchParams(new URL(link).search).get('v');
                 } else if (link.includes('youtube.com/shorts/')) {
                      videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
                 }
 
+                const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
                 if (videoId) {
-                    urlIncrustar = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+                    urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
                 }
                 
-                container.innerHTML = `
-                    <iframe src="${urlIncrustar}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>
-                `;
+                container.innerHTML = `<iframe src="${urlIncrustar}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
             } 
-            // 2. Si es un archivo nativo .mp4
             else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
-                container.innerHTML = `
-                    <video controls autoplay style="width: 100%; height: 100%; object-fit: cover;">
-                        <source src="${link}" type="video/mp4">
-                        Tu navegador no soporta videos HTML5.
-                    </video>
-                `;
+                const attrControles = esJuego ? "autoplay loop muted" : "controls autoplay";
+                container.innerHTML = `<video ${attrControles} style="width: 100%; height: 100%; object-fit: cover;"><source src="${link}" type="video/mp4"></video>`;
             } 
-            // 3. Fallback genérico para otros links (como TikTok)
             else {
-                if (link.includes('tiktok.com') && !link.includes('/embed/')) {
-                    const matchId = link.match(/video\/(\d+)/);
-                    if (matchId && matchId[1]) {
-                        urlIncrustar = `https://www.tiktok.com/embed/v2/${matchId[1]}`;
-                    }
-                }
-
-                container.innerHTML = `
-                    <iframe src="${urlIncrustar}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen; encrypted-media"></iframe>
-                `;
+                container.innerHTML = `<iframe src="${link}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen"></iframe>`;
             }
 
             modal.style.display = 'flex';
         }
 
         function cerrarModalVideo() {
-            const modal = document.getElementById('video-modal');
-            const container = document.getElementById('modal-video-container');
-            modal.style.display = 'none';
-            container.innerHTML = ''; // Vacía el contenido para cortar el audio al instante
-            document.getElementById('game-ui').style.display = 'none'; // Asegura ocultar el juego al cerrar
+            document.getElementById('video-modal').style.display = 'none';
+            document.getElementById('modal-video-container').innerHTML = '';
+            document.getElementById('game-ui').style.display = 'none';
+            document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+            
+            if (guessrMapInstance) {
+                guessrMapInstance.remove();
+                guessrMapInstance = null;
+            }
+            guessrUserMarker = null;
+            guessrTargetMarker = null;
+            guessrPolyline = null;
+            guessrSelectedLatLng = null;
         }
 
-        function switchTab(event, btn, type, estadio = '', pais = '') {
+        // --- MINI-MAPAS LEAFLET DINÁMICOS EN EL POPUP INDIVIDUAL ---
+        function switchTab(event, btn, type, estadio = '', pais = '', lat = '', lng = '') {
             event.stopPropagation();
             const balloon = btn.closest('.trivia-balloon');
             
@@ -980,12 +769,45 @@
             const content = balloon.querySelector('.b-' + type);
             content.classList.add('active');
 
-            if (type === 'mapa' && !content.innerHTML.trim()) {
-                content.innerHTML = '<span style="color:var(--text-muted); font-size: 0.8rem;">Cargando mapa en modo oscuro...</span>';
-                const query = encodeURIComponent(estadio + ' stadium ' + pais);
+            if (type === 'mapa') {
+                if (!lat || lat.trim() === '' || !lng || lng.trim() === '') {
+                    content.innerHTML = '<div style="color:var(--text-muted); font-size: 0.8rem; padding: 10px;">Coordenadas de este estadio no disponibles en el Sheets.</div>';
+                    return;
+                }
+                
+                content.innerHTML = '';
+                const mapId = 'map-card-' + Math.random().toString(36).substr(2, 9);
+                const mapDiv = document.createElement('div');
+                mapDiv.id = mapId;
+                mapDiv.style.width = '100%';
+                mapDiv.style.height = '110px';
+                mapDiv.style.borderRadius = '4px';
+                content.appendChild(mapDiv);
+
+                const parsedLat = parseFloat(lat.toString().replace(',', '.'));
+                const parsedLng = parseFloat(lng.toString().replace(',', '.'));
+
+                // Carga interactiva asíncrona para que no rompa el diseño del DOM
                 setTimeout(() => {
-                    content.innerHTML = `<iframe src="https://maps.google.com/maps?q=${query}&t=m&z=16&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>`;
-                }, 100);
+                    const cardMap = L.map(mapId, {
+                        attributionControl: false,
+                        zoomControl: false
+                    }).setView([parsedLat, parsedLng], 15);
+
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                        maxZoom: 18
+                    }).addTo(cardMap);
+
+                    L.circleMarker([parsedLat, parsedLng], {
+                        radius: 6,
+                        color: 'var(--accent-color)',
+                        fillColor: '#000',
+                        fillOpacity: 1,
+                        weight: 2
+                    }).addTo(cardMap);
+
+                    cardMap.invalidateSize();
+                }, 50);
             }
         }
 
@@ -1006,41 +828,32 @@
                 const estadio = fila.Estadio || 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                // REPARADO CON ENTIDADES HTML PARA QUE NUNCA SE ROMPA EL SCRIPT
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+                const latRaw = fila.Latitud ? fila.Latitud.toString().trim() : '';
+                const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
 
-                const tarjeta = `
-                <article class="card">
+                const tarjeta = document.createElement('article');
+                tarjeta.className = 'card';
+                tarjeta.innerHTML = `
                     <div class="estadio-foto-container" style="background: ${fondoGradiente};" onclick="toggleTriviaPopup(event, this)">
                         <div class="trivia-hint">💡</div>
-                        
-                        ${urlFoto ? 
-                            `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : 
-                            ''
-                        }
-                        <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">
-                            ${clubNombre}
-                        </div>
-
+                        ${urlFoto ? `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : ''}
+                        <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">${clubNombre}</div>
                         <div class="trivia-balloon" onclick="event.stopPropagation()">
                             <div class="balloon-tabs">
                                 <button class="b-tab active" onclick="switchTab(event, this, 'trivia')">Trivia</button>
-                                <button class="b-tab" onclick="switchTab(event, this, 'mapa', '${estadio}', '${pais}')">Mapa</button>
+                                <button class="b-tab" onclick="switchTab(event, this, 'mapa', '${estadio}', '${pais}', '${latRaw}', '${lngRaw}')">Mapa</button>
                             </div>
-                            <div class="b-content b-trivia active">
-                                <p>${datoLimpio}</p>
-                            </div>
-                            <div class="b-content b-mapa">
-                                </div>
+                            <div class="b-content b-trivia active"><p>${datoLimpio}</p></div>
+                            <div class="b-content b-mapa"></div>
                         </div>
                     </div>
                     <div class="card-content">
                         <h2 class="card-title">${estadio}</h2>
                         <p class="card-subtitle">${clubNombre} • ${pais}</p>
                         <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
-                    </div>
-                </article>`;
-                grilla.innerHTML += tarjeta;
+                    </div>`;
+                grilla.appendChild(tarjeta);
             });
         }
 
@@ -1049,32 +862,27 @@
             grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
             document.getElementById('global-search').value = '';
 
-            const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
-
-            Papa.parse(urlCompleta, {
+            Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`, {
                 download: true,
                 header: true, 
                 complete: function(results) {
                     estadiosCargados = results.data.filter(fila => fila.Estadio && fila.Club);
                     renderizarTarjetas(estadiosCargados);
-                },
-                error: function(err) {
-                    grilla.innerHTML = '<h2 style="color:white; text-align:center; padding: 40px;">Error al conectar con esta liga. Verificá el GID de la pestaña.</h2>';
                 }
             });
         }
 
         function indexarCatalogoMasivo() {
+            catalogoGlobal = []; 
             todosLosGids.forEach(gid => {
-                const urlCompleta = `${baseSpreadsheetUrl}&gid=${gid}`;
-                Papa.parse(urlCompleta, {
+                Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`, {
                     download: true,
                     header: true,
                     complete: function(results) {
-                        const datosValidos = results.data.filter(fila => fila.Estadio && fila.Club);
-                        datosValidos.forEach(estadio => {
-                            const yaExiste = catalogoGlobal.some(e => e.Estadio === estadio.Estadio && e.Club === estadio.Club);
-                            if (!yaExiste) catalogoGlobal.push(estadio);
+                        results.data.filter(fila => fila.Estadio && fila.Club).forEach(estadio => {
+                            if (!catalogoGlobal.some(e => e.Estadio === estadio.Estadio && e.Club === estadio.Club)) {
+                                catalogoGlobal.push(estadio);
+                            }
                         });
                     }
                 });
@@ -1083,7 +891,6 @@
 
         document.getElementById('global-search').addEventListener('input', function(e) {
             const terminoBusqueda = e.target.value.toLowerCase().trim();
-            
             if (terminoBusqueda === '') {
                 document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
                 renderizarTarjetas(estadiosCargados);
@@ -1101,131 +908,208 @@
 
         function toggleTriviaPopup(event, elementoContainer) {
             event.stopPropagation();
-
             const globoActual = elementoContainer.querySelector('.trivia-balloon');
             const yaEstaAbierto = globoActual.classList.contains('active');
 
             document.querySelectorAll('.trivia-balloon').forEach(g => {
                 g.classList.remove('active');
-                const tabTrivia = g.querySelector('.b-tab:first-child');
-                if (tabTrivia) {
-                    g.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
-                    g.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
-                    tabTrivia.classList.add('active');
-                    g.querySelector('.b-trivia').classList.add('active');
-                }
             });
-
-            if (!yaEstaAbierto) {
-                globoActual.classList.add('active');
-            }
+            if (!yaEstaAbierto) globoActual.classList.add('active');
         }
 
         document.addEventListener('click', function() {
-            document.querySelectorAll('.trivia-balloon').forEach(g => {
-                g.classList.remove('active');
-            });
+            document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
         });
 
-        document.querySelector('.btn-random').addEventListener('click', function(e) {
-            if (estadiosCargados.length === 0) return;
-
-            const estadiosConVideo = estadiosCargados.filter(fila => {
-                const link = fila['Link del Video'];
-                return link && link.trim() !== '' && !link.includes('[Pegá tu link');
-            });
-
-            if (estadiosConVideo.length === 0) {
-                alert('Aún no hay links de videos disponibles en esta liga para simular el vuelo aleatorio.');
-                return;
-            }
-
-            const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
-            const estadioElegido = estadiosConVideo[indiceAzar];
-
-            abrirModalVideo(e, estadioElegido['Link del Video'].trim());
-        });
-
-        document.querySelectorAll('.tab').forEach(boton => {
-            boton.addEventListener('click', function() {
-                document.getElementById('global-search').value = '';
-                document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
-
-                document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const gidId = this.getAttribute('data-gid');
-                cargarLiga(gidId);
-            });
-        });
-
-        // --- SISTEMA DEL MINIJUEGO INTERACTIVO (TRIVIA) ---
+        // --- SISTEMA DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (SÓLO YOUTUBE) ---
         function iniciarTrivia() {
-            if (catalogoGlobal.length < 4) {
-                alert('Esperá un segundo a que se cargue por completo el catálogo masivo...');
+            if (catalogoGlobal.length === 0) {
+                alert('Esperá un segundo a que cargue todo el catálogo de estadios...');
                 return;
             }
 
-            // Filtramos únicamente estadios que contengan videos válidos para adivinar
-            const estadiosConVideo = catalogoGlobal.filter(fila => {
-                const link = fila['Link del Video'];
-                return link && link.trim() !== '' && link.trim() !== '#' && !link.includes('[Pegá tu link');
-            });
+            guessrRondaActual = 1;
+            guessrPuntosTotales = 0;
+            guessrEstadiosJugados = [];
 
-            if (estadiosConVideo.length === 0) {
-                alert('No se encontraron suficientes videos en el catálogo para iniciar el juego.');
-                return;
-            }
-
-            // Seleccionamos la respuesta correcta al azar
-            const estadioCorrecto = estadiosConVideo[Math.floor(Math.random() * estadiosConVideo.length)];
-            
-            // Generamos las otras 3 respuestas incorrectas sin duplicar clubes
-            let opciones = [estadioCorrecto];
-            while (opciones.length < 4) {
-                const opcionAleatoria = catalogoGlobal[Math.floor(Math.random() * catalogoGlobal.length)];
-                if (!opciones.some(o => o.Club === opcionAleatoria.Club)) {
-                    opciones.push(opcionAleatoria);
-                }
-            }
-
-            // Mezclamos el array para que la opción correcta no quede siempre primera
-            opciones.sort(() => Math.random() - 0.5);
-
-            // Configuramos los textos del panel de la trivia
-            document.getElementById('game-title').innerText = '¿De qué club es este estadio?';
-            const contenedorOpciones = document.getElementById('game-options');
-            contenedorOpciones.innerHTML = '';
-
-            // Renderizamos los botones interactivos
-            opciones.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'game-btn';
-                btn.innerText = opt.Club;
-                
-                btn.onclick = function() {
-                    // Desactivamos todas las opciones para que no sigan clickeando
-                    document.querySelectorAll('.game-btn').forEach(b => b.disabled = true);
-                    
-                    if (opt.Club === estadioCorrecto.Club) {
-                        btn.classList.add('correct');
-                        document.getElementById('game-title').innerHTML = `¡CORRECTO! 🎉 Es de <strong>${estadioCorrecto.Club}</strong> (${estadioCorrecto.Estadio})`;
-                    } else {
-                        btn.classList.add('wrong');
-                        document.getElementById('game-title').innerHTML = `¡INCORRECTO! ❌ Era el de <strong>${estadioCorrecto.Club}</strong> (${estadioCorrecto.Estadio})`;
-                        
-                        // Iluminamos la correcta en verde para guiar al usuario
-                        document.querySelectorAll('.game-btn').forEach(b => {
-                            if (b.innerText === estadioCorrecto.Club) b.classList.add('correct');
-                        });
-                    }
-                };
-                contenedorOpciones.appendChild(btn);
-            });
-
-            // Abrimos el modal forzando el modo minijuego (parámetro true)
-            abrirModalVideo(null, estadioCorrecto['Link del Video'].trim(), true);
+            lanzarRondaGuessr();
         }
+
+        function lanzarRondaGuessr() {
+            // FILTRO ESTRICTO EXCLUSIVO: Solo estadios con videos reales de YouTube y coordenadas
+            const estadiosDisponibles = catalogoGlobal.filter(f => {
+                const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
+                const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
+                const tieneLat = f.Latitud && f.Latitud.toString().trim() !== '';
+                const tieneLng = f.Longitud && f.Longitud.toString().trim() !== '';
+                const yaJugado = guessrEstadiosJugados.includes(f.Estadio);
+                return esYouTube && tieneLat && tieneLng && !yaJugado;
+            });
+
+            if (estadiosDisponibles.length === 0) {
+                alert('No quedan suficientes estadios cargados con videos de YouTube y coordenadas válidas para jugar.');
+                cerrarModalVideo();
+                return;
+            }
+
+            guessrEstadioCorrecto = estadiosDisponibles[Math.floor(Math.random() * estadiosDisponibles.length)];
+            guessrEstadiosJugados.push(guessrEstadioCorrecto.Estadio);
+            guessrSelectedLatLng = null;
+
+            // Actualizar interfaz del panel
+            document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
+            const actionBtn = document.getElementById('game-action-btn');
+            actionBtn.innerText = "Clavá un pin en el mapa 📍";
+            actionBtn.style.backgroundColor = "var(--card-bg)";
+            actionBtn.style.color = "var(--text-muted)";
+            actionBtn.disabled = true;
+
+            // Abrir el modal y desplegar video
+            abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
+
+            // REPARACIÓN COMPLETA DEL MAPA MUDO
+            setTimeout(() => {
+                if (guessrMapInstance) {
+                    guessrMapInstance.remove();
+                }
+
+                guessrMapInstance = L.map('map-guess-container', {
+                    attributionControl: false,
+                    zoomControl: false
+                }).setView([20, 0], 1);
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
+                    maxZoom: 18
+                }).addTo(guessrMapInstance);
+
+                guessrMapInstance.on('click', function(e) {
+                    if (actionBtn.getAttribute('data-estado') === 'resultado') return;
+
+                    guessrSelectedLatLng = e.latlng;
+
+                    if (guessrUserMarker) {
+                        guessrUserMarker.setLatLng(guessrSelectedLatLng);
+                    } else {
+                        guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
+                    }
+
+                    actionBtn.innerText = "Confirmar Ubicación 🚀";
+                    actionBtn.style.backgroundColor = "var(--accent-color)";
+                    actionBtn.style.color = "#000";
+                    actionBtn.disabled = false;
+                });
+
+                guessrMapInstance.invalidateSize();
+            }, 400);
+
+            actionBtn.setAttribute('data-estado', 'juego');
+            actionBtn.onclick = function() {
+                if (this.getAttribute('data-estado') === 'juego') {
+                    procesarArriesgoGuessr();
+                } else {
+                    avanzarDeRondaGuessr();
+                }
+            };
+        }
+
+        function procesarArriesgoGuessr() {
+            const actionBtn = document.getElementById('game-action-btn');
+            actionBtn.setAttribute('data-estado', 'resultado');
+
+            const targetLat = parseFloat(guessrEstadioCorrecto.Latitud.toString().replace(',', '.'));
+            const targetLng = parseFloat(guessrEstadioCorrecto.Longitud.toString().replace(',', '.'));
+
+            const userLat = guessrSelectedLatLng.lat;
+            const userLng = guessrSelectedLatLng.lng;
+
+            const distanciaKm = calcularDistanciaHaversine(userLat, userLng, targetLat, targetLng);
+            const puntosRonda = Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
+            guessrPuntosTotales += puntosRonda;
+
+            guessrTargetMarker = L.circleMarker([targetLat, targetLng], {
+                radius: 8,
+                color: 'var(--accent-color)',
+                fillColor: '#000',
+                fillOpacity: 1,
+                weight: 3
+            }).addTo(guessrMapInstance).bindPopup(`<b>${guessrEstadioCorrecto.Estadio}</b><br>${guessrEstadioCorrecto.Club}`).openPopup();
+
+            guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
+                color: 'var(--danger-color)',
+                weight: 2,
+                dashArray: '5, 8'
+            }).addTo(guessrMapInstance);
+
+            const bounds = L.featureGroup([guessrUserMarker, guessrTargetMarker]).getBounds();
+            guessrMapInstance.fitBounds(bounds, { padding: [30, 30] });
+
+            document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
+            actionBtn.innerHTML = `Le erraste por <b>${distanciaKm.toFixed(1)} km</b>. (+${puntosRonda} pts) • Siguiente ➡️`;
+            actionBtn.style.backgroundColor = "var(--danger-color)";
+            actionBtn.style.color = "white";
+        }
+
+        function avanzarDeRondaGuessr() {
+            if (guessrUserMarker) guessrUserMarker.remove();
+            if (guessrTargetMarker) guessrTargetMarker.remove();
+            if (guessrPolyline) guessrPolyline.remove();
+            guessrUserMarker = null;
+            guessrTargetMarker = null;
+            guessrPolyline = null;
+
+            guessrRondaActual++;
+            if (guessrRondaActual <= 5) {
+                lanzarRondaGuessr();
+            } else {
+                finalizarJuegoGuessr();
+            }
+        }
+
+        function finalizarJuegoGuessr() {
+            const container = document.getElementById('modal-video-container');
+            const gameUi = document.getElementById('game-ui');
+            
+            gameUi.style.display = 'none';
+            container.style.height = '100%';
+            document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+
+            if (guessrMapInstance) {
+                guessrMapInstance.remove();
+                guessrMapInstance = null;
+            }
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5;">Completaste las 5 rondas de reconocimiento aéreo.</p>
+                    <div style="background: #111; border: 1px solid #222; padding: 20px 40px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 5px;">Puntaje Final Global</span>
+                        <strong style="font-size: 2.5rem; color: #ffffff; font-weight: 900;">${guessrPuntosTotales} <span style="font-size: 1.2rem; color: var(--accent-color);">Pts</span></strong>
+                    </div>
+                    <button onclick="iniciarTrivia()" class="btn-view" style="max-width: 240px; padding: 14px 28px; font-size: 1rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);">Volar de nuevo 🎮</button>
+                </div>
+            `;
+        }
+
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
+        // Vinculación de eventos de las pestañas
+        document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+            cargarLiga(this.getAttribute('data-gid'));
+        }));
 
         indexarCatalogoMasivo();
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
