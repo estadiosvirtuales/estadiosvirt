@@ -355,6 +355,16 @@
             display: flex;
         }
 
+        #game-ui .b-mapa {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        
+        #game-ui .b-mapa.active {
+            display: block !important;
+        }
+
         .card-content {
             padding: 20px;
             display: flex;
@@ -513,7 +523,7 @@
             align-items: center;
         }
 
-        /* Split-screen inteligente para computadoras */
+        /* Split-screen intelligente para computadoras */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row !important;
@@ -572,6 +582,15 @@
             }
             .modal-content.stadium-guessr-layout #game-ui {
                 height: 55% !important;
+                padding: 15px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+            .modal-content.stadium-guessr-layout #map-guess-container {
+                flex-grow: 1 !important;
+                height: 100% !important;
+                min-height: 200px;
             }
         }
     </style>
@@ -619,7 +638,7 @@
 
     <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
         <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer;" onclick="cerrarModalVideo()">✕</button>
+            <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalVideo()">✕</button>
             <div id="modal-video-container" class="video-container"></div>
             
             <div id="game-ui">
@@ -822,15 +841,15 @@
             
             listaEstadios.forEach(fila => {
                 const urlFoto = fila.Foto ? fila.Foto.trim() : '';
-                const clubNombre = fila.Club.trim();
+                const clubNombre = fila.Club ? fila.Club.trim() : '';
                 const fondoGradiente = obtenerFondoClub(clubNombre);
-                const pais = fila.País || 'Argentina';
-                const estadio = fila.Estadio || 'Estadio';
+                const pais = fila.País ? fila.País.trim() : 'Argentina';
+                const estadio = fila.Estadio ? fila.Estadio.trim() : 'Estadio';
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
                 const latRaw = fila.Latitud ? fila.Latitud.toString().trim() : '';
                 const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, """);
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
 
                 const tarjeta = document.createElement('article');
                 tarjeta.className = 'card';
