@@ -9,6 +9,19 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
+        .rating-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+        .rating-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
         /* Variables de colores (Estilo Modo Oscuro Premium) */
         :root {
             --bg-color: #0c0c0c;
@@ -1099,10 +1112,41 @@
             const grilla = document.querySelector('.grid');
             grilla.innerHTML = ''; 
 
-            if (listaEstadios.length === 0) {
-                grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
-                return;
-            }
+            listaEstadios.forEach(fila => {
+                if(!fila.Estadio || !fila.Club) return;
+                
+                // ... (tu lógica existente de fotos y colores sigue igual) ...
+                const promedio = fila.Promedio || 0; // Lee el dato del Sheets
+                
+                const tarjeta = document.createElement('article');
+                tarjeta.className = 'card';
+                tarjeta.innerHTML = `
+                    <div class="estadio-foto-container" ...>
+                        <!-- ... (tu HTML existente) ... -->
+                    </div>
+                    <div class="card-content">
+                        <h2 class="card-title">${fila.Estadio.trim()}</h2>
+                        <p class="card-subtitle">${fila.Club.trim()} • ${fila.País || 'Argentina'}</p>
+                        
+                        <!-- ESTRELLAS DE PROMEDIO -->
+                        <div class="rating-display">
+                            ${generarEstrellasHTML(promedio)}
+                            <span class="rating-text">Promedio: ${promedio}/10</span>
+                        </div>
+
+                        <button onclick="abrirModalVideo(event, '${fila['Link del Video']}')" class="btn-view">Ver Vuelo 3D</button>
+                        
+                        <!-- BOTÓN DE VOTACIÓN -->
+                        <div class="rating-box">
+                            <span class="rating-title">¡Votá este estadio!</span>
+                            <div class="stars-row" ...>
+                                <!-- ... (tu código anterior de botones de votación) ... -->
+                            </div>
+                        </div>
+                    </div>`;
+                grilla.appendChild(tarjeta);
+            });
+        }
             
             listaEstadios.forEach(fila => {
                 if(!fila.Estadio || !fila.Club) return;
@@ -1473,6 +1517,25 @@
         indexarCatalogoMasivo();
         const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
         cargarLiga(primerGid);
+
+        function generarEstrellasHTML(promedio) {
+            // Aseguramos que sea un número
+            const valor = parseFloat(promedio) || 0;
+            // Convertimos escala 0-10 a 0-5
+            const estrellas = valor / 2;
+            const llenas = Math.floor(estrellas);
+            const media = (estrellas % 1 >= 0.5) ? 1 : 0;
+            const vacias = 5 - llenas - media;
+            
+            let html = '<div class="stars-display">';
+            for(let i=0; i<llenas; i++) html += '<span>★</span>';
+            if(media) html += '<span>⯨</span>'; // Símbolo de estrella media
+            for(let i=0; i<vacias; i++) html += '<span style="color:#333;">★</span>';
+            html += '</div>';
+            return html;
+        }
+
+        
     </script>
 </body>
 </html>
