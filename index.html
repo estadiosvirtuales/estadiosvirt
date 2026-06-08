@@ -603,6 +603,47 @@
         .leaflet-popup-tip {
             background: #161616 !important;
         }
+
+        /* Sistema de Votación por Estrellas Premium */
+        .rating-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #222;
+        }
+        .rating-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .stars-row {
+            display: flex;
+            gap: 4px;
+        }
+        .star-icon {
+            font-size: 1.4rem;
+            color: #333333; /* Color apagado inicial */
+            cursor: pointer;
+            transition: transform 0.1s ease, color 0.2s ease;
+            user-select: none;
+        }
+        .star-icon:hover {
+            transform: scale(1.15);
+        }
+        /* Clases dinámicas para iluminar con Verde Spotify */
+        .star-icon.active {
+            color: var(--accent-color) !important;
+        }
+        .star-icon.half-active {
+            background: linear-gradient(90deg, var(--accent-color) 50%, #333333 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -995,13 +1036,13 @@
                     previewMapInstance.remove();
                 }
                 
-                // Inicializamos mapa de previsualización interactivo extendido
+                // Inicializamos mapa de previsualización interactivo extendido (OpenStreetMap style)
                 previewMapInstance = L.map('modal-map-container', {
                     attributionControl: false,
                     zoomControl: true
                 }).setView([parsedLat, parsedLng], 5);
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19
                 }).addTo(previewMapInstance);
 
@@ -1012,7 +1053,7 @@
                     fillColor: '#000',
                     fillOpacity: 1,
                     weight: 3
-                }).addTo(previewMapInstance).bindPopup(`<b style="color:#ffffff; font-family:sans-serif;">${estadio}</b><br><span style="color:var(--text-muted);">${pais}</span>`).openPopup();
+                }).addTo(previewMapInstance).bindPopup(`<b style="color:#000; font-family:sans-serif;">${estadio}</b><br><span style="color:#555;">${pais}</span>`).openPopup();
 
                 previewMapInstance.invalidateSize();
             }, 250);
@@ -1095,6 +1136,17 @@
                         <h2 class="card-title">${estadio}</h2>
                         <p class="card-subtitle">${clubNombre} • ${pais}</p>
                         <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
+                        
+                        <div class="rating-box">
+                            <span class="rating-title">Calificá este Templo</span>
+                            <div class="stars-row" data-estadio="${estadio.replace(/"/g, '&quot;')}">
+                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 1)">★</span>
+                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 2)">★</span>
+                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 3)">★</span>
+                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 4)">★</span>
+                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 5)">★</span>
+                            </div>
+                        </div>
                     </div>`;
                 grilla.appendChild(tarjeta);
             });
@@ -1236,7 +1288,7 @@
             // Abrir el modal y desplegar video
             abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
-            // RENDERIZADO DEL MAPA MUDO SIN ETIQUETAS
+            // RENDERIZADO DEL MAPA CON CAPA OPENSTREETMAP INTERACTIVA Y DETALLADA
             setTimeout(() => {
                 if (guessrMapInstance) {
                     guessrMapInstance.remove();
@@ -1247,7 +1299,7 @@
                     zoomControl: false
                 }).setView([20, 0], 1);
 
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png', {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 18
                 }).addTo(guessrMapInstance);
 
@@ -1369,6 +1421,38 @@
                       Math.sin(dLon / 2) * Math.sin(dLon / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             return R * c; 
+        }
+
+        // --- MOTOR INTERACTIVO DE CALIFICACIÓN (ESCALA 1 A 10 con Medias Estrellas) ---
+        function registrarVoto(event, estadio, club, numeroEstrella) {
+            const estrella = event.target;
+            const dimensiones = estrella.getBoundingClientRect();
+            const clickX = event.clientX - dimensiones.left; // Posición exacta del clic dentro de la estrella
+            
+            // Si el clic es en la mitad izquierda es media estrella (impar), si es en la derecha es entera (par)
+            const esMediaEstrella = clickX < (dimensiones.width / 2);
+            const notaFinal = (numeroEstrella * 2) - (esMediaEstrella ? 1 : 0);
+            
+            // Buscamos el contenedor de estrellas de esta tarjeta específica para iluminarlas
+            const filaEstrellas = estrella.closest('.stars-row');
+            const todasLasEstrellas = filaEstrellas.querySelectorAll('.star-icon');
+            
+            todasLasEstrellas.forEach((est, indice) => {
+                const posicionEstrella = indice + 1;
+                est.className = 'star-icon'; // Reseteamos clases
+                
+                if (posicionEstrella < numeroEstrella) {
+                    est.classList.add('active'); // Estrellas previas completamente iluminadas
+                } else if (posicionEstrella === numeroEstrella) {
+                    if (esMediaEstrella) {
+                        est.classList.add('half-active'); // Estrella actual partida a la mitad
+                    } else {
+                        est.classList.add('active'); // Estrella actual completa
+                    }
+                }
+            });
+
+            alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`);
         }
 
         // Vinculación de eventos de las pestañas
