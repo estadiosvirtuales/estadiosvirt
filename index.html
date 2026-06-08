@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -567,7 +567,7 @@
                 font-size: 0.95rem;
                 width: max-content;
             }
-            .btn-random:hover { transform: translateX(50%) scale(1.05); }
+            .btn-random:hover { transform: scale(1.05); }
             .btn-game {
                 bottom: 75px;
                 right: 50%;
@@ -592,6 +592,16 @@
                 height: 100% !important;
                 min-height: 200px;
             }
+        }
+
+        /* Estilos específicos para marcas Leaflet oscurecidas */
+        .leaflet-popup-content-wrapper {
+            background: #161616 !important;
+            color: #ffffff !important;
+            border: 1px solid var(--accent-color);
+        }
+        .leaflet-popup-tip {
+            background: #161616 !important;
         }
     </style>
 </head>
@@ -649,6 +659,13 @@
         </div>
     </div>
 
+    <div id="map-modal" class="modal-overlay" onclick="cerrarModalMapa()">
+        <div class="modal-content" style="max-width: 800px; height: 75vh;" onclick="event.stopPropagation()">
+            <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalMapa()">✕</button>
+            <div id="modal-map-container" style="width: 100%; height: 100%; border-radius: 12px; background: #0c0c0c;"></div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <script>
@@ -668,6 +685,7 @@
         let guessrTargetMarker = null;
         let guessrPolyline = null;
         let guessrSelectedLatLng = null;
+        let previewMapInstance = null;
 
         const coloresClubes = {
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
@@ -776,7 +794,55 @@
             guessrSelectedLatLng = null;
         }
 
-        // --- MINI-MAPAS LEAFLET DINÁMICOS EN EL POPUP INDIVIDUAL ---
+        // --- SOLUCIÓN: LANZAMIENTO DE VENTANA EMERGENTE DE MAPA GIGANTE DEDICADO ---
+        function abrirModalMapa(estadio, pais, lat, lng) {
+            if (!lat || lat.toString().trim() === '' || !lng || lng.toString().trim() === '') {
+                alert("Las coordenadas geográficas de este estadio no están disponibles en el Sheets todavía.");
+                return;
+            }
+            
+            const modal = document.getElementById('map-modal');
+            modal.style.display = 'flex';
+
+            const parsedLat = parseFloat(lat.toString().replace(',', '.'));
+            const parsedLng = parseFloat(lng.toString().replace(',', '.'));
+
+            setTimeout(() => {
+                if (previewMapInstance) {
+                    previewMapInstance.remove();
+                }
+                
+                // Inicializamos mapa de previsualización interactivo extendido
+                previewMapInstance = L.map('modal-map-container', {
+                    attributionControl: false,
+                    zoomControl: true
+                }).setView([parsedLat, parsedLng], 15);
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                    maxZoom: 19
+                }).addTo(previewMapInstance);
+
+                // Pin premium con tooltip/popup automático para guiar al usuario
+                L.circleMarker([parsedLat, parsedLng], {
+                    radius: 8,
+                    color: 'var(--accent-color)',
+                    fillColor: '#000',
+                    fillOpacity: 1,
+                    weight: 3
+                }).addTo(previewMapInstance).bindPopup(`<b style="color:#ffffff; font-family:sans-serif;">${estadio}</b><br><span style="color:var(--text-muted);">${pais}</span>`).openPopup();
+
+                previewMapInstance.invalidateSize();
+            }, 250);
+        }
+
+        function cerrarModalMapa() {
+            document.getElementById('map-modal').style.display = 'none';
+            if (previewMapInstance) {
+                previewMapInstance.remove();
+                previewMapInstance = null;
+            }
+        }
+
         function switchTab(event, btn, type, estadio = '', pais = '', lat = '', lng = '') {
             event.stopPropagation();
             const balloon = btn.closest('.trivia-balloon');
@@ -786,47 +852,20 @@
             
             btn.classList.add('active');
             const content = balloon.querySelector('.b-' + type);
-            content.classList.add('active');
+            if(content) content.classList.add('active');
 
             if (type === 'mapa') {
-                if (!lat || lat.trim() === '' || !lng || lng.trim() === '') {
-                    content.innerHTML = '<div style="color:var(--text-muted); font-size: 0.8rem; padding: 10px;">Coordenadas de este estadio no disponibles en el Sheets.</div>';
-                    return;
-                }
+                // Interceptamos la pestaña y disparamos la ventana emergente gigante dedicada
+                abrirModalMapa(estadio, pais, lat, lng);
                 
-                content.innerHTML = '';
-                const mapId = 'map-card-' + Math.random().toString(36).substr(2, 9);
-                const mapDiv = document.createElement('div');
-                mapDiv.id = mapId;
-                mapDiv.style.width = '100%';
-                mapDiv.style.height = '110px';
-                mapDiv.style.borderRadius = '4px';
-                content.appendChild(mapDiv);
-
-                const parsedLat = parseFloat(lat.toString().replace(',', '.'));
-                const parsedLng = parseFloat(lng.toString().replace(',', '.'));
-
-                // Carga interactiva asíncrona para que no rompa el diseño del DOM
+                // Reseteamos el estado de los tabs internos para que la tarjeta no quede vacía
                 setTimeout(() => {
-                    const cardMap = L.map(mapId, {
-                        attributionControl: false,
-                        zoomControl: false
-                    }).setView([parsedLat, parsedLng], 15);
-
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-                        maxZoom: 18
-                    }).addTo(cardMap);
-
-                    L.circleMarker([parsedLat, parsedLng], {
-                        radius: 6,
-                        color: 'var(--accent-color)',
-                        fillColor: '#000',
-                        fillOpacity: 1,
-                        weight: 2
-                    }).addTo(cardMap);
-
-                    cardMap.invalidateSize();
-                }, 50);
+                    balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
+                    balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
+                    balloon.querySelector('.b-tab:first-child').classList.add('active');
+                    balloon.querySelector('.b-trivia').classList.add('active');
+                    balloon.classList.remove('active');
+                }, 100);
             }
         }
 
@@ -840,11 +879,13 @@
             }
             
             listaEstadios.forEach(fila => {
+                if(!fila.Estadio || !fila.Club) return;
+                
                 const urlFoto = fila.Foto ? fila.Foto.trim() : '';
-                const clubNombre = fila.Club ? fila.Club.trim() : '';
+                const clubNombre = fila.Club.trim();
                 const fondoGradiente = obtenerFondoClub(clubNombre);
                 const pais = fila.País ? fila.País.trim() : 'Argentina';
-                const estadio = fila.Estadio ? fila.Estadio.trim() : 'Estadio';
+                const estadio = fila.Estadio.trim();
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
                 const latRaw = fila.Latitud ? fila.Latitud.toString().trim() : '';
@@ -940,6 +981,33 @@
             document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
         });
 
+        // --- SOLUCIÓN: VUELO ALEATORIO REPARADO CON BUSQUEDA SOBRE DATASETS COMPLETO ---
+        document.querySelector('.btn-random').addEventListener('click', function(e) {
+            const poolDeEstadios = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
+            
+            if (poolDeEstadios.length === 0) {
+                alert('Esperá un segundo a que se termine de sincronizar el catálogo de estadios en memoria...');
+                return;
+            }
+
+            // Filtramos bajo regla estricta: Que sea de YouTube y tenga video real cargado
+            const estadiosConVideo = poolDeEstadios.filter(fila => {
+                const link = fila['Link del Video'] ? fila['Link del Video'].toString().trim() : '';
+                return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link');
+            });
+
+            if (estadiosConVideo.length === 0) {
+                alert('Aún no hay links de videos de YouTube disponibles para disparar la simulación de vuelo aleatorio.');
+                return;
+            }
+
+            const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
+            const estadioElegido = estadiosConVideo[indiceAzar];
+
+            // Lanzamos de forma cinemática normal (esJuego = false) para resetear layouts
+            abrirModalVideo(e, estadioElegido['Link del Video'].trim(), false);
+        });
+
         // --- SISTEMA DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (SÓLO YOUTUBE) ---
         function iniciarTrivia() {
             if (catalogoGlobal.length === 0) {
@@ -955,7 +1023,6 @@
         }
 
         function lanzarRondaGuessr() {
-            // FILTRO ESTRICTO EXCLUSIVO: Solo estadios con videos reales de YouTube y coordenadas
             const estadiosDisponibles = catalogoGlobal.filter(f => {
                 const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
                 const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
@@ -966,7 +1033,7 @@
             });
 
             if (estadiosDisponibles.length === 0) {
-                alert('No quedan suficientes estadios cargados con videos de YouTube y coordenadas válidas para jugar.');
+                alert('¡Felicidades! Completaste todas las georreferencias disponibles en este lote.');
                 cerrarModalVideo();
                 return;
             }
@@ -978,7 +1045,7 @@
             // Actualizar interfaz del panel
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             const actionBtn = document.getElementById('game-action-btn');
-            actionBtn.innerText = "Clavá un pin en el mapa 📍";
+            actionBtn.innerText = "Clavá un pin en el mapa mudo 📍";
             actionBtn.style.backgroundColor = "var(--card-bg)";
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
@@ -986,7 +1053,7 @@
             // Abrir el modal y desplegar video
             abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
-            // REPARACIÓN COMPLETA DEL MAPA MUDO
+            // RENDERIZADO DEL MAPA MUDO SIN ETIQUETAS
             setTimeout(() => {
                 if (guessrMapInstance) {
                     guessrMapInstance.remove();
@@ -1051,7 +1118,7 @@
                 fillColor: '#000',
                 fillOpacity: 1,
                 weight: 3
-            }).addTo(guessrMapInstance).bindPopup(`<b>${guessrEstadioCorrecto.Estadio}</b><br>${guessrEstadioCorrecto.Club}`).openPopup();
+            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#000;">${guessrEstadioCorrecto.Estadio}</b><br><span style="color:#555;">${guessrEstadioCorrecto.Club}</span>`).openPopup();
 
             guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
                 color: 'var(--danger-color)',
@@ -1060,7 +1127,7 @@
             }).addTo(guessrMapInstance);
 
             const bounds = L.featureGroup([guessrUserMarker, guessrTargetMarker]).getBounds();
-            guessrMapInstance.fitBounds(bounds, { padding: [30, 30] });
+            guessrMapInstance.fitBounds(bounds, { padding: [40, 40] });
 
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             actionBtn.innerHTML = `Le erraste por <b>${distanciaKm.toFixed(1)} km</b>. (+${puntosRonda} pts) • Siguiente ➡️`;
@@ -1135,4 +1202,8 @@
         cargarLiga(primerGid);
     </script>
 </body>
-</html>
+</html>"""
+
+with open("estadios_virtuales_v2.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+print("File successfully generated as estadios_virtuales_v2.html")
