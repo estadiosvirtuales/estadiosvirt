@@ -711,6 +711,8 @@
     
     <script>
         const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
+        // URL DE TU PUENTE DE VOTACIÓN
+        const scriptUrlVotos = "https://script.google.com/macros/s/AKfycbxXl41s_6wo2oyS7vmKqQifhuwnS7NdUX_LQhyF_7lIcxp365GS90gCwzWERdGVYM5-/exec";
 
         let estadiosCargados = [];
         let catalogoGlobal = [];
@@ -1138,7 +1140,7 @@
                         <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
                         
                         <div class="rating-box">
-                            <span class="rating-title">Calificá este Estadio</span>
+                            <span class="rating-title">Calificá este Templo</span>
                             <div class="stars-row" data-estadio="${estadio.replace(/"/g, '&quot;')}">
                                 <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 1)">★</span>
                                 <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 2)">★</span>
@@ -1452,7 +1454,11 @@
                 }
             });
 
-            alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`);
+            // ENVIAMOS EL DATO AL PUENTE
+            const urlFinal = `${scriptUrlVotos}?estadio=${encodeURIComponent(estadio)}&club=${encodeURIComponent(club)}&nota=${notaFinal}`;
+            fetch(urlFinal, { mode: 'no-cors' })
+                .then(() => alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`))
+                .catch(err => console.error("Error al registrar el voto:", err));
         }
 
         // Vinculación de eventos de las pestañas
