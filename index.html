@@ -7,6 +7,7 @@
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
         /* Variables de colores (Estilo Modo Oscuro Premium) */
@@ -510,6 +511,7 @@
         .modal-content.stadium-guessr-layout {
             width: 85% !important;
             max-width: 1100px !important; 
+            height: 80vh !important;
         }
 
         .video-container {
@@ -635,7 +637,6 @@
         .star-icon:hover {
             transform: scale(1.15);
         }
-        /* Clases dinámicas para iluminar con Verde Spotify */
         .star-icon.active {
             color: var(--accent-color) !important;
         }
@@ -644,9 +645,84 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* ESTILOS AVANZADOS DE USER-PROFILE & MEDALLAS */
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(29, 185, 84, 0.5);
+            transition: transform 0.2s ease;
+            object-fit: cover;
+        }
+        .profile-avatar:hover {
+            transform: scale(1.08);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #0f0f0f;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #222;
+            text-align: center;
+        }
+        .stat-card h4 {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .stat-card p {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .medals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .medal-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #090909;
+            padding: 12px 6px;
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+            opacity: 0.25;
+            filter: grayscale(100%);
+            transition: all 0.35s ease;
+        }
+        .medal-item.unlocked {
+            opacity: 1;
+            filter: grayscale(0%);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(29, 185, 84, 0.2);
+        }
+        .medal-icon {
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+        .medal-name {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
+
+    <div id="profile-area" style="position: fixed; top: 20px; right: 20px; z-index: 2500; display: flex; align-items: center; gap: 10px;"></div>
 
     <section class="hero-section">
         <div class="hero-content">
@@ -707,11 +783,17 @@
         </div>
     </div>
 
+    <div id="profile-modal" class="modal-overlay" onclick="cerrarModalPerfil()">
+        <div class="modal-content" style="max-width: 480px; height: auto; max-height: 85vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
+            <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalPerfil()">✕</button>
+            <div id="profile-modal-body"></div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <script>
         const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
-        // URL DE TU PUENTE DE VOTACIÓN
         const scriptUrlVotos = "https://script.google.com/macros/s/AKfycbxXl41s_6wo2oyS7vmKqQifhuwnS7NdUX_LQhyF_7lIcxp365GS90gCwzWERdGVYM5-/exec";
 
         let estadiosCargados = [];
@@ -729,6 +811,19 @@
         let guessrPolyline = null;
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
+
+        // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES (LOCALSTORAGE)
+        let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
+            votosRealizados: 0,
+            triviasVistas: 0,
+            partidasJugadas: 0,
+            maxScore: 0,
+            medallaLocalista: false
+        };
+
+        function guardarStats() {
+            localStorage.setItem('ev_user_stats', JSON.stringify(userStats));
+        }
 
         const coloresClubes = {
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
@@ -761,7 +856,6 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-             // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -798,8 +892,6 @@
             "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
             "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
-
-            // INGLATERRA - PREMIER LEAGUE
             "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
             "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
             "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
@@ -820,8 +912,6 @@
             "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
             "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
             "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
-
-            // ESPAÑA - LA LIGA
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
@@ -842,8 +932,6 @@
             "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
             "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
             "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
-
-            // ITALIA - SERIE A
             "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
             "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
@@ -864,8 +952,6 @@
             "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
             "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
             "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
-
-            // FRANCIA - LIGUE 1
             "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
             "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
             "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
@@ -884,8 +970,6 @@
             "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
             "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
             "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
-
-            // ALEMANIA - BUNDESLIGA
             "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
             "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
             "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
@@ -904,8 +988,6 @@
             "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
             "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
             "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-
-            // BRASIL - BRASILEIRAO
             "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
             "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
             "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
@@ -926,8 +1008,6 @@
             "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
             "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
             "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
-
-            // CHILE - PRIMERA DIVISIÓN
             "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
             "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
             "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
@@ -1020,7 +1100,6 @@
             guessrSelectedLatLng = null;
         }
 
-        // --- SOLUCIÓN: LANZAMIENTO DE VENTANA EMERGENTE DE MAPA GIGANTE DEDICADO ---
         function abrirModalMapa(estadio, pais, lat, lng) {
             if (!lat || lat.toString().trim() === '' || !lng || lng.toString().trim() === '') {
                 alert("Las coordenadas geográficas de este estadio no están disponibles en el Sheets todavía.");
@@ -1038,7 +1117,6 @@
                     previewMapInstance.remove();
                 }
                 
-                // Inicializamos mapa de previsualización interactivo extendido (OpenStreetMap style)
                 previewMapInstance = L.map('modal-map-container', {
                     attributionControl: false,
                     zoomControl: true
@@ -1048,7 +1126,6 @@
                     maxZoom: 19
                 }).addTo(previewMapInstance);
 
-                // Pin premium con tooltip/popup automático para guiar al usuario
                 L.circleMarker([parsedLat, parsedLng], {
                     radius: 8,
                     color: 'var(--accent-color)',
@@ -1081,10 +1158,7 @@
             if(content) content.classList.add('active');
 
             if (type === 'mapa') {
-                // Interceptamos la pestaña y disparamos la ventana emergente gigante dedicada
                 abrirModalMapa(estadio, pais, lat, lng);
-                
-                // Reseteamos el estado de los tabs internos para que la tarjeta no quede vacía
                 setTimeout(() => {
                     balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
                     balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
@@ -1118,7 +1192,6 @@
                 const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
                 const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
 
-                // --- INTERPRETACIÓN DEL PROMEDIO COLUMNA DEL SHEETS PARA PRE-ILUMINACIÓN ---
                 const valorPromedio = parseFloat(fila.Promedio) || 0;
                 const estrellasFisicas = valorPromedio / 2;
 
@@ -1126,9 +1199,9 @@
                 for (let i = 1; i <= 5; i++) {
                     let claseEstrella = '';
                     if (i <= Math.floor(estrellasFisicas)) {
-                        claseEstrella = 'active'; // Llenas
+                        claseEstrella = 'active';
                     } else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) {
-                        claseEstrella = 'half-active'; // Media estrella
+                        claseEstrella = 'half-active';
                     }
                     estrellasHTML += `<span class="star-icon ${claseEstrella}" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', ${i})">★</span>`;
                 }
@@ -1155,7 +1228,7 @@
                         <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
                         
                         <div class="rating-box">
-                            <span class="rating-title">Calificá este Estadio ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
+                            <span class="rating-title">Calificá este Templo ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
                             <div class="stars-row" data-estadio="${estadio.replace(/"/g, '&quot;')}">
                                 ${estrellasHTML}
                             </div>
@@ -1222,14 +1295,18 @@
             document.querySelectorAll('.trivia-balloon').forEach(g => {
                 g.classList.remove('active');
             });
-            if (!yaEstaAbierto) globoActual.classList.add('active');
+            if (!yaEstaAbierto) {
+                globoActual.classList.add('active');
+                // DISPARADOR DE MÉTRICA: SUMAR TRIVIA LEÍDA NATIVAMENTE
+                userStats.triviasVistas++;
+                guardarStats();
+            }
         }
 
         document.addEventListener('click', function() {
             document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
         });
 
-        // --- SOLUCIÓN: VUELO ALEATORIO REPARADO WITH BUSQUEDA SOBRE DATASETS COMPLETO ---
         document.querySelector('.btn-random').addEventListener('click', function(e) {
             const poolDeEstadios = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
             
@@ -1238,7 +1315,6 @@
                 return;
             }
 
-            // Filtramos bajo regla estricta: Que sea de YouTube y tenga video real cargado
             const estadiosConVideo = poolDeEstadios.filter(fila => {
                 const link = fila['Link del Video'] ? fila['Link del Video'].toString().trim() : '';
                 return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link');
@@ -1251,12 +1327,9 @@
 
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
             const estadioElegido = estadiosConVideo[indiceAzar];
-
-            // Lanzamos de forma cinemática normal (esJuego = false) para resetear layouts
             abrirModalVideo(e, estadioElegido['Link del Video'].trim(), false);
         });
 
-        // --- SISTEMA DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (SÓLO YOUTUBE) ---
         function iniciarTrivia() {
             if (catalogoGlobal.length === 0) {
                 alert('Esperá un segundo a que cargue todo el catálogo de estadios...');
@@ -1290,7 +1363,6 @@
             guessrEstadiosJugados.push(guessrEstadioCorrecto.Estadio);
             guessrSelectedLatLng = null;
 
-            // Actualizar interfaz del panel
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.innerText = "Clavá un pin en el mapa mudo 📍";
@@ -1298,10 +1370,8 @@
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
 
-            // Abrir el modal y desplegar video
             abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
-            // RENDERIZADO DEL MAPA CON CAPA OPENSTREETMAP INTERACTIVA Y DETALLADA
             setTimeout(() => {
                 if (guessrMapInstance) {
                     guessrMapInstance.remove();
@@ -1360,6 +1430,12 @@
             const puntosRonda = Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
             guessrPuntosTotales += puntosRonda;
 
+            // DISPARADOR DE LOGRO: DETECTAR SI ES SÚPER LOCALISTA (MENOS DE 5 KM)
+            if (distanciaKm < 5) {
+                userStats.medallaLocalista = true;
+                guardarStats();
+            }
+
             guessrTargetMarker = L.circleMarker([targetLat, targetLng], {
                 radius: 8,
                 color: 'var(--accent-color)',
@@ -1412,6 +1488,13 @@
                 guessrMapInstance = null;
             }
 
+            // GUARDAR MÉTRICAS DE FIN DE CAMPEONATO
+            userStats.partidasJugadas++;
+            if (guessrPuntosTotales > userStats.maxScore) {
+                userStats.maxScore = guessrPuntosTotales;
+            }
+            guardarStats();
+
             container.innerHTML = `
                 <div style="text-align: center; padding: 40px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
                     <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2>
@@ -1425,40 +1508,161 @@
             `;
         }
 
-        // --- MOTOR INTERACTIVO DE CALIFICACIÓN (ESCALA 1 A 10 con Medias Estrellas) ---
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
         function registrarVoto(event, estadio, club, numeroEstrella) {
             const estrella = event.target;
             const dimensiones = estrella.getBoundingClientRect();
-            const clickX = event.clientX - dimensiones.left; // Posición exacta del clic dentro de la estrella
+            const clickX = event.clientX - dimensiones.left; 
             
-            // Si el clic es en la mitad izquierda es media estrella (impar), si es en la derecha es entera (par)
             const esMediaEstrella = clickX < (dimensiones.width / 2);
             const notaFinal = (numeroEstrella * 2) - (esMediaEstrella ? 1 : 0);
             
-            // Buscamos el contenedor de estrellas de esta tarjeta específica para iluminarlas
             const filaEstrellas = estrella.closest('.stars-row');
             const todasLasEstrellas = filaEstrellas.querySelectorAll('.star-icon');
             
             todasLasEstrellas.forEach((est, indice) => {
                 const posicionEstrella = indice + 1;
-                est.className = 'star-icon'; // Reseteamos clases
+                est.className = 'star-icon'; 
                 
                 if (posicionEstrella < numeroEstrella) {
-                    est.classList.add('active'); // Estrellas previas completamente iluminadas
+                    est.classList.add('active'); 
                 } else if (posicionEstrella === numeroEstrella) {
                     if (esMediaEstrella) {
-                        est.classList.add('half-active'); // Estrella actual partida a la mitad
+                        est.classList.add('half-active'); 
                     } else {
-                        est.classList.add('active'); // Estrella actual completa
+                        est.classList.add('active'); 
                     }
                 }
             });
 
-            // ENVIAMOS EL DATO AL PUENTE
+            // SUMAR MÉTRICA LOCAL DE VOTO Y GUARDAR
+            userStats.votosRealizados++;
+            guardarStats();
+
             const urlFinal = `${scriptUrlVotos}?estadio=${encodeURIComponent(estadio)}&club=${encodeURIComponent(club)}&nota=${notaFinal}`;
             fetch(urlFinal, { mode: 'no-cors' })
                 .then(() => alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`))
                 .catch(err => console.error("Error al registrar el voto:", err));
+        }
+
+        // --- SISTEMA INTEGRADOR DE GOOGLE LOGIN, MEDALLAS Y ESTADÍSTICAS ---
+        function inicializarGoogleLogin() {
+            google.accounts.id.initialize({
+                client_id: "351786523914-placeholder.apps.googleusercontent.com", // ID Mockup funcional para renderización visual
+                callback: manejarRespuestaGoogle
+            });
+            renderizarBotonLogin();
+        }
+
+        function renderizarBotonLogin() {
+            const container = document.getElementById('profile-area');
+            const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
+            
+            if (loggedUser) {
+                container.innerHTML = `<img src="${loggedUser.picture}" class="profile-avatar" onclick="abrirModalPerfil()" title="Ver mi Perfil Premium">`;
+            } else {
+                container.innerHTML = `<div id="google-login-btn"></div>`;
+                google.accounts.id.renderButton(
+                    document.getElementById("google-login-btn"),
+                    { theme: "dark", size: "medium", type: "standard", shape: "pill" }
+                );
+            }
+        }
+
+        function manejarRespuestaGoogle(response) {
+            const payload = decodeJwt(response.credential);
+            if (payload) {
+                const user = {
+                    id: payload.sub,
+                    name: payload.name,
+                    email: payload.email,
+                    picture: payload.picture
+                };
+                localStorage.setItem('ev_user_logged', JSON.stringify(user));
+                renderizarBotonLogin();
+            }
+        }
+
+        function decodeJwt(token) {
+            try {
+                var base64Url = token.split('.')[1];
+                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch(e) { return null; }
+        }
+
+        function abrirModalPerfil() {
+            const currentUser = JSON.parse(localStorage.getItem('ev_user_logged'));
+            if (!currentUser) return;
+
+            // Evaluación de lógica dinámica de medallas
+            const mLocalista = userStats.medallaLocalista;
+            const mCatador = userStats.votosRealizados >= 5;
+            const mCurioso = userStats.triviasVistas >= 10;
+            const mIdolo = userStats.partidasJugadas >= 3;
+
+            // Determinación de rangos futboleros
+            let rango = "Pibe de Potrero ⚽";
+            if (userStats.maxScore > 15000) rango = "Director Técnico 📋";
+            if (userStats.maxScore > 22000) rango = "Leyenda Mundial 🏆";
+
+            const body = document.getElementById('profile-modal-body');
+            body.innerHTML = `
+                <div style="text-align: center; margin-top: 10px;">
+                    <img src="${currentUser.picture}" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(29, 185, 84, 0.4);">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-top: 12px; color:#fff; letter-spacing:-0.3px;">${currentUser.name}</h2>
+                    <span style="font-size: 0.8rem; color: #000; font-weight: 800; background: var(--accent-color); padding: 4px 14px; border-radius: 15px; display: inline-block; margin-top: 6px; box-shadow: 0 2px 8px rgba(29,185,84,0.3);">${rango}</span>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card"><h4>Votos dados</h4><p>📊 ${userStats.votosRealizados}</p></div>
+                    <div class="stat-card"><h4>Trivias leídas</h4><p>💡 ${userStats.triviasVistas}</p></div>
+                    <div class="stat-card"><h4>Partidas Guessr</h4><p>🎮 ${userStats.partidasJugadas}</p></div>
+                    <div class="stat-card"><h4>Máximo Score</h4><p>✨ ${userStats.maxScore}</p></div>
+                </div>
+
+                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid #222; padding-bottom: 6px; margin-top: 22px; letter-spacing: 1px; font-weight:700;">Vitrina de Medallas</h3>
+                <div class="medals-grid">
+                    <div class="medal-item ${mLocalista ? 'unlocked' : ''}" title="Clavá un pin a menos de 5 km en StadiumGuessr">
+                        <div class="medal-icon">📍</div><div class="medal-name">Localista</div>
+                    </div>
+                    <div class="medal-item ${mCatador ? 'unlocked' : ''}" title="Calificá un mínimo de 5 estadios del catálogo">
+                        <div class="medal-icon">🏅</div><div class="medal-name">Catador</div>
+                    </div>
+                    <div class="medal-item ${mCurioso ? 'unlocked' : ''}" title="Descubrí 10 datos curiosos haciendo clic en los focos">
+                        <div class="medal-icon">💡</div><div class="medal-name">Curioso</div>
+                    </div>
+                    <div class="medal-item ${mIdolo ? 'unlocked' : ''}" title="Completá al menos 3 campeonatos aéreos">
+                        <div class="medal-icon">🏆</div><div class="medal-name">Leyenda</div>
+                    </div>
+                </div>
+
+                <button onclick="cerrarSesion()" class="btn-view" style="background: #222; color: #ff5555; margin-top: 30px; font-size: 0.9rem; padding: 10px; border-radius:10px;">Cerrar Sesión Activa</button>
+            `;
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function cerrarModalPerfil() {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('ev_user_logged');
+            cerrarModalPerfil();
+            renderizarBotonLogin();
         }
 
         // Vinculación de eventos de las pestañas
@@ -1470,9 +1674,13 @@
             cargarLiga(this.getAttribute('data-gid'));
         }));
 
-        indexarCatalogoMasivo();
-        const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
-        cargarLiga(primerGid);
+        // INICIALIZACIÓN COMPUESTA AL CARGAR LA PÁGINA
+        window.addEventListener('load', () => {
+            indexarCatalogoMasivo();
+            const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
+            cargarLiga(primerGid);
+            inicializarGoogleLogin();
+        });
     </script>
 </body>
 </html>
