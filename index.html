@@ -636,7 +636,6 @@
         .star-icon:hover {
             transform: scale(1.15);
         }
-        /* Clases dinámicas para iluminar con Verde Spotify */
         .star-icon.active {
             color: var(--accent-color) !important;
         }
@@ -660,63 +659,257 @@
         .profile-avatar:hover {
             transform: scale(1.08);
         }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
+
+        /* NUEVA ARQUITECTURA DE DISEÑO: MODAL DE PANTALLA DIVIDIDA (FUT + GEOGUESSR DASHBOARD) */
+        .split-profile-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
         }
-        .stat-card {
-            background: #0f0f0f;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #222;
-            text-align: center;
+        @media (min-width: 769px) {
+            .split-profile-layout {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            .left-fut-column {
+                width: 38%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-right: 1px solid #222;
+                padding-right: 25px;
+            }
+            .right-dashboard-column {
+                width: 62%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
         }
-        .stat-card h4 {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 4px;
-            letter-spacing: 0.5px;
-        }
-        .stat-card p {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #fff;
-        }
-        .medals-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .medal-item {
+
+        /* DISEÑO DE CARTA FUT ULTRA PREMIUM */
+        .fut-card {
+            position: relative;
+            width: 250px;
+            height: 380px;
+            background-size: cover;
+            border-radius: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #090909;
-            padding: 12px 6px;
-            border-radius: 8px;
-            border: 1px solid #1a1a1a;
-            opacity: 0.25;
-            filter: grayscale(100%);
-            transition: all 0.35s ease;
+            color: #000;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            overflow: hidden;
+            user-select: none;
         }
-        .medal-item.unlocked {
-            opacity: 1;
-            filter: grayscale(0%);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 10px rgba(29, 185, 84, 0.2);
+        /* Variaciones de metal según rango de juego */
+        .fut-card.bronze {
+            background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%), linear-gradient(135deg, #b45309, #78350f);
+            border: 3px solid #92400e;
+            color: #fef3c7;
         }
-        .medal-icon {
-            font-size: 1.8rem;
-            margin-bottom: 4px;
+        .fut-card.silver {
+            background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%);
+            border: 3px solid #9ca3af;
+            color: #ffffff;
         }
-        .medal-name {
-            font-size: 0.7rem;
-            font-weight: bold;
+        .fut-card.gold {
+            background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%);
+            border: 3px solid #facc15;
             color: #fff;
+            animation: goldShine 4s infinite alternate;
+        }
+        @keyframes goldShine {
+            0% { box-shadow: 0 0 15px rgba(234,179,8,0.4); }
+            100% { box-shadow: 0 0 30px rgba(29,185,84,0.7); }
+        }
+        
+        .fut-top {
+            display: flex;
+            width: 100%;
+            height: 55%;
+            margin-top: 15px;
+        }
+        .fut-badge-meta {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.1;
+        }
+        .fut-ovr {
+            font-size: 2.2rem;
+            font-weight: 900;
+        }
+        .fut-pos {
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+        .fut-club-icon {
+            width: 28px;
+            height: 28px;
+            margin-top: 8px;
+            object-fit: contain;
+        }
+        
+        /* Contenedor de Avatar con Camiseta de Fútbol integrada en CSS */
+        .fut-avatar-container {
+            width: 70%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .fut-user-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 5;
+            margin-bottom: 25px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        .fut-jersey-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100px;
+            height: 50px;
+            background: linear-gradient(0deg, #111 0%, #222 100%);
+            border-radius: 40px 40px 0 0;
+            z-index: 4;
+            border: 2px solid var(--accent-color);
+            border-bottom: none;
+        }
+        .fut-jersey-stripe {
+            position: absolute;
+            top: 0;
+            left: 42px;
+            width: 16px;
+            height: 100%;
+            background: var(--text-main);
+        }
+        
+        .fut-name {
+            width: 100%;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin: 8px 0;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Atributos estilo FIFA Ultimate Team */
+        .fut-stats-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            width: 90%;
+            font-size: 0.85rem;
+            gap: 4px 15px;
+            margin-top: 5px;
+        }
+        .fut-stat-item {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+        .fut-stat-num {
+            font-weight: 900;
+        }
+        .fut-stat-label {
+            opacity: 0.7;
+            font-weight: normal;
+        }
+
+        /* COMPONENTE WIDGET CALENDARIO RETO DIARIO (ESTILO GEOGUESSR) */
+        .geoguessr-dash-box {
+            background: #0f0f0f;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+        .dash-header-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .dash-title-premium {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .streak-fire-badge {
+            background: rgba(29, 185, 84, 0.15);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid rgba(29, 185, 84, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .streak-fire-badge span {
+            animation: pulseFire 1.5s infinite alternate;
+        }
+        @keyframes pulseFire {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px #1db954); }
+            100% { transform: scale(1.2); filter: drop-shadow(0 0 6px #1ed760); }
+        }
+
+        /* Matriz de calendario mudo para Desafíos */
+        .calendar-matrix {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .calendar-day-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: bold;
+            padding-bottom: 4px;
+        }
+        .calendar-cell {
+            font-size: 0.75rem;
+            padding: 6px 0;
+            background: #151515;
+            border-radius: 6px;
+            color: #555;
+            font-weight: 700;
+        }
+        .calendar-cell.past-done {
+            color: #888;
+            background: #1c261f;
+        }
+        .calendar-cell.current-active {
+            color: #000;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+            position: relative;
         }
     </style>
 </head>
@@ -784,7 +977,7 @@
     </div>
 
     <div id="profile-modal" class="modal-overlay" onclick="cerrarModalPerfil()">
-        <div class="modal-content" style="max-width: 480px; height: auto; max-height: 85vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
+        <div class="modal-content" style="max-width: 850px; height: auto; max-height: 90vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
             <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalPerfil()">✕</button>
             <div id="profile-modal-body"></div>
         </div>
@@ -818,7 +1011,8 @@
             triviasVistas: 0,
             partidasJugadas: 0,
             maxScore: 0,
-            medallaLocalista: false
+            medallaLocalista: false,
+            rachaActual: 1 // Racha inicial por defecto
         };
 
         function guardarStats() {
@@ -1250,7 +1444,7 @@
                         <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
                         
                         <div class="rating-box">
-                            <span class="rating-title">Calificá este Templo ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
+                            <span class="rating-title">Calificá este Estadio ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
                             <div class="stars-row" data-estadio="${estadio.replace(/"/g, '&quot;')}">
                                 ${estrellasHTML}
                             </div>
@@ -1538,18 +1732,6 @@
             `;
         }
 
-        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; 
-        }
-
-        // --- MOTOR INTERACTIVO DE CALIFICACIÓN (ESCALA 1 A 10 con Medias Estrellas) ---
         function registrarVoto(event, estadio, club, numeroEstrella) {
             const estrella = event.target;
             const dimensiones = estrella.getBoundingClientRect();
@@ -1589,10 +1771,24 @@
                 .catch(err => console.error("Error al registrar el voto:", err));
         }
 
-        // --- SISTEMA INTERGRADOR DE GOOGLE LOGIN, PERFIL DE USUARIO Y MEDALLAS ---
+        // Vinculación de eventos de las pestañas
+        document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+            cargarLiga(this.getAttribute('data-gid'));
+        }));
+
+        indexarCatalogoMasivo();
+        const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
+        cargarLiga(primerGid);
+    </script>
+
+    <script>
         function inicializarGoogleLogin() {
             google.accounts.id.initialize({
-                client_id: "351786523914-placeholder.apps.googleusercontent.com", // ID Mockup funcional para renderización visual de botones
+                client_id: "351786523914-placeholder.apps.googleusercontent.com", 
                 callback: manejarRespuestaGoogle
             });
             renderizarBotonLogin();
@@ -1603,7 +1799,7 @@
             const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
             
             if (loggedUser) {
-                container.innerHTML = `<img src="${loggedUser.picture}" class="profile-avatar" onclick="abrirModalPerfil()" title="Ver mi Perfil Premium">`;
+                container.innerHTML = `<img src="${loggedUser.picture}" class="profile-avatar" onclick="abrirModalPerfil()" title="Ver mi Perfil Premium FUT">`;
             } else {
                 container.innerHTML = `<div id="google-login-btn"></div>`;
                 google.accounts.id.renderButton(
@@ -1642,49 +1838,119 @@
             const currentUser = JSON.parse(localStorage.getItem('ev_user_logged'));
             if (!currentUser) return;
 
-            // Evaluación de lógica dinámica de medallas basadas en el progreso
+            // Lógica de validación para las insignias
             const mLocalista = userStats.medallaLocalista;
             const mCatador = userStats.votosRealizados >= 5;
             const mCurioso = userStats.triviasVistas >= 10;
             const mIdolo = userStats.partidasJugadas >= 3;
 
-            // Rangos futboleros dinámicos según el récord personal
-            let rango = "Pibe de Potrero ⚽";
-            if (userStats.maxScore > 15000) rango = "Director Técnico 📋";
-            if (userStats.maxScore > 22000) rango = "Leyenda Mundial 🏆";
+            // Definición de Rango e Identidad de Carta Coleccionable FUT
+            let cardClass = "bronze";
+            let rangoFUT = "DEL"; // Delantero de Potrero
+            let rangoTexto = "Pibe de Potrero ⚽";
+            let overallFUT = 64;
 
-            const body = document.getElementById('profile-modal-body');
-            body.innerHTML = `
-                <div style="text-align: center; margin-top: 10px;">
-                    <img src="${currentUser.picture}" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--accent-color); box-shadow: 0 0 20px rgba(29, 185, 84, 0.4);">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-top: 12px; color:#fff; letter-spacing:-0.3px;">${currentUser.name}</h2>
-                    <span style="font-size: 0.8rem; color: #000; font-weight: 800; background: var(--accent-color); padding: 4px 14px; border-radius: 15px; display: inline-block; margin-top: 6px; box-shadow: 0 2px 8px rgba(29,185,84,0.3);">${rango}</span>
+            if (userStats.maxScore > 15000) {
+                cardClass = "silver";
+                rangoFUT = "DT";
+                rangoTexto = "Director Técnico 📋";
+                overallFUT = 79;
+            }
+            if (userStats.maxScore > 22000) {
+                cardClass = "gold";
+                rangoFUT = "MCO"; // Volante Creativo de Elite
+                rangoTexto = "Leyenda Mundial 🏆";
+                overallFUT = 94;
+            }
+
+            // Atributos numéricos limpios estilo Atributos de FIFA (FUT Stats)
+            const statVOT = userStats.votosRealizados;
+            const statTRV = userStats.triviasVistas;
+            const statPJ = userStats.partidasJugadas;
+            const statSCO = userStats.maxScore;
+
+            // Renderizado Dinámico del Mini-Calendario del Reto Diario (Junio de 2026 - Inicia en Lunes)
+            let calendarCellsHTML = '';
+            for (let d = 1; d <= 30; d++) {
+                let cellClass = "calendar-cell";
+                if (d < 9) cellClass += " past-done"; // Días previos resueltos
+                if (d === 9) cellClass += " current-active"; // Día actual contextual (Martes 9 de Junio)
+                calendarCellsHTML += `<div class="${cellClass}">${d}</div>`;
+            }
+
+            const modalBody = document.getElementById('profile-modal-body');
+            modalBody.innerHTML = `
+                <div class="split-profile-layout">
+                    
+                    <div class="left-fut-column">
+                        <div class="fut-card ${cardClass}">
+                            <div class="fut-top">
+                                <div class="fut-badge-meta">
+                                    <div class="fut-ovr">${overallFUT}</div>
+                                    <div class="fut-pos">${rangoFUT}</div>
+                                    <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon">
+                                </div>
+                                <div class="fut-avatar-container">
+                                    <img src="${currentUser.picture}" class="fut-user-img">
+                                    <div class="fut-jersey-overlay">
+                                        <div class="fut-jersey-stripe"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fut-name">${currentUser.name.split(' ')[0]}</div>
+                            <div class="fut-stats-row">
+                                <div class="fut-stat-item"><span class="fut-stat-num">${statVOT}</span><span class="fut-stat-label">VOT</span></div>
+                                <div class="fut-stat-item"><span class="fut-stat-num">${statTRV}</span><span class="fut-stat-label">TRV</span></div>
+                                <div class="fut-stat-item"><span class="fut-stat-num">${statPJ}</span><span class="fut-stat-label">PJ</span></div>
+                                <div class="fut-stat-item"><span class="fut-stat-num">${statSCO > 999 ? (statSCO/1000).toFixed(1)+'K' : statSCO}</span><span class="fut-stat-label">SCO</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-dashboard-column">
+                        <div>
+                            <div class="geoguessr-dash-box">
+                                <div class="dash-header-inline">
+                                    <div class="dash-title-premium">📅 Reto Diario (Junio 2026)</div>
+                                    <div class="streak-fire-badge"><span>🔥</span> racha: ${userStats.rachaActual || 1} d</div>
+                                </div>
+                                <div class="calendar-matrix">
+                                    <div class="calendar-day-label">lun</div>
+                                    <div class="calendar-day-label">mar</div>
+                                    <div class="calendar-day-label">mié</div>
+                                    <div class="calendar-day-label">jue</div>
+                                    <div class="calendar-day-label">vie</div>
+                                    <div class="calendar-day-label">sáb</div>
+                                    <div class="calendar-day-label">dom</div>
+                                    ${calendarCellsHTML}
+                                </div>
+                            </div>
+
+                            <div class="geoguessr-dash-box">
+                                <div class="dash-title-premium" style="margin-bottom:10px;">🏆 Vitrina de Logros</div>
+                                <div class="medals-grid">
+                                    <div class="medal-item ${mLocalista ? 'unlocked' : ''}" title="Clavá un pin a menos de 5 km en StadiumGuessr">
+                                        <div class="medal-icon">📍</div><div class="medal-name">Localista</div>
+                                    </div>
+                                    <div class="medal-item ${mCatador ? 'unlocked' : ''}" title="Calificá un mínimo de 5 estadios del catálogo">
+                                        <div class="medal-icon">🏅</div><div class="medal-name">Catador</div>
+                                    </div>
+                                    <div class="medal-item ${mCurioso ? 'unlocked' : ''}" title="Descubrí 10 datos curiosos haciendo clic en los focos">
+                                        <div class="medal-icon">💡</div><div class="medal-name">Curioso</div>
+                                    </div>
+                                    <div class="medal-item ${mIdolo ? 'unlocked' : ''}" title="Completá al menos 3 campeonatos aéreos">
+                                        <div class="medal-icon">🏆</div><div class="medal-name">Leyenda</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                            <span style="font-size:0.8rem; color:var(--text-muted);">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
+                            <button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card"><h4>Votos dados</h4><p>📊 ${userStats.votosRealizados}</p></div>
-                    <div class="stat-card"><h4>Trivias leídas</h4><p>💡 ${userStats.triviasVistas}</p></div>
-                    <div class="stat-card"><h4>Partidas Guessr</h4><p>🎮 ${userStats.partidasJugadas}</p></div>
-                    <div class="stat-card"><h4>Máximo Score</h4><p>✨ ${userStats.maxScore}</p></div>
-                </div>
-
-                <h3 style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid #222; padding-bottom: 6px; margin-top: 22px; letter-spacing: 1px; font-weight:700;">Vitrina de Medallas</h3>
-                <div class="medals-grid">
-                    <div class="medal-item ${mLocalista ? 'unlocked' : ''}" title="Clavá un pin a menos de 5 km en StadiumGuessr">
-                        <div class="medal-icon">📍</div><div class="medal-name">Localista</div>
-                    </div>
-                    <div class="medal-item ${mCatador ? 'unlocked' : ''}" title="Calificá un mínimo de 5 estadios del catálogo">
-                        <div class="medal-icon">🏅</div><div class="medal-name">Catador</div>
-                    </div>
-                    <div class="medal-item ${mCurioso ? 'unlocked' : ''}" title="Descubrí 10 datos curiosos haciendo clic en los focos">
-                        <div class="medal-icon">💡</div><div class="medal-name">Curioso</div>
-                    </div>
-                    <div class="medal-item ${mIdolo ? 'unlocked' : ''}" title="Completá al menos 3 campeonatos aéreos">
-                        <div class="medal-icon">🏆</div><div class="medal-name">Leyenda</div>
-                    </div>
-                </div>
-
-                <button onclick="cerrarSesion()" class="btn-view" style="background: #222; color: #ff5555; margin-top: 30px; font-size: 0.9rem; padding: 10px; border-radius:10px;">Cerrar Sesión Activa</button>
             `;
             document.getElementById('profile-modal').style.display = 'flex';
         }
@@ -1699,20 +1965,8 @@
             renderizarBotonLogin();
         }
 
-        // Vinculación de eventos de las pestañas
-        document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
-            document.getElementById('global-search').value = '';
-            document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
-            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-            this.classList.add('active');
-            cargarLiga(this.getAttribute('data-gid'));
-        }));
-
-        // INICIALIZACIÓN COMPUESTA AL CARGAR LA PÁGINA
-        window.addEventListener('load', () => {
-            indexarCatalogoMasivo();
-            const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
-            cargarLiga(primerGid);
+        // Ejecutar gancho de inicio en la carga global de Leaflet/PapaParse
+        window.addEventListener('DOMContentLoaded', () => {
             inicializarGoogleLogin();
         });
     </script>
