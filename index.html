@@ -644,24 +644,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        /* Visualización Dinámica de Calificación Promedio Global */
-        .rating-display {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            color: var(--accent-color);
-            font-size: 1.1rem;
-        }
-        .rating-text {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .stars-display span {
-            color: var(--accent-color);
-        }
     </style>
 </head>
 <body>
@@ -1131,11 +1113,25 @@
                 const pais = fila.País ? fila.País.trim() : 'Argentina';
                 const estadio = fila.Estadio.trim();
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
-                const promedio = fila.Promedio || 0; // Toma el dato del promedio del Sheets
                 
                 const latRaw = fila.Latitud ? fila.Latitud.toString().trim() : '';
                 const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
                 const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
+
+                // --- INTERPRETACIÓN DEL PROMEDIO COLUMNA DEL SHEETS PARA PRE-ILUMINACIÓN ---
+                const valorPromedio = parseFloat(fila.Promedio) || 0;
+                const estrellasFisicas = valorPromedio / 2;
+
+                let estrellasHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    let claseEstrella = '';
+                    if (i <= Math.floor(estrellasFisicas)) {
+                        claseEstrella = 'active'; // Llenas
+                    } else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) {
+                        claseEstrella = 'half-active'; // Media estrella
+                    }
+                    estrellasHTML += `<span class="star-icon ${claseEstrella}" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', ${i})">★</span>`;
+                }
 
                 const tarjeta = document.createElement('article');
                 tarjeta.className = 'card';
@@ -1156,22 +1152,12 @@
                     <div class="card-content">
                         <h2 class="card-title">${estadio}</h2>
                         <p class="card-subtitle">${clubNombre} • ${pais}</p>
-                        
-                        <div class="rating-display">
-                            ${generarEstrellasHTML(promedio)}
-                            <span class="rating-text">${promedio > 0 ? parseFloat(promedio).toFixed(1) + '/10' : 'Sin votos'}</span>
-                        </div>
-
-                        <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo del Estadio</button>
+                        <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
                         
                         <div class="rating-box">
-                            <span class="rating-title">Calificá este Estadio</span>
+                            <span class="rating-title">Calificá este Templo ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
                             <div class="stars-row" data-estadio="${estadio.replace(/"/g, '&quot;')}">
-                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 1)">★</span>
-                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 2)">★</span>
-                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 3)">★</span>
-                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 4)">★</span>
-                                <span class="star-icon" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', 5)">★</span>
+                                ${estrellasHTML}
                             </div>
                         </div>
                     </div>`;
@@ -1439,17 +1425,6 @@
             `;
         }
 
-        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; 
-        }
-
         // --- MOTOR INTERACTIVO DE CALIFICACIÓN (ESCALA 1 A 10 con Medias Estrellas) ---
         function registrarVoto(event, estadio, club, numeroEstrella) {
             const estrella = event.target;
@@ -1484,32 +1459,6 @@
             fetch(urlFinal, { mode: 'no-cors' })
                 .then(() => alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`))
                 .catch(err => console.error("Error al registrar el voto:", err));
-        }
-
-        // --- MOTOR DEDICADO PARA DIBUJAR EL PROMEDIO (Escala 1 a 10 con Medias Estrellas) ---
-        function generarEstrellasHTML(promedio) {
-            const valor = parseFloat(promedio) || 0;
-            // Pasamos escala 1-10 a escala de 1-5 estrellas físicas
-            const estrellas = valor / 2;
-            const llenas = Math.floor(estrellas);
-            const media = (estrellas % 1 >= 0.5) ? 1 : 0;
-            const vacias = 5 - llenas - media;
-            
-            let html = '<div class="stars-display">';
-            // Insertamos estrellas llenas verdes
-            for (let i = 0; i < llenas; i++) {
-                html += '<span>★</span>';
-            }
-            // Insertamos media estrella si corresponde
-            if (media) {
-                html += '<span style="background: linear-gradient(90deg, var(--accent-color) 50%, #333 50%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">★</span>';
-            }
-            // Insertamos estrellas vacías oscuras
-            for (let i = 0; i < vacias; i++) {
-                html += '<span style="color:#333333;">★</span>';
-            }
-            html += '</div>';
-            return html;
         }
 
         // Vinculación de eventos de las pestañas
