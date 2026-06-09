@@ -511,7 +511,6 @@
         .modal-content.stadium-guessr-layout {
             width: 85% !important;
             max-width: 1100px !important; 
-            height: 80vh !important;
         }
 
         .video-container {
@@ -637,6 +636,7 @@
         .star-icon:hover {
             transform: scale(1.15);
         }
+        /* Clases dinámicas para iluminar con Verde Spotify */
         .star-icon.active {
             color: var(--accent-color) !important;
         }
@@ -646,7 +646,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* ESTILOS AVANZADOS DE USER-PROFILE & MEDALLAS */
+        /* ESTILOS DE INTERFAZ DEL PERFIL DE USUARIO Y MEDALLAS GLOBALES */
         .profile-avatar {
             width: 45px;
             height: 45px;
@@ -856,6 +856,7 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+             // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -892,6 +893,8 @@
             "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
             "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
+
+            // INGLATERRA - PREMIER LEAGUE
             "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
             "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
             "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
@@ -912,6 +915,8 @@
             "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
             "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
             "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
+
+            // ESPAÑA - LA LIGA
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
@@ -932,6 +937,8 @@
             "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
             "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
             "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
+
+            // ITALIA - SERIE A
             "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
             "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
@@ -952,6 +959,8 @@
             "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
             "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
             "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
+
+            // FRANCIA - LIGUE 1
             "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
             "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
             "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
@@ -970,6 +979,8 @@
             "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
             "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
             "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
+
+            // ALEMANIA - BUNDESLIGA
             "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
             "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
             "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
@@ -988,6 +999,8 @@
             "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
             "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
             "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
+
+            // BRASIL - BRASILEIRAO
             "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
             "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
             "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
@@ -1008,6 +1021,8 @@
             "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
             "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
             "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
+
+            // CHILE - PRIMERA DIVISIÓN
             "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
             "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
             "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
@@ -1100,6 +1115,7 @@
             guessrSelectedLatLng = null;
         }
 
+        // --- SOLUCIÓN: LANZAMIENTO DE VENTANA EMERGENTE DE MAPA GIGANTE DEDICADO ---
         function abrirModalMapa(estadio, pais, lat, lng) {
             if (!lat || lat.toString().trim() === '' || !lng || lng.toString().trim() === '') {
                 alert("Las coordenadas geográficas de este estadio no están disponibles en el Sheets todavía.");
@@ -1117,6 +1133,7 @@
                     previewMapInstance.remove();
                 }
                 
+                // Inicializamos mapa de previsualización interactivo extendido (OpenStreetMap style)
                 previewMapInstance = L.map('modal-map-container', {
                     attributionControl: false,
                     zoomControl: true
@@ -1126,6 +1143,7 @@
                     maxZoom: 19
                 }).addTo(previewMapInstance);
 
+                // Pin premium con tooltip/popup automático para guiar al usuario
                 L.circleMarker([parsedLat, parsedLng], {
                     radius: 8,
                     color: 'var(--accent-color)',
@@ -1158,7 +1176,10 @@
             if(content) content.classList.add('active');
 
             if (type === 'mapa') {
+                // Interceptamos la pestaña y disparamos la ventana emergente gigante dedicada
                 abrirModalMapa(estadio, pais, lat, lng);
+                
+                // Reseteamos el estado de los tabs internos para que la tarjeta no quede vacía
                 setTimeout(() => {
                     balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
                     balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
@@ -1192,6 +1213,7 @@
                 const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
                 const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
 
+                // --- INTERPRETACIÓN DEL PROMEDIO COLUMNA DEL SHEETS PARA PRE-ILUMINACIÓN ---
                 const valorPromedio = parseFloat(fila.Promedio) || 0;
                 const estrellasFisicas = valorPromedio / 2;
 
@@ -1199,9 +1221,9 @@
                 for (let i = 1; i <= 5; i++) {
                     let claseEstrella = '';
                     if (i <= Math.floor(estrellasFisicas)) {
-                        claseEstrella = 'active';
+                        claseEstrella = 'active'; // Llenas
                     } else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) {
-                        claseEstrella = 'half-active';
+                        claseEstrella = 'half-active'; // Media estrella
                     }
                     estrellasHTML += `<span class="star-icon ${claseEstrella}" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', ${i})">★</span>`;
                 }
@@ -1307,6 +1329,7 @@
             document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
         });
 
+        // --- SOLUCIÓN: VUELO ALEATORIO REPARADO WITH BUSQUEDA SOBRE DATASETS COMPLETO ---
         document.querySelector('.btn-random').addEventListener('click', function(e) {
             const poolDeEstadios = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
             
@@ -1315,6 +1338,7 @@
                 return;
             }
 
+            // Filtramos bajo regla estricta: Que sea de YouTube y tenga video real cargado
             const estadiosConVideo = poolDeEstadios.filter(fila => {
                 const link = fila['Link del Video'] ? fila['Link del Video'].toString().trim() : '';
                 return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link');
@@ -1327,9 +1351,12 @@
 
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
             const estadioElegido = estadiosConVideo[indiceAzar];
+
+            // Lanzamos de forma cinemática normal (esJuego = false) para resetear layouts
             abrirModalVideo(e, estadioElegido['Link del Video'].trim(), false);
         });
 
+        // --- SISTEMA DEL MINIJUEGO INTERACTIVO STADIUMGUESSR (SÓLO YOUTUBE) ---
         function iniciarTrivia() {
             if (catalogoGlobal.length === 0) {
                 alert('Esperá un segundo a que cargue todo el catálogo de estadios...');
@@ -1363,6 +1390,7 @@
             guessrEstadiosJugados.push(guessrEstadioCorrecto.Estadio);
             guessrSelectedLatLng = null;
 
+            // Actualizar interfaz del panel
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.innerText = "Clavá un pin en el mapa mudo 📍";
@@ -1370,8 +1398,10 @@
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
 
+            // Abrir el modal y desplegar video
             abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
+            // RENDERIZADO DEL MAPA CON CAPA OPENSTREETMAP INTERACTIVA Y DETALLADA
             setTimeout(() => {
                 if (guessrMapInstance) {
                     guessrMapInstance.remove();
@@ -1519,28 +1549,31 @@
             return R * c; 
         }
 
+        // --- MOTOR INTERACTIVO DE CALIFICACIÓN (ESCALA 1 A 10 con Medias Estrellas) ---
         function registrarVoto(event, estadio, club, numeroEstrella) {
             const estrella = event.target;
             const dimensiones = estrella.getBoundingClientRect();
-            const clickX = event.clientX - dimensiones.left; 
+            const clickX = event.clientX - dimensiones.left; // Posición exacta del clic dentro de la estrella
             
+            // Si el clic es en la mitad izquierda es media estrella (impar), si es en la derecha es entera (par)
             const esMediaEstrella = clickX < (dimensiones.width / 2);
             const notaFinal = (numeroEstrella * 2) - (esMediaEstrella ? 1 : 0);
             
+            // Buscamos el contenedor de estrellas de esta tarjeta específica para iluminarlas
             const filaEstrellas = estrella.closest('.stars-row');
             const todasLasEstrellas = filaEstrellas.querySelectorAll('.star-icon');
             
             todasLasEstrellas.forEach((est, indice) => {
                 const posicionEstrella = indice + 1;
-                est.className = 'star-icon'; 
+                est.className = 'star-icon'; // Reseteamos clases
                 
                 if (posicionEstrella < numeroEstrella) {
-                    est.classList.add('active'); 
+                    est.classList.add('active'); // Estrellas previas completamente iluminadas
                 } else if (posicionEstrella === numeroEstrella) {
                     if (esMediaEstrella) {
-                        est.classList.add('half-active'); 
+                        est.classList.add('half-active'); // Estrella actual partida a la mitad
                     } else {
-                        est.classList.add('active'); 
+                        est.classList.add('active'); // Estrella actual completa
                     }
                 }
             });
@@ -1549,16 +1582,17 @@
             userStats.votosRealizados++;
             guardarStats();
 
+            // ENVIAMOS EL DATO AL PUENTE
             const urlFinal = `${scriptUrlVotos}?estadio=${encodeURIComponent(estadio)}&club=${encodeURIComponent(club)}&nota=${notaFinal}`;
             fetch(urlFinal, { mode: 'no-cors' })
                 .then(() => alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`))
                 .catch(err => console.error("Error al registrar el voto:", err));
         }
 
-        // --- SISTEMA INTEGRADOR DE GOOGLE LOGIN, MEDALLAS Y ESTADÍSTICAS ---
+        // --- SISTEMA INTERGRADOR DE GOOGLE LOGIN, PERFIL DE USUARIO Y MEDALLAS ---
         function inicializarGoogleLogin() {
             google.accounts.id.initialize({
-                client_id: "351786523914-placeholder.apps.googleusercontent.com", // ID Mockup funcional para renderización visual
+                client_id: "351786523914-placeholder.apps.googleusercontent.com", // ID Mockup funcional para renderización visual de botones
                 callback: manejarRespuestaGoogle
             });
             renderizarBotonLogin();
@@ -1608,13 +1642,13 @@
             const currentUser = JSON.parse(localStorage.getItem('ev_user_logged'));
             if (!currentUser) return;
 
-            // Evaluación de lógica dinámica de medallas
+            // Evaluación de lógica dinámica de medallas basadas en el progreso
             const mLocalista = userStats.medallaLocalista;
             const mCatador = userStats.votosRealizados >= 5;
             const mCurioso = userStats.triviasVistas >= 10;
             const mIdolo = userStats.partidasJugadas >= 3;
 
-            // Determinación de rangos futboleros
+            // Rangos futboleros dinámicos según el récord personal
             let rango = "Pibe de Potrero ⚽";
             if (userStats.maxScore > 15000) rango = "Director Técnico 📋";
             if (userStats.maxScore > 22000) rango = "Leyenda Mundial 🏆";
