@@ -471,30 +471,54 @@
             background-color: var(--accent-hover);
         }
 
-        /* Estilos del panel del minijuego GeoGuessr */
+        /* Estilos del panel del minijuego GeoGuessr RECONFIGURADO ESTILO WORLDGUESSR (Punto 2) */
         #game-ui {
             display: none;
             width: 100%;
-            background: #111;
-            padding: 15px;
-            border-top: 2px solid var(--accent-color);
+            background: linear-gradient(135deg, #121f15 0%, #0e0e0e 100%) !important;
+            padding: 20px !important;
+            border-top: none !important;
             text-align: center;
             z-index: 2010;
+            backdrop-filter: blur(12px);
+            border-radius: 0 0 12px 12px;
         }
         #game-title {
-            font-size: 1.05rem;
+            font-size: 1.1rem !important;
             color: #ffffff;
-            margin-bottom: 12px;
-            font-weight: bold;
-            line-height: 1.4;
+            margin-bottom: 15px;
+            font-weight: 800 !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(29, 185, 84, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(29, 185, 84, 0.2);
         }
         #map-guess-container {
             width: 100%;
-            height: 250px;
+            height: 260px;
             background-color: #0c0c0c;
-            border-radius: 8px;
-            border: 1px solid #222;
-            margin-bottom: 12px;
+            border-radius: 12px !important;
+            border: 2px solid #252525;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            transition: border-color 0.3s ease;
+        }
+        #map-guess-container:hover {
+            border-color: var(--accent-color);
+        }
+        #game-action-btn {
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 800 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border-radius: 30px !important;
+            transition: all 0.3s ease !important;
         }
 
         /* Estilos del Modal Reconfigurados */
@@ -540,9 +564,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
-        /* Split-screen inteligente */
+        /* Split-screen inteligente optimizado con look WorldGuessr (Punto 2) */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row !important;
@@ -551,17 +576,19 @@
                 width: 55% !important;
                 height: 100% !important;
                 border-radius: 12px 0 0 12px !important;
+                backdrop-filter: blur(4px) brightness(0.7);
             }
             .modal-content.stadium-guessr-layout #game-ui {
                 width: 45% !important;
                 height: 100% !important;
                 border-top: none !important;
-                border-left: 2px solid var(--accent-color) !important;
+                border-left: 2px solid rgba(29, 185, 84, 0.3) !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
                 border-radius: 0 12px 12px 0 !important;
-                padding: 20px !important;
+                padding: 24px !important;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
             }
             .modal-content.stadium-guessr-layout #map-guess-container {
                 flex-grow: 1 !important;
@@ -922,6 +949,44 @@
             font-weight: bold;
             color: #fff;
         }
+
+        /* ESTILOS DE LOS BOTONES FLOTANTES DE REDES SOCIALES (Punto 1) */
+        .social-floating-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 1999; /* Se mantiene visible por encima de grillas y fondo */
+        }
+        .social-icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: rgba(22, 22, 22, 0.9);
+            border: 1px solid #2a2a2a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            text-decoration: none;
+        }
+        .social-icon-btn:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.45);
+        }
+        .social-icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-main);
+            transition: fill 0.3s ease;
+        }
+        .social-icon-btn:hover svg {
+            fill: var(--accent-color);
+        }
     </style>
 </head>
 <body>
@@ -988,6 +1053,15 @@
             <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalPerfil()">✕</button>
             <div id="profile-modal-body"></div>
         </div>
+    </div>
+
+    <div class="social-floating-container">
+        <a href="https://www.youtube.com/@EstadiosVirtuales1" target="_blank" class="social-icon-btn" title="Visitar Canal de YouTube">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com" target="_blank" class="social-icon-btn" title="Visitar Canal de TikTok">
+            <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.03 1.6 4.25.73.93 1.68 1.64 2.76 2.14.14.07.22.11.22.28 0 1.29-.01 2.58-.01 3.87-.02.08-.08.15-.15.18-1.39-.15-2.73-.71-3.83-1.57-.07-.06-.11-.05-.15.02-.01 2.36.01 4.72-.02 7.07-.07 1.47-.56 2.91-1.39 4.11-.96 1.42-2.38 2.48-4.01 2.97-2.35.73-4.97.33-6.99-1.07A8.73 8.73 0 0 1 .63 15.54c-.5-2.32.04-4.82 1.46-6.75 1.15-1.58 2.85-2.67 4.76-3.07.45-.1.91-.14 1.37-.16v4.03c-.24.04-.49.09-.72.17-1.35.43-2.43 1.52-2.79 2.91-.49 1.81.42 3.79 2.15 4.5 1.25.53 2.71.32 3.74-.5.71-.56 1.13-1.4 1.21-2.3.03-.31.02-.63.02-.94V.17c0-.07.06-.13.13-.15z"/></svg>
+        </a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -1075,7 +1149,6 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-            // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -1228,7 +1301,7 @@
             "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
             "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
             "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Atlético Mineiro": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+            "Atlético Mineire": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
             "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
             "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
