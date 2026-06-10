@@ -116,7 +116,7 @@
             box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
         }
 
-        /* BOTONERA EN LA CABECERA RECORREGIDA */
+        /* BOTONERA EN LA CABECERA */
         .hero-action-buttons {
             display: flex;
             justify-content: center;
@@ -130,7 +130,7 @@
             padding: 12px 24px;
             border-radius: 30px;
             font-size: 1rem;
-            font-weight: 600; /* Reducido de 800 a 600 para estilizar el trazo y evitar que se vea raro */
+            font-weight: 600; /* Ajustado a 600 para un diseño más limpio y legible */
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -218,7 +218,7 @@
             white-space: nowrap;
             font-size: 0.9rem;
             transition: all 0.3s ease;
-            /* Sombreado perimetral para aislar las fuentes blancas */
+            /* El Sombreado mágico para que la letra resalte siempre */
             text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000;
             background-color: #1c1c1c;
             background-size: 100% 100%;
@@ -498,7 +498,7 @@
             margin-bottom: 12px;
         }
 
-        /* Modal Overlay & General Layout */
+        /* Estilos del Modal Reconfigurados */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -544,7 +544,7 @@
             align-items: center;
         }
 
-        /* Split-screen inteligente para computadoras */
+        /* Split-screen intelligente para computadoras */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row !important;
@@ -1658,7 +1658,7 @@
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.setAttribute('data-estado', 'resultado');
 
-            // SOLDADURA COMPLETA USANDO EL BUSCADOR DE PROPIEDADES CONTRA ESPACIOS OCULTOS NATIVOS
+            // SOLUCIÓN INTEGRADA CON bscarPropiedad PARA EVITAR NaN CON CABECERAS MUNDIALISTAS
             const targetLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
             const targetLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
 
@@ -1675,6 +1675,7 @@
                 guardarStats();
             }
 
+            // Remapeo seguro de popups interactivos con el normalizador bscarPropiedad
             guessrTargetMarker = L.circleMarker([targetLat, targetLng], {
                 radius: 8,
                 color: 'var(--accent-color)',
@@ -1744,6 +1745,17 @@
                     <button onclick="iniciarTrivia()" class="btn-view" style="max-width: 240px; padding: 14px 28px; font-size: 1rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);">Volar de nuevo 🎮</button>
                 </div>
             `;
+        }
+
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
         }
 
         function inicializarGoogleLogin() {
@@ -1843,7 +1855,7 @@
                                 <div class="fut-badge-meta">
                                     <div class="fut-ovr">${overallFUT}</div>
                                     <div class="fut-pos">${rangoFUT}</div>
-                                    <img src="https://estadiosvirtuales.github.io/estadiosvirtuales/escudos/Logo.png" class="fut-club-icon" onerror="this.src='https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png'">
+                                    <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon">
                                 </div>
                                 <div class="fut-avatar-container">
                                     <img src="${currentUser.picture}" class="fut-user-img">
@@ -1916,6 +1928,14 @@
             cerrarModalPerfil();
             renderizarBotonLogin();
         }
+
+        document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+            cargarLiga(this.getAttribute('data-gid'));
+        }));
 
         window.addEventListener('DOMContentLoaded', () => {
             indexarCatalogoMasivo();
