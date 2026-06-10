@@ -130,7 +130,7 @@
             padding: 12px 24px;
             border-radius: 30px;
             font-size: 1rem;
-            font-weight: 600; /* Ajustado a 600 para un diseño más limpio y legible */
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -218,32 +218,35 @@
             white-space: nowrap;
             font-size: 0.9rem;
             transition: all 0.3s ease;
-            /* El Sombreado mágico para que la letra resalte siempre */
+            /* El Sombreado mágico para que la letra resalte siempre, sin importar el color del fondo */
             text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000;
-            background-color: #1c1c1c;
+            background-color: #1c1c1c; /* Color por defecto */
             background-size: 100% 100%;
             background-position: center;
             position: relative;
+            /* La capa oscura (Overlay) que se apoya sobre la bandera */
             box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.55);
         }
 
         .tab.active, .tab:hover {
             border-color: var(--accent-color);
+            /* Al pasar el mouse o activarlo, aclaramos la capa oscura para que brille la bandera */
             box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15), 0 4px 15px rgba(29, 185, 84, 0.4);
             transform: translateY(-2px);
             color: #ffffff;
         }
 
-        /* ASIGNACIÓN DE BANDERAS POR GID */
-        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); } 
-        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); } 
-        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); } 
-        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); } 
-        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); } 
-        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); } 
-        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); } 
-        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); } 
-        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); } 
+        /* ASIGNACIÓN DE BANDERAS POR GID (Pintado con CSS puro) */
+        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); } /* Argentina */
+        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); } /* Inglaterra (Cruz) */
+        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); } /* España */
+        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); } /* Italia */
+        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); } /* Francia */
+        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); } /* Alemania */
+        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); } /* Brasil */
+        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); } /* Chile */
+        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); } /* Copa del Mundo (Mex/USA) */
+
 
         /* Grilla de Estadios */
         .grid {
@@ -498,7 +501,7 @@
             margin-bottom: 12px;
         }
 
-        /* Estilos del Modal Reconfigurados */
+        /* Estilos del Modal Reconfigurados (CINEMÁTICO Y PREMIUM) */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -648,7 +651,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* COMBINATORIA DE LAYOUTS DEL PERFIL */
+        /* NUEVA ARQUITECTURA DE DISEÑO: MODAL DE PANTALLA DIVIDIDA (FUT + GEOGUESSR DASHBOARD) */
         .split-profile-layout {
             display: flex;
             flex-direction: column;
@@ -693,6 +696,7 @@
             overflow: hidden;
             user-select: none;
         }
+        /* Variaciones de metal según rango de juego */
         .fut-card.bronze {
             background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%), linear-gradient(135deg, #b45309, #78350f);
             border: 3px solid #92400e;
@@ -745,6 +749,7 @@
             object-fit: contain;
         }
         
+        /* Contenedor de Avatar con Camiseta de Fútbol integrada en CSS */
         .fut-avatar-container {
             width: 70%;
             height: 100%;
@@ -798,6 +803,7 @@
             text-overflow: ellipsis;
         }
         
+        /* Atributos estilo FIFA Ultimate Team */
         .fut-stats-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -819,7 +825,7 @@
             font-weight: normal;
         }
 
-        /* CALENDARIO ESTILO GEOGUESSR */
+        /* COMPONENTE WIDGET CALENDARIO RETO DIARIO (ESTILO GEOGUESSR) */
         .geoguessr-dash-box {
             background: #0f0f0f;
             border: 1px solid #222;
@@ -863,6 +869,7 @@
             100% { transform: scale(1.2); filter: drop-shadow(0 0 6px #1ed760); }
         }
 
+        /* Matriz de calendario mudo para Desafíos */
         .calendar-matrix {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -1033,24 +1040,6 @@
             localStorage.setItem('ev_user_stats', JSON.stringify(userStats));
         }
 
-        // FUNCIÓN BLINDADA BUSCADORA DE PROPIEDADES EN EL SHEETS (Ignora espacios, BOM e invisibles)
-        function bscarPropiedad(obj, claveBuscada) {
-            if (!obj) return '';
-            const claveLimpia = claveBuscada.toLowerCase().trim();
-            for (let k in obj) {
-                let kLimpia = k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
-                if (kLimpia === claveLimpia) {
-                    return obj[k];
-                }
-            }
-            for (let k in obj) {
-                if (k.toLowerCase().includes(claveLimpia)) {
-                    return obj[k];
-                }
-            }
-            return obj[claveBuscada] || '';
-        }
-
         const coloresClubes = {
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
@@ -1082,6 +1071,7 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+             // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -1118,6 +1108,8 @@
             "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
             "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
+
+            // INGLATERRA - PREMIER LEAGUE
             "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
             "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
             "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
@@ -1138,6 +1130,8 @@
             "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
             "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
             "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
+
+            // ESPAÑA - LA LIGA
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
@@ -1158,6 +1152,8 @@
             "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
             "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
             "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
+
+            // ITALIA - SERIE A
             "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
             "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
@@ -1178,6 +1174,8 @@
             "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
             "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
             "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
+
+            // FRANCIA - LIGUE 1
             "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
             "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
             "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
@@ -1196,6 +1194,8 @@
             "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
             "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
             "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
+
+            // ALEMANIA - BUNDESLIGA
             "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
             "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
             "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
@@ -1214,6 +1214,8 @@
             "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
             "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
             "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
+
+            // BRASIL - BRASILEIRAO
             "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
             "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
             "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
@@ -1234,6 +1236,8 @@
             "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
             "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
             "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
+
+            // CHILE - PRIMERA DIVISIÓN
             "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
             "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
             "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
@@ -1252,12 +1256,13 @@
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
-        // ASIGNACIÓN INTELIGENTE DE COLOR DE SELECCIONES (MÉXICO, USA, CANADÁ)
+        // LÓGICA DE FONDOS MEJORADA: LEE EL PAÍS MUNDIALISTA
         function obtenerFondoClub(nombreClub, pais) {
             if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
             
+            // Si el equipo no está en la lista pero es sede del Mundial, pinta los colores de su selección.
             if (pais) {
-                const strPais = pais.toLowerCase().trim();
+                const strPais = pais.toLowerCase();
                 if (strPais.includes('méxico') || strPais.includes('mexico')) return "linear-gradient(135deg, #006341, #ffffff, #c60c30)";
                 if (strPais.includes('ee. uu.') || strPais.includes('estados unidos') || strPais.includes('usa')) return "linear-gradient(135deg, #b31942, #ffffff, #0a3161)";
                 if (strPais.includes('canadá') || strPais.includes('canada')) return "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)";
@@ -1414,22 +1419,20 @@
             }
             
             listaEstadios.forEach(fila => {
-                const estadio = bscarPropiedad(fila, 'Estadio');
-                const clubNombre = bscarPropiedad(fila, 'Club');
-                if(!estadio || !clubNombre) return;
+                if(!fila.Estadio || !fila.Club) return;
                 
-                const urlFoto = bscarPropiedad(fila, 'Foto') ? bscarPropiedad(fila, 'Foto').trim() : '';
-                const pais = bscarPropiedad(fila, 'País') ? bscarPropiedad(fila, 'País').trim() : 'Argentina';
-                const fondoGradiente = obtenerFondoClub(clubNombre, pais);
-                const linkVideo = bscarPropiedad(fila, 'Link del Video') ? bscarPropiedad(fila, 'Link del Video').trim() : '#';
+                const urlFoto = fila.Foto ? fila.Foto.trim() : '';
+                const clubNombre = fila.Club.trim();
+                const pais = fila.País ? fila.País.trim() : 'Argentina';
+                const fondoGradiente = obtenerFondoClub(clubNombre, pais); // Pasamos el país para que pinte si es del Mundial
+                const estadio = fila.Estadio.trim();
+                const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
-                const latRaw = bscarPropiedad(fila, 'Latitud') ? bscarPropiedad(fila, 'Latitud').toString().trim() : '';
-                const lngRaw = bscarPropiedad(fila, 'Longitud') ? bscarPropiedad(fila, 'Longitud').toString().trim() : '';
-                const datoCurioso = bscarPropiedad(fila, 'Dato Curioso');
-                const datoLimpio = (datoCurioso || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
+                const latRaw = fila.Latitud ? fila.Latitud.toString().trim() : '';
+                const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
+                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
 
-                const promedio = bscarPropiedad(fila, 'Promedio');
-                const valorPromedio = parseFloat(promedio) || 0;
+                const valorPromedio = parseFloat(fila.Promedio) || 0;
                 const estrellasFisicas = valorPromedio / 2;
 
                 let estrellasHTML = '';
@@ -1484,7 +1487,7 @@
                 download: true,
                 header: true, 
                 complete: function(results) {
-                    estadiosCargados = results.data.filter(fila => bscarPropiedad(fila, 'Estadio') && bscarPropiedad(fila, 'Club'));
+                    estadiosCargados = results.data.filter(fila => fila.Estadio && fila.Club);
                     renderizarTarjetas(estadiosCargados);
                 }
             });
@@ -1497,10 +1500,8 @@
                     download: true,
                     header: true,
                     complete: function(results) {
-                        results.data.filter(fila => bscarPropiedad(fila, 'Estadio') && bscarPropiedad(fila, 'Club')).forEach(estadio => {
-                            const eName = bscarPropiedad(estadio, 'Estadio');
-                            const cName = bscarPropiedad(estadio, 'Club');
-                            if (!catalogoGlobal.some(e => bscarPropiedad(e, 'Estadio') === eName && bscarPropiedad(e, 'Club') === cName)) {
+                        results.data.filter(fila => fila.Estadio && fila.Club).forEach(estadio => {
+                            if (!catalogoGlobal.some(e => e.Estadio === estadio.Estadio && e.Club === estadio.Club)) {
                                 catalogoGlobal.push(estadio);
                             }
                         });
@@ -1517,9 +1518,9 @@
             } else {
                 document.getElementById('titulo-grilla').innerText = "Resultados del Catálogo Masivo";
                 const estadiosFiltrados = catalogoGlobal.filter(fila => {
-                    const estadio = bscarPropiedad(fila, 'Estadio').toLowerCase();
-                    const club = bscarPropiedad(fila, 'Club').toLowerCase();
-                    const pais = bscarPropiedad(fila, 'País').toLowerCase();
+                    const estadio = (fila.Estadio || '').toLowerCase();
+                    const club = (fila.Club || '').toLowerCase();
+                    const pais = (fila.País || '').toLowerCase();
                     return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda) || pais.includes(terminoBusqueda);
                 });
                 renderizarTarjetas(estadiosFiltrados);
@@ -1554,7 +1555,7 @@
             }
 
             const estadiosConVideo = poolDeEstadios.filter(fila => {
-                const link = bscarPropiedad(fila, 'Link del Video').toString().trim();
+                const link = fila['Link del Video'] ? fila['Link del Video'].toString().trim() : '';
                 return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link');
             });
 
@@ -1565,7 +1566,7 @@
 
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
             const estadioElegido = estadiosConVideo[indiceAzar];
-            abrirModalVideo(e, bscarPropiedad(estadioElegido, 'Link del Video').trim(), false);
+            abrirModalVideo(e, estadioElegido['Link del Video'].trim(), false);
         }
 
         function iniciarTrivia() {
@@ -1583,11 +1584,11 @@
 
         function lanzarRondaGuessr() {
             const estadiosDisponibles = catalogoGlobal.filter(f => {
-                const link = bscarPropiedad(f, 'Link del Video').toString().trim();
+                const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
                 const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
-                const tieneLat = bscarPropiedad(f, 'Latitud').toString().trim() !== '';
-                const tieneLng = bscarPropiedad(f, 'Longitud').toString().trim() !== '';
-                const yaJugado = guessrEstadiosJugados.includes(bscarPropiedad(f, 'Estadio'));
+                const tieneLat = f.Latitud && f.Latitud.toString().trim() !== '';
+                const tieneLng = f.Longitud && f.Longitud.toString().trim() !== '';
+                const yaJugado = guessrEstadiosJugados.includes(f.Estadio);
                 return esYouTube && tieneLat && tieneLng && !yaJugado;
             });
 
@@ -1598,7 +1599,7 @@
             }
 
             guessrEstadioCorrecto = estadiosDisponibles[Math.floor(Math.random() * estadiosDisponibles.length)];
-            guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto, 'Estadio'));
+            guessrEstadiosJugados.push(guessrEstadioCorrecto.Estadio);
             guessrSelectedLatLng = null;
 
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
@@ -1608,7 +1609,7 @@
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
 
-            abrirModalVideo(null, bscarPropiedad(guessrEstadioCorrecto, 'Link del Video').trim(), true);
+            abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
 
             setTimeout(() => {
                 if (guessrMapInstance) {
@@ -1658,9 +1659,8 @@
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.setAttribute('data-estado', 'resultado');
 
-            // SOLUCIÓN INTEGRADA CON bscarPropiedad PARA EVITAR NaN CON CABECERAS MUNDIALISTAS
-            const targetLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
-            const targetLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+            const targetLat = parseFloat(String(guessrEstadioCorrecto.Latitud).trim().replace(',', '.'));
+            const targetLng = parseFloat(String(guessrEstadioCorrecto.Longitud).trim().replace(',', '.'));
 
             const userLat = guessrSelectedLatLng.lat;
             const userLng = guessrSelectedLatLng.lng;
@@ -1675,14 +1675,13 @@
                 guardarStats();
             }
 
-            // Remapeo seguro de popups interactivos con el normalizador bscarPropiedad
             guessrTargetMarker = L.circleMarker([targetLat, targetLng], {
                 radius: 8,
                 color: 'var(--accent-color)',
                 fillColor: '#000',
                 fillOpacity: 1,
                 weight: 3
-            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b><br><span style="color:var(--text-muted);">${bscarPropiedad(guessrEstadioCorrecto, 'Club')}</span>`).openPopup();
+            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${guessrEstadioCorrecto.Estadio}</b><br><span style="color:var(--text-muted);">${guessrEstadioCorrecto.Club}</span>`).openPopup();
 
             guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
                 color: 'var(--danger-color)',
@@ -1747,15 +1746,39 @@
             `;
         }
 
-        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; 
+        function registrarVoto(event, estadio, club, numeroEstrella) {
+            const estrella = event.target;
+            const dimensiones = estrella.getBoundingClientRect();
+            const clickX = event.clientX - dimensiones.left; 
+            
+            const esMediaEstrella = clickX < (dimensiones.width / 2);
+            const notaFinal = (numeroEstrella * 2) - (esMediaEstrella ? 1 : 0);
+            
+            const filaEstrellas = estrella.closest('.stars-row');
+            const todasLasEstrellas = filaEstrellas.querySelectorAll('.star-icon');
+            
+            todasLasEstrellas.forEach((est, indice) => {
+                const posicionEstrella = indice + 1;
+                est.className = 'star-icon'; 
+                
+                if (posicionEstrella < numeroEstrella) {
+                    est.classList.add('active'); 
+                } else if (posicionEstrella === numeroEstrella) {
+                    if (esMediaEstrella) {
+                        est.classList.add('half-active'); 
+                    } else {
+                        est.classList.add('active'); 
+                    }
+                }
+            });
+
+            userStats.votosRealizados++;
+            guardarStats();
+
+            const urlFinal = `${scriptUrlVotos}?estadio=${encodeURIComponent(estadio)}&club=${encodeURIComponent(club)}&nota=${notaFinal}`;
+            fetch(urlFinal, { mode: 'no-cors' })
+                .then(() => alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`))
+                .catch(err => console.error("Error al registrar el voto:", err));
         }
 
         function inicializarGoogleLogin() {
