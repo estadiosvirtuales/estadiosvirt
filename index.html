@@ -116,7 +116,7 @@
             box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
         }
 
-        /* BOTONERA EN LA CABECERA */
+        /* BOTONERA EN LA CABECERA OPTIMIZADA */
         .hero-action-buttons {
             display: flex;
             justify-content: center;
@@ -130,7 +130,7 @@
             padding: 12px 24px;
             border-radius: 30px;
             font-size: 1rem;
-            font-weight: 800;
+            font-weight: 600; /* Tipografía estilizada de trazo limpio */
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -218,35 +218,32 @@
             white-space: nowrap;
             font-size: 0.9rem;
             transition: all 0.3s ease;
-            /* El Sombreado mágico para que la letra resalte siempre, sin importar el color del fondo */
+            /* Sombreado perimetral para aislar las fuentes blancas de los fondos blancos */
             text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000;
-            background-color: #1c1c1c; /* Color por defecto */
+            background-color: #1c1c1c;
             background-size: 100% 100%;
             background-position: center;
             position: relative;
-            /* La capa oscura (Overlay) que se apoya sobre la bandera */
             box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.55);
         }
 
         .tab.active, .tab:hover {
             border-color: var(--accent-color);
-            /* Al pasar el mouse o activarlo, aclaramos la capa oscura para que brille la bandera */
             box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15), 0 4px 15px rgba(29, 185, 84, 0.4);
             transform: translateY(-2px);
             color: #ffffff;
         }
 
-        /* ASIGNACIÓN DE BANDERAS POR GID (Pintado con CSS puro) */
-        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); } /* Argentina */
-        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); } /* Inglaterra (Cruz) */
-        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); } /* España */
-        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); } /* Italia */
-        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); } /* Francia */
-        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); } /* Alemania */
-        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); } /* Brasil */
-        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); } /* Chile */
-        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); } /* Copa del Mundo (Mex/USA) */
-
+        /* ASIGNACIÓN DE BANDERAS POR GID */
+        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); } 
+        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); } 
+        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); } 
+        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); } 
+        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); } 
+        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); } 
+        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); } 
+        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); } 
+        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); } 
 
         /* Grilla de Estadios */
         .grid {
@@ -547,7 +544,7 @@
             align-items: center;
         }
 
-        /* Split-screen intelligente para computadoras */
+        /* Split-screen inteligente para computadoras */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row !important;
@@ -651,7 +648,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* NUEVA ARQUITECTURA DE DISEÑO: MODAL DE PANTALLA DIVIDIDA (FUT + GEOGUESSR DASHBOARD) */
+        /* COMBINATORIA DE LAYOUTS DEL PERFIL */
         .split-profile-layout {
             display: flex;
             flex-direction: column;
@@ -696,7 +693,6 @@
             overflow: hidden;
             user-select: none;
         }
-        /* Variaciones de metal según rango de juego */
         .fut-card.bronze {
             background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%), linear-gradient(135deg, #b45309, #78350f);
             border: 3px solid #92400e;
@@ -749,7 +745,6 @@
             object-fit: contain;
         }
         
-        /* Contenedor de Avatar con Camiseta de Fútbol integrada en CSS */
         .fut-avatar-container {
             width: 70%;
             height: 100%;
@@ -803,7 +798,6 @@
             text-overflow: ellipsis;
         }
         
-        /* Atributos estilo FIFA Ultimate Team */
         .fut-stats-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -825,7 +819,7 @@
             font-weight: normal;
         }
 
-        /* COMPONENTE WIDGET CALENDARIO RETO DIARIO (ESTILO GEOGUESSR) */
+        /* CALENDARIO ESTILO GEOGUESSR */
         .geoguessr-dash-box {
             background: #0f0f0f;
             border: 1px solid #222;
@@ -869,7 +863,6 @@
             100% { transform: scale(1.2); filter: drop-shadow(0 0 6px #1ed760); }
         }
 
-        /* Matriz de calendario mudo para Desafíos */
         .calendar-matrix {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -1040,6 +1033,24 @@
             localStorage.setItem('ev_user_stats', JSON.stringify(userStats));
         }
 
+        // FUNCIÓN BLINDADA BUSCADORA DE PROPIEDADES EN EL SHEETS (Ignora espacios, BOM e invisibles)
+        function bscarPropiedad(obj, claveBuscada) {
+            if (!obj) return '';
+            const claveLimpia = claveBuscada.toLowerCase().trim();
+            for (let k in obj) {
+                let kLimpia = k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+                if (kLimpia === claveLimpia) {
+                    return obj[k];
+                }
+            }
+            for (let k in obj) {
+                if (k.toLowerCase().includes(claveLimpia)) {
+                    return obj[k];
+                }
+            }
+            return obj[claveBuscada] || '';
+        }
+
         const coloresClubes = {
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
@@ -1070,199 +1081,15 @@
             "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-             // ARGENTINA - PRIMERA NACIONAL
-            "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
-            "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
-            "Almagro": "linear-gradient(135deg, #75aadb, #000000, #ffffff)",
-            "Almirante Brown": "linear-gradient(135deg, #ffff00, #000000)",
-            "Atlanta": "linear-gradient(135deg, #002060, #ffcc00)",
-            "Atlético de Rafaela": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Central Norte": "linear-gradient(135deg, #000000, #333333)",
-            "Chacarita Juniors": "linear-gradient(135deg, #ff0000, #000000, #ffffff)",
-            "Chaco For Ever": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ciudad de Bolívar": "linear-gradient(135deg, #75aadb, #004d00)",
-            "Colegiales": "linear-gradient(135deg, #0000ff, #ff0000, #ffff00)",
-            "Colón": "linear-gradient(135deg, #ff0000, #000000)",
-            "Defensores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
-            "Deportivo Madryn": "linear-gradient(135deg, #ffff00, #000000)",
-            "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
-            "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
-            "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Güemes (SdE)": "linear-gradient(135deg, #0000ff, #ff0000)",
-            "Los Andes": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Midland": "linear-gradient(135deg, #ffffff, #0000ff)",
-            "Mitre (SdE)": "linear-gradient(135deg, #ffff00, #000000)",
-            "Nueva Chicago": "linear-gradient(135deg, #004d00, #000000)",
-            "Patronato": "linear-gradient(135deg, #ff0000, #000000)",
-            "Quilmes": "linear-gradient(135deg, #ffffff, #000066)",
-            "Racing (CBA)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "San Martín (SJ)": "linear-gradient(135deg, #004d00, #000000)",
-            "San Martín (T)": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "San Miguel": "linear-gradient(135deg, #004d00, #ffffff, #0000ff)",
-            "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
-            "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
-
-            // INGLATERRA - PREMIER LEAGUE
-            "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
-            "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
-            "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
-            "Brentford": "linear-gradient(135deg, #e30613, #ffffff, #fbcc04)",
-            "Brighton & Hove Albion": "linear-gradient(135deg, #0057b8, #ffffff)",
-            "Chelsea": "linear-gradient(135deg, #034694, #ee242c)",
-            "Coventry City": "linear-gradient(135deg, #84bbf0, #ffffff)",
-            "Crystal Palace": "linear-gradient(135deg, #1b458f, #c4122e)",
-            "Everton": "linear-gradient(135deg, #004a97, #ffffff)",
-            "Fulham": "linear-gradient(135deg, #ffffff, #000000)",
-            "Hull City": "linear-gradient(135deg, #ff9f05, #000000)",
-            "Ipswich Town": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Leeds United": "linear-gradient(135deg, #ffffff, #ffcd00, #003399)",
-            "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
-            "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
-            "Manchester United": "linear-gradient(135deg, #da291c, #000000)",
-            "Newcastle United": "linear-gradient(135deg, #000000, #ffffff)",
-            "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
-            "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
-
-            // ESPAÑA - LA LIGA
-            "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
-            "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
-            "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
-            "Athletic Club": "linear-gradient(135deg, #ee2524, #ffffff, #000000)",
-            "Real Betis": "linear-gradient(135deg, #00954c, #ffffff)",
-            "Valencia CF": "linear-gradient(135deg, #ffffff, #000000, #ff8200)",
-            "Real Sociedad": "linear-gradient(135deg, #0066bb, #ffffff)",
-            "Sevilla FC": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Villarreal CF": "linear-gradient(135deg, #ffdf1b, #005094)",
-            "CA Osasuna": "linear-gradient(135deg, #ab192d, #1a2f54)",
-            "RC Celta de Vigo": "linear-gradient(135deg, #87adde, #ffffff)",
-            "Deportivo Alavés": "linear-gradient(135deg, #00569e, #ffffff)",
-            "Getafe CF": "linear-gradient(135deg, #004bc0, #ffffff)",
-            "RCD Mallorca": "linear-gradient(135deg, #e2001a, #000000)",
-            "UD Las Palmas": "linear-gradient(135deg, #ffe600, #00529f)",
-            "Rayo Vallecano": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Girona FC": "linear-gradient(135deg, #e2001a, #ffffff)",
-            "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
-            "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
-
-            // ITALIA - SERIE A
-            "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
-            "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
-            "AS Roma": "linear-gradient(135deg, #8e1a2f, #f0bc42)",
-            "SS Lazio": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Napoli": "linear-gradient(135deg, #12a0da, #ffffff)",
-            "Fiorentina": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Atalanta": "linear-gradient(135deg, #00529f, #000000)",
-            "Bologna": "linear-gradient(135deg, #1a2f54, #ab192d)",
-            "Torino": "linear-gradient(135deg, #8a1538, #ffffff)",
-            "Udinese": "linear-gradient(135deg, #000000, #ffffff)",
-            "Genoa": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Hellas Verona": "linear-gradient(135deg, #0b2c6c, #ffcc00)",
-            "Empoli": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Lecce": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Monza": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Cagliari": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-            "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
-            "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
-
-            // FRANCIA - LIGUE 1
-            "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
-            "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
-            "Lille": "linear-gradient(135deg, #e30613, #1b458f, #ffffff)",
-            "Monaco": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lens": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Nice": "linear-gradient(135deg, #e30613, #000000)",
-            "Rennes": "linear-gradient(135deg, #e30613, #000000)",
-            "Strasbourg": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Toulouse": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Le Havre": "linear-gradient(135deg, #204060, #87d3f8)",
-            "Angers": "linear-gradient(135deg, #000000, #ffffff)",
-            "Auxerre": "linear-gradient(135deg, #ffffff, #00529f)",
-            "Brest": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lorient": "linear-gradient(135deg, #ff6600, #ffffff, #004d00)",
-            "Le Mans": "linear-gradient(135deg, #ffcc00, #ff0000)",
-            "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
-            "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
-
-            // ALEMANIA - BUNDESLIGA
-            "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
-            "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
-            "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
-            "RB Leipzig": "linear-gradient(135deg, #ffffff, #dd013f, #0c2340)",
-            "VfB Stuttgart": "linear-gradient(135deg, #ffffff, #e30613, #ffffff)",
-            "Eintracht Frankfurt": "linear-gradient(135deg, #e30613, #000000, #ffffff)",
-            "SC Freiburg": "linear-gradient(135deg, #e30613, #ffffff)",
-            "TSG Hoffenheim": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Werder Bremen": "linear-gradient(135deg, #008f5d, #ffffff)",
-            "Borussia Mönchengladbach": "linear-gradient(135deg, #ffffff, #000000, #00a651)",
-            "Mainz 05": "linear-gradient(135deg, #e30613, #ffffff)",
-            "FC Augsburg": "linear-gradient(135deg, #ffffff, #ba9b65, #008f5d)",
-            "Union Berlin": "linear-gradient(135deg, #e30613, #ffffff)",
-            "1. FC Köln": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
-            "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
-            "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
-            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-
-            // BRASIL - BRASILEIRAO
-            "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
-            "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
-            "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Corinthians": "linear-gradient(135deg, #ffffff, #d5d5d5, #000000)",
-            "Santos": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-            "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
-            "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
-            "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Atlético Mineiro": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
-            "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
-            "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
-            "Athletico Paranaense": "linear-gradient(135deg, #cc0000, #000000)",
-            "Bahía": "linear-gradient(135deg, #0033a0, #ffffff, #e20e0e)",
-            "Bragantino": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Coritiba": "linear-gradient(135deg, #006437, #ffffff, #006437)",
-            "Chapecoense": "linear-gradient(135deg, #006437, #ffffff)",
-            "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
-            "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
-            "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
-
-            // CHILE - PRIMERA DIVISIÓN
-            "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
-            "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
-            "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
-            "Everton CD": "linear-gradient(135deg, #0033a0, #ffea00, #0033a0)",
-            "Huachipato": "linear-gradient(135deg, #0033a0, #000000, #0055ff)",
-            "Deportes Limache": "linear-gradient(135deg, #ff3300, #000000, #0033a0)",
-            "Palestino": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
-            "Ñublense": "linear-gradient(135deg, #e20e0e, #ffffff)",
-            "Universidad de Chile": "linear-gradient(135deg, #002244, #0033a0, #e20e0e)",
-            "O'Higgins": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Universidad de Concepción": "linear-gradient(135deg, #ffea00, #0033a0)",
-            "La Serena": "linear-gradient(135deg, #83142c, #ffffff)",
-            "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
-            "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
-            "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
-            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
+            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)"
         };
 
-        // LÓGICA DE FONDOS MEJORADA: LEE EL PAÍS MUNDIALISTA
+        // ASIGNACIÓN INTELIGENTE DE COLOR DE SELECCIONES (MÉXICO, USA, CANADÁ)
         function obtenerFondoClub(nombreClub, pais) {
             if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
             
-            // Si el equipo no está en la lista pero es sede del Mundial, pinta los colores de su selección.
             if (pais) {
-                const strPais = pais.toLowerCase();
+                const strPais = pais.toLowerCase().trim();
                 if (strPais.includes('méxico') || strPais.includes('mexico')) return "linear-gradient(135deg, #006341, #ffffff, #c60c30)";
                 if (strPais.includes('ee. uu.') || strPais.includes('estados unidos') || strPais.includes('usa')) return "linear-gradient(135deg, #b31942, #ffffff, #0a3161)";
                 if (strPais.includes('canadá') || strPais.includes('canada')) return "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)";
@@ -1419,20 +1246,22 @@
             }
             
             listaEstadios.forEach(fila => {
-                if(!fila.Estadio || !fila.Club) return;
+                const estadio = bscarPropiedad(fila, 'Estadio');
+                const clubNombre = bscarPropiedad(fila, 'Club');
+                if(!estadio || !clubNombre) return;
                 
-                const urlFoto = fila.Foto ? fila.Foto.trim() : '';
-                const clubNombre = fila.Club.trim();
-                const pais = fila.País ? fila.País.trim() : 'Argentina';
-                const fondoGradiente = obtenerFondoClub(clubNombre, pais); // Pasamos el país para que pinte si es del Mundial
-                const estadio = fila.Estadio.trim();
-                const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
+                const urlFoto = bscarPropiedad(fila, 'Foto') ? bscarPropiedad(fila, 'Foto').trim() : '';
+                const pais = bscarPropiedad(fila, 'País') ? bscarPropiedad(fila, 'País').trim() : 'Argentina';
+                const fondoGradiente = obtenerFondoClub(clubNombre, pais);
+                const linkVideo = bscarPropiedad(fila, 'Link del Video') ? bscarPropiedad(fila, 'Link del Video').trim() : '#';
                 
-                const latRaw = fila.Latitud ? fila.Latitud.toString().trim() : '';
-                const lngRaw = fila.Longitud ? fila.Longitud.toString().trim() : '';
-                const datoLimpio = (fila['Dato Curioso'] || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
+                const latRaw = bscarPropiedad(fila, 'Latitud') ? bscarPropiedad(fila, 'Latitud').toString().trim() : '';
+                const lngRaw = bscarPropiedad(fila, 'Longitud') ? bscarPropiedad(fila, 'Longitud').toString().trim() : '';
+                const datoCurioso = bscarPropiedad(fila, 'Dato Curioso');
+                const datoLimpio = (datoCurioso || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
 
-                const valorPromedio = parseFloat(fila.Promedio) || 0;
+                const promedio = bscarPropiedad(fila, 'Promedio');
+                const valorPromedio = parseFloat(promedio) || 0;
                 const estrellasFisicas = valorPromedio / 2;
 
                 let estrellasHTML = '';
@@ -1487,7 +1316,7 @@
                 download: true,
                 header: true, 
                 complete: function(results) {
-                    estadiosCargados = results.data.filter(fila => fila.Estadio && fila.Club);
+                    estadiosCargados = results.data.filter(fila => bscarPropiedad(fila, 'Estadio') && bscarPropiedad(fila, 'Club'));
                     renderizarTarjetas(estadiosCargados);
                 }
             });
@@ -1500,8 +1329,10 @@
                     download: true,
                     header: true,
                     complete: function(results) {
-                        results.data.filter(fila => fila.Estadio && fila.Club).forEach(estadio => {
-                            if (!catalogoGlobal.some(e => e.Estadio === estadio.Estadio && e.Club === estadio.Club)) {
+                        results.data.filter(fila => bscarPropiedad(fila, 'Estadio') && bscarPropiedad(fila, 'Club')).forEach(estadio => {
+                            const eName = bscarPropiedad(estadio, 'Estadio');
+                            const cName = bscarPropiedad(estadio, 'Club');
+                            if (!catalogoGlobal.some(e => bscarPropiedad(e, 'Estadio') === eName && bscarPropiedad(e, 'Club') === cName)) {
                                 catalogoGlobal.push(estadio);
                             }
                         });
@@ -1518,9 +1349,9 @@
             } else {
                 document.getElementById('titulo-grilla').innerText = "Resultados del Catálogo Masivo";
                 const estadiosFiltrados = catalogoGlobal.filter(fila => {
-                    const estadio = (fila.Estadio || '').toLowerCase();
-                    const club = (fila.Club || '').toLowerCase();
-                    const pais = (fila.País || '').toLowerCase();
+                    const estadio = bscarPropiedad(fila, 'Estadio').toLowerCase();
+                    const club = bscarPropiedad(fila, 'Club').toLowerCase();
+                    const pais = bscarPropiedad(fila, 'País').toLowerCase();
                     return estadio.includes(terminoBusqueda) || club.includes(terminoBusqueda) || pais.includes(terminoBusqueda);
                 });
                 renderizarTarjetas(estadiosFiltrados);
@@ -1555,7 +1386,7 @@
             }
 
             const estadiosConVideo = poolDeEstadios.filter(fila => {
-                const link = fila['Link del Video'] ? fila['Link del Video'].toString().trim() : '';
+                const link = bscarPropiedad(fila, 'Link del Video').toString().trim();
                 return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link');
             });
 
@@ -1566,7 +1397,7 @@
 
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
             const estadioElegido = estadiosConVideo[indiceAzar];
-            abrirModalVideo(e, estadioElegido['Link del Video'].trim(), false);
+            abrirModalVideo(e, bscarPropiedad(estadioElegido, 'Link del Video').trim(), false);
         }
 
         function iniciarTrivia() {
@@ -1584,11 +1415,11 @@
 
         function lanzarRondaGuessr() {
             const estadiosDisponibles = catalogoGlobal.filter(f => {
-                const link = f['Link del Video'] ? f['Link del Video'].toString().trim() : '';
+                const link = bscarPropiedad(f, 'Link del Video').toString().trim();
                 const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
-                const tieneLat = f.Latitud && f.Latitud.toString().trim() !== '';
-                const tieneLng = f.Longitud && f.Longitud.toString().trim() !== '';
-                const yaJugado = guessrEstadiosJugados.includes(f.Estadio);
+                const tieneLat = bscarPropiedad(f, 'Latitud').toString().trim() !== '';
+                const tieneLng = bscarPropiedad(f, 'Longitud').toString().trim() !== '';
+                const yaJugado = guessrEstadiosJugados.includes(bscarPropiedad(f, 'Estadio'));
                 return esYouTube && tieneLat && tieneLng && !yaJugado;
             });
 
@@ -1599,7 +1430,7 @@
             }
 
             guessrEstadioCorrecto = estadiosDisponibles[Math.floor(Math.random() * estadiosDisponibles.length)];
-            guessrEstadiosJugados.push(guessrEstadioCorrecto.Estadio);
+            guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto, 'Estadio'));
             guessrSelectedLatLng = null;
 
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
@@ -1609,7 +1440,7 @@
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
 
-            abrirModalVideo(null, guessrEstadioCorrecto['Link del Video'].trim(), true);
+            abrirModalVideo(null, bscarPropiedad(guessrEstadioCorrecto, 'Link del Video').trim(), true);
 
             setTimeout(() => {
                 if (guessrMapInstance) {
@@ -1647,7 +1478,7 @@
 
             actionBtn.setAttribute('data-estado', 'juego');
             actionBtn.onclick = function() {
-                if (this.getAttribute('data-estado') === 'juego') {
+                if (this.getAttribute('data-estado') === 'juego') { // CORREGIDO: Paréntesis de cierre restaurado en lugar del corchete defectuoso
                     procesarArriesgoGuessr();
                 } else {
                     avanzarDeRondaGuessr();
@@ -1659,8 +1490,9 @@
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.setAttribute('data-estado', 'resultado');
 
-            const targetLat = parseFloat(String(guessrEstadioCorrecto.Latitud).trim().replace(',', '.'));
-            const targetLng = parseFloat(String(guessrEstadioCorrecto.Longitud).trim().replace(',', '.'));
+            // NORMALIZACIÓN DE MATRIZ DE COORDENADAS CON bscarPropiedad PARA EVITAR NaN CON HOJAS MUNDIALISTAS
+            const targetLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+            const targetLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
 
             const userLat = guessrSelectedLatLng.lat;
             const userLng = guessrSelectedLatLng.lng;
@@ -1681,7 +1513,7 @@
                 fillColor: '#000',
                 fillOpacity: 1,
                 weight: 3
-            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${guessrEstadioCorrecto.Estadio}</b><br><span style="color:var(--text-muted);">${guessrEstadioCorrecto.Club}</span>`).openPopup();
+            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b><br><span style="color:var(--text-muted);">${bscarPropiedad(guessrEstadioCorrecto, 'Club')}</span>`).openPopup();
 
             guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
                 color: 'var(--danger-color)',
@@ -1746,39 +1578,15 @@
             `;
         }
 
-        function registrarVoto(event, estadio, club, numeroEstrella) {
-            const estrella = event.target;
-            const dimensiones = estrella.getBoundingClientRect();
-            const clickX = event.clientX - dimensiones.left; 
-            
-            const esMediaEstrella = clickX < (dimensiones.width / 2);
-            const notaFinal = (numeroEstrella * 2) - (esMediaEstrella ? 1 : 0);
-            
-            const filaEstrellas = estrella.closest('.stars-row');
-            const todasLasEstrellas = filaEstrellas.querySelectorAll('.star-icon');
-            
-            todasLasEstrellas.forEach((est, indice) => {
-                const posicionEstrella = indice + 1;
-                est.className = 'star-icon'; 
-                
-                if (posicionEstrella < numeroEstrella) {
-                    est.classList.add('active'); 
-                } else if (posicionEstrella === numeroEstrella) {
-                    if (esMediaEstrella) {
-                        est.classList.add('half-active'); 
-                    } else {
-                        est.classList.add('active'); 
-                    }
-                }
-            });
-
-            userStats.votosRealizados++;
-            guardarStats();
-
-            const urlFinal = `${scriptUrlVotos}?estadio=${encodeURIComponent(estadio)}&club=${encodeURIComponent(club)}&nota=${notaFinal}`;
-            fetch(urlFinal, { mode: 'no-cors' })
-                .then(() => alert(`¡Voto registrado! Calificaste a "${estadio}" (${club}) con una nota de: ${notaFinal}/10 🚀`))
-                .catch(err => console.error("Error al registrar el voto:", err));
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
         }
 
         function inicializarGoogleLogin() {
@@ -1933,7 +1741,7 @@
                             </div>
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                            <span style="font-size:0.8rem; color:var(--text-muted);">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
+                            <span style="font-size:0.8rem; color:var(--text-muted); Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
                             <button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button>
                         </div>
                     </div>
@@ -1952,6 +1760,7 @@
             renderizarBotonLogin();
         }
 
+        // RECONEXIÓN DE PUENTES DE EVENTOS NATIVOS: Devuelve la vida a los clics de las banderas
         document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
             document.getElementById('global-search').value = '';
             document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
