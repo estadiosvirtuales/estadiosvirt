@@ -116,7 +116,7 @@
             box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
         }
 
-        /* BOTONERA EN LA CABECERA OPTIMIZADA */
+        /* BOTONERA EN LA CABECERA */
         .hero-action-buttons {
             display: flex;
             justify-content: center;
@@ -130,7 +130,7 @@
             padding: 12px 24px;
             border-radius: 30px;
             font-size: 1rem;
-            font-weight: 600; /* Tipografía estilizada de trazo limpio */
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -218,7 +218,6 @@
             white-space: nowrap;
             font-size: 0.9rem;
             transition: all 0.3s ease;
-            /* Sombreado perimetral para aislar las fuentes blancas de los fondos blancos */
             text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000;
             background-color: #1c1c1c;
             background-size: 100% 100%;
@@ -235,15 +234,15 @@
         }
 
         /* ASIGNACIÓN DE BANDERAS POR GID */
-        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); } 
-        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); } 
-        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); } 
-        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); } 
-        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); } 
-        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); } 
-        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); } 
-        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); } 
-        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); } 
+        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); }
+        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); }
+        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); }
+        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); }
+        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); }
+        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); }
+        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); }
+        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); }
+        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); }
 
         /* Grilla de Estadios */
         .grid {
@@ -498,7 +497,7 @@
             margin-bottom: 12px;
         }
 
-        /* Estilos del Modal Reconfigurados (CINEMÁTICO Y PREMIUM) */
+        /* Estilos del Modal Reconfigurados */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -527,7 +526,6 @@
             transition: all 0.3s ease;
         }
 
-        /* DISEÑO DE PANTALLA DIVIDIDA INTERACTIVA PARA EL MODO JUEGO */
         .modal-content.stadium-guessr-layout {
             width: 85% !important;
             max-width: 1100px !important; 
@@ -544,7 +542,7 @@
             align-items: center;
         }
 
-        /* Split-screen inteligente para computadoras */
+        /* Split-screen inteligente */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row !important;
@@ -572,7 +570,7 @@
             }
         }
 
-        /* Adaptación táctil balanceada para celulares */
+        /* Adaptación táctil balanceada */
         @media (max-width: 768px) {
             .hero-section { padding: 40px 15px 25px 15px; }
             .brand-logo { width: 90px; height: 90px; margin-bottom: 12px; }
@@ -598,7 +596,6 @@
             }
         }
 
-        /* Estilos específicos para marcas Leaflet oscurecidas */
         .leaflet-popup-content-wrapper {
             background: #161616 !important;
             color: #ffffff !important;
@@ -608,7 +605,6 @@
             background: #161616 !important;
         }
 
-        /* Sistema de Votación por Estrellas Premium */
         .rating-box {
             display: flex;
             flex-direction: column;
@@ -631,7 +627,7 @@
         }
         .star-icon {
             font-size: 1.4rem;
-            color: #333333; /* Color apagado inicial */
+            color: #333333;
             cursor: pointer;
             transition: transform 0.1s ease, color 0.2s ease;
             user-select: none;
@@ -648,7 +644,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* COMBINATORIA DE LAYOUTS DEL PERFIL */
         .split-profile-layout {
             display: flex;
             flex-direction: column;
@@ -676,7 +671,6 @@
             }
         }
 
-        /* DISEÑO DE CARTA FUT ULTRA PREMIUM */
         .fut-card {
             position: relative;
             width: 250px;
@@ -819,7 +813,6 @@
             font-weight: normal;
         }
 
-        /* CALENDARIO ESTILO GEOGUESSR */
         .geoguessr-dash-box {
             background: #0f0f0f;
             border: 1px solid #222;
@@ -1082,7 +1075,7 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-                // ARGENTINA - PRIMERA NACIONAL
+            // ARGENTINA - PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -1266,7 +1259,6 @@
             "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
-            
 
         // ASIGNACIÓN INTELIGENTE DE COLOR DE SELECCIONES (MÉXICO, USA, CANADÁ)
         function obtenerFondoClub(nombreClub, pais) {
@@ -1662,7 +1654,7 @@
 
             actionBtn.setAttribute('data-estado', 'juego');
             actionBtn.onclick = function() {
-                if (this.getAttribute('data-estado') === 'juego') { // CORREGIDO: Paréntesis de cierre restaurado en lugar del corchete defectuoso
+                if (this.getAttribute('data-estado') === 'juego') {
                     procesarArriesgoGuessr();
                 } else {
                     avanzarDeRondaGuessr();
@@ -1674,7 +1666,6 @@
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.setAttribute('data-estado', 'resultado');
 
-            // NORMALIZACIÓN DE MATRIZ DE COORDENADAS CON bscarPropiedad PARA EVITAR NaN CON HOJAS MUNDIALISTAS
             const targetLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
             const targetLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
 
@@ -1788,11 +1779,15 @@
             if (loggedUser) {
                 container.innerHTML = `<img src="${loggedUser.picture}" class="hero-profile-avatar" onclick="abrirModalPerfil()" title="Ver mi Perfil Premium FUT">`;
             } else {
-                container.innerHTML = `<div id="google-login-btn"></div>`;
-                google.accounts.id.renderButton(
-                    document.getElementById("google-login-btn"),
-                    { theme: "dark", size: "large", type: "standard", shape: "pill" }
-                );
+                if (typeof google !== 'undefined' && google.accounts) {
+                    container.innerHTML = `<div id="google-login-btn"></div>`;
+                    google.accounts.id.renderButton(
+                        document.getElementById("google-login-btn"),
+                        { theme: "dark", size: "large", type: "standard", shape: "pill" }
+                    );
+                } else {
+                    setTimeout(renderizarBotonLogin, 300);
+                }
             }
         }
 
@@ -1925,7 +1920,7 @@
                             </div>
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                            <span style="font-size:0.8rem; color:var(--text-muted); Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
+                            <span style="font-size:0.8rem; color:var(--text-muted);">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
                             <button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button>
                         </div>
                     </div>
@@ -1944,16 +1939,16 @@
             renderizarBotonLogin();
         }
 
-        // RECONEXIÓN DE PUENTES DE EVENTOS NATIVOS: Devuelve la vida a los clics de las banderas
-        document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
-            document.getElementById('global-search').value = '';
-            document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
-            document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-            this.classList.add('active');
-            cargarLiga(this.getAttribute('data-gid'));
-        }));
-
         window.addEventListener('DOMContentLoaded', () => {
+            // Reconexión de botones de ligas
+            document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
+                document.getElementById('global-search').value = '';
+                document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
+                document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+                cargarLiga(this.getAttribute('data-gid'));
+            }));
+
             indexarCatalogoMasivo();
             const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
             cargarLiga(primerGid);
