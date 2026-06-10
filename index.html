@@ -567,7 +567,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Split-screen inteligente optimizado con look WorldGuessr (Punto 2) */
+        /* Split-screen inteligente */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout {
                 flex-direction: row !important;
@@ -1082,6 +1082,7 @@
         let guessrPolyline = null;
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
+        let guessrHistorialRondas = []; // Almacena el desglose de cada ronda
 
         // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES
         let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
@@ -1344,64 +1345,63 @@
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
-       function abrirModalVideo(event, link, esJuego = false) {
-    if (event) event.preventDefault();
-    
-    if (!link || link === '#' || link.includes('[Pegá tu link')) {
-        alert("El video de este estadio todavía no está disponible.");
-        return;
-    }
-
-    const modal = document.getElementById('video-modal');
-    const card = document.getElementById('modal-card');
-    const container = document.getElementById('modal-video-container');
-    container.innerHTML = ''; 
-
-    const gameUi = document.getElementById('game-ui');
-    if (esJuego) {
-        card.classList.add('stadium-guessr-layout');
-        gameUi.style.display = 'block';
-    } else {
-        card.classList.remove('stadium-guessr-layout');
-        gameUi.style.display = 'none';
-        container.style.height = '100%';
-    }
-
-    let urlIncrustar = link;
-
-    if (link.includes('youtube.com') || link.includes('youtu.be')) {
-        let videoId = '';
-        if (link.includes('youtu.be/')) {
-            videoId = link.split('youtu.be/')[1].split('?')[0];
-        } else if (link.includes('youtube.com/watch')) {
-            videoId = new URLSearchParams(new URL(link).search).get('v');
-        } else if (link.includes('youtube.com/shorts/')) {
-             videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
-        }
-
-        const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
-        if (videoId) {
-            urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
-        }
-        
-        // Acá está el truco: si es juego (esJuego === true), estira el video hacia arriba 45 píxeles para esconder el título de YouTube
-        const estiloIframe = esJuego 
-            ? "width: 100%; height: calc(100% + 45px); border: none; margin-top: -45px;" 
-            : "width: 100%; height: 100%; border: none;";
+        function abrirModalVideo(event, link, esJuego = false) {
+            if (event) event.preventDefault();
             
-        container.innerHTML = `<iframe src="${urlIncrustar}" style="${estiloIframe}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-    } 
-    else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
-        const attrControles = esJuego ? "autoplay loop muted" : "controls autoplay";
-        container.innerHTML = `<video ${attrControles} style="width: 100%; height: 100%; object-fit: cover;"><source src="${link}" type="video/mp4"></video>`;
-    } 
-    else {
-        container.innerHTML = `<iframe src="${link}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen"></iframe>`;
-    }
+            if (!link || link === '#' || link.includes('[Pegá tu link')) {
+                alert("El video de este estadio todavía no está disponible.");
+                return;
+            }
 
-    modal.style.display = 'flex';
-}
-            
+            const modal = document.getElementById('video-modal');
+            const card = document.getElementById('modal-card');
+            const container = document.getElementById('modal-video-container');
+            container.innerHTML = ''; 
+
+            const gameUi = document.getElementById('game-ui');
+            if (esJuego) {
+                card.classList.add('stadium-guessr-layout');
+                gameUi.style.display = 'block';
+            } else {
+                card.classList.remove('stadium-guessr-layout');
+                gameUi.style.display = 'none';
+                container.style.height = '100%';
+            }
+
+            let urlIncrustar = link;
+
+            if (link.includes('youtube.com') || link.includes('youtu.be')) {
+                let videoId = '';
+                if (link.includes('youtu.be/')) {
+                    videoId = link.split('youtu.be/')[1].split('?')[0];
+                } else if (link.includes('youtube.com/watch')) {
+                    videoId = new URLSearchParams(new URL(link).search).get('v');
+                } else if (link.includes('youtube.com/shorts/')) {
+                     videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
+                }
+
+                const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
+                if (videoId) {
+                    urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
+                }
+                
+                // Acá está el truco: si es juego (esJuego === true), estira el video hacia arriba 45 píxeles para esconder el título de YouTube
+                const estiloIframe = esJuego 
+                    ? "width: 100%; height: calc(100% + 45px); border: none; margin-top: -45px;" 
+                    : "width: 100%; height: 100%; border: none;";
+                    
+                container.innerHTML = `<iframe src="${urlIncrustar}" style="${estiloIframe}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+            } 
+            else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
+                const attrControles = esJuego ? "autoplay loop muted" : "controls autoplay";
+                container.innerHTML = `<video ${attrControles} style="width: 100%; height: 100%; object-fit: cover;"><source src="${link}" type="video/mp4"></video>`;
+            } 
+            else {
+                container.innerHTML = `<iframe src="${link}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen"></iframe>`;
+            }
+
+            modal.style.display = 'flex';
+        }
 
         function cerrarModalVideo() {
             document.getElementById('video-modal').style.display = 'none';
@@ -1661,6 +1661,7 @@
             guessrRondaActual = 1;
             guessrPuntosTotales = 0;
             guessrEstadiosJugados = [];
+            guessrHistorialRondas = []; // Limpiamos el historial al empezar partida nueva
 
             lanzarRondaGuessr();
         }
@@ -1753,6 +1754,14 @@
             const puntosRonda = isNaN(distanciaKm) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
             guessrPuntosTotales += puntosRonda;
 
+            // Guardamos el historial detallado de la ronda actual antes de avanzar
+            guessrHistorialRondas.push({
+                ronda: guessrRondaActual,
+                estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
+                distancia: distanciaKm,
+                puntos: puntosRonda
+            });
+
             if (!isNaN(distanciaKm) && distanciaKm < 5) {
                 userStats.medallaLocalista = true;
                 guardarStats();
@@ -1816,15 +1825,36 @@
             }
             guardarStats();
 
+            // Construimos la lista estética del desglose de rondas (Estilo Premium)
+            let historialHTML = `<div style="width: 100%; max-width: 420px; text-align: left; margin: 0 auto 20px auto; background: #161616; border: 1px solid #252525; border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+                <h4 style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 6px; font-weight: bold;">📊 DESGLOSE DE RONDAS</h4>`;
+            
+            guessrHistorialRondas.forEach(item => {
+                let distTexto = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
+                historialHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.85rem;">
+                        <span style="color: #ffffff; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.estadio}">
+                            <strong style="color: var(--accent-color);">R${item.ronda}:</strong> ${item.estadio}
+                        </span>
+                        <span style="color: var(--text-muted); text-align: right;">
+                            <strong style="color: #fff;">+${item.puntos}</strong> pts <span style="font-size: 0.75rem; opacity: 0.7;">(${distTexto})</span>
+                        </span>
+                    </div>`;
+            });
+            historialHTML += `</div>`;
+
             container.innerHTML = `
-                <div style="text-align: center; padding: 40px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                    <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2>
-                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5;">Completaste las 5 rondas de reconocimiento aéreo.</p>
-                    <div style="background: #111; border: 1px solid #222; padding: 20px 40px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-                        <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 5px;">Puntaje Final Global</span>
-                        <strong style="font-size: 2.5rem; color: #ffffff; font-weight: 900;">${guessrPuntosTotales} <span style="font-size: 1.2rem; color: var(--accent-color);">Pts</span></strong>
+                <div style="text-align: center; padding: 30px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; overflow-y: auto;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 10px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2>
+                    <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Completaste las 5 rondas de reconocimiento aéreo.</p>
+                    <div style="background: #111; border: 1px solid #222; padding: 12px 35px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 3px;">Puntaje Final Global</span>
+                        <strong style="font-size: 2.3rem; color: #ffffff; font-weight: 900;">${guessrPuntosTotales} <span style="font-size: 1.1rem; color: var(--accent-color);">Pts</span></strong>
                     </div>
-                    <button onclick="iniciarTrivia()" class="btn-view" style="max-width: 240px; padding: 14px 28px; font-size: 1rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);">Volar de nuevo 🎮</button>
+
+                    ${historialHTML}
+
+                    <button onclick="iniciarTrivia()" class="btn-view" style="max-width: 240px; padding: 12px 24px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);">Volar de nuevo 🎮</button>
                 </div>
             `;
         }
