@@ -116,7 +116,7 @@
             box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
         }
 
-        /* NUEVA BOTONERA EN LA CABECERA (Reemplaza los stats viejos y botones flotantes) */
+        /* BOTONERA EN LA CABECERA */
         .hero-action-buttons {
             display: flex;
             justify-content: center;
@@ -181,7 +181,7 @@
             transform: scale(1.1);
         }
 
-        /* SECCIÓN DE FILTROS */
+        /* SECCIÓN DE FILTROS Y BANDERAS PREMIUM */
         .section-ligas {
             max-width: 1200px;
             margin: 35px auto 20px auto;
@@ -207,25 +207,46 @@
             justify-content: center;
         }
 
+        /* DISEÑO DE BOTONES CON BANDERAS INTEGRADAS */
         .tab {
-            background-color: #1c1c1c;
-            color: var(--text-main);
-            border: 1px solid #252525;
+            color: #ffffff;
+            border: 2px solid #252525;
             padding: 10px 22px;
             border-radius: 25px;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 800;
             white-space: nowrap;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            /* El Sombreado mágico para que la letra resalte siempre, sin importar el color del fondo */
+            text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000;
+            background-color: #1c1c1c; /* Color por defecto */
+            background-size: 100% 100%;
+            background-position: center;
+            position: relative;
+            /* La capa oscura (Overlay) que se apoya sobre la bandera */
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.55);
         }
 
         .tab.active, .tab:hover {
-            background-color: var(--accent-color);
             border-color: var(--accent-color);
-            color: #000;
-            box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2);
+            /* Al pasar el mouse o activarlo, aclaramos la capa oscura para que brille la bandera */
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15), 0 4px 15px rgba(29, 185, 84, 0.4);
+            transform: translateY(-2px);
+            color: #ffffff;
         }
+
+        /* ASIGNACIÓN DE BANDERAS POR GID (Pintado con CSS puro) */
+        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); } /* Argentina */
+        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); } /* Inglaterra (Cruz) */
+        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); } /* España */
+        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #ffffff 33%, #ffffff 66%, #ce2b37 66%); } /* Italia */
+        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #ffffff 33%, #ffffff 66%, #ed2939 66%); } /* Francia */
+        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); } /* Alemania */
+        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); } /* Brasil */
+        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); } /* Chile */
+        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); } /* Copa del Mundo (Mex/USA) */
+
 
         /* Grilla de Estadios */
         .grid {
@@ -1005,7 +1026,7 @@
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
 
-        // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES (LOCALSTORAGE)
+        // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES
         let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
             votosRealizados: 0,
             triviasVistas: 0,
@@ -1232,12 +1253,21 @@
             "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
             "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
             "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
-            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"   
-            
+            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
-        function obtenerFondoClub(nombreClub) {
+        // LÓGICA DE FONDOS MEJORADA: LEE EL PAÍS MUNDIALISTA
+        function obtenerFondoClub(nombreClub, pais) {
             if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
+            
+            // Si el equipo no está en la lista pero es sede del Mundial, pinta los colores de su selección.
+            if (pais) {
+                const strPais = pais.toLowerCase();
+                if (strPais.includes('méxico') || strPais.includes('mexico')) return "linear-gradient(135deg, #006341, #ffffff, #c60c30)";
+                if (strPais.includes('ee. uu.') || strPais.includes('estados unidos') || strPais.includes('usa')) return "linear-gradient(135deg, #b31942, #ffffff, #0a3161)";
+                if (strPais.includes('canadá') || strPais.includes('canada')) return "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)";
+            }
+            
             return "linear-gradient(135deg, #1f1f1f, #333333)";
         }
 
@@ -1393,8 +1423,8 @@
                 
                 const urlFoto = fila.Foto ? fila.Foto.trim() : '';
                 const clubNombre = fila.Club.trim();
-                const fondoGradiente = obtenerFondoClub(clubNombre);
                 const pais = fila.País ? fila.País.trim() : 'Argentina';
+                const fondoGradiente = obtenerFondoClub(clubNombre, pais); // Pasamos el país para que pinte si es del Mundial
                 const estadio = fila.Estadio.trim();
                 const linkVideo = fila['Link del Video'] ? fila['Link del Video'].trim() : '#';
                 
@@ -1629,7 +1659,6 @@
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.setAttribute('data-estado', 'resultado');
 
-            // CORRECCIÓN SÚPER ROBUSTA DE PARSEO DE COORDENADAS
             const targetLat = parseFloat(String(guessrEstadioCorrecto.Latitud).trim().replace(',', '.'));
             const targetLng = parseFloat(String(guessrEstadioCorrecto.Longitud).trim().replace(',', '.'));
 
@@ -1638,7 +1667,6 @@
 
             const distanciaKm = calcularDistanciaHaversine(userLat, userLng, targetLat, targetLng);
             
-            // Si por algún motivo la coordenada falla, evitamos que la matemática devuelva NaN
             const puntosRonda = isNaN(distanciaKm) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
             guessrPuntosTotales += puntosRonda;
 
@@ -1647,7 +1675,6 @@
                 guardarStats();
             }
 
-            // Marcador real del estadio
             guessrTargetMarker = L.circleMarker([targetLat, targetLng], {
                 radius: 8,
                 color: 'var(--accent-color)',
@@ -1656,7 +1683,6 @@
                 weight: 3
             }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${guessrEstadioCorrecto.Estadio}</b><br><span style="color:var(--text-muted);">${guessrEstadioCorrecto.Club}</span>`).openPopup();
 
-            // Línea que une tu punto con el estadio real
             guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
                 color: 'var(--danger-color)',
                 weight: 2,
@@ -1720,17 +1746,6 @@
             `;
         }
 
-        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; 
-        }
-
         function registrarVoto(event, estadio, club, numeroEstrella) {
             const estrella = event.target;
             const dimensiones = estrella.getBoundingClientRect();
@@ -1766,7 +1781,6 @@
                 .catch(err => console.error("Error al registrar el voto:", err));
         }
 
-        // --- SISTEMA INTEGRADOR DE GOOGLE LOGIN, PERFIL DE USUARIO Y MEDALLAS ---
         function inicializarGoogleLogin() {
             google.accounts.id.initialize({
                 client_id: "351786523914-placeholder.apps.googleusercontent.com", 
@@ -1776,7 +1790,6 @@
         }
 
         function renderizarBotonLogin() {
-            // Ahora renderizamos el botón o el perfil directo en el nuevo menú de la cabecera
             const container = document.getElementById('hero-google-profile');
             const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
             
@@ -1859,7 +1872,6 @@
             const modalBody = document.getElementById('profile-modal-body');
             modalBody.innerHTML = `
                 <div class="split-profile-layout">
-                    
                     <div class="left-fut-column">
                         <div class="fut-card ${cardClass}">
                             <div class="fut-top">
@@ -1884,7 +1896,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="right-dashboard-column">
                         <div>
                             <div class="geoguessr-dash-box">
@@ -1903,7 +1914,6 @@
                                     ${calendarCellsHTML}
                                 </div>
                             </div>
-
                             <div class="geoguessr-dash-box">
                                 <div class="dash-title-premium" style="margin-bottom:10px;">🏆 Vitrina de Logros</div>
                                 <div class="medals-grid">
@@ -1922,7 +1932,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
                             <span style="font-size:0.8rem; color:var(--text-muted);">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
                             <button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button>
