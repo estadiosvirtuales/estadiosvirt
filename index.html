@@ -1004,7 +1004,7 @@
 
             <div class="hero-action-buttons">
                 <button class="hero-btn primary" onclick="iniciarTrivia()">🌍 Jugar StadiumGuessr</button>
-                <button class="hero-btn secondary" onclick="dispararVuelo Aleatorio(event)">🎲 Vuelo Aleatorio</button>
+                <button class="hero-btn secondary" onclick="dispararVueloAleatorio(event)">🎲 Vuelo Aleatorio</button>
                 <div id="hero-google-profile"></div>
             </div>
         </div>
@@ -1352,234 +1352,6 @@
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
-        // ASIGNACIÓN INTELIGENTE DE COLOR DE SELECCIONES (MÉXICO, USA, CANADÁ)
-        function obtenerFondoClub(nombreClub, pais) {
-            if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
-            
-            if (pais) {
-                const strPais = pais.toLowerCase().trim();
-                if (strPais.includes('méxico') || strPais.includes('mexico')) return "linear-gradient(135deg, #006341, #ffffff, #c60c30)";
-                if (strPais.includes('ee. uu.') || strPais.includes('estados unidos') || strPais.includes('usa')) return "linear-gradient(135deg, #b31942, #ffffff, #0a3161)";
-                if (strPais.includes('canadá') || strPais.includes('canada')) return "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)";
-            }
-            
-            return "linear-gradient(135deg, #1f1f1f, #333333)";
-        }
-
-        function abrirModalVideo(event, link, esJuego = false) {
-            if (event) event.preventDefault();
-            
-            if (!link || link === '#' || link.includes('[Pegá tu link')) {
-                alert("El video de este estadio todavía no está disponible.");
-                return;
-            }
-
-            const modal = document.getElementById('video-modal');
-            const card = document.getElementById('modal-card');
-            const container = document.getElementById('modal-video-container');
-            container.innerHTML = ''; 
-
-            const gameUi = document.getElementById('game-ui');
-            if (esJuego) {
-                card.classList.add('stadium-guessr-layout');
-                gameUi.style.display = 'block';
-            } else {
-                card.classList.remove('stadium-guessr-layout');
-                gameUi.style.display = 'none';
-                container.style.height = '100%';
-            }
-
-            let urlIncrustar = link;
-
-            if (link.includes('youtube.com') || link.includes('youtu.be')) {
-                let videoId = '';
-                if (link.includes('youtu.be/')) {
-                    videoId = link.split('youtu.be/')[1].split('?')[0];
-                } else if (link.includes('youtube.com/watch')) {
-                    videoId = new URLSearchParams(new URL(link).search).get('v');
-                } else if (link.includes('youtube.com/shorts/')) {
-                     videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
-                }
-
-                const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
-                if (videoId) {
-                    urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
-                }
-                
-                // Acá está el truco: si es juego (esJuego === true), estira el video hacia arriba 45 píxeles para esconder el título de YouTube
-                const estiloIframe = esJuego 
-                    ? "width: 100%; height: calc(100% + 45px); border: none; margin-top: -45px;" 
-                    : "width: 100%; height: 100%; border: none;";
-                    
-                container.innerHTML = `<iframe src="${urlIncrustar}" style="${estiloIframe}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-            } 
-            else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
-                const attrControles = esJuego ? "autoplay loop muted" : "controls autoplay";
-                container.innerHTML = `<video ${attrControles} style="width: 100%; height: 100%; object-fit: cover;"><source src="${link}" type="video/mp4"></video>`;
-            } 
-            else {
-                container.innerHTML = `<iframe src="${link}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen"></iframe>`;
-            }
-
-            modal.style.display = 'flex';
-        }
-
-        function cerrarModalVideo() {
-            document.getElementById('video-modal').style.display = 'none';
-            document.getElementById('modal-video-container').innerHTML = '';
-            document.getElementById('game-ui').style.display = 'none';
-            document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-            
-            if (guessrMapInstance) {
-                guessrMapInstance.remove();
-                guessrMapInstance = null;
-            }
-            guessrUserMarker = null;
-            guessrTargetMarker = null;
-            guessrPolyline = null;
-            guessrSelectedLatLng = null;
-        }
-
-        function abrirModalMapa(estadio, pais, lat, lng) {
-            if (!lat || lat.toString().trim() === '' || !lng || lng.toString().trim() === '') {
-                alert("Las coordenadas geográficas de este estadio no están disponibles en el Sheets todavía.");
-                return;
-            }
-            
-            const modal = document.getElementById('map-modal');
-            modal.style.display = 'flex';
-
-            const parsedLat = parseFloat(lat.toString().replace(',', '.'));
-            const parsedLng = parseFloat(lng.toString().replace(',', '.'));
-
-            setTimeout(() => {
-                if (previewMapInstance) {
-                    previewMapInstance.remove();
-                }
-                
-                previewMapInstance = L.map('modal-map-container', {
-                    attributionControl: false,
-                    zoomControl: true
-                }).setView([parsedLat, parsedLng], 5);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19
-                }).addTo(previewMapInstance);
-
-                L.circleMarker([parsedLat, parsedLng], {
-                    radius: 8,
-                    color: 'var(--accent-color)',
-                    fillColor: '#000',
-                    fillOpacity: 1,
-                    weight: 3
-                }).addTo(previewMapInstance).bindPopup(`<b style="color:#ffffff; font-family:sans-serif;">${estadio}</b><br><span style="color:var(--text-muted);">${pais}</span>`).openPopup();
-
-                previewMapInstance.invalidateSize();
-            }, 250);
-        }
-
-        function cerrarModalMapa() {
-            document.getElementById('map-modal').style.display = 'none';
-            if (previewMapInstance) {
-                previewMapInstance.remove();
-                previewMapInstance = null;
-            }
-        }
-
-        function switchTab(event, btn, type, estadio = '', pais = '', lat = '', lng = '') {
-            event.stopPropagation();
-            const balloon = btn.closest('.trivia-balloon');
-            
-            balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
-            balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
-            
-            btn.classList.add('active');
-            const content = balloon.querySelector('.b-' + type);
-            if(content) content.classList.add('active');
-
-            if (type === 'mapa') {
-                abrirModalMapa(estadio, pais, lat, lng);
-                setTimeout(() => {
-                    balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
-                    balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
-                    balloon.querySelector('.b-tab:first-child').classList.add('active');
-                    balloon.querySelector('.b-trivia').classList.add('active');
-                    balloon.classList.remove('active');
-                }, 100);
-            }
-        }
-
-        function renderizarTarjetas(listaEstadios) {
-            const grilla = document.querySelector('.grid');
-            grilla.innerHTML = ''; 
-
-            if (listaEstadios.length === 0) {
-                grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
-                return;
-            }
-            
-            listaEstadios.forEach(fila => {
-                const estadio = bscarPropiedad(fila, 'Estadio');
-                const clubNombre = bscarPropiedad(fila, 'Club');
-                if(!estadio || !clubNombre) return;
-                
-                const urlFoto = bscarPropiedad(fila, 'Foto') ? bscarPropiedad(fila, 'Foto').trim() : '';
-                const pais = bscarPropiedad(fila, 'País') ? bscarPropiedad(fila, 'País').trim() : 'Argentina';
-                const fondoGradiente = obtenerFondoClub(clubNombre, pais);
-                const linkVideo = bscarPropiedad(fila, 'Link del Video') ? bscarPropiedad(fila, 'Link del Video').trim() : '#';
-                
-                const latRaw = bscarPropiedad(fila, 'Latitud') ? bscarPropiedad(fila, 'Latitud').toString().trim() : '';
-                const lngRaw = bscarPropiedad(fila, 'Longitud') ? bscarPropiedad(fila, 'Longitud').toString().trim() : '';
-                const datoCurioso = bscarPropiedad(fila, 'Dato Curioso');
-                const datoLimpio = (datoCurioso || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "'").replace(/"/g, '"');
-
-                const promedio = bscarPropiedad(fila, 'Promedio');
-                const valorPromedio = parseFloat(promedio) || 0;
-                const estrellasFisicas = valorPromedio / 2;
-
-                let estrellasHTML = '';
-                for (let i = 1; i <= 5; i++) {
-                    let claseEstrella = '';
-                    if (i <= Math.floor(estrellasFisicas)) {
-                        claseEstrella = 'active';
-                    } else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) {
-                        claseEstrella = 'half-active';
-                    }
-                    estrellasHTML += `<span class="star-icon ${claseEstrella}" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', ${i})">★</span>`;
-                }
-
-                const tarjeta = document.createElement('article');
-                tarjeta.className = 'card';
-                tarjeta.innerHTML = `
-                    <div class="estadio-foto-container" style="background: ${fondoGradiente};" onclick="toggleTriviaPopup(event, this)">
-                        <div class="trivia-hint">💡</div>
-                        ${urlFoto ? `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">` : ''}
-                        <div class="placeholder-text" style="${urlFoto ? 'display: none;' : 'display: block;'}">${clubNombre}</div>
-                        <div class="trivia-balloon" onclick="event.stopPropagation()">
-                            <div class="balloon-tabs">
-                                <button class="b-tab active" onclick="switchTab(event, this, 'trivia')">Trivia</button>
-                                <button class="b-tab" onclick="switchTab(event, this, 'mapa', '${estadio}', '${pais}', '${latRaw}', '${lngRaw}')">Mapa</button>
-                            </div>
-                            <div class="b-content b-trivia active"><p>${datoLimpio}</p></div>
-                            <div class="b-content b-mapa"></div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h2 class="card-title">${estadio}</h2>
-                        <p class="card-subtitle">${clubNombre} • ${pais}</p>
-                        <button onclick="abrirModalVideo(event, '${linkVideo}')" class="btn-view">Ver Vuelo 3D</button>
-                        
-                        <div class="rating-box">
-                            <span class="rating-title">Calificá este Estadio ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
-                            <div class="stars-row" data-estadio="${estadio.replace(/"/g, '&quot;')}">
-                                ${estrellasHTML}
-                            </div>
-                        </div>
-                    </div>`;
-                grilla.appendChild(tarjeta);
-            });
-        }
-
         function cargarLiga(gid) {
             const grilla = document.querySelector('.grid');
             grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
@@ -1827,7 +1599,7 @@
             }
         }
 
-        // --- ENLACE SEPARADO CON EL RANKING GLOBAL Y REDES ---
+        // --- ENLACE CON NUEVO BACKEND DEL RANKING GLOBAL Y COMPARTIR ---
         function enviarMiPuntaje() {
             let nombre = "";
             const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
@@ -1840,7 +1612,7 @@
 
             const payload = { nombre: nombre.trim(), puntaje: guessrPuntosTotales };
 
-            fetch(scriptUrlRanking, {
+            fetch(scriptUrlVotos, {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
@@ -1856,7 +1628,7 @@
             document.getElementById('profile-modal').style.display = 'flex';
 
             try {
-                const res = await fetch(scriptUrlRanking);
+                const res = await fetch(scriptUrlVotos);
                 const ranking = await res.json();
                 
                 let html = `
@@ -1893,7 +1665,7 @@
             } catch (e) {
                 modalBody.innerHTML = `
                     <div style="text-align:center; padding:25px;">
-                        <h3 style="color:#ff5555; margin-bottom:10px; font-weight:900;">⚠️ ERROR DE CONEXIÓN</h3>
+                        <h3 style="color:#ff5555; margin-bottom:10px; font-weight:900;">⚠️ ERROR DE CONEXÍA“N</h3>
                         <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.5;">No se pudo establecer el enlace con el Apps Script de Google. Comprobá que esté publicado de forma pública ("Ejecutar como: Yo" y "Acceso: Cualquier persona") y con la pestaña 'Ranking' creada en tu Sheets.</p>
                     </div>
                 `;
@@ -1979,7 +1751,17 @@
             `;
         }
 
-        // --- SISTEMA LOGIN DE GOOGLE ---
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
         function inicializarGoogleLogin() {
             google.accounts.id.initialize({
                 client_id: "351786523914-placeholder.apps.googleusercontent.com", 
@@ -2136,7 +1918,7 @@
                             </div>
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                            <span style="font-size:0.8rem; color:var(--text-muted);">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
+                            <span style="font-size:0.8rem; color:var(--text-muted); Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
                             <button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button>
                         </div>
                     </div>
