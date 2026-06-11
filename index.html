@@ -720,7 +720,7 @@
             color: #fef3c7;
         }
         .fut-card.silver {
-            background: linear-gradient(135deg, #9ca3af(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%));
+            background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%);
             border: 3px solid #9ca3af;
             color: #ffffff;
         }
@@ -1004,6 +1004,7 @@
 
             <div class="hero-action-buttons">
                 <button class="hero-btn primary" onclick="iniciarTrivia()">🌍 Jugar StadiumGuessr</button>
+                <button class="hero-btn secondary" onclick="abrirModalOrden()">📊 Desafío de Orden</button>
                 <button class="hero-btn secondary" onclick="dispararVueloAleatorio(event)">🎲 Vuelo Aleatorio</button>
                 <div id="hero-google-profile"></div>
             </div>
@@ -1056,6 +1057,13 @@
         </div>
     </div>
 
+    <div id="order-modal" class="modal-overlay" onclick="cerrarModalOrden()">
+        <div class="modal-content" style="max-width: 800px; height: 85vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
+            <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalOrden()">✕</button>
+            <div id="order-modal-body" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;"></div>
+        </div>
+    </div>
+
     <div class="social-floating-container">
         <a href="https://www.youtube.com/@EstadiosVirtuales1" target="_blank" class="social-icon-btn" title="Visitar Canal de YouTube">
             <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -1090,6 +1098,12 @@
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
         let guessrHistorialRondas = []; // Almacena el desglose de cada ronda
+
+        // Variables del motor del juego de ordenamiento
+        let orderPoolOriginal = [];
+        let orderSlots = Array(7).fill(null);
+        let orderModo = ""; // "capacidad" o "antiguedad"
+        let orderPuntosGanados = 0;
 
         // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES
         let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
@@ -1368,20 +1382,6 @@
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
-        // ASIGNACIÓN INTELIGENTE DE COLOR DE SELECCIONES (MÉXICO, USA, CANADÁ)
-        function obtenerFondoClub(nombreClub, pais) {
-            if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
-            
-            if (pais) {
-                const strPais = pais.toLowerCase().trim();
-                if (strPais.includes('méxico') || strPais.includes('mexico')) return "linear-gradient(135deg, #006341, #ffffff, #c60c30)";
-                if (strPais.includes('ee. uu.') || strPais.includes('estados unidos') || strPais.includes('usa')) return "linear-gradient(135deg, #b31942, #ffffff, #0a3161)";
-                if (strPais.includes('canadá') || strPais.includes('canada')) return "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)";
-            }
-            
-            return "linear-gradient(135deg, #1f1f1f, #333333)";
-        }
-
         function abrirModalVideo(event, link, esJuego = false) {
             if (event) event.preventDefault();
             
@@ -1422,7 +1422,6 @@
                     urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
                 }
                 
-                // AJUSTADO: Se cambia de -45px/calc(100% + 45px) a -55px/calc(100% + 55px) para ocultar completamente el artifact blanco superior de YouTube
                 const estiloIframe = esJuego 
                     ? "width: 100%; height: calc(100% + 55px); border: none; margin-top: -55px;" 
                     : "width: 100%; height: 100%; border: none;";
@@ -1725,7 +1724,7 @@
 
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             const actionBtn = document.getElementById('game-action-btn');
-            actionBtn.innerText = "Ubica el estadio en el mapa 📍";
+            actionBtn.innerText = "Clavá un pin en el mapa mudo 📍";
             actionBtn.style.backgroundColor = "var(--card-bg)";
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
@@ -2006,6 +2005,276 @@
             return R * c; 
         }
 
+        // --- SISTEMA DEL NUEVO MINIJUEGO DE TRIVIA DE ORDENAMIENTO (UNIFICADO) ---
+        function abrirModalOrden() {
+            document.getElementById('order-modal').style.display = 'flex';
+            const body = document.getElementById('order-modal-body');
+            
+            body.innerHTML = `
+                <div style="text-align: center; color: white; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                    <h2 style="font-size: 1.8rem; font-weight: 900; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">📊 DESAFÍO DE ORDENAMIENTO</h2>
+                    <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 500px; line-height: 1.5; margin-bottom: 30px;">Demostrá tu nivel de conocimiento sobre los templos del fútbol mundial. Seleccioná una categoría para ordenar 7 estadios al azar de menor a mayor.</p>
+                    <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
+                        <button onclick="iniciarJuegoOrden('capacidad')" class="btn-view" style="padding: 14px; font-size: 1rem; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2); margin-top:0;">🏟️ Ordenar por Capacidad</button>
+                        <button onclick="iniciarJuegoOrden('antiguedad')" class="btn-view" style="padding: 14px; font-size: 1rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top:0;">⏳ Ordenar por Antigüedad</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function cerrarModalOrden() {
+            document.getElementById('order-modal').style.display = 'none';
+            document.getElementById('order-modal-body').innerHTML = '';
+            orderPoolOriginal = [];
+            orderSlots = Array(7).fill(null);
+            orderModo = "";
+            orderPuntosGanados = 0;
+        }
+
+        function iniciarJuegoOrden(modo) {
+            const poolDeEstadios = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
+            
+            if (poolDeEstadios.length === 0) {
+                alert('Esperá un segundo a que se termine de sincronizar el catálogo de estadios en memoria...');
+                return;
+            }
+
+            orderModo = modo;
+            orderSlots = Array(7).fill(null);
+            orderPuntosGanados = 0;
+
+            // Filtrar estadios válidos que tengan el campo correspondiente cargado
+            const estadiosValidos = poolDeEstadios.filter(f => {
+                const nombre = bscarPropiedad(f, 'Estadio');
+                const club = bscarPropiedad(f, 'Club');
+                if (!nombre || !club) return false;
+
+                if (modo === 'capacidad') {
+                    const capRaw = String(bscarPropiedad(f, 'Capacidad')).replace(/[^0-9]/g, '');
+                    return capRaw !== '' && parseInt(capRaw) > 0;
+                } else {
+                    const anoRaw = String(bscarPropiedad(f, 'Año')).replace(/[^0-9]/g, '');
+                    return anoRaw !== '' && parseInt(anoRaw) > 0;
+                }
+            });
+
+            if (estadiosValidos.length < 7) {
+                alert('No hay suficientes estadios georreferenciados en este lote para armar el podio.');
+                return;
+            }
+
+            // Seleccionar 7 estadios al azar distintos
+            let seleccionados = [];
+            let copiaValidos = [...estadiosValidos];
+            while (seleccionados.length < 7) {
+                const idxRand = Math.floor(Math.random() * copiaValidos.length);
+                const elegido = copiaValidos.splice(idxRand, 1)[0];
+                
+                let valorNumerico = 0;
+                if (modo === 'capacidad') {
+                    valorNumerico = parseInt(String(bscarPropiedad(elegido, 'Capacidad')).replace(/[^0-9]/g, '')) || 0;
+                } else {
+                    valorNumerico = parseInt(String(bscarPropiedad(elegido, 'Año')).replace(/[^0-9]/g, '')) || 0;
+                }
+
+                seleccionados.push({
+                    estadio: bscarPropiedad(elegido, 'Estadio'),
+                    club: bscarPropiedad(elegido, 'Club'),
+                    pais: bscarPropiedad(elegido, 'País') || 'Argentina',
+                    valor: valorNumerico,
+                    correctIdx: -1
+                });
+            }
+
+            // Calcular las posiciones correctas ordenándolos por valor numérico de menor a mayor
+            let ordenadosCorrectamente = [...seleccionados].sort((a, b) => a.valor - b.valor);
+            seleccionados.forEach(est => {
+                est.correctIdx = ordenadosCorrectamente.findIndex(o => o.estadio === est.estadio && o.club === est.club);
+            });
+
+            // Desordenar el pool original que va a usar el usuario en el panel izquierdo
+            orderPoolOriginal = [];
+            while (seleccionados.length > 0) {
+                const idxRand = Math.floor(Math.random() * seleccionados.length);
+                orderPoolOriginal.push(seleccionados.splice(idxRand, 1)[0]);
+            }
+
+            renderJuegoOrden();
+        }
+
+        function renderJuegoOrden(revelarResultados = false) {
+            const body = document.getElementById('order-modal-body');
+            
+            let tituloModo = orderModo === 'capacidad' ? '🏟️ CAPACIDAD MÁXIMA' : '⏳ ANTIGÜEDAD (FUNDACIÓN)';
+            let descModo = orderModo === 'capacidad' 
+                ? 'Organizá los estadios de <b>Menor a Mayor</b> capacidad de espectadores.' 
+                : 'Organizá los estadios del <b>Más Viejo al Más Moderno</b>.';
+
+            // Render del bloque izquierdo (Estadios Disponibles en la bolsa)
+            let poolHTML = '';
+            orderPoolOriginal.forEach((est, idx) => {
+                poolHTML += `
+                    <div onclick="${revelarResultados ? '' : `moverEstadioAlPodio(${idx})`}" style="background:#161616; border: 1px solid #222; border-radius:8px; padding:10px 14px; cursor:${revelarResultados ? 'default' : 'pointer'}; transition:all 0.2s ease; font-size:0.85rem; user-select:none; display:flex; flex-direction:column; justify-content:center; gap:2px;" onmouseover="if(!${revelarResultados}) this.style.borderColor='var(--accent-color)'" onmouseout="this.style.borderColor='#222'">
+                        <strong style="color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${est.estadio}</strong>
+                        <span style="color:var(--text-muted); font-size:0.75rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${est.club} • ${est.pais}</span>
+                    </div>
+                `;
+            });
+
+            if (orderPoolOriginal.length === 0 && !revelarResultados) {
+                poolHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:20px; text-align:center; border:1px dashed #222; border-radius:8px; width:100%;">¡Acomodaste todos los estadios! Confirmá tu orden abajo 🚀</div>`;
+            }
+
+            // Render del bloque derecho (Los 7 Casilleros del Podio)
+            let slotsHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const estEnSlot = orderSlots[i];
+                let cardSlotHTML = '';
+
+                if (estEnSlot) {
+                    let borderCol = '#252525';
+                    let badgeExtra = '';
+                    
+                    if (revelarResultados) {
+                        const esCorrecto = i === estEnSlot.correctIdx;
+                        borderCol = esCorrecto ? '#1db954' : '#ff5555';
+                        let textoValor = orderModo === 'capacidad' 
+                            ? `${estEnSlot.valor.toLocaleString()} esp.` 
+                            : `Año ${estEnSlot.valor}`;
+                        badgeExtra = `<span style="background:${borderCol}; color:#000; font-size:0.7rem; font-weight:bold; padding:2px 8px; border-radius:10px; margin-left:auto; text-transform:uppercase;">${textoValor}</span>`;
+                    }
+
+                    cardSlotHTML = `
+                        <div onclick="${revelarResultados ? '' : `removerEstadioDelPodio(${i})`}" style="width:100%; height:100%; background:#1c1c1c; border:1px solid ${borderCol}; border-radius:6px; padding:0 15px; display:flex; align-items:center; gap:10px; cursor:${revelarResultados ? 'default' : 'pointer'}; transition:all 0.2s;" onmouseover="if(!${revelarResultados}) this.style.borderColor='var(--accent-hover)'" onmouseout="if(!${revelarResultados}) this.style.borderColor='${borderCol}'">
+                            <div style="display:flex; flex-direction:column; justify-content:center; text-align:left; overflow:hidden; max-width:70%;">
+                                <strong style="color:#fff; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${estEnSlot.estadio}</strong>
+                                <span style="color:var(--text-muted); font-size:0.75rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${estEnSlot.club}</span>
+                            </div>
+                            ${badgeExtra}
+                        </div>
+                    `;
+                } else {
+                    cardSlotHTML = `<div style="width:100%; height:100%; border:1px dashed #333; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#444; font-size:0.8rem; font-weight:bold; text-transform:uppercase; letter-spacing:0.5px;">Vacío</div>`;
+                }
+
+                slotsHTML += `
+                    <div style="display:flex; align-items:center; gap:12px; height:48px; width:100%;">
+                        <div style="background:#111; color:var(--accent-color); border:1px solid #222; border-radius:50%; width:26px; height:28px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:900; flex-shrink:0; box-shadow:inset 0 0 5px #000;">${i+1}</div>
+                        ${cardSlotHTML}
+                    </div>
+                `;
+            }
+
+            // Bloque de botonera inferior interactiva
+            let botoneraInferiorHTML = '';
+            if (!revelarResultados) {
+                const podioCompleto = !orderSlots.includes(null);
+                botoneraInferiorHTML = `
+                    <div style="display:flex; gap:12px; margin-top:15px; width:100%;">
+                        <button onclick="abrirModalOrden()" class="btn-view" style="background:#222; color:#fff; border:1px solid #333; margin-top:0; padding:12px; font-size:0.9rem; width:30%;">Volver ⬅️</button>
+                        <button onclick="procesarResultadoOrden()" class="btn-view" style="margin-top:0; padding:12px; font-size:0.9rem; width:70%; opacity:${podioCompleto ? '1' : '0.4'}; cursor:${podioCompleto ? 'pointer' : 'not-allowed'};" ${podioCompleto ? '' : 'disabled'}>Confirmar Ordenación 🚀</button>
+                    </div>
+                `;
+            } else {
+                botoneraInferiorHTML = `
+                    <div style="background:#111; border:1px solid #222; padding:15px; border-radius:10px; text-align:center; width:100%; margin-top:15px;">
+                        <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:0.5px; display:block; margin-bottom:2px;">Puntaje del Desafío</span>
+                        <strong style="font-size:1.8rem; color:#fff; font-weight:900; display:block; margin-bottom:12px;">${orderPuntosGanados} <span style="font-size:0.9rem; color:var(--accent-color);">Pts</span></strong>
+                        <div style="display:flex; flex-direction:column; gap:8px; max-width:260px; margin:0 auto;">
+                            <button onclick="enviarPuntajeOrden()" class="btn-view" style="padding:10px; font-size:0.85rem; margin-top:0;">Guardar Puntaje 🏆</button>
+                            <button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-view" style="padding:10px; font-size:0.85rem; background:#1a1a1a; color:#fff; border:1px solid #333; margin-top:0;">Jugar de nuevo 🎮</button>
+                            <button onclick="cerrarModalOrden()" class="btn-view" style="padding:10px; font-size:0.85rem; background:transparent; color:var(--text-muted); border:none; margin-top:0;">Cerrar Desafío</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            body.innerHTML = `
+                <div style="display:flex; flex-direction:column; height:100%; color:white; justify-content:space-between;">
+                    <div style="border-bottom:1px solid #222; padding-bottom:10px; text-align:left;">
+                        <h2 style="font-size:1.2rem; font-weight:900; color:var(--accent-color); text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">${tituloModo}</h2>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:2px;">${descModo}</p>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns:${revelarResultados ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))'}; gap:25px; margin:15px 0; overflow-y:auto; flex-grow:1; align-content:start; padding-right:5px;">
+                        ${revelarResultados ? '' : `
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <h4 style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; border-left:3px solid var(--accent-color); padding-left:8px;">Estadios Disponibles</h4>
+                            <div style="display:grid; grid-template-columns:1fr; gap:8px; overflow-y:auto; padding-right:2px;">
+                                ${poolHTML}
+                            </div>
+                        </div>
+                        `}
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <h4 style="font-size:0.75rem; font-weight:bold; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; border-left:3px solid var(--accent-color); padding-left:8px;">${revelarResultados ? 'Tu Podio Evaluado' : 'Tu Clasificación'}</h4>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                ${slotsHTML}
+                            </div>
+                        </div>
+                    </div>
+
+                    ${botoneraInferiorHTML}
+                </div>
+            `;
+        }
+
+        function moverEstadioAlPodio(idxPool) {
+            const primerVacio = orderSlots.findIndex(s => s === null);
+            if (primerVacio !== -1) {
+                const elemento = orderPoolOriginal.splice(idxPool, 1)[0];
+                orderSlots[primerVacio] = elemento;
+                renderJuegoOrden();
+            }
+        }
+
+        function removerEstadioDelPodio(idxSlot) {
+            if (orderSlots[idxSlot] !== null) {
+                const elemento = orderSlots[idxSlot];
+                orderSlots[idxSlot] = null;
+                orderPoolOriginal.push(elemento);
+                renderJuegoOrden();
+            }
+        }
+
+        function procesarResultadoOrden() {
+            if (orderSlots.includes(null)) return;
+
+            let desviacionTotal = 0;
+            orderSlots.forEach((est, idx) => {
+                desviacionTotal += Math.abs(idx - est.correctIdx);
+            });
+
+            // Cálculo matemático de puntaje dinámico: 5000 puntos base menos la penalización de desvío
+            orderPuntosGanados = Math.max(0, 5000 - (desviacionTotal * 350));
+            
+            renderJuegoOrden(true);
+        }
+
+        function enviarPuntajeOrden() {
+            let nombre = "";
+            const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
+            if (loggedUser && loggedUser.name) {
+                nombre = loggedUser.name;
+            } else {
+                nombre = prompt("No iniciaste sesión con Google. Ingresá tu nombre para el ranking global:");
+            }
+            if (!nombre || nombre.trim() === "") return;
+
+            const payload = { nombre: nombre.trim(), puntaje: orderPuntosGanados };
+
+            fetch(scriptUrlRanking, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                alert(`¡Tu marca de ${orderPuntosGanados} pts fue enviada con éxito al salón de la fama global! 🚀`);
+                cerrarModalOrden();
+            })
+            .catch(err => alert("Error al enviar el puntaje. Reintentá en unos momentos."));
+        }
+
         function inicializarGoogleLogin() {
             google.accounts.id.initialize({
                 client_id: "351786523914-placeholder.apps.googleusercontent.com", 
@@ -2062,7 +2331,7 @@
             const currentUser = JSON.parse(localStorage.getItem('ev_user_logged'));
             if (!currentUser) return;
 
-            const mLocalista = userStats.medacleLocalista;
+            const mLocalista = userStats.medallaLocalista;
             const mCatador = userStats.votosRealizados >= 5;
             const mCurioso = userStats.triviasVistas >= 10;
             const mIdolo = userStats.partidasJugadas >= 3;
