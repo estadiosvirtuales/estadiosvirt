@@ -471,7 +471,7 @@
             background-color: var(--accent-hover);
         }
 
-        /* Estilos del panel del minijuego GeoGuessr RECONFIGURADO ESTILO WORLDGUESSR (Punto 2) */
+        /* Estilos del panel del minijuego GeoGuessr RECONFIGURADO ESTILO WORLDGUESSR */
         #game-ui {
             display: none;
             width: 100%;
@@ -728,6 +728,7 @@
             background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%);
             border: 3px solid #facc15;
             color: #fff;
+            box-shadow: 0 0 15px rgba(234,179,8,0.4);
             animation: goldShine 4s infinite alternate;
         }
         @keyframes goldShine {
@@ -950,14 +951,14 @@
             color: #fff;
         }
 
-        /* ESTILOS DE LOS BOTONES FLOTANTES DE REDES SOCIALES (Punto 1) */
+        /* ESTILOS DE LOS BOTONES FLOTANTES DE REDES SOCIALES */
         .social-floating-container {
             position: fixed;
             bottom: 20px;
             left: 20px;
             display: flex;
             gap: 12px;
-            z-index: 1999; /* Se mantiene visible por encima de grillas y fondo */
+            z-index: 1999;
         }
         .social-icon-btn {
             width: 44px;
@@ -1806,6 +1807,100 @@
             }
         }
 
+        // --- ENLACE CON NUEVO BACKEND DEL RANKING GLOBAL Y COMPARTIR ---
+        function enviarMiPuntaje() {
+            let nombre = "";
+            const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
+            if (loggedUser && loggedUser.name) {
+                nombre = loggedUser.name;
+            } else {
+                nombre = prompt("No iniciaste sesión con Google. Ingresá tu nombre para el ranking global:");
+            }
+            if (!nombre || nombre.trim() === "") return;
+
+            const payload = { nombre: nombre.trim(), puntaje: guessrPuntosTotales };
+
+            fetch(scriptUrlVotos, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(() => alert("¡Tu marca de " + guessrPuntosTotales + " pts fue enviada con éxito al salón de la fama global! 🚀"))
+            .catch(err => alert("Error al enviar el puntaje. Reintentá en unos momentos."));
+        }
+
+        async function abrirModalRanking() {
+            const modalBody = document.getElementById('profile-modal-body');
+            modalBody.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; padding:30px;">Cargando tabla de posiciones global...</h3>';
+            document.getElementById('profile-modal').style.display = 'flex';
+
+            try {
+                const res = await fetch(scriptUrlVotos);
+                const ranking = await res.json();
+                
+                let html = `
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <h2 style="font-size: 1.8rem; color: var(--accent-color); font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">🏆 TOP 10 GLOBAL 🏆</h2>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 5px;">Los pilotos de reconocimiento aéreo más precisos del mundo</p>
+                    </div>
+                    <div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                `;
+
+                if (!ranking || ranking.length === 0) {
+                    html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay puntajes en la base de datos. ¡Lográ una marca y estrená el tablero!</p>`;
+                } else {
+                    ranking.forEach((fila, i) => {
+                        let nombreJugador = fila[0] || "Anónimo";
+                        let puntosJugador = fila[1] || 0;
+                        
+                        let corona = "";
+                        if (i === 0) corona = "🥇 ";
+                        else if (i === 1) corona = "🥈 ";
+                        else if (i === 2) corona = "🥉 ";
+
+                        html += `
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;">
+                                <span style="font-weight: 700;">${corona}${i + 1}. ${nombreJugador}</span>
+                                <span style="color: var(--accent-color); font-weight: 900;">${puntosJugador} <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">pts</span></span>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `</div>`;
+                modalBody.innerHTML = html;
+            } catch (e) {
+                modalBody.innerHTML = `
+                    <div style="text-align:center; padding:25px;">
+                        <h3 style="color:#ff5555; margin-bottom:10px; font-weight:900;">⚠️ ERROR DE CONEXIÓN</h3>
+                        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.5;">No se pudo establecer el enlace con el Apps Script de Google. Comprobá que esté publicado de forma pública ("Ejecutar como: Yo" y "Acceso: Cualquier persona") y con la pestaña 'Ranking' creada en tu Sheets.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function compartirResultado() {
+            const mensajeShare = `⚽ ¡Completé las 5 rondas de StadiumGuessr en Estadios Virtuales con un récord final de ${guessrPuntosTotales} puntos! 🌍✈️ ¿Te animás a superar mi marca volando en 3D sobre los templos del fútbol?`;
+            const urlShare = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Estadios Virtuales | StadiumGuessr',
+                    text: mensajeShare,
+                    url: urlShare
+                }).catch(err => console.log("Error al compartir por API nativa:", err));
+            } else {
+                navigator.clipboard.writeText(`${mensajeShare} Competí acá: ${urlShare}`)
+                .then(() => {
+                    alert("¡Récord e invitación copiados al portapapeles! Ya podés pegarlo directo en tus redes sociales para picantearla con tus amigos. 🚀");
+                })
+                .catch(err => {
+                    alert("Tu puntaje final es de: " + guessrPuntosTotales + " puntos. ¡Anclalo en tus redes sociales!");
+                });
+            }
+        }
+
         function finalizarJuegoGuessr() {
             const container = document.getElementById('modal-video-container');
             const gameUi = document.getElementById('game-ui');
@@ -1854,7 +1949,12 @@
 
                     ${historialHTML}
 
-                    <button onclick="iniciarTrivia()" class="btn-view" style="max-width: 240px; padding: 12px 24px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3);">Volar de nuevo 🎮</button>
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 250px;">
+                        <button onclick="enviarMiPuntaje()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2); margin-top: 0;">Guardar Puntaje 🚀</button>
+                        <button onclick="abrirModalRanking()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #222; color: #fff; border: 1px solid #333; margin-top: 0;">Ver Ranking Global 🏆</button>
+                        <button onclick="compartirResultado()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; margin-top: 0;">Compartir Récord 🔗</button>
+                        <button onclick="iniciarTrivia()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); margin-top: 10px;">Volar de nuevo 🎮</button>
+                    </div>
                 </div>
             `;
         }
