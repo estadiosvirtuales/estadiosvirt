@@ -1004,7 +1004,7 @@
 
             <div class="hero-action-buttons">
                 <button class="hero-btn primary" onclick="iniciarTrivia()">🌍 Jugar StadiumGuessr</button>
-                <button class="hero-btn secondary" onclick="abrirModalOrden()">📊 Desafío de Orden</button>
+                <button class="hero-btn secondary" onclick="abrirModalOrden()">📊 Ordena los estadios</button>
                 <button class="hero-btn secondary" onclick="dispararVueloAleatorio(event)">🎲 Vuelo Aleatorio</button>
                 <div id="hero-google-profile"></div>
             </div>
@@ -2156,9 +2156,9 @@
                     </div>
                 `;
             });
-
-            let labelSuperior = orderModo === 'capacidad' ? '⬇️ MENOR CAPACIDAD' : '⬇️ MÁS ANTIGUO (MAYOR EDAD)';
+            
             let labelInferior = orderModo === 'capacidad' ? '⬆️ MAYOR CAPACIDAD' : '⬆️ MÁS MODERNO (MENOR EDAD)';
+            let labelSuperior = orderModo === 'capacidad' ? '⬇️ MENOR CAPACIDAD' : '⬇️ MÁS ANTIGUO (MAYOR EDAD)';
 
             // Bloque de botonera inferior interactiva
             let botoneraInferiorHTML = '';
@@ -2166,7 +2166,7 @@
                 botoneraInferiorHTML = `
                     <div style="display:flex; gap:12px; margin-top:15px; width:100%;">
                         <button onclick="abrirModalOrden()" class="btn-view" style="background:#222; color:#fff; border:1px solid #333; margin-top:0; padding:12px; font-size:0.9rem; width:30%;">Volver ⬅️</button>
-                        <button onclick="procesarResultadoOrden()" class="btn-view" style="margin-top:0; padding:12px; font-size:0.9rem; width:70%;">Confirmar Ordenación 🚀</button>
+                        <button onclick="procesarResultadoOrden()" class="btn-view" style="margin-top:0; padding:12px; font-size:0.9rem; width:70%;">Confirmar Orden 🚀</button>
                     </div>
                 `;
             } else {
