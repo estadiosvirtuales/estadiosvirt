@@ -1089,7 +1089,7 @@
         let catalogoGlobal = [];
         const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071", "879164460"];
 
-        // Variables del motor de juego
+        // Variables del motor de juego Guessr
         let guessrRondaActual = 0;
         let guessrPuntosTotales = 0;
         let guessrEstadioCorrecto = null;
@@ -1100,7 +1100,7 @@
         let guessrPolyline = null;
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
-        let guessrHistorialRondas = []; // Almacena el desglose de cada ronda
+        let guessrHistorialRondas = [];
 
         // Variables del motor del juego de ordenamiento
         let orderList = [];
@@ -1827,7 +1827,7 @@
                 fillColor: '#000',
                 fillOpacity: 1,
                 weight: 3
-            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
+            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b><br><span style="color:var(--text-muted);">${bscarPropiedad(guessrEstadioCorrecto, 'Club')}</span>`).openPopup();
 
             guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
                 color: 'var(--danger-color)',
@@ -1933,6 +1933,34 @@
             }
         }
 
+        // --- NUEVAS FUNCIONES DE LA TABLA DE POSICIONES INDEPENDIENTES ---
+        async function abrirModalRankingOrden(modo) {
+            const modalBody = document.getElementById('profile-modal-body');
+            modalBody.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; padding:30px;">Cargando tabla de posiciones...</h3>';
+            document.getElementById('profile-modal').style.display = 'flex';
+            
+            let urlDestino = modo === 'capacidad' ? scriptUrlCapacidad : scriptUrlAntiguedad;
+            let tituloLabel = modo === 'capacidad' ? '🏆 TOP 10 CAPACIDAD 🏆' : '🏆 TOP 10 ANTIGÜEDAD 🏆';
+            
+            try {
+                const res = await fetch(urlDestino);
+                const ranking = await res.json();
+                let html = `<div style="text-align: center; margin-bottom: 25px;"><h2 style="font-size: 1.5rem; color: var(--accent-color); font-weight: 900; text-transform: uppercase;">${tituloLabel}</h2></div><div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">`;
+                if (!ranking || ranking.length === 0) {
+                    html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay marcas en este tablero.</p>`;
+                } else {
+                    ranking.forEach((fila, i) => {
+                        let corona = i === 0 ? "🥇 " : (i === 1 ? "🥈 " : (i === 2 ? "🥉 " : ""));
+                        html += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;"><span style="font-weight: 700;">${corona}${i + 1}. ${fila[0]}</span><span style="color: var(--accent-color); font-weight: 900;">${fila[1]} <span style="font-size:0.8rem; font-weight:normal; color:var(--text-muted);">pts</span></span></div>`;
+                    });
+                }
+                html += `</div>`;
+                modalBody.innerHTML = html;
+            } catch (e) {
+                modalBody.innerHTML = `<div style="text-align:center; padding:25px;"><h3 style="color:#ff5555; font-weight:900;">⚠️ ERROR DE ENLACE</h3></div>`;
+            }
+        }
+
         function compartirResultado() {
             const mensajeShare = `⚽ ¡Completé las 5 rondas de StadiumGuessr en Estadios Virtuales con un récord final de ${guessrPuntosTotales} puntos! 🌍✈️ ¿Te animás a superar mi marca volando en 3D sobre los templos del fútbol?`;
             const urlShare = window.location.href;
@@ -2012,18 +2040,7 @@
             `;
         }
 
-        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; 
-        }
-
-        // --- SISTEMA DEL JUEGO DE ORDENAMIENTO COMPLETO (MOBILE-FIRST: LISTA ÚNICA DE 5 ELEMENTOS INTERACTIVOS) ---
+        // --- SISTEMA DEL MINIJUEGO DE TRIVIA DE ORDENAMIENTO RECONFIGURADO MOBILE-FIRST (LISTA ÚNICA DE 5 ELEMENTOS) ---
         function abrirModalOrden() {
             document.getElementById('order-modal').style.display = 'flex';
             const body = document.getElementById('order-modal-body');
@@ -2044,18 +2061,13 @@
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             Ordenar por Antigüedad
                         </button>
+                        <div style="width:100%; border-top:1px solid #222; margin:10px 0; padding-top:10px; display:flex; gap:10px;">
+                            <button onclick="abrirModalRankingOrden('capacidad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Capacidad</button>
+                            <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Edad</button>
+                        </div>
                     </div>
                 </div>
             `;
-        }
-
-        function cerrarModalOrden() {
-            document.getElementById('order-modal').style.display = 'none';
-            document.getElementById('order-modal-body').innerHTML = '';
-            orderList = [];
-            orderSelectedIdx = null;
-            orderModo = "";
-            orderPuntosGanados = 0;
         }
 
         function iniciarJuegoOrden(modo) {
@@ -2233,6 +2245,7 @@
             `;
         }
 
+        // FUNCIÓN INTERACTIVA "TAP TO SWAP" PARA LISTA ÚNICA MOBILE
         function seleccionarFilaOrden(index) {
             if (orderSelectedIdx === null) {
                 orderSelectedIdx = index;
@@ -2488,4 +2501,4 @@
         });
     </script>
 </body>
-</html>
+</html>"""
