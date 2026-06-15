@@ -1159,7 +1159,7 @@
             if (!obj) return '';
             const claveLimpia = claveBuscada.toLowerCase().trim();
             for (let k in obj) {
-                let kLimpia = k.toLowerCase().replace(/[​-‍﻿]/g, '').trim();
+                let kLimpia = k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
                 if (kLimpia === claveLimpia) {
                     return obj[k];
                 }
