@@ -1089,7 +1089,7 @@
         let catalogoGlobal = [];
         const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071", "879164460"];
 
-        // Variables del motor de juego Guessr
+        // Variables del motor de juego
         let guessrRondaActual = 0;
         let guessrPuntosTotales = 0;
         let guessrEstadioCorrecto = null;
@@ -1100,7 +1100,7 @@
         let guessrPolyline = null;
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
-        let guessrHistorialRondas = [];
+        let guessrHistorialRondas = []; // Almacena el desglose de cada ronda
 
         // Variables del motor del juego de ordenamiento
         let orderList = [];
@@ -1181,7 +1181,7 @@
             "Huracán": "linear-gradient(135deg, #ffffff, #e60000)",
             "Estudiantes de La Plata": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
             "Gimnasia y Esgrima LP": "linear-gradient(135deg, #ffffff, #002060)",
-            "Rosario Central": "linear-gradient(135deg, #ffffff, #002060)",
+            "Rosario Central": "linear-gradient(135deg, #002060, #ffcc00)",
             "Newell's Old Boys": "linear-gradient(135deg, #000000, #cc0000)",
             "Vélez Sarsfield": "linear-gradient(135deg, #ffffff, #0000ff)",
             "Lanús": "linear-gradient(135deg, #5c061e, #2e030f)",
@@ -1913,7 +1913,7 @@
                 modalBody.innerHTML = `
                     <div style="text-align:center; padding:25px;">
                         <h3 style="color:#ff5555; margin-bottom:10px; font-weight:900;">⚠️ ERROR DE CONEXIÓN</h3>
-                        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.5;">No se pudo establecer el enlace con el Apps Script de Google. Comprobá que esté publicado de forma pública ("Ejecutar como: Yo" and "Acceso: Cualquier persona") y con la pestaña 'Ranking' creada en tu Sheets.</p>
+                        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.5;">No se pudo establecer el enlace con el Apps Script de Google. Comprobá que esté publicado de forma pública ("Ejecutar como: Yo" y "Acceso: Cualquier persona") y con la pestaña 'Ranking' creada en tu Sheets.</p>
                     </div>
                 `;
             }
@@ -2037,7 +2037,7 @@
             return R * c; 
         }
 
-        // --- SISTEMA DEL JUEGO DE ORDENAMIENTO COMPLETO (MOBILE-FIRST: LISTA ÚNICA DE 5 ELEMENTOS INTERACTIVOS) ---
+        // --- SISTEMA DEL MINIJUEGO DE TRIVIA DE ORDENAMIENTO RECONFIGURADO MOBILE-FIRST (LISTA ÚNICA DE 5 ELEMENTOS) ---
         function abrirModalOrden() {
             document.getElementById('order-modal').style.display = 'flex';
             const body = document.getElementById('order-modal-body');
@@ -2065,15 +2065,6 @@
                     </div>
                 </div>
             `;
-        }
-
-        function cerrarModalOrden() {
-            document.getElementById('order-modal').style.display = 'none';
-            document.getElementById('order-modal-body').innerHTML = '';
-            orderList = [];
-            orderSelectedIdx = null;
-            orderModo = "";
-            orderPuntosGanados = 0;
         }
 
         function iniciarJuegoOrden(modo) {
@@ -2145,12 +2136,7 @@
             });
 
             // Desordenar la lista para el usuario
-            orderList = [];
-            while (seleccionados.length > 0) {
-                const idxRand = Math.floor(Math.random() * seleccionados.length);
-                orderList.push(seleccionados.splice(idxRand, 1)[0]);
-            }
-
+            orderList = [...seleccionados].sort(() => Math.random() - 0.5);
             orderStartTime = performance.now(); // Clavamos el ancla del reloj de velocidad invisible
             renderJuegoOrden();
         }
@@ -2223,6 +2209,10 @@
                             <button onclick="enviarPuntajeOrden()" class="btn-view" style="padding:11px; font-size:0.9rem; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v7a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/></svg>
                                 Guardar Puntaje
+                            </button>
+                            <button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-view" style="padding:11px; font-size:0.9rem; background:#222; color:#fff; border:1px solid #333; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Ver Ranking Global
                             </button>
                             <button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-view" style="padding:11px; font-size:0.9rem; background:#1a1a1a; color:#fff; border:1px solid #333; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M10 10v4M15 11v.01M18 13v.01"></svg>
@@ -2325,6 +2315,72 @@
                 cerrarModalOrden();
             })
             .catch(err => alert("Error al enviar el puntaje. Reintentá en unos momentos."));
+        }
+
+        function finalizarJuegoGuessr() {
+            const container = document.getElementById('modal-video-container');
+            const gameUi = document.getElementById('game-ui');
+            
+            gameUi.style.display = 'none';
+            container.style.height = '100%';
+            document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+
+            if (guessrMapInstance) {
+                guessrMapInstance.remove();
+                guessrMapInstance = null;
+            }
+
+            userStats.partidasJugadas++;
+            if (guessrPuntosTotales > userStats.maxScore) {
+                userStats.maxScore = guessrPuntosTotales;
+            }
+            guardarStats();
+
+            // Construimos la lista estética del desglose de rondas (Estilo Premium)
+            let historialHTML = `<div style="width: 100%; max-width: 420px; text-align: left; margin: 0 auto 20px auto; background: #161616; border: 1px solid #252525; border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+                <h4 style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 6px; font-weight: bold;">📊 DESGLOSE DE RONDAS</h4>`;
+            
+            guessrHistorialRondas.forEach(item => {
+                let distTexto = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
+                historialHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.85rem;">
+                        <span style="color: #ffffff; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.estadio}">
+                            <strong style="color: var(--accent-color);">R${item.ronda}:</strong> ${item.estadio}
+                        </span>
+                        <span style="color: var(--text-muted); text-align: right;">
+                            <strong style="color: #fff;">+${item.puntos}</strong> pts <span style="font-size: 0.75rem; opacity: 0.7;">(${distTexto})</span>
+                        </span>
+                    </div>`;
+            });
+            historialHTML += `</div>`;
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 30px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; overflow-y: auto;">
+                    <h2 style="font-size: 1.8rem; margin-bottom: 10px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2>
+                    <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Completaste las 5 rondas de reconocimiento aéreo.</p>
+                    <div style="background: #111; border: 1px solid #222; padding: 12px 35px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 3px;">Puntaje Final Global</span>
+                        <strong style="font-size: 2.3rem; color: #ffffff; font-weight: 900;">${guessrPuntosTotales} <span style="font-size: 1.1rem; color: var(--accent-color);">Pts</span></strong>
+                    </div>
+
+                    ${historialHTML}
+
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 250px;">
+                        <button onclick="enviarMiPuntaje()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2); margin-top: 0;">Guardar Puntaje 🚀</button>
+                        <button onclick="abrirModalRanking()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #222; color: #fff; border: 1px solid #333; margin-top: 0;">Ver Ranking Global 🏆</button>
+                        <button onclick="compartirResultado()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; margin-top: 0;">Compartir Récord 🔗</button>
+                        <button onclick="iniciarTrivia()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); margin-top: 10px;">Volar de nuevo 🎮</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))); 
         }
 
         function inicializarGoogleLogin() {
