@@ -1081,15 +1081,12 @@
         // --- SEPARACIÓN DE RUTAS DEFINITIVA ---
         const scriptUrlVotos = "https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWHGFjXnP_1po2goZopbf7YuSfzL5HnpvdLFsrejM6/exec";
         const scriptUrlRanking = "https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
-        // --- TABLEROS INDEPENDIENTES DEL JUEGO DE ORDENAR ---
-        const scriptUrlCapacidad = "https://script.google.com/macros/s/AKfycbyE0qTVuS-tPcRuAYzpduyviucNFqkz2MJzL9nvyMsKleC3DVAK7aCifxxHCkQCOr6WFQ/exec";
-        const scriptUrlAntiguedad = "https://script.google.com/macros/s/AKfycbwCpsQ4Wg8Bgvfpfk-OVRUzueaDuWtaRn1DzHqQJ2XXP7km3-FBXw8w8Eh7JIVk9L-t6w/exec";
 
         let estadiosCargados = [];
         let catalogoGlobal = [];
         const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071", "879164460"];
 
-        // Variables del motor de juego Guessr
+        // Variables del motor de juego
         let guessrRondaActual = 0;
         let guessrPuntosTotales = 0;
         let guessrEstadioCorrecto = null;
@@ -1100,14 +1097,13 @@
         let guessrPolyline = null;
         let guessrSelectedLatLng = null;
         let previewMapInstance = null;
-        let guessrHistorialRondas = [];
+        let guessrHistorialRondas = []; // Almacena el desglose de cada ronda
 
         // Variables del motor del juego de ordenamiento
         let orderList = [];
         let orderSelectedIdx = null;
         let orderModo = ""; // "capacidad" o "antiguedad"
         let orderPuntosGanados = 0;
-        let orderStartTime = 0; // El ancla para el reloj de velocidad invisible
 
         // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES
         let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
@@ -1578,7 +1574,7 @@
                     } else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) {
                         claseEstrella = 'half-active';
                     }
-                    estrellasHTML += `<span class="star-icon ${claseEstrella}" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\\'")}', '${clubNombre.replace(/'/g, "\\'")}', ${i})">★</span>`;
+                    estrellasHTML += `<span class="star-icon ${claseEstrella}" onclick="registrarVoto(event, '${estadio.replace(/'/g, "\'")}', '${clubNombre.replace(/'/g, "\'")}', ${i})">★</span>`;
                 }
 
                 const tarjeta = document.createElement('article');
@@ -1933,34 +1929,6 @@
             }
         }
 
-        // --- NUEVAS FUNCIONES DE LA TABLA DE POSICIONES INDEPENDIENTES ---
-        async function abrirModalRankingOrden(modo) {
-            const modalBody = document.getElementById('profile-modal-body');
-            modalBody.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; padding:30px;">Cargando tabla de posiciones...</h3>';
-            document.getElementById('profile-modal').style.display = 'flex';
-            
-            let urlDestino = modo === 'capacidad' ? scriptUrlCapacidad : scriptUrlAntiguedad;
-            let tituloLabel = modo === 'capacidad' ? '🏆 TOP 10 CAPACIDAD 🏆' : '🏆 TOP 10 ANTIGÜEDAD 🏆';
-            
-            try {
-                const res = await fetch(urlDestino);
-                const ranking = await res.json();
-                let html = `<div style="text-align: center; margin-bottom: 25px;"><h2 style="font-size: 1.5rem; color: var(--accent-color); font-weight: 900; text-transform: uppercase;">${tituloLabel}</h2></div><div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">`;
-                if (!ranking || ranking.length === 0) {
-                    html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay marcas en este tablero.</p>`;
-                } else {
-                    ranking.forEach((fila, i) => {
-                        let corona = i === 0 ? "🥇 " : (i === 1 ? "🥈 " : (i === 2 ? "🥉 " : ""));
-                        html += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;"><span style="font-weight: 700;">${corona}${i + 1}. ${fila[0]}</span><span style="color: var(--accent-color); font-weight: 900;">${fila[1]} <span style="font-size:0.8rem; font-weight:normal; color:var(--text-muted);">pts</span></span></div>`;
-                    });
-                }
-                html += `</div>`;
-                modalBody.innerHTML = html;
-            } catch (e) {
-                modalBody.innerHTML = `<div style="text-align:center; padding:25px;"><h3 style="color:#ff5555; font-weight:900;">⚠️ ERROR DE ENLACE</h3></div>`;
-            }
-        }
-
         function compartirResultado() {
             const mensajeShare = `⚽ ¡Completé las 5 rondas de StadiumGuessr en Estadios Virtuales con un récord final de ${guessrPuntosTotales} puntos! 🌍✈️ ¿Te animás a superar mi marca volando en 3D sobre los templos del fútbol?`;
             const urlShare = window.location.href;
@@ -2040,34 +2008,50 @@
             `;
         }
 
-        // --- SISTEMA DEL MINIJUEGO DE TRIVIA DE ORDENAMIENTO RECONFIGURADO MOBILE-FIRST (LISTA ÚNICA DE 5 ELEMENTOS) ---
+        function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
+        // --- SISTEMA DEL MINIJUEGO DE TRIVIA DE ORDENAMIENTO (MOBILE-FIRST LISTA ÚNICA) ---
         function abrirModalOrden() {
             document.getElementById('order-modal').style.display = 'flex';
             const body = document.getElementById('order-modal-body');
             
             body.innerHTML = `
                 <div style="text-align: center; color: white; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-                    <div style="margin-bottom: 18px; color: var(--accent-color);">
-                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <div style="margin-bottom: 15px; color: var(--accent-color);">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                     </div>
-                    <h2 style="font-size: 1.6rem; font-weight: 900; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">DESAFÍO DE ORDENAMIENTO</h2>
+                    <h2 style="font-size: 1.6rem; font-weight: 900; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">DESAFÍO DE ORDENAMIENTO</h2>
                     <p style="color: var(--text-muted); font-size: 1rem; max-width: 460px; line-height: 1.5; margin-bottom: 30px;">Demostrá tu nivel de conocimiento sobre los templos del fútbol mundial. Seleccioná una categoría para ordenar los estadios.</p>
                     <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-                        <button onclick="iniciarJuegoOrden('capacidad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2); margin-top:0; display:flex; align-items:center; justify-content:center; gap:10px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>
+                        <button onclick="iniciarJuegoOrden('capacidad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2); margin-top:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>
                             Ordenar por Capacidad
                         </button>
-                        <button onclick="iniciarJuegoOrden('antiguedad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top:0; display:flex; align-items:center; justify-content:center; gap:10px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <button onclick="iniciarJuegoOrden('antiguedad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                             Ordenar por Antigüedad
                         </button>
-                        <div style="width:100%; border-top:1px solid #222; margin:10px 0; padding-top:10px; display:flex; gap:10px;">
-                            <button onclick="abrirModalRankingOrden('capacidad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Capacidad</button>
-                            <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Edad</button>
-                        </div>
                     </div>
                 </div>
             `;
+        }
+
+        function cerrarModalOrden() {
+            document.getElementById('order-modal').style.display = 'none';
+            document.getElementById('order-modal-body').innerHTML = '';
+            orderList = [];
+            orderSelectedIdx = null;
+            orderModo = "";
+            orderPuntosGanados = 0;
         }
 
         function iniciarJuegoOrden(modo) {
@@ -2097,11 +2081,11 @@
             });
 
             if (estadiosValidos.length < 5) {
-                alert('No hay suficientes estadios válidos para estructurar el podio.');
+                alert('No hay suficientes estadios con datos válidos para armar el desafío.');
                 return;
             }
 
-            // Seleccionar exactamente 5 estadios al azar distintos
+            // Seleccionar 5 estadios al azar distintos
             let seleccionados = [];
             let copiaValidos = [...estadiosValidos];
             while (seleccionados.length < 5) {
@@ -2124,23 +2108,34 @@
                 });
             }
 
-            // Capacidad de Mayor a Menor, Antigüedad de Menor a Mayor (Más Viejo Primero)
-            let ordenadosCorrectamente = [...seleccionados].sort((a, b) => modo === 'capacidad' ? b.valor - a.valor : a.valor - b.valor);
+            // Calcular las posiciones correctas ordenándolos por valor numérico
+            // CORREGIDO: Capacidad de Mayor a Menor (Puesto 1 = más grande, Puesto 5 = más chico)
+            // Antigüedad de Menor a Mayor (Puesto 1 = más viejo, Puesto 5 = más moderno)
+            let ordenadosCorrectamente;
+            if (modo === 'capacidad') {
+                ordenadosCorrectamente = [...seleccionados].sort((a, b) => b.valor - a.valor);
+            } else {
+                ordenadosCorrectamente = [...seleccionados].sort((a, b) => a.valor - b.valor);
+            }
+
             seleccionados.forEach(est => {
                 est.correctIdx = ordenadosCorrectamente.findIndex(o => o.estadio === est.estadio && o.club === est.club);
             });
 
-            // Desordenar la lista inicial para juego en columna vertical única
-            orderList = [...seleccionados].sort(() => Math.random() - 0.5);
-            orderStartTime = performance.now(); // Clavamos el ancla del reloj invisible de velocidad
+            // Desordenar la lista para el usuario
+            orderList = [];
+            while (seleccionados.length > 0) {
+                const idxRand = Math.floor(Math.random() * seleccionados.length);
+                orderList.push(seleccionados.splice(idxRand, 1)[0]);
+            }
 
             renderJuegoOrden();
         }
 
         function renderJuegoOrden(revelarResultados = false) {
             const body = document.getElementById('order-modal-body');
-            let tituloModo = orderModo === 'capacidad' ? 'CAPACIDAD MÁXIMA' : 'ANTIGÜEDAD (FUNDACIÓN)';
             
+            let tituloModo = orderModo === 'capacidad' ? 'CAPACIDAD MÁXIMA' : 'ANTIGÜEDAD (FUNDACIÓN)';
             let strokeSvg = orderModo === 'capacidad'
                 ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>'
                 : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
@@ -2158,7 +2153,9 @@
                 if (revelarResultados) {
                     const esCorrecto = i === est.correctIdx;
                     borderCol = esCorrecto ? '#1db954' : '#ff5555';
-                    let textoValor = orderModo === 'capacidad' ? `${est.valor.toLocaleString()} esp.` : `Año ${est.valor}`;
+                    let textoValor = orderModo === 'capacidad' 
+                        ? `${est.valor.toLocaleString()} esp.` 
+                        : `Año ${est.valor}`;
                     badgeExtra = `<span style="background:${borderCol}; color:#000; font-size:0.7rem; font-weight:bold; padding:2px 8px; border-radius:10px; margin-left:auto; text-transform:uppercase;">${textoValor}</span>`;
                 } else if (orderSelectedIdx === i) {
                     borderCol = 'var(--accent-hover)';
@@ -2264,22 +2261,13 @@
         }
 
         function procesarResultadoOrden() {
-            let endTime = performance.now();
-            let tiempoTardado = (endTime - orderStartTime) / 1000; // Segundos totales consumidos
-
-            // Fórmula de Bonus de tiempo escalada: Máximo 1250 puntos si lo hace instantáneo, decrece hasta 50s.
-            let bonusTiempo = Math.max(0, Math.round((50 - tiempoTardado) * 25));
-
             let desviacionTotal = 0;
             orderList.forEach((est, idx) => {
                 desviacionTotal += Math.abs(idx - est.correctIdx);
             });
 
-            // Puntos base por precisión (Penalización suave: resta 600 puntos por cada desvío de celda)
-            let puntosBase = Math.max(0, 5000 - (desviacionTotal * 600));
-
-            // El bonus de velocidad se escala proporcionalmente según tu precisión (castiga el azar instantáneo)
-            orderPuntosGanados = Math.round(puntosBase + (bonusTiempo * (puntosBase / 5000)));
+            // Penalización balanceada para 5 elementos
+            orderPuntosGanados = Math.max(0, 5000 - (desviacionTotal * 500));
             renderJuegoOrden(true);
         }
 
@@ -2293,17 +2281,16 @@
             }
             if (!nombre || nombre.trim() === "") return;
 
-            // DIRECCIONAMIENTO CORREGIDO: Envía los puntos a cada Apps Script independiente según el modo activo
-            let urlDestino = orderModo === 'capacidad' ? scriptUrlCapacidad : scriptUrlAntiguedad;
+            const payload = { nombre: nombre.trim(), puntaje: orderPuntosGanados };
 
-            fetch(urlDestino, {
+            fetch(scriptUrlRanking, {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre: nombre.trim(), puntaje: orderPuntosGanados })
+                body: JSON.stringify(payload)
             })
             .then(() => {
-                alert(`¡Tu marca de ${orderPuntosGanados} pts fue guardada con éxito en el tablero de ${orderModo}! 🚀`);
+                alert(`¡Tu marca de ${orderPuntosGanados} pts fue enviada con éxito al salón de la fama global! 🚀`);
                 cerrarModalOrden();
             })
             .catch(err => alert("Error al enviar el puntaje. Reintentá en unos momentos."));
@@ -2501,4 +2488,4 @@
         });
     </script>
 </body>
-</html>"""
+</html>
