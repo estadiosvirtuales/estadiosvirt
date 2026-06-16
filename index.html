@@ -17,7 +17,7 @@
             --bg-color: #0a0a0a;
             --card-bg: #141414;
             --surface-color: #1a1a1a;
-            --surface-hover: #222222;
+            --surface-hover: #252525;
             --text-main: #ffffff;
             --text-muted: #888888;
             --text-inverse: #000000;
@@ -32,28 +32,36 @@
             --flag-overlay: rgba(0,0,0,0.58);
             --shadow-soft: 0 4px 15px rgba(0,0,0,0.3);
             --shadow-strong: 0 12px 40px rgba(0,0,0,0.7);
+            
+            /* Colores Gamificados */
+            --game-card-bg: #1e1e1e;
+            --game-card-border: #333333;
         }
 
         [data-theme="light"] {
-            /* TEMA CLARO */
-            --bg-color: #f0f2f5;
+            /* TEMA CLARO - VERDE CLARITO SUAVE */
+            --bg-color: #eaf4eb; /* Verde clarito de fondo */
             --card-bg: #ffffff;
-            --surface-color: #e4e6e9;
-            --surface-hover: #d5d8dc;
-            --text-main: #111111;
-            --text-muted: #666666;
+            --surface-color: #d8eadb; /* Superficie ligeramente más saturada */
+            --surface-hover: #c5e0c9;
+            --text-main: #112615;
+            --text-muted: #537a5b;
             --text-inverse: #ffffff;
-            --accent-color: #199c45;
-            --accent-hover: #158038;
-            --danger-color: #d32f2f;
-            --border-subtle: rgba(0,0,0,0.08);
-            --border-strong: rgba(0,0,0,0.15);
-            --glass-bg: rgba(255,255,255,0.9);
-            --modal-overlay: rgba(20,25,30,0.7);
+            --accent-color: #16a34a;
+            --accent-hover: #15803d;
+            --danger-color: #dc2626;
+            --border-subtle: rgba(22, 163, 74, 0.15);
+            --border-strong: rgba(22, 163, 74, 0.3);
+            --glass-bg: rgba(255,255,255,0.92);
+            --modal-overlay: rgba(223, 237, 225, 0.85); /* Overlay verdoso */
             --tab-shadow: rgba(255,255,255,0.6);
-            --flag-overlay: rgba(255,255,255,0.7);
-            --shadow-soft: 0 4px 15px rgba(0,0,0,0.05);
-            --shadow-strong: 0 12px 40px rgba(0,0,0,0.12);
+            --flag-overlay: rgba(255,255,255,0.85);
+            --shadow-soft: 0 4px 15px rgba(22, 163, 74, 0.15);
+            --shadow-strong: 0 12px 40px rgba(22, 163, 74, 0.25);
+            
+            /* Colores Gamificados Claro */
+            --game-card-bg: #ffffff;
+            --game-card-border: #b8d6be;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -64,6 +72,51 @@
             padding-bottom: 50px; 
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
+        /* ─── ANIMACIONES DIVERTIDAS (GAMIFICACIÓN) ─── */
+        @keyframes bounceFun {
+            0% { transform: scale(0.8); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 0 12px rgba(29, 185, 84, 0); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); transform: scale(1); }
+        }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-3deg); }
+            75% { transform: rotate(3deg); }
+        }
+
+        .animate-bounce { animation: bounceFun 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .animate-pulse-glow { animation: pulseGlow 2s infinite; }
+
+        /* Botones estilo 3D para Juegos */
+        .btn-3d {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 20px; font-weight: 700; font-size: 1rem;
+            border-radius: 16px; border: none; cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 6px 0 var(--border-strong), 0 10px 15px rgba(0,0,0,0.1);
+        }
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 var(--border-strong), 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-3d.primary {
+            background: var(--accent-color); color: #000;
+            box-shadow: 0 6px 0 #15803d, 0 10px 15px rgba(29,185,84,0.3);
+        }
+        .btn-3d.primary:active { box-shadow: 0 2px 0 #15803d; }
+        
+        .btn-3d.secondary {
+            background: var(--surface-color); color: var(--text-main);
+            border: 2px solid var(--border-strong);
+            box-shadow: 0 5px 0 var(--border-strong);
+        }
+        .btn-3d.secondary:active { box-shadow: 0 1px 0 var(--border-strong); }
 
         /* ─── BOTÓN CAMBIO DE TEMA ─── */
         .theme-toggle-btn {
@@ -84,12 +137,9 @@
 
         /* ─── HERO ─── */
         .hero-section {
-            position: relative; padding: 60px 20px 45px;
-            text-align: center;
-            background:
-                linear-gradient(180deg, rgba(29,185,84,0.10) 0%, rgba(10,10,10,0.05) 55%, var(--bg-color) 100%);
-            border-bottom: 1px solid var(--border-subtle);
-            overflow: hidden;
+            position: relative; padding: 60px 20px 45px; text-align: center;
+            background: linear-gradient(180deg, rgba(29,185,84,0.10) 0%, rgba(10,10,10,0.02) 55%, var(--bg-color) 100%);
+            border-bottom: 1px solid var(--border-subtle); overflow: hidden;
             transition: background 0.3s ease;
         }
 
@@ -115,7 +165,7 @@
             display: inline-flex; align-items: center; gap: 6px;
             background: rgba(29,185,84,0.12); border: 1px solid rgba(29,185,84,0.25);
             color: var(--accent-color); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-            padding: 5px 14px; border-radius: 20px; margin-bottom: 14px;
+            padding: 6px 16px; border-radius: 20px; margin-bottom: 14px;
         }
 
         .hero-subtitle { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 28px; font-weight: 400; max-width: 580px; line-height: 1.65; }
@@ -129,15 +179,12 @@
             color: var(--text-muted); pointer-events: none; font-size: 1.2rem; z-index: 2;
         }
         .search-bar {
-            width: 100%; padding: 15px 20px 15px 46px;
-            border-radius: 30px; border: 1px solid var(--border-subtle);
+            width: 100%; padding: 15px 20px 15px 46px; border-radius: 30px; border: 1px solid var(--border-subtle);
             background: var(--card-bg); color: var(--text-main); font-size: 1rem; outline: none;
             transition: all 0.3s ease;
         }
         .search-bar::placeholder { color: var(--text-muted); font-weight: 400;}
-        .search-bar:focus {
-            border-color: rgba(29,185,84,0.5); box-shadow: 0 0 0 3px rgba(29,185,84,0.12);
-        }
+        .search-bar:focus { border-color: rgba(29,185,84,0.5); box-shadow: 0 0 0 3px rgba(29,185,84,0.12); }
 
         .hero-action-buttons { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; width: 100%; }
 
@@ -158,26 +205,35 @@
         .hero-profile-name { font-size: 0.85rem; font-weight: 600; color: var(--text-main); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .hero-profile-sub { font-size: 0.7rem; color: var(--accent-color); font-weight: 500; display:flex; align-items:center; gap:4px;}
 
-        /* ─── LIGAS TABS ─── */
+        /* ─── LIGAS TABS (MODIFICADO PARA ESTAR EN LISTA) ─── */
         .section-ligas { max-width: 1200px; margin: 32px auto 16px; padding: 0 20px; }
-        .section-title { font-size: 0.7rem; font-weight: 600; margin-bottom: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+        .section-title { font-size: 0.75rem; font-weight: 600; margin-bottom: 18px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
         .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
 
-        .tabs-container { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 12px; justify-content: center; }
+        .tabs-container { 
+            display: flex; 
+            flex-direction: column; /* EN LISTA VERTICAL */
+            align-items: center;
+            gap: 12px; 
+            padding: 4px 0 12px; 
+            width: 100%;
+        }
         
         .tab {
             color: var(--text-main); border: 1px solid var(--border-subtle);
-            padding: 9px 20px; border-radius: 22px; cursor: pointer;
-            font-weight: 400; white-space: nowrap; font-size: 0.9rem;
+            padding: 14px 20px; border-radius: 14px; cursor: pointer; /* Bordes más suaves, más alto */
+            font-weight: 500; white-space: nowrap; font-size: 1rem;
             transition: all 0.25s ease;
             text-shadow: 1px 1px 3px var(--tab-shadow);
             background-color: var(--card-bg); background-size: 100% 100%; background-position: center;
-            position: relative; box-shadow: inset 0 0 0 1000px var(--flag-overlay);
+            position: relative; box-shadow: inset 0 0 0 1000px var(--flag-overlay), var(--shadow-soft);
+            width: 100%; max-width: 350px; /* Tamaño máximo para que se vea elegante y no ocupe todo el ancho */
+            display: flex; justify-content: center; align-items: center;
         }
         .tab.active, .tab:hover {
             border-color: var(--accent-color);
-            box-shadow: inset 0 0 0 1000px var(--flag-overlay), var(--shadow-soft);
-            transform: translateY(-2px); font-weight: 500;
+            box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 6px 20px rgba(29,185,84,0.25);
+            transform: translateY(-3px); font-weight: 600;
         }
 
         /* Flags */
@@ -223,8 +279,8 @@
 
         .trivia-hint {
             position: absolute; top: 10px; right: 10px;
-            background: rgba(0,0,0,0.5); color: var(--text-main);
-            border-radius: 50%; width: 28px; height: 28px;
+            background: rgba(0,0,0,0.5); color: #fff;
+            border-radius: 50%; width: 30px; height: 30px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.1rem; z-index: 4; border: 1px solid rgba(255,255,255,0.2);
             backdrop-filter: blur(6px); transition: all 0.25s;
@@ -233,7 +289,7 @@
 
         .trivia-balloon {
             position: absolute; inset: 8px; background: var(--glass-bg);
-            border: 1px solid var(--border-strong); border-radius: 10px;
+            border: 1px solid var(--border-strong); border-radius: 12px;
             padding: 10px; display: flex; flex-direction: column;
             z-index: 10; opacity: 0; pointer-events: none;
             transform: scale(0.93); transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
@@ -260,16 +316,14 @@
             font-weight: 500; font-size: 0.95rem; border: 1px solid var(--border-strong); cursor: pointer;
             transition: all 0.25s; margin-top: auto;
         }
-        .btn-view:hover { background: var(--accent-color); color: #000; border-color:var(--accent-color); transform: translateY(-1px); }
-        .btn-view.primary-action { background: var(--accent-color); color: #000; border: none; font-weight: 600;}
-        .btn-view.primary-action:hover { background: var(--accent-hover); }
+        .btn-view:hover { background: var(--accent-color); color: #000; border-color:var(--accent-color); transform: translateY(-2px); }
 
         /* ─── RATING STARS ─── */
         .rating-box { display: flex; flex-direction: column; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
         .rating-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         .stars-row { display: flex; gap: 4px; }
         .star-icon { font-size: 1.4rem; color: var(--border-strong); cursor: pointer; transition: transform 0.15s ease, color 0.15s ease; user-select: none; }
-        .star-icon:hover { transform: scale(1.2); }
+        .star-icon:hover { transform: scale(1.2); color: var(--accent-hover); }
         .star-icon.active { color: var(--accent-color) !important; }
         .star-icon.half-active { background: linear-gradient(90deg, var(--accent-color) 50%, var(--border-strong) 50%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
@@ -280,17 +334,17 @@
         }
         .modal-content {
             position: relative; width: 90%; max-width: 560px; height: 80vh;
-            background: var(--bg-color); border-radius: 14px;
+            background: var(--bg-color); border-radius: 16px;
             box-shadow: var(--shadow-strong); display: flex; flex-direction: column; transition: all 0.3s ease;
             border: 1px solid var(--border-subtle);
         }
         .modal-content.stadium-guessr-layout { width: 88% !important; max-width: 1100px !important; }
-        .video-container { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
+        .video-container { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
 
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout { flex-direction: row !important; }
-            .modal-content.stadium-guessr-layout .video-container { width: 55% !important; height: 100% !important; border-radius: 14px 0 0 14px !important; }
-            .modal-content.stadium-guessr-layout #game-ui { width: 45% !important; height: 100% !important; border-top: none !important; border-left: 1px solid var(--border-subtle) !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; border-radius: 0 14px 14px 0 !important; padding: 24px !important; }
+            .modal-content.stadium-guessr-layout .video-container { width: 55% !important; height: 100% !important; border-radius: 16px 0 0 16px !important; }
+            .modal-content.stadium-guessr-layout #game-ui { width: 45% !important; height: 100% !important; border-top: none !important; border-left: 1px solid var(--border-subtle) !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; border-radius: 0 16px 16px 0 !important; padding: 24px !important; }
             .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; height: 100% !important; min-height: 350px !important; }
         }
         @media (max-width: 768px) {
@@ -306,11 +360,10 @@
         }
 
         /* ─── GAME UI ─── */
-        #game-ui { display: none; width: 100%; background: var(--bg-color) !important; padding: 20px !important; text-align: center; z-index: 2010; border-radius: 0 0 14px 14px; }
-        #game-title { font-size: 0.9rem !important; color: var(--text-main); margin-bottom: 14px; font-weight: 600 !important; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--surface-color); padding: 10px; border-radius: 8px; border: 1px solid var(--border-subtle); }
-        #map-guess-container { width: 100%; height: 260px; background: var(--surface-color); border-radius: 10px !important; border: 1px solid var(--border-strong); margin-bottom: 14px; transition: border-color 0.3s; }
-        #map-guess-container:hover { border-color: rgba(29,185,84,0.35); }
-        #game-action-btn { text-transform: uppercase; letter-spacing: 0.5px; border-radius: 28px !important; transition: all 0.3s ease !important; font-weight: 600;}
+        #game-ui { display: none; width: 100%; background: var(--bg-color) !important; padding: 20px !important; text-align: center; z-index: 2010; border-radius: 0 0 16px 16px; }
+        #game-title { font-size: 0.95rem !important; color: var(--text-main); margin-bottom: 14px; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);}
+        #map-guess-container { width: 100%; height: 260px; background: var(--surface-color); border-radius: 12px !important; border: 2px solid var(--border-strong); margin-bottom: 16px; transition: border-color 0.3s; }
+        #map-guess-container:hover { border-color: var(--accent-color); }
 
         /* ─── CLOSE BUTTONS ─── */
         .close-btn {
@@ -318,14 +371,14 @@
             background: var(--surface-color); color: var(--text-main);
             border: 1px solid var(--border-subtle); padding: 0;
             cursor: pointer; z-index: 2020; border-radius: 50%;
-            width: 34px; height: 34px; font-size: 1.1rem;
+            width: 36px; height: 36px; font-size: 1.2rem;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s ease; box-shadow: var(--shadow-soft);
         }
-        .close-btn:hover { background: var(--danger-color); color: #fff; border-color: var(--danger-color); transform: scale(1.1); }
+        .close-btn:hover { background: var(--danger-color); color: #fff; border-color: var(--danger-color); transform: scale(1.1) rotate(90deg); }
 
         /* ─── LEAFLET CUSTOM ─── */
-        .leaflet-popup-content-wrapper { background: var(--surface-color) !important; color: var(--text-main) !important; border: 1px solid var(--accent-color); border-radius: 8px !important; box-shadow: var(--shadow-soft) !important;}
+        .leaflet-popup-content-wrapper { background: var(--surface-color) !important; color: var(--text-main) !important; border: 2px solid var(--accent-color); border-radius: 12px !important; box-shadow: var(--shadow-soft) !important;}
         .leaflet-popup-tip { background: var(--surface-color) !important; }
 
         /* ─── PROFILE MODAL ─── */
@@ -336,100 +389,101 @@
             .right-dashboard-column { width: 62%; display: flex; flex-direction: column; justify-content: space-between; }
         }
 
-        .fut-card { position: relative; width: 250px; height: 380px; background-size: cover; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; color: #000; font-family: 'Arial Black', Gadget, sans-serif; box-shadow: var(--shadow-strong); overflow: hidden; user-select: none; }
-        .fut-card.bronze { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%); border: 3px solid #92400e; color: #fef3c7; }
-        .fut-card.silver { background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%); border: 3px solid #9ca3af; color: #ffffff; }
-        .fut-card.gold { background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%); border: 3px solid #facc15; color: #fff; animation: goldShine 4s infinite alternate; }
-        @keyframes goldShine { 0% { box-shadow: 0 0 15px rgba(234,179,8,0.3); } 100% { box-shadow: 0 0 25px rgba(29,185,84,0.5); } }
+        .fut-card { position: relative; width: 250px; height: 380px; background-size: cover; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; color: #000; font-family: 'Arial Black', Gadget, sans-serif; box-shadow: var(--shadow-strong); overflow: hidden; user-select: none; border: 2px solid rgba(255,255,255,0.1);}
+        .fut-card.bronze { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%); border-color: #92400e; color: #fef3c7; }
+        .fut-card.silver { background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%); border-color: #e5e7eb; color: #ffffff; }
+        .fut-card.gold { background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%); border-color: #fef08a; color: #fff; animation: goldShine 4s infinite alternate; }
+        @keyframes goldShine { 0% { box-shadow: 0 0 15px rgba(234,179,8,0.3); } 100% { box-shadow: 0 0 30px rgba(29,185,84,0.6); } }
         .fut-top { display: flex; width: 100%; height: 55%; margin-top: 15px; }
         .fut-badge-meta { width: 30%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
         .fut-ovr { font-size: 2.2rem; font-weight: 900; }
         .fut-pos { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; opacity: 0.8; }
         .fut-club-icon { width: 28px; height: 28px; margin-top: 8px; object-fit: contain; }
         .fut-avatar-container { width: 70%; height: 100%; position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-        .fut-user-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; z-index: 5; margin-bottom: 25px; border: 2px solid rgba(255,255,255,0.4); }
+        .fut-user-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; z-index: 5; margin-bottom: 25px; border: 3px solid rgba(255,255,255,0.4); }
         .fut-jersey-overlay { position: absolute; bottom: 0; width: 100px; height: 50px; background: linear-gradient(0deg, #111 0%, #333 100%); border-radius: 40px 40px 0 0; z-index: 4; border: 2px solid var(--accent-color); border-bottom: none; }
-        .fut-jersey-stripe { position: absolute; top: 0; left: 42px; width: 16px; height: 100%; background: rgba(255,255,255,0.9); }
+        .fut-jersey-stripe { position: absolute; top: 0; left: 42px; width: 16px; height: 100%; background: rgba(255,255,255,0.8); }
         .fut-name { width: 100%; text-align: center; font-size: 1.1rem; font-weight: 900; margin: 8px 0; text-transform: uppercase; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .fut-stats-row { display: grid; grid-template-columns: repeat(2, 1fr); width: 90%; font-size: 0.85rem; gap: 4px 15px; margin-top: 5px; }
         .fut-stat-item { display: flex; gap: 6px; justify-content: center; }
         .fut-stat-num { font-weight: 900; }
         .fut-stat-label { opacity: 0.7; font-weight: normal; }
 
-        .geoguessr-dash-box { background: var(--surface-color); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 15px; margin-bottom: 14px; }
-        .dash-header-inline { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .dash-title-premium { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-        .streak-fire-badge { background: var(--bg-color); color: var(--accent-color); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 4px; }
-        @keyframes pulseFire { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
-        .streak-fire-badge i { animation: pulseFire 1.5s infinite alternate; color: #ff9800; }
-        .calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-top: 8px; }
-        .calendar-day-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; padding-bottom: 3px; }
-        .calendar-cell { font-size: 0.73rem; padding: 5px 0; background: var(--bg-color); border-radius: 5px; color: var(--text-main); font-weight: 500; border: 1px solid var(--border-subtle);}
-        .calendar-cell.past-done { color: var(--text-muted); opacity:0.6; }
-        .calendar-cell.current-active { color: #fff; background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 0 8px rgba(29,185,84,0.4); }
-        .medals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
-        .medal-item { display: flex; flex-direction: column; align-items: center; background: var(--bg-color); padding: 10px 5px; border-radius: 8px; border: 1px solid var(--border-subtle); opacity: 0.3; filter: grayscale(100%); transition: all 0.35s ease; }
-        .medal-item.unlocked { opacity: 1; filter: grayscale(0%); border-color: var(--accent-color); background: var(--surface-color); box-shadow: 0 0 12px rgba(29,185,84,0.1); }
-        .medal-icon { font-size: 1.6rem; margin-bottom: 4px; color: var(--text-main); }
+        .geoguessr-dash-box { background: var(--surface-color); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow-soft);}
+        .dash-header-inline { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);}
+        .dash-title-premium { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .streak-fire-badge { background: var(--bg-color); color: var(--accent-color); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--border-strong); display: flex; align-items: center; gap: 6px; }
+        .streak-fire-badge i { color: #f59e0b; animation: pulseGlow 1.5s infinite alternate; }
+        
+        .calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-top: 10px; }
+        .calendar-day-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; padding-bottom: 4px; }
+        .calendar-cell { font-size: 0.75rem; padding: 6px 0; background: var(--bg-color); border-radius: 6px; color: var(--text-main); font-weight: 600; border: 1px solid var(--border-subtle); transition: all 0.2s;}
+        .calendar-cell.past-done { color: var(--text-muted); opacity: 0.5; }
+        .calendar-cell.current-active { color: #fff; background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 4px 10px rgba(29,185,84,0.4); transform: scale(1.05); }
+        
+        .medals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+        .medal-item { display: flex; flex-direction: column; align-items: center; background: var(--bg-color); padding: 12px 6px; border-radius: 12px; border: 1px solid var(--border-subtle); opacity: 0.3; filter: grayscale(100%); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .medal-item.unlocked { opacity: 1; filter: grayscale(0%); border-color: var(--accent-color); background: var(--surface-color); box-shadow: 0 4px 12px rgba(29,185,84,0.15); transform: translateY(-3px);}
+        .medal-icon { font-size: 1.8rem; margin-bottom: 6px; color: var(--text-main); }
         .medal-item.unlocked .medal-icon { color: var(--accent-color); }
-        .medal-name { font-size: 0.65rem; font-weight: 600; color: var(--text-main); text-transform: uppercase; }
+        .medal-name { font-size: 0.65rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
 
         /* ─── SOCIAL BUTTONS ─── */
-        .social-floating-container { position: fixed; bottom: 22px; left: 22px; display: flex; gap: 10px; z-index: 1999; }
+        .social-floating-container { position: fixed; bottom: 22px; left: 22px; display: flex; gap: 12px; z-index: 1999; }
         .social-icon-btn {
-            width: 42px; height: 42px; border-radius: 50%;
-            background: var(--surface-color); border: 1px solid var(--border-subtle);
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-muted);
-            transition: all 0.3s ease; cursor: pointer; box-shadow: var(--shadow-soft);
+            width: 46px; height: 46px; border-radius: 50%;
+            background: var(--surface-color); border: 1px solid var(--border-strong);
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--text-muted);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; box-shadow: var(--shadow-soft);
             text-decoration: none; backdrop-filter: blur(8px);
         }
-        .social-icon-btn:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(29,185,84,0.2); }
+        .social-icon-btn:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 25px rgba(29,185,84,0.25); }
 
         /* ─── PRIVACY MODAL ─── */
         #privacy-modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         #privacy-modal-overlay.active { display: flex; }
-        .privacy-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 16px; width: 90%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: var(--shadow-strong); overflow: hidden; }
-        .privacy-modal-header { padding: 22px 24px 18px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
-        .privacy-modal-header h2 { font-size: 1.15rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-        .privacy-modal-header p { font-size: 0.85rem; color: var(--text-muted); }
-        .privacy-modal-body { padding: 18px 24px; overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
-        .privacy-section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin: 16px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border-subtle); }
-        .privacy-modal-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 8px; }
-        .privacy-modal-body ul { padding-left: 16px; margin-bottom: 8px; }
-        .privacy-modal-body li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 4px; }
-        .privacy-modal-body strong { color: var(--text-main); font-weight: 600;}
-        .privacy-read-indicator { font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 8px 0 4px; transition: color 0.3s; font-weight: 500;}
+        .privacy-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 18px; width: 90%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: var(--shadow-strong); overflow: hidden; }
+        .privacy-modal-header { padding: 24px 26px 18px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
+        .privacy-modal-header h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .privacy-modal-header p { font-size: 0.88rem; color: var(--text-muted); line-height:1.4;}
+        .privacy-modal-body { padding: 20px 26px; overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+        .privacy-section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin: 18px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border-subtle); }
+        .privacy-modal-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 10px; }
+        .privacy-modal-body ul { padding-left: 18px; margin-bottom: 10px; }
+        .privacy-modal-body li { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+        .privacy-modal-body strong { color: var(--text-main); font-weight: 700;}
+        .privacy-read-indicator { font-size: 0.8rem; color: var(--text-muted); text-align: center; padding: 12px 0 8px; transition: color 0.3s; font-weight: 600; display:flex; justify-content:center; align-items:center; gap:6px;}
         .privacy-read-indicator.ready { color: var(--accent-color); }
-        .privacy-modal-footer { padding: 16px 24px 20px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-color);}
-        .privacy-checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
-        .privacy-checkbox-row input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-color); flex-shrink: 0; margin-top: 1px; }
-        .privacy-checkbox-row label { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; }
-        .privacy-checkbox-row label a { color: var(--accent-color); text-decoration: none; font-weight: 500;}
-        .btn-accept-privacy { width: 100%; padding: 13px; background: var(--accent-color); color: #fff; border: none; border-radius: 28px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.25s; }
-        .btn-accept-privacy:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
-        .btn-accept-privacy:disabled { background: var(--surface-color); color: var(--text-muted); border: 1px solid var(--border-subtle); cursor: not-allowed; transform: none; }
+        .privacy-modal-footer { padding: 18px 26px 24px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-color);}
+        .privacy-checkbox-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+        .privacy-checkbox-row input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-color); flex-shrink: 0; margin-top: 2px; }
+        .privacy-checkbox-row label { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; font-weight: 500;}
+        .privacy-checkbox-row label a { color: var(--accent-color); text-decoration: none; font-weight: 700;}
+        .btn-accept-privacy { width: 100%; padding: 14px; background: var(--accent-color); color: #000; border: none; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 15px rgba(29,185,84,0.3);}
+        .btn-accept-privacy:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(29,185,84,0.4);}
+        .btn-accept-privacy:disabled { background: var(--surface-color); color: var(--text-muted); border: 2px solid var(--border-subtle); cursor: not-allowed; transform: none; box-shadow:none;}
 
         /* ─── LOADING SKELETON ─── */
         @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
-        .skeleton { background: linear-gradient(90deg, var(--surface-color) 25%, var(--border-subtle) 50%, var(--surface-color) 75%); background-size: 800px 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
+        .skeleton { background: linear-gradient(90deg, var(--surface-color) 25%, var(--border-subtle) 50%, var(--surface-color) 75%); background-size: 800px 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
         .loading-card { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border-subtle); overflow: hidden; display: flex; flex-direction: column; }
         .loading-card-img { height: 185px; border-radius: 0; }
         .loading-card-body { padding: 18px 20px 20px; }
         .loading-card-title { height: 18px; width: 70%; margin-bottom: 10px; }
         .loading-card-sub { height: 12px; width: 50%; margin-bottom: 20px; }
-        .loading-card-btn { height: 38px; border-radius: 22px; }
+        .loading-card-btn { height: 42px; border-radius: 22px; }
     </style>
 </head>
 <body>
 
-    <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
-        <i class="ph-fill ph-moon" id="theme-icon"></i>
+    <button class="theme-toggle-btn animate-bounce" onclick="toggleTheme()" title="Cambiar tema">
+        <i class="ph-duotone ph-moon" id="theme-icon"></i>
     </button>
 
     <div id="privacy-modal-overlay">
         <div class="privacy-modal-box">
             <div class="privacy-modal-header">
-                <h2><i class="ph-fill ph-lock-key" style="color:var(--accent-color);"></i> Política de Privacidad</h2>
+                <h2><i class="ph-duotone ph-shield-check" style="color:var(--accent-color); font-size:1.4rem;"></i> Política de Privacidad</h2>
                 <p>Antes de iniciar sesión con Google, por favor leé y aceptá nuestros términos.</p>
             </div>
             <div class="privacy-modal-body" id="privacy-scroll-body" onscroll="checkPrivacyScrolled(this)">
@@ -490,12 +544,12 @@
                 <div class="privacy-section-title">Cambios a esta política</div>
                 <p>Podemos actualizar esta Política periódicamente. Te notificaremos por correo electrónico o mediante un aviso en el Servicio. Se aplica la ley argentina para todos los efectos.</p>
             </div>
-            <div class="privacy-read-indicator" id="privacy-read-indicator"><i class="ph ph-arrow-down"></i> Desplazate para leer completo</div>
+            <div class="privacy-read-indicator" id="privacy-read-indicator"><i class="ph-bold ph-arrow-down"></i> Desplazate para leer completo</div>
             <div class="privacy-modal-footer">
                 <div class="privacy-checkbox-row">
                     <input type="checkbox" id="privacy-accept-check" disabled>
                     <label for="privacy-accept-check">
-                        Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales, incluyendo el uso de mis datos personales para la gestión de mi cuenta y puntajes.
+                        Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales, incluyendo el uso de mis datos.
                     </label>
                 </div>
                 <button class="btn-accept-privacy" id="btn-confirm-privacy" disabled onclick="confirmarPrivacyYLoginGoogle()">
@@ -508,16 +562,16 @@
     <section class="hero-section">
         <div class="hero-content">
             <img class="brand-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo Estadios Virtuales" onerror="this.style.display='none';">
-            <div class="hero-badge"><i class="ph-fill ph-globe-hemisphere-west"></i> El mundo desde el aire</div>
+            <div class="hero-badge"><i class="ph-duotone ph-globe-hemisphere-west" style="font-size:1.1rem;"></i> El mundo desde el aire</div>
             <p class="hero-subtitle"></p>
             <div class="search-container">
-                <i class="ph ph-magnifying-glass search-icon"></i>
+                <i class="ph-bold ph-magnifying-glass search-icon"></i>
                 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
             </div>
             <div class="hero-action-buttons">
-                <button class="hero-btn primary" onclick="iniciarTrivia()"><i class="ph-fill ph-navigation-arrow"></i> StadiumGuessr</button>
-                <button class="hero-btn secondary" onclick="abrirModalOrden()"><i class="ph-fill ph-chart-bar"></i> Ordenar estadios</button>
-                <button class="hero-btn secondary" onclick="dispararVueloAleatorio(event)"><i class="ph-fill ph-airplane-tilt"></i> Vuelo Aleatorio</button>
+                <button class="hero-btn primary" onclick="iniciarTrivia()"><i class="ph-duotone ph-map-pin-line" style="font-size:1.2rem;"></i> StadiumGuessr</button>
+                <button class="hero-btn secondary" onclick="abrirModalOrden()"><i class="ph-duotone ph-chart-bar" style="font-size:1.2rem;"></i> Ordenar estadios</button>
+                <button class="hero-btn secondary" onclick="dispararVueloAleatorio(event)"><i class="ph-duotone ph-airplane-tilt" style="font-size:1.2rem;"></i> Vuelo Aleatorio</button>
                 <div id="hero-google-profile"></div>
             </div>
         </div>
@@ -543,50 +597,50 @@
 
     <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
         <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="cerrarModalVideo()"><i class="ph ph-x"></i></button>
+            <button class="close-btn" onclick="cerrarModalVideo()"><i class="ph-bold ph-x"></i></button>
             <div id="modal-video-container" class="video-container"></div>
             <div id="game-ui">
                 <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
                 <div id="map-guess-container"></div>
-                <button id="game-action-btn" class="btn-view" style="margin-top: 5px;">Clavá un pin en el mapa <i class="ph-fill ph-map-pin"></i></button>
+                <button id="game-action-btn" class="btn-3d primary" style="width:100%;">Clavá un pin en el mapa <i class="ph-duotone ph-map-pin"></i></button>
             </div>
         </div>
     </div>
 
     <div id="map-modal" class="modal-overlay" onclick="cerrarModalMapa()">
         <div class="modal-content" style="max-width: 800px; height: 75vh;" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="cerrarModalMapa()"><i class="ph ph-x"></i></button>
+            <button class="close-btn" onclick="cerrarModalMapa()"><i class="ph-bold ph-x"></i></button>
             <div id="modal-map-container" style="width: 100%; height: 100%; border-radius: 14px; background: var(--bg-color);"></div>
         </div>
     </div>
 
     <div id="profile-modal" class="modal-overlay" onclick="cerrarModalPerfil()">
         <div class="modal-content" style="max-width: 850px; height: auto; max-height: 90vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="cerrarModalPerfil()"><i class="ph ph-x"></i></button>
+            <button class="close-btn" onclick="cerrarModalPerfil()"><i class="ph-bold ph-x"></i></button>
             <div id="profile-modal-body"></div>
         </div>
     </div>
 
     <div id="order-modal" class="modal-overlay" onclick="cerrarModalOrden()">
         <div class="modal-content" style="max-width: 550px; height: 85vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="cerrarModalOrden()"><i class="ph ph-x"></i></button>
+            <button class="close-btn" onclick="cerrarModalOrden()"><i class="ph-bold ph-x"></i></button>
             <div id="order-modal-body" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;"></div>
         </div>
     </div>
 
     <div id="ranking-modal" class="modal-overlay" onclick="cerrarModalRanking()">
         <div class="modal-content" style="max-width: 600px; height: auto; max-height: 85vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="cerrarModalRanking()"><i class="ph ph-x"></i></button>
+            <button class="close-btn" onclick="cerrarModalRanking()"><i class="ph-bold ph-x"></i></button>
             <div id="ranking-modal-body"></div>
         </div>
     </div>
 
     <div class="social-floating-container">
         <a href="https://www.youtube.com/@EstadiosVirtuales1" target="_blank" class="social-icon-btn" title="Canal de YouTube">
-            <i class="ph-fill ph-youtube-logo"></i>
+            <i class="ph-duotone ph-youtube-logo"></i>
         </a>
         <a href="mailto:estadiosvirtuales1@gmail.com" class="social-icon-btn" title="Correo electrónico">
-            <i class="ph-fill ph-envelope-simple"></i>
+            <i class="ph-duotone ph-envelope-simple"></i>
         </a>
     </div>
 
@@ -615,10 +669,10 @@
         const iconEl = document.getElementById('theme-icon');
         if (iconEl) {
             if (theme === 'light') {
-                iconEl.className = 'ph-fill ph-sun';
+                iconEl.className = 'ph-duotone ph-sun';
                 iconEl.style.color = '#f59e0b';
             } else {
-                iconEl.className = 'ph-fill ph-moon';
+                iconEl.className = 'ph-duotone ph-moon';
                 iconEl.style.color = 'var(--text-main)';
             }
         }
@@ -661,7 +715,7 @@
             privacyScrolled = true;
             document.getElementById('privacy-accept-check').disabled = false;
             const ind = document.getElementById('privacy-read-indicator');
-            ind.innerHTML = '<i class="ph-bold ph-check"></i> Llegaste al final — podés aceptar';
+            ind.innerHTML = '<i class="ph-bold ph-check-circle" style="color:var(--accent-color); font-size:1.2rem;"></i> Llegaste al final — podés aceptar';
             ind.classList.add('ready');
         }
     }
@@ -966,8 +1020,11 @@
         const starsRow = event.target.parentElement;
         if (starsRow) {
             starsRow.querySelectorAll('.star-icon').forEach((star, i) => {
-                star.classList.toggle('active', i < puntuacion);
-                if (i >= puntuacion) star.classList.remove('half-active');
+                if (i < puntuacion) {
+                    star.classList.add('active', 'ph-fill'); star.classList.remove('ph-duotone');
+                } else {
+                    star.classList.remove('active', 'ph-fill'); star.classList.add('ph-duotone');
+                }
             });
         }
         fetch(scriptUrlVotos, { method:"POST", mode:"no-cors", headers:{"Content-Type":"application/json"}, body:JSON.stringify({estadio,club,voto:puntuacion}) }).catch(()=>{});
@@ -1111,7 +1168,7 @@
         const grilla = document.querySelector('.grid');
         grilla.innerHTML = '';
         if (lista.length === 0) {
-            grilla.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);"><div style="font-size:2.5rem;margin-bottom:12px;"><i class="ph-fill ph-magnifying-glass"></i></div><p style="font-size:1rem;">No se encontraron estadios que coincidan con la búsqueda.</p></div>';
+            grilla.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);"><div style="font-size:2.5rem;margin-bottom:12px;"><i class="ph-duotone ph-magnifying-glass"></i></div><p style="font-size:1rem;">No se encontraron estadios que coincidan con la búsqueda.</p></div>';
             return;
         }
         lista.forEach(fila => {
@@ -1133,11 +1190,15 @@
 
             let estrellasHTML = '';
             for (let i = 1; i <= 5; i++) {
-                let clase = '';
-                if (i <= Math.floor(estrellasMostrar)) clase = 'active';
-                else if (i === Math.ceil(estrellasMostrar) && (estrellasMostrar % 1 >= 0.5)) clase = 'half-active';
-                estrellasHTML += `<i class="ph-fill ph-star star-icon ${clase}" data-estadio="${estadio}" data-club="${clubNombre}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;
+                let iconClass = 'ph-duotone ph-star'; // Por defecto, estrella vacía en duotone
+                if (i <= Math.floor(estrellasMostrar)) {
+                    iconClass = 'ph-fill ph-star active'; // Llena
+                } else if (i === Math.ceil(estrellasMostrar) && (estrellasMostrar % 1 >= 0.5)) {
+                    iconClass = 'ph-fill ph-star-half active'; // Mitad (asumiendo que usamos la variante fill si la conseguimos)
+                }
+                estrellasHTML += `<i class="${iconClass} star-icon" data-estadio="${estadio}" data-club="${clubNombre}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;
             }
+            
             const labelRating = votoLocal > 0
                 ? `Tu voto: ${votoLocal}★ ${valorPromedio > 0 ? `· prom. ${valorPromedio.toFixed(1)}/10` : ''}`
                 : (valorPromedio > 0 ? `Calificá este estadio · ${valorPromedio.toFixed(1)}/10` : 'Calificá este estadio');
@@ -1240,7 +1301,7 @@
     }
 
     // ─────────────────────────────────────────────
-    // STADIUM GUESSR
+    // STADIUM GUESSR (GAMIFICADO)
     // ─────────────────────────────────────────────
     function iniciarTrivia() {
         if (!catalogoGlobal.length) { alert('Esperá un segundo a que cargue el catálogo...'); return; }
@@ -1260,10 +1321,12 @@
         guessrEstadioCorrecto = disponibles[Math.floor(Math.random()*disponibles.length)];
         guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
         guessrSelectedLatLng = null;
-        document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
+        document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
         const btn = document.getElementById('game-action-btn');
-        btn.innerHTML = `Clavá un pin en el mapa <i class="ph-fill ph-map-pin"></i>`;
-        btn.style.backgroundColor = "var(--surface-color)"; btn.style.color = "var(--text-muted)"; btn.style.border = "1px solid var(--border-subtle)"; btn.disabled = true;
+        btn.innerHTML = `<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;
+        btn.className = "btn-3d secondary";
+        btn.style.width = "100%"; btn.disabled = true;
+        
         abrirModalVideo(null, bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(), true);
         setTimeout(() => {
             if (guessrMapInstance) guessrMapInstance.remove();
@@ -1274,7 +1337,10 @@
                 guessrSelectedLatLng = e.latlng;
                 if (guessrUserMarker) guessrUserMarker.setLatLng(guessrSelectedLatLng);
                 else guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
-                btn.innerHTML = `Confirmar Ubicación <i class="ph-fill ph-rocket-launch"></i>`; btn.style.backgroundColor="var(--accent-color)"; btn.style.color="#000"; btn.style.border="none"; btn.disabled=false;
+                
+                btn.innerHTML = `<i class="ph-fill ph-rocket-launch"></i> Confirmar Ubicación`; 
+                btn.className = "btn-3d primary animate-pulse-glow"; 
+                btn.disabled=false;
             });
             guessrMapInstance.invalidateSize();
         }, 400);
@@ -1284,6 +1350,7 @@
 
     function procesarArriesgoGuessr() {
         const btn = document.getElementById('game-action-btn');
+        btn.classList.remove('animate-pulse-glow');
         btn.setAttribute('data-estado','resultado');
         const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.'));
         const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
@@ -1295,9 +1362,10 @@
         guessrTargetMarker = L.circleMarker([tLat,tLng],{radius:8,color:'var(--accent-color)',fillColor:'var(--surface-color)',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b style="color:var(--text-main);">${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
         guessrPolyline = L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'var(--danger-color)',weight:2,dashArray:'5,8'}).addTo(guessrMapInstance);
         guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker,guessrTargetMarker]).getBounds(),{padding:[40,40]});
-        document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
-        btn.innerHTML=`Le erraste por <b>${isNaN(dist)?'?':dist.toFixed(1)} km</b>. (+${pts} pts) • Siguiente <i class="ph-bold ph-arrow-right"></i>`;
-        btn.style.backgroundColor="var(--danger-color)"; btn.style.color="white";
+        
+        document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
+        btn.innerHTML=`Error: <b>${isNaN(dist)?'?':dist.toFixed(1)} km</b> (+${pts} pts) • Siguiente <i class="ph-bold ph-arrow-right"></i>`;
+        btn.style.background="var(--danger-color)"; btn.style.color="#fff"; btn.style.boxShadow="0 6px 0 #b71c1c, 0 10px 15px rgba(229,57,53,0.3)";
     }
 
     function avanzarDeRondaGuessr() {
@@ -1314,27 +1382,34 @@
         document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
         if (guessrMapInstance) { guessrMapInstance.remove(); guessrMapInstance=null; }
         userStats.partidasJugadas++; if(guessrPuntosTotales>userStats.maxScore) userStats.maxScore=guessrPuntosTotales; guardarStats();
-        let histHTML = `<div style="width:100%;max-width:420px;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:1px solid var(--border-subtle);border-radius:10px;padding:15px;">
-            <h4 style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;border-bottom:1px solid var(--border-subtle);padding-bottom:6px;"><i class="ph-bold ph-chart-line-up"></i> DESGLOSE</h4>`;
+        
+        let histHTML = `<div style="width:100%;max-width:420px;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:15px;box-shadow:var(--shadow-soft);">
+            <h4 style="font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;border-bottom:2px dashed var(--border-subtle);padding-bottom:8px; display:flex; align-items:center; gap:6px;"><i class="ph-duotone ph-list-numbers" style="font-size:1.2rem;"></i> Desglose</h4>`;
         guessrHistorialRondas.forEach(item => {
             const dTxt = isNaN(item.distancia)?'?':(item.distancia<1?`${Math.round(item.distancia*1000)} m`:`${item.distancia.toFixed(1)} km`);
-            histHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:0.85rem;"><span style="max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.estadio}"><strong style="color:var(--accent-color);">R${item.ronda}:</strong> ${item.estadio}</span><span style="color:var(--text-muted);"><strong style="color:var(--text-main);">+${item.puntos}</strong> <span style="opacity:0.6;">(${dTxt})</span></span></div>`;
+            histHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border-subtle);font-size:0.9rem;"><span style="max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${item.estadio}"><strong style="color:var(--accent-color);">R${item.ronda}:</strong> <span style="font-weight:500;">${item.estadio}</span></span><span style="color:var(--text-muted);"><strong style="color:var(--text-main); font-size:1.1rem;">+${item.puntos}</strong> <span style="opacity:0.8; font-size:0.8rem;">(${dTxt})</span></span></div>`;
         });
         histHTML += '</div>';
-        container.innerHTML=`<div style="text-align:center;padding:30px 20px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;overflow-y:auto;background:var(--bg-color);">
-            <div style="font-size:2.5rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-fill ph-trophy"></i></div>
-            <h2 style="font-size:1.5rem;margin-bottom:8px;font-weight:700;text-transform:uppercase;">Campeonato Completado</h2>
-            <p style="font-size:0.95rem;color:var(--text-muted);margin-bottom:18px;">Completaste las 5 rondas de reconocimiento aéreo.</p>
-            <div style="background:var(--surface-color);border:1px solid var(--border-strong);padding:12px 35px;border-radius:12px;margin-bottom:18px;">
-                <span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;">Puntaje Final</span>
-                <strong style="font-size:2.2rem;color:var(--text-main);font-weight:900;">${guessrPuntosTotales} <span style="font-size:1rem;color:var(--accent-color);">Pts</span></strong>
+        
+        container.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;overflow-y:auto;background:var(--bg-color);">
+            <div class="animate-bounce" style="font-size:4.5rem;color:var(--accent-color);margin-bottom:10px; filter:drop-shadow(0 10px 10px rgba(29,185,84,0.3));"><i class="ph-duotone ph-trophy"></i></div>
+            <h2 style="font-size:1.8rem;margin-bottom:8px;font-weight:800;text-transform:uppercase;">¡Campeonato Completado!</h2>
+            <p style="font-size:1rem;color:var(--text-muted);margin-bottom:24px;">Reconocimiento aéreo finalizado con éxito.</p>
+            
+            <div style="background:var(--surface-color);border:3px solid var(--border-strong);padding:20px 45px;border-radius:20px;margin-bottom:24px; box-shadow:0 8px 0 var(--border-strong);">
+                <span style="font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:4px; font-weight:700;">Puntaje Final</span>
+                <strong style="font-size:3rem;color:var(--accent-color);font-weight:900; line-height:1;">${guessrPuntosTotales} <span style="font-size:1.2rem;color:var(--text-muted);">Pts</span></strong>
             </div>
+            
             ${histHTML}
-            <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px;">
-                <button onclick="enviarMiPuntaje()" class="btn-view primary-action" style="padding:12px;font-size:0.95rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar Puntaje</button>
-                <button onclick="abrirModalRanking()" class="btn-view" style="padding:12px;font-size:0.95rem;background:var(--surface-color);color:var(--text-main);"><i class="ph-fill ph-medal"></i> Ver Ranking</button>
-                <button onclick="compartirResultado()" class="btn-view" style="padding:12px;font-size:0.95rem;background:var(--surface-color);color:var(--accent-color);"><i class="ph-bold ph-share-network"></i> Compartir</button>
-                <button onclick="iniciarTrivia()" class="btn-view" style="padding:12px;font-size:0.95rem;margin-top:4px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Jugar de nuevo</button>
+            
+            <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px;">
+                <button onclick="enviarMiPuntaje()" class="btn-3d primary"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar Puntaje</button>
+                <div style="display:flex; gap:12px;">
+                    <button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1; font-size:0.85rem; padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button>
+                    <button onclick="compartirResultado()" class="btn-3d secondary" style="flex:1; font-size:0.85rem; padding:12px; color:var(--accent-color); border-color:var(--accent-color);"><i class="ph-bold ph-share-network"></i> Compartir</button>
+                </div>
+                <button onclick="iniciarTrivia()" class="btn-3d secondary" style="margin-top:6px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Jugar de nuevo</button>
             </div>
         </div>`;
     }
@@ -1350,78 +1425,79 @@
         let nombre = u?.name || prompt("Ingresá tu nombre para el ranking global:");
         if (!nombre?.trim()) return;
         fetch(scriptUrlRanking,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:nombre.trim(),puntaje:guessrPuntosTotales})}).catch(()=>{});
-        alert(`¡Marca de ${guessrPuntosTotales} pts enviada!`);
+        alert(`¡Marca de ${guessrPuntosTotales} pts enviada! 🚀`);
     }
 
     function compartirResultado() {
-        const msg = `⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! ¿Podés superarme?`;
+        const msg = `⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;
         if (navigator.share) navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});
-        else { navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>alert("¡Copiado al portapapeles!")).catch(()=>alert(`Puntaje: ${guessrPuntosTotales} pts`)); }
+        else { navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>alert("¡Copiado al portapapeles! 🚀")).catch(()=>alert(`Puntaje: ${guessrPuntosTotales} pts`)); }
     }
 
     async function abrirModalRanking() {
         const body = document.getElementById('ranking-modal-body');
-        body.innerHTML='<h3 style="color:var(--text-muted);text-align:center;padding:30px;"><i class="ph-bold ph-spinner ph-spin"></i> Cargando...</h3>';
+        body.innerHTML='<h3 style="color:var(--text-muted);text-align:center;padding:40px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:2rem; color:var(--accent-color);"></i><br><br>Cargando Pilotos...</h3>';
         document.getElementById('ranking-modal').style.display='flex';
         try {
             const res = await fetch(scriptUrlRanking);
             const ranking = await res.json();
-            let html=`<div style="text-align:center;margin-bottom:22px;"><h2 style="font-size:1.4rem;color:var(--text-main);font-weight:700;text-transform:uppercase;"><i class="ph-fill ph-trophy" style="color:var(--accent-color);"></i> TOP 10 GLOBAL</h2><p style="color:var(--text-muted);font-size:0.9rem;margin-top:4px;">Los pilotos más precisos del mundo</p></div>
-            <div style="background:var(--surface-color);border:1px solid var(--border-subtle);border-radius:12px;padding:8px;max-width:500px;margin:0 auto;">`;
-            if (!ranking?.length) html+=`<p style="color:var(--text-muted);text-align:center;padding:20px;">Aún no hay puntajes.</p>`;
+            let html=`<div style="text-align:center;margin-bottom:24px;"><div style="font-size:3rem;color:var(--accent-color); margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.6rem;color:var(--text-main);font-weight:800;text-transform:uppercase;">TOP 10 GLOBAL</h2><p style="color:var(--text-muted);font-size:0.95rem;margin-top:4px;">Los pilotos más precisos del mundo</p></div>
+            <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:10px;max-width:500px;margin:0 auto; box-shadow: 0 8px 0 var(--border-subtle);">';
+            if (!ranking?.length) html+=`<p style="color:var(--text-muted);text-align:center;padding:30px; font-weight:600;"><i class="ph-duotone ph-ghost" style="font-size:2rem;"></i><br><br>Aún no hay puntajes.</p>`;
             else ranking.forEach((f,i)=>{
-                let corona="";
-                if(i===0) corona = '<i class="ph-fill ph-medal" style="color:gold;"></i> ';
-                else if(i===1) corona = '<i class="ph-fill ph-medal" style="color:silver;"></i> ';
-                else if(i===2) corona = '<i class="ph-fill ph-medal" style="color:#cd7f32;"></i> ';
+                let corona=""; let rowBg = "transparent";
+                if(i===0) { corona = '<i class="ph-fill ph-medal" style="color:#fbbf24; font-size:1.2rem;"></i> '; rowBg="rgba(251, 191, 36, 0.1)"; }
+                else if(i===1) { corona = '<i class="ph-fill ph-medal" style="color:#9ca3af; font-size:1.2rem;"></i> '; rowBg="rgba(156, 163, 175, 0.1)"; }
+                else if(i===2) { corona = '<i class="ph-fill ph-medal" style="color:#b45309; font-size:1.2rem;"></i> '; rowBg="rgba(180, 83, 9, 0.1)"; }
 
-                html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:${i===ranking.length-1?'none':'1px solid var(--border-subtle)'};font-size:0.92rem;"><span style="font-weight:600;">${corona}${i+1}. ${f[0]||"Anónimo"}</span><span style="color:var(--accent-color);font-weight:700;">${f[1]||0} <span style="font-size:0.75rem;font-weight:normal;color:var(--text-muted);">pts</span></span></div>`;
+                html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i===ranking.length-1?'none':'2px dashed var(--border-subtle)'};font-size:1rem; background:${rowBg}; border-radius:${i===0?'10px 10px 0 0':i===ranking.length-1?'0 0 10px 10px':'0'};"><span style="font-weight:700; display:flex; align-items:center; gap:8px;">${corona}<span style="color:var(--text-muted); font-size:0.85rem;">${i+1}.</span> ${f[0]||"Anónimo"}</span><span style="color:var(--accent-color);font-weight:900; font-size:1.1rem;">${f[1]||0} <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">pts</span></span></div>`;
             });
             html+='</div>';
             body.innerHTML=html;
-        } catch(e) { body.innerHTML=`<div style="text-align:center;padding:25px;"><h3 style="color:var(--danger-color);"><i class="ph-bold ph-warning-circle"></i> Error de conexión</h3></div>`; }
+        } catch(e) { body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><h3 style="font-weight:700;">Error de conexión</h3></div>`; }
     }
 
     async function abrirModalRankingOrden(modo) {
         const body=document.getElementById('ranking-modal-body');
-        body.innerHTML='<h3 style="color:var(--text-muted);text-align:center;padding:30px;"><i class="ph-bold ph-spinner ph-spin"></i> Cargando...</h3>';
+        body.innerHTML='<h3 style="color:var(--text-muted);text-align:center;padding:40px;"><i class="ph-duotone ph-spinner ph-spin" style="font-size:2rem; color:var(--accent-color);"></i><br><br>Cargando...</h3>';
         document.getElementById('ranking-modal').style.display='flex';
         const url=modo==='capacidad'?scriptUrlCapacidad:scriptUrlAntiguedad;
         const titulo=modo==='capacidad'?'TOP CAPACIDAD':'TOP ANTIGÜEDAD';
         const icono = modo==='capacidad'?'ph-users-three':'ph-hourglass-high';
         try {
             const ranking=await(await fetch(url)).json();
-            let html=`<div style="text-align:center;margin-bottom:22px;"><h2 style="font-size:1.4rem;color:var(--text-main);font-weight:700;text-transform:uppercase;"><i class="ph-fill ${icono}" style="color:var(--accent-color);"></i> ${titulo}</h2></div>
-            <div style="background:var(--surface-color);border:1px solid var(--border-subtle);border-radius:12px;padding:8px;max-width:500px;margin:0 auto;">`;
-            if (!ranking?.length) html+=`<p style="color:var(--text-muted);text-align:center;padding:20px;">Sin marcas aún.</p>`;
+            let html=`<div style="text-align:center;margin-bottom:24px;"><div style="font-size:3rem;color:var(--accent-color); margin-bottom:10px;"><i class="ph-duotone ${icono}"></i></div><h2 style="font-size:1.6rem;color:var(--text-main);font-weight:800;text-transform:uppercase;">${titulo}</h2></div>
+            <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:10px;max-width:500px;margin:0 auto; box-shadow: 0 8px 0 var(--border-subtle);">`;
+            if (!ranking?.length) html+=`<p style="color:var(--text-muted);text-align:center;padding:30px; font-weight:600;"><i class="ph-duotone ph-ghost" style="font-size:2rem;"></i><br><br>Sin marcas aún.</p>`;
             else ranking.forEach((f,i)=>{
-                let c="";
-                if(i===0) c = '<i class="ph-fill ph-medal" style="color:gold;"></i> ';
-                else if(i===1) c = '<i class="ph-fill ph-medal" style="color:silver;"></i> ';
-                else if(i===2) c = '<i class="ph-fill ph-medal" style="color:#cd7f32;"></i> ';
-                html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:${i===ranking.length-1?'none':'1px solid var(--border-subtle)'};font-size:0.92rem;"><span style="font-weight:600;">${c}${i+1}. ${f[0]}</span><span style="color:var(--accent-color);font-weight:700;">${f[1]} <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">pts</span></span></div>`;
+                let c=""; let rowBg = "transparent";
+                if(i===0) { c = '<i class="ph-fill ph-medal" style="color:#fbbf24; font-size:1.2rem;"></i> '; rowBg="rgba(251, 191, 36, 0.1)"; }
+                else if(i===1) { c = '<i class="ph-fill ph-medal" style="color:#9ca3af; font-size:1.2rem;"></i> '; rowBg="rgba(156, 163, 175, 0.1)"; }
+                else if(i===2) { c = '<i class="ph-fill ph-medal" style="color:#b45309; font-size:1.2rem;"></i> '; rowBg="rgba(180, 83, 9, 0.1)"; }
+                
+                html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i===ranking.length-1?'none':'2px dashed var(--border-subtle)'};font-size:1rem; background:${rowBg}; border-radius:${i===0?'10px 10px 0 0':i===ranking.length-1?'0 0 10px 10px':'0'};"><span style="font-weight:700; display:flex; align-items:center; gap:8px;">${c}<span style="color:var(--text-muted); font-size:0.85rem;">${i+1}.</span> ${f[0]}</span><span style="color:var(--accent-color);font-weight:900; font-size:1.1rem;">${f[1]} <span style="font-size:0.8rem;color:var(--text-muted);font-weight:600;">pts</span></span></div>`;
             });
             html+='</div>';
             body.innerHTML=html;
-        } catch(e) { body.innerHTML=`<div style="text-align:center;padding:25px;"><h3 style="color:var(--danger-color);"><i class="ph-bold ph-warning-circle"></i> Error de enlace</h3></div>`; }
+        } catch(e) { body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><h3 style="font-weight:700;">Error de enlace</h3></div>`; }
     }
 
     // ─────────────────────────────────────────────
-    // JUEGO DE ORDEN
+    // JUEGO DE ORDEN (GAMIFICADO)
     // ─────────────────────────────────────────────
     function abrirModalOrden() {
         document.getElementById('order-modal').style.display='flex';
         const body=document.getElementById('order-modal-body');
         body.innerHTML=`<div style="text-align:center;color:var(--text-main);padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;">
-            <div style="margin-bottom:16px;color:var(--accent-color);font-size:3rem;"><i class="ph-fill ph-chart-bar"></i></div>
-            <h2 style="font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Desafío de Ordenamiento</h2>
-            <p style="color:var(--text-muted);font-size:0.95rem;max-width:420px;line-height:1.6;margin-bottom:28px;">Demostrá tu conocimiento sobre los templos del fútbol mundial. Seleccioná una categoría.</p>
-            <div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:300px;">
-                <button onclick="iniciarJuegoOrden('capacidad')" class="btn-view primary-action" style="padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph-fill ph-users-three" style="font-size:1.2rem;"></i> Ordenar por Capacidad</button>
-                <button onclick="iniciarJuegoOrden('antiguedad')" class="btn-view" style="padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph-fill ph-hourglass-high" style="font-size:1.2rem;"></i> Ordenar por Antigüedad</button>
-                <div style="display:flex;gap:10px;margin-top:8px;">
-                    <button onclick="abrirModalRankingOrden('capacidad')" class="btn-view" style="padding:10px;font-size:0.85rem;width:50%;"><i class="ph-fill ph-medal"></i> Top Capacidad</button>
-                    <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-view" style="padding:10px;font-size:0.85rem;width:50%;"><i class="ph-fill ph-medal"></i> Top Edad</button>
+            <div class="animate-bounce" style="margin-bottom:16px;color:var(--accent-color);font-size:4.5rem; filter:drop-shadow(0 10px 10px rgba(29,185,84,0.3));"><i class="ph-duotone ph-sort-ascending"></i></div>
+            <h2 style="font-size:1.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Desafío de Ordenamiento</h2>
+            <p style="color:var(--text-muted);font-size:1rem;max-width:420px;line-height:1.6;margin-bottom:35px; font-weight:500;">Demostrá tu conocimiento sobre los templos del fútbol mundial. Seleccioná una categoría.</p>
+            <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:320px;">
+                <button onclick="iniciarJuegoOrden('capacidad')" class="btn-3d primary" style="padding:16px; font-size:1.1rem;"><i class="ph-duotone ph-users-three" style="font-size:1.4rem;"></i> Por Capacidad</button>
+                <button onclick="iniciarJuegoOrden('antiguedad')" class="btn-3d secondary" style="padding:16px; font-size:1.1rem;"><i class="ph-duotone ph-hourglass-high" style="font-size:1.4rem;"></i> Por Antigüedad</button>
+                <div style="display:flex;gap:12px;margin-top:10px;">
+                    <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="padding:10px;font-size:0.85rem;flex:1;"><i class="ph-fill ph-medal"></i> Top Capacidad</button>
+                    <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-3d secondary" style="padding:10px;font-size:0.85rem;flex:1;"><i class="ph-fill ph-medal"></i> Top Edad</button>
                 </div>
             </div>
         </div>`;
@@ -1455,55 +1531,75 @@
         const body=document.getElementById('order-modal-body');
         const titulo=orderModo==='capacidad'?'CAPACIDAD MÁXIMA':'ANTIGÜEDAD';
         const icono=orderModo==='capacidad'?'ph-users-three':'ph-hourglass-high';
-        const desc=orderModo==='capacidad'?'Tocá dos filas para intercambiarlas y ordenar de <b>Mayor a Menor</b> capacidad.':'Tocá dos filas para intercambiarlas y ordenar del <b>Más Viejo al Más Moderno</b>.';
+        const desc=orderModo==='capacidad'?'Tocá dos tarjetas para intercambiarlas y ordenar de <b>Mayor a Menor</b> capacidad.':'Tocá dos tarjetas para intercambiarlas y ordenar del <b>Más Viejo al Más Moderno</b>.';
         const labelTop=orderModo==='capacidad'?'MÁS GRANDE':'MÁS ANTIGUO';
         const labelBot=orderModo==='capacidad'?'MÁS CHICO':'MÁS MODERNO';
 
         let slotsHTML='';
         orderList.forEach((est,i)=>{
-            let bc='var(--border-subtle)'; let glow=''; let badge=''; let bg = 'var(--surface-color)';
+            let bgColor = 'var(--surface-color)';
+            let borderColor = 'var(--border-strong)';
+            let shadowColor = 'var(--border-strong)';
+            let transform = 'scale(1)';
+            let badge='';
+            let iconLeft = `<div style="background:var(--bg-color);color:var(--text-muted);border:2px solid var(--border-subtle);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:800;flex-shrink:0;box-shadow:inset 0 2px 4px rgba(0,0,0,0.1);">${i+1}</div>`;
+
             if(revelar){
-                const ok=i===est.correctIdx; bc=ok?'var(--accent-color)':'var(--danger-color)';
+                const ok=i===est.correctIdx; 
+                bgColor = ok ? 'rgba(29, 185, 84, 0.1)' : 'rgba(229, 57, 53, 0.1)';
+                borderColor = ok ? 'var(--accent-color)' : 'var(--danger-color)';
+                shadowColor = borderColor;
+                iconLeft = ok ? `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;box-shadow:0 2px 5px rgba(29,185,84,0.4);"><i class="ph-bold ph-check"></i></div>` : `<div style="background:var(--danger-color);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;box-shadow:0 2px 5px rgba(229,57,53,0.4);"><i class="ph-bold ph-x"></i></div>`;
+                
                 const val=orderModo==='capacidad'?`${est.valor.toLocaleString()} esp.`:`Año ${est.valor}`;
-                badge=`<span style="background:${bc};color:#fff;font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:12px;margin-left:auto;">${val}</span>`;
+                badge=`<span style="background:${ok?'var(--accent-color)':'var(--danger-color)'};color:${ok?'#000':'#fff'};font-size:0.75rem;font-weight:800;padding:4px 12px;border-radius:20px;margin-left:auto;box-shadow:0 2px 0 ${ok?'#15803d':'#b71c1c'};">${val}</span>`;
             } else if(orderSelectedIdx===i){
-                bc='var(--accent-color)'; bg = 'var(--surface-hover)';
+                borderColor = 'var(--accent-color)';
+                shadowColor = 'var(--accent-color)';
+                bgColor = 'var(--surface-hover)';
+                transform = 'translateY(-4px)';
+                iconLeft = `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;flex-shrink:0;box-shadow:0 2px 5px rgba(29,185,84,0.4);"><i class="ph-bold ph-arrows-down-up"></i></div>`;
             }
-            slotsHTML+=`<div style="display:flex;align-items:center;gap:12px;height:54px;width:100%;">
-                <div style="background:var(--bg-color);color:var(--text-muted);border:1px solid var(--border-subtle);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:600;flex-shrink:0;">${i+1}</div>
-                <div onclick="${revelar?'':(`seleccionarFilaOrden(${i})`)}" style="flex-grow:1;height:100%;background:${bg};border:1px solid ${bc};border-radius:8px;padding:0 14px;display:flex;align-items:center;gap:10px;cursor:${revelar?'default':'pointer'};transition:all 0.2s;">
-                    <div style="display:flex;flex-direction:column;overflow:hidden;max-width:65%;"><strong style="color:var(--text-main);font-size:0.9rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.estadio}</strong><span style="color:var(--text-muted);font-size:0.75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span></div>
-                    ${badge}
+
+            slotsHTML+=`<div onclick="${revelar?'':(`seleccionarFilaOrden(${i})`)}" style="display:flex;align-items:center;gap:14px;width:100%;background:${bgColor};border:2px solid ${borderColor};border-radius:16px;padding:12px 16px;cursor:${revelar?'default':'pointer'};transition:all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);box-shadow:0 5px 0 ${shadowColor};transform:${transform};margin-bottom:12px;">
+                ${iconLeft}
+                <div style="display:flex;flex-direction:column;overflow:hidden;max-width:65%;">
+                    <strong style="color:var(--text-main);font-size:0.95rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.estadio}</strong>
+                    <span style="color:var(--text-muted);font-size:0.8rem;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span>
                 </div>
+                ${badge}
             </div>`;
         });
 
         let botonera='';
         if(!revelar){
-            botonera=`<div style="display:flex;gap:10px;margin-top:16px;">
-                <button onclick="abrirModalOrden()" class="btn-view" style="width:30%;"><i class="ph-bold ph-arrow-left"></i> Volver</button>
-                <button onclick="procesarResultadoOrden()" class="btn-view primary-action" style="width:70%;">Confirmar <i class="ph-bold ph-check"></i></button>
+            botonera=`<div style="display:flex;gap:12px;margin-top:16px;padding-top:10px;">
+                <button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:30%; padding:14px;"><i class="ph-bold ph-arrow-left"></i></button>
+                <button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:70%; padding:14px; font-size:1.1rem;">Confirmar <i class="ph-bold ph-check-circle"></i></button>
             </div>`;
         } else {
-            botonera=`<div style="background:var(--surface-color);border:1px solid var(--border-subtle);padding:18px;border-radius:12px;text-align:center;margin-top:16px;">
-                <span style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Puntaje del Desafío</span>
-                <strong style="font-size:1.8rem;color:var(--text-main);font-weight:800;display:block;margin-bottom:16px;">${orderPuntosGanados} <span style="font-size:0.9rem;color:var(--accent-color);">Pts</span></strong>
-                <div style="display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;">
-                    <button onclick="enviarPuntajeOrden()" class="btn-view primary-action" style="padding:12px;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar Puntaje</button>
-                    <button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-view" style="padding:12px;"><i class="ph-fill ph-medal"></i> Ver Ranking</button>
-                    <button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-view" style="padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Jugar de nuevo</button>
+            botonera=`<div style="background:var(--surface-color);border:3px solid var(--border-strong);padding:24px;border-radius:20px;text-align:center;margin-top:20px;box-shadow:0 8px 0 var(--border-strong);">
+                <span style="font-size:0.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;font-weight:700;"><i class="ph-fill ph-star"></i> Puntaje del Desafío</span>
+                <strong style="font-size:2.5rem;color:var(--accent-color);font-weight:900;display:block;margin-bottom:20px;line-height:1;">${orderPuntosGanados} <span style="font-size:1rem;color:var(--text-muted);">Pts</span></strong>
+                <div style="display:flex;flex-direction:column;gap:12px;max-width:280px;margin:0 auto;">
+                    <button onclick="enviarPuntajeOrden()" class="btn-3d primary" style="padding:14px;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar Puntaje</button>
+                    <div style="display:flex; gap:12px;">
+                        <button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="flex:1; padding:12px; font-size:0.85rem;"><i class="ph-fill ph-medal"></i> Ranking</button>
+                        <button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="flex:1; padding:12px; font-size:0.85rem;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>
+                    </div>
                 </div>
             </div>`;
         }
+
         body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;color:var(--text-main);justify-content:space-between;">
-            <div style="border-bottom:1px solid var(--border-subtle);padding-bottom:12px;">
-                <h2 style="font-size:1.2rem;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:6px;"><i class="ph-fill ${icono}" style="color:var(--accent-color);"></i> ${titulo}</h2>
-                <p style="color:var(--text-muted);font-size:0.85rem;margin-top:6px;line-height:1.4;">${desc}</p>
+            <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:16px;margin-bottom:10px;text-align:center;">
+                <h2 style="font-size:1.3rem;font-weight:800;color:var(--text-main);display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph-duotone ${icono}" style="color:var(--accent-color); font-size:1.8rem;"></i> ${titulo}</h2>
+                <p style="color:var(--text-muted);font-size:0.9rem;margin-top:8px;line-height:1.5;font-weight:500;">${desc}</p>
             </div>
-            <div style="display:flex;flex-direction:column;gap:8px;margin:16px 0;overflow-y:auto;flex-grow:1;padding-right:4px;">
-                <div style="text-align:center;font-size:0.65rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;background:var(--border-subtle);padding:6px;border-radius:6px;"><i class="ph-bold ph-arrow-up"></i> ${labelTop}</div>
+            <div style="display:flex;flex-direction:column;margin:10px 0;overflow-y:auto;flex-grow:1;padding:5px 8px 15px 4px;">
+                <div style="text-align:center;font-size:0.75rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;"><i class="ph-bold ph-arrow-up"></i> ${labelTop}</div>
                 ${slotsHTML}
-                <div style="text-align:center;font-size:0.65rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;background:var(--border-subtle);padding:6px;border-radius:6px;"><i class="ph-bold ph-arrow-down"></i> ${labelBot}</div>
+                <div style="text-align:center;font-size:0.75rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:4px;"><i class="ph-bold ph-arrow-down"></i> ${labelBot}</div>
             </div>
             ${botonera}
         </div>`;
@@ -1571,7 +1667,7 @@
                 </div>`;
         } else {
             container.innerHTML = `
-                <button class="hero-btn secondary" onclick="manejarClickLoginGoogle()" style="gap:8px;">
+                <button class="hero-btn secondary" onclick="manejarClickLoginGoogle()" style="gap:8px; border-radius:30px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -1645,7 +1741,7 @@
                 <div>
                     <div class="geoguessr-dash-box">
                         <div class="dash-header-inline">
-                            <div class="dash-title-premium"><i class="ph-fill ph-calendar-check" style="font-size:1.2rem; color:var(--accent-color);"></i> Reto Diario (Junio)</div>
+                            <div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.4rem; color:var(--accent-color);"></i> Reto Diario (Junio)</div>
                             <div class="streak-fire-badge"><i class="ph-fill ph-fire"></i> ${userStats.rachaActual||1} d</div>
                         </div>
                         <div class="calendar-matrix">
@@ -1654,18 +1750,18 @@
                         </div>
                     </div>
                     <div class="geoguessr-dash-box">
-                        <div class="dash-title-premium" style="margin-bottom:12px;"><i class="ph-fill ph-medal" style="font-size:1.2rem; color:var(--accent-color);"></i> Vitrina de Logros</div>
+                        <div class="dash-title-premium" style="margin-bottom:16px;"><i class="ph-duotone ph-medal" style="font-size:1.4rem; color:var(--accent-color);"></i> Vitrina de Logros</div>
                         <div class="medals-grid">
-                            <div class="medal-item ${mL?'unlocked':''}" title="Pin a menos de 5km en StadiumGuessr"><i class="ph-fill ph-map-pin medal-icon"></i><div class="medal-name">Localista</div></div>
-                            <div class="medal-item ${mC?'unlocked':''}" title="Calificá 5+ estadios"><i class="ph-fill ph-star medal-icon"></i><div class="medal-name">Catador</div></div>
-                            <div class="medal-item ${mCu?'unlocked':''}" title="Descubrí 10 datos curiosos"><i class="ph-fill ph-lightbulb medal-icon"></i><div class="medal-name">Curioso</div></div>
-                            <div class="medal-item ${mI?'unlocked':''}" title="Completá 3+ campeonatos"><i class="ph-fill ph-trophy medal-icon"></i><div class="medal-name">Leyenda</div></div>
+                            <div class="medal-item ${mL?'unlocked':''}" title="Pin a menos de 5km en StadiumGuessr"><i class="ph-duotone ph-map-pin medal-icon"></i><div class="medal-name">Localista</div></div>
+                            <div class="medal-item ${mC?'unlocked':''}" title="Calificá 5+ estadios"><i class="ph-duotone ph-star medal-icon"></i><div class="medal-name">Catador</div></div>
+                            <div class="medal-item ${mCu?'unlocked':''}" title="Descubrí 10 datos curiosos"><i class="ph-duotone ph-lightbulb medal-icon"></i><div class="medal-name">Curioso</div></div>
+                            <div class="medal-item ${mI?'unlocked':''}" title="Completá 3+ campeonatos"><i class="ph-duotone ph-trophy medal-icon"></i><div class="medal-name">Leyenda</div></div>
                         </div>
                     </div>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
-                    <span style="font-size:0.85rem;color:var(--text-muted);">Rango: <b style="color:var(--accent-color); font-weight:600;">${rangoTexto}</b></span>
-                    <button onclick="cerrarSesion()" style="background:var(--surface-color);color:var(--danger-color);border:1px solid rgba(229, 57, 53, 0.3);padding:8px 16px;border-radius:20px;font-size:0.8rem;cursor:pointer;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='rgba(229, 57, 53, 0.1)'" onmouseout="this.style.background='var(--surface-color)'">Cerrar sesión</button>
+                    <span style="font-size:0.85rem;color:var(--text-muted); font-weight:500;">Rango: <b style="color:var(--accent-color); font-weight:700;">${rangoTexto}</b></span>
+                    <button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color);border-color:var(--danger-color);padding:8px 16px;font-size:0.85rem;box-shadow:0 4px 0 var(--danger-color);">Cerrar sesión</button>
                 </div>
             </div>
         </div>`;
@@ -1676,7 +1772,7 @@
     function cerrarSesion() { localStorage.removeItem('ev_user_logged'); cerrarModalPerfil(); renderizarBotonLogin(); }
 
     // ─────────────────────────────────────────────
-    // INIT
+    // INIT & MEMORIA DE RECARGA (F5)
     // ─────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', () => {
         
@@ -1687,21 +1783,38 @@
             document.getElementById('titulo-grilla').innerText = `Resultados: ${this.innerText}`;
             document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
             this.classList.add('active');
-            cargarLiga(this.getAttribute('data-gid'));
+            
+            const gid = this.getAttribute('data-gid');
+            localStorage.setItem('ev_last_gid', gid); // <-- GUARDAR ESTADO PARA EL F5
+            cargarLiga(gid);
         }));
 
         indexarCatalogoMasivo();
         inicializarGoogleLogin();
         
-        // PANTALLA INICIAL VACÍA SIN CLUBES HASTA QUE SE TOQUE UNA LIGA
-        const grilla = document.querySelector('.grid');
-        grilla.innerHTML = `
-            <div style="grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-main);">
-                <div style="font-size:3.5rem;margin-bottom:20px; color:var(--accent-color);"><i class="ph-fill ph-buildings"></i></div>
-                <h3 style="margin-bottom: 10px; font-weight: 600; font-size:1.4rem;">¡Bienvenido a Estadios Virtuales!</h3>
-                <p style="font-size:1rem; color:var(--text-muted);">Seleccioná una liga arriba o usá el buscador para empezar a explorar.</p>
-            </div>
-        `;
+        // CHECKEO DE ESTADO AL RECARGAR F5
+        const lastGid = localStorage.getItem('ev_last_gid');
+        
+        if (lastGid) {
+            // SI HABÍA UNA LIGA SELECCIONADA, LA RESTAURAMOS
+            const tabToActivate = document.querySelector(`.tab[data-gid="${lastGid}"]`);
+            if (tabToActivate) {
+                document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+                tabToActivate.classList.add('active');
+                document.getElementById('titulo-grilla').innerText = `Resultados: ${tabToActivate.innerText}`;
+                cargarLiga(lastGid);
+            }
+        } else {
+            // SI ES LA PRIMERA VEZ (O NO HAY NADA GUARDADO), PANTALLA VACÍA
+            const grilla = document.querySelector('.grid');
+            grilla.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-main);">
+                    <div class="animate-bounce" style="font-size:4rem;margin-bottom:20px; color:var(--accent-color); filter:drop-shadow(0 10px 10px rgba(29,185,84,0.3));"><i class="ph-duotone ph-buildings"></i></div>
+                    <h3 style="margin-bottom: 10px; font-weight: 800; font-size:1.6rem; text-transform:uppercase;">¡Bienvenido a Estadios Virtuales!</h3>
+                    <p style="font-size:1rem; color:var(--text-muted); font-weight:500;">Seleccioná una liga arriba o usá el buscador para empezar a explorar.</p>
+                </div>
+            `;
+        }
     });
     </script>
 </body>
