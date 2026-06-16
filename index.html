@@ -28,8 +28,11 @@
             --border-strong: rgba(255,255,255,0.15);
             --glass-bg: rgba(20,20,20,0.85);
             --modal-overlay: rgba(0,0,0,0.88);
+            
+            --tab-text: #ffffff;
             --tab-shadow: rgba(0,0,0,0.8);
             --flag-overlay: rgba(0,0,0,0.58);
+            
             --shadow-soft: 0 4px 15px rgba(0,0,0,0.3);
             --shadow-strong: 0 12px 40px rgba(0,0,0,0.7);
             
@@ -40,9 +43,9 @@
 
         [data-theme="light"] {
             /* TEMA CLARO - VERDE CLARITO SUAVE */
-            --bg-color: #eaf4eb; /* Verde clarito de fondo */
+            --bg-color: #eaf4eb; 
             --card-bg: #ffffff;
-            --surface-color: #d8eadb; /* Superficie ligeramente más saturada */
+            --surface-color: #d8eadb; 
             --surface-hover: #c5e0c9;
             --text-main: #112615;
             --text-muted: #537a5b;
@@ -53,9 +56,12 @@
             --border-subtle: rgba(22, 163, 74, 0.15);
             --border-strong: rgba(22, 163, 74, 0.3);
             --glass-bg: rgba(255,255,255,0.92);
-            --modal-overlay: rgba(223, 237, 225, 0.85); /* Overlay verdoso */
-            --tab-shadow: rgba(255,255,255,0.6);
-            --flag-overlay: rgba(255,255,255,0.85);
+            --modal-overlay: rgba(223, 237, 225, 0.85); 
+            
+            --tab-text: #ffffff; 
+            --tab-shadow: rgba(0,0,0,0.8);
+            --flag-overlay: rgba(0,0,0,0.4); 
+            
             --shadow-soft: 0 4px 15px rgba(22, 163, 74, 0.15);
             --shadow-strong: 0 12px 40px rgba(22, 163, 74, 0.25);
             
@@ -210,6 +216,13 @@
         .section-title { font-size: 0.75rem; font-weight: 600; margin-bottom: 18px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
         .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
 
+        #texto-titulo-grilla {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 65%;
+        }
+
         .tabs-container { 
             display: flex; 
             flex-direction: column; /* EN LISTA VERTICAL */
@@ -220,11 +233,11 @@
         }
         
         .tab {
-            color: var(--text-main); border: 1px solid var(--border-subtle);
+            color: var(--tab-text); border: 1px solid var(--border-subtle);
             padding: 14px 20px; border-radius: 14px; cursor: pointer;
             font-weight: 500; white-space: nowrap; font-size: 1rem;
             transition: all 0.25s ease;
-            text-shadow: 1px 1px 3px var(--tab-shadow);
+            text-shadow: 1px 1px 4px var(--tab-shadow);
             background-color: var(--card-bg); background-size: 100% 100%; background-position: center;
             position: relative; box-shadow: inset 0 0 0 1000px var(--flag-overlay), var(--shadow-soft);
             width: 100%; max-width: 350px;
@@ -578,8 +591,12 @@
     </section>
 
     <section class="section-ligas">
-        <h2 class="section-title" id="titulo-grilla">Seleccioná una categoría</h2>
-        <div class="tabs-container">
+        <h2 class="section-title">
+            <span id="texto-titulo-grilla" style="flex-shrink:0;">Seleccioná una categoría</span>
+            <button id="btn-volver-ligas" class="btn-3d secondary" style="display:none; padding:4px 12px; font-size:0.75rem; border-radius:12px; margin-left:12px; text-transform:none; letter-spacing:normal; flex-shrink:0;" onclick="mostrarLigas()"><i class="ph-bold ph-list"></i> Ver Ligas</button>
+            <span style="flex:1; height:1px; background:var(--border-subtle); margin-left:12px;"></span>
+        </h2>
+        <div class="tabs-container" id="tabs-container">
             <button class="tab" data-gid="0">Primera División</button>
             <button class="tab" data-gid="861264971">Primera Nacional</button>
             <button class="tab" data-gid="554922783">Premier League</button>
@@ -721,7 +738,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        initTheme(); // Inicializa tema apenas carga
+        initTheme();
         const checkbox = document.getElementById('privacy-accept-check');
         const btn = document.getElementById('btn-confirm-privacy');
         checkbox.addEventListener('change', () => { btn.disabled = !checkbox.checked; });
@@ -1243,15 +1260,47 @@
     }
 
     // ─────────────────────────────────────────────
-    // BÚSQUEDA Y CARGA DE LIGAS
+    // BÚSQUEDA Y CARGA DE LIGAS Y LISTA OCULTABLE
     // ─────────────────────────────────────────────
+    
+    // Función para mostrar la lista completa de ligas y ocultar tarjetas
+    window.mostrarLigas = function() {
+        document.getElementById('tabs-container').style.display = 'flex';
+        document.getElementById('btn-volver-ligas').style.display = 'none';
+        document.getElementById('texto-titulo-grilla').innerText = 'Seleccioná una categoría';
+        document.getElementById('global-search').value = '';
+        
+        const grilla = document.querySelector('.grid');
+        grilla.innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-main);">
+                <div class="animate-bounce" style="font-size:4rem;margin-bottom:20px; color:var(--accent-color); filter:drop-shadow(0 10px 10px rgba(29,185,84,0.3));"><i class="ph-duotone ph-buildings"></i></div>
+                <h3 style="margin-bottom: 10px; font-weight: 800; font-size:1.6rem; text-transform:uppercase;">¡Bienvenido a Estadios Virtuales!</h3>
+                <p style="font-size:1rem; color:var(--text-muted); font-weight:500;">Seleccioná una liga arriba o usá el buscador para empezar a explorar.</p>
+            </div>
+        `;
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        localStorage.removeItem('ev_last_gid');
+        estadiosCargados = []; // Vaciamos para no mostrar nada en la grilla temporal
+    };
+
     document.getElementById('global-search').addEventListener('input', function(e) {
         const term = e.target.value.toLowerCase().trim();
         if (term === '') {
-            document.getElementById('titulo-grilla').innerText = "Seleccioná una categoría";
-            renderizarTarjetas(estadiosCargados);
+            const lastGid = localStorage.getItem('ev_last_gid');
+            if (lastGid) {
+                const tab = document.querySelector(`.tab[data-gid="${lastGid}"]`);
+                if (tab) document.getElementById('texto-titulo-grilla').innerText = `Resultados: ${tab.innerText}`;
+                renderizarTarjetas(estadiosCargados);
+            } else {
+                window.mostrarLigas();
+            }
         } else {
-            document.getElementById('titulo-grilla').innerText = `Resultados para "${e.target.value}"`;
+            document.getElementById('texto-titulo-grilla').innerText = `Búsqueda: "${e.target.value}"`;
+            
+            // Ocultamos la lista de ligas al buscar
+            document.getElementById('tabs-container').style.display = 'none';
+            document.getElementById('btn-volver-ligas').style.display = 'inline-flex';
+
             renderizarTarjetas(catalogoGlobal.filter(f => {
                 return [bscarPropiedad(f,'Estadio'), bscarPropiedad(f,'Club'), bscarPropiedad(f,'País')]
                     .some(v => v.toLowerCase().includes(term));
@@ -1442,7 +1491,7 @@
             const res = await fetch(scriptUrlRanking);
             const ranking = await res.json();
             let html=`<div style="text-align:center;margin-bottom:24px;"><div style="font-size:3rem;color:var(--accent-color); margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.6rem;color:var(--text-main);font-weight:800;text-transform:uppercase;">TOP 10 GLOBAL</h2><p style="color:var(--text-muted);font-size:0.95rem;margin-top:4px;">Los pilotos más precisos del mundo</p></div>
-            <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:10px;max-width:500px;margin:0 auto; box-shadow: 0 8px 0 var(--border-subtle);">\`;`; /* ERROR ARREGLADO ACA */
+            <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:10px;max-width:500px;margin:0 auto; box-shadow: 0 8px 0 var(--border-subtle);">`;
             if (!ranking?.length) html+=`<p style="color:var(--text-muted);text-align:center;padding:30px; font-weight:600;"><i class="ph-duotone ph-ghost" style="font-size:2rem;"></i><br><br>Aún no hay puntajes.</p>`;
             else ranking.forEach((f,i)=>{
                 let corona=""; let rowBg = "transparent";
@@ -1780,12 +1829,16 @@
 
         document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
             document.getElementById('global-search').value = '';
-            document.getElementById('titulo-grilla').innerText = `Resultados: ${this.innerText}`;
+            document.getElementById('texto-titulo-grilla').innerText = `Resultados: ${this.innerText}`;
             document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
             this.classList.add('active');
             
             const gid = this.getAttribute('data-gid');
             localStorage.setItem('ev_last_gid', gid); // <-- GUARDAR ESTADO PARA EL F5
+            
+            document.getElementById('tabs-container').style.display = 'none';
+            document.getElementById('btn-volver-ligas').style.display = 'inline-flex';
+
             cargarLiga(gid);
         }));
 
@@ -1801,19 +1854,18 @@
             if (tabToActivate) {
                 document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
                 tabToActivate.classList.add('active');
-                document.getElementById('titulo-grilla').innerText = `Resultados: ${tabToActivate.innerText}`;
+                document.getElementById('texto-titulo-grilla').innerText = `Resultados: ${tabToActivate.innerText}`;
+                
+                document.getElementById('tabs-container').style.display = 'none';
+                document.getElementById('btn-volver-ligas').style.display = 'inline-flex';
+
                 cargarLiga(lastGid);
+            } else {
+                window.mostrarLigas();
             }
         } else {
             // SI ES LA PRIMERA VEZ (O NO HAY NADA GUARDADO), PANTALLA VACÍA
-            const grilla = document.querySelector('.grid');
-            grilla.innerHTML = `
-                <div style="grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-main);">
-                    <div class="animate-bounce" style="font-size:4rem;margin-bottom:20px; color:var(--accent-color); filter:drop-shadow(0 10px 10px rgba(29,185,84,0.3));"><i class="ph-duotone ph-buildings"></i></div>
-                    <h3 style="margin-bottom: 10px; font-weight: 800; font-size:1.6rem; text-transform:uppercase;">¡Bienvenido a Estadios Virtuales!</h3>
-                    <p style="font-size:1rem; color:var(--text-muted); font-weight:500;">Seleccioná una liga arriba o usá el buscador para empezar a explorar.</p>
-                </div>
-            `;
+            window.mostrarLigas();
         }
     });
     </script>
