@@ -306,7 +306,22 @@
         function guardarStats() { localStorage.setItem('ev_user_stats', JSON.stringify(userStats)); }
 
         // ============================================================
-        // MAPA DE COLORES POR CLUB — INTEGRADO DESDE TODOS LOS EQUIPOS
+        // PERSISTENCIA DE CALIFICACIONES EN localStorage
+        // Clave: 'ev_votos_locales' → objeto { "Nombre Estadio": puntuacion }
+        // ============================================================
+        function guardarVotoLocal(estadio, puntuacion) {
+            const votos = JSON.parse(localStorage.getItem('ev_votos_locales') || '{}');
+            votos[estadio] = puntuacion;
+            localStorage.setItem('ev_votos_locales', JSON.stringify(votos));
+        }
+
+        function obtenerVotoLocal(estadio) {
+            const votos = JSON.parse(localStorage.getItem('ev_votos_locales') || '{}');
+            return votos[estadio] || 0;
+        }
+
+        // ============================================================
+        // MAPA DE COLORES POR CLUB — INCLUYE COPA DEL MUNDO (países)
         // ============================================================
         const COLORES_CLUBES = {
             // ARGENTINA — PRIMERA DIVISIÓN
@@ -517,21 +532,109 @@
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
-        function obtenerFondoClub(club) {
-            if (!club) return 'linear-gradient(135deg, #1a1a1a 0%, #0c0c0c 100%)';
-            // Búsqueda exacta primero
-            if (COLORES_CLUBES[club]) return COLORES_CLUBES[club];
-            // Búsqueda parcial (tolerante a variaciones menores de nombre)
-            const clubLower = club.toLowerCase();
-            for (const key in COLORES_CLUBES) {
-                if (key.toLowerCase() === clubLower) return COLORES_CLUBES[key];
-            }
-            for (const key in COLORES_CLUBES) {
-                if (clubLower.includes(key.toLowerCase()) || key.toLowerCase().includes(clubLower)) {
-                    return COLORES_CLUBES[key];
+        // ============================================================
+        // GRADIENTES POR PAÍS — para Copa del Mundo y otros sin club
+        // ============================================================
+        const COLORES_PAISES = {
+            "argentina": "linear-gradient(135deg, #75aadb, #ffffff, #75aadb)",
+            "brasil": "linear-gradient(135deg, #009c3b, #ffdf00, #009c3b)",
+            "brasil ": "linear-gradient(135deg, #009c3b, #ffdf00, #009c3b)",
+            "mexico": "linear-gradient(135deg, #006341, #ffffff, #c60c30)",
+            "méxico": "linear-gradient(135deg, #006341, #ffffff, #c60c30)",
+            "estados unidos": "linear-gradient(135deg, #b31942, #ffffff, #0a3161)",
+            "ee. uu.": "linear-gradient(135deg, #b31942, #ffffff, #0a3161)",
+            "usa": "linear-gradient(135deg, #b31942, #ffffff, #0a3161)",
+            "canada": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
+            "canadá": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
+            "alemania": "linear-gradient(135deg, #000000, #dd0000, #ffce00)",
+            "españa": "linear-gradient(135deg, #aa151b, #f1bf00, #aa151b)",
+            "italia": "linear-gradient(135deg, #009246, #ffffff, #ce2b37)",
+            "francia": "linear-gradient(135deg, #002395, #ffffff, #ed2939)",
+            "inglaterra": "linear-gradient(135deg, #cf091b, #ffffff, #cf091b)",
+            "reino unido": "linear-gradient(135deg, #cf091b, #ffffff, #002395)",
+            "portugal": "linear-gradient(135deg, #006600, #ff0000)",
+            "holanda": "linear-gradient(135deg, #ff6600, #ffffff, #003399)",
+            "países bajos": "linear-gradient(135deg, #ff6600, #ffffff, #003399)",
+            "bélgica": "linear-gradient(135deg, #000000, #fdda25, #ef3340)",
+            "belgica": "linear-gradient(135deg, #000000, #fdda25, #ef3340)",
+            "uruguay": "linear-gradient(135deg, #5cb8e4, #ffffff, #5cb8e4)",
+            "colombia": "linear-gradient(135deg, #fcd116, #003087, #ce1126)",
+            "chile": "linear-gradient(135deg, #d52b1e, #ffffff, #002868)",
+            "perú": "linear-gradient(135deg, #d91023, #ffffff, #d91023)",
+            "peru": "linear-gradient(135deg, #d91023, #ffffff, #d91023)",
+            "ecuador": "linear-gradient(135deg, #ffda00, #034694, #ee1c25)",
+            "paraguay": "linear-gradient(135deg, #d52b1e, #ffffff, #034694)",
+            "venezuela": "linear-gradient(135deg, #cf142b, #003087, #cf9e0c)",
+            "bolivia": "linear-gradient(135deg, #d52b1e, #f4e400, #007934)",
+            "japón": "linear-gradient(135deg, #ffffff, #bc002d, #ffffff)",
+            "japon": "linear-gradient(135deg, #ffffff, #bc002d, #ffffff)",
+            "corea del sur": "linear-gradient(135deg, #003087, #ffffff, #cd2e3a)",
+            "australia": "linear-gradient(135deg, #00008b, #ffffff, #ff0000)",
+            "marruecos": "linear-gradient(135deg, #c1272d, #006233)",
+            "túnez": "linear-gradient(135deg, #e70013, #ffffff)",
+            "tunez": "linear-gradient(135deg, #e70013, #ffffff)",
+            "senegal": "linear-gradient(135deg, #00853f, #fcd116, #e31b23)",
+            "ghana": "linear-gradient(135deg, #006b3f, #fcd116, #ce1126)",
+            "camerún": "linear-gradient(135deg, #007a5e, #ce1126, #fcd116)",
+            "camerun": "linear-gradient(135deg, #007a5e, #ce1126, #fcd116)",
+            "nigeria": "linear-gradient(135deg, #008751, #ffffff, #008751)",
+            "egipto": "linear-gradient(135deg, #ce1126, #ffffff, #000000)",
+            "arabia saudita": "linear-gradient(135deg, #006c35, #ffffff)",
+            "irán": "linear-gradient(135deg, #239f40, #ffffff, #da0000)",
+            "iran": "linear-gradient(135deg, #239f40, #ffffff, #da0000)",
+            "qatar": "linear-gradient(135deg, #8d1b3d, #ffffff)",
+            "rusia": "linear-gradient(135deg, #ffffff, #0033a0, #da0000)",
+            "croacia": "linear-gradient(135deg, #ff0000, #ffffff, #003087)",
+            "suecia": "linear-gradient(135deg, #006aa7, #fecc02)",
+            "dinamarca": "linear-gradient(135deg, #c60c30, #ffffff, #c60c30)",
+            "suiza": "linear-gradient(135deg, #ff0000, #ffffff)",
+            "austria": "linear-gradient(135deg, #ed2939, #ffffff, #ed2939)",
+            "polonia": "linear-gradient(135deg, #ffffff, #dc143c)",
+            "república checa": "linear-gradient(135deg, #d7141a, #ffffff, #11457e)",
+            "hungría": "linear-gradient(135deg, #ce2939, #ffffff, #477050)",
+            "hungria": "linear-gradient(135deg, #ce2939, #ffffff, #477050)",
+            "escocia": "linear-gradient(135deg, #005EB8, #ffffff)",
+            "gales": "linear-gradient(135deg, #c8102e, #ffffff)",
+            "turquía": "linear-gradient(135deg, #e30a17, #ffffff)",
+            "turquia": "linear-gradient(135deg, #e30a17, #ffffff)"
+        };
+
+        // ============================================================
+        // ASIGNACIÓN INTELIGENTE DE COLOR — clubs primero, luego país
+        // ============================================================
+        function obtenerFondoClub(club, pais) {
+            if (!club && !pais) return 'linear-gradient(135deg, #1a1a1a 0%, #0c0c0c 100%)';
+
+            // 1. Búsqueda exacta por nombre de club
+            if (club && COLORES_CLUBES[club]) return COLORES_CLUBES[club];
+
+            // 2. Búsqueda insensible a mayúsculas por club
+            if (club) {
+                const clubLower = club.toLowerCase();
+                for (const key in COLORES_CLUBES) {
+                    if (key.toLowerCase() === clubLower) return COLORES_CLUBES[key];
+                }
+                // 3. Búsqueda parcial por club
+                for (const key in COLORES_CLUBES) {
+                    if (clubLower.includes(key.toLowerCase()) || key.toLowerCase().includes(clubLower)) {
+                        return COLORES_CLUBES[key];
+                    }
                 }
             }
-            // Fallback genérico oscuro si no hay coincidencia
+
+            // 4. Fallback por país (útil para Copa del Mundo)
+            if (pais) {
+                const paisLower = pais.toLowerCase().trim();
+                if (COLORES_PAISES[paisLower]) return COLORES_PAISES[paisLower];
+                // Búsqueda parcial por país
+                for (const key in COLORES_PAISES) {
+                    if (paisLower.includes(key) || key.includes(paisLower)) {
+                        return COLORES_PAISES[key];
+                    }
+                }
+            }
+
+            // 5. Fallback genérico oscuro
             return 'linear-gradient(135deg, #1a1a1a 0%, #0c0c0c 100%)';
         }
 
@@ -539,6 +642,10 @@
             event.stopPropagation();
             userStats.votosRealizados++;
             guardarStats();
+
+            // *** NUEVO: persistir el voto en localStorage ***
+            guardarVotoLocal(estadio, puntuacion);
+
             const starsRow = event.target.parentElement;
             if (starsRow) {
                 const stars = starsRow.querySelectorAll('.star-icon');
@@ -658,8 +765,10 @@
                 if (!estadio || !clubNombre) return;
                 const urlFoto = bscarPropiedad(fila, 'Foto') ? bscarPropiedad(fila, 'Foto').trim() : '';
                 const pais = bscarPropiedad(fila, 'País') ? bscarPropiedad(fila, 'País').trim() : 'Argentina';
-                // *** USO DEL NUEVO MAPA DE COLORES ***
-                const fondoGradiente = obtenerFondoClub(clubNombre);
+
+                // *** ACTUALIZADO: pasa "pais" para soporte Copa del Mundo ***
+                const fondoGradiente = obtenerFondoClub(clubNombre, pais);
+
                 const linkVideo = bscarPropiedad(fila, 'Link del Video') ? bscarPropiedad(fila, 'Link del Video').trim() : '#';
                 const latRaw = bscarPropiedad(fila, 'Latitud') ? bscarPropiedad(fila, 'Latitud').toString().trim() : '';
                 const lngRaw = bscarPropiedad(fila, 'Longitud') ? bscarPropiedad(fila, 'Longitud').toString().trim() : '';
@@ -667,14 +776,26 @@
                 const datoLimpio = (datoCurioso || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
                 const promedio = bscarPropiedad(fila, 'Promedio');
                 const valorPromedio = parseFloat(promedio) || 0;
-                const estrellasFisicas = valorPromedio / 2;
+
+                // *** NUEVO: leer voto local y usarlo si existe, si no usar el promedio del servidor ***
+                const votoLocal = obtenerVotoLocal(estadio);
+                // votoLocal está en escala 1-5; valorPromedio está en escala 0-10
+                // Si el usuario ya votó localmente, mostramos su voto; si no, el promedio del servidor
+                const estrellasMostrar = votoLocal > 0 ? votoLocal : (valorPromedio / 2);
+
                 let estrellasHTML = '';
                 for (let i = 1; i <= 5; i++) {
                     let claseEstrella = '';
-                    if (i <= Math.floor(estrellasFisicas)) claseEstrella = 'active';
-                    else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) claseEstrella = 'half-active';
+                    if (i <= Math.floor(estrellasMostrar)) claseEstrella = 'active';
+                    else if (i === Math.ceil(estrellasMostrar) && (estrellasMostrar % 1 >= 0.5)) claseEstrella = 'half-active';
                     estrellasHTML += `<span class="star-icon ${claseEstrella}" data-estadio="${estadio}" data-club="${clubNombre}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event, this)">★</span>`;
                 }
+
+                // Etiqueta del rating: si ya votó localmente se indica
+                const labelRating = votoLocal > 0
+                    ? `Tu voto: ${votoLocal}★ ${valorPromedio > 0 ? `(promedio: ${valorPromedio.toFixed(1)}/10)` : ''}`
+                    : (valorPromedio > 0 ? `Calificá este Estadio (${valorPromedio.toFixed(1)}/10)` : 'Calificá este Estadio (Sin votos)');
+
                 let imgHTML = '';
                 if (urlFoto) {
                     imgHTML = `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-text').style.display='block';"><div class="placeholder-text" style="display:none;">${clubNombre}</div>`;
@@ -702,7 +823,7 @@
                         <p class="card-subtitle">${clubNombre} • ${pais}</p>
                         <button onclick="abrirVideoDesdeCard(event, this)" class="btn-view">Ver Vuelo 3D</button>
                         <div class="rating-box">
-                            <span class="rating-title">Calificá este Estadio ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
+                            <span class="rating-title">${labelRating}</span>
                             <div class="stars-row" data-estadio="${estadio}">${estrellasHTML}</div>
                         </div>
                     </div>`;
