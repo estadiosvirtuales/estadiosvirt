@@ -7,822 +7,481 @@
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        /* ─── VARIABLES DE TEMA ─── */
+        /* ─── VARIABLES DE TEMA CLARO Y OSCURO ─── */
         :root {
-            --bg-color: #080c10;
-            --card-bg: #111820;
-            --surface-color: #161e28;
-            --surface-hover: #1e2a38;
-            --text-main: #f0f4f8;
-            --text-muted: #7a8fa6;
-            --text-inverse: #000000;
-            --accent-color: #00e676;
-            --accent-hover: #69ff9c;
-            --accent-dim: rgba(0, 230, 118, 0.12);
-            --accent-glow: rgba(0, 230, 118, 0.35);
-            --danger-color: #ff4757;
-            --border-subtle: rgba(255,255,255,0.06);
-            --border-strong: rgba(255,255,255,0.12);
-            --glass-bg: rgba(14,22,34,0.88);
-            --modal-overlay: rgba(4,8,14,0.92);
-            --tab-text: #ffffff;
-            --tab-shadow: rgba(0,0,0,0.9);
-            --flag-overlay: rgba(8,12,20,0.62);
-            --shadow-soft: 0 4px 20px rgba(0,0,0,0.4);
-            --shadow-strong: 0 16px 50px rgba(0,0,0,0.75);
-            --hero-particle: rgba(0, 230, 118, 0.06);
-            --game-card-bg: #161e28;
-            --game-card-border: #1e2a38;
-            --pitch-line: rgba(0,230,118,0.07);
+            /* TEMA OSCURO (Por defecto) */
+            --bg-color: #0d0d0d;
+            --card-bg: #141414;
+            --surface-color: #1a1a1a;
+            --surface-hover: #222222;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent-color: #1db954;
+            --accent-hover: #1ed760;
+            --danger-color: #e53935;
+            --border-subtle: rgba(255,255,255,0.08);
+            --border-strong: rgba(255,255,255,0.15);
+            --modal-overlay: rgba(0,0,0,0.85);
+            --shadow-soft: 0 4px 15px rgba(0,0,0,0.2);
+            --shadow-strong: 0 12px 35px rgba(0,0,0,0.6);
         }
 
         [data-theme="light"] {
-            --bg-color: #eef6f0;
+            /* TEMA CLARO - Elegante y sutil (Minimalista) */
+            --bg-color: #f2f7f4; 
             --card-bg: #ffffff;
-            --surface-color: #daeee0;
-            --surface-hover: #c8e4d0;
-            --text-main: #0d2416;
-            --text-muted: #4a7a5c;
-            --text-inverse: #ffffff;
+            --surface-color: #e9f0eb; 
+            --surface-hover: #dce6de;
+            --text-main: #111a14;
+            --text-muted: #5b7364;
             --accent-color: #16a34a;
             --accent-hover: #15803d;
-            --accent-dim: rgba(22,163,74,0.1);
-            --accent-glow: rgba(22,163,74,0.3);
             --danger-color: #dc2626;
-            --border-subtle: rgba(22,163,74,0.12);
-            --border-strong: rgba(22,163,74,0.25);
-            --glass-bg: rgba(255,255,255,0.94);
-            --modal-overlay: rgba(220,235,225,0.88);
-            --tab-text: #0d2416;
-            --tab-shadow: rgba(255,255,255,0.95);
-            --flag-overlay: rgba(238,246,240,0.82);
-            --shadow-soft: 0 4px 20px rgba(22,163,74,0.12);
-            --shadow-strong: 0 16px 50px rgba(22,163,74,0.2);
-            --hero-particle: rgba(22,163,74,0.08);
-            --pitch-line: rgba(22,163,74,0.1);
+            --border-subtle: rgba(22, 163, 74, 0.12);
+            --border-strong: rgba(22, 163, 74, 0.25);
+            --modal-overlay: rgba(230, 240, 233, 0.85); 
+            --shadow-soft: 0 4px 15px rgba(22, 163, 74, 0.08);
+            --shadow-strong: 0 12px 35px rgba(22, 163, 74, 0.15);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-        html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 70px;
-            transition: background-color 0.35s ease, color 0.35s ease;
-            overflow-x: hidden;
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            padding-bottom: 50px; 
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-
-        /* ─── PITCH BACKGROUND ─── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                repeating-linear-gradient(90deg, var(--pitch-line) 0, var(--pitch-line) 1px, transparent 1px, transparent 80px),
-                repeating-linear-gradient(0deg, var(--pitch-line) 0, var(--pitch-line) 1px, transparent 1px, transparent 80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        body > * { position: relative; z-index: 1; }
 
         /* ─── ANIMACIONES ─── */
         @keyframes bounceFun {
-            0% { transform: scale(0.8) translateY(10px); opacity: 0; }
-            60% { transform: scale(1.08) translateY(-4px); opacity: 1; }
-            100% { transform: scale(1) translateY(0); }
+            0% { transform: scale(0.9); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
         }
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 var(--accent-glow); transform: scale(1); }
-            50% { box-shadow: 0 0 0 10px rgba(0,230,118,0); transform: scale(1.015); }
-            100% { box-shadow: 0 0 0 0 rgba(0,230,118,0); transform: scale(1); }
-        }
-        @keyframes shimmerSlide {
-            0% { background-position: -600px 0; }
-            100% { background-position: 600px 0; }
-        }
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes spinSlow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        @keyframes goldShine {
-            0% { box-shadow: 0 0 15px rgba(234,179,8,0.3), 0 8px 20px rgba(0,0,0,0.4); }
-            100% { box-shadow: 0 0 30px rgba(29,185,84,0.55), 0 8px 20px rgba(0,0,0,0.4); }
-        }
-        @keyframes floatBall {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-14px) rotate(180deg); }
-        }
-        @keyframes scoreCount {
-            from { opacity: 0; transform: translateY(-8px) scale(0.8); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            0% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4); transform: scale(1); }
+            70% { box-shadow: 0 0 0 10px rgba(29, 185, 84, 0); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 rgba(29, 185, 84, 0); transform: scale(1); }
         }
 
-        .animate-bounce { animation: bounceFun 0.65s cubic-bezier(0.175,0.885,0.32,1.275) forwards; }
-        .animate-pulse-glow { animation: pulseGlow 1.8s infinite; }
-        .animate-fade-up { animation: fadeSlideUp 0.5s ease forwards; }
+        .animate-bounce { animation: bounceFun 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .animate-pulse-glow { animation: pulseGlow 2s infinite; }
 
-        /* ─── HEADER ─── */
+        /* ─── HEADER PRINCIPAL ─── */
         .app-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 32px;
-            background: var(--glass-bg);
+            padding: 12px 30px; background: var(--card-bg);
             border-bottom: 1px solid var(--border-subtle);
             position: sticky; top: 0; z-index: 1500;
-            backdrop-filter: blur(20px) saturate(1.5);
-            -webkit-backdrop-filter: blur(20px) saturate(1.5);
-            box-shadow: 0 1px 0 var(--border-subtle), 0 4px 20px rgba(0,0,0,0.3);
-            transition: background 0.35s;
+            box-shadow: var(--shadow-soft);
+            transition: background 0.3s;
         }
-
-        .header-left-line {
-            position: absolute; bottom: 0; left: 0;
-            height: 2px; width: 100%;
-            background: linear-gradient(90deg, transparent 0%, var(--accent-color) 30%, var(--accent-color) 70%, transparent 100%);
-            opacity: 0.4;
-        }
-
-        .app-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .app-brand { display: flex; align-items: center; gap: 14px; text-decoration: none;}
         .app-logo {
-            width: 44px; height: 44px; border-radius: 12px;
-            border: 2px solid var(--accent-color);
-            object-fit: cover;
-            box-shadow: 0 0 12px var(--accent-glow);
-            transition: transform 0.3s, box-shadow 0.3s;
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 2px solid var(--accent-color); object-fit: cover;
         }
-        .app-brand:hover .app-logo { transform: rotate(-8deg) scale(1.05); box-shadow: 0 0 20px var(--accent-glow); }
         .app-title-group { display: flex; flex-direction: column; }
-        .app-title { font-size: 1.2rem; font-weight: 800; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
-        .app-subtitle {
-            font-size: 0.7rem; color: var(--accent-color); font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1.5px;
-            display: flex; align-items: center; gap: 5px;
-        }
-        .app-subtitle::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-color); box-shadow: 0 0 6px var(--accent-color); animation: pulseGlow 2s infinite; }
-
-        .header-actions { display: flex; align-items: center; gap: 14px; }
+        .app-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px;}
+        .app-subtitle { font-size: 0.7rem; color: var(--accent-color); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .header-actions { display: flex; align-items: center; gap: 16px; }
 
         .theme-toggle-btn {
-            width: 42px; height: 42px; border-radius: 12px;
-            background: var(--surface-color); border: 1px solid var(--border-strong);
-            color: var(--text-muted); font-size: 1.3rem;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--surface-color); border: 1px solid var(--border-subtle);
+            color: var(--text-main); font-size: 1.3rem;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s ease;
+            cursor: pointer; transition: all 0.2s ease;
         }
-        .theme-toggle-btn:hover { transform: scale(1.1); color: var(--accent-color); border-color: var(--accent-color); background: var(--accent-dim); box-shadow: 0 0 12px var(--accent-glow); }
+        .theme-toggle-btn:hover { transform: scale(1.08); color: var(--accent-color); border-color: var(--accent-color); }
 
-        /* ─── BOTONES 3D ─── */
-        .btn-3d {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px 20px; font-weight: 700; font-size: 1rem;
-            border-radius: 14px; border: none; cursor: pointer;
-            transition: all 0.12s ease;
-            position: relative;
-        }
-        .btn-3d::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 14px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .btn-3d:active { transform: translateY(3px) scale(0.98); }
+        i.ph, i.ph-fill, i.ph-duotone { vertical-align: middle; line-height: 1; }
 
-        .btn-3d.primary {
-            background: var(--accent-color);
-            color: #000;
-            box-shadow: 0 5px 0 #0a7a3a, 0 8px 20px var(--accent-glow);
-        }
-        .btn-3d.primary:hover { background: var(--accent-hover); box-shadow: 0 7px 0 #0a7a3a, 0 12px 25px var(--accent-glow); transform: translateY(-2px); }
-        .btn-3d.primary:active { box-shadow: 0 2px 0 #0a7a3a, 0 4px 10px var(--accent-glow); transform: translateY(3px); }
-
-        .btn-3d.secondary {
-            background: var(--surface-color);
-            color: var(--text-main);
-            border: 2px solid var(--border-strong);
-            box-shadow: 0 4px 0 rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
-        }
-        .btn-3d.secondary:hover { border-color: var(--accent-color); color: var(--accent-color); background: var(--accent-dim); transform: translateY(-2px); }
-        .btn-3d.secondary:active { box-shadow: 0 1px 0 rgba(0,0,0,0.3); transform: translateY(3px); }
-
-        /* ─── HERO ─── */
+        /* ─── HERO Y ZONA DE JUEGOS GAMIFICADA ─── */
         .hero-section {
-            position: relative; padding: 60px 20px 70px; text-align: center;
-            overflow: hidden;
+            padding: 50px 30px; 
+            border-bottom: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, var(--surface-color) 0%, var(--bg-color) 100%);
         }
 
-        .hero-bg-glow {
-            position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
-            width: 700px; height: 700px; border-radius: 50%;
-            background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 65%);
-            pointer-events: none; opacity: 0.5;
+        .hero-content { 
+            max-width: 1200px; margin: 0 auto; 
+            display: flex; flex-direction: column; gap: 40px; 
         }
 
-        .hero-ball {
-            position: absolute; right: 8%; top: 20%;
-            font-size: 5rem; opacity: 0.06;
-            animation: floatBall 6s ease-in-out infinite;
-            pointer-events: none; user-select: none;
-        }
-        .hero-ball-2 {
-            position: absolute; left: 6%; top: 55%;
-            font-size: 3rem; opacity: 0.05;
-            animation: floatBall 8s ease-in-out infinite reverse;
-            pointer-events: none; user-select: none;
+        @media (min-width: 850px) {
+            .hero-content { flex-direction: row; justify-content: space-between; align-items: center; }
+            .hero-text-block { flex: 1.2; padding-right: 30px; }
+            .hero-games-block { flex: 1; width: 100%; max-width: 450px; }
         }
 
-        .hero-content {
-            max-width: 1000px; margin: 0 auto;
-            display: flex; flex-direction: column; align-items: center;
-            position: relative; z-index: 1;
-        }
+        .welcome-heading { font-size: 2.5rem; font-weight: 900; margin-bottom: 12px; color: var(--text-main); letter-spacing: -1px; line-height: 1.15;}
+        .welcome-sub { font-size: 1rem; color: var(--text-muted); margin-bottom: 25px; font-weight: 500; line-height: 1.6; }
 
-        .hero-eyebrow {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--accent-dim); border: 1px solid var(--border-strong);
-            border-left: 3px solid var(--accent-color);
-            color: var(--accent-color); font-size: 0.78rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px;
-            padding: 6px 14px; border-radius: 6px;
-            margin-bottom: 18px;
-            animation: fadeSlideUp 0.4s ease;
-        }
-
-        .welcome-heading {
-            font-size: 3.2rem; font-weight: 900; margin-bottom: 10px;
-            color: var(--text-main); letter-spacing: -1.5px; line-height: 1.05;
-            animation: fadeSlideUp 0.45s 0.05s ease both;
-        }
-        .welcome-heading .accent-word { color: var(--accent-color); }
-
-        .welcome-sub {
-            font-size: 1.05rem; color: var(--text-muted); margin-bottom: 36px;
-            font-weight: 400; max-width: 520px; line-height: 1.65;
-            animation: fadeSlideUp 0.45s 0.1s ease both;
-        }
-
-        /* ─── BÚSQUEDA ─── */
         .search-container {
-            width: 100%; max-width: 580px; margin: 0 auto 40px; position: relative;
-            animation: fadeSlideUp 0.45s 0.15s ease both;
+            width: 100%; max-width: 450px; position: relative;
+            box-shadow: var(--shadow-soft); border-radius: 16px;
         }
         .search-icon {
-            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
-            color: var(--text-muted); pointer-events: none; font-size: 1.25rem; z-index: 2;
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--text-muted); pointer-events: none; font-size: 1.2rem; z-index: 2;
         }
         .search-bar {
-            width: 100%; padding: 18px 20px 18px 54px; border-radius: 16px;
-            border: 2px solid var(--border-strong);
+            width: 100%; padding: 16px 20px 16px 48px; border-radius: 16px; border: 2px solid var(--border-strong);
             background: var(--card-bg); color: var(--text-main); font-size: 1rem; outline: none;
-            transition: all 0.3s ease; font-weight: 500;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 var(--border-subtle);
+            transition: all 0.2s ease; font-weight: 500;
         }
-        .search-bar::placeholder { color: var(--text-muted); font-weight: 400; }
-        .search-bar:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px var(--accent-dim), 0 4px 20px rgba(0,0,0,0.3);
-            background: var(--surface-color);
-        }
+        .search-bar::placeholder { color: var(--text-muted); font-weight: 500;}
+        .search-bar:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(22,163,74,0.15); }
 
-        /* ─── GAME CARDS ─── */
-        .game-modes {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
-            gap: 18px; width: 100%;
-            animation: fadeSlideUp 0.45s 0.2s ease both;
-        }
+        /* TARJETAS DE JUEGOS */
+        .game-modes { display: flex; flex-direction: column; gap: 14px; width: 100%; }
 
         .game-card {
-            border: none; border-radius: 20px; padding: 22px 20px;
+            border: 1px solid var(--border-subtle); border-radius: 16px; padding: 16px;
             display: flex; align-items: center; gap: 16px; text-align: left;
             cursor: pointer; position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
-            color: #fff; text-decoration: none;
-        }
-        .game-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .game-card::after {
-            content: ''; position: absolute; bottom: -30px; right: -30px;
-            width: 100px; height: 100px; border-radius: 50%;
-            background: rgba(255,255,255,0.06);
-            pointer-events: none;
+            background: var(--card-bg); color: var(--text-main);
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            text-decoration: none;
         }
         .game-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-strong);
         }
-        .game-card:active { transform: translateY(-2px) scale(0.99); }
-
-        .btn-guessr { background: linear-gradient(135deg, #00c853 0%, #00695c 100%); box-shadow: 0 8px 0 #004d40, 0 12px 30px rgba(0,200,83,0.25); }
-        .btn-guessr:hover { box-shadow: 0 12px 0 #004d40, 0 18px 40px rgba(0,200,83,0.35); }
-        .btn-order { background: linear-gradient(135deg, #ff8f00 0%, #e65100 100%); box-shadow: 0 8px 0 #bf360c, 0 12px 30px rgba(255,143,0,0.25); }
-        .btn-order:hover { box-shadow: 0 12px 0 #bf360c, 0 18px 40px rgba(255,143,0,0.35); }
-        .btn-random { background: linear-gradient(135deg, #2979ff 0%, #1565c0 100%); box-shadow: 0 8px 0 #0d47a1, 0 12px 30px rgba(41,121,255,0.25); }
-        .btn-random:hover { box-shadow: 0 12px 0 #0d47a1, 0 18px 40px rgba(41,121,255,0.35); }
-
+        
         .game-card-icon {
-            width: 56px; height: 56px; border-radius: 16px;
-            background: rgba(255,255,255,0.18);
-            box-shadow: inset 0 2px 6px rgba(255,255,255,0.25), 0 4px 8px rgba(0,0,0,0.2);
+            width: 48px; height: 48px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.2rem; color: #fff; flex-shrink: 0;
-            transition: transform 0.3s;
+            font-size: 1.8rem; flex-shrink: 0;
         }
-        .game-card:hover .game-card-icon { transform: rotate(-8deg) scale(1.1); }
+        .gc-guessr { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .gc-order { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .gc-random { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
 
-        .game-card-text { display: flex; flex-direction: column; z-index: 2; }
-        .game-card-text strong { font-size: 1.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 3px; }
-        .game-card-text span { font-size: 0.88rem; font-weight: 500; opacity: 0.9; }
+        .game-card-text { display: flex; flex-direction: column; flex-grow: 1;}
+        .game-card-text strong { font-size: 1.05rem; font-weight: 800; line-height: 1.2; margin-bottom: 2px; }
+        .game-card-text span { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+        .game-card-arrow { color: var(--border-strong); font-size: 1.2rem; transition: color 0.2s; }
+        .game-card:hover .game-card-arrow { color: var(--accent-color); transform: translateX(3px); }
 
-        /* ─── GOOGLE PROFILE ─── */
-        #hero-google-profile { display: flex; align-items: center; }
+        /* Botones estilo 3D para la app */
+        .btn-3d {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 20px; font-weight: 700; font-size: 0.95rem;
+            border-radius: 14px; border: none; cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-3d.primary {
+            background: var(--accent-color); color: #000;
+            box-shadow: 0 4px 0 #15803d;
+        }
+        .btn-3d.primary:active { transform: translateY(4px); box-shadow: 0 0 0 #15803d; }
+        
+        .btn-3d.secondary {
+            background: var(--surface-color); color: var(--text-main);
+            border: 2px solid var(--border-strong);
+            box-shadow: 0 4px 0 var(--border-strong);
+        }
+        .btn-3d.secondary:active { transform: translateY(4px); box-shadow: 0 0 0 var(--border-strong); }
+
+        /* ─── GOOGLE PROFILE EN HEADER ─── */
+        #hero-google-profile { display: flex; align-items: center; justify-content: center; }
         .btn-login {
-            background: var(--accent-color); color: #000; padding: 9px 18px;
-            border-radius: 12px; font-weight: 800; border: none; cursor: pointer;
-            display: flex; align-items: center; gap: 7px; font-size: 0.9rem;
-            box-shadow: 0 4px 0 #0a7a3a, 0 6px 15px var(--accent-glow);
-            transition: all 0.2s; letter-spacing: 0.3px;
+            background: var(--card-bg); color: var(--text-main); padding: 8px 16px;
+            border-radius: 20px; font-weight: 700; border: 2px solid var(--border-strong); cursor: pointer;
+            display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #0a7a3a, 0 10px 20px var(--accent-glow); background: var(--accent-hover); }
-        .btn-login:active { transform: translateY(2px); box-shadow: 0 2px 0 #0a7a3a; }
+        .btn-login:hover { border-color: var(--accent-color); color: var(--accent-color); }
+        
+        .hero-profile-wrapper { position: relative; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 12px; border-radius: 30px; transition: background 0.2s; border: 1px solid transparent;}
+        .hero-profile-wrapper:hover { background: var(--surface-color); border-color: var(--border-subtle);}
+        .hero-profile-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; }
+        .hero-profile-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        .hero-profile-wrapper {
-            position: relative; display: flex; align-items: center; gap: 10px;
-            cursor: pointer; padding: 6px 12px 6px 6px;
-            border-radius: 50px; border: 2px solid var(--border-strong);
-            background: var(--surface-color);
-            transition: all 0.25s; box-shadow: 0 2px 0 rgba(0,0,0,0.2);
-        }
-        .hero-profile-wrapper:hover { border-color: var(--accent-color); background: var(--accent-dim); transform: translateY(-1px); }
-        .hero-profile-avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            border: 2px solid var(--accent-color); object-fit: cover;
-            box-shadow: 0 0 8px var(--accent-glow);
-        }
-        .hero-profile-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .hero-profile-sub { font-size: 0.68rem; color: var(--accent-color); font-weight: 700; display: flex; align-items: center; gap: 3px; }
+        /* ─── LIGAS TABS (GRILLA A LO ANCHO) ─── */
+        .section-ligas { max-width: 1200px; margin: 30px auto 16px; padding: 0 24px; }
+        .section-title { font-size: 0.85rem; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
+        .section-title::after { content: ''; flex: 1; height: 2px; background: var(--border-subtle); border-radius:2px;}
 
-        /* ─── SECCIÓN LIGAS ─── */
-        .section-ligas { max-width: 1220px; margin: 36px auto 18px; padding: 0 24px; }
-        .section-title {
-            font-size: 0.75rem; font-weight: 800; margin-bottom: 20px;
-            letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
-            display: flex; align-items: center; gap: 12px;
-        }
-        #texto-titulo-grilla { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; color: var(--text-main); display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
-
-        .tabs-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
-            gap: 14px;
+        .tabs-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Grilla adaptable */
+            gap: 12px; 
             width: 100%;
         }
-
+        
         .tab {
-            color: var(--tab-text); border: 2px solid var(--border-subtle);
-            padding: 16px 20px; border-radius: 16px; cursor: pointer;
-            font-weight: 700; white-space: nowrap; font-size: 1rem;
-            transition: all 0.25s cubic-bezier(0.175,0.885,0.32,1.275);
-            text-shadow: 1px 1px 4px var(--tab-shadow);
-            background-color: var(--card-bg); background-size: cover; background-position: center;
-            position: relative; width: 100%;
-            display: flex; justify-content: flex-start; align-items: center;
-            box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 4px 12px rgba(0,0,0,0.3);
-            overflow: hidden;
+            background: var(--card-bg); color: var(--text-main); 
+            border: 2px solid var(--border-subtle);
+            padding: 12px 16px; border-radius: 12px; cursor: pointer;
+            font-weight: 600; font-size: 0.95rem; text-align: left;
+            transition: all 0.2s;
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .tab::after {
-            content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-            width: 6px; height: 6px; border-radius: 50%;
-            background: rgba(255,255,255,0.25);
-            transition: all 0.25s;
-        }
-        .tab.active::after, .tab:hover::after { background: var(--accent-color); box-shadow: 0 0 6px var(--accent-color); }
         .tab.active, .tab:hover {
-            border-color: var(--accent-color);
-            box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 8px 25px rgba(0,230,118,0.2);
-            transform: translateY(-3px);
+            border-color: var(--accent-color); background: var(--surface-color);
+            transform: translateY(-2px); box-shadow: var(--shadow-soft);
         }
-        .tab.active { background-color: var(--accent-dim); }
-
-        /* Flags */
-        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #fff 33%, #fff 66%, #75aadb 66%); }
-        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #fff 42%, #ce1124 42%, #ce1124 58%, #fff 58%); }
-        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); }
-        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #fff 33%, #fff 66%, #ce2b37 66%); }
-        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #fff 33%, #fff 66%, #ed2939 66%); }
-        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); }
-        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); }
-        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); }
-        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #fff 33%, #fff 66%, #b31942 66%); }
+        .tab i { color: var(--text-muted); transition: color 0.2s;}
+        .tab:hover i, .tab.active i { color: var(--accent-color); }
 
         /* ─── GRID DE CARDS ─── */
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-            gap: 24px; padding: 0 24px; max-width: 1220px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px; padding: 0 24px; max-width: 1200px; margin: 0 auto;
         }
 
         .card {
-            background: var(--card-bg); border-radius: 20px; overflow: hidden;
-            transition: transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275), box-shadow 0.3s ease;
-            cursor: pointer; display: flex; flex-direction: column;
+            background: var(--card-bg); border-radius: 16px; overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s;
+            cursor: pointer; box-shadow: var(--shadow-soft); display: flex; flex-direction: column;
             border: 1px solid var(--border-subtle);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px var(--accent-color);
-        }
+        .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-strong); border-color: var(--border-strong); }
 
         .estadio-foto-container {
-            width: 100%; height: 190px; position: relative;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; padding: 28px;
-            transition: filter 0.3s;
+            width: 100%; height: 180px; position: relative; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; padding: 20px; transition: filter 0.3s;
         }
+        .card-img-logo { max-height: 90%; max-width: 90%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)); transition: transform 0.3s; z-index: 2; }
+        .card:hover .card-img-logo { transform: scale(1.08); }
+
         .estadio-foto-container::after {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(0deg, rgba(10,14,20,0.9) 0%, rgba(0,0,0,0.05) 60%);
-            z-index: 1;
+            background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 100%); z-index: 1;
         }
-        .card:hover .estadio-foto-container { filter: brightness(1.1); }
 
-        .card-img-logo {
-            max-height: 88%; max-width: 88%; object-fit: contain;
-            filter: drop-shadow(0 6px 16px rgba(0,0,0,0.7));
-            transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-            z-index: 2;
-        }
-        .card:hover .card-img-logo { transform: scale(1.12) rotate(3deg); }
-
-        .placeholder-text {
-            color: rgba(255,255,255,0.12); font-weight: 800; font-size: 1rem;
-            text-transform: uppercase; letter-spacing: 2.5px; text-align: center;
-            padding: 0 10px; z-index: 2;
-        }
+        .placeholder-text { color: rgba(255,255,255,0.3); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; text-align: center; z-index: 2; }
 
         .trivia-hint {
             position: absolute; top: 12px; right: 12px;
-            background: rgba(0,0,0,0.55); color: #fff;
-            border-radius: 10px; width: 36px; height: 36px;
+            background: rgba(0,0,0,0.5); color: #fff;
+            border-radius: 50%; width: 32px; height: 32px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; z-index: 4;
-            border: 1px solid rgba(255,255,255,0.15);
-            backdrop-filter: blur(8px);
-            transition: all 0.25s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            font-size: 1.2rem; z-index: 4; border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px); transition: all 0.2s;
         }
-        .card:hover .trivia-hint {
-            background: var(--accent-color); color: #000;
-            box-shadow: 0 0 18px var(--accent-glow);
-            border-color: var(--accent-color);
-            transform: scale(1.08);
-        }
+        .card:hover .trivia-hint { background: var(--accent-color); color: #000; border-color:var(--accent-color); transform:scale(1.1);}
 
         .trivia-balloon {
             position: absolute; inset: 8px; background: var(--glass-bg);
-            border: 1px solid var(--border-strong); border-radius: 14px;
-            padding: 12px; display: flex; flex-direction: column;
+            border: 1px solid var(--border-strong); border-radius: 12px;
+            padding: 10px; display: flex; flex-direction: column;
             z-index: 10; opacity: 0; pointer-events: none;
-            transform: scale(0.92) translateY(4px);
-            transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
-            backdrop-filter: blur(16px);
+            transform: scale(0.95); transition: all 0.2s;
+            backdrop-filter: blur(12px);
         }
-        .trivia-balloon.active {
-            opacity: 1; pointer-events: auto;
-            transform: scale(1) translateY(0);
-            box-shadow: var(--shadow-strong);
-        }
+        .trivia-balloon.active { opacity: 1; pointer-events: auto; transform: scale(1); }
 
         .balloon-tabs { display: flex; width: 100%; border-bottom: 2px solid var(--border-subtle); margin-bottom: 8px; flex-shrink: 0; }
         .b-tab {
-            flex: 1; background: transparent; color: var(--text-muted);
-            border: none; padding: 8px 0; cursor: pointer;
-            font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
-            transition: all 0.2s; border-bottom: 2px solid transparent; margin-bottom: -2px;
+            flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 6px 0; cursor: pointer;
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase; transition: all 0.2s; border-bottom: 2px solid transparent; margin-bottom:-2px;
         }
-        .b-tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: 800; }
-        .b-content { display: none; width: 100%; height: 100%; overflow-y: auto; color: var(--text-main); font-size: 0.88rem; line-height: 1.55; text-align: center; align-items: center; justify-content: center; padding: 4px 5px; }
+        .b-tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+        .b-content { display: none; width: 100%; height: 100%; overflow-y: auto; color: var(--text-main); font-size: 0.85rem; line-height: 1.45; text-align: center; align-items: center; justify-content: center; padding: 0 5px;}
         .b-content.active { display: flex; }
 
-        .card-content { padding: 20px 22px; display: flex; flex-direction: column; flex-grow: 1; }
-        .card-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.3px; color: var(--text-main); }
-        .card-subtitle { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 18px; font-weight: 500; }
+        .card-content { padding: 18px 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; color: var(--text-main); }
+        .card-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; font-weight: 500;}
 
         .btn-view {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 12px;
-            background: var(--surface-color); color: var(--text-main);
-            border-radius: 12px; font-weight: 700; font-size: 0.95rem;
-            border: 2px solid var(--border-strong); cursor: pointer;
-            transition: all 0.22s; margin-top: auto;
-            box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+            display: inline-flex; align-items: center; justify-content: center; gap:8px; width: 100%; padding: 10px;
+            background: var(--surface-color); color: var(--text-main); text-align: center; border-radius: 10px;
+            font-weight: 700; font-size: 0.9rem; border: 1px solid var(--border-strong); cursor: pointer;
+            transition: all 0.2s; margin-top: auto; 
         }
-        .btn-view:hover {
-            background: var(--accent-color); border-color: var(--accent-color);
-            color: #000; box-shadow: 0 5px 0 #0a7a3a, 0 8px 20px var(--accent-glow);
-            transform: translateY(-2px);
-        }
-        .btn-view:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.3); }
+        .btn-view:hover { background: var(--surface-hover); border-color:var(--accent-color); color: var(--accent-color); }
 
-        /* ─── STARS ─── */
-        .rating-box { display: flex; flex-direction: column; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border-strong); }
-        .rating-title { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-        .stars-row { display: flex; gap: 5px; }
-        .star-icon {
-            font-size: 1.5rem; color: var(--border-strong); cursor: pointer;
-            transition: transform 0.15s cubic-bezier(0.175,0.885,0.32,1.275), color 0.15s, filter 0.15s;
-            user-select: none;
-        }
-        .star-icon:hover { transform: scale(1.35); color: var(--accent-hover); filter: drop-shadow(0 0 4px var(--accent-glow)); }
-        .star-icon.active { color: var(--accent-color); filter: drop-shadow(0 0 3px var(--accent-glow)); }
+        /* ─── RATING STARS ─── */
+        .rating-box { display: flex; flex-direction: column; align-items: center; margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border-subtle); }
+        .rating-title { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .stars-row { display: flex; gap: 4px; }
+        .star-icon { font-size: 1.4rem; color: var(--border-strong); cursor: pointer; transition: transform 0.15s, color 0.15s; user-select: none; }
+        .star-icon:hover { transform: scale(1.2); color: var(--accent-hover); }
+        .star-icon.active { color: var(--accent-color) !important; }
+        .star-icon.half-active { background: linear-gradient(90deg, var(--accent-color) 50%, var(--border-strong) 50%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* ─── MODALES ─── */
+        /* ─── MODALES GENERALES ─── */
         .modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: var(--modal-overlay); z-index: 2500;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(12px);
+            display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 2500;
+            justify-content: center; align-items: center; backdrop-filter: blur(6px);
         }
         .modal-content {
-            position: relative; width: 90%; max-width: 580px; height: 80vh;
-            background: var(--bg-color); border-radius: 22px;
-            box-shadow: var(--shadow-strong), 0 0 0 1px var(--border-strong);
-            display: flex; flex-direction: column;
+            position: relative; width: 90%; max-width: 560px; height: 80vh;
+            background: var(--bg-color); border-radius: 20px;
+            box-shadow: var(--shadow-strong); display: flex; flex-direction: column; transition: all 0.3s ease;
             border: 1px solid var(--border-strong); overflow: hidden;
-            animation: bounceFun 0.4s ease;
         }
         .modal-content.stadium-guessr-layout { width: 92% !important; max-width: 1200px !important; }
-        .video-container {
-            width: 100%; height: 100%; border-radius: 22px;
-            overflow: hidden; background: #000;
-            display: flex; justify-content: center; align-items: center;
-        }
+        .video-container { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
 
-        .close-btn {
-            position: absolute; top: 14px; right: 14px;
-            background: rgba(0,0,0,0.6); color: #fff;
-            border: 1px solid rgba(255,255,255,0.15); padding: 0;
-            cursor: pointer; z-index: 2020; border-radius: 10px;
-            width: 38px; height: 38px; font-size: 1.3rem;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            backdrop-filter: blur(8px);
-        }
-        .close-btn:hover { background: var(--danger-color); border-color: var(--danger-color); transform: scale(1.1) rotate(90deg); }
-
-        /* ─── GAME UI GUESSR ─── */
-        #game-ui {
-            display: none; width: 100%;
-            background: var(--bg-color) !important; padding: 20px !important;
-            text-align: center; z-index: 2010;
-            border-radius: 0 0 22px 22px;
-        }
-        #game-title {
-            font-size: 0.95rem !important; color: var(--text-main);
-            margin-bottom: 14px; font-weight: 800 !important;
-            text-transform: uppercase; letter-spacing: 1px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            background: var(--surface-color); padding: 13px;
-            border-radius: 12px; border: 2px solid var(--border-strong);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-        }
-        #map-guess-container {
-            width: 100%; height: 260px;
-            background: var(--surface-color); border-radius: 14px !important;
-            border: 3px solid var(--border-strong); margin-bottom: 16px;
-            transition: border-color 0.3s;
-            overflow: hidden;
-        }
-        #map-guess-container:hover { border-color: var(--accent-color); }
-
-        /* LEAFLET */
-        .leaflet-popup-content-wrapper {
-            background: var(--surface-color) !important; color: var(--text-main) !important;
-            border: 2px solid var(--accent-color); border-radius: 14px !important;
-            box-shadow: var(--shadow-strong) !important; font-weight: 700;
-        }
-        .leaflet-popup-tip { background: var(--surface-color) !important; }
-
-        /* ─── PROFILE MODAL ─── */
-        .split-profile-layout { display: flex; flex-direction: column; gap: 28px; width: 100%; }
-        @media (min-width: 769px) {
-            .split-profile-layout { flex-direction: row; align-items: stretch; }
-            .left-fut-column { width: 38%; display: flex; justify-content: center; align-items: center; border-right: 2px dashed var(--border-subtle); padding-right: 25px; }
-            .right-dashboard-column { width: 62%; display: flex; flex-direction: column; justify-content: space-between; }
-        }
-
-        .fut-card {
-            position: relative; width: 250px; height: 380px;
-            background-size: cover; border-radius: 18px; padding: 20px;
-            display: flex; flex-direction: column; align-items: center;
-            color: #fff; font-family: 'Arial Black', Gadget, sans-serif;
-            box-shadow: var(--shadow-strong); overflow: hidden;
-            user-select: none; border: 2px solid rgba(255,255,255,0.15);
-        }
-        .fut-card.bronze { background: linear-gradient(135deg,#a855f7 0%,#7e22ce 50%,#3b0764 100%); }
-        .fut-card.silver { background: linear-gradient(135deg,#9ca3af 0%,#4b5563 50%,#1f2937 100%); }
-        .fut-card.gold { background: linear-gradient(135deg,#eab308 0%,#ca8a04 40%,#16a34a 80%,#0c0c0c 100%); animation: goldShine 4s infinite alternate; }
-        .fut-top { display: flex; width: 100%; height: 55%; margin-top: 15px; }
-        .fut-badge-meta { width: 30%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
-        .fut-ovr { font-size: 2.2rem; font-weight: 900; }
-        .fut-pos { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; opacity: 0.8; }
-        .fut-club-icon { width: 28px; height: 28px; margin-top: 8px; object-fit: contain; }
-        .fut-avatar-container { width: 70%; height: 100%; position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
-        .fut-user-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; z-index: 5; margin-bottom: 25px; border: 4px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .fut-jersey-overlay { position: absolute; bottom: 0; width: 100px; height: 50px; background: linear-gradient(0deg,#111 0%,#333 100%); border-radius: 40px 40px 0 0; z-index: 4; border: 2px solid var(--accent-color); border-bottom: none; }
-        .fut-jersey-stripe { position: absolute; top: 0; left: 42px; width: 16px; height: 100%; background: rgba(255,255,255,0.8); }
-        .fut-name { width: 100%; text-align: center; font-size: 1.1rem; font-weight: 900; margin: 8px 0; text-transform: uppercase; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .fut-stats-row { display: grid; grid-template-columns: repeat(2,1fr); width: 90%; font-size: 0.85rem; gap: 4px 15px; margin-top: 5px; }
-        .fut-stat-item { display: flex; gap: 6px; justify-content: center; }
-        .fut-stat-num { font-weight: 900; }
-        .fut-stat-label { opacity: 0.7; }
-
-        .geoguessr-dash-box { background: var(--surface-color); border: 2px solid var(--border-strong); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
-        .dash-header-inline { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px dashed var(--border-subtle); }
-        .dash-title-premium { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .streak-fire-badge { background: var(--bg-color); color: var(--accent-color); padding: 6px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 800; border: 2px solid var(--border-strong); display: flex; align-items: center; gap: 5px; }
-        .calendar-matrix { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; text-align: center; margin-top: 10px; }
-        .calendar-day-label { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; padding-bottom: 4px; }
-        .calendar-cell { font-size: 0.78rem; padding: 7px 0; background: var(--bg-color); border-radius: 7px; color: var(--text-main); font-weight: 700; border: 2px solid var(--border-subtle); transition: all 0.2s; }
-        .calendar-cell.past-done { color: var(--text-muted); opacity: 0.4; border-color: transparent; background: transparent; }
-        .calendar-cell.current-active { color: #000; background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 4px 12px var(--accent-glow); transform: scale(1.1); }
-
-        .medals-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 14px; }
-        .medal-item { display: flex; flex-direction: column; align-items: center; background: var(--bg-color); padding: 12px 6px; border-radius: 14px; border: 2px solid var(--border-subtle); opacity: 0.3; filter: grayscale(100%); transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); }
-        .medal-item.unlocked { opacity: 1; filter: grayscale(0%); border-color: var(--accent-color); background: var(--accent-dim); box-shadow: 0 4px 16px var(--accent-glow); transform: translateY(-3px); }
-        .medal-icon { font-size: 2rem; margin-bottom: 7px; color: var(--text-main); }
-        .medal-item.unlocked .medal-icon { color: var(--accent-color); filter: drop-shadow(0 0 6px var(--accent-glow)); }
-        .medal-name { font-size: 0.68rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
-
-        /* ─── LOGIN MODAL (reemplazo del Google SDK) ─── */
-        #login-modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: var(--modal-overlay); z-index: 9000;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(12px);
-        }
-        #login-modal-overlay.active { display: flex; }
-        .login-modal-box {
-            background: var(--card-bg); border: 1px solid var(--border-strong);
-            border-radius: 22px; width: 90%; max-width: 420px;
-            padding: 36px; display: flex; flex-direction: column; align-items: center;
-            box-shadow: var(--shadow-strong), 0 0 0 1px var(--border-subtle);
-            animation: bounceFun 0.4s ease;
-        }
-        .login-modal-logo {
-            width: 56px; height: 56px; border-radius: 16px;
-            border: 2px solid var(--accent-color);
-            object-fit: cover; margin-bottom: 18px;
-            box-shadow: 0 0 18px var(--accent-glow);
-        }
-        .login-modal-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; color: var(--text-main); }
-        .login-modal-sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 28px; text-align: center; line-height: 1.5; }
-        .login-input {
-            width: 100%; padding: 14px 18px; border-radius: 12px;
-            border: 2px solid var(--border-strong); background: var(--surface-color);
-            color: var(--text-main); font-size: 1rem; outline: none;
-            margin-bottom: 12px; transition: all 0.25s; font-weight: 600;
-        }
-        .login-input:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px var(--accent-dim); }
-        .login-input::placeholder { color: var(--text-muted); font-weight: 400; }
-        .login-modal-cancel { background: none; border: none; color: var(--text-muted); font-size: 0.88rem; cursor: pointer; margin-top: 14px; font-weight: 600; transition: color 0.2s; }
-        .login-modal-cancel:hover { color: var(--danger-color); }
-        .login-avatar-grid {
-            display: grid; grid-template-columns: repeat(4,1fr); gap: 10px;
-            width: 100%; margin-bottom: 20px;
-        }
-        .login-avatar-opt {
-            width: 100%; aspect-ratio: 1; border-radius: 50%;
-            border: 3px solid var(--border-strong); cursor: pointer;
-            transition: all 0.2s; object-fit: cover; background: var(--surface-color);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-        .login-avatar-opt.selected { border-color: var(--accent-color); box-shadow: 0 0 14px var(--accent-glow); transform: scale(1.1); }
-        .login-step { display: none; flex-direction: column; align-items: center; width: 100%; }
-        .login-step.active { display: flex; }
-        .login-step-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 16px; }
-
-        /* ─── PRIVACY MODAL ─── */
-        #privacy-modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
-        #privacy-modal-overlay.active { display: flex; }
-        .privacy-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 22px; width: 90%; max-width: 560px; max-height: 88vh; display: flex; flex-direction: column; box-shadow: var(--shadow-strong); overflow: hidden; animation: bounceFun 0.4s ease; }
-        .privacy-modal-header { padding: 26px 30px 18px; border-bottom: 2px dashed var(--border-subtle); flex-shrink: 0; }
-        .privacy-modal-header h2 { font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .privacy-modal-header p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; }
-        .privacy-modal-body { padding: 22px 28px; overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
-        .privacy-section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin: 18px 0 8px; padding-bottom: 6px; border-bottom: 2px solid var(--border-subtle); }
-        .privacy-modal-body p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 10px; }
-        .privacy-modal-body ul { padding-left: 20px; margin-bottom: 10px; }
-        .privacy-modal-body li { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
-        .privacy-modal-body strong { color: var(--text-main); font-weight: 800; }
-        .privacy-read-indicator { font-size: 0.82rem; color: var(--text-muted); text-align: center; padding: 12px 0 8px; transition: color 0.3s; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 7px; }
-        .privacy-read-indicator.ready { color: var(--accent-color); }
-        .privacy-modal-footer { padding: 18px 28px 24px; border-top: 2px dashed var(--border-subtle); flex-shrink: 0; background: var(--surface-color); }
-        .privacy-checkbox-row { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
-        .privacy-checkbox-row input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--accent-color); flex-shrink: 0; margin-top: 2px; }
-        .privacy-checkbox-row label { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; font-weight: 600; }
-        .privacy-checkbox-row label a { color: var(--accent-color); text-decoration: none; font-weight: 800; }
-
-        /* ─── SOCIAL BUTTONS ─── */
-        .social-floating-container { position: fixed; bottom: 22px; left: 22px; display: flex; gap: 12px; z-index: 1999; }
-        .social-icon-btn {
-            width: 48px; height: 48px; border-radius: 14px;
-            background: var(--card-bg); border: 2px solid var(--border-strong);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; color: var(--text-muted);
-            transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
-            cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.3);
-            text-decoration: none;
-        }
-        .social-icon-btn:hover {
-            border-color: var(--accent-color); color: #000; background: var(--accent-color);
-            transform: translateY(-6px); box-shadow: 0 10px 0 #0a7a3a, 0 14px 25px var(--accent-glow);
-        }
-
-        /* ─── SKELETON ─── */
-        @keyframes shimmer { 0% { background-position: -600px 0; } 100% { background-position: 600px 0; } }
-        .skeleton { background: linear-gradient(90deg, var(--surface-color) 25%, var(--border-subtle) 50%, var(--surface-color) 75%); background-size: 800px 100%; animation: shimmer 1.6s infinite; border-radius: 8px; }
-        .loading-card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-subtle); overflow: hidden; display: flex; flex-direction: column; }
-        .loading-card-img { height: 190px; border-radius: 0; }
-        .loading-card-body { padding: 20px 22px 22px; }
-        .loading-card-title { height: 20px; width: 70%; margin-bottom: 12px; }
-        .loading-card-sub { height: 14px; width: 50%; margin-bottom: 24px; }
-        .loading-card-btn { height: 46px; border-radius: 12px; }
-
-        /* ─── RESPONSIVE ─── */
         @media (min-width: 769px) {
             .modal-content.stadium-guessr-layout { flex-direction: row !important; }
-            .modal-content.stadium-guessr-layout .video-container { width: 55% !important; height: 100% !important; border-radius: 22px 0 0 22px !important; }
-            .modal-content.stadium-guessr-layout #game-ui { width: 45% !important; height: 100% !important; border-top: none !important; border-left: 2px solid var(--border-strong) !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; border-radius: 0 22px 22px 0 !important; padding: 24px !important; }
+            .modal-content.stadium-guessr-layout .video-container { width: 55% !important; height: 100% !important; border-radius: 20px 0 0 20px !important; }
+            .modal-content.stadium-guessr-layout #game-ui { width: 45% !important; height: 100% !important; border-top: none !important; border-left: 1px solid var(--border-subtle) !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; border-radius: 0 20px 20px 0 !important; padding: 24px !important; }
             .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; height: 100% !important; min-height: 350px !important; }
         }
         @media (max-width: 768px) {
             .app-header { padding: 12px 16px; }
-            .app-title { font-size: 1.05rem; }
-            .welcome-heading { font-size: 2.2rem; }
-            .game-modes { grid-template-columns: 1fr; }
-            .grid { grid-template-columns: 1fr; gap: 18px; padding: 0 16px; }
-            .modal-content.stadium-guessr-layout .video-container { height: 45% !important; border-radius: 22px 22px 0 0 !important; }
-            .modal-content.stadium-guessr-layout #game-ui { height: 55% !important; padding: 16px !important; display: flex !important; flex-direction: column !important; border-radius: 0 0 22px 22px !important; }
-            .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; min-height: 200px; }
-            .tabs-container { grid-template-columns: 1fr 1fr; }
-            .section-ligas { padding: 0 16px; }
-        }
-        @media (max-width: 480px) {
-            .tabs-container { grid-template-columns: 1fr; }
+            .app-title { font-size: 1.1rem; }
+            .hero-section { padding: 30px 16px 40px; text-align: center; }
+            .hero-content { align-items: center; }
+            .welcome-heading { font-size: 2rem; }
+            .search-container { margin: 0 auto 30px; }
+            .grid { grid-template-columns: 1fr; padding: 0 16px; }
+            .modal-content.stadium-guessr-layout .video-container { height: 45% !important; border-radius: 20px 20px 0 0 !important; }
+            .modal-content.stadium-guessr-layout #game-ui { height: 55% !important; padding: 16px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; border-radius: 0 0 20px 20px !important;}
+            .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; height: 100% !important; min-height: 200px; }
         }
 
-        /* ─── ESTADO VACÍO ─── */
-        .empty-state {
-            grid-column: 1/-1; text-align: center; padding: 60px 20px;
-            color: var(--text-muted);
-        }
-        .empty-state-icon { font-size: 3.5rem; margin-bottom: 16px; color: var(--border-strong); display: block; }
-        .empty-state h3 { font-size: 1.1rem; margin-bottom: 6px; color: var(--text-main); font-weight: 700; }
-        .empty-state p { font-size: 0.92rem; }
+        /* ─── GAME UI (GUESS) ─── */
+        #game-ui { display: none; width: 100%; background: var(--bg-color) !important; padding: 20px !important; text-align: center; z-index: 2010; border-radius: 0 0 20px 20px; }
+        #game-title { font-size: 0.95rem !important; color: var(--text-main); margin-bottom: 14px; font-weight: 700 !important; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); }
+        #map-guess-container { width: 100%; height: 260px; background: var(--surface-color); border-radius: 12px !important; border: 2px solid var(--border-strong); margin-bottom: 16px; transition: border-color 0.3s; }
+        #map-guess-container:hover { border-color: var(--accent-color); }
 
-        /* ─── TOASTS ─── */
-        .toast-container { position: fixed; bottom: 80px; right: 22px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast {
-            background: var(--card-bg); border: 1px solid var(--border-strong);
-            border-left: 4px solid var(--accent-color);
-            padding: 14px 18px; border-radius: 14px;
-            box-shadow: var(--shadow-strong); color: var(--text-main);
-            font-size: 0.88rem; font-weight: 600; max-width: 300px;
-            display: flex; align-items: center; gap: 10px;
-            animation: fadeSlideUp 0.3s ease;
+        /* ─── CLOSE BUTTONS ─── */
+        .close-btn {
+            position: absolute; top: 16px; right: 16px;
+            background: var(--surface-color); color: var(--text-main);
+            border: 1px solid var(--border-strong); padding: 0;
+            cursor: pointer; z-index: 2020; border-radius: 50%;
+            width: 36px; height: 36px; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; box-shadow: var(--shadow-soft);
         }
-        .toast.danger { border-left-color: var(--danger-color); }
+        .close-btn:hover { background: var(--danger-color); color: #fff; border-color: var(--danger-color); transform: scale(1.1) rotate(90deg); }
+
+        /* ─── LEAFLET CUSTOM ─── */
+        .leaflet-popup-content-wrapper { background: var(--surface-color) !important; color: var(--text-main) !important; border: 2px solid var(--accent-color); border-radius: 12px !important; box-shadow: var(--shadow-soft) !important; font-weight: 600;}
+        .leaflet-popup-tip { background: var(--surface-color) !important; }
+
+        /* ─── PROFILE MODAL ─── */
+        .split-profile-layout { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+        @media (min-width: 769px) {
+            .split-profile-layout { flex-direction: row; align-items: stretch; }
+            .left-fut-column { width: 38%; display: flex; justify-content: center; align-items: center; border-right: 1px dashed var(--border-subtle); padding-right: 25px; }
+            .right-dashboard-column { width: 62%; display: flex; flex-direction: column; justify-content: space-between; }
+        }
+
+        .fut-card { position: relative; width: 230px; height: 350px; background-size: cover; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; align-items: center; color: #000; font-family: 'Arial Black', Gadget, sans-serif; box-shadow: var(--shadow-strong); overflow: hidden; user-select: none; border: 2px solid rgba(255,255,255,0.15);}
+        .fut-card.bronze { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%); border-color: #92400e; color: #fef3c7; }
+        .fut-card.silver { background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%); border-color: #e5e7eb; color: #ffffff; }
+        .fut-card.gold { background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%); border-color: #fef08a; color: #fff; }
+        .fut-top { display: flex; width: 100%; height: 55%; margin-top: 10px; }
+        .fut-badge-meta { width: 30%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
+        .fut-ovr { font-size: 2rem; font-weight: 900; }
+        .fut-pos { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; opacity: 0.8; }
+        .fut-club-icon { width: 24px; height: 24px; margin-top: 8px; object-fit: contain; }
+        .fut-avatar-container { width: 70%; height: 100%; position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+        .fut-user-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; z-index: 5; margin-bottom: 20px; border: 3px solid rgba(255,255,255,0.5); box-shadow: 0 4px 8px rgba(0,0,0,0.3);}
+        .fut-jersey-overlay { position: absolute; bottom: 0; width: 100px; height: 40px; background: linear-gradient(0deg, #111 0%, #333 100%); border-radius: 40px 40px 0 0; z-index: 4; border: 2px solid var(--accent-color); border-bottom: none; }
+        .fut-jersey-stripe { position: absolute; top: 0; left: 42px; width: 16px; height: 100%; background: rgba(255,255,255,0.8); }
+        .fut-name { width: 100%; text-align: center; font-size: 1rem; font-weight: 900; margin: 8px 0; text-transform: uppercase; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .fut-stats-row { display: grid; grid-template-columns: repeat(2, 1fr); width: 90%; font-size: 0.8rem; gap: 4px 10px; margin-top: 5px; }
+        .fut-stat-item { display: flex; gap: 6px; justify-content: center; }
+        .fut-stat-num { font-weight: 900; }
+        .fut-stat-label { opacity: 0.7; font-weight: normal; }
+
+        .geoguessr-dash-box { background: var(--surface-color); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
+        .dash-header-inline { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed var(--border-subtle);}
+        .dash-title-premium { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .streak-fire-badge { background: var(--bg-color); color: var(--accent-color); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--border-subtle); display: flex; align-items: center; gap: 4px;}
+        .streak-fire-badge i { color: #f59e0b; animation: pulseGlow 1.5s infinite alternate; font-size:1rem;}
+        
+        .calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-top: 8px; }
+        .calendar-day-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; padding-bottom: 4px; }
+        .calendar-cell { font-size: 0.75rem; padding: 6px 0; background: var(--bg-color); border-radius: 6px; color: var(--text-main); font-weight: 600; border: 1px solid var(--border-subtle); transition: all 0.2s;}
+        .calendar-cell.past-done { color: var(--text-muted); opacity: 0.4; border-color:transparent; background: transparent;}
+        .calendar-cell.current-active { color: #fff; background: var(--accent-color); border-color: var(--accent-color); transform: scale(1.05); }
+        
+        .medals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+        .medal-item { display: flex; flex-direction: column; align-items: center; background: var(--bg-color); padding: 12px 4px; border-radius: 12px; border: 1px solid var(--border-subtle); opacity: 0.4; filter: grayscale(100%); transition: all 0.3s; }
+        .medal-item.unlocked { opacity: 1; filter: grayscale(0%); border-color: var(--accent-color); background: var(--surface-color); transform: translateY(-2px);}
+        .medal-icon { font-size: 1.8rem; margin-bottom: 4px; color: var(--text-main); }
+        .medal-item.unlocked .medal-icon { color: var(--accent-color); }
+        .medal-name { font-size: 0.6rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; }
+
+        /* ─── SOCIAL BUTTONS ─── */
+        .social-floating-container { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 10px; z-index: 1999; }
+        .social-icon-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--surface-color); border: 1px solid var(--border-strong);
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--text-muted);
+            transition: all 0.2s; cursor: pointer; box-shadow: var(--shadow-soft); text-decoration: none;
+        }
+        .social-icon-btn:hover { border-color: var(--accent-color); color: #fff; background:var(--accent-color); transform: translateY(-4px); }
+
+        /* ─── PRIVACY MODAL ─── */
+        #privacy-modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        #privacy-modal-overlay.active { display: flex; }
+        .privacy-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 18px; width: 90%; max-width: 560px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: var(--shadow-strong); overflow: hidden; }
+        .privacy-modal-header { padding: 24px 26px 16px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
+        .privacy-modal-header h2 { font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+        .privacy-modal-header p { font-size: 0.9rem; color: var(--text-muted); line-height:1.4; font-weight:500;}
+        .privacy-modal-body { padding: 20px 26px; overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+        .privacy-section-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-color); margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border-subtle); }
+        .privacy-modal-body p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; font-weight:500;}
+        .privacy-modal-body ul { padding-left: 20px; margin-bottom: 10px; }
+        .privacy-modal-body li { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; font-weight:500;}
+        .privacy-modal-body strong { color: var(--text-main); font-weight: 700;}
+        .privacy-read-indicator { font-size: 0.8rem; color: var(--text-muted); text-align: center; padding: 12px 0 8px; transition: color 0.3s; font-weight: 700; display:flex; justify-content:center; align-items:center; gap:6px;}
+        .privacy-read-indicator.ready { color: var(--accent-color); }
+        .privacy-modal-footer { padding: 16px 26px 20px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; background: var(--bg-color);}
+        .privacy-checkbox-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+        .privacy-checkbox-row input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-color); flex-shrink: 0; margin-top: 2px; }
+        .privacy-checkbox-row label { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; font-weight: 500;}
+        
+        /* ─── MODAL CUSTOMIZAR AVATAR ─── */
+        #avatar-modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        #avatar-modal-overlay.active { display: flex; }
+        .avatar-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 20px; width: 90%; max-width: 400px; padding: 30px; display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow-strong); text-align: center; animation: bounceFun 0.4s ease; }
+        .avatar-modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: var(--text-main); }
+        .avatar-modal-sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; font-weight: 500;}
+        .login-avatar-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; width: 100%; margin-bottom: 24px; }
+        .login-avatar-opt {
+            width: 100%; aspect-ratio: 1; border-radius: 12px;
+            border: 2px solid var(--border-strong); cursor: pointer;
+            transition: all 0.2s; background: var(--surface-color);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .login-avatar-opt:hover { border-color: var(--text-muted); }
+        .login-avatar-opt.selected { border-color: var(--accent-color); background: var(--accent-dim); transform: scale(1.08); }
+
+        /* ─── LOADING SKELETON ─── */
+        @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+        .skeleton { background: linear-gradient(90deg, var(--surface-color) 25%, var(--border-subtle) 50%, var(--surface-color) 75%); background-size: 800px 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        .loading-card { background: var(--card-bg); border-radius: 18px; border: 1px solid var(--border-subtle); overflow: hidden; display: flex; flex-direction: column; }
+        .loading-card-img { height: 185px; border-radius: 0; }
+        .loading-card-body { padding: 20px; }
+        .loading-card-title { height: 20px; width: 70%; margin-bottom: 12px; }
+        .loading-card-sub { height: 14px; width: 50%; margin-bottom: 24px; }
+        .loading-card-btn { height: 42px; border-radius: 12px; }
     </style>
 </head>
 <body>
 
-    <!-- TOAST CONTAINER -->
-    <div class="toast-container" id="toast-container"></div>
-
     <header class="app-header">
         <a class="app-brand" href="#" onclick="window.mostrarLigas(); return false;">
-            <img class="app-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo Estadios Virtuales" onerror="this.style.display='none';">
+            <img class="app-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" onerror="this.style.display='none';">
             <div class="app-title-group">
                 <h1 class="app-title">Estadios Virtuales</h1>
                 <span class="app-subtitle">El mundo desde el aire</span>
             </div>
         </a>
-        <div class="header-left-line"></div>
         <div class="header-actions">
             <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
                 <i class="ph-duotone ph-moon" id="theme-icon"></i>
@@ -831,148 +490,168 @@
         </div>
     </header>
 
-    <!-- MODAL PRIVACY -->
     <div id="privacy-modal-overlay">
         <div class="privacy-modal-box">
             <div class="privacy-modal-header">
-                <h2><i class="ph-duotone ph-shield-check" style="color:var(--accent-color); font-size:1.5rem;"></i> Política de Privacidad</h2>
-                <p>Por favor leé y aceptá nuestros términos antes de continuar.</p>
+                <h2><i class="ph-duotone ph-shield-check" style="color:var(--accent-color); font-size:1.6rem;"></i> Política de Privacidad</h2>
+                <p>Antes de iniciar sesión con Google, por favor leé y aceptá nuestros términos.</p>
             </div>
             <div class="privacy-modal-body" id="privacy-scroll-body" onscroll="checkPrivacyScrolled(this)">
                 <div class="privacy-section-title">Última actualización: 11 de junio de 2026</div>
-                <p>Esta Política de Privacidad describe nuestras políticas sobre la recopilación, uso y divulgación de tu información cuando utilizás el Servicio.</p>
-                <p>Usamos tus Datos Personales para proveer y mejorar el Servicio. <strong>Estadios Virtuales</strong> — accesible desde <em>www.estadiosvirtuales.com</em>.</p>
+                <p>Esta Política de Privacidad describe nuestras políticas y procedimientos sobre la recopilación, uso y divulgación de tu información cuando utilizás el Servicio, y te informa sobre tus derechos de privacidad y cómo te protege la ley.</p>
+                <p>Usamos tus Datos Personales para proveer y mejorar el Servicio. Al usar el Servicio, aceptás la recopilación y uso de la información de acuerdo con esta Política de Privacidad.</p>
+
                 <div class="privacy-section-title">Datos que recopilamos</div>
-                <p><strong>Datos personales</strong> — Al registrarte, podemos recopilar: nombre, dirección de correo electrónico y foto de perfil.</p>
-                <p><strong>Datos de uso</strong> — Se recopilan automáticamente: dirección IP, tipo de navegador, páginas visitadas, tiempo de permanencia.</p>
-                <div class="privacy-section-title">Cookies y tecnologías de rastreo</div>
-                <p>Usamos Cookies y tecnologías similares para rastrear la actividad en el Servicio. Podés configurar tu navegador para rechazar todas las cookies.</p>
+                <p><strong>Datos personales</strong> — Al registrarte con Google, podemos recopilar:</p>
                 <ul>
-                    <li><strong>Cookies Esenciales:</strong> Necesarias para el funcionamiento del servicio.</li>
-                    <li><strong>Cookies de Funcionalidad:</strong> Recuerdan tus preferencias.</li>
-                    <li><strong>Cookies de Analítica:</strong> Nos ayudan a entender cómo se usa el sitio.</li>
+                    <li>Dirección de correo electrónico</li>
+                    <li>Nombre y apellido</li>
+                    <li>Foto de perfil de tu cuenta Google</li>
                 </ul>
+                <p><strong>Datos de uso</strong> — Se recopilan automáticamente: dirección IP, tipo de navegador, páginas visitadas, tiempo de permanencia, identificadores de dispositivo.</p>
+
+                <div class="privacy-section-title">Cookies y tecnologías de rastreo</div>
+                <p>Usamos Cookies y tecnologías similares para rastrear la actividad y guardar cierta información. Las cookies pueden ser <em>Persistentes</em> (permanecen cuando cerrás el navegador) o de <em>Sesión</em> (se eliminan al cerrar).</p>
+                <ul>
+                    <li><strong>Cookies Esenciales:</strong> Necesarias para el funcionamiento del servicio y autenticación.</li>
+                    <li><strong>Cookies de Funcionalidad:</strong> Recuerdan tus preferencias de idioma y sesión.</li>
+                    <li><strong>Cookies de Analítica:</strong> Nos ayudan a entender cómo se usa el sitio (solo con tu consentimiento).</li>
+                </ul>
+
                 <div class="privacy-section-title">Uso de tus datos</div>
+                <p>Usamos tus Datos Personales para:</p>
                 <ul>
                     <li>Proveer y mantener el Servicio</li>
                     <li>Gestionar tu cuenta de usuario</li>
                     <li>Contactarte sobre actualizaciones del servicio</li>
-                    <li>Gestionar tus puntajes y estadísticas</li>
+                    <li>Gestionar tus solicitudes y puntajes</li>
+                    <li>Análisis de datos y mejora del servicio</li>
                 </ul>
+
                 <div class="privacy-section-title">Retención de datos</div>
-                <p>Retenemos tus Datos Personales solo el tiempo necesario. La información de cuenta se guarda durante la relación activa más hasta 24 meses tras el cierre.</p>
-                <div class="privacy-section-title">Seguridad</div>
-                <p>Implementamos medidas de seguridad razonables. Nuestro Servicio no está dirigido a menores de 16 años.</p>
+                <p>Retenemos tus Datos Personales solo el tiempo necesario:</p>
+                <ul>
+                    <li><strong>Información de cuenta:</strong> Durante la relación de cuenta + hasta 24 meses tras el cierre.</li>
+                    <li><strong>Datos de uso y analítica:</strong> Hasta 24 meses desde la recopilación.</li>
+                    <li><strong>Registros de servidor:</strong> Hasta 24 meses por seguridad.</li>
+                </ul>
+
+                <div class="privacy-section-title">Compartir tus datos</div>
+                <p>Podemos compartir tus Datos Personales con:</p>
+                <ul>
+                    <li>Proveedores de servicios que nos ayudan a operar la plataforma</li>
+                    <li>Autoridades cuando lo exija la ley</li>
+                    <li>Terceros en caso de fusión o adquisición (con previo aviso)</li>
+                </ul>
+                <p>No vendemos ni alquilamos tus datos personales a terceros con fines comerciales.</p>
+
+                <div class="privacy-section-title">Seguridad y privacidad de menores</div>
+                <p>Implementamos medidas de seguridad razonables para proteger tus datos. Nuestro Servicio no está dirigido a menores de 16 años. Si sos padre/madre y tu hijo/a nos proporcionó datos, contactanos.</p>
+
                 <div class="privacy-section-title">Tus derechos</div>
-                <p>Podés solicitar en cualquier momento acceso, corrección o eliminación de tus Datos Personales. Contactanos en <strong>estadiosvirtuales1@gmail.com</strong>.</p>
+                <p>Podés solicitar en cualquier momento: acceso, corrección, o eliminación de tus Datos Personales. Para ejercer tus derechos, contactanos en <strong>estadiosvirtuales1@gmail.com</strong>.</p>
+
+                <div class="privacy-section-title">Cambios a esta política</div>
+                <p>Podemos actualizar esta Política periódicamente. Te notificaremos por correo electrónico o mediante un aviso en el Servicio. Se aplica la ley argentina para todos los efectos.</p>
             </div>
             <div class="privacy-read-indicator" id="privacy-read-indicator"><i class="ph-bold ph-arrow-down"></i> Desplazate para leer completo</div>
             <div class="privacy-modal-footer">
                 <div class="privacy-checkbox-row">
                     <input type="checkbox" id="privacy-accept-check" disabled onchange="togglePrivacyBtn()">
-                    <label for="privacy-accept-check">Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales.</label>
+                    <label for="privacy-accept-check">
+                        Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales.
+                    </label>
                 </div>
-                <button class="btn-3d primary" style="width:100%; padding:15px; font-size:1rem;" id="btn-confirm-privacy" disabled onclick="confirmarPrivacyYLogin()">
-                    <i class="ph-fill ph-check-circle"></i> Aceptar y continuar
+                <button class="btn-3d primary" style="width:100%;" id="btn-confirm-privacy" disabled onclick="confirmarPrivacyYLoginGoogle()">
+                    Aceptar y continuar con Google
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL LOGIN -->
-    <div id="login-modal-overlay">
-        <div class="login-modal-box">
-            <img class="login-modal-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" onerror="this.style.display='none';">
-            <h2 class="login-modal-title">Crear perfil</h2>
-            <p class="login-modal-sub">Guardá tus puntajes y desbloqueá logros.</p>
-            <!-- Paso 1: nombre -->
-            <div class="login-step active" id="login-step-1">
-                <div class="login-step-label">¿Cómo te llamás?</div>
-                <input type="text" class="login-input" id="login-name-input" placeholder="Tu nombre o apodo..." maxlength="24" onkeydown="if(event.key==='Enter') irALoginStep2()">
-                <button class="btn-3d primary" style="width:100%; padding:14px;" onclick="irALoginStep2()">
-                    Siguiente <i class="ph-bold ph-arrow-right"></i>
-                </button>
-            </div>
-            <!-- Paso 2: avatar -->
-            <div class="login-step" id="login-step-2">
-                <div class="login-step-label">Elegí tu avatar</div>
-                <div class="login-avatar-grid" id="avatar-grid"></div>
-                <button class="btn-3d primary" style="width:100%; padding:14px;" onclick="confirmarLogin()">
-                    <i class="ph-fill ph-user-check"></i> ¡Listo, entrar!
-                </button>
-            </div>
-            <button class="login-modal-cancel" onclick="cerrarLoginModal()">Cancelar</button>
+    <div id="avatar-modal-overlay">
+        <div class="avatar-modal-box">
+            <h2 class="avatar-modal-title">¡Hola Piloto!</h2>
+            <p class="avatar-modal-sub">Elegí una insignia de jugador para acompañar tu foto de perfil.</p>
+            <div class="login-avatar-grid" id="avatar-grid">
+                </div>
+            <button class="btn-3d primary" style="width:100%; padding:14px;" onclick="guardarPerfilPersonalizado()">
+                <i class="ph-bold ph-check-circle"></i> Guardar Perfil
+            </button>
         </div>
     </div>
 
     <section class="hero-section">
-        <div class="hero-bg-glow"></div>
-        <div class="hero-ball">⚽</div>
-        <div class="hero-ball-2">🏟️</div>
         <div class="hero-content">
-            <div class="hero-eyebrow"><i class="ph-fill ph-airplane-tilt"></i> Tour aéreo de los estadios del mundo</div>
-            <h2 class="welcome-heading">Estadios <span class="accent-word">Virtuales</span></h2>
-            <p class="welcome-sub">Recorré los templos del fútbol mundial desde el aire. Votá, jugá, competí y descubrí datos que no sabías.</p>
             
-            <div class="search-container">
-                <i class="ph-bold ph-magnifying-glass search-icon"></i>
-                <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
+            <div class="hero-text-block">
+                <div class="hero-badge"><i class="ph-duotone ph-sparkle" style="font-size:1.1rem;"></i> Explorá el mundo</div>
+                <h2 class="welcome-heading">¡Bienvenido a <span class="accent-word">Estadios Virtuales!</span></h2>
+                <p class="welcome-sub">Buscá tu estadio favorito, recorré el mundo desde el aire o divertite poniendo a prueba tus conocimientos futboleros.</p>
+                
+                <div class="search-container">
+                    <i class="ph-bold ph-magnifying-glass search-icon"></i>
+                    <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
+                </div>
             </div>
 
-            <div class="game-modes">
-                <button class="game-card btn-guessr" onclick="iniciarTrivia()">
-                    <div class="game-card-icon"><i class="ph-duotone ph-map-pin-line"></i></div>
+            <div class="hero-games-block game-modes">
+                <a href="#" class="game-card btn-guessr" onclick="iniciarTrivia(); return false;">
+                    <div class="game-card-icon gc-guessr"><i class="ph-duotone ph-map-pin-line"></i></div>
                     <div class="game-card-text">
                         <strong>StadiumGuessr</strong>
                         <span>Adiviná la ubicación</span>
                     </div>
-                </button>
-                <button class="game-card btn-order" onclick="abrirModalOrden()">
-                    <div class="game-card-icon"><i class="ph-duotone ph-chart-bar"></i></div>
+                    <i class="ph-bold ph-caret-right game-card-arrow"></i>
+                </a>
+                <a href="#" class="game-card btn-order" onclick="abrirModalOrden(); return false;">
+                    <div class="game-card-icon gc-order"><i class="ph-duotone ph-chart-bar"></i></div>
                     <div class="game-card-text">
                         <strong>Ordenar Estadios</strong>
                         <span>Capacidad y Edad</span>
                     </div>
-                </button>
-                <button class="game-card btn-random" onclick="dispararVueloAleatorio(event)">
-                    <div class="game-card-icon"><i class="ph-duotone ph-airplane-tilt"></i></div>
+                    <i class="ph-bold ph-caret-right game-card-arrow"></i>
+                </a>
+                <a href="#" class="game-card btn-random" onclick="dispararVueloAleatorio(event); return false;">
+                    <div class="game-card-icon gc-random"><i class="ph-duotone ph-airplane-tilt"></i></div>
                     <div class="game-card-text">
                         <strong>Vuelo Aleatorio</strong>
                         <span>Descubrí al azar</span>
                     </div>
-                </button>
+                    <i class="ph-bold ph-caret-right game-card-arrow"></i>
+                </a>
             </div>
+            
         </div>
     </section>
 
     <section class="section-ligas">
         <h2 class="section-title">
             <span id="texto-titulo-grilla" style="flex-shrink:0;">
-                <i class="ph-fill ph-list-dashes" style="font-size:1.1rem; color:var(--accent-color);"></i> Seleccioná una categoría
+                <i class="ph-fill ph-list-dashes" style="font-size:1.2rem; color:var(--accent-color);"></i> Seleccioná una categoría
             </span>
-            <button id="btn-volver-ligas" class="btn-3d secondary" style="display:none; padding:6px 14px; font-size:0.8rem; border-radius:10px; margin-left:12px; flex-shrink:0;" onclick="mostrarLigas()">
-                <i class="ph-bold ph-arrow-left"></i> Volver
+            <button id="btn-volver-ligas" class="btn-3d secondary" style="display:none; padding:6px 14px; font-size:0.8rem; border-radius:10px; margin-left:14px; flex-shrink:0;" onclick="mostrarLigas()">
+                <i class="ph-bold ph-arrow-left"></i> Volver a Ligas
             </button>
-            <span style="flex:1; height:1px; background: linear-gradient(90deg, var(--border-strong), transparent); margin-left:14px; border-radius:2px;"></span>
+            <span style="flex:1; height:2px; background:var(--border-subtle); margin-left:14px; border-radius:2px;"></span>
         </h2>
         
         <div class="tabs-container" id="tabs-container">
-            <button class="tab" data-gid="0">🇦🇷 Primera División</button>
-            <button class="tab" data-gid="861264971">🇦🇷 Primera Nacional</button>
-            <button class="tab" data-gid="554922783">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</button>
-            <button class="tab" data-gid="88250864">🇪🇸 La Liga</button>
-            <button class="tab" data-gid="2013531070">🇮🇹 Serie A</button>
-            <button class="tab" data-gid="165565330">🇫🇷 Ligue 1</button>
-            <button class="tab" data-gid="96716546">🇩🇪 Bundesliga</button>
-            <button class="tab" data-gid="58862486">🇧🇷 Brasileirao</button>
-            <button class="tab" data-gid="304687071">🇨🇱 Liga Chile</button>
-            <button class="tab" data-gid="879164460">🌍 Copa del Mundo</button>
+            <button class="tab" data-gid="0">🇦🇷 Primera División <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="861264971">🇦🇷 Primera Nacional <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="554922783">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="88250864">🇪🇸 La Liga <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="2013531070">🇮🇹 Serie A <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="165565330">🇫🇷 Ligue 1 <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="96716546">🇩🇪 Bundesliga <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="58862486">🇧🇷 Brasileirao <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="304687071">🇨🇱 Liga Chile <i class="ph-bold ph-caret-right"></i></button>
+            <button class="tab" data-gid="879164460">🌍 Copa del Mundo <i class="ph-bold ph-caret-right"></i></button>
         </div>
     </section>
 
     <main class="grid"></main>
 
-    <!-- MODALES PRINCIPALES -->
     <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
         <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="cerrarModalVideo()"><i class="ph-bold ph-x"></i></button>
@@ -980,7 +659,7 @@
             <div id="game-ui">
                 <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
                 <div id="map-guess-container"></div>
-                <button id="game-action-btn" class="btn-3d secondary" style="width:100%; padding:15px; font-size:1rem;">
+                <button id="game-action-btn" class="btn-3d primary" style="width:100%; padding:15px; font-size:1rem;">
                     <i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa
                 </button>
             </div>
@@ -990,7 +669,7 @@
     <div id="map-modal" class="modal-overlay" onclick="cerrarModalMapa()">
         <div class="modal-content" style="max-width:800px; height:75vh;" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="cerrarModalMapa()"><i class="ph-bold ph-x"></i></button>
-            <div id="modal-map-container" style="width:100%; height:100%; border-radius:22px; background:var(--bg-color);"></div>
+            <div id="modal-map-container" style="width:100%; height:100%; border-radius:20px; background:var(--bg-color);"></div>
         </div>
     </div>
 
@@ -1027,46 +706,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <script>
-    // ════════════════════════════════════════════
-    // CONFIGURACIÓN GLOBAL
-    // ════════════════════════════════════════════
-    const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
-    const scriptUrlVotos     = "https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
-    const scriptUrlRanking   = "https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
-    const scriptUrlCapacidad = "https://script.google.com/macros/s/AKfycbxIME-M84DhBy3oG4-Y-dtHRhSoTX1G-l476biCk0tgtuMNeM0eHp6-u550yv7h1nkJwQ/exec";
-    const scriptUrlAntiguedad= "https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
-
-    let estadiosCargados = [];
-    let catalogoGlobal   = [];
-    const todosLosGids   = ["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
-
-    let guessrRondaActual=0, guessrPuntosTotales=0;
-    let guessrEstadioCorrecto=null, guessrEstadiosJugados=[], guessrHistorialRondas=[];
-    let guessrMapInstance=null, guessrUserMarker=null, guessrTargetMarker=null;
-    let guessrPolyline=null, guessrSelectedLatLng=null;
-    let previewMapInstance=null;
-    let orderList=[], orderSelectedIdx=null, orderModo="", orderPuntosGanados=0, orderStartTime=0;
-
-    let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
-        votosRealizados:0, triviasVistas:0, partidasJugadas:0,
-        maxScore:0, medallaLocalista:false, rachaActual:1
-    };
-    function guardarStats() { localStorage.setItem('ev_user_stats', JSON.stringify(userStats)); }
-
     // ────────────────────────────────────────────
-    // TOAST
-    // ────────────────────────────────────────────
-    function showToast(msg, icon='ph-check-circle', tipo='') {
-        const c = document.getElementById('toast-container');
-        const t = document.createElement('div');
-        t.className = 'toast' + (tipo ? ' ' + tipo : '');
-        t.innerHTML = `<i class="ph-fill ${icon}" style="font-size:1.3rem; color:var(--accent-color); flex-shrink:0;"></i> ${msg}`;
-        c.appendChild(t);
-        setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(20px)'; t.style.transition='all 0.3s'; setTimeout(()=>t.remove(),350); }, 2800);
-    }
-
-    // ────────────────────────────────────────────
-    // TEMA CLARO / OSCURO  ← función que faltaba
+    // TEMA CLARO / OSCURO 
     // ────────────────────────────────────────────
     function toggleTheme() {
         const html = document.documentElement;
@@ -1081,33 +722,26 @@
             localStorage.setItem('ev_theme', 'dark');
         }
     }
-    // Restaurar tema guardado
-    (function() {
+
+    function initTheme() {
         const saved = localStorage.getItem('ev_theme');
         if (saved === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
-            document.addEventListener('DOMContentLoaded', () => {
-                const icon = document.getElementById('theme-icon');
-                if (icon) icon.className = 'ph-duotone ph-sun';
-            });
+            const icon = document.getElementById('theme-icon');
+            if (icon) icon.className = 'ph-duotone ph-sun';
         }
-    })();
+    }
 
     // ────────────────────────────────────────────
-    // PRIVACY MODAL  ← funciones que faltaban
+    // PRIVACY MODAL 
     // ────────────────────────────────────────────
-    function abrirModalPrivacy() {
-        const overlay = document.getElementById('privacy-modal-overlay');
-        overlay.style.display = 'flex';
-    }
-    function cerrarModalPrivacy() {
-        document.getElementById('privacy-modal-overlay').style.display = 'none';
-    }
+    let privacyScrolled = false;
     function checkPrivacyScrolled(el) {
         const scrolled = el.scrollTop + el.clientHeight >= el.scrollHeight - 30;
         const indicator = document.getElementById('privacy-read-indicator');
         const check = document.getElementById('privacy-accept-check');
-        if (scrolled) {
+        if (scrolled && !privacyScrolled) {
+            privacyScrolled = true;
             indicator.innerHTML = '<i class="ph-fill ph-check-circle"></i> ¡Leíste todo! Ahora podés aceptar.';
             indicator.classList.add('ready');
             check.disabled = false;
@@ -1118,137 +752,69 @@
         const btn   = document.getElementById('btn-confirm-privacy');
         btn.disabled = !check.checked;
     }
-    function confirmarPrivacyYLogin() {
+    function abrirModalPrivacy() {
+        privacyScrolled = false;
+        const ind = document.getElementById('privacy-read-indicator');
+        ind.innerHTML = '<i class="ph-bold ph-arrow-down"></i> Desplazate para leer completo';
+        ind.classList.remove('ready');
+        document.getElementById('privacy-accept-check').checked = false;
+        document.getElementById('privacy-accept-check').disabled = true;
+        document.getElementById('btn-confirm-privacy').disabled = true;
+        document.getElementById('privacy-scroll-body').scrollTop = 0;
+        document.getElementById('privacy-modal-overlay').classList.add('active');
+    }
+    function cerrarModalPrivacy() { document.getElementById('privacy-modal-overlay').classList.remove('active'); }
+    
+    function confirmarPrivacyYLoginGoogle() {
         localStorage.setItem('ev_privacy_accepted', '1');
         cerrarModalPrivacy();
-        abrirLoginModal();
-    }
-    // Compatibilidad con nombre viejo usado en HTML original
-    function confirmarPrivacyYLoginGoogle() { confirmarPrivacyYLogin(); }
-
-    // ────────────────────────────────────────────
-    // LOGIN PROPIO (reemplaza SDK Google roto)
-    // ────────────────────────────────────────────
-    const AVATARS = ['⚽','🏟️','🥅','🏆','👟','🦅','🔥','🌟','⭐','🎯','🛩️','🌍'];
-
-    function abrirLoginModal() {
-        // Reset
-        document.getElementById('login-step-1').classList.add('active');
-        document.getElementById('login-step-2').classList.remove('active');
-        document.getElementById('login-name-input').value = '';
-        // Render avatars
-        const grid = document.getElementById('avatar-grid');
-        grid.innerHTML = AVATARS.map((a,i) => `
-            <div class="login-avatar-opt" id="av-${i}" onclick="selectAvatar(${i})">${a}</div>
-        `).join('');
-        document.getElementById('login-modal-overlay').classList.add('active');
-        setTimeout(() => document.getElementById('login-name-input').focus(), 200);
-    }
-    function cerrarLoginModal() {
-        document.getElementById('login-modal-overlay').classList.remove('active');
-    }
-    function selectAvatar(idx) {
-        document.querySelectorAll('.login-avatar-opt').forEach(a => a.classList.remove('selected'));
-        document.getElementById('av-'+idx).classList.add('selected');
-    }
-    function irALoginStep2() {
-        const name = document.getElementById('login-name-input').value.trim();
-        if (!name) { document.getElementById('login-name-input').focus(); return; }
-        document.getElementById('login-step-1').classList.remove('active');
-        document.getElementById('login-step-2').classList.add('active');
-        // Pre-seleccionar primer avatar
-        setTimeout(() => selectAvatar(0), 100);
-    }
-    function confirmarLogin() {
-        const name = document.getElementById('login-name-input').value.trim();
-        const selAvatar = document.querySelector('.login-avatar-opt.selected');
-        if (!name) { cerrarLoginModal(); return; }
-        const emoji = selAvatar ? selAvatar.textContent : '⚽';
-        const user = { name, emoji, id: Date.now().toString() };
-        localStorage.setItem('ev_user_logged', JSON.stringify(user));
-        cerrarLoginModal();
-        renderizarBotonLogin();
-        showToast(`¡Bienvenido, ${name.split(' ')[0]}! ${emoji}`);
-    }
-
-    // ────────────────────────────────────────────
-    // RENDER PERFIL HEADER
-    // ────────────────────────────────────────────
-    function renderizarBotonLogin() {
-        const container = document.getElementById('hero-google-profile');
-        const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
-        if (loggedUser) {
-            const display = loggedUser.emoji
-                ? `<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:var(--surface-color);box-shadow:0 0 8px var(--accent-glow);">${loggedUser.emoji}</div>`
-                : `<img src="${loggedUser.picture||''}" class="hero-profile-avatar" onerror="this.style.display='none';">`;
-            container.innerHTML = `
-                <div class="hero-profile-wrapper" onclick="abrirModalPerfil()">
-                    <div style="text-align:right;">
-                        <div class="hero-profile-name">${loggedUser.name.split(' ')[0]}</div>
-                        <div class="hero-profile-sub"><i class="ph-fill ph-star"></i> Perfil</div>
-                    </div>
-                    ${display}
-                </div>`;
-        } else {
-            container.innerHTML = `
-                <button class="btn-login" onclick="manejarClickLogin()">
-                    <i class="ph-bold ph-user-circle" style="font-size:1.1rem;"></i> Entrar
-                </button>`;
+        if (typeof google !== 'undefined' && google.accounts) {
+            google.accounts.id.prompt();
         }
     }
 
-    function manejarClickLogin() {
-        const privacyAceptada = localStorage.getItem('ev_privacy_accepted') === '1';
-        if (privacyAceptada) { abrirLoginModal(); }
-        else { abrirModalPrivacy(); }
-    }
-    // Alias por compatibilidad
-    function manejarClickLoginGoogle() { manejarClickLogin(); }
+    // ────────────────────────────────────────────
+    // CONFIGURACIÓN GLOBAL
+    // ────────────────────────────────────────────
+    const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
+    const scriptUrlVotos     = "https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
+    const scriptUrlRanking   = "https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
+    const scriptUrlCapacidad = "https://script.google.com/macros/s/AKfycbxIME-M84DhBy3oG4-Y-dtHRhSoTX1G-l476biCk0tgtuMNeM0eHp6-u550yv7h1nkJwQ/exec";
+    const scriptUrlAntiguedad= "https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
 
-    // ────────────────────────────────────────────
-    // VOTOS LOCALES
-    // ────────────────────────────────────────────
+    let estadiosCargados = []; let catalogoGlobal   = [];
+    const todosLosGids   = ["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
+    let guessrRondaActual=0, guessrPuntosTotales=0;
+    let guessrEstadioCorrecto=null, guessrEstadiosJugados=[], guessrHistorialRondas=[];
+    let guessrMapInstance=null, guessrUserMarker=null, guessrTargetMarker=null;
+    let guessrPolyline=null, guessrSelectedLatLng=null;
+    let previewMapInstance=null;
+    let orderList=[], orderSelectedIdx=null, orderModo="", orderPuntosGanados=0, orderStartTime=0;
+
+    let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || { votosRealizados:0, triviasVistas:0, partidasJugadas:0, maxScore:0, medallaLocalista:false, rachaActual:1 };
+    function guardarStats() { localStorage.setItem('ev_user_stats', JSON.stringify(userStats)); }
+
     function guardarVotoLocal(estadio, puntuacion) {
         const votos = JSON.parse(localStorage.getItem('ev_votos_locales') || '{}');
-        votos[estadio] = puntuacion;
-        localStorage.setItem('ev_votos_locales', JSON.stringify(votos));
+        votos[estadio] = puntuacion; localStorage.setItem('ev_votos_locales', JSON.stringify(votos));
     }
-    function obtenerVotoLocal(estadio) {
-        const votos = JSON.parse(localStorage.getItem('ev_votos_locales') || '{}');
-        return votos[estadio] || 0;
-    }
+    function obtenerVotoLocal(estadio) { return JSON.parse(localStorage.getItem('ev_votos_locales') || '{}')[estadio] || 0; }
 
-    // ────────────────────────────────────────────
-    // COLORES CLUBES
-    // ────────────────────────────────────────────
     const COLORES_CLUBES = {
         "River Plate":"linear-gradient(135deg,#cc0000,#ffffff)","Boca Juniors":"linear-gradient(135deg,#003b46,#07575b,#f4b251)","Racing Club":"linear-gradient(135deg,#75aadb,#ffffff)","Independiente":"linear-gradient(135deg,#b30000,#1a1a1a)","San Lorenzo":"linear-gradient(135deg,#0f2042,#a61c32)","Huracán":"linear-gradient(135deg,#ffffff,#e60000)","Estudiantes de La Plata":"linear-gradient(135deg,#ff0000,#ffffff,#ff0000)","Gimnasia y Esgrima LP":"linear-gradient(135deg,#ffffff,#002060)","Rosario Central":"linear-gradient(135deg,#002060,#ffcc00)","Newell's Old Boys":"linear-gradient(135deg,#000000,#cc0000)","Vélez Sarsfield":"linear-gradient(135deg,#ffffff,#0000ff)","Lanús":"linear-gradient(135deg,#5c061e,#2e030f)","Argentinos Juniors":"linear-gradient(135deg,#e60000,#ffffff)","Belgrano de Córdoba":"linear-gradient(135deg,#5cb8e4,#ffffff)","Talleres":"linear-gradient(135deg,#002060,#ffffff,#002060)","Arsenal":"linear-gradient(135deg,#ef0107,#ffffff)","Liverpool":"linear-gradient(135deg,#c8102e,#f6eb61)","Manchester City":"linear-gradient(135deg,#6cabdd,#ffffff)","Manchester United":"linear-gradient(135deg,#da291c,#000000)","Chelsea":"linear-gradient(135deg,#034694,#ee242c)","Tottenham Hotspur":"linear-gradient(135deg,#ffffff,#132257)","Real Madrid":"linear-gradient(135deg,#ffffff,#e5e5e5,#febe10)","FC Barcelona":"linear-gradient(135deg,#a50044,#004d98)","Atlético de Madrid":"linear-gradient(135deg,#cb0000,#ffffff,#000040)","Juventus":"linear-gradient(135deg,#000000,#ffffff,#000000)","Inter de Milán":"linear-gradient(135deg,#00529f,#000000)","AC Milan":"linear-gradient(135deg,#e30613,#000000)","AS Roma":"linear-gradient(135deg,#8e1a2f,#f0bc42)","Paris Saint-Germain":"linear-gradient(135deg,#004170,#e30613,#ffffff)","Bayern Munich":"linear-gradient(135deg,#dc052d,#0066b2,#ffffff)","Borussia Dortmund":"linear-gradient(135deg,#fde100,#000000)","Flamengo":"linear-gradient(135deg,#111111,#c8102e)","Palmeiras":"linear-gradient(135deg,#006437,#ffffff,#006437)","Corinthians":"linear-gradient(135deg,#ffffff,#d5d5d5,#000000)","Colo Colo":"linear-gradient(135deg,#ffffff,#b5b5b5,#000000)"
     };
-    const COLORES_PAISES = {
-        "argentina":"linear-gradient(135deg,#75aadb,#ffffff,#75aadb)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#aa151b,#f1bf00,#aa151b)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","qatar":"linear-gradient(135deg,#8d1b3d,#ffffff)","chile":"linear-gradient(135deg,#e20e0e,#ffffff,#0033a0)"
-    };
+    const COLORES_PAISES = { "argentina":"linear-gradient(135deg,#75aadb,#ffffff,#75aadb)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#aa151b,#f1bf00,#aa151b)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","qatar":"linear-gradient(135deg,#8d1b3d,#ffffff)","chile":"linear-gradient(135deg,#e20e0e,#ffffff,#0033a0)" };
 
     function obtenerFondoClub(club, pais) {
         if (!club && !pais) return 'linear-gradient(135deg,#0f1419 0%,#080c10 100%)';
-        if (club) {
-            const cl = club.toLowerCase();
-            for (const k in COLORES_CLUBES) { if (k.toLowerCase() === cl) return COLORES_CLUBES[k]; }
-            for (const k in COLORES_CLUBES) { if (cl.includes(k.toLowerCase()) || k.toLowerCase().includes(cl)) return COLORES_CLUBES[k]; }
-        }
-        if (pais) {
-            const pl = pais.toLowerCase().trim();
-            for (const k in COLORES_PAISES) { if (pl.includes(k) || k.includes(pl)) return COLORES_PAISES[k]; }
-        }
-        return 'linear-gradient(135deg,#0f1419 0%,#1a2233 100%)';
+        if (club) { const cl = club.toLowerCase(); for (const k in COLORES_CLUBES) { if (k.toLowerCase() === cl || cl.includes(k.toLowerCase()) || k.toLowerCase().includes(cl)) return COLORES_CLUBES[k]; } }
+        if (pais) { const pl = pais.toLowerCase().trim(); for (const k in COLORES_PAISES) { if (pl.includes(k) || k.includes(pl)) return COLORES_PAISES[k]; } }
+        return 'linear-gradient(135deg,#181818 0%,#0c0c0c 100%)';
     }
 
-    // ────────────────────────────────────────────
-    // VOTOS
-    // ────────────────────────────────────────────
     function registrarVoto(event, estadio, club, puntuacion) {
         event.stopPropagation();
-        userStats.votosRealizados++; guardarStats();
-        guardarVotoLocal(estadio, puntuacion);
+        userStats.votosRealizados++; guardarStats(); guardarVotoLocal(estadio, puntuacion);
         const starsRow = event.target.closest('.stars-row');
         if (starsRow) {
             starsRow.querySelectorAll('.star-icon').forEach((star, i) => {
@@ -1257,18 +823,18 @@
             });
         }
         fetch(scriptUrlVotos, { method:"POST", mode:"no-cors", headers:{"Content-Type":"application/json"}, body:JSON.stringify({estadio,club,voto:puntuacion}) }).catch(()=>{});
-        showToast(`¡Calificaste ${estadio} con ${puntuacion} estrella${puntuacion>1?'s':''}!`);
+        const ratingTitle = starsRow?.previousElementSibling;
+        if (ratingTitle) {
+            const orig = ratingTitle.textContent;
+            ratingTitle.innerHTML = `<i class="ph-bold ph-check-circle"></i> ¡Gracias! (${puntuacion}★)`;
+            ratingTitle.style.color = 'var(--accent-color)';
+            setTimeout(() => { ratingTitle.textContent = orig; ratingTitle.style.color=''; }, 2500);
+        }
     }
-    function registrarVotoDesdeAtributo(event, star) {
-        registrarVoto(event, star.dataset.estadio, star.dataset.club, parseInt(star.dataset.puntuacion));
-    }
+    function registrarVotoDesdeAtributo(event, star) { registrarVoto(event, star.dataset.estadio, star.dataset.club, parseInt(star.dataset.puntuacion)); }
 
-    // ────────────────────────────────────────────
-    // UTILIDAD
-    // ────────────────────────────────────────────
     function bscarPropiedad(obj, clave) {
-        if (!obj) return '';
-        const cl = clave.toLowerCase().trim();
+        if (!obj) return ''; const cl = clave.toLowerCase().trim();
         for (let k in obj) { if (k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g,'').trim() === cl) return obj[k]; }
         for (let k in obj) { if (k.toLowerCase().includes(cl)) return obj[k]; }
         return obj[clave] || '';
@@ -1279,15 +845,9 @@
     // ────────────────────────────────────────────
     function abrirModalVideo(event, link, esJuego=false) {
         if (event) event.preventDefault();
-        if (!link || link==='#' || link.includes('[Pegá tu link')) {
-            showToast('Video de este estadio todavía no disponible.', 'ph-warning-circle', 'danger');
-            return;
-        }
-        const modal = document.getElementById('video-modal');
-        const card  = document.getElementById('modal-card');
-        const container = document.getElementById('modal-video-container');
-        container.innerHTML = '';
-        const gameUi = document.getElementById('game-ui');
+        if (!link || link==='#' || link.includes('[Pegá tu link')) { alert('Video de este estadio todavía no disponible.'); return; }
+        const modal = document.getElementById('video-modal'); const card  = document.getElementById('modal-card'); const container = document.getElementById('modal-video-container');
+        container.innerHTML = ''; const gameUi = document.getElementById('game-ui');
         if (esJuego) { card.classList.add('stadium-guessr-layout'); gameUi.style.display='block'; }
         else { card.classList.remove('stadium-guessr-layout'); gameUi.style.display='none'; container.style.height='100%'; }
         let urlIncrustar = link;
@@ -1303,28 +863,19 @@
         } else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
             const attr = esJuego ? "autoplay loop muted" : "controls autoplay";
             container.innerHTML = `<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
-        } else {
-            container.innerHTML = `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`;
-        }
+        } else { container.innerHTML = `<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`; }
         modal.style.display = 'flex';
     }
 
     function cerrarModalVideo() {
-        document.getElementById('video-modal').style.display='none';
-        document.getElementById('modal-video-container').innerHTML='';
-        document.getElementById('game-ui').style.display='none';
-        document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-        if (guessrMapInstance) { guessrMapInstance.remove(); guessrMapInstance=null; }
-        guessrUserMarker=guessrTargetMarker=guessrPolyline=null; guessrSelectedLatLng=null;
+        document.getElementById('video-modal').style.display='none'; document.getElementById('modal-video-container').innerHTML=''; document.getElementById('game-ui').style.display='none'; document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+        if (guessrMapInstance) { guessrMapInstance.remove(); guessrMapInstance=null; } guessrUserMarker=guessrTargetMarker=guessrPolyline=null; guessrSelectedLatLng=null;
     }
 
     function abrirModalMapa(estadio, pais, lat, lng) {
-        if (!lat||!lng||lat.toString().trim()===''||lng.toString().trim()==='') {
-            showToast('Coordenadas no disponibles todavía.', 'ph-warning-circle', 'danger'); return;
-        }
+        if (!lat||!lng||lat.toString().trim()===''||lng.toString().trim()==='') { alert('Coordenadas no disponibles todavía.'); return; }
         document.getElementById('map-modal').style.display='flex';
-        const parsedLat = parseFloat(lat.toString().replace(',','.'));
-        const parsedLng = parseFloat(lng.toString().replace(',','.'));
+        const parsedLat = parseFloat(lat.toString().replace(',','.')); const parsedLng = parseFloat(lng.toString().replace(',','.'));
         setTimeout(() => {
             if (previewMapInstance) previewMapInstance.remove();
             previewMapInstance = L.map('modal-map-container',{attributionControl:false}).setView([parsedLat,parsedLng],5);
@@ -1338,30 +889,18 @@
     function cerrarModalOrden()   { document.getElementById('order-modal').style.display='none'; }
     function cerrarModalRanking() { document.getElementById('ranking-modal').style.display='none'; }
 
-    // ────────────────────────────────────────────
-    // TRIVIA POPUP
-    // ────────────────────────────────────────────
     function switchTab(event, btn, type, estadio, pais, lat, lng) {
-        event.stopPropagation();
-        const balloon = btn.closest('.trivia-balloon');
-        balloon.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('active'));
-        balloon.querySelectorAll('.b-content').forEach(c=>c.classList.remove('active'));
-        btn.classList.add('active');
-        const content = balloon.querySelector('.b-'+type);
-        if (content) content.classList.add('active');
+        event.stopPropagation(); const balloon = btn.closest('.trivia-balloon');
+        balloon.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('active')); balloon.querySelectorAll('.b-content').forEach(c=>c.classList.remove('active'));
+        btn.classList.add('active'); const content = balloon.querySelector('.b-'+type); if (content) content.classList.add('active');
         if (type==='mapa') {
             abrirModalMapa(estadio, pais, lat, lng);
             setTimeout(()=>{ balloon.classList.remove('active'); balloon.querySelectorAll('.b-tab')[0].classList.add('active'); balloon.querySelector('.b-trivia').classList.add('active'); },100);
         }
     }
-    function switchTabMapa(event, btn) {
-        event.stopPropagation();
-        switchTab(event, btn, 'mapa', btn.dataset.estadio, btn.dataset.pais, btn.dataset.lat, btn.dataset.lng);
-    }
+    function switchTabMapa(event, btn) { event.stopPropagation(); switchTab(event, btn, 'mapa', btn.dataset.estadio, btn.dataset.pais, btn.dataset.lat, btn.dataset.lng); }
     function toggleTriviaPopup(event, el) {
-        event.stopPropagation();
-        const globo = el.querySelector('.trivia-balloon');
-        const yaAbierto = globo.classList.contains('active');
+        event.stopPropagation(); const globo = el.querySelector('.trivia-balloon'); const yaAbierto = globo.classList.contains('active');
         document.querySelectorAll('.trivia-balloon').forEach(g=>g.classList.remove('active'));
         if (!yaAbierto) { globo.classList.add('active'); userStats.triviasVistas++; guardarStats(); }
     }
@@ -1371,40 +910,23 @@
     // RENDER TARJETAS
     // ────────────────────────────────────────────
     function mostrarSkeletons() {
-        document.querySelector('.grid').innerHTML = Array(6).fill(0).map(()=>`
-            <div class="loading-card">
-                <div class="loading-card-img skeleton"></div>
-                <div class="loading-card-body">
-                    <div class="skeleton loading-card-title"></div>
-                    <div class="skeleton loading-card-sub"></div>
-                    <div class="skeleton loading-card-btn"></div>
-                </div>
-            </div>`).join('');
+        document.querySelector('.grid').innerHTML = Array(6).fill(0).map(()=>`<div class="loading-card"><div class="loading-card-img skeleton"></div><div class="loading-card-body"><div class="skeleton loading-card-title"></div><div class="skeleton loading-card-sub"></div><div class="skeleton loading-card-btn"></div></div></div>`).join('');
     }
 
     function renderizarTarjetas(lista) {
-        const grilla = document.querySelector('.grid');
-        grilla.innerHTML = '';
+        const grilla = document.querySelector('.grid'); grilla.innerHTML = '';
         if (!lista.length) {
-            grilla.innerHTML = `<div class="empty-state"><i class="ph-duotone ph-magnifying-glass empty-state-icon"></i><h3>Sin resultados</h3><p>No se encontraron estadios que coincidan.</p></div>`;
+            grilla.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--text-muted);"><i class="ph-duotone ph-magnifying-glass" style="font-size:3rem; color:var(--border-strong);"></i><br><br><h3>Sin resultados</h3><p>No se encontraron estadios.</p></div>`;
             return;
         }
-        lista.forEach((fila,idx) => {
-            const estadio   = bscarPropiedad(fila,'Estadio');
-            const clubNombre= bscarPropiedad(fila,'Club');
-            if (!estadio||!clubNombre) return;
-            const urlFoto   = bscarPropiedad(fila,'Foto')?.trim()||'';
-            const pais      = bscarPropiedad(fila,'País')?.trim()||'Argentina';
-            const fondoGrad = obtenerFondoClub(clubNombre, pais);
-            const linkVideo = bscarPropiedad(fila,'Link del Video')?.trim()||'#';
-            const latRaw    = bscarPropiedad(fila,'Latitud')?.toString().trim()||'';
-            const lngRaw    = bscarPropiedad(fila,'Longitud')?.toString().trim()||'';
-            const datoCurioso=bscarPropiedad(fila,'Dato Curioso');
-            const datoLimpio =(datoCurioso||'¡Este estadio esconde grandes historias!').replace(/'/g,"\u2019").replace(/"/g,"\u201C");
-            const promedio  = bscarPropiedad(fila,'Promedio');
-            const valorProm = parseFloat(promedio)||0;
-            const votoLocal = obtenerVotoLocal(estadio);
-            const estRellas = votoLocal>0 ? votoLocal : (valorProm/2);
+        lista.forEach((fila) => {
+            const estadio   = bscarPropiedad(fila,'Estadio'); const clubNombre= bscarPropiedad(fila,'Club'); if (!estadio||!clubNombre) return;
+            const urlFoto   = bscarPropiedad(fila,'Foto')?.trim()||''; const pais      = bscarPropiedad(fila,'País')?.trim()||'Argentina';
+            const fondoGrad = obtenerFondoClub(clubNombre, pais); const linkVideo = bscarPropiedad(fila,'Link del Video')?.trim()||'#';
+            const latRaw    = bscarPropiedad(fila,'Latitud')?.toString().trim()||''; const lngRaw    = bscarPropiedad(fila,'Longitud')?.toString().trim()||'';
+            const datoLimpio =(bscarPropiedad(fila,'Dato Curioso')||'¡Este estadio esconde grandes historias!').replace(/'/g,"\u2019").replace(/"/g,"\u201C");
+            const promedio  = bscarPropiedad(fila,'Promedio'); const valorProm = parseFloat(promedio)||0;
+            const votoLocal = obtenerVotoLocal(estadio); const estRellas = votoLocal>0 ? votoLocal : (valorProm/2);
 
             let estrellasHTML='';
             for(let i=1;i<=5;i++){
@@ -1413,18 +935,12 @@
                 else if(i===Math.ceil(estRellas)&&(estRellas%1>=0.5)) ic='ph-fill ph-star-half active';
                 estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadio}" data-club="${clubNombre}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;
             }
-            const labelRating = votoLocal>0
-                ? `Tu voto: ${votoLocal}★${valorProm>0?` · prom. ${valorProm.toFixed(1)}/10`:''}`
-                : (valorProm>0 ? `Calificá · prom. ${valorProm.toFixed(1)}/10` : 'Calificá este estadio');
+            const labelRating = votoLocal>0 ? `Tu voto: ${votoLocal}★${valorProm>0?` · prom. ${valorProm.toFixed(1)}/10`:''}` : (valorProm>0 ? `Calificá · prom. ${valorProm.toFixed(1)}/10` : 'Calificá este estadio');
 
-            const imgHTML = urlFoto
-                ? `<img class="card-img-logo" src="${urlFoto}" alt="${clubNombre}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${clubNombre}</div>`
-                : `<div class="placeholder-text">${clubNombre}</div>`;
+            const imgHTML = urlFoto ? `<img class="card-img-logo" src="${urlFoto}" alt="${clubNombre}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${clubNombre}</div>` : `<div class="placeholder-text">${clubNombre}</div>`;
 
             const tarjeta = document.createElement('article');
-            tarjeta.className = 'card animate-fade-up';
-            tarjeta.style.animationDelay = `${idx*0.04}s`;
-            tarjeta.dataset.linkVideo = linkVideo;
+            tarjeta.className = 'card'; tarjeta.dataset.linkVideo = linkVideo;
             tarjeta.innerHTML = `
                 <div class="estadio-foto-container" style="background:${fondoGrad};" onclick="toggleTriviaPopup(event,this)">
                     <div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>
@@ -1434,28 +950,19 @@
                             <button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button>
                             <button class="b-tab" data-estadio="${estadio}" data-pais="${pais}" data-lat="${latRaw}" data-lng="${lngRaw}" onclick="switchTabMapa(event,this)">Mapa</button>
                         </div>
-                        <div class="b-content b-trivia active"><p>${datoLimpio}</p></div>
-                        <div class="b-content b-mapa"></div>
+                        <div class="b-content b-trivia active"><p>${datoLimpio}</p></div><div class="b-content b-mapa"></div>
                     </div>
                 </div>
                 <div class="card-content">
-                    <h2 class="card-title">${estadio}</h2>
-                    <p class="card-subtitle">${clubNombre} · ${pais}</p>
+                    <h2 class="card-title">${estadio}</h2><p class="card-subtitle">${clubNombre} · ${pais}</p>
                     <button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button>
-                    <div class="rating-box">
-                        <span class="rating-title">${labelRating}</span>
-                        <div class="stars-row">${estrellasHTML}</div>
-                    </div>
+                    <div class="rating-box"><span class="rating-title">${labelRating}</span><div class="stars-row">${estrellasHTML}</div></div>
                 </div>`;
             grilla.appendChild(tarjeta);
         });
     }
 
-    function abrirVideoDesdeCard(event, btn) {
-        event.stopPropagation();
-        const card = btn.closest('.card');
-        abrirModalVideo(event, card?.dataset.linkVideo||'#', false);
-    }
+    function abrirVideoDesdeCard(event, btn) { event.stopPropagation(); const card = btn.closest('.card'); abrirModalVideo(event, card?.dataset.linkVideo||'#', false); }
 
     // ────────────────────────────────────────────
     // LIGAS / BÚSQUEDA
@@ -1466,14 +973,15 @@
         document.getElementById('texto-titulo-grilla').innerHTML='<i class="ph-fill ph-list-dashes" style="font-size:1.1rem; color:var(--accent-color);"></i> Seleccioná una categoría';
         document.getElementById('global-search').value='';
         document.querySelector('.grid').innerHTML=`
-            <div class="empty-state" style="background:var(--surface-color);border-radius:20px;border:2px dashed var(--border-strong);max-width:550px;margin:20px auto;padding:50px 30px;">
-                <i class="ph-duotone ph-map-pin empty-state-icon animate-bounce" style="color:var(--accent-color);font-size:4rem;"></i>
-                <h3>¡Elegí una categoría!</h3>
-                <p>Tocá alguna de las ligas de arriba para desplegar los estadios.</p>
+            <div style="grid-column:1/-1;text-align:left;padding:35px 25px;color:var(--text-muted); background:var(--surface-color); border-radius:20px; border:1px solid var(--border-strong); max-width:800px; margin: 20px auto; display:flex; align-items:center; gap:20px;">
+                <div class="animate-pulse-glow" style="font-size:3rem;margin-bottom:0px; color:var(--accent-color); flex-shrink:0;"><i class="ph-duotone ph-hand-pointing"></i></div>
+                <div>
+                    <h3 style="margin-bottom: 6px; font-weight: 800; font-size:1.3rem; color:var(--text-main);">Elegí una categoría</h3>
+                    <p style="font-size:1rem; font-weight:500;">Tocá alguna de las ligas de arriba para desplegar los estadios de esa competición.</p>
+                </div>
             </div>`;
         document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-        localStorage.removeItem('ev_last_gid');
-        estadiosCargados=[];
+        localStorage.removeItem('ev_last_gid'); estadiosCargados=[];
     };
 
     document.getElementById('global-search').addEventListener('input', function(e) {
@@ -1482,7 +990,7 @@
             const lastGid = localStorage.getItem('ev_last_gid');
             if (lastGid) {
                 const tab = document.querySelector(`.tab[data-gid="${lastGid}"]`);
-                if (tab) document.getElementById('texto-titulo-grilla').textContent = tab.innerText;
+                if (tab) document.getElementById('texto-titulo-grilla').innerHTML = `<i class="ph-fill ph-check-circle" style="color:var(--accent-color);"></i> Resultados: ${tab.innerText}`;
                 renderizarTarjetas(estadiosCargados);
             } else { window.mostrarLigas(); }
         } else {
@@ -1525,12 +1033,12 @@
     // ────────────────────────────────────────────
     function dispararVueloAleatorio(e) {
         const pool = catalogoGlobal.length>0 ? catalogoGlobal : estadiosCargados;
-        if (!pool.length) { showToast('Esperá un momento mientras carga el catálogo...','ph-info','danger'); return; }
+        if (!pool.length) { alert('Esperá un momento mientras carga el catálogo...'); return; }
         const conVideo = pool.filter(f=>{
             const l=bscarPropiedad(f,'Link del Video').toString().trim();
             return (l.includes('youtube.com')||l.includes('youtu.be'))&&!l.includes('[Pegá tu link');
         });
-        if (!conVideo.length) { showToast('No hay videos de YouTube disponibles.','ph-warning-circle','danger'); return; }
+        if (!conVideo.length) { alert('No hay videos de YouTube disponibles.'); return; }
         abrirModalVideo(e, bscarPropiedad(conVideo[Math.floor(Math.random()*conVideo.length)],'Link del Video').trim(), false);
     }
 
@@ -1538,7 +1046,7 @@
     // STADIUM GUESSR
     // ────────────────────────────────────────────
     function iniciarTrivia() {
-        if (!catalogoGlobal.length) { showToast('Esperá un momento mientras carga el catálogo...','ph-info','danger'); return; }
+        if (!catalogoGlobal.length) { alert('Esperá un momento mientras carga el catálogo...'); return; }
         guessrRondaActual=1; guessrPuntosTotales=0; guessrEstadiosJugados=[]; guessrHistorialRondas=[];
         lanzarRondaGuessr();
     }
@@ -1546,12 +1054,9 @@
     function lanzarRondaGuessr() {
         const disponibles = catalogoGlobal.filter(f=>{
             const l=bscarPropiedad(f,'Link del Video').toString().trim();
-            return (l.includes('youtube.com')||l.includes('youtu.be'))
-                && bscarPropiedad(f,'Latitud').toString().trim()!==''
-                && bscarPropiedad(f,'Longitud').toString().trim()!==''
-                && !guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));
+            return (l.includes('youtube.com')||l.includes('youtu.be')) && bscarPropiedad(f,'Latitud').toString().trim()!=='' && bscarPropiedad(f,'Longitud').toString().trim()!=='' && !guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));
         });
-        if (!disponibles.length) { showToast('¡Completaste todas las geolocalizaciones!'); cerrarModalVideo(); return; }
+        if (!disponibles.length) { alert('¡Completaste todas las geolocalizaciones!'); cerrarModalVideo(); return; }
         guessrEstadioCorrecto = disponibles[Math.floor(Math.random()*disponibles.length)];
         guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
         guessrSelectedLatLng = null;
@@ -1580,8 +1085,7 @@
 
     function procesarArriesgoGuessr() {
         const btn=document.getElementById('game-action-btn');
-        btn.classList.remove('animate-pulse-glow');
-        btn.setAttribute('data-estado','resultado');
+        btn.classList.remove('animate-pulse-glow'); btn.setAttribute('data-estado','resultado');
         const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.'));
         const tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
         const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);
@@ -1606,9 +1110,7 @@
 
     function finalizarJuegoGuessr() {
         const container=document.getElementById('modal-video-container');
-        document.getElementById('game-ui').style.display='none';
-        container.style.height='100%';
-        document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+        document.getElementById('game-ui').style.display='none'; container.style.height='100%'; document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
         if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}
         userStats.partidasJugadas++; if(guessrPuntosTotales>userStats.maxScore) userStats.maxScore=guessrPuntosTotales; guardarStats();
 
@@ -1651,13 +1153,13 @@
         let nombre=u?.name||prompt("Ingresá tu nombre para el ranking global:");
         if(!nombre?.trim()) return;
         fetch(scriptUrlRanking,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:nombre.trim(),puntaje:guessrPuntosTotales})}).catch(()=>{});
-        showToast(`¡${guessrPuntosTotales} pts enviados al ranking global! 🚀`);
+        alert(`¡${guessrPuntosTotales} pts enviados al ranking global! 🚀`);
     }
 
     function compartirResultado() {
         const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;
         if(navigator.share) navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});
-        else { navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`)); }
+        else { navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>alert('¡Resultado copiado!')).catch(()=>alert(`Puntaje: ${guessrPuntosTotales} pts`)); }
     }
 
     async function abrirModalRanking() {
@@ -1721,14 +1223,14 @@
 
     function iniciarJuegoOrden(modo) {
         const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;
-        if(!pool.length){showToast('Esperá un momento...','ph-info','danger');return;}
+        if(!pool.length){alert('Esperá un momento...');return;}
         orderModo=modo; orderSelectedIdx=null; orderPuntosGanados=0;
         const validos=pool.filter(f=>{
             const n=bscarPropiedad(f,'Estadio'),c=bscarPropiedad(f,'Club'); if(!n||!c) return false;
             const raw=String(bscarPropiedad(f,modo==='capacidad'?'Capacidad':'Año')).replace(/[^0-9]/g,'');
             return raw!==''&&parseInt(raw)>0;
         });
-        if(validos.length<5){showToast('No hay suficientes datos.','ph-warning-circle','danger');return;}
+        if(validos.length<5){alert('No hay suficientes datos.');return;}
         let sel=[],copia=[...validos];
         while(sel.length<5){const idx=Math.floor(Math.random()*copia.length);const e=copia.splice(idx,1)[0];const val=parseInt(String(bscarPropiedad(e,modo==='capacidad'?'Capacidad':'Año')).replace(/[^0-9]/g,''))||0;sel.push({estadio:bscarPropiedad(e,'Estadio'),club:bscarPropiedad(e,'Club'),pais:bscarPropiedad(e,'País')||'Argentina',valor:val,correctIdx:-1});}
         const ordenados=[...sel].sort((a,b)=>modo==='capacidad'?b.valor-a.valor:a.valor-b.valor);
@@ -1826,8 +1328,103 @@
         if(!nombre?.trim()) return;
         const url=orderModo==='capacidad'?scriptUrlCapacidad:scriptUrlAntiguedad;
         fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:nombre.trim(),puntaje:orderPuntosGanados})}).catch(()=>{});
-        showToast(`¡${orderPuntosGanados} pts guardados! 🚀`);
+        alert(`¡${orderPuntosGanados} pts guardados! 🚀`);
         cerrarModalOrden();
+    }
+
+    // ────────────────────────────────────────────
+    // GOOGLE LOGIN + EMOJI CUSTOMIZER
+    // ────────────────────────────────────────────
+    const AVATARS = ['⚽','🏟️','🏅','🏆','🌍','🔥','🌟','🎯','🦅','👟','🎩','🚀'];
+    let tempGoogleUser = null; // Guardará los datos hasta que elija el avatar
+
+    function inicializarGoogleLogin() {
+        renderizarBotonLogin();
+        const init = () => {
+            google.accounts.id.initialize({
+                client_id: "351786523914-placeholder.apps.googleusercontent.com",
+                callback: manejarRespuestaGoogle,
+                auto_select: false,
+            });
+        };
+
+        if (typeof google !== 'undefined' && google.accounts) { init(); } 
+        else { const int = setInterval(() => { if (typeof google !== 'undefined' && google.accounts) { clearInterval(int); init(); } }, 200); }
+    }
+
+    function renderizarBotonLogin() {
+        const container = document.getElementById('hero-google-profile');
+        const u = JSON.parse(localStorage.getItem('ev_user_logged'));
+
+        if (u) {
+            const avatarDisplay = u.emoji 
+                ? `<div style="width:38px;height:38px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:var(--surface-color);">${u.emoji}</div>`
+                : `<img src="${u.picture}" class="hero-profile-avatar" alt="Perfil" onerror="this.style.display='none';">`;
+
+            container.innerHTML = `
+                <div class="hero-profile-wrapper" onclick="abrirModalPerfil()">
+                    <div style="text-align:right;">
+                        <div class="hero-profile-name">${u.name.split(' ')[0]}</div>
+                        <div class="hero-profile-sub"><i class="ph-fill ph-star"></i> Perfil</div>
+                    </div>
+                    ${avatarDisplay}
+                </div>`;
+        } else {
+            container.innerHTML = `
+                <button class="btn-login" onclick="manejarClickLoginGoogle()">
+                    <i class="ph-bold ph-google-logo" style="font-size:1.1rem;"></i> Entrar
+                </button>`;
+        }
+    }
+
+    function manejarClickLoginGoogle() {
+        const privacyAceptada = localStorage.getItem('ev_privacy_accepted') === '1';
+        if (privacyAceptada) {
+            if (typeof google !== 'undefined' && google.accounts) google.accounts.id.prompt();
+        } else {
+            abrirModalPrivacy();
+        }
+    }
+
+    function manejarRespuestaGoogle(response) {
+        const payload = decodeJwt(response.credential);
+        if (payload) {
+            tempGoogleUser = { id:payload.sub, name:payload.name, email:payload.email, picture:payload.picture };
+            abrirAvatarModal(); // En vez de guardar directo, le pedimos elegir insignia
+        }
+    }
+
+    function decodeJwt(token) {
+        try {
+            const b64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+            return JSON.parse(decodeURIComponent(atob(b64).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+        } catch(e) { return null; }
+    }
+
+    // Modal para elegir insignia
+    function abrirAvatarModal() {
+        const grid = document.getElementById('avatar-grid');
+        grid.innerHTML = AVATARS.map((a,i) => `
+            <div class="login-avatar-opt ${i===0?'selected':''}" id="av-${i}" onclick="selectAvatar(${i})">${a}</div>
+        `).join('');
+        document.getElementById('avatar-modal-overlay').classList.add('active');
+    }
+    
+    function selectAvatar(idx) {
+        document.querySelectorAll('.login-avatar-opt').forEach(a => a.classList.remove('selected'));
+        document.getElementById('av-'+idx).classList.add('selected');
+    }
+
+    function guardarPerfilPersonalizado() {
+        if (!tempGoogleUser) return;
+        const sel = document.querySelector('.login-avatar-opt.selected');
+        tempGoogleUser.emoji = sel ? sel.textContent : '⚽';
+        
+        localStorage.setItem('ev_user_logged', JSON.stringify(tempGoogleUser));
+        localStorage.setItem('ev_privacy_accepted', '1');
+        document.getElementById('avatar-modal-overlay').classList.remove('active');
+        
+        renderizarBotonLogin();
     }
 
     // ────────────────────────────────────────────
@@ -1848,9 +1445,12 @@
             if(d===9) cl+=' current-active';
             calHTML+=`<div class="${cl}">${d}</div>`;
         }
-        const avatarDisplay=u.emoji
-            ?`<div style="width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:2.8rem;border:4px solid rgba(255,255,255,0.5);margin-bottom:25px;z-index:5;">${u.emoji}</div>`
-            :`<img src="${u.picture||''}" class="fut-user-img">`;
+        
+        // Mostrar Emoji o Foto de Google en la tarjeta FUT
+        const avatarDisplay = u.emoji
+            ? `<div style="width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:2.8rem;border:4px solid rgba(255,255,255,0.5);margin-bottom:25px;z-index:5;">${u.emoji}</div>`
+            : `<img src="${u.picture||''}" class="fut-user-img">`;
+
         document.getElementById('profile-modal-body').innerHTML=`
         <div class="split-profile-layout">
             <div class="left-fut-column">
@@ -1903,7 +1503,6 @@
         localStorage.removeItem('ev_user_logged');
         cerrarModalPerfil();
         renderizarBotonLogin();
-        showToast('¡Hasta la próxima!','ph-hand-waving');
     }
 
     // ────────────────────────────────────────────
@@ -1925,6 +1524,7 @@
         }));
 
         indexarCatalogoMasivo();
+        inicializarGoogleLogin();
 
         const lastGid = localStorage.getItem('ev_last_gid');
         if (lastGid) {
