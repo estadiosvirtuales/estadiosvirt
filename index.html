@@ -601,7 +601,7 @@
             <img class="brand-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo Estadios Virtuales" onerror="this.style.display='none';">
             <div class="hero-badge">El mundo desde el aire</div>
             <h1>ESTADIOS VIRTUALES</h1>
-            <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
+            <p class="hero-subtitle">Descubrí estadios del mundo.</p>
             <div class="search-container">
                 <span class="search-icon">🔍</span>
                 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
@@ -1233,7 +1233,7 @@
                 <div class="card-content">
                     <h2 class="card-title">${estadio}</h2>
                     <p class="card-subtitle">${clubNombre} · ${pais}</p>
-                    <button onclick="abrirVideoDesdeCard(event,this)" class="btn-view">Ver Vuelo 3D ▶</button>
+                    <button onclick="abrirVideoDesdeCard(event,this)" class="btn-view">Ver Estadio ▶</button>
                     <div class="rating-box">
                         <span class="rating-title">${labelRating}</span>
                         <div class="stars-row" data-estadio="${estadio}">${estrellasHTML}</div>
@@ -1330,7 +1330,7 @@
         guessrSelectedLatLng = null;
         document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
         const btn = document.getElementById('game-action-btn');
-        btn.innerText = "Clavá un pin en el mapa mudo 📍";
+        btn.innerText = "Ubica el estadio en el mapa 📍";
         btn.style.backgroundColor = "var(--card-bg)"; btn.style.color = "var(--text-muted)"; btn.disabled = true;
         abrirModalVideo(null, bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(), true);
         setTimeout(() => {
