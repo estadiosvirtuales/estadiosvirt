@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
@@ -56,9 +55,11 @@
             --border-strong: rgba(22,163,74,0.25);
             --glass-bg: rgba(255,255,255,0.94);
             --modal-overlay: rgba(220,235,225,0.88);
+            /* FIX modo claro: texto de tabs oscuro y sombra clara para legibilidad */
             --tab-text: #0d2416;
             --tab-shadow: rgba(255,255,255,0.95);
-            --flag-overlay: rgba(238,246,240,0.82);
+            /* FIX modo claro: overlay más intenso para que el texto se lea sobre las banderas */
+            --flag-overlay: rgba(238,246,240,0.80);
             --shadow-soft: 0 4px 20px rgba(22,163,74,0.12);
             --shadow-strong: 0 16px 50px rgba(22,163,74,0.2);
             --pitch-line: rgba(22,163,74,0.1);
@@ -155,23 +156,107 @@
 
         /* ─── SECCIÓN LIGAS ─── */
         .section-ligas { max-width: 1220px; margin: 36px auto 18px; padding: 0 24px; }
-        .section-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 20px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 12px; }
-        #texto-titulo-grilla { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55%; color: var(--text-main); display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+
+        /* FIX: título no se corta en mobile */
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        #texto-titulo-grilla {
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            /* Permitir que haga wrap en mobile en lugar de cortarse */
+            white-space: normal;
+            word-break: break-word;
+            min-width: 0;
+        }
+
         .tabs-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; width: 100%; }
-        .tab { color: var(--tab-text); border: 2px solid var(--border-subtle); padding: 16px 20px; border-radius: 16px; cursor: pointer; font-weight: 700; white-space: nowrap; font-size: 1rem; transition: all 0.25s cubic-bezier(0.175,0.885,0.32,1.275); text-shadow: 1px 1px 4px var(--tab-shadow); background-color: var(--card-bg); background-size: cover; background-position: center; position: relative; width: 100%; display: flex; justify-content: flex-start; align-items: center; box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 4px 12px rgba(0,0,0,0.3); overflow: hidden; }
-        .tab::after { content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); transition: all 0.25s; }
+
+        /* ─── TABS (Ligas) ─── */
+        .tab {
+            color: var(--tab-text);
+            border: 2px solid var(--border-subtle);
+            padding: 14px 20px 14px 56px; /* espacio a la izquierda para la bandera */
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 700;
+            white-space: nowrap;
+            font-size: 1rem;
+            transition: all 0.25s cubic-bezier(0.175,0.885,0.32,1.275);
+            text-shadow: 1px 1px 4px var(--tab-shadow), 0 0 8px var(--tab-shadow);
+            background-color: var(--card-bg);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Bandera como imagen inline dentro del tab */
+        .tab-flag {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 14px;
+        }
+        .tab-label {
+            position: relative;
+            z-index: 2;
+            font-weight: 800;
+            text-shadow: 1px 1px 6px var(--tab-shadow), 0 0 12px var(--tab-shadow), -1px -1px 4px var(--tab-shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* Miniatura de bandera 24x18 dentro del label */
+        .tab-flag-mini {
+            width: 28px;
+            height: 20px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.3);
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        .tab::after { content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); transition: all 0.25s; z-index: 3; }
         .tab.active::after, .tab:hover::after { background: var(--accent-color); box-shadow: 0 0 6px var(--accent-color); }
-        .tab.active, .tab:hover { border-color: var(--accent-color); box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 8px 25px rgba(0,230,118,0.2); transform: translateY(-3px); }
+        .tab.active, .tab:hover {
+            border-color: var(--accent-color);
+            box-shadow: inset 0 0 0 1000px var(--flag-overlay), 0 8px 25px rgba(0,230,118,0.2);
+            transform: translateY(-3px);
+        }
         .tab.active { background-color: var(--accent-dim); }
-        .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #fff 33%, #fff 66%, #75aadb 66%); }
-        .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #fff 42%, #ce1124 42%, #ce1124 58%, #fff 58%); }
-        .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); }
-        .tab[data-gid="2013531070"] { background-image: linear-gradient(90deg, #009246 33%, #fff 33%, #fff 66%, #ce2b37 66%); }
-        .tab[data-gid="165565330"] { background-image: linear-gradient(90deg, #002395 33%, #fff 33%, #fff 66%, #ed2939 66%); }
-        .tab[data-gid="96716546"] { background-image: linear-gradient(180deg, #000 33%, #dd0000 33%, #dd0000 66%, #ffce00 66%); }
-        .tab[data-gid="58862486"] { background-image: linear-gradient(135deg, #009c3b 40%, #ffdf00 50%, #009c3b 60%); }
-        .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); }
-        .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #fff 33%, #fff 66%, #b31942 66%); }
+
+        /* Modo claro: el overlay se vuelve más denso para mantener legibilidad del texto */
+        [data-theme="light"] .tab {
+            box-shadow: inset 0 0 0 1000px rgba(238,246,240,0.82), 0 4px 12px rgba(22,163,74,0.15);
+        }
+        [data-theme="light"] .tab.active,
+        [data-theme="light"] .tab:hover {
+            box-shadow: inset 0 0 0 1000px rgba(200,230,210,0.85), 0 8px 25px rgba(22,163,74,0.25);
+        }
 
         /* ─── GRID DE CARDS ─── */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 24px; padding: 0 24px; max-width: 1220px; margin: 0 auto; }
@@ -262,19 +347,16 @@
         .medal-icon { font-size: 2rem; margin-bottom: 7px; }
         .medal-name { font-size: 0.68rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
 
-        /* ─── GOOGLE LOGIN MODAL ─── */
+        /* ─── MODALES LOGIN / PRIVACY ─── */
         #login-modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 9000; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
         #login-modal-overlay.active { display: flex; }
         .login-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 22px; width: 90%; max-width: 440px; padding: 36px; display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow-strong); animation: bounceFun 0.4s ease; }
         .login-modal-logo { width: 56px; height: 56px; border-radius: 16px; border: 2px solid var(--accent-color); object-fit: cover; margin-bottom: 18px; box-shadow: 0 0 18px var(--accent-glow); }
         .login-modal-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; color: var(--text-main); }
         .login-modal-sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 28px; text-align: center; line-height: 1.5; }
-
-        /* Google Sign-In button container */
         #google-signin-btn-container { width: 100%; display: flex; justify-content: center; margin-bottom: 16px; }
         .or-divider { display: flex; align-items: center; gap: 12px; width: 100%; margin: 14px 0; color: var(--text-muted); font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border-strong); }
-
         .login-input { width: 100%; padding: 14px 18px; border-radius: 12px; border: 2px solid var(--border-strong); background: var(--surface-color); color: var(--text-main); font-size: 1rem; outline: none; margin-bottom: 12px; transition: all 0.25s; font-weight: 600; }
         .login-input:focus { border-color: var(--accent-color); box-shadow: 0 0 0 4px var(--accent-dim); }
         .login-input::placeholder { color: var(--text-muted); font-weight: 400; }
@@ -283,28 +365,21 @@
         .login-step { display: none; flex-direction: column; align-items: center; width: 100%; }
         .login-step.active { display: flex; }
         .login-step-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 16px; text-align: center; }
-
-        /* ─── AVATAR PICKER MEJORADO ─── */
         .avatar-picker-section { width: 100%; margin-bottom: 20px; }
         .avatar-picker-title { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px; text-align: center; }
-        /* Preview del avatar */
         .avatar-preview { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 2.6rem; margin: 0 auto 16px; box-shadow: 0 0 20px var(--accent-glow); transition: all 0.3s; background: var(--surface-color); }
-        /* Tabs de categorías */
         .avatar-cat-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
         .avatar-cat-tab { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: 2px solid var(--border-strong); background: var(--surface-color); color: var(--text-muted); transition: all 0.2s; }
         .avatar-cat-tab.active { background: var(--accent-dim); border-color: var(--accent-color); color: var(--accent-color); }
-        /* Grid de emojis */
         .avatar-emoji-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-height: 150px; overflow-y: auto; padding: 4px; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
         .avatar-emoji-opt { width: 100%; aspect-ratio: 1; border-radius: 12px; border: 2px solid var(--border-strong); cursor: pointer; transition: all 0.2s; background: var(--surface-color); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
         .avatar-emoji-opt:hover { transform: scale(1.1); border-color: var(--accent-color); background: var(--accent-dim); }
         .avatar-emoji-opt.selected { border-color: var(--accent-color); background: var(--accent-dim); box-shadow: 0 0 12px var(--accent-glow); transform: scale(1.08); }
-        /* Color de fondo del avatar */
         .avatar-color-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
         .avatar-color-opt { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
         .avatar-color-opt:hover { transform: scale(1.2); }
         .avatar-color-opt.selected { border-color: white; transform: scale(1.25); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* ─── PRIVACY MODAL ─── */
         #privacy-modal-overlay { display: none; position: fixed; inset: 0; background: var(--modal-overlay); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(12px); }
         #privacy-modal-overlay.active { display: flex; }
         .privacy-modal-box { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 22px; width: 90%; max-width: 620px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: var(--shadow-strong); overflow: hidden; animation: bounceFun 0.4s ease; }
@@ -366,9 +441,13 @@
             .modal-content.stadium-guessr-layout .video-container { height: 45% !important; border-radius: 22px 22px 0 0 !important; }
             .modal-content.stadium-guessr-layout #game-ui { height: 55% !important; padding: 16px !important; display: flex !important; flex-direction: column !important; border-radius: 0 0 22px 22px !important; }
             .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; min-height: 200px; }
+            /* FIX mobile: tabs en 2 columnas */
             .tabs-container { grid-template-columns: 1fr 1fr; }
             .section-ligas { padding: 0 16px; }
             .avatar-emoji-grid { grid-template-columns: repeat(5, 1fr); }
+            /* FIX mobile: sección-title no desborda */
+            .section-title { flex-wrap: wrap; gap: 6px; }
+            #texto-titulo-grilla { font-size: 0.82rem; }
         }
         @media (max-width: 480px) {
             .tabs-container { grid-template-columns: 1fr; }
@@ -377,7 +456,6 @@
     </style>
 </head>
 <body>
-
     <div class="toast-container" id="toast-container"></div>
 
     <header class="app-header">
@@ -397,7 +475,7 @@
         </div>
     </header>
 
-    <!-- MODAL PRIVACY (con el texto completo real) -->
+    <!-- MODAL PRIVACY -->
     <div id="privacy-modal-overlay">
         <div class="privacy-modal-box">
             <div class="privacy-modal-header">
@@ -408,9 +486,8 @@
                 <div class="privacy-section-title">Última actualización: 11 de junio de 2026</div>
                 <p>Esta Política de Privacidad describe las políticas y procedimientos sobre la recopilación, uso y divulgación de tu información cuando utilizás el Servicio, y te informa sobre tus derechos de privacidad.</p>
                 <p>Usamos tus Datos Personales para proveer y mejorar el Servicio. Al usar el Servicio, aceptás la recopilación y uso de información de acuerdo con esta Política de Privacidad. <strong>Estadios Virtuales</strong> — accesible desde <a href="https://www.estadiosvirtuales.com" target="_blank">www.estadiosvirtuales.com</a>.</p>
-
                 <div class="privacy-section-title">Interpretación y Definiciones</div>
-                <p>Las palabras cuya letra inicial está en mayúscula tienen significados definidos bajo las siguientes condiciones. Las siguientes definiciones tienen el mismo significado independientemente de si aparecen en singular o plural.</p>
+                <p>Las palabras cuya letra inicial está en mayúscula tienen significados definidos bajo las siguientes condiciones.</p>
                 <ul>
                     <li><strong>Cuenta</strong> — Cuenta única creada para acceder a nuestro Servicio.</li>
                     <li><strong>Empresa</strong> — Estadios Virtuales.</li>
@@ -420,59 +497,41 @@
                     <li><strong>Sitio Web</strong> — Estadios Virtuales, accesible desde www.estadiosvirtuales.com.</li>
                     <li><strong>Vos / Usted</strong> — El individuo que accede o usa el Servicio.</li>
                 </ul>
-
                 <div class="privacy-section-title">Tipos de Datos que Recopilamos</div>
                 <p><strong>Datos Personales:</strong> Al registrarte, podemos solicitarte información identificable como tu nombre completo, dirección de correo electrónico y foto de perfil (cuando usás el inicio de sesión con Google).</p>
                 <p><strong>Datos de Uso:</strong> Se recopilan automáticamente al usar el Servicio. Pueden incluir tu dirección IP, tipo de navegador, páginas visitadas, tiempo de permanencia e identificadores únicos de dispositivo.</p>
-
                 <div class="privacy-section-title">Registro con Google</div>
                 <p>Cuando te registrás usando tu cuenta de Google, recibimos información de tu perfil de Google (nombre, dirección de correo electrónico y foto de perfil). Esta información se almacena en nuestra base de datos para gestionar tu cuenta y personalizar tu experiencia en Estadios Virtuales.</p>
-                <p>Al registrarte con Google, tu nombre, email y foto pueden quedar guardados en nuestros registros de usuarios para permitirte acceder a funciones como guardar puntajes, desbloquear logros y participar en rankings globales.</p>
-
                 <div class="privacy-section-title">Cookies y Tecnologías de Rastreo</div>
-                <p>Usamos Cookies y tecnologías similares para rastrear la actividad en el Servicio. Las tecnologías que usamos incluyen beacons, etiquetas y scripts para recopilar y rastrear información.</p>
+                <p>Usamos Cookies y tecnologías similares para rastrear la actividad en el Servicio.</p>
                 <ul>
                     <li><strong>Cookies Esenciales (Sesión):</strong> Necesarias para el funcionamiento del servicio y autenticación.</li>
                     <li><strong>Cookies de Aceptación (Persistentes):</strong> Identifican si aceptaste el uso de cookies.</li>
-                    <li><strong>Cookies de Funcionalidad (Persistentes):</strong> Recuerdan tus preferencias (login, tema visual, última liga vista).</li>
+                    <li><strong>Cookies de Funcionalidad (Persistentes):</strong> Recuerdan tus preferencias.</li>
                 </ul>
-
                 <div class="privacy-section-title">Uso de tus Datos Personales</div>
                 <ul>
-                    <li>Proveer y mantener el Servicio, incluido monitorear su uso.</li>
+                    <li>Proveer y mantener el Servicio.</li>
                     <li>Gestionar tu cuenta de usuario y tus puntajes en rankings.</li>
                     <li>Contactarte sobre actualizaciones o comunicaciones del servicio.</li>
                     <li>Análisis de datos e identificación de tendencias de uso.</li>
-                    <li>Transferencias comerciales en caso de fusión, adquisición o venta de activos.</li>
                 </ul>
-
                 <div class="privacy-section-title">Retención de Datos</div>
-                <p>Retenemos tus Datos Personales solo el tiempo necesario:</p>
                 <ul>
                     <li><strong>Cuentas de usuario:</strong> Durante la relación activa más hasta 24 meses tras el cierre.</li>
                     <li><strong>Datos de soporte:</strong> Hasta 24 meses desde el cierre del ticket.</li>
                     <li><strong>Datos de uso y analytics:</strong> Hasta 24 meses desde la recopilación.</li>
-                    <li><strong>Logs del servidor:</strong> Hasta 24 meses para seguridad y resolución de problemas.</li>
                 </ul>
-
                 <div class="privacy-section-title">Transferencia de Datos</div>
                 <p>Tu información puede ser procesada en computadoras ubicadas fuera de tu provincia, país u otra jurisdicción. La Empresa tomará todas las medidas razonablemente necesarias para garantizar que tus datos sean tratados de forma segura.</p>
-
                 <div class="privacy-section-title">Eliminación de tus Datos</div>
                 <p>Tenés derecho a solicitar la eliminación de tus Datos Personales. Podés contactarnos en cualquier momento a <strong>estadiosvirtuales1@gmail.com</strong> para solicitar acceso, corrección o eliminación de tus datos.</p>
-
-                <div class="privacy-section-title">Divulgación de Datos</div>
-                <p>Podemos divulgar tus Datos Personales en circunstancias específicas: transacciones comerciales, requerimientos legales o para proteger derechos y seguridad.</p>
-
                 <div class="privacy-section-title">Seguridad</div>
-                <p>La seguridad de tus Datos Personales es importante para nosotros, pero recordá que ningún método de transmisión por Internet es 100% seguro. Utilizamos medios comercialmente razonables para proteger tus datos.</p>
-
+                <p>La seguridad de tus Datos Personales es importante para nosotros, pero recordá que ningún método de transmisión por Internet es 100% seguro.</p>
                 <div class="privacy-section-title">Privacidad de Menores</div>
-                <p>Nuestro Servicio no está dirigido a menores de 16 años. No recopilamos conscientemente información identificable de menores de 16 años. Si sos padre o tutor y tu hijo proporcionó datos, contactanos para eliminarlos.</p>
-
+                <p>Nuestro Servicio no está dirigido a menores de 16 años.</p>
                 <div class="privacy-section-title">Cambios a esta Política</div>
-                <p>Podemos actualizar esta Política de Privacidad periódicamente. Te notificaremos cualquier cambio publicando la nueva política en esta página y actualizando la fecha de "Última actualización".</p>
-
+                <p>Podemos actualizar esta Política de Privacidad periódicamente. Te notificaremos cualquier cambio publicando la nueva política en esta página.</p>
                 <div class="privacy-section-title">Contacto</div>
                 <p>Si tenés preguntas sobre esta Política de Privacidad, contactanos en: <strong>estadiosvirtuales1@gmail.com</strong></p>
             </div>
@@ -480,7 +539,7 @@
             <div class="privacy-modal-footer">
                 <div class="privacy-checkbox-row">
                     <input type="checkbox" id="privacy-accept-check" disabled onchange="togglePrivacyBtn()">
-                    <label for="privacy-accept-check">Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales, incluyendo el registro de mis datos al iniciar sesión con Google.</label>
+                    <label for="privacy-accept-check">Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales.</label>
                 </div>
                 <button class="btn-3d primary" style="width:100%; padding:15px; font-size:1rem;" id="btn-confirm-privacy" disabled onclick="confirmarPrivacyYLogin()">
                     <i class="ph-fill ph-check-circle"></i> Aceptar y continuar
@@ -489,17 +548,14 @@
         </div>
     </div>
 
-    <!-- MODAL LOGIN con Google + fallback manual -->
+    <!-- MODAL LOGIN -->
     <div id="login-modal-overlay">
         <div class="login-modal-box">
             <img class="login-modal-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" onerror="this.style.display='none';">
             <h2 class="login-modal-title">Unirte a Estadios Virtuales</h2>
             <p class="login-modal-sub">Guardá tus puntajes y competí en el ranking global.</p>
-
-            <!-- Paso 1: Google o nombre manual -->
             <div class="login-step active" id="login-step-1">
                 <div class="login-step-label">Iniciá sesión para continuar</div>
-                <!-- Google Sign-In button se renderiza acá -->
                 <div id="google-signin-btn-container"></div>
                 <div class="or-divider">o con apodo</div>
                 <input type="text" class="login-input" id="login-name-input" placeholder="Tu nombre o apodo..." maxlength="24" onkeydown="if(event.key==='Enter') irALoginStep2()">
@@ -507,35 +563,24 @@
                     Continuar con apodo <i class="ph-bold ph-arrow-right"></i>
                 </button>
             </div>
-
-            <!-- Paso 2: avatar personalizable -->
             <div class="login-step" id="login-step-2">
                 <div class="login-step-label">Personalizá tu avatar</div>
-
-                <!-- Preview -->
                 <div class="avatar-preview" id="avatar-preview-box">⚽</div>
-
                 <div class="avatar-picker-section">
-                    <!-- Categorías de emojis -->
                     <div class="avatar-cat-tabs" id="avatar-cat-tabs">
                         <button class="avatar-cat-tab active" data-cat="futbol" onclick="cambiarCatAvatar(this,'futbol')">⚽ Fútbol</button>
                         <button class="avatar-cat-tab" data-cat="animales" onclick="cambiarCatAvatar(this,'animales')">🦁 Animales</button>
                         <button class="avatar-cat-tab" data-cat="caras" onclick="cambiarCatAvatar(this,'caras')">😄 Caras</button>
                         <button class="avatar-cat-tab" data-cat="objetos" onclick="cambiarCatAvatar(this,'objetos')">🌟 Otros</button>
                     </div>
-                    <!-- Grid de emojis -->
                     <div class="avatar-emoji-grid" id="avatar-emoji-grid"></div>
-
-                    <!-- Color de fondo -->
                     <div class="avatar-picker-title" style="margin-top:14px;">Color de fondo</div>
                     <div class="avatar-color-row" id="avatar-color-row"></div>
                 </div>
-
                 <button class="btn-3d primary" style="width:100%; padding:14px;" onclick="confirmarLogin()">
                     <i class="ph-fill ph-user-check"></i> ¡Listo, entrar!
                 </button>
             </div>
-
             <button class="login-modal-cancel" onclick="cerrarLoginModal()">Cancelar</button>
         </div>
     </div>
@@ -571,25 +616,99 @@
 
     <section class="section-ligas">
         <h2 class="section-title">
-            <span id="texto-titulo-grilla" style="flex-shrink:0;">
+            <span id="texto-titulo-grilla">
                 <i class="ph-fill ph-list-dashes" style="font-size:1.1rem; color:var(--accent-color);"></i> Seleccioná una categoría
             </span>
-            <button id="btn-volver-ligas" class="btn-3d secondary" style="display:none; padding:6px 14px; font-size:0.8rem; border-radius:10px; margin-left:12px; flex-shrink:0;" onclick="mostrarLigas()">
+            <button id="btn-volver-ligas" class="btn-3d secondary" style="display:none; padding:6px 14px; font-size:0.8rem; border-radius:10px; flex-shrink:0;" onclick="mostrarLigas()">
                 <i class="ph-bold ph-arrow-left"></i> Volver
             </button>
-            <span style="flex:1; height:1px; background: linear-gradient(90deg, var(--border-strong), transparent); margin-left:14px; border-radius:2px;"></span>
+            <span style="flex:1; height:1px; background: linear-gradient(90deg, var(--border-strong), transparent); margin-left:8px; border-radius:2px; flex-shrink:1; min-width:10px;"></span>
         </h2>
+
+        <!-- TABS con banderas reales como imágenes (compatibles con PC y móvil) -->
         <div class="tabs-container" id="tabs-container">
-            <button class="tab" data-gid="0">🇦🇷 Primera División</button>
-            <button class="tab" data-gid="861264971">🇦🇷 Primera Nacional</button>
-            <button class="tab" data-gid="554922783">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</button>
-            <button class="tab" data-gid="88250864">🇪🇸 La Liga</button>
-            <button class="tab" data-gid="2013531070">🇮🇹 Serie A</button>
-            <button class="tab" data-gid="165565330">🇫🇷 Ligue 1</button>
-            <button class="tab" data-gid="96716546">🇩🇪 Bundesliga</button>
-            <button class="tab" data-gid="58862486">🇧🇷 Brasileirao</button>
-            <button class="tab" data-gid="304687071">🇨🇱 Liga Chile</button>
-            <button class="tab" data-gid="879164460">🌍 Copa del Mundo</button>
+
+            <button class="tab" data-gid="0">
+                <img class="tab-flag" src="https://flagcdn.com/ar.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/ar.svg" alt="Argentina">
+                    Primera División
+                </span>
+            </button>
+
+            <button class="tab" data-gid="861264971">
+                <img class="tab-flag" src="https://flagcdn.com/ar.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/ar.svg" alt="Argentina">
+                    Primera Nacional
+                </span>
+            </button>
+
+            <button class="tab" data-gid="554922783">
+                <img class="tab-flag" src="https://flagcdn.com/gb-eng.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/gb-eng.svg" alt="England">
+                    Premier League
+                </span>
+            </button>
+
+            <button class="tab" data-gid="88250864">
+                <img class="tab-flag" src="https://flagcdn.com/es.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/es.svg" alt="España">
+                    La Liga
+                </span>
+            </button>
+
+            <button class="tab" data-gid="2013531070">
+                <img class="tab-flag" src="https://flagcdn.com/it.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/it.svg" alt="Italia">
+                    Serie A
+                </span>
+            </button>
+
+            <button class="tab" data-gid="165565330">
+                <img class="tab-flag" src="https://flagcdn.com/fr.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/fr.svg" alt="Francia">
+                    Ligue 1
+                </span>
+            </button>
+
+            <button class="tab" data-gid="96716546">
+                <img class="tab-flag" src="https://flagcdn.com/de.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/de.svg" alt="Alemania">
+                    Bundesliga
+                </span>
+            </button>
+
+            <button class="tab" data-gid="58862486">
+                <img class="tab-flag" src="https://flagcdn.com/br.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/br.svg" alt="Brasil">
+                    Brasileirao
+                </span>
+            </button>
+
+            <button class="tab" data-gid="304687071">
+                <img class="tab-flag" src="https://flagcdn.com/cl.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <img class="tab-flag-mini" src="https://flagcdn.com/cl.svg" alt="Chile">
+                    Liga Chile
+                </span>
+            </button>
+
+            <button class="tab" data-gid="879164460">
+                <!-- Copa del Mundo: usamos el globo terráqueo de flagcdn -->
+                <img class="tab-flag" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Flag_of_the_United_Nations.svg" alt="" aria-hidden="true">
+                <span class="tab-label">
+                    <span style="font-size:1.3rem; line-height:1; display:inline-block;">🌍</span>
+                    Copa del Mundo
+                </span>
+            </button>
+
         </div>
     </section>
 
@@ -646,7 +765,6 @@
             <i class="ph-duotone ph-envelope-simple"></i>
         </a>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 
     <script>
@@ -658,10 +776,7 @@
     const scriptUrlRanking    = "https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
     const scriptUrlCapacidad  = "https://script.google.com/macros/s/AKfycbxIME-M84DhBy3oG4-Y-dtHRhSoTX1G-l476biCk0tgtuMNeM0eHp6-u550yv7h1nkJwQ/exec";
     const scriptUrlAntiguedad = "https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
-    // ⬇️  REEMPLAZÁ ESTE CLIENT_ID con el tuyo de Google Cloud Console
     const GOOGLE_CLIENT_ID    = "TU_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
-    // ⬇️  Apps Script que registra usuarios en tu hoja de cálculo
-    //     Creá un Apps Script con doPost() que guarde nombre, email, foto, fecha
     const scriptUrlUsuarios   = "https://script.google.com/macros/s/TU_SCRIPT_USUARIOS/exec";
 
     let estadiosCargados = [];
@@ -722,7 +837,6 @@
     // ────────────────────────────────────────────
     function inicializarGoogleLogin() {
         if (typeof google === 'undefined' || !google.accounts) {
-            // SDK no cargó aún, reintentar
             setTimeout(inicializarGoogleLogin, 500);
             return;
         }
@@ -732,58 +846,28 @@
             auto_select: false,
             cancel_on_tap_outside: true
         });
-        // Renderizar el botón dentro del modal de login
         const btnContainer = document.getElementById('google-signin-btn-container');
         if (btnContainer) {
             google.accounts.id.renderButton(btnContainer, {
-                theme: 'filled_black',
-                size: 'large',
-                shape: 'pill',
-                width: 300,
-                text: 'signin_with'
+                theme: 'filled_black', size: 'large', shape: 'pill', width: 300, text: 'signin_with'
             });
         }
     }
 
     function manejarRespuestaGoogle(response) {
-        // Decodificar el JWT de Google
         const payload = decodeJwt(response.credential);
         if (!payload) { showToast('Error al procesar la respuesta de Google.','ph-warning-circle','danger'); return; }
-
-        const user = {
-            id: payload.sub,
-            name: payload.name,
-            email: payload.email,
-            picture: payload.picture,
-            loginMethod: 'google',
-            emoji: '⚽',
-            avatarBg: '#1a2a1a'
-        };
-
-        // Guardar en localStorage
+        const user = { id: payload.sub, name: payload.name, email: payload.email, picture: payload.picture, loginMethod: 'google', emoji: '⚽', avatarBg: '#1a2a1a' };
         localStorage.setItem('ev_user_logged', JSON.stringify(user));
-        // Registrar en la hoja de cálculo (no-cors, silencioso)
         registrarUsuarioEnSheets(user);
-
         cerrarLoginModal();
         renderizarBotonLogin();
         showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
     }
 
     function registrarUsuarioEnSheets(user) {
-        // Envía los datos al Apps Script que registra usuarios en tu Sheets
-        fetch(scriptUrlUsuarios, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                accion: 'registrar_usuario',
-                nombre: user.name,
-                email: user.email || '',
-                foto: user.picture || '',
-                metodo: user.loginMethod || 'manual',
-                fecha: new Date().toISOString()
-            })
+        fetch(scriptUrlUsuarios, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accion: 'registrar_usuario', nombre: user.name, email: user.email || '', foto: user.picture || '', metodo: user.loginMethod || 'manual', fecha: new Date().toISOString() })
         }).catch(()=>{});
     }
 
@@ -799,12 +883,8 @@
     // ────────────────────────────────────────────
     // PRIVACY MODAL
     // ────────────────────────────────────────────
-    function abrirModalPrivacy() {
-        document.getElementById('privacy-modal-overlay').style.display='flex';
-    }
-    function cerrarModalPrivacy() {
-        document.getElementById('privacy-modal-overlay').style.display='none';
-    }
+    function abrirModalPrivacy() { document.getElementById('privacy-modal-overlay').style.display='flex'; }
+    function cerrarModalPrivacy() { document.getElementById('privacy-modal-overlay').style.display='none'; }
     function checkPrivacyScrolled(el) {
         const scrolled = el.scrollTop + el.clientHeight >= el.scrollHeight - 40;
         const indicator = document.getElementById('privacy-read-indicator');
@@ -817,8 +897,7 @@
     }
     function togglePrivacyBtn() {
         const check = document.getElementById('privacy-accept-check');
-        const btn   = document.getElementById('btn-confirm-privacy');
-        btn.disabled = !check.checked;
+        document.getElementById('btn-confirm-privacy').disabled = !check.checked;
     }
     function confirmarPrivacyYLogin() {
         localStorage.setItem('ev_privacy_accepted','1');
@@ -827,7 +906,7 @@
     }
 
     // ────────────────────────────────────────────
-    // AVATAR PICKER — datos
+    // AVATAR PICKER
     // ────────────────────────────────────────────
     const AVATAR_CATS = {
         futbol:  ['⚽','🏟️','🥅','🏆','🥇','👟','🧤','🎽','🏅','🎯','🛩️','🌍','📍','🎮','🕹️','🏴'],
@@ -835,53 +914,37 @@
         caras:   ['😎','🔥','💪','🤩','🥶','👑','🤘','💫','⚡','🌟','💥','🎭','😤','🫡','🤯','👾'],
         objetos: ['🌟','⭐','💎','🚀','🎸','🎺','🎻','🥁','🎷','🌈','☄️','🌊','🏔️','🌋','🗺️','🧭']
     };
-    const AVATAR_COLORS = [
-        '#1a2a1a','#0d1b2a','#1a0d2a','#2a1a0d','#0d2a1a',
-        '#2a0d1a','#0a0a0a','#1a1a0a','#0a1a2a','#2a1a1a',
-        '#004d40','#1a237e','#311b92','#b71c1c','#e65100',
-        '#1b5e20','#006064','#4a148c','#880e4f','#3e2723'
-    ];
-
-    let selectedEmoji = '⚽';
-    let selectedColor = '#1a2a1a';
+    const AVATAR_COLORS = ['#1a2a1a','#0d1b2a','#1a0d2a','#2a1a0d','#0d2a1a','#2a0d1a','#0a0a0a','#1a1a0a','#0a1a2a','#2a1a1a','#004d40','#1a237e','#311b92','#b71c1c','#e65100','#1b5e20','#006064','#4a148c','#880e4f','#3e2723'];
+    let selectedEmoji = '⚽', selectedColor = '#1a2a1a';
 
     function renderAvatarGrid(cat) {
         const grid = document.getElementById('avatar-emoji-grid');
         if (!grid) return;
-        grid.innerHTML = (AVATAR_CATS[cat]||AVATAR_CATS.futbol).map((e,i)=>`
-            <div class="avatar-emoji-opt ${e===selectedEmoji?'selected':''}" onclick="seleccionarEmoji('${e}',this)">${e}</div>
-        `).join('');
+        grid.innerHTML = (AVATAR_CATS[cat]||AVATAR_CATS.futbol).map(e=>`<div class="avatar-emoji-opt ${e===selectedEmoji?'selected':''}" onclick="seleccionarEmoji('${e}',this)">${e}</div>`).join('');
     }
-
     function renderColorRow() {
         const row = document.getElementById('avatar-color-row');
         if (!row) return;
-        row.innerHTML = AVATAR_COLORS.map(c=>`
-            <div class="avatar-color-opt ${c===selectedColor?'selected':''}" style="background:${c};" onclick="seleccionarColor('${c}',this)" title="${c}"></div>
-        `).join('');
+        row.innerHTML = AVATAR_COLORS.map(c=>`<div class="avatar-color-opt ${c===selectedColor?'selected':''}" style="background:${c};" onclick="seleccionarColor('${c}',this)" title="${c}"></div>`).join('');
     }
-
     function actualizarPreview() {
         const box = document.getElementById('avatar-preview-box');
         if (!box) return;
         box.textContent = selectedEmoji;
         box.style.background = selectedColor;
     }
-
     function seleccionarEmoji(emoji, el) {
         selectedEmoji = emoji;
         document.querySelectorAll('.avatar-emoji-opt').forEach(e=>e.classList.remove('selected'));
         el.classList.add('selected');
         actualizarPreview();
     }
-
     function seleccionarColor(color, el) {
         selectedColor = color;
         document.querySelectorAll('.avatar-color-opt').forEach(e=>e.classList.remove('selected'));
         el.classList.add('selected');
         actualizarPreview();
     }
-
     function cambiarCatAvatar(btn, cat) {
         document.querySelectorAll('.avatar-cat-tab').forEach(t=>t.classList.remove('active'));
         btn.classList.add('active');
@@ -892,13 +955,11 @@
     // LOGIN MODAL
     // ────────────────────────────────────────────
     function abrirLoginModal() {
-        selectedEmoji = '⚽';
-        selectedColor = '#1a2a1a';
+        selectedEmoji = '⚽'; selectedColor = '#1a2a1a';
         document.getElementById('login-step-1').classList.add('active');
         document.getElementById('login-step-2').classList.remove('active');
         document.getElementById('login-name-input').value='';
         document.getElementById('login-modal-overlay').classList.add('active');
-        // Re-renderizar Google button
         setTimeout(()=>{
             const c = document.getElementById('google-signin-btn-container');
             if (c && typeof google!=='undefined' && google.accounts) {
@@ -908,41 +969,30 @@
         },100);
         setTimeout(()=>document.getElementById('login-name-input').focus(), 200);
     }
-
-    function cerrarLoginModal() {
-        document.getElementById('login-modal-overlay').classList.remove('active');
-    }
-
+    function cerrarLoginModal() { document.getElementById('login-modal-overlay').classList.remove('active'); }
     function irALoginStep2() {
         const name = document.getElementById('login-name-input').value.trim();
         if (!name) { document.getElementById('login-name-input').focus(); return; }
         document.getElementById('login-step-1').classList.remove('active');
         document.getElementById('login-step-2').classList.add('active');
-        renderAvatarGrid('futbol');
-        renderColorRow();
-        actualizarPreview();
+        renderAvatarGrid('futbol'); renderColorRow(); actualizarPreview();
     }
-
     function confirmarLogin() {
         const name = document.getElementById('login-name-input').value.trim();
         if (!name) { cerrarLoginModal(); return; }
         const user = { name, emoji: selectedEmoji, avatarBg: selectedColor, id: Date.now().toString(), loginMethod: 'manual' };
         localStorage.setItem('ev_user_logged', JSON.stringify(user));
-        // Registrar también en Sheets
         registrarUsuarioEnSheets(user);
-        cerrarLoginModal();
-        renderizarBotonLogin();
+        cerrarLoginModal(); renderizarBotonLogin();
         showToast(`¡Bienvenido, ${name.split(' ')[0]}! ${selectedEmoji}`);
     }
-
     function manejarClickLogin() {
         const privacyAceptada = localStorage.getItem('ev_privacy_accepted')==='1';
-        if (privacyAceptada) abrirLoginModal();
-        else abrirModalPrivacy();
+        if (privacyAceptada) abrirLoginModal(); else abrirModalPrivacy();
     }
 
     // ────────────────────────────────────────────
-    // RENDER BOTÓN DE PERFIL EN HEADER
+    // RENDER BOTÓN PERFIL
     // ────────────────────────────────────────────
     function renderizarBotonLogin() {
         const container = document.getElementById('hero-google-profile');
@@ -950,30 +1000,18 @@
         if (u) {
             let avatarHTML;
             if (u.picture && u.loginMethod==='google') {
-                // Usuario de Google: mostrar foto real
                 avatarHTML = `<img src="${u.picture}" class="hero-profile-avatar" onerror="this.style.display='none';">`;
             } else {
-                // Usuario manual: mostrar emoji con color de fondo
                 avatarHTML = `<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:${u.avatarBg||'#1a2a1a'};box-shadow:0 0 8px var(--accent-glow);">${u.emoji||'⚽'}</div>`;
             }
-            container.innerHTML = `
-                <div class="hero-profile-wrapper" onclick="abrirModalPerfil()">
-                    <div style="text-align:right;">
-                        <div class="hero-profile-name">${u.name.split(' ')[0]}</div>
-                        <div class="hero-profile-sub"><i class="ph-fill ph-star"></i> Perfil</div>
-                    </div>
-                    ${avatarHTML}
-                </div>`;
+            container.innerHTML = `<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${u.name.split(' ')[0]}</div><div class="hero-profile-sub"><i class="ph-fill ph-star"></i> Perfil</div></div>${avatarHTML}</div>`;
         } else {
-            container.innerHTML = `
-                <button class="btn-login" onclick="manejarClickLogin()">
-                    <i class="ph-bold ph-user-circle" style="font-size:1.1rem;"></i> Entrar
-                </button>`;
+            container.innerHTML = `<button class="btn-login" onclick="manejarClickLogin()"><i class="ph-bold ph-user-circle" style="font-size:1.1rem;"></i> Entrar</button>`;
         }
     }
 
     // ────────────────────────────────────────────
-    // VOTOS LOCALES
+    // VOTOS LOCALES (persisten al recargar)
     // ────────────────────────────────────────────
     function guardarVotoLocal(estadio, puntuacion) {
         const v = JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');
@@ -986,13 +1024,13 @@
     }
 
     // ────────────────────────────────────────────
-    // COLORES CLUBES
+    // COLORES CLUBES + PAÍSES
     // ────────────────────────────────────────────
     const COLORES_CLUBES = {
         "River Plate":"linear-gradient(135deg,#cc0000,#ffffff)","Boca Juniors":"linear-gradient(135deg,#003b46,#07575b,#f4b251)","Racing Club":"linear-gradient(135deg,#75aadb,#ffffff)","Independiente":"linear-gradient(135deg,#b30000,#1a1a1a)","San Lorenzo":"linear-gradient(135deg,#0f2042,#a61c32)","Huracán":"linear-gradient(135deg,#ffffff,#e60000)","Estudiantes de La Plata":"linear-gradient(135deg,#ff0000,#ffffff,#ff0000)","Gimnasia y Esgrima LP":"linear-gradient(135deg,#ffffff,#002060)","Rosario Central":"linear-gradient(135deg,#002060,#ffcc00)","Newell's Old Boys":"linear-gradient(135deg,#000000,#cc0000)","Vélez Sarsfield":"linear-gradient(135deg,#ffffff,#0000ff)","Lanús":"linear-gradient(135deg,#5c061e,#2e030f)","Argentinos Juniors":"linear-gradient(135deg,#e60000,#ffffff)","Belgrano de Córdoba":"linear-gradient(135deg,#5cb8e4,#ffffff)","Talleres":"linear-gradient(135deg,#002060,#ffffff,#002060)","Arsenal":"linear-gradient(135deg,#ef0107,#ffffff)","Liverpool":"linear-gradient(135deg,#c8102e,#f6eb61)","Manchester City":"linear-gradient(135deg,#6cabdd,#ffffff)","Manchester United":"linear-gradient(135deg,#da291c,#000000)","Chelsea":"linear-gradient(135deg,#034694,#ee242c)","Tottenham Hotspur":"linear-gradient(135deg,#ffffff,#132257)","Real Madrid":"linear-gradient(135deg,#ffffff,#e5e5e5,#febe10)","FC Barcelona":"linear-gradient(135deg,#a50044,#004d98)","Atlético de Madrid":"linear-gradient(135deg,#cb0000,#ffffff,#000040)","Juventus":"linear-gradient(135deg,#000000,#ffffff,#000000)","Inter de Milán":"linear-gradient(135deg,#00529f,#000000)","AC Milan":"linear-gradient(135deg,#e30613,#000000)","AS Roma":"linear-gradient(135deg,#8e1a2f,#f0bc42)","Paris Saint-Germain":"linear-gradient(135deg,#004170,#e30613,#ffffff)","Bayern Munich":"linear-gradient(135deg,#dc052d,#0066b2,#ffffff)","Borussia Dortmund":"linear-gradient(135deg,#fde100,#000000)","Flamengo":"linear-gradient(135deg,#111111,#c8102e)","Palmeiras":"linear-gradient(135deg,#006437,#ffffff,#006437)","Corinthians":"linear-gradient(135deg,#ffffff,#d5d5d5,#000000)","Colo Colo":"linear-gradient(135deg,#ffffff,#b5b5b5,#000000)"
     };
     const COLORES_PAISES = {
-        "argentina":"linear-gradient(135deg,#75aadb,#ffffff,#75aadb)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#aa151b,#f1bf00,#aa151b)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","qatar":"linear-gradient(135deg,#8d1b3d,#ffffff)","chile":"linear-gradient(135deg,#e20e0e,#ffffff,#0033a0)"
+        "argentina":"linear-gradient(135deg,#75aadb,#ffffff,#75aadb)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#aa151b,#f1bf00,#aa151b)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","qatar":"linear-gradient(135deg,#8d1b3d,#ffffff)","chile":"linear-gradient(135deg,#e20e0e,#ffffff,#0033a0)","méxico":"linear-gradient(135deg,#006341,#ffffff,#c60c30)","mexico":"linear-gradient(135deg,#006341,#ffffff,#c60c30)","estados unidos":"linear-gradient(135deg,#b31942,#ffffff,#0a3161)","usa":"linear-gradient(135deg,#b31942,#ffffff,#0a3161)","canadá":"linear-gradient(135deg,#ff0000,#ffffff,#ff0000)","canada":"linear-gradient(135deg,#ff0000,#ffffff,#ff0000)"
     };
     function obtenerFondoClub(club, pais) {
         if (!club&&!pais) return 'linear-gradient(135deg,#0f1419 0%,#080c10 100%)';
@@ -1056,9 +1094,9 @@
         let urlIncrustar=link;
         if(link.includes('youtube.com')||link.includes('youtu.be')){
             let videoId='';
-            if(link.includes('youtu.be/'))       videoId=link.split('youtu.be/')[1].split('?')[0];
-            else if(link.includes('watch'))       videoId=new URLSearchParams(new URL(link).search).get('v');
-            else if(link.includes('shorts/'))     videoId=link.split('shorts/')[1].split('?')[0];
+            if(link.includes('youtu.be/')) videoId=link.split('youtu.be/')[1].split('?')[0];
+            else if(link.includes('watch')) videoId=new URLSearchParams(new URL(link).search).get('v');
+            else if(link.includes('shorts/')) videoId=link.split('shorts/')[1].split('?')[0];
             const qp=esJuego?"?autoplay=1&controls=0&rel=0&modestbranding=1":"?autoplay=1&rel=0&modestbranding=1";
             if(videoId) urlIncrustar=`https://www.youtube.com/embed/${videoId}${qp}`;
             const est=esJuego?"width:100%;height:calc(100% + 55px);border:none;margin-top:-55px;":"width:100%;height:100%;border:none;";
@@ -1164,6 +1202,7 @@
             const datoLimpio=(datoCurioso||'¡Este estadio esconde grandes historias!').replace(/'/g,"\u2019").replace(/"/g,"\u201C");
             const promedio=bscarPropiedad(fila,'Promedio');
             const valorProm=parseFloat(promedio)||0;
+            // Votos locales persistentes
             const votoLocal=obtenerVotoLocal(estadio);
             const estRellas=votoLocal>0?votoLocal:(valorProm/2);
             let estrellasHTML='';
@@ -1173,8 +1212,12 @@
                 else if(i===Math.ceil(estRellas)&&(estRellas%1>=0.5)) ic='ph-fill ph-star-half active';
                 estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadio}" data-club="${clubNombre}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;
             }
-            const labelRating=votoLocal>0?`Tu voto: ${votoLocal}★${valorProm>0?` · prom. ${valorProm.toFixed(1)}/10`:''}`:(valorProm>0?`Calificá · prom. ${valorProm.toFixed(1)}/10`:'Calificá este estadio');
-            const imgHTML=urlFoto?`<img class="card-img-logo" src="${urlFoto}" alt="${clubNombre}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${clubNombre}</div>`:`<div class="placeholder-text">${clubNombre}</div>`;
+            const labelRating=votoLocal>0
+                ?`Tu voto: ${votoLocal}★${valorProm>0?` · prom. ${valorProm.toFixed(1)}/10`:''}`
+                :(valorProm>0?`Calificá · prom. ${valorProm.toFixed(1)}/10`:'Calificá este estadio');
+            const imgHTML=urlFoto
+                ?`<img class="card-img-logo" src="${urlFoto}" alt="${clubNombre}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${clubNombre}</div>`
+                :`<div class="placeholder-text">${clubNombre}</div>`;
 
             const tarjeta=document.createElement('article');
             tarjeta.className='card animate-fade-up';
@@ -1220,12 +1263,8 @@
         document.getElementById('btn-volver-ligas').style.display='none';
         document.getElementById('texto-titulo-grilla').innerHTML='<i class="ph-fill ph-list-dashes" style="font-size:1.1rem; color:var(--accent-color);"></i> Seleccioná una categoría';
         document.getElementById('global-search').value='';
-        document.querySelector('.grid').innerHTML=`
-            <div class="empty-state" style="background:var(--surface-color);border-radius:20px;border:2px dashed var(--border-strong);max-width:550px;margin:20px auto;padding:50px 30px;">
-                <i class="ph-duotone ph-map-pin empty-state-icon animate-bounce" style="color:var(--accent-color);font-size:4rem;"></i>
-                <h3>¡Elegí una categoría!</h3>
-                <p>Tocá alguna de las ligas de arriba para desplegar los estadios.</p>
-            </div>`;
+        // FIX: ya no mostramos el recuadro vacío — grilla queda limpia
+        document.querySelector('.grid').innerHTML='';
         document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
         localStorage.removeItem('ev_last_gid');
         estadiosCargados=[];
@@ -1235,8 +1274,14 @@
         const term=e.target.value.toLowerCase().trim();
         if(term===''){
             const lastGid=localStorage.getItem('ev_last_gid');
-            if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab) document.getElementById('texto-titulo-grilla').textContent=tab.innerText;renderizarTarjetas(estadiosCargados);}
-            else window.mostrarLigas();
+            if(lastGid){
+                const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);
+                if(tab){
+                    const label = tab.querySelector('.tab-label');
+                    document.getElementById('texto-titulo-grilla').textContent = label ? label.textContent.trim() : tab.textContent.trim();
+                }
+                renderizarTarjetas(estadiosCargados);
+            } else window.mostrarLigas();
         } else {
             document.getElementById('texto-titulo-grilla').innerHTML=`<i class="ph-fill ph-magnifying-glass" style="color:var(--accent-color);"></i> Buscando: "${e.target.value}"`;
             document.getElementById('tabs-container').style.display='none';
@@ -1400,8 +1445,7 @@
         document.getElementById('ranking-modal').style.display='flex';
         try{
             const ranking=await(await fetch(scriptUrlRanking)).json();
-            let html=`<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2><p style="color:var(--text-muted);font-size:0.88rem;margin-top:4px;">Los pilotos más precisos del mundo</p></div>
-            <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+            let html=`<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2><p style="color:var(--text-muted);font-size:0.88rem;margin-top:4px;">Los pilotos más precisos del mundo</p></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
             if(!ranking?.length) html+=`<p style="color:var(--text-muted);text-align:center;padding:30px;font-weight:600;">Aún no hay puntajes.</p>`;
             else ranking.forEach((f,i)=>{
                 const medals=['🥇','🥈','🥉'];const medal=i<3?medals[i]:`<span style="color:var(--text-muted);font-size:0.9rem;">${i+1}</span>`;
@@ -1562,18 +1606,13 @@
         if(userStats.maxScore>22000){cardClass='gold';rangoFUT='MCO';rangoTexto='Leyenda Mundial';ovr=94;}
         let calHTML='';
         for(let d=1;d<=30;d++){let cl='calendar-cell';if(d<9) cl+=' past-done';if(d===9) cl+=' current-active';calHTML+=`<div class="${cl}">${d}</div>`;}
-
-        // Avatar en la tarjeta FUT
         let avatarDisplay;
         if(u.picture && u.loginMethod==='google'){
             avatarDisplay=`<img src="${u.picture}" class="fut-user-img">`;
         } else {
             avatarDisplay=`<div style="width:90px;height:90px;border-radius:50%;background:${u.avatarBg||'#1a2a1a'};display:flex;align-items:center;justify-content:center;font-size:2.8rem;border:4px solid rgba(255,255,255,0.5);margin-bottom:25px;z-index:5;">${u.emoji||'⚽'}</div>`;
         }
-
-        // Botón para editar avatar (solo usuarios manuales)
         const btnEditarAvatar = u.loginMethod!=='google' ? `<button onclick="abrirEditorAvatar()" class="btn-3d secondary" style="padding:7px 14px;font-size:0.8rem;margin-top:10px;"><i class="ph-duotone ph-pencil-simple"></i> Editar avatar</button>` : '';
-
         document.getElementById('profile-modal-body').innerHTML=`
         <div class="split-profile-layout">
             <div class="left-fut-column" style="flex-direction:column;">
@@ -1623,21 +1662,17 @@
         document.getElementById('profile-modal').style.display='flex';
     }
 
-    // ─── Editor de avatar desde el perfil ───
     function abrirEditorAvatar(){
         const u=JSON.parse(localStorage.getItem('ev_user_logged'));
         if(!u) return;
         selectedEmoji=u.emoji||'⚽';
         selectedColor=u.avatarBg||'#1a2a1a';
         cerrarModalPerfil();
-        // Ir al paso 2 del login solo para editar
         document.getElementById('login-step-1').classList.remove('active');
         document.getElementById('login-step-2').classList.add('active');
         document.getElementById('login-name-input').value=u.name;
         document.getElementById('login-modal-overlay').classList.add('active');
-        renderAvatarGrid('futbol');
-        renderColorRow();
-        actualizarPreview();
+        renderAvatarGrid('futbol'); renderColorRow(); actualizarPreview();
     }
 
     function cerrarModalPerfil(){ document.getElementById('profile-modal').style.display='none'; }
@@ -1654,10 +1689,8 @@
     window.addEventListener('DOMContentLoaded',()=>{
         renderizarBotonLogin();
 
-        // Inicializar Google Login en background
         if(typeof google!=='undefined'&&google.accounts) inicializarGoogleLogin();
         else document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load', inicializarGoogleLogin);
-        // Fallback si el SDK tarda
         setTimeout(inicializarGoogleLogin, 2000);
 
         document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',function(){
@@ -1668,7 +1701,10 @@
             localStorage.setItem('ev_last_gid',gid);
             document.getElementById('tabs-container').style.display='none';
             document.getElementById('btn-volver-ligas').style.display='inline-flex';
-            document.getElementById('texto-titulo-grilla').innerHTML=`<i class="ph-fill ph-check-circle" style="color:var(--accent-color);"></i> ${this.innerText}`;
+            // Toma el texto del span .tab-label (sin la imagen mini)
+            const labelSpan = this.querySelector('.tab-label');
+            const labelText = labelSpan ? labelSpan.textContent.trim() : this.textContent.trim();
+            document.getElementById('texto-titulo-grilla').innerHTML=`<i class="ph-fill ph-check-circle" style="color:var(--accent-color);"></i> ${labelText}`;
             cargarLiga(gid);
         }));
 
@@ -1679,7 +1715,9 @@
             if(tabToActivate){
                 document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
                 tabToActivate.classList.add('active');
-                document.getElementById('texto-titulo-grilla').innerHTML=`<i class="ph-fill ph-check-circle" style="color:var(--accent-color);"></i> ${tabToActivate.innerText}`;
+                const labelSpan = tabToActivate.querySelector('.tab-label');
+                const labelText = labelSpan ? labelSpan.textContent.trim() : tabToActivate.textContent.trim();
+                document.getElementById('texto-titulo-grilla').innerHTML=`<i class="ph-fill ph-check-circle" style="color:var(--accent-color);"></i> ${labelText}`;
                 document.getElementById('tabs-container').style.display='none';
                 document.getElementById('btn-volver-ligas').style.display='inline-flex';
                 cargarLiga(lastGid);
