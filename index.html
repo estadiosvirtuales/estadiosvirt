@@ -187,9 +187,9 @@
         <div class="hero-content">
             <img class="brand-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo Estadios Virtuales" onerror="this.style.display='none';">
             <h1>ESTADIOS VIRTUALES</h1>
-            <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
+            <p class="hero-subtitle">Descubrí los estadios desde el aire.</p>
             <div class="search-container">
-                <input type="text" class="search-bar" id="global-search" placeholder="Buscá en todo el catálogo de estadios, clubes o países...">
+                <input type="text" class="search-bar" id="global-search" placeholder="Buscá en todo el catálogo">
             </div>
             <div class="hero-action-buttons">
                 <button class="hero-btn primary" onclick="iniciarTrivia()">🌍 Jugar StadiumGuessr</button>
@@ -934,7 +934,7 @@
             guessrSelectedLatLng = null;
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             const actionBtn = document.getElementById('game-action-btn');
-            actionBtn.innerText = "Clavá un pin en el mapa mudo 📍";
+            actionBtn.innerText = "Ubica el estadio en el mapa 📍";
             actionBtn.style.backgroundColor = "var(--card-bg)";
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
