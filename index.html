@@ -10,230 +10,49 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
-        /* Variables de colores (Estilo Modo Oscuro Premium) */
         :root {
             --bg-color: #0c0c0c;
             --card-bg: #161616;
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
-            --accent-color: #1db954; /* Verde estilo Spotify */
+            --accent-color: #1db954;
             --accent-hover: #1ed760;
-            --danger-color: #1db954; /* Rojo estilo Netflix */
+            --danger-color: #1db954;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 50px;
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 50px; }
 
-        /* PORTADA CINEMÁTICA CON IDENTIDAD OPTIMIZADA */
         .hero-section {
-            position: relative;
-            padding: 60px 20px 40px 20px;
-            text-align: center;
+            position: relative; padding: 60px 20px 40px 20px; text-align: center;
             background: linear-gradient(180deg, rgba(29, 185, 84, 0.12) 0%, rgba(20, 20, 20, 0.6) 50%, var(--bg-color) 100%), 
                         radial-gradient(circle at top, #1a3a21 0%, #0c0c0c 70%);
             border-bottom: 1px solid #1a1a1a;
         }
+        .hero-content { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .brand-logo { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent-color); box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3), inset 0 0 15px rgba(0,0,0,0.5); margin-bottom: 18px; transition: transform 0.3s ease; }
+        .brand-logo:hover { transform: scale(1.04) rotate(2deg); }
+        .hero-section h1 { font-size: 2.3rem; font-weight: 900; margin-bottom: 15px; letter-spacing: -0.5px; background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 30px; font-weight: 400; max-width: 600px; line-height: 1.6; }
+        .search-container { width: 100%; max-width: 550px; margin: 0 auto 25px auto; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.5); border-radius: 30px; }
+        .search-bar { width: 100%; padding: 16px 25px; border-radius: 30px; border: 1px solid #2a2a2a; background-color: rgba(30, 30, 30, 0.85); color: white; font-size: 1.05rem; outline: none; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .search-bar:focus { background-color: #222222; border-color: var(--accent-color); box-shadow: 0 0 15px rgba(29, 185, 84, 0.3); }
+        .hero-action-buttons { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; width: 100%; }
+        .hero-btn { padding: 12px 24px; border-radius: 30px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .hero-btn.primary { background-color: var(--accent-color); color: #000; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3); }
+        .hero-btn.primary:hover { background-color: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(29, 185, 84, 0.5); }
+        .hero-btn.secondary { background-color: #1a1a1a; color: #fff; border: 1px solid #333; }
+        .hero-btn.secondary:hover { background-color: #252525; border-color: var(--accent-color); transform: translateY(-2px); }
+        #hero-google-profile { display: flex; align-items: center; justify-content: center; min-height: 44px; }
+        .hero-profile-avatar { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--accent-color); cursor: pointer; box-shadow: 0 0 12px rgba(29, 185, 84, 0.4); transition: transform 0.2s ease; object-fit: cover; }
+        .hero-profile-avatar:hover { transform: scale(1.1); }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Logo optimizado */
-        .brand-logo {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid var(--accent-color);
-            box-shadow: 0 4px 20px rgba(29, 185, 84, 0.3), inset 0 0 15px rgba(0,0,0,0.5);
-            margin-bottom: 18px;
-            transition: transform 0.3s ease;
-        }
-
-        .brand-logo:hover {
-            transform: scale(1.04) rotate(2deg);
-        }
-
-        .hero-section h1 {
-            font-size: 2.3rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            letter-spacing: -0.5px;
-            background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-weight: 400;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-
-        /* Buscador */
-        .search-container {
-            width: 100%;
-            max-width: 550px;
-            margin: 0 auto 25px auto;
-            position: relative;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            border-radius: 30px;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 16px 25px;
-            border-radius: 30px;
-            border: 1px solid #2a2a2a;
-            background-color: rgba(30, 30, 30, 0.85);
-            color: white;
-            font-size: 1.05rem;
-            outline: none;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .search-bar:focus {
-            background-color: #222222;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
-        }
-
-        /* BOTONERA EN LA CABECERA */
-        .hero-action-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-        .hero-btn {
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .hero-btn.primary {
-            background-color: var(--accent-color);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
-        }
-        .hero-btn.primary:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.5);
-        }
-        .hero-btn.secondary {
-            background-color: #1a1a1a;
-            color: #fff;
-            border: 1px solid #333;
-        }
-        .hero-btn.secondary:hover {
-            background-color: #252525;
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-        
-        #hero-google-profile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 44px;
-        }
-
-        .hero-profile-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-color);
-            cursor: pointer;
-            box-shadow: 0 0 12px rgba(29, 185, 84, 0.4);
-            transition: transform 0.2s ease;
-            object-fit: cover;
-        }
-        .hero-profile-avatar:hover {
-            transform: scale(1.1);
-        }
-
-        /* SECCIÓN DE FILTROS Y BANDERAS PREMIUM */
-        .section-ligas {
-            max-width: 1200px;
-            margin: 35px auto 20px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            letter-spacing: -0.5px;
-            text-transform: uppercase;
-            color: #f5f5f5;
-            border-left: 4px solid var(--accent-color);
-            padding-left: 12px;
-        }
-
-        .tabs-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 5px 0 15px 0;
-            justify-content: center;
-        }
-
-        /* DISEÑO DE BOTONES CON BANDERAS INTEGRADAS */
-        .tab {
-            color: #ffffff;
-            border: 2px solid #252525;
-            padding: 10px 22px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 800;
-            white-space: nowrap;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000;
-            background-color: #1c1c1c;
-            background-size: 100% 100%;
-            background-position: center;
-            position: relative;
-            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.55);
-        }
-
-        .tab.active, .tab:hover {
-            border-color: var(--accent-color);
-            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15), 0 4px 15px rgba(29, 185, 84, 0.4);
-            transform: translateY(-2px);
-            color: #ffffff;
-        }
-
-        /* ASIGNACIÓN DE BANDERAS POR GID */
+        .section-ligas { max-width: 1200px; margin: 35px auto 20px auto; padding: 0 20px; }
+        .section-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -0.5px; text-transform: uppercase; color: #f5f5f5; border-left: 4px solid var(--accent-color); padding-left: 12px; }
+        .tabs-container { display: flex; flex-wrap: wrap; gap: 10px; padding: 5px 0 15px 0; justify-content: center; }
+        .tab { color: #ffffff; border: 2px solid #252525; padding: 10px 22px; border-radius: 25px; cursor: pointer; font-weight: 800; white-space: nowrap; font-size: 0.9rem; transition: all 0.3s ease; text-shadow: 2px 2px 4px #000, -1px -1px 4px #000, 0px 0px 8px #000; background-color: #1c1c1c; background-size: 100% 100%; background-position: center; position: relative; box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.55); }
+        .tab.active, .tab:hover { border-color: var(--accent-color); box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.15), 0 4px 15px rgba(29, 185, 84, 0.4); transform: translateY(-2px); color: #ffffff; }
         .tab[data-gid="0"], .tab[data-gid="861264971"] { background-image: linear-gradient(180deg, #75aadb 33%, #ffffff 33%, #ffffff 66%, #75aadb 66%); }
         .tab[data-gid="554922783"] { background-image: linear-gradient(90deg, #ffffff 42%, #ce1124 42%, #ce1124 58%, #ffffff 58%); }
         .tab[data-gid="88250864"] { background-image: linear-gradient(180deg, #aa151b 25%, #f1bf00 25%, #f1bf00 75%, #aa151b 75%); }
@@ -244,360 +63,50 @@
         .tab[data-gid="304687071"] { background-image: linear-gradient(180deg, #0039a6 50%, #d52b1e 50%); }
         .tab[data-gid="879164460"] { background-image: linear-gradient(135deg, #006341 33%, #ffffff 33%, #ffffff 66%, #b31942 66%); }
 
-        /* Grilla de Estadios */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            padding: 0 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 0 20px; max-width: 1200px; margin: 0 auto; }
+        .card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; transition: transform 0.3s, background-color 0.3s; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; border: 1px solid #1f1f1f; }
+        .card:hover { background-color: #1f1f1f; transform: translateY(-5px); border-color: #2d2d2d; }
+        .estadio-foto-container { width: 100%; height: 180px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 25px; transition: filter 0.3s; }
+        .card:hover .estadio-foto-container { filter: brightness(1.15); }
+        .card-img-logo { max-height: 85%; max-width: 85%; object-fit: contain; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.8)); transition: transform 0.3s ease-out; z-index: 2; }
+        .card:hover .card-img-logo { transform: scale(1.08) rotate(2deg); }
+        .estadio-foto-container::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(0deg, rgba(22,22,22,0.9) 0%, rgba(0,0,0,0.2) 100%); z-index: 1; }
+        .placeholder-text { color: rgba(255,255,255,0.15); font-weight: 900; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 3px; text-align: center; padding: 0 10px; z-index: 2; }
+        .trivia-hint { position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.6); color: var(--accent-color); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; z-index: 4; border: 1px solid rgba(29, 185, 84, 0.2); backdrop-filter: blur(4px); transition: all 0.3s; }
+        .card:hover .trivia-hint { background: var(--accent-color); color: #000; box-shadow: 0 0 10px var(--accent-color); }
+        .trivia-balloon { position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px; background: rgba(16, 16, 16, 0.98); border: 1px solid var(--accent-color); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; z-index: 10; opacity: 0; pointer-events: none; transform: scale(0.92); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); }
+        .trivia-balloon.active { opacity: 1; pointer-events: auto; transform: scale(1); box-shadow: 0 8px 24px rgba(0,0,0,0.8); }
+        .balloon-tabs { display: flex; width: 100%; border-bottom: 1px solid #333; margin-bottom: 8px; flex-shrink: 0; }
+        .b-tab { flex: 1; background: transparent; color: var(--text-muted); border: none; padding: 6px 0; cursor: pointer; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; transition: all 0.2s; }
+        .b-tab.active { color: var(--accent-color); border-bottom: 2px solid var(--accent-color); }
+        .b-content { display: none; width: 100%; height: 100%; overflow-y: auto; color: var(--text-main); font-size: 0.85rem; line-height: 1.4; text-align: center; align-items: center; justify-content: center; }
+        .b-content.active { display: flex; }
+        #game-ui .b-mapa { width: 100%; height: 100%; display: none; }
+        #game-ui .b-mapa.active { display: block !important; }
+        .card-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; z-index: 2; }
+        .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.3px; }
+        .card-subtitle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
+        .btn-view { display: inline-block; width: 100%; padding: 12px; background-color: var(--accent-color); color: #000; text-align: center; border-radius: 25px; text-decoration: none; font-weight: bold; font-size: 1rem; border: none; cursor: pointer; transition: background 0.3s; margin-top: auto; }
+        .btn-view:hover { background-color: var(--accent-hover); }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s, background-color 0.3s;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #1f1f1f;
-        }
+        #game-ui { display: none; width: 100%; background: linear-gradient(135deg, #121f15 0%, #0e0e0e 100%) !important; padding: 20px !important; border-top: none !important; text-align: center; z-index: 2010; backdrop-filter: blur(12px); border-radius: 0 0 12px 12px; }
+        #game-title { font-size: 1.1rem !important; color: #ffffff; margin-bottom: 15px; font-weight: 800 !important; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(29, 185, 84, 0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(29, 185, 84, 0.2); }
+        #map-guess-container { width: 100%; height: 260px; background-color: #0c0c0c; border-radius: 12px !important; border: 2px solid #252525; margin-bottom: 15px; box-shadow: inset 0 0 20px rgba(0,0,0,0.9); transition: border-color 0.3s ease; }
+        #map-guess-container:hover { border-color: var(--accent-color); }
+        #game-action-btn { text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800 !important; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border-radius: 30px !important; transition: all 0.3s ease !important; }
 
-        .card:hover {
-            background-color: #1f1f1f;
-            transform: translateY(-5px);
-            border-color: #2d2d2d;
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { position: relative; width: 90%; max-width: 550px; height: 80vh; background: #000; border-radius: 12px; box-shadow: 0 10px 40px rgba(29, 185, 84, 0.4); border: 1px solid var(--accent-color); display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .modal-content.stadium-guessr-layout { width: 85% !important; max-width: 1100px !important; }
+        .video-container { width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; }
 
-        .estadio-foto-container {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 25px;
-            transition: filter 0.3s;
-        }
-
-        .card:hover .estadio-foto-container {
-            filter: brightness(1.15);
-        }
-
-        .card-img-logo {
-            max-height: 85%;
-            max-width: 85%;
-            object-fit: contain;
-            filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.8));
-            transition: transform 0.3s ease-out;
-            z-index: 2;
-        }
-
-        .card:hover .card-img-logo {
-            transform: scale(1.08) rotate(2deg);
-        }
-
-        .estadio-foto-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(0deg, rgba(22,22,22,0.9) 0%, rgba(0,0,0,0.2) 100%);
-            z-index: 1;
-        }
-
-        .placeholder-text {
-            color: rgba(255,255,255,0.15);
-            font-weight: 900;
-            font-size: 1.3rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-align: center;
-            padding: 0 10px;
-            z-index: 2;
-        }
-
-        .trivia-hint {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: var(--accent-color);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            z-index: 4;
-            border: 1px solid rgba(29, 185, 84, 0.2);
-            backdrop-filter: blur(4px);
-            transition: all 0.3s;
-        }
-
-        .card:hover .trivia-hint {
-            background: var(--accent-color);
-            color: #000;
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        /* GLOBO EMERGENTE CON PESTAÑAS (TRIVIA / MAPA) */
-        .trivia-balloon {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
-            background: rgba(16, 16, 16, 0.98);
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.92);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-        }
-
-        .trivia-balloon.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.8);
-        }
-
-        .balloon-tabs {
-            display: flex;
-            width: 100%;
-            border-bottom: 1px solid #333;
-            margin-bottom: 8px;
-            flex-shrink: 0;
-        }
-
-        .b-tab {
-            flex: 1;
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            padding: 6px 0;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-
-        .b-tab.active {
-            color: var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
-        }
-
-        .b-content {
-            display: none;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            color: var(--text-main);
-            font-size: 0.85rem;
-            line-height: 1.4;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .b-content.active {
-            display: flex;
-        }
-
-        #game-ui .b-mapa {
-            width: 100%;
-            height: 100%;
-            display: none;
-        }
-        
-        #game-ui .b-mapa.active {
-            display: block !important;
-        }
-
-        .card-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            z-index: 2;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            letter-spacing: -0.3px;
-        }
-
-        .card-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-
-        .btn-view {
-            display: inline-block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--accent-color);
-            color: #000;
-            text-align: center;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: auto;
-        }
-
-        .btn-view:hover {
-            background-color: var(--accent-hover);
-        }
-
-        /* Estilos del panel del minijuego GeoGuessr RECONFIGURADO ESTILO WORLDGUESSR */
-        #game-ui {
-            display: none;
-            width: 100%;
-            background: linear-gradient(135deg, #121f15 0%, #0e0e0e 100%) !important;
-            padding: 20px !important;
-            border-top: none !important;
-            text-align: center;
-            z-index: 2010;
-            backdrop-filter: blur(12px);
-            border-radius: 0 0 12px 12px;
-        }
-        #game-title {
-            font-size: 1.1rem !important;
-            color: #ffffff;
-            margin-bottom: 15px;
-            font-weight: 800 !important;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(29, 185, 84, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(29, 185, 84, 0.2);
-        }
-        #map-guess-container {
-            width: 100%;
-            height: 260px;
-            background-color: #0c0c0c;
-            border-radius: 12px !important;
-            border: 2px solid #252525;
-            margin-bottom: 15px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
-            transition: border-color 0.3s ease;
-        }
-        #map-guess-container:hover {
-            border-color: var(--accent-color);
-        }
-        #game-action-btn {
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 800 !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            border-radius: 30px !important;
-            transition: all 0.3s ease !important;
-        }
-
-        /* Estilos del Modal Reconfigurados */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 550px; 
-            height: 80vh;
-            background: #000;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(29, 185, 84, 0.4);
-            border: 1px solid var(--accent-color);
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-        }
-
-        .modal-content.stadium-guessr-layout {
-            width: 85% !important;
-            max-width: 1100px !important; 
-        }
-
-        .video-container {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        /* Split-screen inteligente */
         @media (min-width: 769px) {
-            .modal-content.stadium-guessr-layout {
-                flex-direction: row !important;
-            }
-            .modal-content.stadium-guessr-layout .video-container {
-                width: 55% !important;
-                height: 100% !important;
-                border-radius: 12px 0 0 12px !important;
-                backdrop-filter: blur(4px) brightness(0.7);
-            }
-            .modal-content.stadium-guessr-layout #game-ui {
-                width: 45% !important;
-                height: 100% !important;
-                border-top: none !important;
-                border-left: 2px solid rgba(29, 185, 84, 0.3) !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
-                border-radius: 0 12px 12px 0 !important;
-                padding: 24px !important;
-                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-            }
-            .modal-content.stadium-guessr-layout #map-guess-container {
-                flex-grow: 1 !important;
-                height: 100% !important;
-                min-height: 350px !important;
-            }
+            .modal-content.stadium-guessr-layout { flex-direction: row !important; }
+            .modal-content.stadium-guessr-layout .video-container { width: 55% !important; height: 100% !important; border-radius: 12px 0 0 12px !important; backdrop-filter: blur(4px) brightness(0.7); }
+            .modal-content.stadium-guessr-layout #game-ui { width: 45% !important; height: 100% !important; border-top: none !important; border-left: 2px solid rgba(29, 185, 84, 0.3) !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; border-radius: 0 12px 12px 0 !important; padding: 24px !important; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+            .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; height: 100% !important; min-height: 350px !important; }
         }
 
-        /* Adaptación táctil balanceada */
         @media (max-width: 768px) {
             .hero-section { padding: 40px 15px 25px 15px; }
             .brand-logo { width: 90px; height: 90px; margin-bottom: 12px; }
@@ -605,389 +114,71 @@
             .hero-subtitle { font-size: 1rem; margin-bottom: 20px; }
             .grid { grid-template-columns: 1fr; gap: 20px; padding: 0 15px; }
             .estadio-foto-container { height: 200px; }
-            
-            .modal-content.stadium-guessr-layout .video-container {
-                height: 45% !important;
-            }
-            .modal-content.stadium-guessr-layout #game-ui {
-                height: 55% !important;
-                padding: 15px !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-between !important;
-            }
-            .modal-content.stadium-guessr-layout #map-guess-container {
-                flex-grow: 1 !important;
-                height: 100% !important;
-                min-height: 200px;
-            }
+            .modal-content.stadium-guessr-layout .video-container { height: 45% !important; }
+            .modal-content.stadium-guessr-layout #game-ui { height: 55% !important; padding: 15px !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
+            .modal-content.stadium-guessr-layout #map-guess-container { flex-grow: 1 !important; height: 100% !important; min-height: 200px; }
         }
 
-        .leaflet-popup-content-wrapper {
-            background: #161616 !important;
-            color: #ffffff !important;
-            border: 1px solid var(--accent-color);
-        }
-        .leaflet-popup-tip {
-            background: #161616 !important;
-        }
+        .leaflet-popup-content-wrapper { background: #161616 !important; color: #ffffff !important; border: 1px solid var(--accent-color); }
+        .leaflet-popup-tip { background: #161616 !important; }
 
-        .rating-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid #222;
-        }
-        .rating-title {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-        .stars-row {
-            display: flex;
-            gap: 4px;
-        }
-        .star-icon {
-            font-size: 1.4rem;
-            color: #333333;
-            cursor: pointer;
-            transition: transform 0.1s ease, color 0.2s ease;
-            user-select: none;
-        }
-        .star-icon:hover {
-            transform: scale(1.15);
-        }
-        .star-icon.active {
-            color: var(--accent-color) !important;
-        }
-        .star-icon.half-active {
-            background: linear-gradient(90deg, var(--accent-color) 50%, #333333 50%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .rating-box { display: flex; flex-direction: column; align-items: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #222; }
+        .rating-title { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .stars-row { display: flex; gap: 4px; }
+        .star-icon { font-size: 1.4rem; color: #333333; cursor: pointer; transition: transform 0.1s ease, color 0.2s ease; user-select: none; }
+        .star-icon:hover { transform: scale(1.15); }
+        .star-icon.active { color: var(--accent-color) !important; }
+        .star-icon.half-active { background: linear-gradient(90deg, var(--accent-color) 50%, #333333 50%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .split-profile-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            width: 100%;
-        }
+        .split-profile-layout { display: flex; flex-direction: column; gap: 30px; width: 100%; }
         @media (min-width: 769px) {
-            .split-profile-layout {
-                flex-direction: row;
-                align-items: stretch;
-            }
-            .left-fut-column {
-                width: 38%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-right: 1px solid #222;
-                padding-right: 25px;
-            }
-            .right-dashboard-column {
-                width: 62%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
+            .split-profile-layout { flex-direction: row; align-items: stretch; }
+            .left-fut-column { width: 38%; display: flex; justify-content: center; align-items: center; border-right: 1px solid #222; padding-right: 25px; }
+            .right-dashboard-column { width: 62%; display: flex; flex-direction: column; justify-content: space-between; }
         }
 
-        .fut-card {
-            position: relative;
-            width: 250px;
-            height: 380px;
-            background-size: cover;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #000;
-            font-family: 'Arial Black', Gadget, sans-serif;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            overflow: hidden;
-            user-select: none;
-        }
-        .fut-card.bronze {
-            background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%), linear-gradient(135deg, #b45309, #78350f);
-            border: 3px solid #92400e;
-            color: #fef3c7;
-        }
-        .fut-card.silver {
-            background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%);
-            border: 3px solid #9ca3af;
-            color: #ffffff;
-        }
-        .fut-card.gold {
-            background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%);
-            border: 3px solid #facc15;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(234,179,8,0.4);
-            animation: goldShine 4s infinite alternate;
-        }
-        @keyframes goldShine {
-            0% { box-shadow: 0 0 15px rgba(234,179,8,0.4); }
-            100% { box-shadow: 0 0 30px rgba(29,185,84,0.7); }
-        }
-        
-        .fut-top {
-            display: flex;
-            width: 100%;
-            height: 55%;
-            margin-top: 15px;
-        }
-        .fut-badge-meta {
-            width: 30%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.1;
-        }
-        .fut-ovr {
-            font-size: 2.2rem;
-            font-weight: 900;
-        }
-        .fut-pos {
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-        .fut-club-icon {
-            width: 28px;
-            height: 28px;
-            margin-top: 8px;
-            object-fit: contain;
-        }
-        
-        .fut-avatar-container {
-            width: 70%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .fut-user-img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            z-index: 5;
-            margin-bottom: 25px;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-        .fut-jersey-overlay {
-            position: absolute;
-            bottom: 0;
-            width: 100px;
-            height: 50px;
-            background: linear-gradient(0deg, #111 0%, #222 100%);
-            border-radius: 40px 40px 0 0;
-            z-index: 4;
-            border: 2px solid var(--accent-color);
-            border-bottom: none;
-        }
-        .fut-jersey-stripe {
-            position: absolute;
-            top: 0;
-            left: 42px;
-            width: 16px;
-            height: 100%;
-            background: var(--text-main);
-        }
-        
-        .fut-name {
-            width: 100%;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 900;
-            margin: 8px 0;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            padding-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .fut-stats-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            width: 90%;
-            font-size: 0.85rem;
-            gap: 4px 15px;
-            margin-top: 5px;
-        }
-        .fut-stat-item {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-        }
-        .fut-stat-num {
-            font-weight: 900;
-        }
-        .fut-stat-label {
-            opacity: 0.7;
-            font-weight: normal;
-        }
+        .fut-card { position: relative; width: 250px; height: 380px; background-size: cover; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; color: #000; font-family: 'Arial Black', Gadget, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,0.7); overflow: hidden; user-select: none; }
+        .fut-card.bronze { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 50%, #3b0764 100%), linear-gradient(135deg, #b45309, #78350f); border: 3px solid #92400e; color: #fef3c7; }
+        .fut-card.silver { background: linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%); border: 3px solid #9ca3af; color: #ffffff; }
+        .fut-card.gold { background: linear-gradient(135deg, #eab308 0%, #ca8a04 40%, #16a34a 80%, #0c0c0c 100%); border: 3px solid #facc15; color: #fff; box-shadow: 0 0 15px rgba(234,179,8,0.4); animation: goldShine 4s infinite alternate; }
+        @keyframes goldShine { 0% { box-shadow: 0 0 15px rgba(234,179,8,0.4); } 100% { box-shadow: 0 0 30px rgba(29,185,84,0.7); } }
+        .fut-top { display: flex; width: 100%; height: 55%; margin-top: 15px; }
+        .fut-badge-meta { width: 30%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; }
+        .fut-ovr { font-size: 2.2rem; font-weight: 900; }
+        .fut-pos { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; opacity: 0.8; }
+        .fut-club-icon { width: 28px; height: 28px; margin-top: 8px; object-fit: contain; }
+        .fut-avatar-container { width: 70%; height: 100%; position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+        .fut-user-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; z-index: 5; margin-bottom: 25px; border: 2px solid rgba(255,255,255,0.2); }
+        .fut-jersey-overlay { position: absolute; bottom: 0; width: 100px; height: 50px; background: linear-gradient(0deg, #111 0%, #222 100%); border-radius: 40px 40px 0 0; z-index: 4; border: 2px solid var(--accent-color); border-bottom: none; }
+        .fut-jersey-stripe { position: absolute; top: 0; left: 42px; width: 16px; height: 100%; background: var(--text-main); }
+        .fut-name { width: 100%; text-align: center; font-size: 1.1rem; font-weight: 900; margin: 8px 0; text-transform: uppercase; letter-spacing: -0.5px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .fut-stats-row { display: grid; grid-template-columns: repeat(2, 1fr); width: 90%; font-size: 0.85rem; gap: 4px 15px; margin-top: 5px; }
+        .fut-stat-item { display: flex; gap: 6px; justify-content: center; }
+        .fut-stat-num { font-weight: 900; }
+        .fut-stat-label { opacity: 0.7; font-weight: normal; }
 
-        .geoguessr-dash-box {
-            background: #0f0f0f;
-            border: 1px solid #222;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 15px;
-        }
-        .dash-header-inline {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .dash-title-premium {
-            font-size: 0.95rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .streak-fire-badge {
-            background: rgba(29, 185, 84, 0.15);
-            color: var(--accent-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            border: 1px solid rgba(29, 185, 84, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .streak-fire-badge span {
-            animation: pulseFire 1.5s infinite alternate;
-        }
-        @keyframes pulseFire {
-            0% { transform: scale(1); filter: drop-shadow(0 0 2px #1db954); }
-            100% { transform: scale(1.2); filter: drop-shadow(0 0 6px #1ed760); }
-        }
+        .geoguessr-dash-box { background: #0f0f0f; border: 1px solid #222; border-radius: 12px; padding: 16px; margin-bottom: 15px; }
+        .dash-header-inline { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .dash-title-premium { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; display: flex; align-items: center; gap: 6px; }
+        .streak-fire-badge { background: rgba(29, 185, 84, 0.15); color: var(--accent-color); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(29, 185, 84, 0.3); display: flex; align-items: center; gap: 4px; }
+        .streak-fire-badge span { animation: pulseFire 1.5s infinite alternate; }
+        @keyframes pulseFire { 0% { transform: scale(1); filter: drop-shadow(0 0 2px #1db954); } 100% { transform: scale(1.2); filter: drop-shadow(0 0 6px #1ed760); } }
+        .calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; margin-top: 8px; }
+        .calendar-day-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; padding-bottom: 4px; }
+        .calendar-cell { font-size: 0.75rem; padding: 6px 0; background: #151515; border-radius: 6px; color: #555; font-weight: 700; }
+        .calendar-cell.past-done { color: #888; background: #1c261f; }
+        .calendar-cell.current-active { color: #000; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); position: relative; }
+        .medals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
+        .medal-item { display: flex; flex-direction: column; align-items: center; background: #090909; padding: 12px 6px; border-radius: 8px; border: 1px solid #1a1a1a; opacity: 0.25; filter: grayscale(100%); transition: all 0.35s ease; }
+        .medal-item.unlocked { opacity: 1; filter: grayscale(0%); border-color: var(--accent-color); box-shadow: 0 0 10px rgba(29, 185, 84, 0.2); }
+        .medal-icon { font-size: 1.8rem; margin-bottom: 4px; }
+        .medal-name { font-size: 0.7rem; font-weight: bold; color: #fff; }
 
-        .calendar-matrix {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            text-align: center;
-            margin-top: 8px;
-        }
-        .calendar-day-label {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: bold;
-            padding-bottom: 4px;
-        }
-        .calendar-cell {
-            font-size: 0.75rem;
-            padding: 6px 0;
-            background: #151515;
-            border-radius: 6px;
-            color: #555;
-            font-weight: 700;
-        }
-        .calendar-cell.past-done {
-            color: #888;
-            background: #1c261f;
-        }
-        .calendar-cell.current-active {
-            color: #000;
-            background: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-color);
-            position: relative;
-        }
-        
-        .medals-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .medal-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #090909;
-            padding: 12px 6px;
-            border-radius: 8px;
-            border: 1px solid #1a1a1a;
-            opacity: 0.25;
-            filter: grayscale(100%);
-            transition: all 0.35s ease;
-        }
-        .medal-item.unlocked {
-            opacity: 1;
-            filter: grayscale(0%);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 10px rgba(29, 185, 84, 0.2);
-        }
-        .medal-icon {
-            font-size: 1.8rem;
-            margin-bottom: 4px;
-        }
-        .medal-name {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: #fff;
-        }
-
-        /* ESTILOS DE LOS BOTONES FLOTANTES DE REDES SOCIALES */
-        .social-floating-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 12px;
-            z-index: 1999;
-        }
-        .social-icon-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background-color: rgba(22, 22, 22, 0.9);
-            border: 1px solid #2a2a2a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            text-decoration: none;
-        }
-        .social-icon-btn:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.45);
-        }
-        .social-icon-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-main);
-            transition: fill 0.3s ease;
-        }
-        .social-icon-btn:hover svg {
-            fill: var(--accent-color);
-        }
+        .social-floating-container { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 12px; z-index: 1999; }
+        .social-icon-btn { width: 44px; height: 44px; border-radius: 50%; background-color: rgba(22, 22, 22, 0.9); border: 1px solid #2a2a2a; display: flex; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.6); text-decoration: none; }
+        .social-icon-btn:hover { border-color: var(--accent-color); transform: translateY(-4px); box-shadow: 0 6px 20px rgba(29, 185, 84, 0.45); }
+        .social-icon-btn svg { width: 20px; height: 20px; fill: var(--text-main); transition: fill 0.3s ease; }
+        .social-icon-btn:hover svg { fill: var(--accent-color); }
     </style>
 </head>
 <body>
@@ -997,11 +188,9 @@
             <img class="brand-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo Estadios Virtuales" onerror="this.style.display='none';">
             <h1>ESTADIOS VIRTUALES</h1>
             <p class="hero-subtitle">Volá sobre los templos del fútbol mundial. Descubrí datos curiosos, arquitecturas imponentes y recorridos tridimensionales desde el aire.</p>
-            
             <div class="search-container">
                 <input type="text" class="search-bar" id="global-search" placeholder="Buscá en todo el catálogo de estadios, clubes o países...">
             </div>
-
             <div class="hero-action-buttons">
                 <button class="hero-btn primary" onclick="iniciarTrivia()">🌍 Jugar StadiumGuessr</button>
                 <button class="hero-btn secondary" onclick="abrirModalOrden()">📊 Ordena los estadios</button>
@@ -1027,14 +216,12 @@
         </div>
     </section>
 
-    <main class="grid">
-    </main>
+    <main class="grid"></main>
 
     <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
         <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
             <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalVideo()">✕</button>
             <div id="modal-video-container" class="video-container"></div>
-            
             <div id="game-ui">
                 <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
                 <div id="map-guess-container"></div>
@@ -1064,7 +251,6 @@
         </div>
     </div>
 
-    <!-- Modal de ranking separado del de perfil -->
     <div id="ranking-modal" class="modal-overlay" onclick="cerrarModalRanking()">
         <div class="modal-content" style="max-width: 600px; height: auto; max-height: 85vh; padding: 25px; overflow-y: auto;" onclick="event.stopPropagation()">
             <button class="close-btn" style="position:absolute; top:10px; right:10px; background:var(--danger-color); color:white; border:none; padding:5px 10px; cursor:pointer; z-index:2020; border-radius:50%; width:30px; height:30px; font-weight:bold;" onclick="cerrarModalRanking()">✕</button>
@@ -1085,11 +271,8 @@
     
     <script>
         const baseSpreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
-        
-        // --- SEPARACIÓN DE RUTAS DEFINITIVA ---
         const scriptUrlVotos = "https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWHGFjXnP_1po2goZopbf7YuSfzL5HnpvdLFsrejM6/exec";
         const scriptUrlRanking = "https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
-        // --- TABLEROS INDEPENDIENTES DEL JUEGO DE ORDENAR ---
         const scriptUrlCapacidad = "https://script.google.com/macros/s/AKfycbxIME-M84DhBy3oG4-Y-dtHRhSoTX1G-l476biCk0tgtuMNeM0eHp6-u550yv7h1nkJwQ/exec";
         const scriptUrlAntiguedad = "https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
 
@@ -1097,7 +280,6 @@
         let catalogoGlobal = [];
         const todosLosGids = ["0", "861264971", "554922783", "88250864", "2013531070", "165565330", "96716546", "58862486", "304687071", "879164460"];
 
-        // Variables del motor de juego Guessr
         let guessrRondaActual = 0;
         let guessrPuntosTotales = 0;
         let guessrEstadioCorrecto = null;
@@ -1110,88 +292,24 @@
         let previewMapInstance = null;
         let guessrHistorialRondas = [];
 
-        // Variables del motor del juego de ordenamiento
         let orderList = [];
         let orderSelectedIdx = null;
         let orderModo = "";
         let orderPuntosGanados = 0;
         let orderStartTime = 0;
 
-        // MOTOR CENTRALIZADO DE ESTADÍSTICAS PERSISTENTES
         let userStats = JSON.parse(localStorage.getItem('ev_user_stats')) || {
-            votosRealizados: 0,
-            triviasVistas: 0,
-            partidasJugadas: 0,
-            maxScore: 0,
-            medallaLocalista: false,
-            rachaActual: 1
+            votosRealizados: 0, triviasVistas: 0, partidasJugadas: 0,
+            maxScore: 0, medallaLocalista: false, rachaActual: 1
         };
 
-        function guardarStats() {
-            localStorage.setItem('ev_user_stats', JSON.stringify(userStats));
-        }
+        function guardarStats() { localStorage.setItem('ev_user_stats', JSON.stringify(userStats)); }
 
-        // FUNCIÓN REGISTRAR VOTO — sin alert de error, solo confirmación
-        function registrarVoto(event, estadio, club, puntuacion) {
-            event.stopPropagation();
-
-            userStats.votosRealizados++;
-            guardarStats();
-
-            // Feedback visual inmediato en las estrellas del contenedor actual
-            const starsRow = event.target.parentElement;
-            if (starsRow) {
-                const stars = starsRow.querySelectorAll('.star-icon');
-                stars.forEach((star, index) => {
-                    if (index < puntuacion) {
-                        star.classList.add('active');
-                        star.classList.remove('half-active');
-                    } else {
-                        star.classList.remove('active', 'half-active');
-                    }
-                });
-            }
-
-            // Envío silencioso — no-cors nunca tira error visible al usuario
-            fetch(scriptUrlVotos, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ estadio: estadio, club: club, voto: puntuacion })
-            }).catch(() => {}); // ignoramos cualquier error de red silenciosamente
-
-            // Confirmación discreta sin interrumpir la experiencia
-            const ratingTitle = starsRow ? starsRow.previousElementSibling : null;
-            if (ratingTitle) {
-                const textoOriginal = ratingTitle.textContent;
-                ratingTitle.textContent = `✓ ¡Gracias por tu voto! (${puntuacion}★)`;
-                ratingTitle.style.color = 'var(--accent-color)';
-                setTimeout(() => {
-                    ratingTitle.textContent = textoOriginal;
-                    ratingTitle.style.color = '';
-                }, 2500);
-            }
-        }
-
-        // FUNCIÓN BLINDADA BUSCADORA DE PROPIEDADES EN EL SHEETS
-        function bscarPropiedad(obj, claveBuscada) {
-            if (!obj) return '';
-            const claveLimpia = claveBuscada.toLowerCase().trim();
-            for (let k in obj) {
-                let kLimpia = k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
-                if (kLimpia === claveLimpia) {
-                    return obj[k];
-                }
-            }
-            for (let k in obj) {
-                if (k.toLowerCase().includes(claveLimpia)) {
-                    return obj[k];
-                }
-            }
-            return obj[claveBuscada] || '';
-        }
-
-        const coloresClubes = {
+        // ============================================================
+        // MAPA DE COLORES POR CLUB — INTEGRADO DESDE TODOS LOS EQUIPOS
+        // ============================================================
+        const COLORES_CLUBES = {
+            // ARGENTINA — PRIMERA DIVISIÓN
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
             "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
@@ -1222,6 +340,7 @@
             "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
             "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+            // ARGENTINA — PRIMERA NACIONAL
             "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
             "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
             "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
@@ -1257,8 +376,7 @@
             "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
             "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
             "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
-
-            // INGLATERRA - PREMIER LEAGUE
+            // INGLATERRA — PREMIER LEAGUE
             "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
             "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
             "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
@@ -1279,8 +397,7 @@
             "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
             "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
             "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
-
-            // ESPAÑA - LA LIGA
+            // ESPAÑA — LA LIGA
             "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
             "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
             "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
@@ -1301,8 +418,7 @@
             "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
             "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
             "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
-
-            // ITALIA - SERIE A
+            // ITALIA — SERIE A
             "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
             "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
@@ -1323,8 +439,7 @@
             "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
             "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
             "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
-
-            // FRANCIA - LIGUE 1
+            // FRANCIA — LIGUE 1
             "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
             "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
             "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
@@ -1343,8 +458,7 @@
             "Le Mans": "linear-gradient(135deg, #ff6600, #ff0000)",
             "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
             "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
-
-            // ALEMANIA - BUNDESLIGA
+            // ALEMANIA — BUNDESLIGA
             "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
             "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
             "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
@@ -1363,8 +477,7 @@
             "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
             "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
             "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-
-            // BRASIL - BRASILEIRAO
+            // BRASIL — BRASILEIRAO
             "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
             "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
             "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
@@ -1385,8 +498,7 @@
             "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
             "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
             "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
-
-            // CHILE - PRIMERA DIVISIÓN
+            // CHILE — PRIMERA DIVISIÓN
             "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
             "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
             "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
@@ -1405,65 +517,83 @@
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"
         };
 
-        function obtenerFondoClub(club, pais) {
-            // Gradiente genérico oscuro si no hay color especificado
+        function obtenerFondoClub(club) {
+            if (!club) return 'linear-gradient(135deg, #1a1a1a 0%, #0c0c0c 100%)';
+            // Búsqueda exacta primero
+            if (COLORES_CLUBES[club]) return COLORES_CLUBES[club];
+            // Búsqueda parcial (tolerante a variaciones menores de nombre)
+            const clubLower = club.toLowerCase();
+            for (const key in COLORES_CLUBES) {
+                if (key.toLowerCase() === clubLower) return COLORES_CLUBES[key];
+            }
+            for (const key in COLORES_CLUBES) {
+                if (clubLower.includes(key.toLowerCase()) || key.toLowerCase().includes(clubLower)) {
+                    return COLORES_CLUBES[key];
+                }
+            }
+            // Fallback genérico oscuro si no hay coincidencia
             return 'linear-gradient(135deg, #1a1a1a 0%, #0c0c0c 100%)';
+        }
+
+        function registrarVoto(event, estadio, club, puntuacion) {
+            event.stopPropagation();
+            userStats.votosRealizados++;
+            guardarStats();
+            const starsRow = event.target.parentElement;
+            if (starsRow) {
+                const stars = starsRow.querySelectorAll('.star-icon');
+                stars.forEach((star, index) => {
+                    if (index < puntuacion) { star.classList.add('active'); star.classList.remove('half-active'); }
+                    else { star.classList.remove('active', 'half-active'); }
+                });
+            }
+            fetch(scriptUrlVotos, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ estadio, club, voto: puntuacion }) }).catch(() => {});
+            const ratingTitle = starsRow ? starsRow.previousElementSibling : null;
+            if (ratingTitle) {
+                const textoOriginal = ratingTitle.textContent;
+                ratingTitle.textContent = `✓ ¡Gracias por tu voto! (${puntuacion}★)`;
+                ratingTitle.style.color = 'var(--accent-color)';
+                setTimeout(() => { ratingTitle.textContent = textoOriginal; ratingTitle.style.color = ''; }, 2500);
+            }
+        }
+
+        function bscarPropiedad(obj, claveBuscada) {
+            if (!obj) return '';
+            const claveLimpia = claveBuscada.toLowerCase().trim();
+            for (let k in obj) {
+                let kLimpia = k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+                if (kLimpia === claveLimpia) return obj[k];
+            }
+            for (let k in obj) { if (k.toLowerCase().includes(claveLimpia)) return obj[k]; }
+            return obj[claveBuscada] || '';
         }
 
         function abrirModalVideo(event, link, esJuego = false) {
             if (event) event.preventDefault();
-            
-            if (!link || link === '#' || link.includes('[Pegá tu link')) {
-                alert("El video de este estadio todavía no está disponible.");
-                return;
-            }
-
+            if (!link || link === '#' || link.includes('[Pegá tu link')) { alert("El video de este estadio todavía no está disponible."); return; }
             const modal = document.getElementById('video-modal');
             const card = document.getElementById('modal-card');
             const container = document.getElementById('modal-video-container');
-            container.innerHTML = ''; 
-
+            container.innerHTML = '';
             const gameUi = document.getElementById('game-ui');
-            if (esJuego) {
-                card.classList.add('stadium-guessr-layout');
-                gameUi.style.display = 'block';
-            } else {
-                card.classList.remove('stadium-guessr-layout');
-                gameUi.style.display = 'none';
-                container.style.height = '100%';
-            }
-
+            if (esJuego) { card.classList.add('stadium-guessr-layout'); gameUi.style.display = 'block'; }
+            else { card.classList.remove('stadium-guessr-layout'); gameUi.style.display = 'none'; container.style.height = '100%'; }
             let urlIncrustar = link;
-
             if (link.includes('youtube.com') || link.includes('youtu.be')) {
                 let videoId = '';
-                if (link.includes('youtu.be/')) {
-                    videoId = link.split('youtu.be/')[1].split('?')[0];
-                } else if (link.includes('youtube.com/watch')) {
-                    videoId = new URLSearchParams(new URL(link).search).get('v');
-                } else if (link.includes('youtube.com/shorts/')) {
-                     videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
-                }
-
+                if (link.includes('youtu.be/')) videoId = link.split('youtu.be/')[1].split('?')[0];
+                else if (link.includes('youtube.com/watch')) videoId = new URLSearchParams(new URL(link).search).get('v');
+                else if (link.includes('youtube.com/shorts/')) videoId = link.split('youtube.com/shorts/')[1].split('?')[0];
                 const queryParams = esJuego ? "?autoplay=1&controls=0&rel=0&modestbranding=1" : "?autoplay=1&rel=0&modestbranding=1";
-                if (videoId) {
-                    urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
-                }
-                
-                const estiloIframe = esJuego 
-                    ? "width: 100%; height: calc(100% + 55px); border: none; margin-top: -55px;" 
-                    : "width: 100%; height: 100%; border: none;";
-                    
+                if (videoId) urlIncrustar = `https://www.youtube.com/embed/${videoId}${queryParams}`;
+                const estiloIframe = esJuego ? "width: 100%; height: calc(100% + 55px); border: none; margin-top: -55px;" : "width: 100%; height: 100%; border: none;";
                 container.innerHTML = `<iframe src="${urlIncrustar}" style="${estiloIframe}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-            } 
-            else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
+            } else if (link.toLowerCase().endsWith('.mp4') || link.includes('.mp4?')) {
                 const attrControles = esJuego ? "autoplay loop muted" : "controls autoplay";
                 container.innerHTML = `<video ${attrControles} style="width: 100%; height: 100%; object-fit: cover;"><source src="${link}" type="video/mp4"></video>`;
-            } 
-            else {
+            } else {
                 container.innerHTML = `<iframe src="${link}" style="width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen"></iframe>`;
             }
-
             modal.style.display = 'flex';
         }
 
@@ -1472,84 +602,37 @@
             document.getElementById('modal-video-container').innerHTML = '';
             document.getElementById('game-ui').style.display = 'none';
             document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-            
-            if (guessrMapInstance) {
-                guessrMapInstance.remove();
-                guessrMapInstance = null;
-            }
-            guessrUserMarker = null;
-            guessrTargetMarker = null;
-            guessrPolyline = null;
-            guessrSelectedLatLng = null;
+            if (guessrMapInstance) { guessrMapInstance.remove(); guessrMapInstance = null; }
+            guessrUserMarker = null; guessrTargetMarker = null; guessrPolyline = null; guessrSelectedLatLng = null;
         }
 
         function abrirModalMapa(estadio, pais, lat, lng) {
-            if (!lat || lat.toString().trim() === '' || !lng || lng.toString().trim() === '') {
-                alert("Las coordenadas geográficas de este estadio no están disponibles en el Sheets todavía.");
-                return;
-            }
-            
+            if (!lat || lat.toString().trim() === '' || !lng || lng.toString().trim() === '') { alert("Las coordenadas geográficas de este estadio no están disponibles en el Sheets todavía."); return; }
             const modal = document.getElementById('map-modal');
             modal.style.display = 'flex';
-
             const parsedLat = parseFloat(lat.toString().replace(',', '.'));
             const parsedLng = parseFloat(lng.toString().replace(',', '.'));
-
             setTimeout(() => {
-                if (previewMapInstance) {
-                    previewMapInstance.remove();
-                }
-                
-                previewMapInstance = L.map('modal-map-container', {
-                    attributionControl: false,
-                    zoomControl: true
-                }).setView([parsedLat, parsedLng], 5);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19
-                }).addTo(previewMapInstance);
-
-                L.circleMarker([parsedLat, parsedLng], {
-                    radius: 8,
-                    color: 'var(--accent-color)',
-                    fillColor: '#000',
-                    fillOpacity: 1,
-                    weight: 3
-                }).addTo(previewMapInstance).bindPopup(`<b style="color:#ffffff; font-family:sans-serif;">${estadio}</b><br><span style="color:var(--text-muted);">${pais}</span>`).openPopup();
-
+                if (previewMapInstance) previewMapInstance.remove();
+                previewMapInstance = L.map('modal-map-container', { attributionControl: false, zoomControl: true }).setView([parsedLat, parsedLng], 5);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(previewMapInstance);
+                L.circleMarker([parsedLat, parsedLng], { radius: 8, color: 'var(--accent-color)', fillColor: '#000', fillOpacity: 1, weight: 3 }).addTo(previewMapInstance).bindPopup(`<b style="color:#ffffff; font-family:sans-serif;">${estadio}</b><br><span style="color:var(--text-muted);">${pais}</span>`).openPopup();
                 previewMapInstance.invalidateSize();
             }, 250);
         }
 
-        function cerrarModalMapa() {
-            document.getElementById('map-modal').style.display = 'none';
-            if (previewMapInstance) {
-                previewMapInstance.remove();
-                previewMapInstance = null;
-            }
-        }
-
-        // FIX: cerrarModalOrden ahora es una función global correctamente definida
-        function cerrarModalOrden() {
-            document.getElementById('order-modal').style.display = 'none';
-        }
-
-        // FIX: cerrarModalRanking para el nuevo modal independiente
-        function cerrarModalRanking() {
-            document.getElementById('ranking-modal').style.display = 'none';
-        }
+        function cerrarModalMapa() { document.getElementById('map-modal').style.display = 'none'; if (previewMapInstance) { previewMapInstance.remove(); previewMapInstance = null; } }
+        function cerrarModalOrden() { document.getElementById('order-modal').style.display = 'none'; }
+        function cerrarModalRanking() { document.getElementById('ranking-modal').style.display = 'none'; }
 
         function switchTab(event, btn, type, estadio, pais, lat, lng) {
             event.stopPropagation();
             const balloon = btn.closest('.trivia-balloon');
-            
             balloon.querySelectorAll('.b-tab').forEach(t => t.classList.remove('active'));
             balloon.querySelectorAll('.b-content').forEach(c => c.classList.remove('active'));
-            
             btn.classList.add('active');
             const content = balloon.querySelector('.b-' + type);
-            if(content) content.classList.add('active');
-
+            if (content) content.classList.add('active');
             if (type === 'mapa') {
                 abrirModalMapa(estadio, pais, lat, lng);
                 setTimeout(() => {
@@ -1564,55 +647,40 @@
 
         function renderizarTarjetas(listaEstadios) {
             const grilla = document.querySelector('.grid');
-            grilla.innerHTML = ''; 
-
+            grilla.innerHTML = '';
             if (listaEstadios.length === 0) {
                 grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">No se encontraron estadios que coincidan con la búsqueda.</h3>';
                 return;
             }
-            
             listaEstadios.forEach(fila => {
                 const estadio = bscarPropiedad(fila, 'Estadio');
                 const clubNombre = bscarPropiedad(fila, 'Club');
-                if(!estadio || !clubNombre) return;
-                
+                if (!estadio || !clubNombre) return;
                 const urlFoto = bscarPropiedad(fila, 'Foto') ? bscarPropiedad(fila, 'Foto').trim() : '';
                 const pais = bscarPropiedad(fila, 'País') ? bscarPropiedad(fila, 'País').trim() : 'Argentina';
-                const fondoGradiente = obtenerFondoClub(clubNombre, pais);
+                // *** USO DEL NUEVO MAPA DE COLORES ***
+                const fondoGradiente = obtenerFondoClub(clubNombre);
                 const linkVideo = bscarPropiedad(fila, 'Link del Video') ? bscarPropiedad(fila, 'Link del Video').trim() : '#';
-                
                 const latRaw = bscarPropiedad(fila, 'Latitud') ? bscarPropiedad(fila, 'Latitud').toString().trim() : '';
                 const lngRaw = bscarPropiedad(fila, 'Longitud') ? bscarPropiedad(fila, 'Longitud').toString().trim() : '';
                 const datoCurioso = bscarPropiedad(fila, 'Dato Curioso');
                 const datoLimpio = (datoCurioso || '¡Este club esconde grandes historias en su estadio!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
-
                 const promedio = bscarPropiedad(fila, 'Promedio');
                 const valorPromedio = parseFloat(promedio) || 0;
                 const estrellasFisicas = valorPromedio / 2;
-
                 let estrellasHTML = '';
                 for (let i = 1; i <= 5; i++) {
                     let claseEstrella = '';
-                    if (i <= Math.floor(estrellasFisicas)) {
-                        claseEstrella = 'active';
-                    } else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) {
-                        claseEstrella = 'half-active';
-                    }
-                    // FIX: usamos data-attributes para evitar problemas de escape en onclick
+                    if (i <= Math.floor(estrellasFisicas)) claseEstrella = 'active';
+                    else if (i === Math.ceil(estrellasFisicas) && (estrellasFisicas % 1 >= 0.5)) claseEstrella = 'half-active';
                     estrellasHTML += `<span class="star-icon ${claseEstrella}" data-estadio="${estadio}" data-club="${clubNombre}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event, this)">★</span>`;
                 }
-
-                // FIX: imagen con onerror que muestra el placeholder correctamente
                 let imgHTML = '';
                 if (urlFoto) {
-                    imgHTML = `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" 
-                        onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-text').style.display='block';">
-                        <div class="placeholder-text" style="display:none;">${clubNombre}</div>`;
+                    imgHTML = `<img class="card-img-logo" src="${urlFoto}" alt="Escudo de ${clubNombre}" onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-text').style.display='block';"><div class="placeholder-text" style="display:none;">${clubNombre}</div>`;
                 } else {
                     imgHTML = `<div class="placeholder-text">${clubNombre}</div>`;
                 }
-
-                // FIX: el link del video se pasa como data-attribute para evitar problemas de escape
                 const tarjeta = document.createElement('article');
                 tarjeta.className = 'card';
                 tarjeta.dataset.linkVideo = linkVideo;
@@ -1633,19 +701,15 @@
                         <h2 class="card-title">${estadio}</h2>
                         <p class="card-subtitle">${clubNombre} • ${pais}</p>
                         <button onclick="abrirVideoDesdeCard(event, this)" class="btn-view">Ver Vuelo 3D</button>
-                        
                         <div class="rating-box">
                             <span class="rating-title">Calificá este Estadio ${valorPromedio > 0 ? `(${valorPromedio.toFixed(1)}/10)` : '(Sin votos)'}</span>
-                            <div class="stars-row" data-estadio="${estadio}">
-                                ${estrellasHTML}
-                            </div>
+                            <div class="stars-row" data-estadio="${estadio}">${estrellasHTML}</div>
                         </div>
                     </div>`;
                 grilla.appendChild(tarjeta);
             });
         }
 
-        // FIX: función helper para abrir video desde la tarjeta via data-attribute
         function abrirVideoDesdeCard(event, btn) {
             event.stopPropagation();
             const card = btn.closest('.card');
@@ -1653,7 +717,6 @@
             abrirModalVideo(event, link, false);
         }
 
-        // FIX: función helper para registrar voto desde data-attributes (evita problemas de escape)
         function registrarVotoDesdeAtributo(event, star) {
             const estadio = star.dataset.estadio;
             const club = star.dataset.club;
@@ -1661,7 +724,6 @@
             registrarVoto(event, estadio, club, puntuacion);
         }
 
-        // FIX: switchTab para el botón Mapa usando data-attributes
         function switchTabMapa(event, btn) {
             event.stopPropagation();
             const estadio = btn.dataset.estadio;
@@ -1675,10 +737,8 @@
             const grilla = document.querySelector('.grid');
             grilla.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; width:100%; padding:40px;">Cargando estadios...</h3>';
             document.getElementById('global-search').value = '';
-
             Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`, {
-                download: true,
-                header: true, 
+                download: true, header: true,
                 complete: function(results) {
                     estadiosCargados = results.data.filter(fila => bscarPropiedad(fila, 'Estadio') && bscarPropiedad(fila, 'Club'));
                     renderizarTarjetas(estadiosCargados);
@@ -1687,18 +747,15 @@
         }
 
         function indexarCatalogoMasivo() {
-            catalogoGlobal = []; 
+            catalogoGlobal = [];
             todosLosGids.forEach(gid => {
                 Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`, {
-                    download: true,
-                    header: true,
+                    download: true, header: true,
                     complete: function(results) {
                         results.data.filter(fila => bscarPropiedad(fila, 'Estadio') && bscarPropiedad(fila, 'Club')).forEach(estadio => {
                             const eName = bscarPropiedad(estadio, 'Estadio');
                             const cName = bscarPropiedad(estadio, 'Club');
-                            if (!catalogoGlobal.some(e => bscarPropiedad(e, 'Estadio') === eName && bscarPropiedad(e, 'Club') === cName)) {
-                                catalogoGlobal.push(estadio);
-                            }
+                            if (!catalogoGlobal.some(e => bscarPropiedad(e, 'Estadio') === eName && bscarPropiedad(e, 'Club') === cName)) catalogoGlobal.push(estadio);
                         });
                     }
                 });
@@ -1707,10 +764,8 @@
 
         document.getElementById('global-search').addEventListener('input', function(e) {
             const terminoBusqueda = e.target.value.toLowerCase().trim();
-            if (terminoBusqueda === '') {
-                document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría";
-                renderizarTarjetas(estadiosCargados);
-            } else {
+            if (terminoBusqueda === '') { document.getElementById('titulo-grilla').innerText = "Seleccioná una Categoría"; renderizarTarjetas(estadiosCargados); }
+            else {
                 document.getElementById('titulo-grilla').innerText = "Resultados del Catálogo Masivo";
                 const estadiosFiltrados = catalogoGlobal.filter(fila => {
                     const estadio = bscarPropiedad(fila, 'Estadio').toLowerCase();
@@ -1726,483 +781,187 @@
             event.stopPropagation();
             const globoActual = elementoContainer.querySelector('.trivia-balloon');
             const yaEstaAbierto = globoActual.classList.contains('active');
-
-            document.querySelectorAll('.trivia-balloon').forEach(g => {
-                g.classList.remove('active');
-            });
-            if (!yaEstaAbierto) {
-                globoActual.classList.add('active');
-                userStats.triviasVistas++;
-                guardarStats();
-            }
+            document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
+            if (!yaEstaAbierto) { globoActual.classList.add('active'); userStats.triviasVistas++; guardarStats(); }
         }
 
-        document.addEventListener('click', function() {
-            document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active'));
-        });
+        document.addEventListener('click', function() { document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active')); });
 
         function dispararVueloAleatorio(e) {
             const poolDeEstadios = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
-            
-            if (poolDeEstadios.length === 0) {
-                alert('Esperá un segundo a que se termine de sincronizar el catálogo de estadios en memoria...');
-                return;
-            }
-
-            const estadiosConVideo = poolDeEstadios.filter(fila => {
-                const link = bscarPropiedad(fila, 'Link del Video').toString().trim();
-                return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link');
-            });
-
-            if (estadiosConVideo.length === 0) {
-                alert('Aún no hay links de videos de YouTube disponibles para disparar la simulación de vuelo aleatorio.');
-                return;
-            }
-
+            if (poolDeEstadios.length === 0) { alert('Esperá un segundo a que se termine de sincronizar el catálogo de estadios en memoria...'); return; }
+            const estadiosConVideo = poolDeEstadios.filter(fila => { const link = bscarPropiedad(fila, 'Link del Video').toString().trim(); return (link.includes('youtube.com') || link.includes('youtu.be')) && !link.includes('[Pegá tu link'); });
+            if (estadiosConVideo.length === 0) { alert('Aún no hay links de videos de YouTube disponibles para disparar la simulación de vuelo aleatorio.'); return; }
             const indiceAzar = Math.floor(Math.random() * estadiosConVideo.length);
-            const estadioElegido = estadiosConVideo[indiceAzar];
-            abrirModalVideo(e, bscarPropiedad(estadioElegido, 'Link del Video').trim(), false);
+            abrirModalVideo(e, bscarPropiedad(estadiosConVideo[indiceAzar], 'Link del Video').trim(), false);
         }
 
         function iniciarTrivia() {
-            if (catalogoGlobal.length === 0) {
-                alert('Esperá un segundo a que cargue todo el catálogo de estadios...');
-                return;
-            }
-
-            guessrRondaActual = 1;
-            guessrPuntosTotales = 0;
-            guessrEstadiosJugados = [];
-            guessrHistorialRondas = [];
-
+            if (catalogoGlobal.length === 0) { alert('Esperá un segundo a que cargue todo el catálogo de estadios...'); return; }
+            guessrRondaActual = 1; guessrPuntosTotales = 0; guessrEstadiosJugados = []; guessrHistorialRondas = [];
             lanzarRondaGuessr();
         }
 
         function lanzarRondaGuessr() {
             const estadiosDisponibles = catalogoGlobal.filter(f => {
                 const link = bscarPropiedad(f, 'Link del Video').toString().trim();
-                const esYouTube = link.includes('youtube.com') || link.includes('youtu.be');
-                const tieneLat = bscarPropiedad(f, 'Latitud').toString().trim() !== '';
-                const tieneLng = bscarPropiedad(f, 'Longitud').toString().trim() !== '';
-                const yaJugado = guessrEstadiosJugados.includes(bscarPropiedad(f, 'Estadio'));
-                return esYouTube && tieneLat && tieneLng && !yaJugado;
+                return (link.includes('youtube.com') || link.includes('youtu.be')) && bscarPropiedad(f, 'Latitud').toString().trim() !== '' && bscarPropiedad(f, 'Longitud').toString().trim() !== '' && !guessrEstadiosJugados.includes(bscarPropiedad(f, 'Estadio'));
             });
-
-            if (estadiosDisponibles.length === 0) {
-                alert('¡Felicidades! Completaste todas las georreferencias disponibles en este lote.');
-                cerrarModalVideo();
-                return;
-            }
-
+            if (estadiosDisponibles.length === 0) { alert('¡Felicidades! Completaste todas las georreferencias disponibles en este lote.'); cerrarModalVideo(); return; }
             guessrEstadioCorrecto = estadiosDisponibles[Math.floor(Math.random() * estadiosDisponibles.length)];
             guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto, 'Estadio'));
             guessrSelectedLatLng = null;
-
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.innerText = "Clavá un pin en el mapa mudo 📍";
             actionBtn.style.backgroundColor = "var(--card-bg)";
             actionBtn.style.color = "var(--text-muted)";
             actionBtn.disabled = true;
-
             abrirModalVideo(null, bscarPropiedad(guessrEstadioCorrecto, 'Link del Video').trim(), true);
-
             setTimeout(() => {
-                if (guessrMapInstance) {
-                    guessrMapInstance.remove();
-                }
-
-                guessrMapInstance = L.map('map-guess-container', {
-                    attributionControl: false,
-                    zoomControl: false
-                }).setView([20, 0], 1);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 18
-                }).addTo(guessrMapInstance);
-
+                if (guessrMapInstance) guessrMapInstance.remove();
+                guessrMapInstance = L.map('map-guess-container', { attributionControl: false, zoomControl: false }).setView([20, 0], 1);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(guessrMapInstance);
                 guessrMapInstance.on('click', function(e) {
                     if (actionBtn.getAttribute('data-estado') === 'resultado') return;
-
                     guessrSelectedLatLng = e.latlng;
-
-                    if (guessrUserMarker) {
-                        guessrUserMarker.setLatLng(guessrSelectedLatLng);
-                    } else {
-                        guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
-                    }
-
-                    actionBtn.innerText = "Confirmar Ubicación 🚀";
-                    actionBtn.style.backgroundColor = "var(--accent-color)";
-                    actionBtn.style.color = "#000";
-                    actionBtn.disabled = false;
+                    if (guessrUserMarker) guessrUserMarker.setLatLng(guessrSelectedLatLng);
+                    else guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
+                    actionBtn.innerText = "Confirmar Ubicación 🚀"; actionBtn.style.backgroundColor = "var(--accent-color)"; actionBtn.style.color = "#000"; actionBtn.disabled = false;
                 });
-
                 guessrMapInstance.invalidateSize();
             }, 400);
-
             actionBtn.setAttribute('data-estado', 'juego');
-            actionBtn.onclick = function() {
-                if (this.getAttribute('data-estado') === 'juego') {
-                    procesarArriesgoGuessr();
-                } else {
-                    avanzarDeRondaGuessr();
-                }
-            };
+            actionBtn.onclick = function() { if (this.getAttribute('data-estado') === 'juego') procesarArriesgoGuessr(); else avanzarDeRondaGuessr(); };
         }
 
         function procesarArriesgoGuessr() {
             const actionBtn = document.getElementById('game-action-btn');
             actionBtn.setAttribute('data-estado', 'resultado');
-
             const targetLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
             const targetLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
-
-            const userLat = guessrSelectedLatLng.lat;
-            const userLng = guessrSelectedLatLng.lng;
-
-            const distanciaKm = calcularDistanciaHaversine(userLat, userLng, targetLat, targetLng);
-            
+            const distanciaKm = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, targetLat, targetLng);
             const puntosRonda = isNaN(distanciaKm) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -distanciaKm / 1200)));
             guessrPuntosTotales += puntosRonda;
-
-            guessrHistorialRondas.push({
-                ronda: guessrRondaActual,
-                estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
-                distancia: distanciaKm,
-                puntos: puntosRonda
-            });
-
-            if (!isNaN(distanciaKm) && distanciaKm < 5) {
-                userStats.medallaLocalista = true;
-                guardarStats();
-            }
-
-            guessrTargetMarker = L.circleMarker([targetLat, targetLng], {
-                radius: 8,
-                color: 'var(--accent-color)',
-                fillColor: '#000',
-                fillOpacity: 1,
-                weight: 3
-            }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
-
-            guessrPolyline = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
-                color: 'var(--danger-color)',
-                weight: 2,
-                dashArray: '5, 8'
-            }).addTo(guessrMapInstance);
-
-            const bounds = L.featureGroup([guessrUserMarker, guessrTargetMarker]).getBounds();
-            guessrMapInstance.fitBounds(bounds, { padding: [40, 40] });
-
+            guessrHistorialRondas.push({ ronda: guessrRondaActual, estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'), distancia: distanciaKm, puntos: puntosRonda });
+            if (!isNaN(distanciaKm) && distanciaKm < 5) { userStats.medallaLocalista = true; guardarStats(); }
+            guessrTargetMarker = L.circleMarker([targetLat, targetLng], { radius: 8, color: 'var(--accent-color)', fillColor: '#000', fillOpacity: 1, weight: 3 }).addTo(guessrMapInstance).bindPopup(`<b style="color:#ffffff;">${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
+            guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [targetLat, targetLng]], { color: 'var(--danger-color)', weight: 2, dashArray: '5, 8' }).addTo(guessrMapInstance);
+            guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker, guessrTargetMarker]).getBounds(), { padding: [40, 40] });
             document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 • SCORE: ${guessrPuntosTotales} PTS`;
             actionBtn.innerHTML = `Le erraste por <b>${isNaN(distanciaKm) ? '?' : distanciaKm.toFixed(1)} km</b>. (+${puntosRonda} pts) • Siguiente ➡️`;
-            actionBtn.style.backgroundColor = "var(--danger-color)";
-            actionBtn.style.color = "white";
+            actionBtn.style.backgroundColor = "var(--danger-color)"; actionBtn.style.color = "white";
         }
 
         function avanzarDeRondaGuessr() {
             if (guessrUserMarker) guessrUserMarker.remove();
             if (guessrTargetMarker) guessrTargetMarker.remove();
             if (guessrPolyline) guessrPolyline.remove();
-            guessrUserMarker = null;
-            guessrTargetMarker = null;
-            guessrPolyline = null;
-
+            guessrUserMarker = null; guessrTargetMarker = null; guessrPolyline = null;
             guessrRondaActual++;
-            if (guessrRondaActual <= 5) {
-                lanzarRondaGuessr();
-            } else {
-                finalizarJuegoGuessr();
-            }
+            if (guessrRondaActual <= 5) lanzarRondaGuessr(); else finalizarJuegoGuessr();
         }
 
-        // FIX: enviarMiPuntaje sin alert de error engañoso — el fetch no-cors siempre "funciona"
         function enviarMiPuntaje() {
             let nombre = "";
             const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
-            if (loggedUser && loggedUser.name) {
-                nombre = loggedUser.name;
-            } else {
-                nombre = prompt("No iniciaste sesión con Google. Ingresá tu nombre para el ranking global:");
-            }
+            if (loggedUser && loggedUser.name) nombre = loggedUser.name;
+            else nombre = prompt("No iniciaste sesión con Google. Ingresá tu nombre para el ranking global:");
             if (!nombre || nombre.trim() === "") return;
-
-            const payload = { nombre: nombre.trim(), puntaje: guessrPuntosTotales };
-
-            fetch(scriptUrlRanking, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            }).catch(() => {}); // con no-cors el fetch siempre resuelve, nunca falla visible
-
-            // Confirmamos inmediatamente (no-cors no da respuesta, pero el envío se realiza)
+            fetch(scriptUrlRanking, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: nombre.trim(), puntaje: guessrPuntosTotales }) }).catch(() => {});
             alert("¡Tu marca de " + guessrPuntosTotales + " pts fue enviada al salón de la fama global! 🚀");
         }
 
-        // FIX: abrirModalRanking ahora usa el modal dedicado (#ranking-modal) en vez del de perfil
         async function abrirModalRanking() {
             const modalBody = document.getElementById('ranking-modal-body');
             modalBody.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; padding:30px;">Cargando tabla de posiciones global...</h3>';
             document.getElementById('ranking-modal').style.display = 'flex';
-
             try {
                 const res = await fetch(scriptUrlRanking);
                 const ranking = await res.json();
-                
-                let html = `
-                    <div style="text-align: center; margin-bottom: 25px;">
-                        <h2 style="font-size: 1.8rem; color: var(--accent-color); font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">🏆 TOP 10 GLOBAL 🏆</h2>
-                        <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 5px;">Los pilotos de reconocimiento aéreo más precisos del mundo</p>
-                    </div>
-                    <div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-                `;
-
-                if (!ranking || ranking.length === 0) {
-                    html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay puntajes en la base de datos. ¡Lográ una marca y estrená el tablero!</p>`;
-                } else {
-                    ranking.forEach((fila, i) => {
-                        let nombreJugador = fila[0] || "Anónimo";
-                        let puntosJugador = fila[1] || 0;
-                        
-                        let corona = "";
-                        if (i === 0) corona = "🥇 ";
-                        else if (i === 1) corona = "🥈 ";
-                        else if (i === 2) corona = "🥉 ";
-
-                        html += `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;">
-                                <span style="font-weight: 700;">${corona}${i + 1}. ${nombreJugador}</span>
-                                <span style="color: var(--accent-color); font-weight: 900;">${puntosJugador} <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">pts</span></span>
-                            </div>
-                        `;
-                    });
-                }
-
+                let html = `<div style="text-align: center; margin-bottom: 25px;"><h2 style="font-size: 1.8rem; color: var(--accent-color); font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">🏆 TOP 10 GLOBAL 🏆</h2><p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 5px;">Los pilotos de reconocimiento aéreo más precisos del mundo</p></div><div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">`;
+                if (!ranking || ranking.length === 0) { html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay puntajes en la base de datos.</p>`; }
+                else { ranking.forEach((fila, i) => { let corona = i === 0 ? "🥇 " : (i === 1 ? "🥈 " : (i === 2 ? "🥉 " : "")); html += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;"><span style="font-weight: 700;">${corona}${i + 1}. ${fila[0] || "Anónimo"}</span><span style="color: var(--accent-color); font-weight: 900;">${fila[1] || 0} <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">pts</span></span></div>`; }); }
                 html += `</div>`;
                 modalBody.innerHTML = html;
-            } catch (e) {
-                modalBody.innerHTML = `
-                    <div style="text-align:center; padding:25px;">
-                        <h3 style="color:#ff5555; margin-bottom:10px; font-weight:900;">⚠️ ERROR DE CONEXIÓN</h3>
-                        <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.5;">No se pudo establecer el enlace con el Apps Script de Google. Comprobá que esté publicado de forma pública ("Ejecutar como: Yo" y "Acceso: Cualquier persona") y con la pestaña 'Ranking' creada en tu Sheets.</p>
-                    </div>
-                `;
-            }
+            } catch (e) { modalBody.innerHTML = `<div style="text-align:center; padding:25px;"><h3 style="color:#ff5555; margin-bottom:10px; font-weight:900;">⚠️ ERROR DE CONEXIÓN</h3><p style="color:var(--text-muted); font-size:0.95rem; line-height:1.5;">No se pudo establecer el enlace con el Apps Script de Google.</p></div>`; }
         }
 
-        // --- RANKING DE ORDENAMIENTO (usa el mismo modal dedicado) ---
         async function abrirModalRankingOrden(modo) {
             const modalBody = document.getElementById('ranking-modal-body');
             modalBody.innerHTML = '<h3 style="color:var(--text-muted); text-align:center; padding:30px;">Cargando tabla de posiciones...</h3>';
             document.getElementById('ranking-modal').style.display = 'flex';
-            
             let urlDestino = modo === 'capacidad' ? scriptUrlCapacidad : scriptUrlAntiguedad;
             let tituloLabel = modo === 'capacidad' ? '🏆 TOP 10 CAPACIDAD 🏆' : '🏆 TOP 10 ANTIGÜEDAD 🏆';
-            
             try {
                 const res = await fetch(urlDestino);
                 const ranking = await res.json();
                 let html = `<div style="text-align: center; margin-bottom: 25px;"><h2 style="font-size: 1.5rem; color: var(--accent-color); font-weight: 900; text-transform: uppercase;">${tituloLabel}</h2></div><div style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">`;
-                if (!ranking || ranking.length === 0) {
-                    html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay marcas en este tablero.</p>`;
-                } else {
-                    ranking.forEach((fila, i) => {
-                        let corona = i === 0 ? "🥇 " : (i === 1 ? "🥈 " : (i === 2 ? "🥉 " : ""));
-                        html += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;"><span style="font-weight: 700;">${corona}${i + 1}. ${fila[0]}</span><span style="color: var(--accent-color); font-weight: 900;">${fila[1]} <span style="font-size:0.8rem; font-weight:normal; color:var(--text-muted);">pts</span></span></div>`;
-                    });
-                }
+                if (!ranking || ranking.length === 0) { html += `<p style="color: var(--text-muted); text-align: center; padding: 20px;">Aún no hay marcas en este tablero.</p>`; }
+                else { ranking.forEach((fila, i) => { let corona = i === 0 ? "🥇 " : (i === 1 ? "🥈 " : (i === 2 ? "🥉 " : "")); html += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: ${i === ranking.length - 1 ? 'none' : '1px solid #222'}; font-size: 0.95rem; color: #fff;"><span style="font-weight: 700;">${corona}${i + 1}. ${fila[0]}</span><span style="color: var(--accent-color); font-weight: 900;">${fila[1]} <span style="font-size:0.8rem; font-weight:normal; color:var(--text-muted);">pts</span></span></div>`; }); }
                 html += `</div>`;
                 modalBody.innerHTML = html;
-            } catch (e) {
-                modalBody.innerHTML = `<div style="text-align:center; padding:25px;"><h3 style="color:#ff5555; font-weight:900;">⚠️ ERROR DE ENLACE</h3></div>`;
-            }
+            } catch (e) { modalBody.innerHTML = `<div style="text-align:center; padding:25px;"><h3 style="color:#ff5555; font-weight:900;">⚠️ ERROR DE ENLACE</h3></div>`; }
         }
 
         function compartirResultado() {
-            const mensajeShare = `⚽ ¡Completé las 5 rondas de StadiumGuessr en Estadios Virtuales con un récord final de ${guessrPuntosTotales} puntos! 🌍✈️ ¿Te animás a superar mi marca volando en 3D sobre los templos del fútbol?`;
-            const urlShare = window.location.href;
-
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Estadios Virtuales | StadiumGuessr',
-                    text: mensajeShare,
-                    url: urlShare
-                }).catch(err => console.log("Error al compartir por API nativa:", err));
-            } else {
-                navigator.clipboard.writeText(`${mensajeShare} Competí acá: ${urlShare}`)
-                .then(() => {
-                    alert("¡Récord e invitación copiados al portapapeles! Ya podés pegarlo directo en tus redes sociales para picantearla con tus amigos. 🚀");
-                })
-                .catch(err => {
-                    alert("Tu puntaje final es de: " + guessrPuntosTotales + " puntos. ¡Anclalo en tus redes sociales!");
-                });
-            }
+            const mensajeShare = `⚽ ¡Completé las 5 rondas de StadiumGuessr en Estadios Virtuales con un récord final de ${guessrPuntosTotales} puntos! 🌍✈️ ¿Te animás a superar mi marca?`;
+            if (navigator.share) { navigator.share({ title: 'Estadios Virtuales | StadiumGuessr', text: mensajeShare, url: window.location.href }).catch(() => {}); }
+            else { navigator.clipboard.writeText(`${mensajeShare} Competí acá: ${window.location.href}`).then(() => { alert("¡Récord e invitación copiados al portapapeles! 🚀"); }).catch(() => { alert("Tu puntaje final es de: " + guessrPuntosTotales + " puntos."); }); }
         }
 
         function finalizarJuegoGuessr() {
             const container = document.getElementById('modal-video-container');
             const gameUi = document.getElementById('game-ui');
-            
-            gameUi.style.display = 'none';
-            container.style.height = '100%';
+            gameUi.style.display = 'none'; container.style.height = '100%';
             document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-
-            if (guessrMapInstance) {
-                guessrMapInstance.remove();
-                guessrMapInstance = null;
-            }
-
+            if (guessrMapInstance) { guessrMapInstance.remove(); guessrMapInstance = null; }
             userStats.partidasJugadas++;
-            if (guessrPuntosTotales > userStats.maxScore) {
-                userStats.maxScore = guessrPuntosTotales;
-            }
+            if (guessrPuntosTotales > userStats.maxScore) userStats.maxScore = guessrPuntosTotales;
             guardarStats();
-
-            let historialHTML = `<div style="width: 100%; max-width: 420px; text-align: left; margin: 0 auto 20px auto; background: #161616; border: 1px solid #252525; border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
-                <h4 style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 6px; font-weight: bold;">📊 DESGLOSE DE RONDAS</h4>`;
-            
+            let historialHTML = `<div style="width: 100%; max-width: 420px; text-align: left; margin: 0 auto 20px auto; background: #161616; border: 1px solid #252525; border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"><h4 style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #222; padding-bottom: 6px; font-weight: bold;">📊 DESGLOSE DE RONDAS</h4>`;
             guessrHistorialRondas.forEach(item => {
                 let distTexto = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
-                historialHTML += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.85rem;">
-                        <span style="color: #ffffff; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.estadio}">
-                            <strong style="color: var(--accent-color);">R${item.ronda}:</strong> ${item.estadio}
-                        </span>
-                        <span style="color: var(--text-muted); text-align: right;">
-                            <strong style="color: #fff;">+${item.puntos}</strong> pts <span style="font-size: 0.75rem; opacity: 0.7;">(${distTexto})</span>
-                        </span>
-                    </div>`;
+                historialHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.85rem;"><span style="color: #ffffff; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.estadio}"><strong style="color: var(--accent-color);">R${item.ronda}:</strong> ${item.estadio}</span><span style="color: var(--text-muted); text-align: right;"><strong style="color: #fff;">+${item.puntos}</strong> pts <span style="font-size: 0.75rem; opacity: 0.7;">(${distTexto})</span></span></div>`;
             });
             historialHTML += `</div>`;
-
-            container.innerHTML = `
-                <div style="text-align: center; padding: 30px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; overflow-y: auto;">
-                    <h2 style="font-size: 1.8rem; margin-bottom: 10px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2>
-                    <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Completaste las 5 rondas de reconocimiento aéreo.</p>
-                    <div style="background: #111; border: 1px solid #222; padding: 12px 35px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-                        <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 3px;">Puntaje Final Global</span>
-                        <strong style="font-size: 2.3rem; color: #ffffff; font-weight: 900;">${guessrPuntosTotales} <span style="font-size: 1.1rem; color: var(--accent-color);">Pts</span></strong>
-                    </div>
-
-                    ${historialHTML}
-
-                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 250px;">
-                        <button onclick="enviarMiPuntaje()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2); margin-top: 0;">Guardar Puntaje 🚀</button>
-                        <button onclick="abrirModalRanking()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #222; color: #fff; border: 1px solid #333; margin-top: 0;">Ver Ranking Global 🏆</button>
-                        <button onclick="compartirResultado()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; margin-top: 0;">Compartir Récord 🔗</button>
-                        <button onclick="iniciarTrivia()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); margin-top: 10px;">Volar de nuevo 🎮</button>
-                    </div>
-                </div>
-            `;
+            container.innerHTML = `<div style="text-align: center; padding: 30px 20px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; overflow-y: auto;"><h2 style="font-size: 1.8rem; margin-bottom: 10px; color: var(--accent-color); font-weight: 900; letter-spacing: -0.5px;">🏆 CAMPEONATO COMPLETADO 🏆</h2><p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Completaste las 5 rondas de reconocimiento aéreo.</p><div style="background: #111; border: 1px solid #222; padding: 12px 35px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);"><span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: block; margin-bottom: 3px;">Puntaje Final Global</span><strong style="font-size: 2.3rem; color: #ffffff; font-weight: 900;">${guessrPuntosTotales} <span style="font-size: 1.1rem; color: var(--accent-color);">Pts</span></strong></div>${historialHTML}<div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 250px;"><button onclick="enviarMiPuntaje()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.2); margin-top: 0;">Guardar Puntaje 🚀</button><button onclick="abrirModalRanking()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #222; color: #fff; border: 1px solid #333; margin-top: 0;">Ver Ranking Global 🏆</button><button onclick="compartirResultado()" class="btn-view" style="padding: 12px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; margin-top: 0;">Compartir Récord 🔗</button><button onclick="iniciarTrivia()" class="btn-view" style="padding: 12px; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3); margin-top: 10px;">Volar de nuevo 🎮</button></div></div>`;
         }
 
         function calcularDistanciaHaversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
+            const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; 
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         }
 
-        // --- SISTEMA DEL MINIJUEGO DE TRIVIA DE ORDENAMIENTO ---
         function abrirModalOrden() {
             document.getElementById('order-modal').style.display = 'flex';
             const body = document.getElementById('order-modal-body');
-            
-            body.innerHTML = `
-                <div style="text-align: center; color: white; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
-                    <div style="margin-bottom: 18px; color: var(--accent-color);">
-                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    </div>
-                    <h2 style="font-size: 1.6rem; font-weight: 900; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">DESAFÍO DE ORDENAMIENTO</h2>
-                    <p style="color: var(--text-muted); font-size: 1rem; max-width: 460px; line-height: 1.5; margin-bottom: 30px;">Demostrá tu nivel de conocimiento sobre los templos del fútbol mundial. Seleccioná una categoría para ordenar los estadios.</p>
-                    <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;">
-                        <button onclick="iniciarJuegoOrden('capacidad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2); margin-top:0; display:flex; align-items:center; justify-content:center; gap:10px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>
-                            Ordenar por Capacidad
-                        </button>
-                        <button onclick="iniciarJuegoOrden('antiguedad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top:0; display:flex; align-items:center; justify-content:center; gap:10px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                            Ordenar por Antigüedad
-                        </button>
-                        <div style="width:100%; border-top:1px solid #222; margin:10px 0; padding-top:10px; display:flex; gap:10px;">
-                            <button onclick="abrirModalRankingOrden('capacidad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Capacidad</button>
-                            <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Edad</button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            body.innerHTML = `<div style="text-align: center; color: white; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;"><div style="margin-bottom: 18px; color: var(--accent-color);"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div><h2 style="font-size: 1.6rem; font-weight: 900; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">DESAFÍO DE ORDENAMIENTO</h2><p style="color: var(--text-muted); font-size: 1rem; max-width: 460px; line-height: 1.5; margin-bottom: 30px;">Demostrá tu nivel de conocimiento sobre los templos del fútbol mundial. Seleccioná una categoría para ordenar los estadios.</p><div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px;"><button onclick="iniciarJuegoOrden('capacidad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2); margin-top:0; display:flex; align-items:center; justify-content:center; gap:10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>Ordenar por Capacidad</button><button onclick="iniciarJuegoOrden('antiguedad')" class="btn-view" style="padding: 14px; font-size: 0.95rem; background: #1a1a1a; color: var(--accent-color); border: 1px solid #222; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top:0; display:flex; align-items:center; justify-content:center; gap:10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Ordenar por Antigüedad</button><div style="width:100%; border-top:1px solid #222; margin:10px 0; padding-top:10px; display:flex; gap:10px;"><button onclick="abrirModalRankingOrden('capacidad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Capacidad</button><button onclick="abrirModalRankingOrden('antiguedad')" class="btn-view" style="padding: 10px; font-size: 0.8rem; background: #222; color: #fff; border: 1px solid #333; margin-top:0; width:50%; display:flex; align-items:center; justify-content:center; gap:5px;">🏆 Top Edad</button></div></div></div>`;
         }
 
         function iniciarJuegoOrden(modo) {
             const poolDeEstadios = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
-            
-            if (poolDeEstadios.length === 0) {
-                alert('Esperá un segundo a que se termine de sincronizar el catálogo de estadios en memoria...');
-                return;
-            }
-
-            orderModo = modo;
-            orderSelectedIdx = null;
-            orderPuntosGanados = 0;
-
+            if (poolDeEstadios.length === 0) { alert('Esperá un segundo a que se termine de sincronizar el catálogo...'); return; }
+            orderModo = modo; orderSelectedIdx = null; orderPuntosGanados = 0;
             const estadiosValidos = poolDeEstadios.filter(f => {
-                const nombre = bscarPropiedad(f, 'Estadio');
-                const club = bscarPropiedad(f, 'Club');
+                const nombre = bscarPropiedad(f, 'Estadio'); const club = bscarPropiedad(f, 'Club');
                 if (!nombre || !club) return false;
-
-                if (modo === 'capacidad') {
-                    const capRaw = String(bscarPropiedad(f, 'Capacidad')).replace(/[^0-9]/g, '');
-                    return capRaw !== '' && parseInt(capRaw) > 0;
-                } else {
-                    const anoRaw = String(bscarPropiedad(f, 'Año')).replace(/[^0-9]/g, '');
-                    return anoRaw !== '' && parseInt(anoRaw) > 0;
-                }
+                if (modo === 'capacidad') { const capRaw = String(bscarPropiedad(f, 'Capacidad')).replace(/[^0-9]/g, ''); return capRaw !== '' && parseInt(capRaw) > 0; }
+                else { const anoRaw = String(bscarPropiedad(f, 'Año')).replace(/[^0-9]/g, ''); return anoRaw !== '' && parseInt(anoRaw) > 0; }
             });
-
-            if (estadiosValidos.length < 5) {
-                alert('No hay suficientes estadios con datos válidos para armar el desafío.');
-                return;
-            }
-
-            let seleccionados = [];
-            let copiaValidos = [...estadiosValidos];
+            if (estadiosValidos.length < 5) { alert('No hay suficientes estadios con datos válidos para armar el desafío.'); return; }
+            let seleccionados = []; let copiaValidos = [...estadiosValidos];
             while (seleccionados.length < 5) {
                 const idxRand = Math.floor(Math.random() * copiaValidos.length);
                 const elegido = copiaValidos.splice(idxRand, 1)[0];
-                
-                let valorNumerico = 0;
-                if (modo === 'capacidad') {
-                    valorNumerico = parseInt(String(bscarPropiedad(elegido, 'Capacidad')).replace(/[^0-9]/g, '')) || 0;
-                } else {
-                    valorNumerico = parseInt(String(bscarPropiedad(elegido, 'Año')).replace(/[^0-9]/g, '')) || 0;
-                }
-
-                seleccionados.push({
-                    estadio: bscarPropiedad(elegido, 'Estadio'),
-                    club: bscarPropiedad(elegido, 'Club'),
-                    pais: bscarPropiedad(elegido, 'País') || 'Argentina',
-                    valor: valorNumerico,
-                    correctIdx: -1
-                });
+                let valorNumerico = modo === 'capacidad' ? (parseInt(String(bscarPropiedad(elegido, 'Capacidad')).replace(/[^0-9]/g, '')) || 0) : (parseInt(String(bscarPropiedad(elegido, 'Año')).replace(/[^0-9]/g, '')) || 0);
+                seleccionados.push({ estadio: bscarPropiedad(elegido, 'Estadio'), club: bscarPropiedad(elegido, 'Club'), pais: bscarPropiedad(elegido, 'País') || 'Argentina', valor: valorNumerico, correctIdx: -1 });
             }
-
-            let ordenadosCorrectamente;
-            if (modo === 'capacidad') {
-                ordenadosCorrectamente = [...seleccionados].sort((a, b) => b.valor - a.valor);
-            } else {
-                ordenadosCorrectamente = [...seleccionados].sort((a, b) => a.valor - b.valor);
-            }
-
-            seleccionados.forEach(est => {
-                est.correctIdx = ordenadosCorrectamente.findIndex(o => o.estadio === est.estadio && o.club === est.club);
-            });
-
+            let ordenadosCorrectamente = [...seleccionados].sort((a, b) => modo === 'capacidad' ? b.valor - a.valor : a.valor - b.valor);
+            seleccionados.forEach(est => { est.correctIdx = ordenadosCorrectamente.findIndex(o => o.estadio === est.estadio && o.club === est.club); });
             orderList = [...seleccionados].sort(() => Math.random() - 0.5);
             orderStartTime = performance.now();
             renderJuegoOrden();
@@ -2211,349 +970,93 @@
         function renderJuegoOrden(revelarResultados = false) {
             const body = document.getElementById('order-modal-body');
             let tituloModo = orderModo === 'capacidad' ? 'CAPACIDAD MÁXIMA' : 'ANTIGÜEDAD (FUNDACIÓN)';
-            
-            let strokeSvg = orderModo === 'capacidad'
-                ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>'
-                : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
-                
-            let descModo = orderModo === 'capacidad' 
-                ? 'Intercambiá las posiciones tocando dos filas hasta ordenarlos de <b>Mayor a Menor</b> capacidad.' 
-                : 'Intercambiá las posiciones tocando dos filas hasta ordenarlos del <b>Más Viejo al Más Moderno</b>.';
-
+            let strokeSvg = orderModo === 'capacidad' ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M3 21h18M3 7v10h18V7M6 7V3h12v4"/></svg>' : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
+            let descModo = orderModo === 'capacidad' ? 'Intercambiá las posiciones tocando dos filas hasta ordenarlos de <b>Mayor a Menor</b> capacidad.' : 'Intercambiá las posiciones tocando dos filas hasta ordenarlos del <b>Más Viejo al Más Moderno</b>.';
             let slotsHTML = '';
             orderList.forEach((est, i) => {
-                let borderCol = '#252525';
-                let glowStyle = '';
-                let badgeExtra = '';
-                
-                if (revelarResultados) {
-                    const esCorrecto = i === est.correctIdx;
-                    borderCol = esCorrecto ? '#1db954' : '#ff5555';
-                    let textoValor = orderModo === 'capacidad' ? `${est.valor.toLocaleString()} esp.` : `Año ${est.valor}`;
-                    badgeExtra = `<span style="background:${borderCol}; color:#000; font-size:0.7rem; font-weight:bold; padding:2px 8px; border-radius:10px; margin-left:auto; text-transform:uppercase;">${textoValor}</span>`;
-                } else if (orderSelectedIdx === i) {
-                    borderCol = 'var(--accent-hover)';
-                    glowStyle = 'box-shadow: 0 0 10px var(--accent-color);';
-                }
-
-                slotsHTML += `
-                    <div style="display:flex; align-items:center; gap:12px; height:54px; width:100%;">
-                        <div style="background:#111; color:var(--accent-color); border:1px solid #222; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:900; flex-shrink:0; box-shadow:inset 0 0 5px #000;">${i+1}</div>
-                        <div onclick="${revelarResultados ? '' : `seleccionarFilaOrden(${i})`}" style="flex-grow:1; height:100%; background:#161616; border:1px solid ${borderCol}; ${glowStyle} border-radius:6px; padding:0 15px; display:flex; align-items:center; gap:10px; cursor:${revelarResultados ? 'default' : 'pointer'}; transition:all 0.2s;">
-                            <div style="display:flex; flex-direction:column; justify-content:center; text-align:left; overflow:hidden; max-width:65%;">
-                                <strong style="color:#fff; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${est.estadio}</strong>
-                                <span style="color:var(--text-muted); font-size:0.75rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${est.club} • ${est.pais}</span>
-                            </div>
-                            ${badgeExtra}
-                        </div>
-                    </div>
-                `;
+                let borderCol = '#252525'; let glowStyle = ''; let badgeExtra = '';
+                if (revelarResultados) { const esCorrecto = i === est.correctIdx; borderCol = esCorrecto ? '#1db954' : '#ff5555'; let textoValor = orderModo === 'capacidad' ? `${est.valor.toLocaleString()} esp.` : `Año ${est.valor}`; badgeExtra = `<span style="background:${borderCol}; color:#000; font-size:0.7rem; font-weight:bold; padding:2px 8px; border-radius:10px; margin-left:auto; text-transform:uppercase;">${textoValor}</span>`; }
+                else if (orderSelectedIdx === i) { borderCol = 'var(--accent-hover)'; glowStyle = 'box-shadow: 0 0 10px var(--accent-color);'; }
+                slotsHTML += `<div style="display:flex; align-items:center; gap:12px; height:54px; width:100%;"><div style="background:#111; color:var(--accent-color); border:1px solid #222; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:900; flex-shrink:0; box-shadow:inset 0 0 5px #000;">${i+1}</div><div onclick="${revelarResultados ? '' : `seleccionarFilaOrden(${i})`}" style="flex-grow:1; height:100%; background:#161616; border:1px solid ${borderCol}; ${glowStyle} border-radius:6px; padding:0 15px; display:flex; align-items:center; gap:10px; cursor:${revelarResultados ? 'default' : 'pointer'}; transition:all 0.2s;"><div style="display:flex; flex-direction:column; justify-content:center; text-align:left; overflow:hidden; max-width:65%;"><strong style="color:#fff; font-size:0.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${est.estadio}</strong><span style="color:var(--text-muted); font-size:0.75rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${est.club} • ${est.pais}</span></div>${badgeExtra}</div></div>`;
             });
-
             let labelSuperior = orderModo === 'capacidad' ? 'MÁXIMA CAPACIDAD (MÁS GRANDE)' : 'MÁS ANTIGUO (MAYOR EDAD)';
             let labelInferior = orderModo === 'capacidad' ? 'MÍNIMA CAPACIDAD (MÁS CHICO)' : 'MÁS MODERNO (MENOR EDAD)';
-
             let botoneraInferiorHTML = '';
             if (!revelarResultados) {
-                botoneraInferiorHTML = `
-                    <div style="display:flex; gap:12px; margin-top:15px; width:100%;">
-                        <button onclick="abrirModalOrden()" class="btn-view" style="background:#222; color:#fff; border:1px solid #333; margin-top:0; padding:12px; font-size:0.9rem; width:30%; display:flex; align-items:center; justify-content:center; gap:6px;">
-                            <svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                            Volver
-                        </button>
-                        <button onclick="procesarResultadoOrden()" class="btn-view" style="margin-top:0; padding:12px; font-size:0.9rem; width:70%; display:flex; align-items:center; justify-content:center; gap:6px;">
-                            <svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 2 11 13 11 22 14 19 22 2"></polyline></svg>
-                            Confirmar
-                        </button>
-                    </div>
-                `;
+                botoneraInferiorHTML = `<div style="display:flex; gap:12px; margin-top:15px; width:100%;"><button onclick="abrirModalOrden()" class="btn-view" style="background:#222; color:#fff; border:1px solid #333; margin-top:0; padding:12px; font-size:0.9rem; width:30%; display:flex; align-items:center; justify-content:center; gap:6px;"><svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>Volver</button><button onclick="procesarResultadoOrden()" class="btn-view" style="margin-top:0; padding:12px; font-size:0.9rem; width:70%; display:flex; align-items:center; justify-content:center; gap:6px;"><svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 2 11 13 11 22 14 19 22 2"></polyline></svg>Confirmar</button></div>`;
             } else {
-                // FIX: botones con funciones globales correctamente referenciadas
-                botoneraInferiorHTML = `
-                    <div style="background:#111; border:1px solid #222; padding:18px; border-radius:10px; text-align:center; width:100%; margin-top:15px;">
-                        <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:0.5px; display:block; margin-bottom:2px;">Puntaje del Desafío</span>
-                        <strong style="font-size:1.8rem; color:#fff; font-weight:900; display:block; margin-bottom:15px;">${orderPuntosGanados} <span style="font-size:0.9rem; color:var(--accent-color);">Pts</span></strong>
-                        <div style="display:flex; flex-direction:column; gap:10px; max-width:280px; margin:0 auto; width:100%;">
-                            <button onclick="enviarPuntajeOrden()" class="btn-view" style="padding:11px; font-size:0.9rem; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v7a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/></svg>
-                                Guardar Puntaje
-                            </button>
-                            <button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-view" style="padding:11px; font-size:0.9rem; background:#222; color:#fff; border:1px solid #333; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                Ver Ranking Global
-                            </button>
-                            <button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-view" style="padding:11px; font-size:0.9rem; background:#1a1a1a; color:#fff; border:1px solid #333; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">
-                                Jugar de nuevo
-                            </button>
-                            <button onclick="cerrarModalOrden()" class="btn-view" style="padding:11px; font-size:0.9rem; background:transparent; color:var(--text-muted); border:none; margin-top:0; width:100%; text-align:center; display:flex; align-items:center; justify-content:center;">
-                                Cerrar Desafío
-                            </button>
-                        </div>
-                    </div>
-                `;
+                botoneraInferiorHTML = `<div style="background:#111; border:1px solid #222; padding:18px; border-radius:10px; text-align:center; width:100%; margin-top:15px;"><span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:0.5px; display:block; margin-bottom:2px;">Puntaje del Desafío</span><strong style="font-size:1.8rem; color:#fff; font-weight:900; display:block; margin-bottom:15px;">${orderPuntosGanados} <span style="font-size:0.9rem; color:var(--accent-color);">Pts</span></strong><div style="display:flex; flex-direction:column; gap:10px; max-width:280px; margin:0 auto; width:100%;"><button onclick="enviarPuntajeOrden()" class="btn-view" style="padding:11px; font-size:0.9rem; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34M12 2a4 4 0 0 1 4 4v7a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/></svg>Guardar Puntaje</button><button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-view" style="padding:11px; font-size:0.9rem; background:#222; color:#fff; border:1px solid #333; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Ver Ranking Global</button><button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-view" style="padding:11px; font-size:0.9rem; background:#1a1a1a; color:#fff; border:1px solid #333; margin-top:0; width:100%; display:flex; align-items:center; justify-content:center; gap:6px;">Jugar de nuevo</button><button onclick="cerrarModalOrden()" class="btn-view" style="padding:11px; font-size:0.9rem; background:transparent; color:var(--text-muted); border:none; margin-top:0; width:100%; text-align:center; display:flex; align-items:center; justify-content:center;">Cerrar Desafío</button></div></div>`;
             }
-
-            body.innerHTML = `
-                <div style="display:flex; flex-direction:column; height:100%; color:white; justify-content:space-between;">
-                    <div style="border-bottom:1px solid #222; padding-bottom:10px; text-align:left;">
-                        <h2 style="font-size:1.15rem; font-weight:900; color:var(--accent-color); text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-                            ${strokeSvg}
-                            ${tituloModo}
-                        </h2>
-                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">${descModo}</p>
-                    </div>
-                    
-                    <div style="display:flex; flex-direction:column; gap:8px; margin:15px 0; overflow-y:auto; flex-grow:1; justify-content:start; padding-right:5px;">
-                        <div style="text-align:center; font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:1px; margin-bottom:2px; background:rgba(255,255,255,0.02); padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; gap:4px;">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-                            ${labelSuperior}
-                        </div>
-                        ${slotsHTML}
-                        <div style="text-align:center; font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:1px; margin-top:2px; background:rgba(255,255,255,0.02); padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; gap:4px;">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
-                            ${labelInferior}
-                        </div>
-                    </div>
-
-                    ${botoneraInferiorHTML}
-                </div>
-            `;
+            body.innerHTML = `<div style="display:flex; flex-direction:column; height:100%; color:white; justify-content:space-between;"><div style="border-bottom:1px solid #222; padding-bottom:10px; text-align:left;"><h2 style="font-size:1.15rem; font-weight:900; color:var(--accent-color); text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">${strokeSvg}${tituloModo}</h2><p style="color:var(--text-muted); font-size:0.85rem; margin-top:4px;">${descModo}</p></div><div style="display:flex; flex-direction:column; gap:8px; margin:15px 0; overflow-y:auto; flex-grow:1; justify-content:start; padding-right:5px;"><div style="text-align:center; font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:1px; margin-bottom:2px; background:rgba(255,255,255,0.02); padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; gap:4px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>${labelSuperior}</div>${slotsHTML}<div style="text-align:center; font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:bold; letter-spacing:1px; margin-top:2px; background:rgba(255,255,255,0.02); padding:4px; border-radius:4px; display:flex; align-items:center; justify-content:center; gap:4px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>${labelInferior}</div></div>${botoneraInferiorHTML}</div>`;
         }
 
         function seleccionarFilaOrden(index) {
-            if (orderSelectedIdx === null) {
-                orderSelectedIdx = index;
-                renderJuegoOrden();
-            } else if (orderSelectedIdx === index) {
-                orderSelectedIdx = null;
-                renderJuegoOrden();
-            } else {
-                const temp = orderList[orderSelectedIdx];
-                orderList[orderSelectedIdx] = orderList[index];
-                orderList[index] = temp;
-                
-                orderSelectedIdx = null; 
-                renderJuegoOrden();
-            }
+            if (orderSelectedIdx === null) { orderSelectedIdx = index; renderJuegoOrden(); }
+            else if (orderSelectedIdx === index) { orderSelectedIdx = null; renderJuegoOrden(); }
+            else { const temp = orderList[orderSelectedIdx]; orderList[orderSelectedIdx] = orderList[index]; orderList[index] = temp; orderSelectedIdx = null; renderJuegoOrden(); }
         }
 
         function procesarResultadoOrden() {
-            let endTime = performance.now();
-            let tiempoTardado = (endTime - orderStartTime) / 1000;
-
+            let endTime = performance.now(); let tiempoTardado = (endTime - orderStartTime) / 1000;
             let bonusTiempo = Math.max(0, Math.round((50 - tiempoTardado) * 25));
-
             let desviacionTotal = 0;
-            orderList.forEach((est, idx) => {
-                desviacionTotal += Math.abs(idx - est.correctIdx);
-            });
-
+            orderList.forEach((est, idx) => { desviacionTotal += Math.abs(idx - est.correctIdx); });
             let puntosBase = Math.max(0, 5000 - (desviacionTotal * 600));
             orderPuntosGanados = Math.round(puntosBase + (bonusTiempo * (puntosBase / 5000)));
             renderJuegoOrden(true);
         }
 
-        // FIX: enviarPuntajeOrden sin alert de error engañoso
         function enviarPuntajeOrden() {
             let nombre = "";
             const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
-            if (loggedUser && loggedUser.name) {
-                nombre = loggedUser.name;
-            } else {
-                nombre = prompt("No iniciaste sesión con Google. Ingresá tu nombre para el ranking global:");
-            }
+            if (loggedUser && loggedUser.name) nombre = loggedUser.name;
+            else nombre = prompt("No iniciaste sesión con Google. Ingresá tu nombre para el ranking global:");
             if (!nombre || nombre.trim() === "") return;
-
             let urlDestino = orderModo === 'capacidad' ? scriptUrlCapacidad : scriptUrlAntiguedad;
-
-            fetch(urlDestino, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre: nombre.trim(), puntaje: orderPuntosGanados })
-            }).catch(() => {}); // no-cors siempre resuelve correctamente
-
-            // Confirmación inmediata y cierre
+            fetch(urlDestino, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ nombre: nombre.trim(), puntaje: orderPuntosGanados }) }).catch(() => {});
             alert(`¡Tu marca de ${orderPuntosGanados} pts fue guardada con éxito en el tablero de ${orderModo}! 🚀`);
             cerrarModalOrden();
         }
 
         function inicializarGoogleLogin() {
-            google.accounts.id.initialize({
-                client_id: "351786523914-placeholder.apps.googleusercontent.com", 
-                callback: manejarRespuestaGoogle
-            });
+            google.accounts.id.initialize({ client_id: "351786523914-placeholder.apps.googleusercontent.com", callback: manejarRespuestaGoogle });
             renderizarBotonLogin();
         }
 
         function renderizarBotonLogin() {
             const container = document.getElementById('hero-google-profile');
             const loggedUser = JSON.parse(localStorage.getItem('ev_user_logged'));
-            
-            if (loggedUser) {
-                container.innerHTML = `<img src="${loggedUser.picture}" class="hero-profile-avatar" onclick="abrirModalPerfil()" title="Ver mi Perfil Premium FUT">`;
-            } else {
-                if (typeof google !== 'undefined' && google.accounts) {
-                    container.innerHTML = `<div id="google-login-btn"></div>`;
-                    google.accounts.id.renderButton(
-                        document.getElementById("google-login-btn"),
-                        { theme: "dark", size: "large", type: "standard", shape: "pill" }
-                    );
-                } else {
-                    setTimeout(renderizarBotonLogin, 300);
-                }
-            }
+            if (loggedUser) { container.innerHTML = `<img src="${loggedUser.picture}" class="hero-profile-avatar" onclick="abrirModalPerfil()" title="Ver mi Perfil Premium FUT">`; }
+            else { if (typeof google !== 'undefined' && google.accounts) { container.innerHTML = `<div id="google-login-btn"></div>`; google.accounts.id.renderButton(document.getElementById("google-login-btn"), { theme: "dark", size: "large", type: "standard", shape: "pill" }); } else { setTimeout(renderizarBotonLogin, 300); } }
         }
 
         function manejarRespuestaGoogle(response) {
             const payload = decodeJwt(response.credential);
-            if (payload) {
-                const user = {
-                    id: payload.sub,
-                    name: payload.name,
-                    email: payload.email,
-                    picture: payload.picture
-                };
-                localStorage.setItem('ev_user_logged', JSON.stringify(user));
-                renderizarBotonLogin();
-            }
+            if (payload) { const user = { id: payload.sub, name: payload.name, email: payload.email, picture: payload.picture }; localStorage.setItem('ev_user_logged', JSON.stringify(user)); renderizarBotonLogin(); }
         }
 
         function decodeJwt(token) {
-            try {
-                var base64Url = token.split('.')[1];
-                var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                return JSON.parse(jsonPayload);
-            } catch(e) { return null; }
+            try { var base64Url = token.split('.')[1]; var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) { return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2); }).join('')); return JSON.parse(jsonPayload); } catch(e) { return null; }
         }
 
         function abrirModalPerfil() {
             const currentUser = JSON.parse(localStorage.getItem('ev_user_logged'));
             if (!currentUser) return;
-
-            const mLocalista = userStats.medallaLocalista;
-            const mCatador = userStats.votosRealizados >= 5;
-            const mCurioso = userStats.triviasVistas >= 10;
-            const mIdolo = userStats.partidasJugadas >= 3;
-
-            let cardClass = "bronze";
-            let rangoFUT = "DEL";
-            let rangoTexto = "Pibe de Potrero ⚽";
-            let overallFUT = 64;
-
-            if (userStats.maxScore > 15000) {
-                cardClass = "silver";
-                rangoFUT = "DT";
-                rangoTexto = "Director Técnico 📋";
-                overallFUT = 79;
-            }
-            if (userStats.maxScore > 22000) {
-                cardClass = "gold";
-                rangoFUT = "MCO"; 
-                rangoTexto = "Leyenda Mundial 🏆";
-                overallFUT = 94;
-            }
-
-            const statVOT = userStats.votosRealizados;
-            const statTRV = userStats.triviasVistas;
-            const statPJ = userStats.partidasJugadas;
-            const statSCO = userStats.maxScore;
-
+            const mLocalista = userStats.medallaLocalista; const mCatador = userStats.votosRealizados >= 5; const mCurioso = userStats.triviasVistas >= 10; const mIdolo = userStats.partidasJugadas >= 3;
+            let cardClass = "bronze"; let rangoFUT = "DEL"; let rangoTexto = "Pibe de Potrero ⚽"; let overallFUT = 64;
+            if (userStats.maxScore > 15000) { cardClass = "silver"; rangoFUT = "DT"; rangoTexto = "Director Técnico 📋"; overallFUT = 79; }
+            if (userStats.maxScore > 22000) { cardClass = "gold"; rangoFUT = "MCO"; rangoTexto = "Leyenda Mundial 🏆"; overallFUT = 94; }
+            const statVOT = userStats.votosRealizados; const statTRV = userStats.triviasVistas; const statPJ = userStats.partidasJugadas; const statSCO = userStats.maxScore;
             let calendarCellsHTML = '';
-            for (let d = 1; d <= 30; d++) {
-                let cellClass = "calendar-cell";
-                if (d < 9) cellClass += " past-done"; 
-                if (d === 9) cellClass += " current-active"; 
-                calendarCellsHTML += `<div class="${cellClass}">${d}</div>`;
-            }
-
+            for (let d = 1; d <= 30; d++) { let cellClass = "calendar-cell"; if (d < 9) cellClass += " past-done"; if (d === 9) cellClass += " current-active"; calendarCellsHTML += `<div class="${cellClass}">${d}</div>`; }
             const modalBody = document.getElementById('profile-modal-body');
-            modalBody.innerHTML = `
-                <div class="split-profile-layout">
-                    <div class="left-fut-column">
-                        <div class="fut-card ${cardClass}">
-                            <div class="fut-top">
-                                <div class="fut-badge-meta">
-                                    <div class="fut-ovr">${overallFUT}</div>
-                                    <div class="fut-pos">${rangoFUT}</div>
-                                    <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon">
-                                </div>
-                                <div class="fut-avatar-container">
-                                    <img src="${currentUser.picture}" class="fut-user-img">
-                                    <div class="fut-jersey-overlay">
-                                        <div class="fut-jersey-stripe"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fut-name">${currentUser.name.split(' ')[0]}</div>
-                            <div class="fut-stats-row">
-                                <div class="fut-stat-item"><span class="fut-stat-num">${statVOT}</span><span class="fut-stat-label">VOT</span></div>
-                                <div class="fut-stat-item"><span class="fut-stat-num">${statTRV}</span><span class="fut-stat-label">TRV</span></div>
-                                <div class="fut-stat-item"><span class="fut-stat-num">${statPJ}</span><span class="fut-stat-label">PJ</span></div>
-                                <div class="fut-stat-item"><span class="fut-stat-num">${statSCO > 999 ? (statSCO/1000).toFixed(1)+'K' : statSCO}</span><span class="fut-stat-label">SCO</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="right-dashboard-column">
-                        <div>
-                            <div class="geoguessr-dash-box">
-                                <div class="dash-header-inline">
-                                    <div class="dash-title-premium">📅 Reto Diario (Junio 2026)</div>
-                                    <div class="streak-fire-badge"><span>🔥</span> racha: ${userStats.rachaActual || 1} d</div>
-                                </div>
-                                <div class="calendar-matrix">
-                                    <div class="calendar-day-label">lun</div>
-                                    <div class="calendar-day-label">mar</div>
-                                    <div class="calendar-day-label">mié</div>
-                                    <div class="calendar-day-label">jue</div>
-                                    <div class="calendar-day-label">vie</div>
-                                    <div class="calendar-day-label">sáb</div>
-                                    <div class="calendar-day-label">dom</div>
-                                    ${calendarCellsHTML}
-                                </div>
-                            </div>
-                            <div class="geoguessr-dash-box">
-                                <div class="dash-title-premium" style="margin-bottom:10px;">🏆 Vitrina de Logros</div>
-                                <div class="medals-grid">
-                                    <div class="medal-item ${mLocalista ? 'unlocked' : ''}" title="Clavá un pin a menos de 5 km en StadiumGuessr">
-                                        <div class="medal-icon">📍</div><div class="medal-name">Localista</div>
-                                    </div>
-                                    <div class="medal-item ${mCatador ? 'unlocked' : ''}" title="Calificá un mínimo de 5 estadios del catálogo">
-                                        <div class="medal-icon">🏅</div><div class="medal-name">Catador</div>
-                                    </div>
-                                    <div class="medal-item ${mCurioso ? 'unlocked' : ''}" title="Descubrí 10 datos curiosos haciendo clic en los focos">
-                                        <div class="medal-icon">💡</div><div class="medal-name">Curioso</div>
-                                    </div>
-                                    <div class="medal-item ${mIdolo ? 'unlocked' : ''}" title="Completá al menos 3 campeonatos aéreos">
-                                        <div class="medal-icon">🏆</div><div class="medal-name">Leyenda</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                            <span style="font-size:0.8rem; color:var(--text-muted); font-weight: bold;">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span>
-                            <button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            modalBody.innerHTML = `<div class="split-profile-layout"><div class="left-fut-column"><div class="fut-card ${cardClass}"><div class="fut-top"><div class="fut-badge-meta"><div class="fut-ovr">${overallFUT}</div><div class="fut-pos">${rangoFUT}</div><img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon"></div><div class="fut-avatar-container"><img src="${currentUser.picture}" class="fut-user-img"><div class="fut-jersey-overlay"><div class="fut-jersey-stripe"></div></div></div></div><div class="fut-name">${currentUser.name.split(' ')[0]}</div><div class="fut-stats-row"><div class="fut-stat-item"><span class="fut-stat-num">${statVOT}</span><span class="fut-stat-label">VOT</span></div><div class="fut-stat-item"><span class="fut-stat-num">${statTRV}</span><span class="fut-stat-label">TRV</span></div><div class="fut-stat-item"><span class="fut-stat-num">${statPJ}</span><span class="fut-stat-label">PJ</span></div><div class="fut-stat-item"><span class="fut-stat-num">${statSCO > 999 ? (statSCO/1000).toFixed(1)+'K' : statSCO}</span><span class="fut-stat-label">SCO</span></div></div></div></div><div class="right-dashboard-column"><div><div class="geoguessr-dash-box"><div class="dash-header-inline"><div class="dash-title-premium">📅 Reto Diario (Junio 2026)</div><div class="streak-fire-badge"><span>🔥</span> racha: ${userStats.rachaActual || 1} d</div></div><div class="calendar-matrix"><div class="calendar-day-label">lun</div><div class="calendar-day-label">mar</div><div class="calendar-day-label">mié</div><div class="calendar-day-label">jue</div><div class="calendar-day-label">vie</div><div class="calendar-day-label">sáb</div><div class="calendar-day-label">dom</div>${calendarCellsHTML}</div></div><div class="geoguessr-dash-box"><div class="dash-title-premium" style="margin-bottom:10px;">🏆 Vitrina de Logros</div><div class="medals-grid"><div class="medal-item ${mLocalista ? 'unlocked' : ''}" title="Clavá un pin a menos de 5 km en StadiumGuessr"><div class="medal-icon">📍</div><div class="medal-name">Localista</div></div><div class="medal-item ${mCatador ? 'unlocked' : ''}" title="Calificá un mínimo de 5 estadios del catálogo"><div class="medal-icon">🏅</div><div class="medal-name">Catador</div></div><div class="medal-item ${mCurioso ? 'unlocked' : ''}" title="Descubrí 10 datos curiosos haciendo clic en los focos"><div class="medal-icon">💡</div><div class="medal-name">Curioso</div></div><div class="medal-item ${mIdolo ? 'unlocked' : ''}" title="Completá al menos 3 campeonatos aéreos"><div class="medal-icon">🏆</div><div class="medal-name">Leyenda</div></div></div></div></div><div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;"><span style="font-size:0.8rem; color:var(--text-muted); font-weight: bold;">Rango: <b style="color:var(--accent-color);">${rangoTexto}</b></span><button onclick="cerrarSesion()" style="background: #1f1f1f; color: #ff5555; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: bold;">Cerrar Sesión Google</button></div></div></div>`;
             document.getElementById('profile-modal').style.display = 'flex';
         }
 
-        function cerrarModalPerfil() {
-            document.getElementById('profile-modal').style.display = 'none';
-        }
+        function cerrarModalPerfil() { document.getElementById('profile-modal').style.display = 'none'; }
+        function cerrarSesion() { localStorage.removeItem('ev_user_logged'); cerrarModalPerfil(); renderizarBotonLogin(); }
 
-        function cerrarSesion() {
-            localStorage.removeItem('ev_user_logged');
-            cerrarModalPerfil();
-            renderizarBotonLogin();
-        }
-
-        // LISTENERS DE CARGA
         window.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
                 document.getElementById('global-search').value = '';
@@ -2562,7 +1065,6 @@
                 this.classList.add('active');
                 cargarLiga(this.getAttribute('data-gid'));
             }));
-
             indexarCatalogoMasivo();
             const primerGid = document.querySelector('.tab.active').getAttribute('data-gid');
             cargarLiga(primerGid);
