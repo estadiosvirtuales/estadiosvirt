@@ -770,8 +770,15 @@
         }
 
         function registrarUsuarioEnSheets(user) {
+            // CORRECCIÓN CLAVE: Enviamos exactamente los campos que tu Apps Script espera (id, name, email, picture)
             fetch(scriptUrlUsuarios,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({accion:'registrar_usuario',nombre:user.name,email:user.email||'',foto:user.picture||'',metodo:user.loginMethod||'google',fecha:new Date().toISOString()})
+                body:JSON.stringify({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email || '',
+                    picture: user.picture || '',
+                    emoji: ''
+                })
             }).catch(()=>{});
         }
 
@@ -1225,7 +1232,7 @@
                 Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`,{download:true,header:true,complete:(r)=>{
                     r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club')).forEach(est=>{
                         const n=bscarPropiedad(est,'Estadio'),c=bscarPropiedad(est,'Club');
-                        if(!catalogoGlobal.some(e=>bscarPropiedad(e,'Estadio')===n&&bscarPropiedad(e,'Club')===c)) catalogoGlobal.push(est);
+                        if(!catalogoGlobal.some(e=>bscarPropiedad(e,'Estadio')===n&&bscarPropiedad(e|'Club')===c)) catalogoGlobal.push(est);
                     });
                 }});
             });
@@ -1474,7 +1481,7 @@
         function guardarScoreOrden(){ pendingScore=orderPuntosGanados; pendingScoreType=orderModo; guardarScorePendiente(); }
         function enviarPuntajeOrden(){guardarScoreOrden();}
 
-        // ─── TARJETA PERFIL FUT ───
+        /* ─── PERFIL ─── */
         function abrirModalPerfil(){
             const u=JSON.parse(localStorage.getItem('ev_user_logged'));
             if(!u) return;
