@@ -329,7 +329,6 @@ body>*{position:relative;z-index:1}
 .td-neon{background:linear-gradient(135deg,#ff007f,#7928ca,#4338ca);}
 .td-retro{background:linear-gradient(135deg,#f59e0b,#b45309);}
 .td-arg{background:linear-gradient(180deg,#74acdf 33%,#fff 33%,#fff 66%,#74acdf 66%);}
-/* Label encima del check de tema activo */
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px;}
 
 /* Campos de entrada */
@@ -761,12 +760,11 @@ const NIVELES=(function(){
 })();
 
 /* ══ EMOJIS POR CATEGORÍA ══ */
-const EMOJI_CATS={
+const EMOJI_CATS_DATA={
   '⚽ Fútbol':['⚽','🏟️','🥅','🎽','🏆','🥇','🥈','🎯','🎪','🃏','🎭'],
   '🦁 Animales':['🦁','🐯','🦊','🦅','🐺','🦋','🐉','🦄','🐻','🦀','🦈'],
   '⭐ Estrellas':['⭐','🌟','🔥','⚡','💎','🚀','🌍','🌊','⛰️','🎸','🎩']
 };
-
 let emojiCatActual='⚽ Fútbol';
 let logrosTabActual='todos';
 
@@ -1209,8 +1207,6 @@ function calcularLogros(){
   return logros;
 }
 
-let logrosTabActual='todos';
-
 function filtrarLogros(tipo){
   logrosTabActual=tipo;
   document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));
@@ -1249,16 +1245,7 @@ function previsualizarTema(tema){
   const claseBase=tema==='auto'?nivel.cardClass:tema;
   card.className='fut-card '+claseBase;
   document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));
-  setPref('ev_card_theme',tema);
 }
-
-/* ══ AVATAR EMOJI ══ */
-let emojiCatActual='⚽ Fútbol';
-const EMOJI_CATS_DATA={
-  '⚽ Fútbol':['⚽','🏟️','🥅','🎽','🏆','🥇','🥈','🎯','🎪','🃏','🎭'],
-  '🦁 Animales':['🦁','🐯','🦊','🦅','🐺','🦋','🐉','🦄','🐻','🦀','🦈'],
-  '⭐ Estrellas':['⭐','🌟','🔥','⚡','💎','🚀','🌍','🌊','⛰️','🎸','🎩']
-};
 
 function cambiarEmojiCat(cat){
   emojiCatActual=cat;
@@ -1278,8 +1265,12 @@ function guardarPersonalizacion(){
   if(selectedOpt){setPref('ev_avatar_emoji',selectedOpt.textContent.trim());}
   const posSelect=document.getElementById('avatar-pos-input');
   if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
-  const themeActual=getPref('ev_card_theme','auto');
   
+  const themeActualEl=document.querySelector('.theme-dot.active');
+  if(themeActualEl) {
+      setPref('ev_card_theme', themeActualEl.dataset.tema);
+  }
+
   const nickInput = document.getElementById('avatar-nick-input');
   if(nickInput !== null){
       const newNick = nickInput.value.trim();
@@ -1287,7 +1278,7 @@ function guardarPersonalizacion(){
       const futName = document.getElementById('fut-name-display');
       if(futName){
           const u = JSON.parse(localStorage.getItem('ev_user_logged'));
-          futName.textContent = newNick || (u ? u.name.split(' ')[0] : 'Jugador');
+          futName.textContent = newNick || (u ? u.name.split(' ')[0] : 'Jonathan'); // Jonathan is the user's name from user data
       }
   }
 
