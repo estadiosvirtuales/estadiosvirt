@@ -9,8 +9,41 @@
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--bg-color:#080c10;--card-bg:#111820;--surface-color:#161e28;--surface-hover:#1e2a38;--text-main:#f0f4f8;--text-muted:#7a8fa6;--text-inverse:#000;--accent-color:#00e676;--accent-hover:#69ff9c;--accent-dim:rgba(0,230,118,.12);--accent-glow:rgba(0,230,118,.35);--danger-color:#ff4757;--border-subtle:rgba(255,255,255,.06);--border-strong:rgba(255,255,255,.12);--glass-bg:rgba(14,22,34,.88);--modal-overlay:rgba(4,8,14,.92);--shadow-soft:0 4px 20px rgba(0,0,0,.4);--shadow-strong:0 16px 50px rgba(0,0,0,.75);--pitch-line:rgba(0,230,118,.07);--xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa}
-[data-theme="light"]{--bg-color:#eef6f0;--card-bg:#fff;--surface-color:#daeee0;--surface-hover:#c8e4d0;--text-main:#0d2416;--text-muted:#4a7a5c;--text-inverse:#fff;--accent-color:#16a34a;--accent-hover:#15803d;--accent-dim:rgba(22,163,74,.1);--accent-glow:rgba(22,163,74,.3);--danger-color:#dc2626;--border-subtle:rgba(22,163,74,.12);--border-strong:rgba(22,163,74,.25);--glass-bg:rgba(255,255,255,.94);--modal-overlay:rgba(220,235,225,.88);--shadow-soft:0 4px 20px rgba(22,163,74,.12);--shadow-strong:0 16px 50px rgba(22,163,74,.2);--pitch-line:rgba(22,163,74,.1)}
+/* ─── DARK MODE: levemente menos oscuro ─── */
+:root{
+  --bg-color:#0e141b;         /* era #080c10 */
+  --card-bg:#18212c;          /* era #111820 */
+  --surface-color:#1e2936;    /* era #161e28 */
+  --surface-hover:#263445;    /* era #1e2a38 */
+  --text-main:#f0f4f8;
+  --text-muted:#7a8fa6;
+  --text-inverse:#000;
+  --accent-color:#00e676;
+  --accent-hover:#69ff9c;
+  --accent-dim:rgba(0,230,118,.12);
+  --accent-glow:rgba(0,230,118,.35);
+  --danger-color:#ff4757;
+  --border-subtle:rgba(255,255,255,.08);   /* era .06 */
+  --border-strong:rgba(255,255,255,.15);   /* era .12 */
+  --glass-bg:rgba(20,32,46,.88);           /* era rgba(14,22,34,.88) */
+  --modal-overlay:rgba(6,12,20,.92);       /* era rgba(4,8,14,.92) */
+  --shadow-soft:0 4px 20px rgba(0,0,0,.35);
+  --shadow-strong:0 16px 50px rgba(0,0,0,.65);
+  --pitch-line:rgba(0,230,118,.055);       /* era .07 — un poco más sutil */
+  --xp-bronze:#cd7f32;
+  --xp-silver:#9ca3af;
+  --xp-gold:#eab308;
+  --xp-legend:#a78bfa
+}
+[data-theme="light"]{
+  --bg-color:#eef6f0;--card-bg:#fff;--surface-color:#daeee0;--surface-hover:#c8e4d0;
+  --text-main:#0d2416;--text-muted:#4a7a5c;--text-inverse:#fff;--accent-color:#16a34a;
+  --accent-hover:#15803d;--accent-dim:rgba(22,163,74,.1);--accent-glow:rgba(22,163,74,.3);
+  --danger-color:#dc2626;--border-subtle:rgba(22,163,74,.12);--border-strong:rgba(22,163,74,.25);
+  --glass-bg:rgba(255,255,255,.94);--modal-overlay:rgba(220,235,225,.88);
+  --shadow-soft:0 4px 20px rgba(22,163,74,.12);--shadow-strong:0 16px 50px rgba(22,163,74,.2);
+  --pitch-line:rgba(22,163,74,.1)
+}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 html{scroll-behavior:smooth}
 body{background-color:var(--bg-color);color:var(--text-main);padding-bottom:70px;transition:background-color .35s ease,color .35s ease;overflow-x:hidden}
@@ -259,7 +292,7 @@ body>*{position:relative;z-index:1}
 .fut-stat-num{font-weight:900}
 .fut-stat-label{opacity:.7}
 
-/* ── AVATAR PICKER (mejorado) ── */
+/* ── AVATAR PICKER ── */
 .avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:18px;margin-top:14px;width:250px}
 .avatar-picker-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-color);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .avatar-picker-label i{font-size:.9rem}
@@ -293,11 +326,20 @@ body>*{position:relative;z-index:1}
 .calendar-cell{font-size:.78rem;padding:7px 0;background:var(--bg-color);border-radius:7px;color:var(--text-main);font-weight:700;border:2px solid var(--border-subtle);transition:all .2s}
 .calendar-cell.past-done{color:var(--text-muted);opacity:.4;border-color:transparent;background:transparent}
 .calendar-cell.current-active{color:#000;background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 4px 12px var(--accent-glow);transform:scale(1.1)}
-.medals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-.medal-item{display:flex;flex-direction:column;align-items:center;background:var(--bg-color);padding:12px 6px;border-radius:14px;border:2px solid var(--border-subtle);opacity:.3;filter:grayscale(100%);transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
+
+/* ── LOGROS: grilla compacta ── */
+.medals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.medal-item{display:flex;flex-direction:column;align-items:center;background:var(--bg-color);padding:10px 4px;border-radius:14px;border:2px solid var(--border-subtle);opacity:.28;filter:grayscale(100%);transition:all .4s cubic-bezier(.175,.885,.32,1.275);cursor:default;position:relative}
 .medal-item.unlocked{opacity:1;filter:grayscale(0%);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 4px 16px var(--accent-glow);transform:translateY(-3px)}
-.medal-icon{font-size:2rem;margin-bottom:7px}
-.medal-name{font-size:.68rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:.5px;text-align:center}
+.medal-item.rare.unlocked{border-color:#a78bfa;box-shadow:0 4px 20px rgba(167,139,250,.45)}
+.medal-item.epic.unlocked{border-color:#eab308;box-shadow:0 4px 22px rgba(234,179,8,.45)}
+.medal-icon{font-size:1.8rem;margin-bottom:5px}
+.medal-name{font-size:.6rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:.4px;text-align:center;line-height:1.2}
+.medal-req{font-size:.55rem;color:var(--text-muted);text-align:center;margin-top:3px;line-height:1.2;font-weight:600}
+.medal-rarity{position:absolute;top:5px;right:5px;font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:1px 5px;border-radius:20px}
+.medal-item.rare .medal-rarity{background:rgba(167,139,250,.2);color:#a78bfa}
+.medal-item.epic .medal-rarity{background:rgba(234,179,8,.2);color:#eab308}
+.medal-item:not(.rare):not(.epic) .medal-rarity{background:rgba(156,163,175,.15);color:#9ca3af}
 
 #login-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9000;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
 #login-modal-overlay.active{display:flex}
@@ -382,8 +424,9 @@ body>*{position:relative;z-index:1}
   .modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:200px}
   .avatar-grid{grid-template-columns:repeat(5,1fr)}
   .header-level-badge{display:none}
+  .medals-grid{grid-template-columns:repeat(4,1fr)}
 }
-@media(max-width:480px){.tabs-container{grid-template-columns:1fr}}
+@media(max-width:480px){.tabs-container{grid-template-columns:1fr}.medals-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -442,39 +485,6 @@ body>*{position:relative;z-index:1}
       </ul>
       <div class="privacy-section-title">Tipos de Datos que Recopilamos</div>
       <p><strong>Datos Personales:</strong> Al registrarte, podemos solicitarte información identificable como tu nombre completo, dirección de correo electrónico y foto de perfil (cuando usás el inicio de sesión con Google).</p>
-      <p><strong>Datos de Uso:</strong> Se recopilan automáticamente al usar el Servicio. Pueden incluir tu dirección IP, tipo de navegador, páginas visitadas, tiempo de permanencia e identificadores únicos de dispositivo.</p>
-      <div class="privacy-section-title">Registro con Google</div>
-      <p>Cuando te registrás usando tu cuenta de Google, recibimos información de tu perfil de Google (nombre, dirección de correo electrónico y foto de perfil). Esta información se almacena en nuestra base de datos para gestionar tu cuenta y personalizar tu experiencia en Estadios Virtuales.</p>
-      <div class="privacy-section-title">Cookies y Tecnologías de Rastreo</div>
-      <p>Usamos Cookies y tecnologías similares para rastrear la activity en el Servicio.</p>
-      <ul>
-        <li><strong>Cookies Esenciales (Sesión):</strong> Necesarias para el funcionamiento del servicio y autenticación.</li>
-        <li><strong>Cookies de Aceptación (Persistentes):</strong> Identifican si aceptaste el uso de cookies.</li>
-        <li><strong>Cookies de Funcionalidad (Persistentes):</strong> Recuerdan tus preferencias.</li>
-      </ul>
-      <div class="privacy-section-title">Uso de tus Datos Personales</div>
-      <ul>
-        <li>Proveer y mantener el Servicio.</li>
-        <li>Gestionar tu cuenta de usuario y tus puntajes en rankings.</li>
-        <li>Contactarte sobre actualizaciones o comunicaciones del servicio.</li>
-        <li>Análisis de datos e identificación de tendencias de uso.</li>
-      </ul>
-      <div class="privacy-section-title">Retención de Datos</div>
-      <ul>
-        <li><strong>Cuentas de usuario:</strong> Durante la relación activa más hasta 24 meses tras el cierre.</li>
-        <li><strong>Datos de soporte:</strong> Hasta 24 meses desde el cierre del ticket.</li>
-        <li><strong>Datos de uso y analytics:</strong> Hasta 24 meses desde la recopilación.</li>
-      </ul>
-      <div class="privacy-section-title">Transferencia de Datos</div>
-      <p>Tu información puede ser procesada en computadoras ubicadas fuera de tu provincia, país u otra jurisdicción. La Empresa tomará todas las medidas razonablemente necesarias para garantizar que tus datos sean tratados de forma segura.</p>
-      <div class="privacy-section-title">Eliminación de tus Datos</div>
-      <p>Tenés derecho a solicitar la eliminación de tus Datos Personales. Podés contactarnos en cualquier momento a <strong>estadiosvirtuales1@gmail.com</strong> para solicitar acceso, corrección o eliminación de tus datos.</p>
-      <div class="privacy-section-title">Seguridad</div>
-      <p>La seguridad de tus Datos Personales es importante para nosotros, pero recordá que ningún método de transmisión por Internet es 100% seguro.</p>
-      <div class="privacy-section-title">Privacidad de Menores</div>
-      <p>Nuestro Servicio no está dirigido a menores de 16 años.</p>
-      <div class="privacy-section-title">Cambios a esta Política</div>
-      <p>Podemos actualizar esta Política de Privacidad periódicamente. Te notificaremos cualquier cambio publicando la nueva política en esta página.</p>
       <div class="privacy-section-title">Contacto</div>
       <p>Si tenés preguntas sobre esta Política de Privacidad, contactanos en: <strong>estadiosvirtuales1@gmail.com</strong></p>
     </div>
@@ -658,9 +668,35 @@ const NIVELES=[
 
 const AVATAR_EMOJIS=["⚽","🏟️","🥅","🎽","🦅","🦁","🐯","🦊","🌟","🔥","⚡","🎯","🏆","🥇","🎪","🚀","🌎","🎭","🃏","🦋","🌊","⛰️","🎸","🎺","🎩"];
 
-let userStats=JSON.parse(localStorage.getItem('ev_user_stats'))||{votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0};
+let userStats=JSON.parse(localStorage.getItem('ev_user_stats'))||{
+  votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,
+  medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,
+  // logros extendidos
+  guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),
+  topRanking:false,ordenPerfecto:false,primeraVez:false,vuelosAleatorios:0,
+  ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,
+  votadoTodosEstilos:false,nickPersonalizado:false,avatarCambiado:false,
+  sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0
+};
+// Compatibilidad: convertir arrays a Sets si viene de localStorage
+['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{
+  if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);
+  if(!(userStats[k] instanceof Set))userStats[k]=new Set();
+});
 if(userStats.xpTotal===undefined){userStats.xpTotal=userStats.maxScore||0;userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);}
-function guardarStats(){localStorage.setItem('ev_user_stats',JSON.stringify(userStats));}
+
+// Primer acceso
+if(!userStats.primeraVez){userStats.primeraVez=true;}
+userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
+
+function guardarStats(){
+  const toSave={...userStats,
+    ligas5:[...userStats.ligas5],
+    triviasDescubiertas:[...userStats.triviasDescubiertas],
+    ligasExploradas:[...userStats.ligasExploradas]
+  };
+  localStorage.setItem('ev_user_stats',JSON.stringify(toSave));
+}
 
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
 
@@ -773,6 +809,9 @@ function activarLiga(gid,nombre){
   document.getElementById('liga-selector-label').textContent=nombre;
   localStorage.setItem('ev_last_gid',gid);
   cerrarLigasPanel();
+  // Registrar liga explorada para logros
+  userStats.ligasExploradas.add(gid);
+  guardarStats();
   cargarLiga(gid);
 }
 
@@ -897,7 +936,8 @@ function bscarPropiedad(obj,clave){
   return obj[clave]||'';
 }
 
-const COLORES_CLUBES={// ARGENTINA — PRIMERA DIVISIÓN
+const COLORES_CLUBES={
+  // ARGENTINA — PRIMERA DIVISIÓN
             "River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
             "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
             "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
@@ -1102,8 +1142,9 @@ const COLORES_CLUBES={// ARGENTINA — PRIMERA DIVISIÓN
             "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
             "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
             "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
-            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"};
-const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","brasil ":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","qatar":"linear-gradient(135deg,#8d1b3d,#ffffff)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)","méxico":"linear-gradient(135deg,#006341,#ffffff,#c60c30)","mexico":"linear-gradient(135deg,#006341,#ffffff,#c60c30)"};
+            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)""
+};
+const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)"};
 
 function obtenerFondoClub(club,pais){
   if(!club&&!pais)return 'linear-gradient(135deg,#0f1419,#080c10)';
@@ -1185,7 +1226,14 @@ function toggleTriviaPopup(event,el){
   const g=el.querySelector('.trivia-balloon');
   const open=g.classList.contains('active');
   document.querySelectorAll('.trivia-balloon').forEach(x=>x.classList.remove('active'));
-  if(!open){g.classList.add('active');userStats.triviasVistas++;guardarStats();agregarXP(10);}
+  if(!open){
+    g.classList.add('active');
+    userStats.triviasVistas++;
+    const cardTitle=el.closest('.card')?.querySelector('.card-title')?.textContent;
+    if(cardTitle)userStats.triviasDescubiertas.add(cardTitle);
+    guardarStats();
+    agregarXP(10);
+  }
 }
 document.addEventListener('click',()=>document.querySelectorAll('.trivia-balloon').forEach(g=>g.classList.remove('active')));
 
@@ -1221,7 +1269,14 @@ function renderizarTarjetas(lista){
   });
 }
 
-function abrirVideoDesdeCard(event,btn){event.stopPropagation();const c=btn.closest('.card');abrirModalVideo(event,c?.dataset.linkVideo||'#',false);}
+function abrirVideoDesdeCard(event,btn){
+  event.stopPropagation();
+  const c=btn.closest('.card');
+  // Logro vuelo aleatorio manual
+  userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;
+  guardarStats();
+  abrirModalVideo(event,c?.dataset.linkVideo||'#',false);
+}
 
 document.getElementById('global-search').addEventListener('input',function(e){
   const term=e.target.value.toLowerCase().trim();
@@ -1252,6 +1307,8 @@ function dispararVueloAleatorio(e){
   if(!pool.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
   const cv=pool.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&!l.includes('[Pegá tu link');});
   if(!cv.length){showToast('No hay videos disponibles.','ph-warning-circle','danger');return;}
+  userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;
+  guardarStats();
   abrirModalVideo(e,bscarPropiedad(cv[Math.floor(Math.random()*cv.length)],'Link del Video').trim(),false);
 }
 
@@ -1267,6 +1324,8 @@ function iniciarTrivia(){
   if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
   guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];
   pendingScore=null;pendingScoreType=null;
+  userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;
+  guardarStats();
   lanzarRondaGuessr();
 }
 
@@ -1316,7 +1375,8 @@ function procesarArriesgoGuessr(){
   const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
   guessrPuntosTotales+=pts;
   guessrHistorialRondas.push({ronda:guessrRondaActual,estadio:bscarPropiedad(guessrEstadioCorrecto,'Estadio'),distancia:dist,puntos:pts});
-  if(!isNaN(dist)&&dist<5){userStats.medallaLocalista=true;guardarStats();}
+  if(!isNaN(dist)&&dist<5){userStats.medallaLocalista=true;}
+  if(!isNaN(dist)&&dist<1){userStats.guessrUnKm=true;}
   actualizarDotsProgreso();
   guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColor:'#111820',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
   guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:2,dashArray:'6,8'}).addTo(guessrMapInstance);
@@ -1344,7 +1404,14 @@ function finalizarJuegoGuessr(){
   container.style.height='100%';
   document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
   if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}
-  userStats.partidasJugadas++;if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;guardarStats();
+  userStats.partidasJugadas++;
+  if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
+  // Logros por puntaje
+  if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
+  if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
+  // Partida perfecta: todas las rondas > 4000 pts
+  if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;
+  guardarStats();
   agregarXP(guessrPuntosTotales);
   pendingScore=guessrPuntosTotales;pendingScoreType='guessr';
   const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757';
@@ -1515,17 +1582,135 @@ function procesarResultadoOrden(){
   const bonus=Math.max(0,Math.round((60-t)*20));
   let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));
   const base=Math.max(0,5000-(dev*600));
+  // Logro: orden perfecto
+  if(dev===0)userStats.ordenSinFallar=true;
   orderPuntosGanados=Math.round(base+(bonus*(base/5000)));
   pendingScore=orderPuntosGanados;pendingScoreType=orderModo;
   agregarXP(orderPuntosGanados);
+  guardarStats();
   renderJuegoOrden(true);
 }
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
 
+/* ══════════════════════════════════════════════════
+   SISTEMA DE LOGROS EXTENDIDO
+   ══════════════════════════════════════════════════ */
+function calcularLogros(){
+  const s=userStats;
+  return [
+    // ── COMUNES ──
+    {
+      id:'bienvenido', icon:'👋', name:'Primer Despegue', rarity:'common',
+      req:'Abrí la app por primera vez',
+      unlocked: s.sesionesTotal>=1
+    },
+    {
+      id:'voto1', icon:'⭐', name:'Primer Voto', rarity:'common',
+      req:'Calificá un estadio',
+      unlocked: s.votosRealizados>=1
+    },
+    {
+      id:'trivia1', icon:'💡', name:'Curioso', rarity:'common',
+      req:'Descubrí 5 datos curiosos',
+      unlocked: s.triviasVistas>=5
+    },
+    {
+      id:'vuelo1', icon:'✈️', name:'Primera Travesía', rarity:'common',
+      req:'Jugá tu primera partida de StadiumGuessr',
+      unlocked: s.partidasJugadas>=1
+    },
+    {
+      id:'liga1', icon:'🗂️', name:'Explorador', rarity:'common',
+      req:'Visitá 3 ligas distintas',
+      unlocked: s.ligasExploradas.size>=3
+    },
+    {
+      id:'vueloaleatorio', icon:'🎲', name:'A la Aventura', rarity:'common',
+      req:'Usá el Vuelo Aleatorio 3 veces',
+      unlocked: (s.vuelosAleatorios||0)>=3
+    },
+    // ── RAROS ──
+    {
+      id:'localista', icon:'📍', name:'GPS Humano', rarity:'rare',
+      req:'Clavá un pin a menos de 5 km del estadio real',
+      unlocked: s.medallaLocalista
+    },
+    {
+      id:'catador', icon:'🍷', name:'Gran Catador', rarity:'rare',
+      req:'Calificá 10 estadios',
+      unlocked: s.votosRealizados>=10
+    },
+    {
+      id:'trivia10', icon:'🧠', name:'Enciclopedia', rarity:'rare',
+      req:'Descubrí 25 datos curiosos',
+      unlocked: s.triviasVistas>=25
+    },
+    {
+      id:'explorador5', icon:'🌍', name:'Globetrotter', rarity:'rare',
+      req:'Explorá todas las ligas disponibles',
+      unlocked: s.ligasExploradas.size>=10
+    },
+    {
+      id:'guessr5', icon:'🎯', name:'Veterano del Aire', rarity:'rare',
+      req:'Completá 5 partidas de StadiumGuessr',
+      unlocked: s.partidasJugadas>=5
+    },
+    {
+      id:'score10k', icon:'💥', name:'Explosivo', rarity:'rare',
+      req:'Superá 10.000 puntos en una partida de Guessr',
+      unlocked: s.scoreMayor10000
+    },
+    {
+      id:'nick', icon:'🪪', name:'Mi Identidad', rarity:'rare',
+      req:'Personalizá tu apodo en el perfil',
+      unlocked: !!localStorage.getItem('ev_custom_nick')
+    },
+    {
+      id:'avatar', icon:'🎨', name:'Mi Estilo', rarity:'rare',
+      req:'Cambiá tu avatar emoji',
+      unlocked: !!(localStorage.getItem('ev_avatar_emoji') && localStorage.getItem('ev_avatar_emoji')!=='⚽')
+    },
+    // ── ÉPICOS ──
+    {
+      id:'unKm', icon:'🔬', name:'Ojo de Águila', rarity:'epic',
+      req:'Clavá un pin a menos de 1 km del estadio real',
+      unlocked: s.guessrUnKm
+    },
+    {
+      id:'perfecto', icon:'💎', name:'Perfeccionista', rarity:'epic',
+      req:'En Guessr, todas las rondas con más de 4000 pts',
+      unlocked: s.guessrPerfecto
+    },
+    {
+      id:'score20k', icon:'🏅', name:'Leyenda del Radar', rarity:'epic',
+      req:'Superá 20.000 puntos en una partida de Guessr',
+      unlocked: s.scoreMayor20000
+    },
+    {
+      id:'ordenPerfecto', icon:'🃏', name:'Estratega Total', rarity:'epic',
+      req:'Completá un orden sin ningún error',
+      unlocked: s.ordenSinFallar
+    },
+    {
+      id:'guessr15', icon:'👑', name:'El Inmortal', rarity:'epic',
+      req:'Completá 15 partidas de StadiumGuessr',
+      unlocked: s.partidasJugadas>=15
+    },
+    {
+      id:'votos30', icon:'🌠', name:'Árbitro Supremo', rarity:'epic',
+      req:'Calificá 30 estadios distintos',
+      unlocked: s.votosRealizados>=30
+    },
+  ];
+}
+
+/* ══════════════════════════════════════════════════
+   MODAL DE PERFIL
+   ══════════════════════════════════════════════════ */
 function abrirModalPerfil(){
   const u=JSON.parse(localStorage.getItem('ev_user_logged'));
   if(!u)return;
-  const mL=userStats.medallaLocalista,mC=userStats.votosRealizados>=5,mCu=userStats.triviasVistas>=10,mI=userStats.partidasJugadas>=3;
+
   const nivelIdx=calcularNivelIdx(userStats.xpTotal);
   const nivel=NIVELES[nivelIdx];
   const nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
@@ -1535,9 +1720,12 @@ function abrirModalPerfil(){
   const savedEmoji=localStorage.getItem('ev_avatar_emoji')||'⚽';
   const savedNick=localStorage.getItem('ev_custom_nick')||'';
 
-  let avatarD=u.picture&&u.loginMethod==='google'
+  // ── Avatar: Google photo o emoji ──
+  const useGooglePhoto=u.picture&&u.loginMethod==='google';
+  let avatarD=useGooglePhoto
     ?`<img src="${u.picture}" class="fut-user-img">`
-    :`<div class="avatar-emoji-display">${savedEmoji}</div>`;
+    :`<div class="avatar-emoji-display" id="fut-avatar-emoji-display">${savedEmoji}</div>`;
+
   const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:8px;"><i class="ph-fill ph-google-logo"></i> Google</div>`:'';
 
   const emojiOpts=AVATAR_EMOJIS.map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this,'${em}')">${em}</div>`).join('');
@@ -1545,10 +1733,27 @@ function abrirModalPerfil(){
   let calHTML='';
   for(let d=1;d<=30;d++){let cl='calendar-cell';if(d<17)cl+=' past-done';if(d===17)cl+=' current-active';calHTML+=`<div class="${cl}">${d}</div>`;}
 
+  // ── Logros ──
+  const logros=calcularLogros();
+  const totalLogros=logros.length;
+  const desbloqueados=logros.filter(l=>l.unlocked).length;
+  const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
+
+  function medalItem(l){
+    const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
+    return `<div class="medal-item ${l.unlocked?'unlocked':''} ${rarityClass}" title="${l.req}">
+      <span class="medal-rarity">${rarityLabel[l.rarity]}</span>
+      <div class="medal-icon">${l.icon}</div>
+      <div class="medal-name">${l.name}</div>
+      <div class="medal-req">${l.req}</div>
+    </div>`;
+  }
+  const medalsHTML=logros.map(medalItem).join('');
+
   document.getElementById('profile-modal-body').innerHTML=`
   <div class="split-profile-layout">
     <div class="left-fut-column" style="flex-direction:column;gap:14px;">
-      <div class="fut-card ${nivel.cardClass}">
+      <div class="fut-card ${nivel.cardClass}" id="fut-card-main">
         <div class="fut-card-shine"></div>
         <div class="fut-top">
           <div class="fut-badge-meta">
@@ -1561,7 +1766,7 @@ function abrirModalPerfil(){
             <div class="fut-jersey-overlay"><div class="fut-jersey-stripe"></div></div>
           </div>
         </div>
-        <div class="fut-name">${savedNick||u.name.split(' ')[0]}</div>
+        <div class="fut-name" id="fut-name-display">${savedNick||u.name.split(' ')[0]}</div>
         <div class="fut-stats-row">
           <div class="fut-stat-item"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
           <div class="fut-stat-item"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
@@ -1572,7 +1777,7 @@ function abrirModalPerfil(){
       ${googleBadge}
 
       <div class="avatar-picker">
-        <div class="avatar-picker-label"><i class="ph-fill ph-smiley"></i> Tu avatar</div>
+        <div class="avatar-picker-label"><i class="ph-fill ph-smiley"></i> Tu avatar en la carta</div>
         <div class="avatar-grid">${emojiOpts}</div>
         <div class="avatar-divider"></div>
         <label class="avatar-nick-label">Apodo en el ranking</label>
@@ -1611,17 +1816,22 @@ function abrirModalPerfil(){
         </div>
       </div>
 
+      <!-- VITRINA DE LOGROS EXTENDIDA -->
       <div class="geoguessr-dash-box">
-        <div class="dash-title-premium" style="margin-bottom:14px;"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
-        <div class="medals-grid">
-          <div class="medal-item ${mL?'unlocked':''}" title="Pin a menos de 5km del estadio real"><div class="medal-icon">📍</div><div class="medal-name">Localista</div></div>
-          <div class="medal-item ${mC?'unlocked':''}" title="Calificá 5 o más estadios"><div class="medal-icon">⭐</div><div class="medal-name">Catador</div></div>
-          <div class="medal-item ${mCu?'unlocked':''}" title="Descubrí 10 datos curiosos"><div class="medal-icon">💡</div><div class="medal-name">Curioso</div></div>
-          <div class="medal-item ${mI?'unlocked':''}" title="Completá 3 o más partidas"><div class="medal-icon">🏆</div><div class="medal-name">Leyenda</div></div>
+        <div class="dash-header-inline" style="margin-bottom:10px;">
+          <div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
+          <div class="streak-fire-badge" style="color:var(--text-muted);">${desbloqueados}/${totalLogros}</div>
         </div>
+        <div style="font-size:.68rem;color:var(--text-muted);margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap;">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="background:rgba(156,163,175,.2);color:#9ca3af;padding:1px 6px;border-radius:8px;font-weight:800;font-size:.55rem;">Común</span></span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="background:rgba(167,139,250,.2);color:#a78bfa;padding:1px 6px;border-radius:8px;font-weight:800;font-size:.55rem;">Raro</span></span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="background:rgba(234,179,8,.2);color:#eab308;padding:1px 6px;border-radius:8px;font-weight:800;font-size:.55rem;">Épico</span></span>
+          <span style="color:var(--text-muted);font-size:.62rem;">Pasá el mouse para ver cómo desbloquear</span>
+        </div>
+        <div class="medals-grid">${medalsHTML}</div>
       </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:4px;">
         <span style="font-size:.85rem;color:var(--text-muted);font-weight:700;">Nivel: <b style="color:${nivel.color};">${nivel.nombre}</b></span>
         <button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color);border-color:var(--danger-color);padding:8px 16px;font-size:.82rem;">Cerrar sesión</button>
       </div>
@@ -1630,25 +1840,45 @@ function abrirModalPerfil(){
   document.getElementById('profile-modal').style.display='flex';
 }
 
+/* ── Selección de avatar: actualiza carta en tiempo real ── */
 function seleccionarAvatarEmoji(el,emoji){
   document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');
+  // Actualizar la carta FUT en tiempo real (solo si no hay foto de Google)
   const zone=document.getElementById('fut-avatar-zone');
   if(zone){
     const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-    if(!u||u.loginMethod!=='google'||!u.picture){
-      const disp=zone.querySelector('.avatar-emoji-display');
-      if(disp)disp.textContent=emoji;
+    const hasGooglePhoto=u&&u.loginMethod==='google'&&u.picture;
+    if(!hasGooglePhoto){
+      // Buscar o crear el emoji display dentro de la zona del avatar
+      let disp=zone.querySelector('.avatar-emoji-display');
+      if(!disp){
+        // Si había imagen de google y falló, puede no existir; crear nuevo
+        disp=document.createElement('div');
+        disp.className='avatar-emoji-display';
+        // Insertar antes del jersey overlay
+        const jersey=zone.querySelector('.fut-jersey-overlay');
+        if(jersey)zone.insertBefore(disp,jersey);
+        else zone.appendChild(disp);
+      }
+      disp.textContent=emoji;
     }
   }
 }
 
 function guardarPersonalizacion(){
   const opts=document.querySelectorAll('.avatar-opt.selected');
-  if(opts.length)localStorage.setItem('ev_avatar_emoji',opts[0].textContent.trim());
+  if(opts.length){
+    const emoji=opts[0].textContent.trim();
+    localStorage.setItem('ev_avatar_emoji',emoji);
+  }
   const nick=document.getElementById('avatar-nick-input')?.value?.trim();
-  if(nick){localStorage.setItem('ev_custom_nick',nick);const futName=document.querySelector('.fut-name');if(futName)futName.textContent=nick;}
-  showToast('¡Avatar guardado! 🎉');
+  if(nick){
+    localStorage.setItem('ev_custom_nick',nick);
+    const futName=document.getElementById('fut-name-display');
+    if(futName)futName.textContent=nick;
+  }
+  showToast('¡Avatar y apodo guardados! 🎉');
   renderizarBotonLogin();
 }
 
@@ -1669,6 +1899,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   const lastGid=localStorage.getItem('ev_last_gid');
   if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}
   else mostrarLigas();
+  guardarStats(); // guardar sesión inicial
 });
 </script>
 </body>
