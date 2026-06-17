@@ -274,7 +274,6 @@ body>*{position:relative;z-index:1}
 .fut-card.silver{background:linear-gradient(135deg,#9ca3af 0%,#4b5563 50%,#1f2937 100%)}
 .fut-card.gold{background:linear-gradient(135deg,#eab308 0%,#ca8a04 40%,#16a34a 80%,#0c0c0c 100%);animation:goldShine 4s infinite alternate}
 .fut-card.legend{background:linear-gradient(135deg,#6d28d9 0%,#4c1d95 30%,#1e1b4b 60%,#312e81 100%);box-shadow:0 0 40px rgba(139,92,246,.5),0 8px 20px rgba(0,0,0,.4)}
-/* Nuevos temas agregados */
 .fut-card.dark{background:linear-gradient(135deg, #1f2937 0%, #111827 50%, #030712 100%); box-shadow: 0 0 20px rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);}
 .fut-card.neon{background:linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #4338ca 100%); box-shadow: 0 0 30px rgba(255,0,127,0.4); border-color: rgba(255,0,127,0.5);}
 .fut-card.retro{background:linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%); color: #000; box-shadow: 0 0 20px rgba(245,158,11,0.3); border-color: rgba(245,158,11,0.5);}
@@ -292,9 +291,17 @@ body>*{position:relative;z-index:1}
 .fut-club-icon{width:28px;height:28px;margin-top:8px;object-fit:contain}
 .fut-avatar-container{width:70%;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
 .avatar-emoji-head{font-size:4rem;z-index:5;margin-bottom:22px;animation:avatarGlow 3s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.4));user-select:none;}
-/* Cuerpo humanoide con clip-path y cuello explícito */
-.fut-jersey-overlay{position:absolute;bottom:0;width:150px;height:65px;background:linear-gradient(180deg, var(--accent-color) 0%, #111 100%);clip-path:polygon(25% 0%, 75% 0%, 100% 40%, 90% 100%, 10% 100%, 0% 40%);z-index:4;display:flex;justify-content:center;}
-.fut-jersey-neck{width:40px;height:18px;background:#1a2233;border-radius:0 0 20px 20px;}
+
+/* ── AVATAR BODY: cuerpo humanizado con torso, cuello y brazos ── */
+.fut-body-wrapper{position:absolute;bottom:0;width:160px;height:88px;z-index:4;display:flex;flex-direction:column;align-items:center;}
+.fut-neck{width:22px;height:16px;background:rgba(26,34,51,0.85);border-radius:0 0 8px 8px;flex-shrink:0;}
+.fut-torso-row{display:flex;align-items:flex-start;width:100%;}
+.fut-arm{width:26px;height:52px;background:linear-gradient(180deg,var(--accent-color) 0%,color-mix(in srgb,var(--accent-color) 60%,#000) 100%);flex-shrink:0;}
+.fut-arm.left{border-radius:6px 0 8px 14px;transform-origin:top right;transform:rotate(-8deg);}
+.fut-arm.right{border-radius:0 6px 14px 8px;transform-origin:top left;transform:rotate(8deg);}
+.fut-torso{flex:1;height:58px;background:linear-gradient(180deg,var(--accent-color) 0%,color-mix(in srgb,var(--accent-color) 50%,#111) 100%);border-radius:4px 4px 0 0;display:flex;align-items:center;justify-content:center;}
+.fut-number{font-size:1.1rem;font-weight:900;color:rgba(0,0,0,0.35);font-family:'Arial Black',Gadget,sans-serif;user-select:none;}
+
 .fut-name{width:100%;text-align:center;font-size:1.1rem;font-weight:900;margin:8px 0;text-transform:uppercase;letter-spacing:-.5px;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fut-stats-row{display:grid;grid-template-columns:repeat(2,1fr);width:90%;font-size:.85rem;gap:4px 15px;margin-top:5px}
 .fut-stat-item{display:flex;gap:6px;justify-content:center}
@@ -882,11 +889,8 @@ window.mostrarLigas=function(){
   document.getElementById('btn-volver-ligas').style.display='none';
   document.getElementById('liga-elegida-badge').style.display='none';
   document.getElementById('texto-titulo-grilla').textContent='EXPLORÁ EL CATÁLOGO';
-  
-  // Resetea el texto del botón al salir de la liga
   const labelLiga = document.getElementById('liga-selector-label');
   if(labelLiga) labelLiga.textContent = 'Elegir liga';
-
   document.getElementById('global-search').value='';
   document.querySelector('.grid').innerHTML='';
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -928,7 +932,7 @@ function manejarRespuestaGoogle(response){
   const user={id:payload.sub,name:payload.name,email:payload.email,picture:payload.picture,loginMethod:'google'};
   localStorage.setItem('ev_user_logged',JSON.stringify(user));
   registrarUsuarioEnSheets(user);
-  cargarStats(); // Recargar stats ahora que hay un usuario logueado
+  cargarStats();
   cerrarLoginModal();
   renderizarBotonLogin();
   showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
@@ -1083,7 +1087,10 @@ function cerrarModalVideo(){
   document.getElementById('modal-video-container').innerHTML='';
   document.getElementById('game-ui').style.display='none';
   document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-  if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}
+  try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
+  try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}
+  try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}
+  try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
   guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
 }
 
@@ -1154,8 +1161,6 @@ function renderizarTarjetas(lista){
     const prom=parseFloat(bscarPropiedad(fila,'Promedio'))||0;
     const vL=obtenerVotoLocal(estadio);
     const est=vL>0?vL:(prom/2);
-    
-    // Sanitización para prevenir rotura del HTML al inyectar atributos
     const estadioSafe = estadio.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     const clubSafe = club.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     const paisSafe = pais.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -1246,13 +1251,17 @@ function lanzarRondaGuessr(){
   const btn=document.getElementById('game-action-btn');
   btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;
   btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.style.background='';btn.style.color='';btn.style.boxShadow='';
+  btn.setAttribute('data-estado','juego');
+  btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
   abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
   setTimeout(()=>{
     if(guessrMapInstance)guessrMapInstance.remove();
-    guessrMapInstance=L.map('map-guess-container',{attributionControl:false,zoomControl:false}).setView([20,0],1);
+    const mapContainer=document.getElementById('map-guess-container');
+    if(!mapContainer)return;
+    guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
     guessrMapInstance.on('click',e=>{
-      if(btn.getAttribute('data-estado')==='resultado')return;
+      if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;
       guessrSelectedLatLng=e.latlng;
       if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);
       else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
@@ -1262,14 +1271,15 @@ function lanzarRondaGuessr(){
       btn.className="btn-3d primary";btn.disabled=false;
     });
     guessrMapInstance.invalidateSize();
-  },400);
-  btn.setAttribute('data-estado','juego');
-  btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
+    setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
+  },600);
 }
 
 function procesarArriesgoGuessr(){
   const btn=document.getElementById('game-action-btn');
-  btn.setAttribute('data-estado','resultado');
+  if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;
+  btn.setAttribute('data-estado','procesando');
+  btn.disabled=true;
   const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.'));
   const tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
   const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);
@@ -1290,10 +1300,12 @@ function procesarArriesgoGuessr(){
   if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}
   else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}
   else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
+  btn.setAttribute('data-estado','resultado');
+  btn.disabled=false;
 }
 
 function avanzarDeRondaGuessr(){
-  [guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{if(m)m.remove();});
+  [guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});
   guessrUserMarker=guessrTargetMarker=guessrPolyline=null;
   guessrRondaActual++;
   guessrRondaActual<=5?lanzarRondaGuessr():finalizarJuegoGuessr();
@@ -1304,7 +1316,7 @@ function finalizarJuegoGuessr(){
   document.getElementById('game-ui').style.display='none';
   container.style.height='100%';
   document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-  if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}
+  if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
   userStats.partidasJugadas++;
   if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
   if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
@@ -1518,7 +1530,7 @@ function calcularLogros(){
 
   const addInfiniteTier = (id, icon, baseName, reqText, currentVal, step, isEpic=false, unit='') => {
     let maxUnlockedTier = Math.floor(currentVal / step);
-    let limit = Math.min(maxUnlockedTier, 50); // Límite por seguridad
+    let limit = Math.min(maxUnlockedTier, 50);
     for(let i=1; i<=limit; i++){
       let rarity = isEpic ? 'epic' : (i < 3 ? 'common' : (i < 6 ? 'rare' : 'epic'));
       logros.push({
@@ -1546,7 +1558,6 @@ function calcularLogros(){
   addInfiniteTier('racha', '🔥', 'Constante', 'Mantené racha de', s.rachaActual||1, 5, false, ' días');
   addInfiniteTier('maxscore', '💥', 'Puntaje Récord', 'Alcanzá', s.maxScore||0, 5000, true, ' pts');
 
-  // Logros únicos
   logros.push({id:'bienvenido', icon:'👋', name:'Primer Despegue', rarity:'common', req:'Abrí la app por primera vez', unlocked: s.sesionesTotal>=1});
   logros.push({id:'nick', icon:'🪪', name:'Identidad', rarity:'common', req:'Personalizá tu apodo', unlocked: !!getPref('ev_custom_nick', '')});
   logros.push({id:'avatar', icon:'🎨', name:'Estilo Propio', rarity:'rare', req:'Cambiá tu avatar o diseño', unlocked: !!(getPref('ev_avatar_emoji', '') && getPref('ev_avatar_emoji', '')!=='⚽')});
@@ -1579,8 +1590,6 @@ function abrirModalPerfil(){
 
   const activeCardClass = savedTheme === 'auto' ? nivel.cardClass : savedTheme;
 
-  // Cabeza del Avatar (Emoji)
-  let avatarD=`<div class="avatar-emoji-head" id="fut-avatar-emoji-display" title="Avatar Elegido">${savedEmoji}</div>`;
   const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:8px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
 
   const emojiOpts=AVATAR_EMOJIS.map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this,'${em}')">${em}</div>`).join('');
@@ -1616,9 +1625,14 @@ function abrirModalPerfil(){
             <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon" onerror="this.style.display='none';">
           </div>
           <div class="fut-avatar-container" id="fut-avatar-zone">
-            ${avatarD}
-            <div class="fut-jersey-overlay">
-              <div class="fut-jersey-neck"></div>
+            <div class="avatar-emoji-head" id="fut-avatar-emoji-display" title="Avatar Elegido">${savedEmoji}</div>
+            <div class="fut-body-wrapper">
+              <div class="fut-neck"></div>
+              <div class="fut-torso-row">
+                <div class="fut-arm left"></div>
+                <div class="fut-torso"><span class="fut-number">10</span></div>
+                <div class="fut-arm right"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1743,19 +1757,8 @@ function abrirModalPerfil(){
 function seleccionarAvatarEmoji(el,emoji){
   document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');
-  const zone=document.getElementById('fut-avatar-zone');
-  if(zone){
-    let disp=zone.querySelector('.avatar-emoji-head');
-    if(!disp){
-      disp=document.createElement('div');
-      disp.className='avatar-emoji-head';
-      disp.id='fut-avatar-emoji-display';
-      const jersey=zone.querySelector('.fut-jersey-overlay');
-      if(jersey)zone.insertBefore(disp,jersey);
-      else zone.appendChild(disp);
-    }
-    disp.textContent=emoji;
-  }
+  const disp=document.getElementById('fut-avatar-emoji-display');
+  if(disp)disp.textContent=emoji;
 }
 
 function guardarPersonalizacion(){
@@ -1781,13 +1784,24 @@ function guardarPersonalizacion(){
   }
   showToast('¡Personalización guardada! 🎉');
   renderizarBotonLogin();
-  setTimeout(()=>abrirModalPerfil(), 10);
+  actualizarHeaderNivel();
+  // Actualizar OVR en carta si cambió de nivel
+  const futOvr=document.querySelector('.fut-ovr');
+  if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
+  // Actualizar tema de la carta sin reconstruir el modal
+  const cardEl=document.getElementById('fut-card-main');
+  if(cardEl){
+    const th=getPref('ev_card_theme','auto');
+    const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+    const cls=th==='auto'?n.cardClass:th;
+    cardEl.className='fut-card '+cls;
+  }
 }
 
 function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
 function cerrarSesion(){
   localStorage.removeItem('ev_user_logged');
-  cargarStats(); // Reinicia el perfil a modo invitado independiente
+  cargarStats();
   cerrarModalPerfil();
   renderizarBotonLogin();
   showToast('¡Hasta la próxima!','ph-hand-waving');
