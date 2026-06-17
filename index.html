@@ -640,6 +640,14 @@ body>*{position:relative;z-index:1}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script>
+// Solución al problema de carga de iconos por defecto de Leaflet a través de CDN
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+
 const baseSpreadsheetUrl="https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
 const scriptUrlVotos="https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
 const scriptUrlRanking="https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
@@ -671,21 +679,20 @@ const AVATAR_EMOJIS=["⚽","🏟️","🥅","🎽","🦅","🦁","🐯","🦊","
 let userStats=JSON.parse(localStorage.getItem('ev_user_stats'))||{
   votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,
   medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,
-  // logros extendidos
   guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),
   topRanking:false,ordenPerfecto:false,primeraVez:false,vuelosAleatorios:0,
   ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,
   votadoTodosEstilos:false,nickPersonalizado:false,avatarCambiado:false,
   sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0
 };
-// Compatibilidad: convertir arrays a Sets si viene de localStorage
-['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{
-  if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);
-  if(!(userStats[k] instanceof Set))userStats[k]=new Set();
-});
-if(userStats.xpTotal===undefined){userStats.xpTotal=userStats.maxScore||0;userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);}
 
-// Primer acceso
+// Conversión segura de Arrays a Sets
+['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{
+  if(Array.isArray(userStats[k])) userStats[k]=new Set(userStats[k]);
+  if(!(userStats[k] instanceof Set)) userStats[k]=new Set();
+});
+
+if(userStats.xpTotal===undefined){userStats.xpTotal=userStats.maxScore||0;userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);}
 if(!userStats.primeraVez){userStats.primeraVez=true;}
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 
@@ -809,7 +816,6 @@ function activarLiga(gid,nombre){
   document.getElementById('liga-selector-label').textContent=nombre;
   localStorage.setItem('ev_last_gid',gid);
   cerrarLigasPanel();
-  // Registrar liga explorada para logros
   userStats.ligasExploradas.add(gid);
   guardarStats();
   cargarLiga(gid);
@@ -1053,13 +1059,19 @@ function renderizarTarjetas(lista){
     const prom=parseFloat(bscarPropiedad(fila,'Promedio'))||0;
     const vL=obtenerVotoLocal(estadio);
     const est=vL>0?vL:(prom/2);
+    
+    // Sanitización para prevenir rotura del HTML al inyectar atributos
+    const estadioSafe = estadio.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const clubSafe = club.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const paisSafe = pais.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
     let estrellasHTML='';
-    for(let i=1;i<=5;i++){let ic='ph-duotone ph-star';if(i<=Math.floor(est))ic='ph-fill ph-star active';else if(i===Math.ceil(est)&&(est%1>=.5))ic='ph-fill ph-star-half active';estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadio}" data-club="${club}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;}
+    for(let i=1;i<=5;i++){let ic='ph-duotone ph-star';if(i<=Math.floor(est))ic='ph-fill ph-star active';else if(i===Math.ceil(est)&&(est%1>=.5))ic='ph-fill ph-star-half active';estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadioSafe}" data-club="${clubSafe}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;}
     const lRating=vL>0?`Tu voto: ${vL}★${prom>0?` · prom. ${prom.toFixed(1)}/10`:''}`:prom>0?`Calificá · prom. ${prom.toFixed(1)}/10`:'Calificá este estadio';
-    const imgHTML=urlFoto?`<img class="card-img-logo" src="${urlFoto}" alt="${club}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>`:`<div class="placeholder-text">${club}</div>`;
+    const imgHTML=urlFoto?`<img class="card-img-logo" src="${urlFoto}" alt="${clubSafe}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>`:`<div class="placeholder-text">${club}</div>`;
     const t=document.createElement('article');
     t.className='card animate-fade-up';t.style.animationDelay=`${idx*.04}s`;t.dataset.linkVideo=linkVideo;
-    t.innerHTML=`<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadio}" data-pais="${pais}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="rating-box"><span class="rating-title">${lRating}</span><div class="stars-row">${estrellasHTML}</div></div></div>`;
+    t.innerHTML=`<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="rating-box"><span class="rating-title">${lRating}</span><div class="stars-row">${estrellasHTML}</div></div></div>`;
     gr.appendChild(t);
   });
 }
@@ -1067,7 +1079,6 @@ function renderizarTarjetas(lista){
 function abrirVideoDesdeCard(event,btn){
   event.stopPropagation();
   const c=btn.closest('.card');
-  // Logro vuelo aleatorio manual
   userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;
   guardarStats();
   abrirModalVideo(event,c?.dataset.linkVideo||'#',false);
@@ -1201,10 +1212,8 @@ function finalizarJuegoGuessr(){
   if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}
   userStats.partidasJugadas++;
   if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
-  // Logros por puntaje
   if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
   if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
-  // Partida perfecta: todas las rondas > 4000 pts
   if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;
   guardarStats();
   agregarXP(guessrPuntosTotales);
@@ -1377,7 +1386,6 @@ function procesarResultadoOrden(){
   const bonus=Math.max(0,Math.round((60-t)*20));
   let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));
   const base=Math.max(0,5000-(dev*600));
-  // Logro: orden perfecto
   if(dev===0)userStats.ordenSinFallar=true;
   orderPuntosGanados=Math.round(base+(bonus*(base/5000)));
   pendingScore=orderPuntosGanados;pendingScoreType=orderModo;
@@ -1393,7 +1401,6 @@ function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=or
 function calcularLogros(){
   const s=userStats;
   return [
-    // ── COMUNES ──
     {
       id:'bienvenido', icon:'👋', name:'Primer Despegue', rarity:'common',
       req:'Abrí la app por primera vez',
@@ -1424,7 +1431,6 @@ function calcularLogros(){
       req:'Usá el Vuelo Aleatorio 3 veces',
       unlocked: (s.vuelosAleatorios||0)>=3
     },
-    // ── RAROS ──
     {
       id:'localista', icon:'📍', name:'GPS Humano', rarity:'rare',
       req:'Clavá un pin a menos de 5 km del estadio real',
@@ -1465,7 +1471,6 @@ function calcularLogros(){
       req:'Cambiá tu avatar emoji',
       unlocked: !!(localStorage.getItem('ev_avatar_emoji') && localStorage.getItem('ev_avatar_emoji')!=='⚽')
     },
-    // ── ÉPICOS ──
     {
       id:'unKm', icon:'🔬', name:'Ojo de Águila', rarity:'epic',
       req:'Clavá un pin a menos de 1 km del estadio real',
@@ -1515,7 +1520,6 @@ function abrirModalPerfil(){
   const savedEmoji=localStorage.getItem('ev_avatar_emoji')||'⚽';
   const savedNick=localStorage.getItem('ev_custom_nick')||'';
 
-  // ── Avatar: Google photo o emoji ──
   const useGooglePhoto=u.picture&&u.loginMethod==='google';
   let avatarD=useGooglePhoto
     ?`<img src="${u.picture}" class="fut-user-img">`
@@ -1528,7 +1532,6 @@ function abrirModalPerfil(){
   let calHTML='';
   for(let d=1;d<=30;d++){let cl='calendar-cell';if(d<17)cl+=' past-done';if(d===17)cl+=' current-active';calHTML+=`<div class="${cl}">${d}</div>`;}
 
-  // ── Logros ──
   const logros=calcularLogros();
   const totalLogros=logros.length;
   const desbloqueados=logros.filter(l=>l.unlocked).length;
@@ -1611,7 +1614,6 @@ function abrirModalPerfil(){
         </div>
       </div>
 
-      <!-- VITRINA DE LOGROS EXTENDIDA -->
       <div class="geoguessr-dash-box">
         <div class="dash-header-inline" style="margin-bottom:10px;">
           <div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
@@ -1635,23 +1637,18 @@ function abrirModalPerfil(){
   document.getElementById('profile-modal').style.display='flex';
 }
 
-/* ── Selección de avatar: actualiza carta en tiempo real ── */
 function seleccionarAvatarEmoji(el,emoji){
   document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));
   el.classList.add('selected');
-  // Actualizar la carta FUT en tiempo real (solo si no hay foto de Google)
   const zone=document.getElementById('fut-avatar-zone');
   if(zone){
     const u=JSON.parse(localStorage.getItem('ev_user_logged'));
     const hasGooglePhoto=u&&u.loginMethod==='google'&&u.picture;
     if(!hasGooglePhoto){
-      // Buscar o crear el emoji display dentro de la zona del avatar
       let disp=zone.querySelector('.avatar-emoji-display');
       if(!disp){
-        // Si había imagen de google y falló, puede no existir; crear nuevo
         disp=document.createElement('div');
         disp.className='avatar-emoji-display';
-        // Insertar antes del jersey overlay
         const jersey=zone.querySelector('.fut-jersey-overlay');
         if(jersey)zone.insertBefore(disp,jersey);
         else zone.appendChild(disp);
@@ -1694,7 +1691,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   const lastGid=localStorage.getItem('ev_last_gid');
   if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}
   else mostrarLigas();
-  guardarStats(); // guardar sesión inicial
+  guardarStats(); 
 });
 </script>
 </body>
