@@ -138,7 +138,6 @@ body>*{position:relative;z-index:1}
 .btn-login:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0a7a3a,0 10px 20px var(--accent-glow);background:var(--accent-hover)}
 .hero-profile-wrapper{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px 6px 6px;border-radius:50px;border:2px solid var(--border-strong);background:var(--surface-color);transition:all .25s;box-shadow:0 2px 0 rgba(0,0,0,.2)}
 .hero-profile-wrapper:hover{border-color:var(--accent-color);background:var(--accent-dim);transform:translateY(-1px)}
-.hero-profile-avatar{width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:#1a2a1a;box-shadow:0 0 8px var(--accent-glow);}
 .hero-profile-name{font-size:.85rem;font-weight:700;color:var(--text-main);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hero-profile-sub{font-size:.68rem;color:var(--accent-color);font-weight:700;display:flex;align-items:center;gap:3px}
 
@@ -282,9 +281,9 @@ body>*{position:relative;z-index:1}
 .fut-pos{font-size:.8rem;font-weight:bold;text-transform:uppercase;opacity:.8}
 .fut-club-icon{width:28px;height:28px;margin-top:8px;object-fit:contain}
 .fut-avatar-container{width:70%;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
-.avatar-emoji-display{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,rgba(0,0,0,.4),rgba(255,255,255,.05));display:flex;align-items:center;justify-content:center;font-size:3.5rem;z-index:5;margin-bottom:25px;border:4px solid rgba(255,255,255,.6);box-shadow:0 4px 10px rgba(0,0,0,.3);animation:avatarGlow 3s ease-in-out infinite}
-.fut-jersey-overlay{position:absolute;bottom:0;width:100px;height:50px;background:linear-gradient(0deg,#111 0%,#333 100%);border-radius:40px 40px 0 0;z-index:4;border:2px solid var(--accent-color);border-bottom:none}
-.fut-jersey-stripe{position:absolute;top:0;left:42px;width:16px;height:100%;background:rgba(255,255,255,.8)}
+.avatar-emoji-head{font-size:4rem;z-index:5;margin-bottom:22px;animation:avatarGlow 3s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.4));user-select:none;}
+.fut-jersey-overlay{position:absolute;bottom:0;width:140px;height:55px;background:linear-gradient(0deg,#111 0%,var(--accent-hover) 100%);border-radius:70px 70px 0 0;z-index:4;box-shadow:inset 0 -10px 20px rgba(0,0,0,0.7);border:2px solid var(--accent-color);border-bottom:none;}
+.fut-jersey-overlay::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:35px;height:18px;background:#1a2233;border-radius:0 0 20px 20px;box-shadow:inset 0 3px 5px rgba(0,0,0,0.5);border:2px solid var(--accent-color);border-top:none;}
 .fut-name{width:100%;text-align:center;font-size:1.1rem;font-weight:900;margin:8px 0;text-transform:uppercase;letter-spacing:-.5px;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fut-stats-row{display:grid;grid-template-columns:repeat(2,1fr);width:90%;font-size:.85rem;gap:4px 15px;margin-top:5px}
 .fut-stat-item{display:flex;gap:6px;justify-content:center}
@@ -326,20 +325,21 @@ body>*{position:relative;z-index:1}
 .calendar-cell.past-done{color:var(--text-muted);opacity:.4;border-color:transparent;background:transparent}
 .calendar-cell.current-active{color:#000;background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 4px 12px var(--accent-glow);transform:scale(1.1)}
 
-/* ── LOGROS: grilla expansiva ── */
+/* ── LOGROS: grilla expansiva con descripciones en hover ── */
 .medals-grid-wrapper{max-height:300px;overflow-y:auto;padding-right:5px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;}
 .medals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.medal-item{display:flex;flex-direction:column;align-items:center;background:var(--bg-color);padding:10px 4px;border-radius:14px;border:2px solid var(--border-subtle);opacity:.28;filter:grayscale(100%);transition:all .4s cubic-bezier(.175,.885,.32,1.275);cursor:default;position:relative}
-.medal-item.unlocked{opacity:1;filter:grayscale(0%);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 4px 16px var(--accent-glow);transform:translateY(-3px)}
-.medal-item.rare.unlocked{border-color:#a78bfa;box-shadow:0 4px 20px rgba(167,139,250,.45)}
-.medal-item.epic.unlocked{border-color:#eab308;box-shadow:0 4px 22px rgba(234,179,8,.45)}
-.medal-icon{font-size:1.8rem;margin-bottom:5px}
-.medal-name{font-size:.6rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:.4px;text-align:center;line-height:1.2}
-.medal-req{font-size:.55rem;color:var(--text-muted);text-align:center;margin-top:3px;line-height:1.2;font-weight:600}
-.medal-rarity{position:absolute;top:5px;right:5px;font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:1px 5px;border-radius:20px}
-.medal-item.rare .medal-rarity{background:rgba(167,139,250,.2);color:#a78bfa}
-.medal-item.epic .medal-rarity{background:rgba(234,179,8,.2);color:#eab308}
-.medal-item:not(.rare):not(.epic) .medal-rarity{background:rgba(156,163,175,.15);color:#9ca3af}
+.medal-item{display:flex;flex-direction:column;align-items:center;background:var(--bg-color);padding:14px 4px;border-radius:14px;border:2px solid var(--border-subtle);opacity:.28;filter:grayscale(100%);transition:all .4s cubic-bezier(.175,.885,.32,1.275);cursor:default;position:relative;}
+.medal-item.unlocked{opacity:1;filter:grayscale(0%);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 4px 16px var(--accent-glow);transform:translateY(-3px);}
+.medal-item.rare.unlocked{border-color:#a78bfa;box-shadow:0 4px 20px rgba(167,139,250,.45);}
+.medal-item.epic.unlocked{border-color:#eab308;box-shadow:0 4px 22px rgba(234,179,8,.45);}
+.medal-icon{font-size:1.8rem;margin-bottom:5px;}
+.medal-name{font-size:.6rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:.4px;text-align:center;line-height:1.2;}
+.medal-req{font-size:.55rem;color:var(--text-muted);text-align:center;line-height:1.3;font-weight:600;opacity:0;max-height:0;overflow:hidden;transition:all 0.3s ease;margin-top:0;}
+.medal-item:hover .medal-req{opacity:1;max-height:40px;margin-top:6px;}
+.medal-rarity{position:absolute;top:5px;right:5px;font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:1px 5px;border-radius:20px;}
+.medal-item.rare .medal-rarity{background:rgba(167,139,250,.2);color:#a78bfa;}
+.medal-item.epic .medal-rarity{background:rgba(234,179,8,.2);color:#eab308;}
+.medal-item:not(.rare):not(.epic) .medal-rarity{background:rgba(156,163,175,.15);color:#9ca3af;}
 
 #login-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9000;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
 #login-modal-overlay.active{display:flex}
@@ -620,9 +620,9 @@ body>*{position:relative;z-index:1}
 </div>
 
 <div id="order-modal" class="modal-overlay" onclick="cerrarModalOrden()">
-  <div class="modal-content" style="max-width:580px;height:85vh;padding:25px;overflow-y:auto;" onclick="event.stopPropagation()">
+  <div class="modal-content" style="max-width:580px;height:85vh;padding:20px 25px;display:flex;flex-direction:column;" onclick="event.stopPropagation()">
     <button class="close-btn" onclick="cerrarModalOrden()"><i class="ph-bold ph-x"></i></button>
-    <div id="order-modal-body" style="height:100%;display:flex;flex-direction:column;justify-content:space-between;"></div>
+    <div id="order-modal-body" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;"></div>
   </div>
 </div>
 
@@ -676,12 +676,11 @@ const NIVELES = (function(){
   const baseNames = ["Amateur", "Promesa", "Pibe", "Reserva", "Volante", "Enganche", "Goleador", "Crack", "Ídolo", "Capitán", "Galáctico", "Leyenda", "Inmortal", "Mito", "Dios del Fútbol"];
 
   for (let i = 0; i < 1000; i++) {
-    // La fórmula hace que los primeros niveles sean fáciles y los últimos requieran altísima experiencia
     let xpReq = i === 0 ? 0 : Math.floor(1000 * Math.pow(i, 1.4)); 
     let nextXpReq = Math.floor(1000 * Math.pow(i + 1, 1.4));
     
     let ovr = Math.min(99, 50 + Math.floor(i * 1.5));
-    if (i > 32) ovr = 99 + (i - 32); // Puede superar 99 si juega muchísimo
+    if (i > 32) ovr = 99 + (i - 32);
 
     let tierIndex = Math.floor(i / 5);
     let name = (baseNames[Math.min(tierIndex, baseNames.length - 1)]) + (i > 0 ? ` Lvl ${i}` : "");
@@ -700,39 +699,85 @@ const NIVELES = (function(){
       cssClass: baseClasses[colorIdx] || "level-leyenda"
     });
   }
-  n[999].max = Infinity; // Último límite
+  n[999].max = Infinity;
   return n;
 })();
 
 const AVATAR_EMOJIS=["⚽","🏟️","🥅","🎽","🦅","🦁","🐯","🦊","🌟","🔥","⚡","🎯","🏆","🥇","🎪","🚀","🌎","🎭","🃏","🦋","🌊","⛰️","🎸","🎺","🎩"];
 
-let userStats=JSON.parse(localStorage.getItem('ev_user_stats'))||{
-  votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,
-  medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,
-  guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),
-  topRanking:false,ordenPerfecto:false,primeraVez:false,vuelosAleatorios:0,
-  ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,
-  votadoTodosEstilos:false,nickPersonalizado:false,avatarCambiado:false,
-  sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0
-};
+/* ══════════════════════════════════════════════════
+   SISTEMA DE GUARDADO (Invitado vs Conectado)
+   ══════════════════════════════════════════════════ */
+function getUserId() {
+  const u = JSON.parse(localStorage.getItem('ev_user_logged'));
+  return u ? u.id : 'guest';
+}
+function getPref(key, def) {
+  const id = getUserId();
+  return localStorage.getItem(key + '_' + id) || def;
+}
+function setPref(key, val) {
+  const id = getUserId();
+  localStorage.setItem(key + '_' + id, val);
+}
 
-// Conversión segura de Arrays a Sets
-['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{
-  if(Array.isArray(userStats[k])) userStats[k]=new Set(userStats[k]);
-  if(!(userStats[k] instanceof Set)) userStats[k]=new Set();
-});
+let userStats = {};
 
-if(userStats.xpTotal===undefined){userStats.xpTotal=userStats.maxScore||0;userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);}
-if(!userStats.primeraVez){userStats.primeraVez=true;}
-userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
+function migrarStatsAntiguos() {
+  if (!localStorage.getItem('ev_migrated_v2')) {
+    const oldStats = localStorage.getItem('ev_user_stats');
+    if (oldStats) {
+      localStorage.setItem('ev_user_stats_guest', oldStats);
+      const u = JSON.parse(localStorage.getItem('ev_user_logged'));
+      if(u) localStorage.setItem('ev_user_stats_' + u.id, oldStats);
+    }
+    const e = localStorage.getItem('ev_avatar_emoji');
+    const n = localStorage.getItem('ev_custom_nick');
+    const p = localStorage.getItem('ev_user_pos');
+    const id = getUserId();
+    if(e) localStorage.setItem('ev_avatar_emoji_' + id, e);
+    if(n) localStorage.setItem('ev_custom_nick_' + id, n);
+    if(p) localStorage.setItem('ev_user_pos_' + id, p);
+    localStorage.setItem('ev_migrated_v2', 'true');
+  }
+}
+migrarStatsAntiguos();
 
-function guardarStats(){
-  const toSave={...userStats,
+function cargarStats() {
+  const id = getUserId();
+  const stored = localStorage.getItem('ev_user_stats_' + id);
+  if (stored) {
+    userStats = JSON.parse(stored);
+  } else {
+    userStats = {
+      votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,
+      medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,
+      guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),
+      topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,
+      ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,
+      votadoTodosEstilos:false,nickPersonalizado:false,avatarCambiado:false,
+      sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0
+    };
+  }
+  
+  ['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{
+    if(Array.isArray(userStats[k])) userStats[k]=new Set(userStats[k]);
+    if(!(userStats[k] instanceof Set)) userStats[k]=new Set();
+  });
+  if(userStats.xpTotal===undefined) userStats.xpTotal = userStats.maxScore || 0;
+  userStats.nivelActual = calcularNivelIdx(userStats.xpTotal);
+  userStats.sesionesTotal = (userStats.sesionesTotal || 0) + 1;
+}
+cargarStats();
+
+function guardarStats() {
+  const id = getUserId();
+  const toSave = {...userStats,
     ligas5:[...userStats.ligas5],
     triviasDescubiertas:[...userStats.triviasDescubiertas],
     ligasExploradas:[...userStats.ligasExploradas]
   };
-  localStorage.setItem('ev_user_stats',JSON.stringify(toSave));
+  localStorage.setItem('ev_user_stats_' + id, JSON.stringify(toSave));
 }
 
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
@@ -753,7 +798,7 @@ function actualizarHeaderNivel(){
   const dot=document.getElementById('header-level-dot');
   const label=document.getElementById('header-level-label');
   const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
-  const userPos = localStorage.getItem('ev_user_pos') || 'DT';
+  const userPos = getPref('ev_user_pos', 'DT');
   if(badge&&dot&&label){badge.style.display='flex';dot.style.background=nivel.color;dot.style.boxShadow=`0 0 6px ${nivel.color}`;label.textContent=nivel.emoji+' '+userPos;}
 }
 
@@ -824,6 +869,11 @@ window.mostrarLigas=function(){
   document.getElementById('btn-volver-ligas').style.display='none';
   document.getElementById('liga-elegida-badge').style.display='none';
   document.getElementById('texto-titulo-grilla').textContent='EXPLORÁ EL CATÁLOGO';
+  
+  // Resetea el texto del botón al salir de la liga
+  const labelLiga = document.getElementById('liga-selector-label');
+  if(labelLiga) labelLiga.textContent = 'Elegir liga';
+
   document.getElementById('global-search').value='';
   document.querySelector('.grid').innerHTML='';
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -865,6 +915,7 @@ function manejarRespuestaGoogle(response){
   const user={id:payload.sub,name:payload.name,email:payload.email,picture:payload.picture,loginMethod:'google'};
   localStorage.setItem('ev_user_logged',JSON.stringify(user));
   registrarUsuarioEnSheets(user);
+  cargarStats(); // Recargar stats ahora que hay un usuario logueado
   cerrarLoginModal();
   renderizarBotonLogin();
   showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
@@ -927,9 +978,9 @@ function pedirLoginParaGuardar(){
 }
 
 function obtenerNombreDisplay(){
-  const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-  const customNick=localStorage.getItem('ev_custom_nick');
+  const customNick=getPref('ev_custom_nick', '');
   if(customNick)return customNick;
+  const u=JSON.parse(localStorage.getItem('ev_user_logged'));
   if(u)return u.name.split(' ')[0];
   return 'Jugador';
 }
@@ -937,11 +988,11 @@ function obtenerNombreDisplay(){
 function renderizarBotonLogin(){
   const container=document.getElementById('hero-google-profile');
   const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-  const avatarEmoji=localStorage.getItem('ev_avatar_emoji')||'⚽';
-  const userPos=localStorage.getItem('ev_user_pos')||'DT';
+  const avatarEmoji=getPref('ev_avatar_emoji', '⚽');
+  const userPos=getPref('ev_user_pos', 'DT');
 
   if(u){
-    // Se elimina forzosamente la foto de google de la UI, solo usamos el emoji custom
+    // Pequeño círculo para la cabecera
     let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:#1a2a1a;box-shadow:0 0 8px var(--accent-glow);">${avatarEmoji}</div>`;
     const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
     container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${userPos}</div></div>${avatarHTML}</div>`;
@@ -1384,26 +1435,45 @@ function renderJuegoOrden(revelar=false){
   let timerBarHTML=!revelar?`<div style="background:var(--border-subtle);border-radius:20px;height:4px;margin-bottom:12px;overflow:hidden;"><div id="order-timer-bar" style="height:100%;border-radius:20px;background:var(--accent-color);width:100%;transition:width .5s linear;"></div></div>`:'';
   let botonera='';
   if(!revelar){
-    botonera=`<div style="display:flex;gap:10px;margin-top:14px;"><button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:13px;"><i class="ph-bold ph-arrow-left"></i></button><button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:13px;font-size:1rem;">Confirmar orden <i class="ph-bold ph-check-circle"></i></button></div>`;
+    botonera=`<div style="display:flex;gap:10px;margin-top:10px;flex-shrink:0;"><button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:13px;"><i class="ph-bold ph-arrow-left"></i></button><button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:13px;font-size:1rem;">Confirmar orden <i class="ph-bold ph-check-circle"></i></button></div>`;
   }else{
     const esGoogle=esUsuarioGoogle();
-    const guardarBtnOrden=esGoogle?`<button onclick="guardarScoreOrden()" class="btn-3d primary" style="padding:13px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar puntaje</button>`:`<div class="google-wall" style="margin-bottom:12px;padding:20px 16px;"><i class="ph-duotone ph-google-logo google-wall-icon" style="font-size:2.2rem;"></i><h3 style="font-weight:800;font-size:1rem;">Guardá tu resultado</h3><p>Necesitás cuenta Google para el ranking.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button></div>`;
+    const btnGuardar = esGoogle 
+        ? `<button onclick="guardarScoreOrden()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar puntaje</button>`
+        : `<button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
     const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
-    botonera=`<div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:20px;border-radius:18px;text-align:center;margin-top:16px;"><div style="font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:800;">Puntaje obtenido</div><strong style="font-size:2.4rem;color:var(--accent-color);font-weight:900;display:block;margin-bottom:4px;">${orderPuntosGanados} <span style="font-size:1rem;color:var(--text-muted);">Pts</span></strong><span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span><div style="display:flex;flex-direction:column;gap:10px;max-width:250px;margin:16px auto 0;">${guardarBtnOrden}<div style="display:flex;gap:10px;"><button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="flex:1;padding:10px;font-size:.82rem;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="flex:1;padding:10px;font-size:.82rem;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
+    
+    botonera=`<div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:14px;border-radius:18px;margin-top:10px;flex-shrink:0;box-shadow:0 -5px 20px rgba(0,0,0,0.3);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div>
+          <div style="font-size:.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:1px;">Puntaje obtenido</div>
+          <strong style="font-size:1.8rem;color:var(--accent-color);font-weight:900;">${orderPuntosGanados} <span style="font-size:.9rem;color:var(--text-muted);">Pts</span></strong>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        ${btnGuardar}
+        <button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-fill ph-medal"></i></button>
+        <button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-bold ph-arrow-counter-clockwise"></i></button>
+      </div>
+    </div>`;
   }
-  body.innerHTML=`<div style="display:flex;flex-direction:column;height:100%;color:var(--text-main);">
-    <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:14px;margin-bottom:12px;text-align:center;flex-shrink:0;">
+  
+  body.innerHTML=`
+    <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;">
       <h2 style="font-size:1.1rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph-duotone ${icono}" style="color:var(--accent-color);font-size:1.4rem;"></i> ${titulo}</h2>
-      <p style="color:var(--text-muted);font-size:.84rem;margin-top:6px;line-height:1.5;">${desc}</p>
+      <p style="color:var(--text-muted);font-size:.84rem;margin-top:4px;line-height:1.5;">${desc}</p>
     </div>
     ${timerBarHTML}
-    <div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 2px 10px;">
+    <div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 5px 10px;scrollbar-width:thin;">
       <div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;opacity:.8;">${labelTop}</div>
       ${slotsHTML}
       <div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:2px;opacity:.8;">${labelBot}</div>
     </div>
     ${botonera}
-  </div>`;
+  `;
   if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar');if(bar)bar.style.width='0%';},100);
 }
 
@@ -1457,8 +1527,8 @@ function calcularLogros(){
 
   // Logros únicos
   logros.push({id:'bienvenido', icon:'👋', name:'Primer Despegue', rarity:'common', req:'Abrí la app por primera vez', unlocked: s.sesionesTotal>=1});
-  logros.push({id:'nick', icon:'🪪', name:'Identidad', rarity:'common', req:'Personalizá tu apodo', unlocked: !!localStorage.getItem('ev_custom_nick')});
-  logros.push({id:'avatar', icon:'🎨', name:'Estilo Propio', rarity:'rare', req:'Cambiá tu avatar o posición', unlocked: !!(localStorage.getItem('ev_avatar_emoji') && localStorage.getItem('ev_avatar_emoji')!=='⚽')});
+  logros.push({id:'nick', icon:'🪪', name:'Identidad', rarity:'common', req:'Personalizá tu apodo', unlocked: !!getPref('ev_custom_nick', '')});
+  logros.push({id:'avatar', icon:'🎨', name:'Estilo Propio', rarity:'rare', req:'Cambiá tu avatar o posición', unlocked: !!(getPref('ev_avatar_emoji', '') && getPref('ev_avatar_emoji', '')!=='⚽')});
   logros.push({id:'localista', icon:'📍', name:'GPS Humano', rarity:'rare', req:'Adiviná a menos de 5 km', unlocked: s.medallaLocalista});
   logros.push({id:'unKm', icon:'🔬', name:'Ojo de Águila', rarity:'epic', req:'Adiviná a menos de 1 km', unlocked: s.guessrUnKm});
   logros.push({id:'perfecto', icon:'💎', name:'Perfeccionista', rarity:'epic', req:'Todo Guessr >4000 pts', unlocked: s.guessrPerfecto});
@@ -1481,12 +1551,12 @@ function abrirModalPerfil(){
   const xpNivelTotal=nivelSig.min-nivel.min;
   const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
   
-  const savedEmoji=localStorage.getItem('ev_avatar_emoji')||'⚽';
-  const savedNick=localStorage.getItem('ev_custom_nick')||'';
-  const savedPos=localStorage.getItem('ev_user_pos')||'DT';
+  const savedEmoji=getPref('ev_avatar_emoji', '⚽');
+  const savedNick=getPref('ev_custom_nick', '');
+  const savedPos=getPref('ev_user_pos', 'DT');
 
-  // Forzamos uso del Emoji siempre
-  let avatarD=`<div class="avatar-emoji-display" id="fut-avatar-emoji-display" title="Avatar Elegido">${savedEmoji}</div>`;
+  // Cabeza del Avatar (Emoji)
+  let avatarD=`<div class="avatar-emoji-head" id="fut-avatar-emoji-display" title="Avatar Elegido">${savedEmoji}</div>`;
   const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:8px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
 
   const emojiOpts=AVATAR_EMOJIS.map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this,'${em}')">${em}</div>`).join('');
@@ -1501,7 +1571,7 @@ function abrirModalPerfil(){
 
   function medalItem(l){
     const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
-    return `<div class="medal-item ${l.unlocked?'unlocked':''} ${rarityClass}" title="${l.req}">
+    return `<div class="medal-item ${l.unlocked?'unlocked':''} ${rarityClass}">
       <span class="medal-rarity">${rarityLabel[l.rarity]}</span>
       <div class="medal-icon">${l.icon}</div>
       <div class="medal-name">${l.name}</div>
@@ -1523,7 +1593,7 @@ function abrirModalPerfil(){
           </div>
           <div class="fut-avatar-container" id="fut-avatar-zone">
             ${avatarD}
-            <div class="fut-jersey-overlay"><div class="fut-jersey-stripe"></div></div>
+            <div class="fut-jersey-overlay"></div>
           </div>
         </div>
         <div class="fut-name" id="fut-name-display" title="Tu Apodo">${savedNick||u.name.split(' ')[0]}</div>
@@ -1621,7 +1691,6 @@ function abrirModalPerfil(){
   
   document.getElementById('profile-modal').style.display='flex';
   
-  // Setear el selector de posición con lo que tiene guardado
   setTimeout(()=>{
     const selPos = document.getElementById('avatar-pos-input');
     if(selPos) selPos.value = savedPos;
@@ -1633,10 +1702,11 @@ function seleccionarAvatarEmoji(el,emoji){
   el.classList.add('selected');
   const zone=document.getElementById('fut-avatar-zone');
   if(zone){
-    let disp=zone.querySelector('.avatar-emoji-display');
+    let disp=zone.querySelector('.avatar-emoji-head');
     if(!disp){
       disp=document.createElement('div');
-      disp.className='avatar-emoji-display';
+      disp.className='avatar-emoji-head';
+      disp.id='fut-avatar-emoji-display';
       const jersey=zone.querySelector('.fut-jersey-overlay');
       if(jersey)zone.insertBefore(disp,jersey);
       else zone.appendChild(disp);
@@ -1646,33 +1716,35 @@ function seleccionarAvatarEmoji(el,emoji){
 }
 
 function guardarPersonalizacion(){
-  // Guardar Emoji
   const opts=document.querySelectorAll('.avatar-opt.selected');
   if(opts.length){
-    const emoji=opts[0].textContent.trim();
-    localStorage.setItem('ev_avatar_emoji',emoji);
+    setPref('ev_avatar_emoji', opts[0].textContent.trim());
   }
-  // Guardar Posición
   const posSelect=document.getElementById('avatar-pos-input');
   if(posSelect){
-    localStorage.setItem('ev_user_pos', posSelect.value);
+    setPref('ev_user_pos', posSelect.value);
     const futPos=document.getElementById('fut-pos-display');
     if(futPos) futPos.textContent=posSelect.value;
   }
-  // Guardar Apodo
   const nick=document.getElementById('avatar-nick-input')?.value?.trim();
   if(nick){
-    localStorage.setItem('ev_custom_nick',nick);
+    setPref('ev_custom_nick', nick);
     const futName=document.getElementById('fut-name-display');
     if(futName)futName.textContent=nick;
   }
   showToast('¡Personalización guardada! 🎉');
-  renderizarBotonLogin(); // Refrescar header
-  setTimeout(()=>abrirModalPerfil(), 10); // Refrescar la pantalla de perfil por si cambió algo
+  renderizarBotonLogin();
+  setTimeout(()=>abrirModalPerfil(), 10);
 }
 
 function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
-function cerrarSesion(){localStorage.removeItem('ev_user_logged');cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
+function cerrarSesion(){
+  localStorage.removeItem('ev_user_logged');
+  cargarStats(); // Reinicia el perfil a modo invitado
+  cerrarModalPerfil();
+  renderizarBotonLogin();
+  showToast('¡Hasta la próxima!','ph-hand-waving');
+}
 
 window.addEventListener('DOMContentLoaded',()=>{
   renderizarBotonLogin();
