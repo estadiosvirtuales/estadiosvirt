@@ -283,13 +283,22 @@ body>*{position:relative;z-index:1}
 .fut-stat-num{font-weight:900}
 .fut-stat-label{opacity:.7}
 
-/* Avatar Silhouette 2.0 */
-.fut-avatar-container{width:70%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
+/* Avatar Silhouette 3.0 - Estilo 3D Cartoony */
+.fut-avatar-container {
+  width: 70%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+}
 .avatar-emoji-head {
-  font-size: 4.8rem;
+  font-size: 4.4rem;
   z-index: 5;
   position: absolute;
-  bottom: 82px; /* Posicionado perfecto sobre el cuello */
+  bottom: 88px;
   margin-bottom: 0; 
   filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
   transition: transform 0.3s cubic-bezier(.175,.885,.32,1.275);
@@ -297,60 +306,103 @@ body>*{position:relative;z-index:1}
 }
 .fut-player-body {
   position: absolute;
-  bottom: 0;
-  width: 150px;
-  height: 105px;
+  bottom: -5px;
+  width: 120px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 4;
 }
 .fut-player-neck {
-  width: 32px;
-  height: 28px;
+  width: 16px;
+  height: 18px;
   background: #e2b999;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 8px 8px;
   position: relative;
   z-index: 2;
-  box-shadow: inset 0 4px 6px rgba(0,0,0,0.2);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.3);
 }
-.fut-player-shoulders {
-  width: 100%;
-  height: 90px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 40%, #111) 100%);
-  border-radius: 60px 60px 20px 20px / 70px 70px 10px 10px;
-  margin-top: -12px;
-  z-index: 3;
+.fut-player-torso {
   position: relative;
-  box-shadow: inset 0 10px 20px rgba(255,255,255,0.2), 0 5px 15px rgba(0,0,0,0.5);
+  width: 100%;
+  height: 85px;
   display: flex;
   justify-content: center;
+  margin-top: -6px;
+}
+.fut-player-shirt {
+  width: 64px;
+  height: 100%;
+  background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 40%, #111) 100%);
+  border-radius: 18px 18px 5px 5px;
+  z-index: 3;
+  position: relative;
+  box-shadow: inset 0 5px 12px rgba(255,255,255,0.25), 0 4px 10px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  border-top: 1px solid rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-bottom: none;
 }
 .fut-player-collar {
-  position: absolute;
-  top: 0;
-  width: 48px;
-  height: 22px;
-  border: 4px solid rgba(255,255,255,0.9);
+  width: 24px;
+  height: 10px;
+  border: 3px solid rgba(255,255,255,0.9);
   border-top: none;
-  border-radius: 0 0 24px 24px;
-}
-.fut-player-chest-line {
-  position: absolute;
-  top: 35px;
-  width: 100%;
-  height: 2px;
-  background: rgba(255,255,255,0.15);
+  border-radius: 0 0 12px 12px;
+  margin-top: 0;
 }
 .fut-player-number {
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   font-weight: 900;
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.9);
   font-family: 'Arial Black', sans-serif;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.4);
-  margin-top: 15px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  margin-top: 6px;
+}
+.fut-player-arm {
+  width: 15px;
+  height: 65px;
+  background: #e2b999;
+  position: absolute;
+  top: 6px;
+  border-radius: 10px;
+  box-shadow: inset -2px 0 4px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+.fut-player-arm::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 26px;
+  background: var(--accent-color);
+  border-radius: 10px 10px 4px 4px;
+  box-shadow: inset 0 -3px 4px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-bottom: none;
+}
+.fut-player-arm::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 15px;
+  background: #d4a788;
+  border-radius: 10px;
+}
+.fut-player-arm.left {
+  left: 12px;
+  transform: rotate(18deg);
+  transform-origin: top center;
+}
+.fut-player-arm.right {
+  right: 12px;
+  transform: rotate(-18deg);
+  transform-origin: top center;
 }
 
 /* ══════════════════════════════════════════════════
@@ -1429,10 +1481,13 @@ function abrirModalPerfil(){
             <div class="avatar-emoji-head" id="fut-avatar-emoji-display" title="Tu avatar">${savedEmoji}</div>
             <div class="fut-player-body">
               <div class="fut-player-neck"></div>
-              <div class="fut-player-shoulders">
-                <div class="fut-player-collar"></div>
-                <div class="fut-player-chest-line"></div>
-                <span class="fut-player-number">10</span>
+              <div class="fut-player-torso">
+                <div class="fut-player-arm left"></div>
+                <div class="fut-player-shirt">
+                  <div class="fut-player-collar"></div>
+                  <span class="fut-player-number">10</span>
+                </div>
+                <div class="fut-player-arm right"></div>
               </div>
             </div>
           </div>
