@@ -249,7 +249,23 @@ body>*{position:relative;z-index:1}
 #btn-toggle-custom{margin-left:0}
 
 .fut-card{position:relative;width:250px;height:380px;background-size:cover;border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;color:#fff;font-family:'Arial Black',Gadget,sans-serif;box-shadow:var(--shadow-strong);overflow:hidden;user-select:none;border:2px solid rgba(255,255,255,.15);transition:all .4s cubic-bezier(.175,.885,.32,1.275);flex-shrink:0}
-.fut-card.legend{background:linear-gradient(135deg,#6d28d9 0%,#4c1d95 30%,#1e1b4b 60%,#312e81 100%);box-shadow:0 0 40px rgba(139,92,246,.5),0 8px 20px rgba(0,0,0,.4)}.fut-card.arg{background:linear-gradient(160deg,#74acdf 0%,#74acdf 42%,#fff 42%,#fff 58%,#74acdf 58%);color:#0d2b6b;border-color:#74acdf}.fut-card.arg .fut-name,.fut-card.arg .fut-stat-label{color:#0d2b6b}.fut-card.arg .fut-ovr,.fut-card.arg .fut-pos{color:#0d2b6b}.fut-card.bra{background:linear-gradient(135deg,#009c3b 0%,#1db954 35%,#ffdf00 60%,#002776 100%);color:#fff;border-color:#ffdf00}.fut-card.esp{background:linear-gradient(160deg,#c60b1e 0%,#c60b1e 30%,#ffc400 30%,#ffc400 70%,#c60b1e 70%);color:#fff;border-color:#ffc400}.fut-card.ita{background:linear-gradient(90deg,#009246 0%,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%);color:#000;border-color:#009246}.fut-card.fra{background:linear-gradient(90deg,#002395 0%,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%);color:#002395;border-color:#ed2939}.fut-card.ger{background:linear-gradient(180deg,#000 0%,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%);color:#fff;border-color:#ffce00}.fut-card.eng{background:linear-gradient(135deg,#fff 0%,#fff 45%,#cf142b 45%,#cf142b 100%);color:#cf142b;border-color:#cf142b}.fut-card.por{background:linear-gradient(160deg,#006600 0%,#006600 40%,#ff0000 40%);color:#fff;border-color:#006600}.fut-card.ned{background:linear-gradient(135deg,#ff6600 0%,#ff6600 55%,#fff 55%);color:#fff;border-color:#ff6600}.fut-card.uru{background:linear-gradient(135deg,#5cb8e4 0%,#fff 50%,#5cb8e4 100%);color:#1a3a6b;border-color:#5cb8e4}.fut-card.arg .fut-name{border-bottom-color:rgba(13,43,107,.3)}
+.fut-card.bronze{background:linear-gradient(135deg,#a855f7 0%,#7e22ce 50%,#3b0764 100%)}
+.fut-card.silver{background:linear-gradient(135deg,#9ca3af 0%,#4b5563 50%,#1f2937 100%)}
+.fut-card.gold{background:linear-gradient(135deg,#eab308 0%,#ca8a04 40%,#16a34a 80%,#0c0c0c 100%);animation:goldShine 4s infinite alternate}
+.fut-card.legend{background:linear-gradient(135deg,#6d28d9 0%,#4c1d95 30%,#1e1b4b 60%,#312e81 100%);box-shadow:0 0 40px rgba(139,92,246,.5),0 8px 20px rgba(0,0,0,.4)}
+.fut-card.dark{background:linear-gradient(135deg,#1f2937 0%,#111827 50%,#030712 100%);box-shadow:0 0 20px rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.fut-card.neon{background:linear-gradient(135deg,#ff007f 0%,#7928ca 50%,#4338ca 100%);box-shadow:0 0 30px rgba(255,0,127,.4);border-color:rgba(255,0,127,.5)}
+.fut-card.retro{background:linear-gradient(135deg,#f59e0b 0%,#d97706 50%,#b45309 100%);color:#000;box-shadow:0 0 20px rgba(245,158,11,.3);border-color:rgba(245,158,11,.5)}
+.fut-card.retro .fut-name{border-bottom-color:rgba(0,0,0,.3)}
+.fut-card.retro .fut-stat-label{opacity:.8}
+.fut-card.arg{background:linear-gradient(135deg,#74acdf 0%,#ffffff 50%,#74acdf 100%);color:#000;border-color:#74acdf}
+.fut-card.arg .fut-name{border-bottom-color:rgba(0,0,0,.3)}
+.fut-card.arg .fut-stat-label{opacity:.8}
+.fut-card.bra{background:linear-gradient(135deg,#009c3b 0%,#ffdf00 45%,#002776 100%);color:#fff;border-color:#009c3b}
+.fut-card.esp{background:linear-gradient(135deg,#aa151b 0%,#f1bf00 45%,#aa151b 100%);color:#000;border-color:#f1bf00}
+.fut-card.ita{background:linear-gradient(135deg,#009246 0%,#ffffff 50%,#ce2b37 100%);color:#000;border-color:#009246}
+.fut-card.fra{background:linear-gradient(135deg,#002395 0%,#ffffff 50%,#ed2939 100%);color:#000;border-color:#002395}
+.fut-card.ger{background:linear-gradient(135deg,#000000 0%,#dd0000 50%,#ffce00 100%);color:#fff;border-color:#dd0000}
 
 .fut-card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%,rgba(255,255,255,.04) 100%);pointer-events:none}
 .fut-top{display:flex;width:100%;height:55%;margin-top:15px}
@@ -264,8 +280,18 @@ body>*{position:relative;z-index:1}
 .fut-stat-label{opacity:.7}
 
 .fut-avatar-container{width:70%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
-.avatar-emoji-head{font-size:4.4rem;z-index:5;position:absolute;bottom:80px;margin-bottom:0;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.5));transition:transform .3s cubic-bezier(.175,.885,.32,1.275);user-select:none;color:#fff;width:72px;height:72px;display:flex;align-items:center;justify-content:center}.avatar-emoji-head svg{width:68px;height:68px;border-radius:50%;overflow:visible;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.45))}
-.fut-player-body{position:absolute;bottom:-5px;width:130px;height:105px;display:flex;flex-direction:column;align-items:center;z-index:4}.fut-player-neck{width:18px;height:16px;background:#e2b999;border-radius:0 0 9px 9px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.25)}.fut-player-torso{position:relative;width:100%;height:88px;display:flex;justify-content:center;margin-top:-5px}.fut-player-shirt{width:70px;height:100%;background:linear-gradient(160deg,var(--accent-color) 0%,color-mix(in srgb,var(--accent-color) 50%,#111) 100%);border-radius:22px 22px 12px 12px;z-index:3;position:relative;box-shadow:inset 2px 6px 14px rgba(255,255,255,0.3),inset -2px -4px 8px rgba(0,0,0,0.3),0 6px 14px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;border:1.5px solid rgba(255,255,255,0.25);border-bottom:none}.fut-player-collar{width:22px;height:11px;border:3px solid rgba(255,255,255,.95);border-top:none;border-radius:0 0 11px 11px;margin-top:0}.fut-player-number{font-size:1.7rem;font-weight:900;color:rgba(255,255,255,.95);font-family:'Arial Black',sans-serif;text-shadow:0 2px 5px rgba(0,0,0,.6);margin-top:4px;line-height:1}.fut-player-arm{width:17px;height:68px;background:#e2b999;position:absolute;top:8px;border-radius:12px;box-shadow:inset -2px 0 5px rgba(0,0,0,.15),0 5px 8px rgba(0,0,0,.35);z-index:2}.fut-player-arm::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:28px;background:var(--accent-color);border-radius:12px 12px 4px 4px;box-shadow:inset 0 -3px 5px rgba(0,0,0,.25),inset 2px 4px 6px rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.18);border-bottom:none}.fut-player-arm::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:16px;background:#d4a788;border-radius:10px;box-shadow:0 2px 4px rgba(0,0,0,.2)}.fut-player-arm.left{left:10px;transform:rotate(16deg);transform-origin:top center}.fut-player-arm.right{right:10px;transform:rotate(-16deg);transform-origin:top center}
+.avatar-emoji-head{font-size:4.4rem;z-index:5;position:absolute;bottom:88px;margin-bottom:0;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.4));transition:transform .3s cubic-bezier(.175,.885,.32,1.275);user-select:none;color:#fff}
+.fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
+.fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
+.fut-player-torso{position:relative;width:100%;height:85px;display:flex;justify-content:center;margin-top:-6px}
+.fut-player-shirt{width:64px;height:100%;background:linear-gradient(135deg,var(--accent-color) 0%,color-mix(in srgb,var(--accent-color) 40%,#111) 100%);border-radius:18px 18px 5px 5px;z-index:3;position:relative;box-shadow:inset 0 5px 12px rgba(255,255,255,0.25),0 4px 10px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.2);border-bottom:none}
+.fut-player-collar{width:24px;height:10px;border:3px solid rgba(255,255,255,.9);border-top:none;border-radius:0 0 12px 12px;margin-top:0}
+.fut-player-number{font-size:1.6rem;font-weight:900;color:rgba(255,255,255,.9);font-family:'Arial Black',sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.5);margin-top:6px}
+.fut-player-arm{width:15px;height:65px;background:#e2b999;position:absolute;top:6px;border-radius:10px;box-shadow:inset -2px 0 4px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.3);z-index:2}
+.fut-player-arm::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:26px;background:var(--accent-color);border-radius:10px 10px 4px 4px;box-shadow:inset 0 -3px 4px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.15);border-bottom:none}
+.fut-player-arm::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:15px;background:#d4a788;border-radius:10px}
+.fut-player-arm.left{left:12px;transform:rotate(18deg);transform-origin:top center}
+.fut-player-arm.right{right:12px;transform:rotate(-18deg);transform-origin:top center}
 
 .avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:20px;margin-top:14px;width:100%;max-width:280px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .avatar-picker-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-color);margin-bottom:12px;display:flex;align-items:center;gap:6px}
@@ -274,8 +300,8 @@ body>*{position:relative;z-index:1}
 .emoji-cat-btn{flex:1;padding:6px 4px;border-radius:8px;border:1px solid var(--border-subtle);background:var(--bg-color);color:var(--text-muted);font-size:.65rem;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;letter-spacing:.3px}
 .emoji-cat-btn.active{background:var(--accent-dim);border-color:var(--accent-color);color:var(--accent-color);box-shadow:0 2px 8px var(--accent-glow)}
 .emoji-cat-btn:hover:not(.active){background:var(--surface-hover);color:var(--text-main)}
-.avatar-grid-v2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;min-height:50px;transition:all .2s}
-.avatar-opt{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;background:var(--bg-color);border:2px solid var(--border-subtle);transition:all .18s cubic-bezier(.175,.885,.32,1.275);color:var(--text-main);overflow:hidden;padding:2px}.avatar-opt svg{width:100%;height:100%;}
+.avatar-grid-v2{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px;min-height:50px;transition:all .2s}
+.avatar-opt{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;background:var(--bg-color);border:2px solid var(--border-subtle);transition:all .18s cubic-bezier(.175,.885,.32,1.275);color:var(--text-main)}
 .avatar-opt:hover{transform:scale(1.18) translateY(-2px);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 4px 12px var(--accent-glow)}
 .avatar-opt.selected{border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 0 0 3px var(--accent-glow);transform:scale(1.1)}
 .tema-strip-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
@@ -285,7 +311,21 @@ body>*{position:relative;z-index:1}
 .theme-dot.active{border-color:var(--accent-color);box-shadow:0 0 12px var(--accent-glow);transform:scale(1.1)}
 .theme-dot::after{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%);pointer-events:none}
 
-.td-auto{background:linear-gradient(135deg,#6d28d9,#4c1d95,#312e81)}.td-legend{background:linear-gradient(135deg,#6d28d9,#4c1d95,#312e81)}.td-arg{background:linear-gradient(160deg,#74acdf 42%,#fff 42%,#fff 58%,#74acdf 58%)}.td-bra{background:linear-gradient(135deg,#009c3b,#ffdf00,#002776)}.td-esp{background:linear-gradient(160deg,#c60b1e 30%,#ffc400 30%,#ffc400 70%,#c60b1e 70%)}.td-ita{background:linear-gradient(90deg,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%)}.td-fra{background:linear-gradient(90deg,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%)}.td-ger{background:linear-gradient(180deg,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%)}.td-eng{background:linear-gradient(135deg,#fff 45%,#cf142b 45%)}.td-por{background:linear-gradient(160deg,#006600 40%,#ff0000 40%)}.td-ned{background:linear-gradient(135deg,#ff6600 55%,#fff 55%)}.td-uru{background:linear-gradient(135deg,#5cb8e4,#fff,#5cb8e4)}.theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
+.td-auto{background:linear-gradient(135deg,#eab308 0%,#16a34a 50%,#6d28d9 100%)}
+.td-bronze{background:linear-gradient(135deg,#a855f7,#3b0764)}
+.td-silver{background:linear-gradient(135deg,#9ca3af,#1f2937)}
+.td-gold{background:linear-gradient(135deg,#eab308,#ca8a04,#16a34a)}
+.td-legend{background:linear-gradient(135deg,#6d28d9,#4c1d95,#312e81)}
+.td-dark{background:linear-gradient(135deg,#374151,#030712)}
+.td-neon{background:linear-gradient(135deg,#ff007f,#7928ca,#4338ca)}
+.td-retro{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.td-arg{background:linear-gradient(180deg,#74acdf 33%,#fff 33%,#fff 66%,#74acdf 66%)}
+.td-bra{background:linear-gradient(135deg,#009c3b,#ffdf00,#002776)}
+.td-esp{background:linear-gradient(135deg,#aa151b,#f1bf00,#aa151b)}
+.td-ita{background:linear-gradient(135deg,#009246,#fff,#ce2b37)}
+.td-fra{background:linear-gradient(135deg,#002395,#fff,#ed2939)}
+.td-ger{background:linear-gradient(135deg,#000,#dd0000,#ffce00)}
+.theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
 
 .avatar-divider{height:1px;background:var(--border-strong);margin:14px 0}
 .avatar-nick-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
@@ -319,7 +359,7 @@ body>*{position:relative;z-index:1}
 .calendar-day-label{font-size:.55rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;padding-bottom:2px}
 .calendar-cell{font-size:.7rem;padding:4px 0;background:var(--bg-color);border-radius:5px;color:var(--text-main);font-weight:700;border:2px solid var(--border-subtle);transition:all .2s}
 .calendar-cell.past-done{color:var(--text-muted);opacity:.4;border-color:transparent;background:transparent}
-.calendar-cell.current-active{color:#000;background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 2px 8px var(--accent-glow);transform:scale(1.08)}.calendar-cell.done-activity{color:var(--accent-color);background:var(--accent-dim);border-color:var(--accent-color);opacity:.85}
+.calendar-cell.current-active{color:#000;background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 4px 12px var(--accent-glow);transform:scale(1.1)}
 
 .logros-tabs-row{display:flex;gap:5px;margin-bottom:14px;background:var(--bg-color);padding:4px;border-radius:12px;border:2px solid var(--border-strong)}
 .logro-tab-btn{flex:1;min-width:50px;padding:7px 8px;border-radius:8px;border:none;background:transparent;color:var(--text-muted);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .2s;white-space:nowrap}
@@ -661,7 +701,7 @@ const NIVELES=(function(){
 const n=[];
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
 const baseClasses=["level-pibe","level-volante","level-crack","level-leyenda","level-leyenda","level-leyenda","level-leyenda"];
-const baseCards=["arg","bra","esp","legend","legend","legend","legend"];
+const baseCards=["bronze","silver","gold","legend","legend","legend","legend"];
 const baseEmojis=["⚽","🎯","🥈","⭐","🥇","🏆","👑","🔥","⚡","💎","🌟","🚀"];
 const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Goleador","Crack","Ídolo","Capitán","Galáctico","Leyenda","Inmortal","Mito","Dios del Fútbol"];
 for(let i=0;i<1000;i++){
@@ -678,7 +718,12 @@ n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,cardClass:baseCards[colorI
 n[999].max=Infinity;
 return n;
 })();
-const SVG_FACES={'😎 Frescos':[`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="hc1"><circle cx="20" cy="18" r="11"/></clipPath></defs><circle cx="20" cy="18" r="11" fill="#f5c99a"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#f5c99a"/><circle cx="16.5" cy="17.5" r="2.5" fill="#2c1810"/><circle cx="23.5" cy="17.5" r="2.5" fill="#2c1810"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><ellipse cx="20" cy="21.5" rx="2" ry=".8" fill="#e08060" opacity=".4"/><path d="M16 23.5 Q20 26 24 23.5" stroke="#c86040" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="13" y="15" width="6" height="3" rx="1.5" fill="#111" opacity=".9"/><rect x="21" y="15" width="6" height="3" rx="1.5" fill="#111" opacity=".9"/><ellipse cx="20" cy="10" rx="9" ry="4.5" fill="#c8903a"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#ffe0b2"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#ffe0b2"/><circle cx="16.5" cy="17.5" r="2.5" fill="#1a237e"/><circle cx="23.5" cy="17.5" r="2.5" fill="#1a237e"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M16 23.5 Q20 26 24 23.5" stroke="#d48060" stroke-width="1.5" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="10" rx="8" ry="4" fill="#7b4f2e"/><rect x="12" y="11.5" width="16" height="2.5" rx="1.2" fill="#7b4f2e"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#d4a574"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#d4a574"/><circle cx="16.5" cy="17.5" r="2.5" fill="#1a1a1a"/><circle cx="23.5" cy="17.5" r="2.5" fill="#1a1a1a"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M15 23 Q20 26 25 23" stroke="#a0522d" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M11 17 Q20 9 29 17" stroke="#5c3317" stroke-width="3" fill="none"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#ffd5b8"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#ffd5b8"/><circle cx="16.5" cy="17.5" r="2.5" fill="#4a3728"/><circle cx="23.5" cy="17.5" r="2.5" fill="#4a3728"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M16 23 Q20 25.5 24 23" stroke="#c07050" stroke-width="1.5" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="10" rx="10" ry="4.5" fill="#e0c070"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#c68642"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#c68642"/><circle cx="16.5" cy="17.5" r="2.5" fill="#1c1c1c"/><circle cx="23.5" cy="17.5" r="2.5" fill="#1c1c1c"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M15 23 Q20 27 25 23" stroke="#8b4513" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M11 15 Q16 10 20 12 Q24 10 29 15" fill="#3d1c02"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#ffe8d0"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#ffe8d0"/><circle cx="16.5" cy="17.5" r="2.5" fill="#2d4a22"/><circle cx="23.5" cy="17.5" r="2.5" fill="#2d4a22"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M16 23 Q20 25 24 23" stroke="#d4806a" stroke-width="1.5" fill="none" stroke-linecap="round"/><rect x="11" y="8.5" width="18" height="4" rx="2" fill="#c0392b"/></svg>`],'🧒 Jóvenes':[`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="19" r="10" fill="#fce4c8"/><circle cx="16.5" cy="18" r="2.2" fill="#5d4037"/><circle cx="23.5" cy="18" r="2.2" fill="#5d4037"/><circle cx="17.1" cy="17.2" r=".8" fill="#fff"/><circle cx="24.1" cy="17.2" r=".8" fill="#fff"/><path d="M16 23 Q20 25 24 23" stroke="#e07060" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="15.5" cy="21" rx="1.5" ry="1" fill="#f0a090" opacity=".65"/><ellipse cx="24.5" cy="21" rx="1.5" ry="1" fill="#f0a090" opacity=".65"/><path d="M12 16 Q16 10 20 12 Q24 10 28 16" fill="#d4a030"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="19" r="10" fill="#ffe0c8"/><circle cx="16.5" cy="18" r="2.2" fill="#3e2723"/><circle cx="23.5" cy="18" r="2.2" fill="#3e2723"/><circle cx="17.1" cy="17.2" r=".8" fill="#fff"/><circle cx="24.1" cy="17.2" r=".8" fill="#fff"/><path d="M16 23 Q20 25.5 24 23" stroke="#c06050" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="15.5" cy="21" rx="1.5" ry="1" fill="#f0a090" opacity=".55"/><ellipse cx="24.5" cy="21" rx="1.5" ry="1" fill="#f0a090" opacity=".55"/><ellipse cx="20" cy="10" rx="8" ry="4" fill="#8b2252"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="19" r="10" fill="#ffd5a0"/><circle cx="16.5" cy="18" r="2.2" fill="#1a237e"/><circle cx="23.5" cy="18" r="2.2" fill="#1a237e"/><circle cx="17.1" cy="17.2" r=".8" fill="#fff"/><circle cx="24.1" cy="17.2" r=".8" fill="#fff"/><path d="M16 23 Q20 25 24 23" stroke="#c07040" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M11 15 Q15 9 20 11 Q25 9 29 15" fill="#2c1654"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="19" r="10" fill="#f5c5a0"/><circle cx="16.5" cy="18" r="2.2" fill="#263238"/><circle cx="23.5" cy="18" r="2.2" fill="#263238"/><circle cx="17.1" cy="17.2" r=".8" fill="#fff"/><circle cx="24.1" cy="17.2" r=".8" fill="#fff"/><path d="M15 23 Q20 26 25 23" stroke="#b06040" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="15.5" cy="21" rx="1.5" ry="1" fill="#e09080" opacity=".5"/><ellipse cx="24.5" cy="21" rx="1.5" ry="1" fill="#e09080" opacity=".5"/><rect x="12" y="9.5" width="16" height="3" rx="1.5" fill="#c0a030"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="19" r="10" fill="#ffe8d8"/><circle cx="16.5" cy="18" r="2.2" fill="#4a148c"/><circle cx="23.5" cy="18" r="2.2" fill="#4a148c"/><circle cx="17.1" cy="17.2" r=".8" fill="#fff"/><circle cx="24.1" cy="17.2" r=".8" fill="#fff"/><path d="M16 22.5 Q20 25 24 22.5" stroke="#d07060" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M12 14 Q20 8 28 14" fill="#f5c040"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="19" r="10" fill="#d4956a"/><circle cx="16.5" cy="18" r="2.2" fill="#212121"/><circle cx="23.5" cy="18" r="2.2" fill="#212121"/><circle cx="17.1" cy="17.2" r=".8" fill="#fff"/><circle cx="24.1" cy="17.2" r=".8" fill="#fff"/><path d="M16 23 Q20 25.5 24 23" stroke="#8b3a1a" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M11 15 Q15 9 20 12 Q25 9 29 15" fill="#3a2010"/></svg>`],'🧔 Mayores':[`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#f5b98a"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#f5b98a"/><circle cx="16.5" cy="17.5" r="2.5" fill="#1a1a1a"/><circle cx="23.5" cy="17.5" r="2.5" fill="#1a1a1a"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M14 22 Q20 27 26 22 Q24 29 20 30 Q16 29 14 22Z" fill="#8b4513" opacity=".7"/><path d="M11 15 Q15 9 20 11 Q25 9 29 15" fill="#6b4c2a"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#ffe0b0"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#ffe0b0"/><circle cx="16.5" cy="17.5" r="2.5" fill="#2c3e50"/><circle cx="23.5" cy="17.5" r="2.5" fill="#2c3e50"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M14 22 Q17 27 20 28 Q23 27 26 22 Q24 30 20 31 Q16 30 14 22Z" fill="#c8a060" opacity=".8"/><path d="M11 15 Q15 9 20 11 Q25 9 29 15" fill="#c8a060"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#d4956a"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#d4956a"/><circle cx="16.5" cy="17.5" r="2.5" fill="#1a1a1a"/><circle cx="23.5" cy="17.5" r="2.5" fill="#1a1a1a"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M13 21 Q17 28 20 29 Q23 28 27 21 Q25 30 20 31 Q15 30 13 21Z" fill="#5a3010" opacity=".75"/><path d="M11 14 Q14 8 20 10 Q26 8 29 14" fill="#3a200a"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#fcd0a0"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#fcd0a0"/><circle cx="16.5" cy="17.5" r="2.5" fill="#37474f"/><circle cx="23.5" cy="17.5" r="2.5" fill="#37474f"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M14 23 Q17 27 20 28 Q23 27 26 23 Q24 30 20 31 Q16 30 14 23Z" fill="#d4a870" opacity=".6"/><rect x="12" y="9" width="16" height="4" rx="2" fill="#9e9e9e"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#e8a878"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#e8a878"/><circle cx="16.5" cy="17.5" r="2.5" fill="#263238"/><circle cx="23.5" cy="17.5" r="2.5" fill="#263238"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M14 22 Q17 28 20 29 Q23 28 26 22 Q24 30 20 31 Q16 30 14 22Z" fill="#a06040" opacity=".7"/><path d="M11 15 Q13 9 20 11 Q27 9 29 15" fill="#7a4020"/></svg>`,`<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="18" r="11" fill="#c8845a"/><ellipse cx="20" cy="31" rx="8" ry="5" fill="#c8845a"/><circle cx="16.5" cy="17.5" r="2.5" fill="#1a1a2e"/><circle cx="23.5" cy="17.5" r="2.5" fill="#1a1a2e"/><circle cx="17.2" cy="16.5" r=".9" fill="#fff"/><circle cx="24.2" cy="16.5" r=".9" fill="#fff"/><path d="M13 22 Q16 29 20 30 Q24 29 27 22 Q25 31 20 32 Q15 31 13 22Z" fill="#5a2a0a" opacity=".75"/><path d="M10 14 Q14 7 20 9 Q26 7 30 14" fill="#2a1005"/></svg>`]};const AVATAR_CATS_DATA=SVG_FACES;
+const AVATAR_CATS_DATA={
+'👤 Humanos':['<i class="ph-duotone ph-user"></i>','<i class="ph-duotone ph-user-focus"></i>','<i class="ph-duotone ph-user-gear"></i>','<i class="ph-duotone ph-user-circle"></i>','<i class="ph-duotone ph-detective"></i>','<i class="ph-duotone ph-ninja"></i>'],
+'👾 Criaturas':['<i class="ph-duotone ph-alien"></i>','<i class="ph-duotone ph-robot"></i>','<i class="ph-duotone ph-skull"></i>','<i class="ph-duotone ph-ghost"></i>','<i class="ph-duotone ph-mask-happy"></i>','<i class="ph-duotone ph-smiley-x-eyes"></i>'],
+'🦁 Animales':['<i class="ph-duotone ph-cat"></i>','<i class="ph-duotone ph-dog"></i>','<i class="ph-duotone ph-bird"></i>','<i class="ph-duotone ph-fish"></i>','<i class="ph-duotone ph-rabbit"></i>','<i class="ph-duotone ph-tortoise"></i>'],
+'⚽ Fútbol':['<i class="ph-duotone ph-soccer-ball"></i>','<i class="ph-duotone ph-trophy"></i>','<i class="ph-duotone ph-medal"></i>','<i class="ph-duotone ph-t-shirt"></i>','<i class="ph-duotone ph-whistle"></i>','<i class="ph-duotone ph-flag"></i>']
+};
 let avatarCatActual='👤 Humanos';
 let logrosTabActual='todos';
 function getUserId(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u?u.id:'guest';}
@@ -821,8 +866,8 @@ const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal
 function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)return u.name.split(' ')[0];return 'Jugador';}
 function renderizarBotonLogin(){
 const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-let avatarEmoji=getPref('ev_avatar_emoji','');
-if(!avatarEmoji){const firstCat=Object.values(SVG_FACES)[0];avatarEmoji=firstCat?firstCat[0]:'';}
+let avatarEmoji=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
+if(!avatarEmoji.includes('<i class=')) avatarEmoji='<i class="ph-duotone ph-user"></i>';
 const userPos=getPref('ev_user_pos','DT');
 if(u){
 let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:#1a2a1a;box-shadow:0 0 8px var(--accent-glow); color:#fff;">${avatarEmoji}</div>`;
@@ -1067,7 +1112,7 @@ addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
 addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
 logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
 logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-logros.push({id:'avatar',icon:'🎨',name:'Estilo Propio',rarity:'rare',req:'Cambiá tu avatar',unlocked:!!(getPref('ev_avatar_emoji','')&&getPref('ev_avatar_emoji','')!==''),pct:0,pctLabel:''});
+logros.push({id:'avatar',icon:'🎨',name:'Estilo Propio',rarity:'rare',req:'Cambiá tu avatar',unlocked:!!(getPref('ev_avatar_emoji','')&&getPref('ev_avatar_emoji','')!=='<i class="ph-duotone ph-user"></i>'),pct:0,pctLabel:''});
 logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
 logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
 logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
@@ -1112,9 +1157,9 @@ function cambiarEmojiCat(cat){
 avatarCatActual=cat;
 document.querySelectorAll('.emoji-cat-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
 const grid=document.getElementById('avatar-grid-v2');if(!grid)return;
-let saved=getPref('ev_avatar_emoji','');
-const faces=SVG_FACES[cat]||[];
-grid.innerHTML=faces.map(em=>`<div class="avatar-opt${em===saved?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
+let saved=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
+if(!saved.includes('<i class=')) saved='<i class="ph-duotone ph-user"></i>';
+grid.innerHTML=AVATAR_CATS_DATA[cat].map(em=>`<div class="avatar-opt${em===saved?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
 }
 function seleccionarAvatarEmoji(el){
 document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
@@ -1163,16 +1208,18 @@ const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(!u)return;
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
 const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;
 const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
-let savedEmoji=getPref('ev_avatar_emoji','');
-if(!savedEmoji){const firstCat=Object.values(SVG_FACES)[0];savedEmoji=firstCat?firstCat[0]:'';}
+let savedEmoji=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
+if(!savedEmoji.includes('<i class=')) savedEmoji='<i class="ph-duotone ph-user"></i>';
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT'),savedTheme=getPref('ev_card_theme','auto');
 const activeCardClass=savedTheme==='auto'?nivel.cardClass:savedTheme;
 const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
-const primeraCat=Object.keys(SVG_FACES)[0];
-const emojiOpts=(SVG_FACES[primeraCat]||[]).map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
-const catTabs=Object.keys(SVG_FACES).map(cat=>`<button class="emoji-cat-btn${cat===primeraCat?' active':''}" data-cat="${cat}" onclick="cambiarEmojiCat('${cat}')">${cat.split(' ').slice(1).join(' ')||cat}</button>`).join('');
+const primeraCat='👤 Humanos';
+const emojiOpts=AVATAR_CATS_DATA[primeraCat].map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
+const catTabs=Object.keys(AVATAR_CATS_DATA).map(cat=>`<button class="emoji-cat-btn${cat===primeraCat?' active':''}" data-cat="${cat}" onclick="cambiarEmojiCat('${cat}')">${cat.split(' ')[1]}</button>`).join('');
 const temas=[
-{k:'auto',l:'Leyenda'},{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'ned',l:'NED'},{k:'uru',l:'URU'}
+{k:'auto',l:'Auto'},{k:'bronze',l:'Bronz'},{k:'silver',l:'Plata'},{k:'gold',l:'Oro'},{k:'legend',l:'Leyen'},
+{k:'dark',l:'Dark'},{k:'neon',l:'Neon'},{k:'retro',l:'Retro'},{k:'arg',l:'ARG'},
+{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'}
 ];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 let calHTML='';for(let d=1;d<=30;d++){let cl='calendar-cell';if(d<17)cl+=' past-done';if(d===17)cl+=' current-active';calHTML+=`<div class="${cl}">${d}</div>`;}
@@ -1236,4 +1283,86 @@ ${googleBadge}
 <option value="MI">MI — Medio Izq.</option>
 <option value="MD">MD — Medio Der.</option>
 <option value="EI">EI — Extremo Izq.</option>
-<option value="ED">ED — Extremo Der.</
+<option value="ED">ED — Extremo Der.</option>
+<option value="SD">SD — Segundo Del.</option>
+<option value="DC">DC — Delantero</option>
+<option value="DT">DT — Técnico</option>
+</select>
+<label class="avatar-nick-label">Apodo en el ranking</label>
+<div class="avatar-nickname-row">
+<input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
+</div>
+<button class="avatar-save-btn" onclick="guardarPersonalizacion()">
+<i class="ph-bold ph-check"></i> Guardar cambios
+</button>
+</div>
+</div>
+</div>
+<div class="right-dashboard-column">
+<div class="xp-profile-section">
+<div class="xp-level-row">
+<div class="xp-level-name">${nivel.emoji} ${nivel.nombre}</div>
+<div class="level-badge-inline ${nivel.cssClass}">Nivel ${nivelIdx}</div>
+</div>
+<div class="xp-bar-big"><div class="xp-bar-big-fill" style="width:${xpPct}%;"></div></div>
+<div class="xp-milestones">
+<span>${nivel.min.toLocaleString('es-AR')} XP</span>
+<span style="color:var(--accent-color);font-weight:800;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
+<span>${nivelSig.min===Infinity?'∞':nivelSig.min.toLocaleString('es-AR')} XP</span>
+</div>
+</div>
+<div class="geoguessr-dash-box">
+<div class="dash-header-inline">
+<div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (Junio)</div>
+<div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
+</div>
+<div class="calendar-matrix">
+<div class="calendar-day-label">lun</div><div class="calendar-day-label">mar</div><div class="calendar-day-label">mié</div><div class="calendar-day-label">jue</div><div class="calendar-day-label">vie</div><div class="calendar-day-label">sáb</div><div class="calendar-day-label">dom</div>
+${calHTML}
+</div>
+</div>
+<div class="geoguessr-dash-box">
+<div class="dash-header-inline" style="margin-bottom:12px;">
+<div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
+<div class="streak-fire-badge" id="logros-counter" style="color:var(--text-muted);">${desbloqueados}/${totalLogros}</div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+<span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
+<span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
+<span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
+</div>
+<div class="logros-tabs-row">
+<button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
+<button class="logro-tab-btn" data-tipo="desbloqueados" onclick="filtrarLogros('desbloqueados')">✓ Logrados</button>
+<button class="logro-tab-btn" data-tipo="progreso" onclick="filtrarLogros('progreso')">⏳ Progreso</button>
+<button class="logro-tab-btn" data-tipo="bloqueados" onclick="filtrarLogros('bloqueados')">🔒 Bloq.</button>
+</div>
+<div class="logros-grid-v2" id="logros-grid-v2"></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:4px;">
+<span style="font-size:.85rem;color:var(--text-muted);font-weight:700;">Nivel actual: <b style="color:${nivel.color};">${nivel.nombre}</b></span>
+<button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color);border-color:var(--danger-color);padding:8px 16px;font-size:.82rem;">Cerrar sesión</button>
+</div>
+</div>
+</div>`;
+document.getElementById('profile-modal').style.display='flex';
+setTimeout(()=>{
+const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
+selPos&&(selPos.onchange=()=>{const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=selPos.value;});
+renderizarGridLogros();
+},50);
+}
+function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
+function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
+window.addEventListener('DOMContentLoaded',()=>{
+renderizarBotonLogin();actualizarHeaderNivel();
+if(typeof google!=='undefined'&&google.accounts)inicializarGoogleLogin();
+else{document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load',inicializarGoogleLogin);setTimeout(inicializarGoogleLogin,2000);}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',function(){const gid=this.getAttribute('data-gid'),nombre=this.querySelector('.tab-name')?.textContent.trim()||this.textContent.trim();activarLiga(gid,nombre);}));
+indexarCatalogoMasivo();
+const lastGid=localStorage.getItem('ev_last_gid');if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}else mostrarLigas();
+guardarStats();
+});
+</script>
+</body>
+</html>
