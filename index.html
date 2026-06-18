@@ -255,21 +255,28 @@ body>*{position:relative;z-index:1}
 .fut-card.ita{background:linear-gradient(135deg,#009246 0%,#ffffff 50%,#ce2b37 100%);color:#000;border-color:#009246}
 .fut-card.fra{background:linear-gradient(135deg,#002395 0%,#ffffff 50%,#ed2939 100%);color:#000;border-color:#002395}
 .fut-card.ger{background:linear-gradient(135deg,#000000 0%,#dd0000 50%,#ffce00 100%);color:#fff;border-color:#dd0000}
+/* Nuevas Cartas */
+.fut-card.eng { background: linear-gradient(135deg, #ffffff 0%, #ce1126 100%); color: #000; border-color: #ce1126; }
+.fut-card.por { background: linear-gradient(135deg, #046a38 0%, #ff0000 100%); color: #fff; border-color: #f1c400; }
+.fut-card.uru { background: linear-gradient(135deg, #7badd3 0%, #ffffff 50%, #fcd116 100%); color: #000; border-color: #7badd3; }
+.fut-card.mex { background: linear-gradient(135deg, #006847 0%, #ffffff 50%, #ce1126 100%); color: #000; border-color: #006847; }
+.fut-card.col { background: linear-gradient(135deg, #fcd116 0%, #003893 50%, #ce1126 100%); color: #fff; border-color: #fcd116; }
+.fut-card.chi { background: linear-gradient(135deg, #d52b1e 0%, #ffffff 50%, #0039a6 100%); color: #000; border-color: #d52b1e; }
 
 .fut-card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%,rgba(255,255,255,.04) 100%);pointer-events:none}
-.fut-top{display:flex;width:100%;height:55%;margin-top:15px}
-.fut-badge-meta{width:30%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
-.fut-ovr{font-size:2.2rem;font-weight:900}
-.fut-pos{font-size:.8rem;font-weight:bold;text-transform:uppercase;opacity:.8}
-.fut-club-icon{width:28px;height:28px;margin-top:8px;object-fit:contain}
-.fut-name{width:100%;text-align:center;font-size:1.1rem;font-weight:900;margin:8px 0;text-transform:uppercase;letter-spacing:-.5px;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fut-stats-row{display:grid;grid-template-columns:repeat(2,1fr);width:90%;font-size:.85rem;gap:4px 15px;margin-top:5px}
+.fut-top{display:flex;width:100%;height:50%;margin-top:15px}
+.fut-badge-meta{width:35%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.fut-ovr{font-size:2.8rem;font-weight:900;letter-spacing:-1px}
+.fut-pos{font-size:1rem;font-weight:900;text-transform:uppercase;opacity:.8;margin-top:-2px}
+.fut-club-icon{width:40px;height:40px;margin-top:10px;object-fit:contain}
+.fut-name{width:100%;text-align:center;font-size:1.35rem;font-weight:900;margin:12px 0 8px;text-transform:uppercase;letter-spacing:-.5px;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fut-stats-row{display:grid;grid-template-columns:repeat(2,1fr);width:95%;font-size:.95rem;gap:8px 15px;margin-top:5px}
 .fut-stat-item{display:flex;gap:6px;justify-content:center}
-.fut-stat-num{font-weight:900}
-.fut-stat-label{opacity:.7}
+.fut-stat-num{font-weight:900;font-size:1.15rem}
+.fut-stat-label{opacity:.8;font-size:.8rem;align-self:flex-end;margin-bottom:1px}
 
 /* Avatar Estilo Animal Crossing */
-.fut-avatar-container{width:70%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
+.fut-avatar-container{width:65%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
 
 .ac-avatar { position: absolute; bottom: 84px; z-index: 5; width: 68px; height: 60px; transition: transform .3s cubic-bezier(.175,.885,.32,1.275); }
 .ac-head-base { width: 100%; height: 100%; background: #e2b999; border-radius: 45% 45% 35% 35%; position: relative; box-shadow: inset -4px -4px 10px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.3); border: 2px solid #c89f81; }
@@ -285,7 +292,6 @@ body>*{position:relative;z-index:1}
 .ac-eye::after { content: ''; position: absolute; top: 2px; right: 2px; width: 3px; height: 4px; background: #fff; border-radius: 50%; }
 .ac-nose { width: 8px; height: 5px; background: #d4a788; border-radius: 50%; position: absolute; top: 38px; left: 30px; z-index: 2;}
 .ac-mouth { width: 14px; height: 7px; border-bottom: 2px solid #a66a41; border-radius: 0 0 50% 50%; position: absolute; top: 43px; left: 27px; z-index: 2;}
-.fut-card:hover .ac-avatar { transform: translateY(-5px); }
 
 .fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
 .fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
@@ -299,13 +305,13 @@ body>*{position:relative;z-index:1}
 .fut-player-arm.left{left:12px;transform:rotate(18deg);transform-origin:top center}
 .fut-player-arm.right{right:12px;transform:rotate(-18deg);transform-origin:top center}
 
-.avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:20px;margin-top:14px;width:100%;max-width:280px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:20px;margin-top:14px;width:100%;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .avatar-picker-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-color);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .avatar-picker-label i{font-size:1rem}
 
 .tema-strip-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
-.theme-preview-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:16px}
-.theme-dot{width:100%;aspect-ratio:1.2;border-radius:8px;cursor:pointer;border:2px solid var(--border-subtle);transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.9);overflow:hidden}
+.theme-preview-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.theme-dot{width:100%;aspect-ratio:1.3;border-radius:8px;cursor:pointer;border:2px solid var(--border-subtle);transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.9);overflow:hidden}
 .theme-dot:hover{border-color:rgba(255,255,255,.5);transform:scale(1.08)}
 .theme-dot.active{border-color:var(--accent-color);box-shadow:0 0 12px var(--accent-glow);transform:scale(1.1)}
 .theme-dot::after{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%);pointer-events:none}
@@ -316,6 +322,12 @@ body>*{position:relative;z-index:1}
 .td-ita{background:linear-gradient(135deg,#009246,#fff,#ce2b37); color: #000;}
 .td-fra{background:linear-gradient(135deg,#002395,#fff,#ed2939); color: #000;}
 .td-ger{background:linear-gradient(135deg,#000,#dd0000,#ffce00)}
+.td-eng { background: linear-gradient(135deg, #fff, #ce1126); color: #000; }
+.td-por { background: linear-gradient(135deg, #046a38, #ff0000); }
+.td-uru { background: linear-gradient(135deg, #7badd3, #fff, #fcd116); color: #000; }
+.td-mex { background: linear-gradient(135deg, #006847, #fff, #ce1126); color: #000; }
+.td-col { background: linear-gradient(135deg, #fcd116, #003893, #ce1126); }
+.td-chi { background: linear-gradient(135deg, #d52b1e, #fff, #0039a6); color: #000; }
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
 
 .avatar-divider{height:1px;background:var(--border-strong);margin:14px 0}
@@ -331,7 +343,7 @@ body>*{position:relative;z-index:1}
 .avatar-save-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0a7a3a}
 
 #customization-panel-wrapper{overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;width:100%;display:flex;justify-content:flex-start}
-#customization-panel-wrapper.open{max-height:750px;opacity:1}
+#customization-panel-wrapper.open{max-height:1000px;opacity:1}
 #btn-toggle-custom{transition:all .3s ease}
 #btn-toggle-custom.active-panel{background:var(--accent-dim);border-color:var(--accent-color);color:var(--accent-color)}
 
@@ -346,11 +358,13 @@ body>*{position:relative;z-index:1}
 .dash-header-inline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:2px dashed var(--border-subtle)}
 .dash-title-premium{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text-main);display:flex;align-items:center;gap:8px}
 .streak-fire-badge{background:var(--bg-color);color:var(--accent-color);padding:6px 12px;border-radius:20px;font-size:.78rem;font-weight:800;border:2px solid var(--border-strong);display:flex;align-items:center;gap:5px}
-.calendar-matrix{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;margin-top:6px}
-.calendar-day-label{font-size:.55rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;padding-bottom:2px}
-.calendar-cell{font-size:.7rem;padding:4px 0;background:var(--bg-color);border-radius:5px;color:var(--text-main);font-weight:700;border:2px solid var(--border-subtle);transition:all .2s}
-.calendar-cell.past-done{color:var(--text-muted);opacity:.4;border-color:transparent;background:transparent}
-.calendar-cell.current-active{color:#000;background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 4px 12px var(--accent-glow);transform:scale(1.1)}
+
+.calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; background: rgba(0,0,0,0.1); border-radius: 12px; padding: 12px; border: 1px solid var(--border-subtle); margin-top: 10px; }
+.calendar-day-label { font-size: .6rem; color: var(--text-muted); font-weight: 800; margin-bottom: 2px; }
+.calendar-cell { font-size: .7rem; width: 24px; height: 24px; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--bg-color); color: var(--text-muted); font-weight: 700; border: 1px solid var(--border-subtle); transition: all .2s; }
+.calendar-cell.past-done { color: #000; background: var(--accent-color); border-color: var(--accent-color); opacity: 0.7; }
+.calendar-cell.current-active { color: #000; background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 4px 12px var(--accent-glow); transform: scale(1.15); font-weight: 900; opacity: 1; }
+.calendar-cell:not(.past-done):not(.current-active) { opacity: 0.35; }
 
 .logros-tabs-row{display:flex;gap:5px;margin-bottom:14px;background:var(--bg-color);padding:4px;border-radius:12px;border:2px solid var(--border-strong)}
 .logro-tab-btn{flex:1;min-width:50px;padding:7px 8px;border-radius:8px;border:none;background:transparent;color:var(--text-muted);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .2s;white-space:nowrap}
@@ -468,6 +482,7 @@ body>*{position:relative;z-index:1}
 @media(max-width:480px){
 .tabs-container{grid-template-columns:1fr}
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
+.theme-preview-strip { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 </head>
@@ -682,7 +697,37 @@ const scriptUrlAntiguedad="https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7
 const scriptUrlUsuarios="https://script.google.com/macros/s/AKfycby4GOySVikjCt7vtaNcKMI8Xzo6sxrfmhRwtWS3h2OabxJEMbtIA_Q-lukMRwrZu2HztA/exec";
 const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googleusercontent.com";
 
-const acHeadHTML = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base"><div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div><div class="ac-hair-base"></div><div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
+function generarAvatarHTML(genero, pelo, camisa, numero) {
+    let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
+    if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
+    else if(pelo === 'long') peloHTML += `<div style="position:absolute;top:10px;left:-10%;width:120%;height:45px;background:#4a2e1b;border-radius:20px;z-index:-1;"></div>`;
+    else if(pelo === 'ponytail') peloHTML += `<div style="position:absolute;top:5px;right:-15px;width:25px;height:40px;background:#4a2e1b;border-radius:50%;z-index:-1;transform:rotate(-20deg);"></div>`;
+
+    let extras = genero === 'F' ? `<div style="width:5px;height:3px;background:rgba(255,100,100,0.6);border-radius:50%;position:absolute;top:35px;left:12px;z-index:2;box-shadow: 20px 0 0 rgba(255,100,100,0.6);"></div>` : '';
+
+    let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div>${extras}</div></div>`;
+
+    let shirtBg = '';
+    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, var(--accent-color) 0, var(--accent-color) 12px, color-mix(in srgb,var(--accent-color) 40%,#111) 12px, color-mix(in srgb,var(--accent-color) 40%,#111) 24px);`;
+    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, var(--accent-color) 35%, color-mix(in srgb,var(--accent-color) 20%,#fff) 35%, color-mix(in srgb,var(--accent-color) 20%,#fff) 65%, var(--accent-color) 65%);`;
+    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, var(--accent-color) 40%, color-mix(in srgb,var(--accent-color) 20%,#fff) 40%, color-mix(in srgb,var(--accent-color) 20%,#fff) 60%, var(--accent-color) 60%);`;
+    else shirtBg = `background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb,var(--accent-color) 40%,#111) 100%);`;
+
+    let body = `
+    <div class="fut-player-body">
+        <div class="fut-player-neck"></div>
+        <div class="fut-player-torso">
+            <div class="fut-player-arm left"></div>
+            <div class="fut-player-shirt" style="${shirtBg}">
+                <div class="fut-player-collar"></div>
+                <span class="fut-player-number">${numero}</span>
+            </div>
+            <div class="fut-player-arm right"></div>
+        </div>
+    </div>`;
+
+    return `<div style="transform: scale(1.15); transform-origin: bottom center; width: 100%; height: 100%; position: absolute; bottom: 0; display:flex; flex-direction:column; align-items:center;">${acHead}${body}</div>`;
+}
 
 let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
@@ -896,7 +941,7 @@ function renderizarBotonLogin(){
 const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
 const userPos=getPref('ev_user_pos','DT');
 if(u){
-let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.48); transform-origin: bottom center; position:absolute; bottom: -2px;">${acHeadHTML}</div></div>`;
+let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_gender','M'), getPref('ev_avatar_hair','spiky'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_num','10'))}</div></div>`;
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${userPos}</div></div>${avatarHTML}</div>`;
 actualizarHeaderNivel();
@@ -1193,6 +1238,24 @@ btn.classList.remove('primary');
 btn.classList.add('secondary');
 }
 };
+window.actualizarAvatarLive = function() {
+    const g = document.getElementById('avatar-gender-input').value;
+    const h = document.getElementById('avatar-hair-input').value;
+    const s = document.getElementById('avatar-shirt-input').value;
+    const n = document.getElementById('avatar-num-input').value || '10';
+
+    const container = document.getElementById('fut-avatar-live-container');
+    if(container) {
+        container.innerHTML = generarAvatarHTML(g, h, s, n);
+    }
+    
+    const posInput = document.getElementById('avatar-pos-input');
+    if(posInput) {
+         const futPos = document.getElementById('fut-pos-display');
+         if(futPos) futPos.textContent = posInput.value;
+    }
+};
+
 function guardarPersonalizacion(){
 const posSelect=document.getElementById('avatar-pos-input');
 if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
@@ -1208,13 +1271,18 @@ const u=JSON.parse(localStorage.getItem('ev_user_logged'));
 futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jonathan');
 }
 }
+const genderInput=document.getElementById('avatar-gender-input'); if(genderInput) setPref('ev_avatar_gender', genderInput.value);
+const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
+const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
+const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
+
 showToast('¡Personalización guardada! 🎉');
 renderizarBotonLogin();actualizarHeaderNivel();
 const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
 const cardEl=document.getElementById('fut-card-main');
 if(cardEl){
     let th=getPref('ev_card_theme','arg');
-    if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger'].includes(th)) th = 'arg';
+    if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi'].includes(th)) th = 'arg';
     cardEl.className='fut-card '+th;
 }
 if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
@@ -1228,14 +1296,21 @@ const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/x
 
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');
 let savedTheme=getPref('ev_card_theme','arg');
-if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger'].includes(savedTheme)) savedTheme = 'arg';
+if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi'].includes(savedTheme)) savedTheme = 'arg';
+
+const savedGender = getPref('ev_avatar_gender', 'M');
+const savedHair = getPref('ev_avatar_hair', 'spiky');
+const savedShirt = getPref('ev_avatar_shirt', 'solid');
+const savedNum = getPref('ev_avatar_num', '10');
 
 const activeCardClass=savedTheme;
 const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
 
 const temas=[
 {k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},
-{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'}
+{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},
+{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},
+{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'}
 ];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 
@@ -1249,7 +1324,7 @@ let startOffset = firstDay === 0 ? 6 : firstDay - 1;
 const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
 let calHTML='';
-for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden;"></div>`; }
+for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden; border:none;"></div>`; }
 for(let d=1;d<=daysInMonth;d++){
     const dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
     let cl='calendar-cell';
@@ -1273,19 +1348,8 @@ document.getElementById('profile-modal-body').innerHTML=`
 <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
 <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon" onerror="this.style.display='none';">
 </div>
-<div class="fut-avatar-container">
-${acHeadHTML}
-<div class="fut-player-body">
-<div class="fut-player-neck"></div>
-<div class="fut-player-torso">
-<div class="fut-player-arm left"></div>
-<div class="fut-player-shirt">
-<div class="fut-player-collar"></div>
-<span class="fut-player-number">10</span>
-</div>
-<div class="fut-player-arm right"></div>
-</div>
-</div>
+<div class="fut-avatar-container" id="fut-avatar-live-container">
+${generarAvatarHTML(savedGender, savedHair, savedShirt, savedNum)}
 </div>
 </div>
 <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
@@ -1305,8 +1369,31 @@ ${googleBadge}
 <div class="avatar-picker-label"><i class="ph-fill ph-palette"></i> Diseño de la Carta</div>
 <div class="theme-preview-strip">${themeStrip}</div>
 <div class="avatar-divider"></div>
-<label class="avatar-nick-label">Posición en la cancha</label>
-<select class="avatar-pos-select" id="avatar-pos-input">
+<label class="avatar-nick-label">Apariencia</label>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+<select class="avatar-pos-select" id="avatar-gender-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+<option value="M">Varón</option>
+<option value="F">Mujer</option>
+</select>
+<select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+<option value="spiky">Pelo Pincho</option>
+<option value="short">Pelo Corto</option>
+<option value="long">Pelo Largo</option>
+<option value="ponytail">Cola Caballo</option>
+<option value="bald">Calvo</option>
+</select>
+</div>
+<label class="avatar-nick-label">Camiseta y Posición</label>
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:12px;">
+<select class="avatar-pos-select" id="avatar-shirt-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+<option value="solid">Lisa</option>
+<option value="striped">Rayada</option>
+<option value="band">Banda Horizontal</option>
+<option value="diagonal">Franja Diagonal</option>
+</select>
+<input type="number" id="avatar-num-input" class="avatar-nickname-input" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
+</div>
+<select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
 <option value="POR">POR — Arquero</option>
 <option value="DFC">DFC — Def. Central</option>
 <option value="LD">LD — Lateral Der.</option>
@@ -1351,7 +1438,7 @@ ${googleBadge}
 <div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
 </div>
 <div class="calendar-matrix">
-<div class="calendar-day-label">lun</div><div class="calendar-day-label">mar</div><div class="calendar-day-label">mié</div><div class="calendar-day-label">jue</div><div class="calendar-day-label">vie</div><div class="calendar-day-label">sáb</div><div class="calendar-day-label">dom</div>
+<div class="calendar-day-label">LUN</div><div class="calendar-day-label">MAR</div><div class="calendar-day-label">MIÉ</div><div class="calendar-day-label">JUE</div><div class="calendar-day-label">VIE</div><div class="calendar-day-label">SÁB</div><div class="calendar-day-label">DOM</div>
 ${calHTML}
 </div>
 </div>
@@ -1382,7 +1469,11 @@ ${calHTML}
 document.getElementById('profile-modal').style.display='flex';
 setTimeout(()=>{
 const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
-selPos&&(selPos.onchange=()=>{const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=selPos.value;});
+const selGen = document.getElementById('avatar-gender-input'); if(selGen) selGen.value = savedGender;
+const selHair = document.getElementById('avatar-hair-input'); if(selHair) selHair.value = savedHair;
+const selShirt = document.getElementById('avatar-shirt-input'); if(selShirt) selShirt.value = savedShirt;
+const selNum = document.getElementById('avatar-num-input'); if(selNum) selNum.value = savedNum;
+
 renderizarGridLogros();
 },50);
 }
