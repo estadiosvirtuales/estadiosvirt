@@ -1220,6 +1220,16 @@ const COLORES_CLUBES={"River Plate": "linear-gradient(135deg, #cc0000, #ffffff)"
             "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
             "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"};
+  // ASIGNACIÓN INTELIGENTE DE COLOR DE SELECCIONES (MÉXICO, USA, CANADÁ)
+        function obtenerFondoClub(nombreClub, pais) {
+            if (coloresClubes[nombreClub]) return coloresClubes[nombreClub];
+            
+            if (pais) {
+                const strPais = pais.toLowerCase().trim();
+                if (strPais.includes('méxico') || strPais.includes('mexico')) return "linear-gradient(135deg, #006341, #ffffff, #c60c30)";
+                if (strPais.includes('ee. uu.') || strPais.includes('estados unidos') || strPais.includes('usa')) return "linear-gradient(135deg, #b31942, #ffffff, #0a3161)";
+                if (strPais.includes('canadá') || strPais.includes('canada')) return "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)";
+            }
 const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)"};
 function obtenerFondoClub(club,pais){
 if(!club&&!pais)return 'linear-gradient(135deg,#0f1419,#080c10)';
