@@ -1,1547 +1,3176 @@
 <!DOCTYPE html>
+
 <html lang="es" data-theme="dark">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Estadios Virtuales | El Mundo Desde el Aire</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <style>
+
 :root{
+
   --bg-color:#0e141b;--card-bg:#18212c;--surface-color:#1e2936;--surface-hover:#263445;
+
   --text-main:#f0f4f8;--text-muted:#7a8fa6;--text-inverse:#000;
+
   --accent-color:#00e676;--accent-hover:#69ff9c;--accent-dim:rgba(0,230,118,.12);--accent-glow:rgba(0,230,118,.35);
+
   --danger-color:#ff4757;--border-subtle:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.15);
+
   --glass-bg:rgba(20,32,46,.88);--modal-overlay:rgba(6,12,20,.92);
+
   --shadow-soft:0 4px 20px rgba(0,0,0,.35);--shadow-strong:0 16px 50px rgba(0,0,0,.65);
+
   --pitch-line:rgba(0,230,118,.055);
+
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
+
 }
+
 [data-theme="light"]{
+
   --bg-color:#eef6f0;--card-bg:#fff;--surface-color:#daeee0;--surface-hover:#c8e4d0;
+
   --text-main:#0d2416;--text-muted:#4a7a5c;--text-inverse:#fff;--accent-color:#16a34a;
+
   --accent-hover:#15803d;--accent-dim:rgba(22,163,74,.1);--accent-glow:rgba(22,163,74,.3);
+
   --danger-color:#dc2626;--border-subtle:rgba(22,163,74,.12);--border-strong:rgba(22,163,74,.25);
+
   --glass-bg:rgba(255,255,255,.94);--modal-overlay:rgba(220,235,225,.88);
+
   --shadow-soft:0 4px 20px rgba(22,163,74,.12);--shadow-strong:0 16px 50px rgba(22,163,74,.2);
+
   --pitch-line:rgba(22,163,74,.1)
+
 }
+
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+
 html{scroll-behavior:smooth}
+
 body{background-color:var(--bg-color);color:var(--text-main);padding-bottom:70px;transition:background-color .35s ease,color .35s ease;overflow-x:hidden}
+
 body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(90deg,var(--pitch-line) 0,var(--pitch-line) 1px,transparent 1px,transparent 80px),repeating-linear-gradient(0deg,var(--pitch-line) 0,var(--pitch-line) 1px,transparent 1px,transparent 80px);pointer-events:none;z-index:0}
+
 body>*{position:relative;z-index:1}
 
+
+
 @keyframes bounceFun{0%{transform:scale(.8) translateY(10px);opacity:0}60%{transform:scale(1.08) translateY(-4px);opacity:1}100%{transform:scale(1) translateY(0)}}
+
 @keyframes pulseGlow{0%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
 @keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
 @keyframes floatBall{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(180deg)}}
+
 @keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+
 @keyframes dropPanel{from{opacity:0;transform:translateY(-12px) scaleY(.94)}to{opacity:1;transform:translateY(0) scaleY(1)}}
+
 @keyframes levelUpPop{0%{transform:scale(0) rotate(-10deg);opacity:0}60%{transform:scale(1.2) rotate(3deg);opacity:1}80%{transform:scale(.95) rotate(-1deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+
 @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(80px) rotate(720deg);opacity:0}}
+
 @keyframes scorePopIn{0%{transform:scale(.5) translateY(10px);opacity:0}70%{transform:scale(1.15) translateY(-3px);opacity:1}100%{transform:scale(1) translateY(0);opacity:1}}
+
 @keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
 @keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 16px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+
 @keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
 
+
+
 .animate-bounce{animation:bounceFun .65s cubic-bezier(.175,.885,.32,1.275) forwards}
+
 .animate-fade-up{animation:fadeSlideUp .5s ease forwards}
+
 .animate-correct{animation:correctPulse .6s ease}
+
 .animate-wrong{animation:wrongShake .4s ease}
 
+
+
 .app-header{display:flex;justify-content:space-between;align-items:center;padding:14px 32px;background:var(--glass-bg);border-bottom:1px solid var(--border-subtle);position:sticky;top:0;z-index:1500;backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 1px 0 var(--border-subtle),0 4px 20px rgba(0,0,0,.3);transition:background .35s}
+
 .header-left-line{position:absolute;bottom:0;left:0;height:2px;width:100%;background:linear-gradient(90deg,transparent 0%,var(--accent-color) 30%,var(--accent-color) 70%,transparent 100%);opacity:.4}
+
 .app-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+
 .app-logo{width:44px;height:44px;border-radius:12px;border:2px solid var(--accent-color);object-fit:cover;box-shadow:0 0 12px var(--accent-glow);transition:transform .3s,box-shadow .3s}
+
 .app-brand:hover .app-logo{transform:rotate(-8deg) scale(1.05);box-shadow:0 0 20px var(--accent-glow)}
+
 .app-title-group{display:flex;flex-direction:column}
+
 .app-title{font-size:1.2rem;font-weight:800;color:var(--text-main);line-height:1.1;letter-spacing:-.5px}
+
 .app-subtitle{font-size:.7rem;color:var(--accent-color);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;display:flex;align-items:center;gap:5px}
+
 .app-subtitle::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-color);box-shadow:0 0 6px var(--accent-color);animation:pulseGlow 2s infinite}
+
 .header-actions{display:flex;align-items:center;gap:14px}
+
 .theme-toggle-btn{width:42px;height:42px;border-radius:12px;background:var(--surface-color);border:1px solid var(--border-strong);color:var(--text-muted);font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease}
+
 .theme-toggle-btn:hover{transform:scale(1.1);color:var(--accent-color);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 0 12px var(--accent-glow)}
+
 .header-level-badge{display:flex;align-items:center;gap:6px;background:var(--surface-color);border:1.5px solid var(--border-strong);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:800;cursor:default;transition:all .25s}
+
 .header-level-badge:hover{border-color:var(--accent-color);background:var(--accent-dim)}
+
 .level-dot{width:10px;height:10px;border-radius:50%}
 
+
+
 .btn-3d{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font-weight:700;font-size:1rem;border-radius:14px;border:none;cursor:pointer;transition:all .12s ease;position:relative}
+
 .btn-3d::after{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,transparent 60%);pointer-events:none}
+
 .btn-3d:active{transform:translateY(3px) scale(.98)}
+
 .btn-3d.primary{background:var(--accent-color);color:#000;box-shadow:0 5px 0 #0a7a3a,0 8px 20px var(--accent-glow)}
+
 .btn-3d.primary:hover{background:var(--accent-hover);box-shadow:0 7px 0 #0a7a3a,0 12px 25px var(--accent-glow);transform:translateY(-2px)}
+
 .btn-3d.primary:active{box-shadow:0 2px 0 #0a7a3a,0 4px 10px var(--accent-glow);transform:translateY(3px)}
+
 .btn-3d.secondary{background:var(--surface-color);color:var(--text-main);border:2px solid var(--border-strong);box-shadow:0 4px 0 rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2)}
+
 .btn-3d.secondary:hover{border-color:var(--accent-color);color:var(--accent-color);background:var(--accent-dim);transform:translateY(-2px)}
+
 .btn-3d.secondary:active{box-shadow:1px 0 rgba(0,0,0,.3);transform:translateY(3px)}
 
+
+
 .hero-section{position:relative;padding:60px 20px 70px;text-align:center;overflow:hidden}
+
 .hero-bg-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 65%);pointer-events:none;opacity:.5}
+
 .hero-ball{position:absolute;right:8%;top:20%;font-size:5rem;opacity:.06;animation:floatBall 6s ease-in-out infinite;pointer-events:none;user-select:none}
+
 .hero-ball-2{position:absolute;left:6%;top:55%;font-size:3rem;opacity:.05;animation:floatBall 8s ease-in-out infinite reverse;pointer-events:none;user-select:none}
+
 .hero-content{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--border-strong);border-left:3px solid var(--accent-color);color:var(--accent-color);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;padding:6px 14px;border-radius:6px;margin-bottom:18px;animation:fadeSlideUp .4s ease}
+
 .welcome-heading{font-size:3.2rem;font-weight:900;margin-bottom:10px;color:var(--text-main);letter-spacing:-1.5px;line-height:1.05;animation:fadeSlideUp .45s .05s ease both}
+
 .welcome-heading .accent-word{color:var(--accent-color)}
+
 .welcome-sub{font-size:1.05rem;color:var(--text-muted);margin-bottom:36px;font-weight:400;max-width:520px;line-height:1.65;animation:fadeSlideUp .45s .1s ease both}
+
 .search-container{width:100%;max-width:580px;margin:0 auto 40px;position:relative;animation:fadeSlideUp .45s .15s ease both}
+
 .search-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:1.25rem;z-index:2}
+
 .search-bar{width:100%;padding:18px 20px 18px 54px;border-radius:16px;border:2px solid var(--border-strong);background:var(--card-bg);color:var(--text-main);font-size:1rem;outline:none;transition:all .3s ease;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.3),inset 0 1px 0 var(--border-subtle)}
+
 .search-bar::placeholder{color:var(--text-muted);font-weight:400}
+
 .search-bar:focus{border-color:var(--accent-color);box-shadow:0 0 0 4px var(--accent-dim),0 4px 20px rgba(0,0,0,.3);background:var(--surface-color)}
 
+
+
 .game-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;width:100%;animation:fadeSlideUp .45s .2s ease both}
+
 .game-modes button{border:none;border-radius:20px;padding:22px 20px;display:flex;align-items:center;gap:16px;text-align:left;cursor:pointer;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.175,.885,.32,1.275);color:#fff;text-decoration:none}
+
 .game-modes button::before{content:'';inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
-.game-modes button::after{content:'';position:absolute;bottom:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+
+.game-modes button::after{content:'absolute';bottom:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+
 .game-modes button:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 45px rgba(0,0,0,.5)}
+
 .game-modes button:active{transform:translateY(-2px) scale(.99)}
+
 .btn-guessr{background:linear-gradient(135deg,#00c853 0%,#00695c 100%);box-shadow:0 8px 0 #004d40,0 12px 30px rgba(0,200,83,.25)}
+
 .btn-guessr:hover{box-shadow:0 12px 0 #004d40,0 18px 40px rgba(0,200,83,.35)!important}
+
 .btn-order{background:linear-gradient(135deg,#ff8f00 0%,#e65100 100%);box-shadow:0 8px 0 #bf360c,0 12px 30px rgba(255,143,0,.25)}
+
 .btn-order:hover{box-shadow:0 12px 0 #bf360c,0 18px 40px rgba(255,143,0,.35)!important}
+
 .btn-random{background:linear-gradient(135deg,#2979ff 0%,#1565c0 100%);box-shadow:0 8px 0 #0d47a1,0 12px 30px rgba(41,121,255,.25)}
+
 .btn-random:hover{box-shadow:0 12px 0 #0d47a1,0 18px 40px rgba(41,121,255,.35)!important}
+
 .game-card-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.18);box-shadow:inset 0 2px 6px rgba(255,255,255,.25),0 4px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:#fff;flex-shrink:0;transition:transform .3s}
+
 .game-modes button:hover .game-card-icon{transform:rotate(-8deg) scale(1.1)}
+
 .game-card-text{display:flex;flex-direction:column;z-index:2}
+
 .game-card-text strong{font-size:1.2rem;font-weight:800;line-height:1.15;margin-bottom:3px}
+
 .game-card-text span{font-size:.88rem;font-weight:500;opacity:.9}
+
 .game-card-badge{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.2);color:#fff;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:20px;border:1px solid rgba(255,255,255,.3)}
 
+
+
 #hero-google-profile{display:flex;align-items:center}
+
 .btn-login{background:var(--accent-color);color:#000;padding:9px 18px;border-radius:12px;font-weight:800;border:none;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:.9rem;box-shadow:0 4px 0 #0a7a3a,0 6px 15px var(--accent-glow);transition:all .2s;letter-spacing:.3px}
+
 .btn-login:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0a7a3a,0 10px 20px var(--accent-glow);background:var(--accent-hover)}
+
 .hero-profile-wrapper{position:relative;display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px 6px 6px;border-radius:50px;border:2px solid var(--border-strong);background:var(--surface-color);transition:all .25s;box-shadow:0 2px 0 rgba(0,0,0,.2)}
+
 .hero-profile-wrapper:hover{border-color:var(--accent-color);background:var(--accent-dim);transform:translateY(-1px)}
+
 .hero-profile-name{font-size:.85rem;font-weight:700;color:var(--text-main);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 .hero-profile-sub{font-size:.68rem;color:var(--accent-color);font-weight:700;display:flex;align-items:center;gap:3px}
+
 .xp-bar-container{width:100%;background:var(--border-subtle);border-radius:20px;height:6px;overflow:hidden;margin-top:6px}
+
 .xp-bar-fill{height:100%;border-radius:20px;transition:width 1.2s cubic-bezier(.4,0,.2,1);background:var(--accent-color);box-shadow:0 0 8px var(--accent-glow)}
+
 .level-badge-inline{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+
 .level-pibe{background:rgba(205,127,50,.15);color:var(--xp-bronze);border:1px solid rgba(205,127,50,.3)}
+
 .level-volante{background:rgba(156,163,175,.15);color:var(--xp-silver);border:1px solid rgba(156,163,175,.3)}
+
 .level-crack{background:rgba(234,179,8,.15);color:var(--xp-gold);border:1px solid rgba(234,179,8,.3)}
+
 .level-leyenda{background:rgba(167,139,250,.15);color:var(--xp-legend);border:1px solid rgba(167,139,250,.3)}
 
+
+
 #levelup-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(16px)}
+
 #levelup-overlay.active{display:flex}
+
 .levelup-box{text-align:center;animation:levelUpPop .6s cubic-bezier(.175,.885,.32,1.275) forwards}
+
 .levelup-icon{font-size:5rem;filter:drop-shadow(0 0 30px var(--accent-color));margin-bottom:16px;display:block}
+
 .levelup-title{font-size:2.4rem;font-weight:900;color:var(--accent-color);text-transform:uppercase;letter-spacing:-1px}
+
 .levelup-sub{font-size:1.1rem;color:var(--text-muted);margin-top:8px}
+
 .levelup-close{margin-top:28px}
+
 .confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confetti 1.2s ease-out forwards;pointer-events:none}
 
+
+
 .section-ligas{max-width:1220px;margin:36px auto 18px;padding:0 24px}
+
 .ligas-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+
 .ligas-title-area{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+
 #texto-titulo-grilla{font-size:.9rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 .liga-elegida-badge{display:none;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:4px 12px 4px 6px;font-size:.8rem;font-weight:700;color:var(--accent-color)}
+
 .liga-elegida-badge .badge-dot{width:10px;height:10px;border-radius:50%}
+
 #btn-volver-ligas{display:none;padding:8px 16px;font-size:.82rem;border-radius:10px;flex-shrink:0}
+
 .liga-selector-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;border:2px solid var(--border-strong);background:var(--card-bg);color:var(--text-main);font-size:1rem;font-weight:700;cursor:pointer;transition:all .25s;position:relative;box-shadow:0 4px 0 rgba(0,0,0,.35);white-space:nowrap}
+
 .liga-selector-btn:hover,.liga-selector-btn.open{border-color:var(--accent-color);color:var(--accent-color);background:var(--accent-dim)}
+
 .liga-selector-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 rgba(0,0,0,.35),0 8px 24px var(--accent-glow)}
+
 .liga-selector-btn .chevron{transition:transform .25s;font-size:.9rem}
+
 .liga-selector-btn.open .chevron{transform:rotate(180deg)}
+
 .liga-selector-preview{display:flex;align-items:center;gap:6px}
+
 .ligas-dropdown-panel{display:none;position:relative;width:100%;margin-bottom:28px}
+
 .ligas-dropdown-panel.open{display:block;animation:dropPanel .22s cubic-bezier(.4,0,.2,1) forwards}
+
 .ligas-panel-inner{background:var(--card-bg);border:2px solid var(--border-strong);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-subtle)}
+
 .ligas-panel-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
 .ligas-panel-label::after{content:'';flex:1;height:1px;background:var(--border-strong)}
+
 .tabs-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+
 .tab{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:2px solid transparent;cursor:pointer;font-size:.9rem;font-weight:700;color:#fff;transition:all .2s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;text-align:left;box-shadow:0 3px 0 rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25)}
+
 .tab-bg{position:absolute;inset:0;z-index:0;transition:opacity .2s}
+
 .tab::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:1;border-radius:12px;transition:background .2s}
+
 .tab:hover::before,.tab.active::before{background:rgba(0,0,0,.22)}
+
 .tab:hover{transform:translateY(-3px) scale(1.01);border-color:rgba(255,255,255,.4);box-shadow:0 7px 0 rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.4)}
+
 .tab.active{border-color:var(--accent-color);box-shadow:0 5px 0 rgba(0,0,0,.35),0 8px 25px rgba(0,230,118,.25)}
+
 .tab.active::after{content:'';position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--accent-color);box-shadow:0 0 8px var(--accent-color);z-index:3}
+
 .tab-swatch{width:28px;height:20px;border-radius:5px;border:2px solid rgba(255,255,255,.3);flex-shrink:0;z-index:2;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+
 .tab-name{z-index:2;position:relative;text-shadow:0 1px 4px rgba(0,0,0,.8);font-size:.9rem;font-weight:700}
 
+
+
 .tab[data-gid="0"] .tab-bg,.tab[data-gid="861264971"] .tab-bg{background:linear-gradient(135deg,#74acdf 0%,#74acdf 40%,#fff 40%,#fff 60%,#74acdf 60%)}
+
 .tab[data-gid="0"] .tab-swatch,.tab[data-gid="861264971"] .tab-swatch{background:linear-gradient(135deg,#74acdf 50%,#fff 50%)}
+
 .tab[data-gid="554922783"] .tab-bg{background:linear-gradient(135deg,#cf142b 0%,#cf142b 45%,#fff 45%,#fff 55%,#cf142b 55%)}
+
 .tab[data-gid="554922783"] .tab-swatch{background:linear-gradient(135deg,#cf142b 50%,#fff 50%)}
+
 .tab[data-gid="88250864"] .tab-bg{background:linear-gradient(160deg,#c60b1e 0%,#c60b1e 35%,#ffc400 35%,#ffc400 65%,#c60b1e 65%)}
+
 .tab[data-gid="88250864"] .tab-swatch{background:linear-gradient(180deg,#c60b1e 33%,#ffc400 33%,#ffc400 66%,#c60b1e 66%)}
+
 .tab[data-gid="2013531070"] .tab-bg{background:linear-gradient(135deg,#009246 0%,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%)}
+
 .tab[data-gid="2013531070"] .tab-swatch{background:linear-gradient(90deg,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%)}
+
 .tab[data-gid="165565330"] .tab-bg{background:linear-gradient(135deg,#002395 0%,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%)}
+
 .tab[data-gid="165565330"] .tab-swatch{background:linear-gradient(90deg,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%)}
+
 .tab[data-gid="96716546"] .tab-bg{background:linear-gradient(160deg,#000 0%,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%)}
+
 .tab[data-gid="96716546"] .tab-swatch{background:linear-gradient(180deg,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%)}
+
 .tab[data-gid="58862486"] .tab-bg{background:linear-gradient(135deg,#009c3b 0%,#009c3b 40%,#ffdf00 40%,#ffdf00 70%,#009c3b 70%)}
+
 .tab[data-gid="58862486"] .tab-swatch{background:linear-gradient(135deg,#009c3b 50%,#ffdf00 50%)}
+
 .tab[data-gid="304687071"] .tab-bg{background:linear-gradient(135deg,#d52b1e 0%,#d52b1e 45%,#fff 45%,#fff 65%,#0039a6 65%)}
+
 .tab[data-gid="304687071"] .tab-swatch{background:linear-gradient(90deg,#d52b1e 40%,#fff 40%,#fff 60%,#0039a6 60%)}
+
 .tab[data-gid="879164460"] .tab-bg{background:linear-gradient(135deg,#1a3a6b 0%,#6b1a1a 25%,#1a6b3a 50%,#6b6b1a 75%,#1a3a6b 100%)}
+
 .tab[data-gid="879164460"] .tab-swatch{background:conic-gradient(#e63946 0%,#457b9d 25%,#2a9d8f 50%,#e9c46a 75%,#e63946 100%)}
 
+
+
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;padding:0 24px;max-width:1220px;margin:0 auto}
+
 .card{background:var(--card-bg);border-radius:20px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease;cursor:pointer;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+
 .card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px var(--accent-color)}
+
 .estadio-foto-container{width:100%;height:190px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:28px;transition:filter .3s}
+
 .estadio-foto-container::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,20,.9) 0%,rgba(0,0,0,.05) 60%);z-index:1}
+
 .card:hover .estadio-foto-container{filter:brightness(1.1)}
+
 .card-img-logo{max-height:88%;max-width:88%;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,.7));transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:2}
+
 .card:hover .card-img-logo{transform:scale(1.12) rotate(3deg)}
+
 .placeholder-text{color:rgba(255,255,255,.12);font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:2.5px;text-align:center;padding:0 10px;z-index:2}
+
 .trivia-hint{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;z-index:4;border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px);transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+
 .card:hover .trivia-hint{background:var(--accent-color);color:#000;box-shadow:0 0 18px var(--accent-glow);border-color:var(--accent-color);transform:scale(1.08)}
+
 .trivia-balloon{position:absolute;inset:8px;background:var(--glass-bg);border:1px solid var(--border-strong);border-radius:14px;padding:12px;display:flex;flex-direction:column;z-index:10;opacity:0;pointer-events:none;transform:scale(.92) translateY(4px);transition:all .22s cubic-bezier(.4,0,.2,1);backdrop-filter:blur(16px)}
+
 .trivia-balloon.active{opacity:1;pointer-events:auto;transform:scale(1) translateY(0);box-shadow:var(--shadow-strong)}
+
 .balloon-tabs{display:flex;width:100%;border-bottom:2px solid var(--border-subtle);margin-bottom:8px;flex-shrink:0}
+
 .b-tab{flex:1;background:transparent;color:var(--text-muted);border:none;padding:8px 0;cursor:pointer;font-size:.82rem;font-weight:700;text-transform:uppercase;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-2px}
+
 .b-tab.active{color:var(--accent-color);border-bottom-color:var(--accent-color);font-weight:800}
+
 .b-content{display:none;width:100%;height:100%;overflow-y:auto;color:var(--text-main);font-size:.88rem;line-height:1.55;text-align:center;align-items:center;justify-content:center;padding:4px 5px}
+
 .b-content.active{display:flex}
+
 .card-content{padding:20px 22px;display:flex;flex-direction:column;flex-grow:1}
+
 .card-title{font-size:1.2rem;font-weight:800;margin-bottom:4px;letter-spacing:-.3px;color:var(--text-main)}
+
 .card-subtitle{font-size:.88rem;color:var(--text-muted);margin-bottom:18px;font-weight:500}
+
 .btn-view{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:var(--surface-color);color:var(--text-main);border-radius:12px;font-weight:700;font-size:.95rem;border:2px solid var(--border-strong);cursor:pointer;transition:all .22s;margin-top:auto;box-shadow:0 3px 0 rgba(0,0,0,.3)}
+
 .btn-view:hover{background:var(--accent-color);border-color:var(--accent-color);color:#000;box-shadow:0 5px 0 #0a7a3a,0 8px 20px var(--accent-glow);transform:translateY(-2px)}
+
 .rating-box{display:flex;flex-direction:column;align-items:center;margin-top:18px;padding-top:14px;border-top:1px dashed var(--border-strong)}
+
 .rating-title{font-size:.72rem;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+
 .stars-row{display:flex;gap:5px}
+
 .star-icon{font-size:1.5rem;color:var(--border-strong);cursor:pointer;transition:transform .15s cubic-bezier(.175,.885,.32,1.275),color .15s;user-select:none}
+
 .star-icon:hover{transform:scale(1.35);color:var(--accent-hover)}
+
 .star-icon.active{color:var(--accent-color)}
 
+
+
 .modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:2500;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
+
 .modal-content{position:relative;width:90%;max-width:580px;height:80vh;background:var(--bg-color);border-radius:22px;box-shadow:var(--shadow-strong),0 0 0 1px var(--border-strong);display:flex;flex-direction:column;border:1px solid var(--border-strong);overflow:hidden;animation:bounceFun .4s ease}
+
 .modal-content.stadium-guessr-layout{width:92%!important;max-width:1200px!important}
+
 .video-container{width:100%;height:100%;border-radius:22px;overflow:hidden;background:#000;display:flex;justify-content:center;align-items:center}
+
 .close-btn{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.15);padding:0;cursor:pointer;z-index:2020;border-radius:10px;width:38px;height:38px;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
+
 .close-btn:hover{background:var(--danger-color);border-color:var(--danger-color);transform:scale(1.1) rotate(90deg)}
 
+
+
 #game-ui{display:none;width:100%;background:var(--bg-color)!important;padding:20px!important;text-align:center;z-index:2010;border-radius:0 0 22px 22px}
+
 #game-title{font-size:.95rem!important;color:var(--text-main);margin-bottom:10px;font-weight:800!important;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface-color);padding:13px;border-radius:12px;border:2px solid var(--border-strong)}
+
 .rounds-progress{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+
 .round-dot{width:28px;height:6px;border-radius:3px;background:var(--border-strong);transition:all .4s ease}
+
 .round-dot.done{background:var(--accent-color);box-shadow:0 0 8px var(--accent-glow)}
+
 .round-dot.current{background:var(--accent-color);opacity:.5;animation:timerPulse 1s infinite}
+
 .score-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--accent-color);color:#000;font-size:1.8rem;font-weight:900;padding:10px 24px;border-radius:14px;pointer-events:none;z-index:100;white-space:nowrap;box-shadow:0 0 40px var(--accent-glow)}
+
 .score-popup.show{animation:scorePopIn .6s ease forwards}
+
 .score-popup.bad{background:var(--danger-color);color:#fff;box-shadow:0 0 40px rgba(255,71,87,.6)}
+
 #map-guess-container{width:100%;height:260px;background:var(--surface-color);border-radius:14px!important;border:3px solid var(--border-strong);margin-bottom:16px;transition:border-color .3s;overflow:hidden;position:relative}
+
 #map-guess-container:hover{border-color:var(--accent-color)}
+
 .map-hint-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:5;transition:opacity .3s}
+
 .map-hint-text{background:var(--glass-bg);border:1px solid var(--border-strong);border-radius:12px;padding:10px 16px;font-size:.85rem;font-weight:700;color:var(--text-muted);backdrop-filter:blur(8px);display:flex;align-items:center;gap:8px}
 
+
+
 .split-profile-layout{display:flex;flex-direction:column;gap:28px;width:100%}
+
 @media(min-width:769px){
+
 .split-profile-layout{flex-direction:row;align-items:flex-start}
+
 .left-fut-column{width:38%;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;border-right:2px dashed var(--border-subtle);padding-right:25px;padding-top:10px}
+
 .right-dashboard-column{width:62%;display:flex;flex-direction:column;justify-content:flex-start}
+
 }
+
 #customization-panel-wrapper{justify-content:flex-start}
+
 #btn-toggle-custom{margin-left:0}
 
+
+
 /* Estilos Carta Nacionales */
+
 .fut-card{position:relative;width:250px;height:380px;background-size:cover;border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;color:#fff;font-family:'Arial Black',Gadget,sans-serif;box-shadow:var(--shadow-strong);overflow:hidden;user-select:none;border:2px solid rgba(255,255,255,.15);transition:all .4s cubic-bezier(.175,.885,.32,1.275);flex-shrink:0}
+
 .fut-card.arg{background:linear-gradient(135deg,#74acdf 0%,#ffffff 50%,#74acdf 100%);color:#000;border-color:#74acdf}
+
 .fut-card.arg .fut-name{border-bottom-color:rgba(0,0,0,.3)}
+
 .fut-card.arg .fut-stat-label{opacity:.8}
+
 .fut-card.bra{background:linear-gradient(135deg,#009c3b 0%,#ffdf00 45%,#002776 100%);color:#fff;border-color:#009c3b}
+
 .fut-card.esp{background:linear-gradient(135deg,#aa151b 0%,#f1bf00 45%,#aa151b 100%);color:#000;border-color:#f1bf00}
+
 .fut-card.ita{background:linear-gradient(135deg,#009246 0%,#ffffff 50%,#ce2b37 100%);color:#000;border-color:#009246}
+
 .fut-card.fra{background:linear-gradient(135deg,#002395 0%,#ffffff 50%,#ed2939 100%);color:#000;border-color:#002395}
+
 .fut-card.ger{background:linear-gradient(135deg,#000000 0%,#dd0000 50%,#ffce00 100%);color:#fff;border-color:#dd0000}
-/* Nuevas Cartas */
+
 .fut-card.eng { background: linear-gradient(135deg, #ffffff 0%, #ce1126 100%); color: #000; border-color: #ce1126; }
+
 .fut-card.por { background: linear-gradient(135deg, #046a38 0%, #ff0000 100%); color: #fff; border-color: #f1c400; }
+
 .fut-card.uru { background: linear-gradient(135deg, #7badd3 0%, #ffffff 50%, #fcd116 100%); color: #000; border-color: #7badd3; }
+
 .fut-card.mex { background: linear-gradient(135deg, #006847 0%, #ffffff 50%, #ce1126 100%); color: #000; border-color: #006847; }
+
 .fut-card.col { background: linear-gradient(135deg, #fcd116 0%, #003893 50%, #ce1126 100%); color: #fff; border-color: #fcd116; }
+
 .fut-card.chi { background: linear-gradient(135deg, #d52b1e 0%, #ffffff 50%, #0039a6 100%); color: #000; border-color: #d52b1e; }
+
 .fut-card.ned { background: linear-gradient(135deg, #f36c21 0%, #ffffff 50%, #21468b 100%); color: #000; border-color: #f36c21; }
+
 .fut-card.bel { background: linear-gradient(135deg, #e30613 0%, #fbd600 50%, #000000 100%); color: #fff; border-color: #e30613; }
+
 .fut-card.cro { background: linear-gradient(135deg, #ed1c24 0%, #ffffff 50%, #005caa 100%); color: #000; border-color: #ed1c24; }
+
 .fut-card.usa { background: linear-gradient(135deg, #002868 0%, #ffffff 50%, #bf0a30 100%); color: #000; border-color: #002868; }
+
 .fut-card.jpn { background: linear-gradient(135deg, #000555 0%, #ffffff 50%, #ed1944 100%); color: #000; border-color: #000555; }
 
+/* Nuevas Cartas - 31 Extra for 2026 World Cup */
+
+.fut-card.can { background: linear-gradient(135deg, #d52b1e 0%, #ffffff 50%, #d52b1e 100%); color: #000; border-color: #d52b1e; }
+
+.fut-card.mar { background: linear-gradient(135deg, #c1272d 0%, #006233 100%); color: #fff; border-color: #006233; }
+
+.fut-card.sen { background: linear-gradient(135deg, #00853f 0%, #fdef42 50%, #e31b23 100%); color: #000; border-color: #00853f; }
+
+.fut-card.kor { background: linear-gradient(135deg, #ffffff 0%, #cd2e3a 50%, #0f64cd 100%); color: #000; border-color: #cd2e3a; }
+
+.fut-card.aus { background: linear-gradient(135deg, #ffcd00 0%, #008751 100%); color: #000; border-color: #008751; }
+
+.fut-card.sui { background: linear-gradient(135deg, #d52b1e 0%, #ffffff 100%); color: #000; border-color: #d52b1e; }
+
+.fut-card.ecu { background: linear-gradient(135deg, #ffdd00 40%, #034ea2 70%, #ed1c24 100%); color: #000; border-color: #ffdd00; }
+
+.fut-card.per { background: linear-gradient(135deg, #d91023 0%, #ffffff 50%, #d91023 100%); color: #000; border-color: #d91023; }
+
+.fut-card.den { background: linear-gradient(135deg, #c60c30 0%, #ffffff 100%); color: #000; border-color: #c60c30; }
+
+.fut-card.srb { background: linear-gradient(135deg, #c6363c 0%, #0c4076 50%, #ffffff 100%); color: #fff; border-color: #c6363c; }
+
+.fut-card.pol { background: linear-gradient(135deg, #ffffff 0%, #dc143c 100%); color: #000; border-color: #dc143c; }
+
+.fut-card.wal { background: linear-gradient(135deg, #d30731 0%, #ffffff 50%, #00ad36 100%); color: #000; border-color: #d30731; }
+
+.fut-card.swe { background: linear-gradient(135deg, #fecc00 0%, #006aa7 100%); color: #000; border-color: #fecc00; }
+
+.fut-card.civ { background: linear-gradient(135deg, #f77f00 0%, #ffffff 50%, #009e60 100%); color: #000; border-color: #f77f00; }
+
+.fut-card.cmr { background: linear-gradient(135deg, #007a5e 0%, #ce1126 50%, #fcd116 100%); color: #fff; border-color: #007a5e; }
+
+.fut-card.gha { background: linear-gradient(135deg, #ce1126 0%, #fcd116 50%, #006b3f 100%); color: #000; border-color: #ce1126; }
+
+.fut-card.nga { background: linear-gradient(135deg, #008751 0%, #ffffff 50%, #008751 100%); color: #000; border-color: #008751; }
+
+.fut-card.ksa { background: linear-gradient(135deg, #006a4e 0%, #ffffff 100%); color: #fff; border-color: #006a4e; }
+
+.fut-card.irn { background: linear-gradient(135deg, #239f40 0%, #ffffff 50%, #da0000 100%); color: #000; border-color: #239f40; }
+
+.fut-card.egy { background: linear-gradient(135deg, #ce1126 0%, #ffffff 50%, #000000 100%); color: #000; border-color: #ce1126; }
+
+.fut-card.alg { background: linear-gradient(135deg, #006233 0%, #ffffff 50%, #d21034 100%); color: #000; border-color: #006233; }
+
+.fut-card.tun { background: linear-gradient(135deg, #e70013 0%, #ffffff 100%); color: #000; border-color: #e70013; }
+
+.fut-card.mli { background: linear-gradient(135deg, #14b53a 0%, #fcd116 50%, #ce1126 100%); color: #000; border-color: #14b53a; }
+
+.fut-card.qat { background: linear-gradient(135deg, #8d1b3d 0%, #ffffff 100%); color: #fff; border-color: #8d1b3d; }
+
+.fut-card.par { background: linear-gradient(135deg, #d52b1e 0%, #ffffff 50%, #0038a8 100%); color: #000; border-color: #d52b1e; }
+
+.fut-card.ven { background: linear-gradient(135deg, #fce300 0%, #0038a8 50%, #ce1126 100%); color: #000; border-color: #fce300; }
+
+.fut-card.bol { background: linear-gradient(135deg, #d52b1e 0%, #fcd116 50%, #007a33 100%); color: #fff; border-color: #d52b1e; }
+
+.fut-card.crc { background: linear-gradient(135deg, #002b7f 0%, #ffffff 50%, #ce1126 100%); color: #000; border-color: #002b7f; }
+
+.fut-card.pan { background: linear-gradient(135deg, #005293 0%, #ffffff 50%, #d21034 100%); color: #000; border-color: #005293; }
+
+.fut-card.jam { background: linear-gradient(135deg, #009b3a 0%, #fed100 50%, #000000 100%); color: #fff; border-color: #009b3a; }
+
+.fut-card.nzl { background: linear-gradient(135deg, #ffffff 0%, #000000 100%); color: #000; border-color: #000000; }
+
+
+
 .fut-card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%,rgba(255,255,255,.04) 100%);pointer-events:none}
+
 .fut-top{display:flex;width:100%;height:50%;margin-top:15px}
+
 .fut-badge-meta{width:35%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+
 .fut-ovr{font-size:2.8rem;font-weight:900;letter-spacing:-1px}
+
 .fut-pos{font-size:1rem;font-weight:900;text-transform:uppercase;opacity:.8;margin-top:-2px}
+
 .fut-club-icon{width:40px;height:40px;margin-top:10px;object-fit:contain}
+
 .fut-name{width:100%;text-align:center;font-size:1.35rem;font-weight:900;margin:12px 0 8px;text-transform:uppercase;letter-spacing:-.5px;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 .fut-stats-row{display:grid;grid-template-columns:repeat(2,1fr);width:95%;font-size:.95rem;gap:8px 15px;margin-top:5px}
+
 .fut-stat-item{display:flex;gap:6px;justify-content:center}
+
 .fut-stat-num{font-weight:900;font-size:1.15rem}
+
 .fut-stat-label{opacity:.8;font-size:.8rem;align-self:flex-end;margin-bottom:1px}
 
+
+
 /* Avatar Estilo Animal Crossing */
+
 .fut-avatar-container{width:65%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
 
+
+
 .ac-avatar { position: absolute; bottom: 84px; z-index: 5; width: 68px; height: 60px; transition: transform .3s cubic-bezier(.175,.885,.32,1.275); }
+
 .ac-head-base { width: 100%; height: 100%; background: #e2b999; border-radius: 45% 45% 35% 35%; position: relative; box-shadow: inset -4px -4px 10px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.3); border: 2px solid #c89f81; }
+
 .ac-ear { width: 18px; height: 18px; background: #e2b999; border-radius: 50%; position: absolute; top: 22px; border: 2px solid #c89f81; z-index: -1; }
+
 .ac-ear.left { left: -8px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1); }
+
 .ac-ear.right { right: -8px; box-shadow: inset 2px -2px 4px rgba(0,0,0,0.1); }
+
 .ac-hair-base { width: 110%; height: 26px; background: #4a2e1b; position: absolute; top: -4px; left: -5%; border-radius: 50% 50% 15% 15%; border-bottom: 2px solid #301d10; z-index: 2; }
+
 .ac-hair-spike { position: absolute; top: -12px; right: 12px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 16px solid #4a2e1b; transform: rotate(20deg); }
+
 .ac-hair-spike2 { position: absolute; top: -8px; left: 15px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #4a2e1b; transform: rotate(-15deg); }
+
 .ac-eye { width: 8px; height: 14px; background: #111; border-radius: 50%; position: absolute; top: 26px; z-index: 2;}
+
 .ac-eye.left { left: 16px; }
+
 .ac-eye.right { right: 16px; }
+
 .ac-eye::after { content: ''; position: absolute; top: 2px; right: 2px; width: 3px; height: 4px; background: #fff; border-radius: 50%; }
+
 .ac-nose { width: 8px; height: 5px; background: #d4a788; border-radius: 50%; position: absolute; top: 38px; left: 30px; z-index: 2;}
+
 .ac-mouth { width: 14px; height: 7px; border-bottom: 2px solid #a66a41; border-radius: 0 0 50% 50%; position: absolute; top: 43px; left: 27px; z-index: 2;}
 
+
+
 .fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
+
 .fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
+
 .fut-player-torso{position:relative;width:100%;height:85px;display:flex;justify-content:center;margin-top:-6px}
+
 .fut-player-shirt{width:64px;height:100%;border-radius:18px 18px 5px 5px;z-index:3;position:relative;box-shadow:inset 0 5px 12px rgba(255,255,255,0.25),0 4px 10px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.2);border-bottom:none}
+
 .fut-player-collar{width:24px;height:10px;border:3px solid rgba(255,255,255,.9);border-top:none;border-radius:0 0 12px 12px;margin-top:0}
+
 .fut-player-number{font-size:1.6rem;font-weight:900;color:rgba(255,255,255,.9);font-family:'Arial Black',sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.5);margin-top:6px}
+
 .fut-player-arm{width:15px;height:65px;background:#e2b999;position:absolute;top:6px;border-radius:10px;box-shadow:inset -2px 0 4px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.3);z-index:2}
+
 .fut-player-arm::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:26px;border-radius:10px 10px 4px 4px;box-shadow:inset 0 -3px 4px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.15);border-bottom:none}
+
 .fut-player-arm::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:15px;background:#d4a788;border-radius:10px}
+
 .fut-player-arm.left{left:12px;transform:rotate(18deg);transform-origin:top center}
+
 .fut-player-arm.right{right:12px;transform:rotate(-18deg);transform-origin:top center}
 
+
+
 .avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:20px;margin-top:14px;width:100%;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+
 .avatar-picker-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-color);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
 .avatar-picker-label i{font-size:1rem}
 
+
+
 .tema-strip-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
+
 .theme-preview-strip{display:grid;grid-template-columns:repeat(auto-fill, minmax(45px, 1fr));gap:6px;margin-bottom:16px}
+
 .theme-dot{width:100%;aspect-ratio:1.3;border-radius:8px;cursor:pointer;border:2px solid var(--border-subtle);transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.9);overflow:hidden}
+
 .theme-dot:hover{border-color:rgba(255,255,255,.5);transform:scale(1.08)}
+
 .theme-dot.active{border-color:var(--accent-color);box-shadow:0 0 12px var(--accent-glow);transform:scale(1.1)}
+
 .theme-dot::after{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%);pointer-events:none}
 
+
+
 .td-arg{background:linear-gradient(180deg,#74acdf 33%,#fff 33%,#fff 66%,#74acdf 66%); color: #000;}
+
 .td-bra{background:linear-gradient(135deg,#009c3b,#ffdf00,#002776)}
+
 .td-esp{background:linear-gradient(135deg,#aa151b,#f1bf00,#aa151b); color: #000;}
+
 .td-ita{background:linear-gradient(135deg,#009246,#fff,#ce2b37); color: #000;}
+
 .td-fra{background:linear-gradient(135deg,#002395,#fff,#ed2939); color: #000;}
+
 .td-ger{background:linear-gradient(135deg,#000,#dd0000,#ffce00)}
+
 .td-eng { background: linear-gradient(135deg, #fff, #ce1126); color: #000; }
+
 .td-por { background: linear-gradient(135deg, #046a38, #ff0000); }
+
 .td-uru { background: linear-gradient(135deg, #7badd3, #fff, #fcd116); color: #000; }
+
 .td-mex { background: linear-gradient(135deg, #006847, #fff, #ce1126); color: #000; }
+
 .td-col { background: linear-gradient(135deg, #fcd116, #003893, #ce1126); }
+
 .td-chi { background: linear-gradient(135deg, #d52b1e, #fff, #0039a6); color: #000; }
+
 .td-ned { background: linear-gradient(135deg, #f36c21, #fff, #21468b); color: #000; }
+
 .td-bel { background: linear-gradient(135deg, #e30613, #fbd600, #000); }
+
 .td-cro { background: linear-gradient(135deg, #ed1c24, #fff, #005caa); color: #000; }
+
 .td-usa { background: linear-gradient(135deg, #002868, #fff, #bf0a30); color: #000; }
+
 .td-jpn { background: linear-gradient(135deg, #000555, #fff, #ed1944); color: #000; }
+
+.td-can { background: linear-gradient(135deg, #d52b1e, #fff, #d52b1e); color: #000; }
+
+.td-mar { background: linear-gradient(135deg, #c1272d, #006233); color: #fff; }
+
+.td-sen { background: linear-gradient(135deg, #00853f, #fdef42, #e31b23); color: #000; }
+
+.td-kor { background: linear-gradient(135deg, #fff, #cd2e3a, #0f64cd); color: #000; }
+
+.td-aus { background: linear-gradient(135deg, #ffcd00, #008751); color: #000; }
+
+.td-sui { background: linear-gradient(135deg, #d52b1e, #fff); color: #000; }
+
+.td-ecu { background: linear-gradient(135deg, #ffdd00, #034ea2, #ed1c24); color: #000; }
+
+.td-per { background: linear-gradient(135deg, #d91023, #fff, #d91023); color: #000; }
+
+.td-den { background: linear-gradient(135deg, #c60c30, #fff); color: #000; }
+
+.td-srb { background: linear-gradient(135deg, #c6363c, #0c4076, #fff); color: #fff; }
+
+.td-pol { background: linear-gradient(135deg, #fff, #dc143c); color: #000; }
+
+.td-wal { background: linear-gradient(135deg, #d30731, #fff, #00ad36); color: #000; }
+
+.td-swe { background: linear-gradient(135deg, #fecc00, #006aa7); color: #000; }
+
+.td-civ { background: linear-gradient(135deg, #f77f00, #fff, #009e60); color: #000; }
+
+.td-cmr { background: linear-gradient(135deg, #007a5e, #ce1126, #fcd116); color: #fff; }
+
+.td-gha { background: linear-gradient(135deg, #ce1126, #fcd116, #006b3f); color: #000; }
+
+.td-nga { background: linear-gradient(135deg, #008751, #fff, #008751); color: #000; }
+
+.td-ksa { background: linear-gradient(135deg, #006a4e, #fff); color: #fff; }
+
+.td-irn { background: linear-gradient(135deg, #239f40, #fff, #da0000); color: #000; }
+
+.td-egy { background: linear-gradient(135deg, #ce1126, #fff, #000); color: #000; }
+
+.td-alg { background: linear-gradient(135deg, #006233, #fff, #d21034); color: #000; }
+
+.td-tun { background: linear-gradient(135deg, #e70013, #fff); color: #000; }
+
+.td-mli { background: linear-gradient(135deg, #14b53a, #fcd116, #ce1126); color: #000; }
+
+.td-qat { background: linear-gradient(135deg, #8d1b3d, #fff); color: #fff; }
+
+.td-par { background: linear-gradient(135deg, #d52b1e, #fff, #0038a8); color: #000; }
+
+.td-ven { background: linear-gradient(135deg, #fce300, #0038a8, #ce1126); color: #000; }
+
+.td-bol { background: linear-gradient(135deg, #d52b1e, #fcd116, #007a33); color: #fff; }
+
+.td-crc { background: linear-gradient(135deg, #002b7f, #fff, #ce1126); color: #000; }
+
+.td-pan { background: linear-gradient(135deg, #005293, #fff, #d21034); color: #000; }
+
+.td-jam { background: linear-gradient(135deg, #009b3a, #fed100, #000); color: #fff; }
+
+.td-nzl { background: linear-gradient(135deg, #fff, #000); color: #000; }
+
+
 
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
 
+
+
 .avatar-divider{height:1px;background:var(--border-strong);margin:14px 0}
+
 .avatar-nick-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
+
 .avatar-nickname-row{display:flex;gap:7px;align-items:center;margin-bottom:12px}
+
 .avatar-nickname-input{flex:1;background:var(--bg-color);border:2px solid var(--border-strong);border-radius:10px;padding:10px 12px;color:var(--text-main);font-size:.9rem;font-weight:700;outline:none;transition:border-color .2s;min-width:0}
+
 .avatar-nickname-input:focus{border-color:var(--accent-color);box-shadow:0 0 0 3px var(--accent-dim)}
+
 .avatar-nickname-input::placeholder{color:var(--text-muted);font-weight:400}
+
 .avatar-pos-select{width:100%;background:var(--bg-color);border:2px solid var(--border-strong);border-radius:10px;padding:10px 12px;color:var(--text-main);font-size:.9rem;font-weight:700;outline:none;transition:border-color .2s;cursor:pointer;margin-bottom:12px}
+
 .avatar-pos-select:focus{border-color:var(--accent-color)}
+
 .avatar-save-btn{background:var(--accent-color);color:#000;border:none;border-radius:12px;padding:12px 14px;font-size:.9rem;font-weight:800;cursor:pointer;transition:all .18s;width:100%;box-shadow:0 4px 0 #0a7a3a;display:flex;align-items:center;justify-content:center;gap:8px}
+
 .avatar-save-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0a7a3a,0 8px 16px var(--accent-glow)}
+
 .avatar-save-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0a7a3a}
 
+
+
 #customization-panel-wrapper{overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;width:100%;display:flex;justify-content:flex-start}
+
 #customization-panel-wrapper.open{max-height:1000px;opacity:1}
+
 #btn-toggle-custom{transition:all .3s ease}
+
 #btn-toggle-custom.active-panel{background:var(--accent-dim);border-color:var(--accent-color);color:var(--accent-color)}
 
+
+
 .xp-profile-section{background:var(--bg-color);border:2px solid var(--border-strong);border-radius:16px;padding:16px;margin-bottom:14px}
+
 .xp-level-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
 .xp-level-name{font-size:1rem;font-weight:900}
+
 .xp-progress-label{font-size:.75rem;color:var(--text-muted);font-weight:700}
+
 .xp-bar-big{height:10px;border-radius:20px;background:var(--border-subtle);overflow:hidden;margin-bottom:6px}
+
 .xp-bar-big-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent-color),var(--accent-hover));box-shadow:0 0 10px var(--accent-glow);transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+
 .xp-milestones{display:flex;justify-content:space-between;font-size:.68rem;color:var(--text-muted)}
+
 .geoguessr-dash-box{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px 18px;margin-bottom:14px}
+
 .dash-header-inline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:2px dashed var(--border-subtle)}
+
 .dash-title-premium{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text-main);display:flex;align-items:center;gap:8px}
+
 .streak-fire-badge{background:var(--bg-color);color:var(--accent-color);padding:6px 12px;border-radius:20px;font-size:.78rem;font-weight:800;border:2px solid var(--border-strong);display:flex;align-items:center;gap:5px}
 
+
+
 .calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; background: rgba(0,0,0,0.1); border-radius: 12px; padding: 12px; border: 1px solid var(--border-subtle); margin-top: 10px; }
+
 .calendar-day-label { font-size: .6rem; color: var(--text-muted); font-weight: 800; margin-bottom: 2px; }
+
 .calendar-cell { font-size: .7rem; width: 24px; height: 24px; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--bg-color); color: var(--text-muted); font-weight: 700; border: 1px solid var(--border-subtle); transition: all .2s; }
+
 .calendar-cell.past-done { color: #000; background: var(--accent-color); border-color: var(--accent-color); opacity: 0.7; }
+
 .calendar-cell.current-active { color: #000; background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 4px 12px var(--accent-glow); transform: scale(1.15); font-weight: 900; opacity: 1; }
+
 .calendar-cell:not(.past-done):not(.current-active) { opacity: 0.35; }
 
+
+
 .logros-tabs-row{display:flex;gap:5px;margin-bottom:14px;background:var(--bg-color);padding:4px;border-radius:12px;border:2px solid var(--border-strong)}
+
 .logro-tab-btn{flex:1;min-width:50px;padding:7px 8px;border-radius:8px;border:none;background:transparent;color:var(--text-muted);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .2s;white-space:nowrap}
+
 .logro-tab-btn.active{background:var(--accent-color);color:#000;box-shadow:0 2px 8px var(--accent-glow)}
+
 .logro-tab-btn:hover:not(.active){background:var(--surface-hover);color:var(--text-main)}
+
 .logros-grid-v2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:480px;overflow-y:auto;padding:2px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
+
 .logro-card-v2{display:flex;flex-direction:column;align-items:center;background:var(--bg-color);padding:12px 6px 10px;border-radius:14px;border:2px solid var(--border-subtle);transition:all .3s cubic-bezier(.175,.885,.32,1.275);cursor:default;position:relative;overflow:hidden;text-align:center}
+
 .logro-card-v2.unlocked{border-color:var(--accent-color);background:linear-gradient(135deg,rgba(0,230,118,.07) 0%,var(--bg-color) 70%)}
+
 .logro-card-v2.unlocked:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 8px 24px var(--accent-glow);border-color:var(--accent-hover)}
+
 .logro-card-v2.rare.unlocked{border-color:#a78bfa;background:linear-gradient(135deg,rgba(167,139,250,.09) 0%,var(--bg-color) 70%);box-shadow:0 0 18px rgba(167,139,250,.2)}
+
 .logro-card-v2.rare.unlocked:hover{box-shadow:0 8px 24px rgba(167,139,250,.35)}
+
 .logro-card-v2.epic.unlocked{border-color:#eab308;background:linear-gradient(135deg,rgba(234,179,8,.09) 0%,var(--bg-color) 70%);box-shadow:0 0 18px rgba(234,179,8,.2)}
+
 .logro-card-v2.epic.unlocked:hover{box-shadow:0 8px 28px rgba(234,179,8,.4)}
+
 .logro-card-v2.in-progress{border-color:rgba(0,230,118,.35);border-style:dashed}
+
 .logro-card-v2.in-progress:hover{border-color:var(--accent-color);transform:translateY(-2px)}
+
 .logro-card-v2.locked{opacity:.35;filter:grayscale(75%)}
+
 .logro-icon-v2{font-size:1.9rem;margin-bottom:5px;line-height:1;transition:transform .3s}
+
 .logro-card-v2.unlocked:hover .logro-icon-v2{transform:scale(1.2) rotate(-5deg)}
+
 .logro-name-v2{font-size:.6rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:.4px;line-height:1.2;margin-bottom:3px}
+
 .logro-req-v2{font-size:.55rem;color:var(--text-muted);line-height:1.35;font-weight:600;margin-bottom:5px}
+
 .logro-rarity-pill{font-size:.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:2px 6px;border-radius:20px;margin-top:auto}
+
 .logro-card-v2:not(.rare):not(.epic) .logro-rarity-pill{background:rgba(156,163,175,.18);color:#9ca3af}
+
 .logro-card-v2.rare .logro-rarity-pill{background:rgba(167,139,250,.18);color:#a78bfa}
+
 .logro-card-v2.epic .logro-rarity-pill{background:rgba(234,179,8,.18);color:#eab308}
+
 .logro-progress-mini{width:100%;margin-top:5px}
+
 .logro-progress-bar-bg{width:100%;height:3px;border-radius:20px;background:var(--border-subtle);overflow:hidden}
+
 .logro-progress-bar-fill{height:100%;border-radius:20px;background:var(--accent-color);transition:width 1.2s ease}
+
 .logro-progress-text{font-size:.52rem;color:var(--text-muted);margin-top:2px;font-weight:700;text-align:center}
+
 .logro-unlock-badge{position:absolute;top:0;right:0;background:var(--accent-color);color:#000;border-radius:0 12px 0 10px;width:18px;height:18px;display:none;align-items:center;justify-content:center;font-size:.65rem;font-weight:900}
+
 .logro-card-v2.unlocked .logro-unlock-badge{display:flex}
+
 .logros-empty{grid-column:1/-1;text-align:center;padding:28px 10px;color:var(--text-muted);font-size:.82rem;display:flex;flex-direction:column;align-items:center;gap:8px}
+
 .logros-empty i{font-size:2rem;color:var(--border-strong)}
 
+
+
 #login-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9000;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
+
 #login-modal-overlay.active{display:flex}
+
 .login-modal-box{background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:440px;padding:36px;display:flex;flex-direction:column;align-items:center;box-shadow:var(--shadow-strong);animation:bounceFun .4s ease}
+
 .login-modal-logo{width:56px;height:56px;border-radius:16px;border:2px solid var(--accent-color);object-fit:cover;margin-bottom:18px;box-shadow:0 0 18px var(--accent-glow)}
+
 .login-modal-title{font-size:1.4rem;font-weight:900;margin-bottom:6px;color:var(--text-main)}
+
 .login-modal-sub{font-size:.9rem;color:var(--text-muted);margin-bottom:28px;text-align:center;line-height:1.5}
+
 #google-signin-btn-container{width:100%;display:flex;justify-content:center;margin-bottom:16px}
+
 .google-wall{background:var(--surface-color);border:2px dashed var(--border-strong);border-radius:18px;padding:28px 22px;text-align:center;margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:12px}
+
 .google-wall-icon{font-size:2.8rem;color:var(--accent-color);filter:drop-shadow(0 0 12px var(--accent-glow))}
+
 .google-wall h3{font-size:1.1rem;font-weight:800;color:var(--text-main);margin:0}
+
 .google-wall p{font-size:.88rem;color:var(--text-muted);line-height:1.55;margin:0}
 
+
+
 #privacy-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9999;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
+
 #privacy-modal-overlay.active{display:flex}
+
 .privacy-modal-box{background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-strong);overflow:hidden;animation:bounceFun .4s ease}
+
 .privacy-modal-header{padding:26px 30px 18px;border-bottom:2px dashed var(--border-subtle);flex-shrink:0}
+
 .privacy-modal-header h2{font-size:1.3rem;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:12px;margin-bottom:8px}
+
 .privacy-modal-header p{font-size:.92rem;color:var(--text-muted);line-height:1.5}
+
 .privacy-modal-body{padding:22px 28px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
+
 .privacy-section-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent-color);margin:20px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--border-subtle)}
+
 .privacy-modal-body p{font-size:.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:10px}
+
 .privacy-modal-body ul{padding-left:20px;margin-bottom:10px}
+
 .privacy-modal-body li{font-size:.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:6px}
+
 .privacy-modal-body strong{color:var(--text-main);font-weight:800}
+
 .privacy-modal-body a{color:var(--accent-color);text-decoration:none}
+
 .privacy-read-indicator{font-size:.82rem;color:var(--text-muted);text-align:center;padding:12px 0 8px;transition:color .3s;font-weight:700;display:flex;justify-content:center;align-items:center;gap:7px}
+
 .privacy-read-indicator.ready{color:var(--accent-color)}
+
 .privacy-modal-footer{padding:18px 28px 24px;border-top:2px dashed var(--border-subtle);flex-shrink:0;background:var(--surface-color)}
+
 .privacy-checkbox-row{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+
 .privacy-checkbox-row input[type="checkbox"]{width:20px;height:20px;cursor:pointer;accent-color:var(--accent-color);flex-shrink:0;margin-top:2px}
+
 .privacy-checkbox-row label{font-size:.9rem;color:var(--text-muted);line-height:1.5;cursor:pointer;font-weight:600}
+
 .privacy-checkbox-row label a{color:var(--accent-color);font-weight:800}
 
+
+
 .social-floating-container{position:fixed;bottom:22px;left:22px;display:flex;gap:12px;z-index:1999}
+
 .social-icon-btn{width:48px;height:48px;border-radius:14px;background:var(--card-bg);border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--text-muted);transition:all .3s cubic-bezier(.175,.885,.32,1.275);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.3);text-decoration:none}
+
 .social-icon-btn:hover{border-color:var(--accent-color);color:#000;background:var(--accent-color);transform:translateY(-6px);box-shadow:0 10px 0 #0a7a3a,0 14px 25px var(--accent-glow)}
+
 .skeleton{background:linear-gradient(90deg,var(--surface-color) 25%,var(--border-subtle) 50%,var(--surface-color) 75%);background-size:800px 100%;animation:shimmer 1.6s infinite;border-radius:8px}
+
 .loading-card{background:var(--card-bg);border-radius:20px;border:1px solid var(--border-subtle);overflow:hidden;display:flex;flex-direction:column}
+
 .loading-card-img{height:190px;border-radius:0}
+
 .loading-card-body{padding:20px 22px 22px}
+
 .loading-card-title{height:20px;width:70%;margin-bottom:12px}
+
 .loading-card-sub{height:14px;width:50%;margin-bottom:24px}
+
 .loading-card-btn{height:46px;border-radius:12px}
+
 .toast-container{position:fixed;bottom:80px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:10px}
+
 .toast{background:var(--card-bg);border:1px solid var(--border-strong);border-left:4px solid var(--accent-color);padding:14px 18px;border-radius:14px;box-shadow:var(--shadow-strong);color:var(--text-main);font-size:.88rem;font-weight:600;max-width:320px;display:flex;align-items:center;gap:10px;animation:fadeSlideUp .3s ease}
+
 .toast.danger{border-left-color:var(--danger-color)}
+
 .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted)}
+
 .empty-state-icon{font-size:3.5rem;margin-bottom:16px;color:var(--border-strong);display:block}
+
 .empty-state h3{font-size:1.1rem;margin-bottom:6px;color:var(--text-main);font-weight:700}
 
+
+
 .order-slot{display:flex;align-items:center;gap:12px;width:100%;border-radius:14px;padding:11px 14px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+
 .order-slot:hover:not(.revealed){transform:translateY(-2px)}
+
 .order-slot.selected{transform:translateY(-3px)}
+
 .order-slot.correct-reveal{animation:correctPulse .6s ease}
+
 .order-slot.wrong-reveal{animation:wrongShake .4s ease}
+
 .result-score-ring{position:relative;width:120px;height:120px;margin:0 auto 20px}
+
 .result-score-ring svg{transform:rotate(-90deg)}
+
 .result-score-ring .score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+
 .result-dist-tag{display:inline-flex;align-items:center;gap:6px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:20px;padding:6px 14px;font-size:.85rem;font-weight:800;color:var(--text-muted);margin-bottom:16px}
 
+
+
 @media(min-width:769px){
+
 .modal-content.stadium-guessr-layout{flex-direction:row!important}
+
 .modal-content.stadium-guessr-layout .video-container{width:55%!important;height:100%!important;border-radius:22px 0 0 22px!important}
+
 .modal-content.stadium-guessr-layout #game-ui{width:45%!important;height:100%!important;border-top:none!important;border-left:2px solid var(--border-strong)!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;border-radius:0 22px 22px 0!important;padding:24px!important}
+
 .modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;height:100%!important;min-height:350px!important}
+
 }
+
 @media(max-width:768px){
+
 .app-header{padding:12px 16px}
+
 .app-title{font-size:1.05rem}
+
 .welcome-heading{font-size:2.2rem}
+
 .game-modes{grid-template-columns:1fr}
+
 .grid{grid-template-columns:1fr;gap:18px;padding:0 16px}
+
 .tabs-container{grid-template-columns:1fr 1fr}
+
 .section-ligas{padding:0 16px}
+
 .modal-content.stadium-guessr-layout{height:92vh!important}
+
 .modal-content.stadium-guessr-layout .video-container{height:38%!important;border-radius:22px 22px 0 0!important}
+
 .modal-content.stadium-guessr-layout #game-ui{height:62%!important;padding:16px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 22px 22px!important}
+
 .modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:200px}
+
 .header-level-badge{display:none}
+
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
+
 .split-profile-layout{flex-direction:column}
+
 }
+
 @media(max-width:480px){
+
 .tabs-container{grid-template-columns:1fr}
+
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
+
 }
+
 </style>
+
 </head>
+
 <body>
+
 <div class="toast-container" id="toast-container"></div>
+
 <div id="levelup-overlay">
+
 <div class="levelup-box" id="levelup-box">
+
 <span class="levelup-icon" id="levelup-icon">🏆</span>
+
 <div class="levelup-title" id="levelup-title">¡Subiste de nivel!</div>
+
 <div class="levelup-sub" id="levelup-sub">Ahora sos <b>Volante de Lujo</b></div>
+
 <button class="btn-3d primary levelup-close" onclick="cerrarLevelUp()">¡Vamos! <i class="ph-bold ph-arrow-right"></i></button>
+
 </div>
+
 </div>
+
 <header class="app-header">
+
 <a class="app-brand" href="#" onclick="window.mostrarLigas();return false;">
+
 <img class="app-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" onerror="this.style.display='none';">
+
 <div class="app-title-group">
+
 <h1 class="app-title">Estadios Virtuales</h1>
+
 <span class="app-subtitle">El mundo desde el aire</span>
+
 </div>
+
 </a>
+
 <div class="header-left-line"></div>
+
 <div class="header-actions">
+
 <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
+
 <i class="ph-duotone ph-moon" id="theme-icon"></i>
+
 </button>
+
 <div id="hero-google-profile"></div>
+
 </div>
+
 </header>
+
 <div id="privacy-modal-overlay">
+
 <div class="privacy-modal-box">
+
 <div class="privacy-modal-header">
+
 <h2><i class="ph-duotone ph-shield-check" style="color:var(--accent-color);font-size:1.5rem;"></i> Política de Privacidad</h2>
+
 <p>Por favor leé y aceptá nuestros términos antes de continuar con el registro.</p>
+
 </div>
+
 <div class="privacy-modal-body" id="privacy-scroll-body" onscroll="checkPrivacyScrolled(this)">
+
 <div class="privacy-section-title">Última actualización: 17 de junio de 2026</div>
+
 <p>Esta Política de Privacidad describe las políticas y procedimientos sobre la recopilación, uso y divulgación de tu información cuando utilizás el Servicio, y te informa sobre tus derechos de privacidad.</p>
+
 <p>Usamos tus Datos Personales para proveer y mejorar el Servicio. Al usar el Servicio, aceptás la recopilación y uso de información de acuerdo con esta Política de Privacidad. <strong>Estadios Virtuales</strong> — accesible desde <a href="https://www.estadiosvirtuales.com" target="_blank">www.estadiosvirtuales.com</a>.</p>
+
 <div class="privacy-section-title">Interpretación y Definiciones</div>
+
 <p>Las palabras cuya letra inicial está en mayúscula tienen significados definidos bajo las siguientes condiciones.</p>
+
 <ul>
+
 <li><strong>Cuenta</strong> — Cuenta única creada para acceder a nuestro Servicio.</li>
+
 <li><strong>Empresa</strong> — Estadios Virtuales.</li>
+
 <li><strong>Cookies</strong> — Archivos pequeños colocados en tu dispositivo con detalles de navegación.</li>
+
 <li><strong>País</strong> — Argentina.</li>
+
 <li><strong>Datos Personales</strong> — Cualquier información relacionada con un individuo identificado o identificable.</li>
+
 <li><strong>Sitio Web</strong> — Estadios Virtuales, accesible desde www.estadiosvirtuales.com.</li>
+
 <li><strong>Vos / Usted</strong> — El individuo que accede o usa el Servicio.</li>
+
 </ul>
+
 <div class="privacy-section-title">Tipos de Datos que Recopilamos</div>
+
 <p><strong>Datos Personales:</strong> Al registrarte, podemos solicitarte información identificable como tu nombre completo, dirección de correo electrónico y foto de perfil (cuando usás el inicio de sesión con Google).</p>
+
 <div class="privacy-section-title">Contacto</div>
+
 <p>Si tenés preguntas sobre esta Política de Privacidad, contactanos en: <strong>estadiosvirtuales1@gmail.com</strong></p>
+
 </div>
+
 <div class="privacy-read-indicator" id="privacy-read-indicator"><i class="ph-bold ph-arrow-down"></i> Desplazate para leer la política completa</div>
+
 <div class="privacy-modal-footer">
+
 <div class="privacy-checkbox-row">
+
 <input type="checkbox" id="privacy-accept-check" disabled onchange="togglePrivacyBtn()">
+
 <label for="privacy-accept-check">Leí y acepto la <a href="#" onclick="return false;">Política de Privacidad</a> de Estadios Virtuales.</label>
+
 </div>
+
 <button class="btn-3d primary" style="width:100%;padding:15px;font-size:1rem;" id="btn-confirm-privacy" disabled onclick="confirmarPrivacyYLogin()">
+
 <i class="ph-fill ph-check-circle"></i> Aceptar y continuar
+
 </button>
+
 </div>
+
 </div>
+
 </div>
+
 <div id="login-modal-overlay">
+
 <div class="login-modal-box">
+
 <img class="login-modal-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" onerror="this.style.display='none';">
+
 <h2 class="login-modal-title">Unirte a Estadios Virtuales</h2>
+
 <p class="login-modal-sub">Guardá tus puntajes y competí en el ranking global con tu cuenta de Google.</p>
+
 <div id="google-signin-btn-container"></div>
+
 <p style="font-size:.82rem;color:var(--text-muted);text-align:center;line-height:1.5;margin-top:8px;">
+
 ¿Querés jugar sin guardar progreso?
+
 <button onclick="cerrarLoginModal()" style="background:none;border:none;color:var(--accent-color);cursor:pointer;font-weight:700;font-size:inherit;">Entrá como invitado</button>
+
 </p>
+
 </div>
+
 </div>
+
 <section class="hero-section">
+
 <div class="hero-bg-glow"></div>
+
 <div class="hero-ball">⚽</div>
+
 <div class="hero-ball-2">🏟️</div>
+
 <div class="hero-content">
+
 <div class="hero-eyebrow"><i class="ph-fill ph-airplane-tilt"></i> Tour aéreo de los estadios del mundo</div>
+
 <h2 class="welcome-heading">Estadios <span class="accent-word">Virtuales</span></h2>
+
 <p class="welcome-sub">Recorré los templos del fútbol mundial desde el aire. Votá, jugá, competí y descubrí datos que no sabías.</p>
+
 <div class="search-container">
+
 <i class="ph-bold ph-magnifying-glass search-icon"></i>
+
 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
+
 </div>
+
 <div class="game-modes">
+
 <button class="game-card btn-guessr" onclick="iniciarTrivia()">
+
 <div class="game-card-icon"><i class="ph-duotone ph-map-pin-line"></i></div>
+
 <div class="game-card-text"><strong>StadiumGuessr</strong><span>Adiviná la ubicación</span></div>
+
 <span class="game-card-badge">5 rondas</span>
+
 </button>
+
 <button class="game-card btn-order" onclick="abrirModalOrden()">
+
 <div class="game-card-icon"><i class="ph-duotone ph-chart-bar"></i></div>
+
 <div class="game-card-text"><strong>Ordenar Estadios</strong><span>Capacidad y Edad</span></div>
+
 </button>
+
 <button class="game-card btn-random" onclick="dispararVueloAleatorio(event)">
+
 <div class="game-card-icon"><i class="ph-duotone ph-airplane-tilt"></i></div>
+
 <div class="game-card-text"><strong>Vuelo Aleatorio</strong><span>Descubrí al azar</span></div>
+
 </button>
+
 </div>
+
 </div>
+
 </section>
+
 <section class="section-ligas">
+
 <div class="ligas-header">
+
 <div class="ligas-title-area">
+
 <i class="ph-fill ph-list-dashes" style="font-size:1.1rem;color:var(--accent-color);flex-shrink:0;"></i>
+
 <span id="texto-titulo-grilla">EXPLORÁ EL CATÁLOGO</span>
+
 <div class="liga-elegida-badge" id="liga-elegida-badge">
+
 <div class="badge-dot" id="liga-badge-dot"></div>
+
 <span id="liga-badge-nombre"></span>
+
 </div>
+
 </div>
+
 <button id="btn-volver-ligas" class="btn-3d secondary" onclick="mostrarLigas()">
+
 <i class="ph-bold ph-arrow-left"></i> Volver
+
 </button>
+
 <button class="liga-selector-btn" id="liga-selector-btn" onclick="toggleLigasPanel()">
+
 <div class="liga-selector-preview" id="liga-selector-preview">
+
 <i class="ph-duotone ph-trophy"></i>
+
 <span id="liga-selector-label">Elegir liga</span>
+
 </div>
+
 <i class="ph-bold ph-caret-down chevron"></i>
+
 </button>
+
 </div>
+
 <div class="ligas-dropdown-panel" id="ligas-dropdown-panel">
+
 <div class="ligas-panel-inner">
+
 <div class="ligas-panel-label"><i class="ph-fill ph-flag" style="color:var(--accent-color);"></i> Seleccioná una liga</div>
+
 <div class="tabs-container" id="tabs-container">
+
 <button class="tab" data-gid="0"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Primera División</span></button>
+
 <button class="tab" data-gid="861264971"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Primera Nacional</span></button>
+
 <button class="tab" data-gid="554922783"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Premier League</span></button>
+
 <button class="tab" data-gid="88250864"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">La Liga</span></button>
+
 <button class="tab" data-gid="2013531070"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Serie A</span></button>
+
 <button class="tab" data-gid="165565330"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Ligue 1</span></button>
+
 <button class="tab" data-gid="96716546"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Bundesliga</span></button>
+
 <button class="tab" data-gid="58862486"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Brasileirao</span></button>
+
 <button class="tab" data-gid="304687071"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Liga Chile</span></button>
+
 <button class="tab" data-gid="879164460"><div class="tab-bg"></div><div class="tab-swatch"></div><span class="tab-name">Copa del Mundo</span></button>
+
 </div>
+
 </div>
+
 </div>
+
 </section>
+
 <main class="grid"></main>
+
 <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
+
 <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
+
 <button class="close-btn" onclick="cerrarModalVideo()"><i class="ph-bold ph-x"></i></button>
+
 <div id="modal-video-container" class="video-container"></div>
+
 <div id="game-ui">
+
 <div class="rounds-progress" id="rounds-progress"></div>
+
 <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
+
 <div id="map-guess-container">
+
 <div class="map-hint-overlay" id="map-hint-overlay">
+
 <div class="map-hint-text"><i class="ph-bold ph-map-pin" style="color:var(--accent-color);"></i> Tocá el mapa para clavar un pin</div>
+
 </div>
+
 </div>
+
 <button id="game-action-btn" class="btn-3d secondary" style="width:100%;padding:15px;font-size:1rem;">
+
 <i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa
+
 </button>
+
 </div>
+
 </div>
+
 </div>
+
 <div id="map-modal" class="modal-overlay" onclick="cerrarModalMapa()">
+
 <div class="modal-content" style="max-width:800px;height:75vh;" onclick="event.stopPropagation()">
+
 <button class="close-btn" onclick="cerrarModalMapa()"><i class="ph-bold ph-x"></i></button>
+
 <div id="modal-map-container" style="width:100%;height:100%;border-radius:22px;background:var(--bg-color);"></div>
+
 </div>
+
 </div>
+
 <div id="profile-modal" class="modal-overlay" onclick="cerrarModalPerfil()">
+
 <div class="modal-content" style="max-width:850px;height:auto;max-height:90vh;padding:30px;overflow-y:auto;" onclick="event.stopPropagation()">
+
 <button class="close-btn" onclick="cerrarModalPerfil()"><i class="ph-bold ph-x"></i></button>
+
 <div id="profile-modal-body"></div>
+
 </div>
+
 </div>
+
 <div id="order-modal" class="modal-overlay" onclick="cerrarModalOrden()">
+
 <div class="modal-content" style="max-width:580px;height:85vh;padding:20px 25px;display:flex;flex-direction:column;" onclick="event.stopPropagation()">
+
 <button class="close-btn" onclick="cerrarModalOrden()"><i class="ph-bold ph-x"></i></button>
+
 <div id="order-modal-body" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;"></div>
+
 </div>
+
 </div>
+
 <div id="ranking-modal" class="modal-overlay" onclick="cerrarModalRanking()">
+
 <div class="modal-content" style="max-width:600px;height:auto;max-height:85vh;padding:25px;overflow-y:auto;" onclick="event.stopPropagation()">
+
 <button class="close-btn" onclick="cerrarModalRanking()"><i class="ph-bold ph-x"></i></button>
+
 <div id="ranking-modal-body"></div>
+
 </div>
+
 </div>
+
 <div class="social-floating-container">
+
 <a href="https://www.youtube.com/@EstadiosVirtuales1" target="_blank" class="social-icon-btn" title="Canal de YouTube"><i class="ph-duotone ph-youtube-logo"></i></a>
+
 <a href="mailto:estadiosvirtuales1@gmail.com" class="social-icon-btn" title="Correo electrónico"><i class="ph-duotone ph-envelope-simple"></i></a>
+
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
 <script>
+
 delete L.Icon.Default.prototype._getIconUrl;
+
 L.Icon.Default.mergeOptions({
+
 iconRetinaUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+
 iconUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+
 shadowUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+
 });
+
 const baseSpreadsheetUrl="https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub?output=csv";
+
 const scriptUrlVotos="https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
+
 const scriptUrlRanking="https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
+
 const scriptUrlCapacidad="https://script.google.com/macros/s/AKfycbxIME-M84DhBy3oG4-Y-dtHRhSoTX1G-l476biCk0tgtuMNeM0eHp6-u550yv7h1nkJwQ/exec";
+
 const scriptUrlAntiguedad="https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
+
 const scriptUrlUsuarios="https://script.google.com/macros/s/AKfycby4GOySVikjCt7vtaNcKMI8Xzo6sxrfmhRwtWS3h2OabxJEMbtIA_Q-lukMRwrZu2HztA/exec";
+
 const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googleusercontent.com";
 
+
+
 const ESCUDOS_MAP = {
+
   'ev': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png',
+
   'ar': 'https://flagcdn.com/w80/ar.png',
+
   'br': 'https://flagcdn.com/w80/br.png',
+
   'es': 'https://flagcdn.com/w80/es.png',
+
   'it': 'https://flagcdn.com/w80/it.png',
+
   'fr': 'https://flagcdn.com/w80/fr.png',
+
   'de': 'https://flagcdn.com/w80/de.png',
+
   'gb-eng': 'https://flagcdn.com/w80/gb-eng.png',
+
   'pt': 'https://flagcdn.com/w80/pt.png',
+
   'uy': 'https://flagcdn.com/w80/uy.png',
+
   'co': 'https://flagcdn.com/w80/co.png',
+
   'mx': 'https://flagcdn.com/w80/mx.png',
+
   'cl': 'https://flagcdn.com/w80/cl.png',
+
   'nl': 'https://flagcdn.com/w80/nl.png',
+
   'be': 'https://flagcdn.com/w80/be.png',
+
   'hr': 'https://flagcdn.com/w80/hr.png',
+
   'us': 'https://flagcdn.com/w80/us.png',
-  'jp': 'https://flagcdn.com/w80/jp.png'
+
+  'jp': 'https://flagcdn.com/w80/jp.png',
+
+  'can': 'https://flagcdn.com/w80/ca.png',
+
+  'mar': 'https://flagcdn.com/w80/ma.png',
+
+  'sen': 'https://flagcdn.com/w80/sn.png',
+
+  'kor': 'https://flagcdn.com/w80/kr.png',
+
+  'aus': 'https://flagcdn.com/w80/au.png',
+
+  'sui': 'https://flagcdn.com/w80/ch.png',
+
+  'ecu': 'https://flagcdn.com/w80/ec.png',
+
+  'per': 'https://flagcdn.com/w80/pe.png',
+
+  'den': 'https://flagcdn.com/w80/dk.png',
+
+  'srb': 'https://flagcdn.com/w80/rs.png',
+
+  'pol': 'https://flagcdn.com/w80/pl.png',
+
+  'wal': 'https://flagcdn.com/w80/gb-wls.png',
+
+  'swe': 'https://flagcdn.com/w80/se.png',
+
+  'civ': 'https://flagcdn.com/w80/ci.png',
+
+  'cmr': 'https://flagcdn.com/w80/cm.png',
+
+  'gha': 'https://flagcdn.com/w80/gh.png',
+
+  'nga': 'https://flagcdn.com/w80/ng.png',
+
+  'ksa': 'https://flagcdn.com/w80/sa.png',
+
+  'irn': 'https://flagcdn.com/w80/ir.png',
+
+  'egy': 'https://flagcdn.com/w80/eg.png',
+
+  'alg': 'https://flagcdn.com/w80/dz.png',
+
+  'tun': 'https://flagcdn.com/w80/tn.png',
+
+  'mli': 'https://flagcdn.com/w80/ml.png',
+
+  'qat': 'https://flagcdn.com/w80/qa.png',
+
+  'par': 'https://flagcdn.com/w80/py.png',
+
+  'ven': 'https://flagcdn.com/w80/ve.png',
+
+  'bol': 'https://flagcdn.com/w80/bo.png',
+
+  'crc': 'https://flagcdn.com/w80/cr.png',
+
+  'pan': 'https://flagcdn.com/w80/pa.png',
+
+  'jam': 'https://flagcdn.com/w80/jm.png',
+
+  'nzl': 'https://flagcdn.com/w80/nz.png'
+
 };
 
-function generarAvatarHTML(pelo, camisa, colorCamisa, numero) {
+
+
+function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
+
     let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
+
     if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
+
     else if(pelo === 'long') peloHTML += `<div style="position:absolute;top:10px;left:-10%;width:120%;height:45px;background:#4a2e1b;border-radius:20px;z-index:-1;"></div>`;
+
     else if(pelo === 'ponytail') peloHTML += `<div style="position:absolute;top:5px;right:-15px;width:25px;height:40px;background:#4a2e1b;border-radius:50%;z-index:-1;transform:rotate(-20deg);"></div>`;
+
+
 
     let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
 
+
+
     let shirtBg = '';
+
     let mainColor = colorCamisa || '#00e676';
-    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, ${mainColor} 0, ${mainColor} 12px, color-mix(in srgb, ${mainColor} 40%, #111) 12px, color-mix(in srgb, ${mainColor} 40%, #111) 24px);`;
-    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, ${mainColor} 35%, color-mix(in srgb, ${mainColor} 20%, #fff) 35%, color-mix(in srgb, ${mainColor} 20%, #fff) 65%, ${mainColor} 65%);`;
-    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, ${mainColor} 40%, color-mix(in srgb, ${mainColor} 20%, #fff) 40%, color-mix(in srgb, ${mainColor} 20%, #fff) 60%, ${mainColor} 60%);`;
+
+    let secColor = colorCamisa2 || '#ffffff';
+
+    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, ${mainColor} 0, ${mainColor} 12px, ${secColor} 12px, ${secColor} 24px);`;
+
+    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, ${mainColor} 35%, ${secColor} 35%, ${secColor} 65%, ${mainColor} 65%);`;
+
+    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, ${mainColor} 40%, ${secColor} 40%, ${secColor} 60%, ${mainColor} 60%);`;
+
     else shirtBg = `background: linear-gradient(135deg, ${mainColor} 0%, color-mix(in srgb, ${mainColor} 40%, #111) 100%);`;
 
+
+
     let body = `
+
     <div class="fut-player-body">
+
         <div class="fut-player-neck"></div>
+
         <div class="fut-player-torso">
+
             <div class="fut-player-arm left"></div>
+
             <div class="fut-player-shirt" style="${shirtBg}">
+
                 <div class="fut-player-collar"></div>
+
                 <span class="fut-player-number">${numero}</span>
+
             </div>
+
             <div class="fut-player-arm right"></div>
+
         </div>
+
     </div>`;
 
+
+
     return `<div style="transform: scale(1.15); transform-origin: bottom center; width: 100%; height: 100%; position: absolute; bottom: 0; display:flex; flex-direction:column; align-items:center;">${acHead}${body}</div>`;
+
 }
+
+
 
 let estadiosCargados=[],catalogoGlobal=[];
+
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
+
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
+
 let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrPolyline=null,guessrSelectedLatLng=null;
+
 let previewMapInstance=null;
+
 let orderList=[],orderSelectedIdx=null,orderModo="",orderPuntosGanados=0,orderStartTime=0;
+
 let pendingScore=null,pendingScoreType=null;
 
+
+
 const NIVELES=(function(){
+
 const n=[];
+
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
+
 const baseClasses=["level-pibe","level-volante","level-crack","level-leyenda","level-leyenda","level-leyenda","level-leyenda"];
+
 const baseEmojis=["⚽","🎯","🥈","⭐","🥇","🏆","👑","🔥","⚡","💎","🌟","🚀"];
+
 const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Goleador","Crack","Ídolo","Capitán","Galáctico","Leyenda","Inmortal","Mito","Dios del Fútbol"];
+
 for(let i=0;i<1000;i++){
+
 let xpReq=i===0?0:Math.floor(8000*Math.pow(i,1.5));
+
 let nextXpReq=Math.floor(8000*Math.pow(i+1,1.5));
+
 let ovr=Math.min(99,50+Math.floor(i*1.5));
+
 if(i>32)ovr=99+(i-32);
+
 let tierIndex=Math.floor(i/5);
+
 let name=(baseNames[Math.min(tierIndex,baseNames.length-1)])+(i>0?` Lvl ${i}`:"");
+
 let colorIdx=Math.min(Math.floor(i/8),baseColors.length-1);
+
 let emojiIdx=Math.min(Math.floor(i/4),baseEmojis.length-1);
+
 n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,color:baseColors[colorIdx]||"#a78bfa",emoji:baseEmojis[emojiIdx]||"✨",cssClass:baseClasses[colorIdx]||"level-leyenda"});
+
 }
+
 n[999].max=Infinity;
+
 return n;
+
 })();
 
+
+
 let logrosTabActual='todos';
+
 function getUserId(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u?u.id:'guest';}
+
 function getPref(key,def){const id=getUserId();return localStorage.getItem(key+'_'+id)||def;}
+
 function setPref(key,val){const id=getUserId();localStorage.setItem(key+'_'+id,val);}
+
 let userStats={};
 
+
+
 function migrarStatsAntiguos(){
+
 if(!localStorage.getItem('ev_migrated_v2')){
+
 const oldStats=localStorage.getItem('ev_user_stats');
+
 if(oldStats){localStorage.setItem('ev_user_stats_guest',oldStats);const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)localStorage.setItem('ev_user_stats_'+u.id,oldStats);}
+
 const n=localStorage.getItem('ev_custom_nick'),p=localStorage.getItem('ev_user_pos'),th=localStorage.getItem('ev_card_theme'),id=getUserId();
+
 if(n)localStorage.setItem('ev_custom_nick_'+id,n);if(p)localStorage.setItem('ev_user_pos_'+id,p);if(th)localStorage.setItem('ev_card_theme_'+id,th);
+
 localStorage.setItem('ev_migrated_v2','true');
+
 }
+
 }
+
 migrarStatsAntiguos();
 
+
+
 function procesarRachaDiaria() {
+
     const today = new Date();
+
     const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
+
+
     if (!userStats.activeDates) userStats.activeDates = [];
+
     if (userStats.activeDates instanceof Set) userStats.activeDates = Array.from(userStats.activeDates);
+
+
 
     const lastLogin = userStats.lastLoginDate;
 
+
+
     if (lastLogin !== todayStr) {
+
         if (lastLogin) {
+
             const lastDate = new Date(lastLogin + 'T00:00:00');
+
             const currDate = new Date(todayStr + 'T00:00:00');
+
             const diffTime = Math.abs(currDate - lastDate);
+
             const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
+
+
             if (diffDays === 1) {
+
                 userStats.rachaActual = (userStats.rachaActual || 0) + 1;
+
             } else {
+
                 userStats.rachaActual = 1;
+
             }
+
         } else {
+
             userStats.rachaActual = 1;
+
         }
+
         userStats.lastLoginDate = todayStr;
+
         if (!userStats.activeDates.includes(todayStr)) {
+
             userStats.activeDates.push(todayStr);
+
         }
+
         guardarStats();
+
     }
+
 }
+
+
 
 function cargarStats(){
+
 const id=getUserId();
+
 const stored=localStorage.getItem('ev_user_stats_'+id);
+
 if(stored){userStats=JSON.parse(stored);}
+
 else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
 
+
+
 ['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);if(!(userStats[k] instanceof Set))userStats[k]=new Set();});
+
 if(!userStats.activeDates) userStats.activeDates = [];
 
+
+
 if(userStats.xpTotal===undefined)userStats.xpTotal=userStats.maxScore||0;
+
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
+
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 
+
+
 procesarRachaDiaria();
+
 }
+
 cargarStats();
 
+
+
 function guardarStats(){
+
 const id=getUserId();
+
 const toSave={...userStats,ligas5:[...userStats.ligas5],triviasDescubiertas:[...userStats.triviasDescubiertas],ligasExploradas:[...userStats.ligasExploradas],activeDates:[...userStats.activeDates]};
+
 localStorage.setItem('ev_user_stats_'+id,JSON.stringify(toSave));
+
 }
+
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
+
 function agregarXP(cantidad){
+
 const nivelAntes=calcularNivelIdx(userStats.xpTotal);
+
 userStats.xpTotal+=cantidad;
+
 if(userStats.xpTotal>userStats.maxScore)userStats.maxScore=userStats.xpTotal;
+
 const nivelDespues=calcularNivelIdx(userStats.xpTotal);
+
 userStats.nivelActual=nivelDespues;
+
 guardarStats();
+
 actualizarHeaderNivel();
+
 if(nivelDespues>nivelAntes)setTimeout(()=>mostrarLevelUp(NIVELES[nivelDespues]),800);
+
 }
+
 function actualizarHeaderNivel(){
+
 const badge=document.getElementById('header-level-badge');
+
 const dot=document.getElementById('header-level-dot');
+
 const label=document.getElementById('header-level-label');
+
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+
 const userPos=getPref('ev_user_pos','DT');
+
 if(badge&&dot&&label){badge.style.display='flex';dot.style.background=nivel.color;dot.style.boxShadow=`0 0 6px ${nivel.color}`;label.textContent=nivel.emoji+' '+userPos;}
+
 }
+
 function mostrarLevelUp(nivel){
+
 const overlay=document.getElementById('levelup-overlay');
+
 document.getElementById('levelup-icon').textContent=nivel.emoji;
+
 document.getElementById('levelup-title').textContent='¡Subiste de nivel!';
+
 document.getElementById('levelup-sub').innerHTML=`Ahora sos <b style="color:${nivel.color};">${nivel.nombre}</b>`;
+
 overlay.classList.add('active');
+
 lanzarConfetti();
+
 }
+
 function cerrarLevelUp(){document.getElementById('levelup-overlay').classList.remove('active');}
+
 function lanzarConfetti(){
+
 const overlay=document.getElementById('levelup-overlay');
+
 const colors=['#00e676','#eab308','#a78bfa','#ff4757','#2979ff'];
+
 for(let i=0;i<30;i++){
+
 const p=document.createElement('div');p.className='confetti-piece';
+
 p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*40}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*.5}s;animation-duration:${.8+Math.random()*.8}s;transform:rotate(${Math.random()*360}deg);`;
+
 overlay.appendChild(p);setTimeout(()=>p.remove(),1500);
+
 }
+
 }
+
 function showToast(msg,icon='ph-check-circle',tipo=''){
+
 const c=document.getElementById('toast-container');const t=document.createElement('div');
+
 t.className='toast'+(tipo?' '+tipo:'');
+
 t.innerHTML=`<i class="ph-fill ${icon}" style="font-size:1.3rem;color:${tipo==='danger'?'var(--danger-color)':'var(--accent-color)'};flex-shrink:0;"></i> ${msg}`;
+
 c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(20px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),350);},2800);
+
 }
+
 function toggleTheme(){
+
 const html=document.documentElement,icon=document.getElementById('theme-icon');
+
 if(html.getAttribute('data-theme')==='dark'){html.setAttribute('data-theme','light');icon.className='ph-duotone ph-sun';localStorage.setItem('ev_theme','light');}
+
 else{html.setAttribute('data-theme','dark');icon.className='ph-duotone ph-moon';localStorage.setItem('ev_theme','dark');}
+
 }
+
 (function(){
+
 const saved=localStorage.getItem('ev_theme');
+
 if(saved==='light'){document.documentElement.setAttribute('data-theme','light');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='ph-duotone ph-sun';});}
+
 })();
+
 let ligasPanelOpen=false;
+
 const LIGA_COLORS={"0":"#74acdf","861264971":"#74acdf","554922783":"#cf142b","88250864":"#c60b1e","2013531070":"#009246","165565330":"#002395","96716546":"#ffce00","58862486":"#009c3b","304687071":"#d52b1e","879164460":"#1a6b3a"};
+
 function toggleLigasPanel(){const panel=document.getElementById('ligas-dropdown-panel'),btn=document.getElementById('liga-selector-btn');ligasPanelOpen=!ligasPanelOpen;panel.classList.toggle('open',ligasPanelOpen);btn.classList.toggle('open',ligasPanelOpen);}
+
 function cerrarLigasPanel(){ligasPanelOpen=false;document.getElementById('ligas-dropdown-panel').classList.remove('open');document.getElementById('liga-selector-btn').classList.remove('open');}
+
 document.addEventListener('click',(e)=>{const btn=document.getElementById('liga-selector-btn'),panel=document.getElementById('ligas-dropdown-panel');if(btn&&panel&&!btn.contains(e.target)&&!panel.contains(e.target))cerrarLigasPanel();});
+
 window.mostrarLigas=function(){
+
 document.getElementById('btn-volver-ligas').style.display='none';document.getElementById('liga-elegida-badge').style.display='none';document.getElementById('texto-titulo-grilla').textContent='EXPLORÁ EL CATÁLOGO';
+
 const labelLiga=document.getElementById('liga-selector-label');if(labelLiga)labelLiga.textContent='Elegir liga';
+
 document.getElementById('global-search').value='';document.querySelector('.grid').innerHTML='';document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));localStorage.removeItem('ev_last_gid');estadiosCargados=[];cerrarLigasPanel();
+
 };
+
 function activarLiga(gid,nombre){
+
 document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));const tab=document.querySelector(`.tab[data-gid="${gid}"]`);if(tab)tab.classList.add('active');
+
 document.getElementById('btn-volver-ligas').style.display='inline-flex';document.getElementById('texto-titulo-grilla').textContent=nombre.replace(/^[\s\S]*?\s/,'').trim()||nombre;
+
 const badge=document.getElementById('liga-elegida-badge'),dot=document.getElementById('liga-badge-dot'),nom=document.getElementById('liga-badge-nombre');
+
 dot.style.background=LIGA_COLORS[gid]||'var(--accent-color)';nom.textContent=nombre;badge.style.display='inline-flex';
+
 document.getElementById('liga-selector-label').textContent=nombre;localStorage.setItem('ev_last_gid',gid);cerrarLigasPanel();
+
 userStats.ligasExploradas.add(gid);guardarStats();cargarLiga(gid);
+
 }
+
 function inicializarGoogleLogin(){
+
 if(typeof google==='undefined'||!google.accounts){setTimeout(inicializarGoogleLogin,500);return;}
+
 google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:manejarRespuestaGoogle,auto_select:false,cancel_on_tap_outside:true});
+
 const btnContainer=document.getElementById('google-signin-btn-container');
+
 if(btnContainer)google.accounts.id.renderButton(btnContainer,{theme:'filled_black',size:'large',shape:'pill',width:300,text:'signin_with'});
+
 }
+
 function manejarRespuestaGoogle(response){
+
 const payload=decodeJwt(response.credential);if(!payload){showToast('Error al procesar la respuesta de Google.','ph-warning-circle','danger');return;}
+
 const user={id:payload.sub,name:payload.name,email:payload.email,picture:payload.picture,loginMethod:'google'};
+
 localStorage.setItem('ev_user_logged',JSON.stringify(user));registrarUsuarioEnSheets(user);cargarStats();cerrarLoginModal();renderizarBotonLogin();
+
 showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);if(pendingScore!==null)setTimeout(()=>guardarScorePendiente(),500);
+
 }
+
 function registrarUsuarioEnSheets(user){fetch(scriptUrlUsuarios,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:user.id,name:user.name,email:user.email||'',picture:user.picture||'',emoji:''})}).catch(()=>{});}
+
 function decodeJwt(token){try{const b=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));}catch(e){return null;}}
+
 function abrirModalPrivacy(){document.getElementById('privacy-modal-overlay').style.display='flex';}
+
 function cerrarModalPrivacy(){document.getElementById('privacy-modal-overlay').style.display='none';}
+
 function checkPrivacyScrolled(el){if(el.scrollTop+el.clientHeight>=el.scrollHeight-40){const ind=document.getElementById('privacy-read-indicator');ind.innerHTML='<i class="ph-fill ph-check-circle"></i> ¡Leíste todo! Ahora podés aceptar.';ind.classList.add('ready');document.getElementById('privacy-accept-check').disabled=false;}}
+
 function togglePrivacyBtn(){document.getElementById('btn-confirm-privacy').disabled=!document.getElementById('privacy-accept-check').checked;}
+
 function confirmarPrivacyYLogin(){localStorage.setItem('ev_privacy_accepted','1');cerrarModalPrivacy();abrirLoginModal();}
+
 function abrirLoginModal(){
+
 document.getElementById('login-modal-overlay').classList.add('active');
+
 setTimeout(()=>{const c=document.getElementById('google-signin-btn-container');if(c&&typeof google!=='undefined'&&google.accounts){c.innerHTML='';google.accounts.id.renderButton(c,{theme:'filled_black',size:'large',shape:'pill',width:300,text:'signin_with'});}},100);
+
 }
+
 function cerrarLoginModal(){document.getElementById('login-modal-overlay').classList.remove('active');}
+
 function manejarClickLogin(){const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
+
 function esUsuarioGoogle(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u&&u.loginMethod==='google';}
+
 function guardarScorePendiente(){
+
 if(pendingScore===null)return;if(!esUsuarioGoogle()){pedirLoginParaGuardar();return;}
+
 const u=JSON.parse(localStorage.getItem('ev_user_logged'));
+
 if(pendingScoreType==='guessr'){fetch(scriptUrlRanking,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:u.name,puntaje:pendingScore})}).catch(()=>{});showToast(`¡${pendingScore} pts guardados en el ranking global! 🚀`);}
+
 else if(pendingScoreType==='capacidad'||pendingScoreType==='antiguedad'){const url=pendingScoreType==='capacidad'?scriptUrlCapacidad:scriptUrlAntiguedad;fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:u.name,puntaje:pendingScore})}).catch(()=>{});showToast(`¡${pendingScore} pts guardados! 🚀`);}
+
 pendingScore=null;pendingScoreType=null;
+
 }
+
 function pedirLoginParaGuardar(){
+
 const sub=document.querySelector('.login-modal-sub');if(sub)sub.innerHTML=`<b style="color:var(--accent-color);">¡Puntaje listo para guardar!</b><br>Iniciá sesión con Google para guardarlo en el ranking global y no perderlo.`;
+
 const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();
+
 }
+
 function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)return u.name.split(' ')[0];return 'Jugador';}
+
 function renderizarBotonLogin(){
+
 const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
+
 const userPos=getPref('ev_user_pos','DT');
+
 if(u){
-let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_hair','spiky'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_color','#00e676'), getPref('ev_avatar_num','10'))}</div></div>`;
+
+let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_hair','spiky'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_color','#00e676'), getPref('ev_avatar_num','10'), getPref('ev_avatar_color2','#ffffff'))}</div></div>`;
+
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+
 container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${userPos}</div></div>${avatarHTML}</div>`;
+
 actualizarHeaderNivel();
+
 }else{container.innerHTML=`<button class="btn-login" onclick="manejarClickLogin()"><i class="ph-bold ph-user-circle" style="font-size:1.1rem;"></i> Entrar</button>`;}
+
 }
+
 function guardarVotoLocal(estadio,p){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');v[estadio]=p;localStorage.setItem('ev_votos_locales',JSON.stringify(v));}
+
 function obtenerVotoLocal(estadio){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');return v[estadio]||0;}
+
 function registrarVoto(event,estadio,club,puntuacion){
+
 event.stopPropagation();userStats.votosRealizados++;guardarStats();guardarVotoLocal(estadio,puntuacion);
+
 const sr=event.target.closest('.stars-row');
+
 if(sr){sr.querySelectorAll('.star-icon').forEach((s,i)=>{if(i<puntuacion){s.classList.add('active','ph-fill');s.classList.remove('ph-duotone');}else{s.classList.remove('active','ph-fill');s.classList.add('ph-duotone');}});}
+
 fetch(scriptUrlVotos,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({estadio,club,voto:puntuacion})}).catch(()=>{});
+
 showToast(`Calificaste ${estadio} con ${puntuacion}★`);agregarXP(50);
+
 }
+
 function registrarVotoDesdeAtributo(event,star){registrarVoto(event,star.dataset.estadio,star.dataset.club,parseInt(star.dataset.puntuacion));}
+
 function bscarPropiedad(obj,clave){
+
 if(!obj)return '';const cl=clave.toLowerCase().trim();
+
 for(let k in obj){if(k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g,'').trim()===cl)return obj[k];}
+
 for(let k in obj){if(k.toLowerCase().includes(cl))return obj[k];}
+
 return obj[clave]||'';
+
 }
+
 const COLORES_CLUBES={"River Plate":"linear-gradient(135deg,#cc0000,#ffffff)","Boca Juniors":"linear-gradient(135deg,#003b46,#07575b,#f4b251)","Racing Club":"linear-gradient(135deg,#75aadb,#ffffff)","Independiente":"linear-gradient(135deg,#b30000,#1a1a1a)","San Lorenzo":"linear-gradient(135deg,#0f2042,#a61c32)","Huracán":"linear-gradient(135deg,#ffffff,#e60000)","Estudiantes de La Plata":"linear-gradient(135deg,#ff0000,#ffffff,#ff0000)","Gimnasia y Esgrima LP":"linear-gradient(135deg,#ffffff,#002060)","Rosario Central":"linear-gradient(135deg,#002060,#ffcc00)","Newell's Old Boys":"linear-gradient(135deg,#000000,#cc0000)","Vélez Sarsfield":"linear-gradient(135deg,#ffffff,#0000ff)","Lanús":"linear-gradient(135deg,#5c061e,#2e030f)","Argentinos Juniors":"linear-gradient(135deg,#e60000,#ffffff)","Belgrano de Córdoba":"linear-gradient(135deg,#5cb8e4,#ffffff)","Talleres":"linear-gradient(135deg,#002060,#ffffff,#002060)","Atlético Tucumán":"linear-gradient(135deg,#75aadb,#ffffff)","Defensa y Justicia":"linear-gradient(135deg,#008000,#ffff00)","Banfield":"linear-gradient(135deg,#006400,#ffffff)","Unión de Santa Fe":"linear-gradient(135deg,#ff0000,#ffffff)","Platense":"linear-gradient(135deg,#6b4423,#ffffff)","Arsenal":"linear-gradient(135deg,#ef0107,#ffffff)","Aston Villa":"linear-gradient(135deg,#95bfe5,#670e36)","Chelsea":"linear-gradient(135deg,#034694,#ee242c)","Liverpool":"linear-gradient(135deg,#c8102e,#f6eb61)","Manchester City":"linear-gradient(135deg,#6cabdd,#ffffff)","Manchester United":"linear-gradient(135deg,#da291c,#000000)","Real Madrid":"linear-gradient(135deg,#ffffff,#e5e5e5,#febe10)","FC Barcelona":"linear-gradient(135deg,#a50044,#004d98)","Atlético de Madrid":"linear-gradient(135deg,#cb0000,#ffffff,#000040)","Bayern Munich":"linear-gradient(135deg,#dc052d,#0066b2,#ffffff)","Borussia Dortmund":"linear-gradient(135deg,#fde100,#000000)","Paris Saint-Germain":"linear-gradient(135deg,#004170,#e30613,#ffffff)","Juventus":"linear-gradient(135deg,#000000,#ffffff,#000000)","Inter de Milán":"linear-gradient(135deg,#00529f,#000000)","AC Milan":"linear-gradient(135deg,#e30613,#000000)","Flamengo":"linear-gradient(135deg,#111111,#c8102e)","Palmeiras":"linear-gradient(135deg,#006437,#ffffff,#006437)","Colo Colo":"linear-gradient(135deg,#ffffff,#b5b5b5,#000000)"};
+
 const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)"};
+
 function obtenerFondoClub(club,pais){
+
 if(!club&&!pais)return 'linear-gradient(135deg,#0f1419,#080c10)';
+
 if(club){const cl=club.toLowerCase();for(const k in COLORES_CLUBES){if(k.toLowerCase()===cl)return COLORES_CLUBES[k];}for(const k in COLORES_CLUBES){if(cl.includes(k.toLowerCase())||k.toLowerCase().includes(cl))return COLORES_CLUBES[k];}}
+
 if(pais){const pl=pais.toLowerCase().trim();for(const k in COLORES_PAISES){if(pl.includes(k)||k.includes(pl))return COLORES_PAISES[k];}}
+
 return 'linear-gradient(135deg,#0f1419,#1a2233)';
+
 }
+
 function abrirModalVideo(event,link,esJuego=false){
+
 if(event)event.preventDefault();if(!link||link==='#'||link.includes('[Pegá tu link')){showToast('Video de este estadio no disponible.','ph-warning-circle','danger');return;}
+
 const modal=document.getElementById('video-modal'),card=document.getElementById('modal-card'),container=document.getElementById('modal-video-container');container.innerHTML='';
+
 const gameUi=document.getElementById('game-ui');
+
 if(esJuego){card.classList.add('stadium-guessr-layout');gameUi.style.display='block';}else{card.classList.remove('stadium-guessr-layout');gameUi.style.display='none';container.style.height='100%';}
+
 let url=link;
+
 if(link.includes('youtube.com')||link.includes('youtu.be')){
+
 let vid='';
+
 if(link.includes('youtu.be/'))vid=link.split('youtu.be/')[1].split('?')[0];
+
 else if(link.includes('watch'))vid=new URLSearchParams(new URL(link).search).get('v');
+
 else if(link.includes('shorts/'))vid=link.split('shorts/')[1].split('?')[0];
+
 const qp=esJuego?"?autoplay=1&controls=0&rel=0&modestbranding=1":"?autoplay=1&rel=0&modestbranding=1";
+
 if(vid)url=`https://www.youtube.com/embed/${vid}${qp}`;
+
 const est=esJuego?"width:100%;height:calc(100% + 55px);border:none;margin-top:-55px;":"width:100%;height:100%;border:none;";
+
 container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+
 }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
+
 const attr=esJuego?"autoplay loop muted":"controls autoplay";container.innerHTML=`<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
+
 }else{container.innerHTML=`<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`;}
+
 modal.style.display='flex';
+
 }
+
 function cerrarModalVideo(){
+
 document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+
 try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
+
 try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
+
 guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
+
 }
+
 function abrirModalMapa(estadio,pais,lat,lng){
+
 if(!lat||!lng||!lat.toString().trim()||!lng.toString().trim()){showToast('Coordenadas no disponibles.','ph-warning-circle','danger');return;}
+
 document.getElementById('map-modal').style.display='flex';const pLat=parseFloat(lat.toString().replace(',','.')),pLng=parseFloat(lng.toString().replace(',','.'));
+
 setTimeout(()=>{if(previewMapInstance)previewMapInstance.remove();previewMapInstance=L.map('modal-map-container',{attributionControl:false}).setView([pLat,pLng],5);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(previewMapInstance);L.circleMarker([pLat,pLng],{radius:9,color:'var(--accent-color)',fillColor:'var(--card-bg)',fillOpacity:1,weight:3}).addTo(previewMapInstance).bindPopup(`<b>${estadio}</b><br>${pais}`).openPopup();previewMapInstance.invalidateSize();},250);
+
 }
+
 function cerrarModalMapa(){document.getElementById('map-modal').style.display='none';if(previewMapInstance){previewMapInstance.remove();previewMapInstance=null;}}
+
 function cerrarModalOrden(){document.getElementById('order-modal').style.display='none';}
+
 function cerrarModalRanking(){document.getElementById('ranking-modal').style.display='none';}
+
 function switchTab(event,btn,type,estadio,pais,lat,lng){
+
 event.stopPropagation();const b=btn.closest('.trivia-balloon');b.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('active'));b.querySelectorAll('.b-content').forEach(c=>c.classList.remove('active'));btn.classList.add('active');const ct=b.querySelector('.b-'+type);if(ct)ct.classList.add('active');
+
 if(type==='mapa'){abrirModalMapa(estadio,pais,lat,lng);setTimeout(()=>{b.classList.remove('active');b.querySelectorAll('.b-tab')[0].classList.add('active');b.querySelector('.b-trivia').classList.add('active');},100);}
+
 }
+
 function switchTabMapa(event,btn){event.stopPropagation();switchTab(event,btn,'mapa',btn.dataset.estadio,btn.dataset.pais,btn.dataset.lat,btn.dataset.lng);}
+
 function toggleTriviaPopup(event,el){
+
 event.stopPropagation();const g=el.querySelector('.trivia-balloon');const open=g.classList.contains('active');document.querySelectorAll('.trivia-balloon').forEach(x=>x.classList.remove('active'));
+
 if(!open){g.classList.add('active');userStats.triviasVistas++;const cardTitle=el.closest('.card')?.querySelector('.card-title')?.textContent;if(cardTitle)userStats.triviasDescubiertas.add(cardTitle);guardarStats();agregarXP(10);}
+
 }
+
 document.addEventListener('click',()=>document.querySelectorAll('.trivia-balloon').forEach(g=>g.classList.remove('active')));
+
 function mostrarSkeletons(){document.querySelector('.grid').innerHTML=Array(6).fill(0).map(()=>`<div class="loading-card"><div class="loading-card-img skeleton"></div><div class="loading-card-body"><div class="skeleton loading-card-title"></div><div class="skeleton loading-card-sub"></div><div class="skeleton loading-card-btn"></div></div></div>`).join('');}
+
 function renderizarTarjetas(lista){
+
 const gr=document.querySelector('.grid');gr.innerHTML='';
+
 if(!lista.length){gr.innerHTML=`<div class="empty-state"><i class="ph-duotone ph-magnifying-glass empty-state-icon"></i><h3>Sin resultados</h3><p>No se encontraron estadios que coincidan.</p></div>`;return;}
+
 lista.forEach((fila,idx)=>{
+
 const estadio=bscarPropiedad(fila,'Estadio'),club=bscarPropiedad(fila,'Club');if(!estadio||!club)return;
+
 const urlFoto=bscarPropiedad(fila,'Foto')?.trim()||'',pais=bscarPropiedad(fila,'País')?.trim()||'Argentina',fond=obtenerFondoClub(club,pais),linkVideo=bscarPropiedad(fila,'Link del Video')?.trim()||'#',latR=bscarPropiedad(fila,'Latitud')?.toString().trim()||'',lngR=bscarPropiedad(fila,'Longitud')?.toString().trim()||'',dato=bscarPropiedad(fila,'Dato Curioso');
+
 const datoL=(dato||'¡Este estadio esconde grandes historias!').replace(/'/g,"\u2019").replace(/"/g,"\u201C");
+
 const prom=parseFloat(bscarPropiedad(fila,'Promedio'))||0,vL=obtenerVotoLocal(estadio),est=vL>0?vL:(prom/2);
+
 const estadioSafe=estadio.replace(/"/g,'&quot;').replace(/'/g,'&#39;'),clubSafe=club.replace(/"/g,'&quot;').replace(/'/g,'&#39;'),paisSafe=pais.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
 let estrellasHTML='';for(let i=1;i<=5;i++){let ic='ph-duotone ph-star';if(i<=Math.floor(est))ic='ph-fill ph-star active';else if(i===Math.ceil(est)&&(est%1>=.5))ic='ph-fill ph-star-half active';estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadioSafe}" data-club="${clubSafe}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;}
+
 const lRating=vL>0?`Tu voto: ${vL}★${prom>0?` · prom. ${prom.toFixed(1)}/10`:''}`:prom>0?`Calificá · prom. ${prom.toFixed(1)}/10`:'Calificá este estadio';
+
 const imgHTML=urlFoto?`<img class="card-img-logo" src="${urlFoto}" alt="${clubSafe}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>`:`<div class="placeholder-text">${club}</div>`;
+
 const t=document.createElement('article');t.className='card animate-fade-up';t.style.animationDelay=`${idx*.04}s`;t.dataset.linkVideo=linkVideo;
+
 t.innerHTML=`<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="rating-box"><span class="rating-title">${lRating}</span><div class="stars-row">${estrellasHTML}</div></div></div>`;
+
 gr.appendChild(t);
+
 });
+
 }
+
 function abrirVideoDesdeCard(event,btn){event.stopPropagation();const c=btn.closest('.card');userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abrirModalVideo(event,c?.dataset.linkVideo||'#',false);}
+
 document.getElementById('global-search').addEventListener('input',function(e){
+
 const term=e.target.value.toLowerCase().trim();
+
 if(term===''){const last=localStorage.getItem('ev_last_gid');if(last)renderizarTarjetas(estadiosCargados);else mostrarLigas();}
+
 else{document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e.target.value.toUpperCase()}"`;cerrarLigasPanel();renderizarTarjetas(catalogoGlobal.filter(f=>[bscarPropiedad(f,'Estadio'),bscarPropiedad(f,'Club'),bscarPropiedad(f,'País')].some(v=>v.toLowerCase().includes(term))));}
+
 });
+
 function cargarLiga(gid){mostrarSkeletons();document.getElementById('global-search').value='';Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`,{download:true,header:true,complete:(r)=>{estadiosCargados=r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club'));renderizarTarjetas(estadiosCargados);}});}
+
 function indexarCatalogoMasivo(){catalogoGlobal=[];todosLosGids.forEach(gid=>{Papa.parse(`${baseSpreadsheetUrl}&gid=${gid}`,{download:true,header:true,complete:(r)=>{r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club')).forEach(est=>{const n=bscarPropiedad(est,'Estadio'),c=bscarPropiedad(est,'Club');if(!catalogoGlobal.some(e=>bscarPropiedad(e,'Estadio')===n&&bscarPropiedad(e,'Club')===c))catalogoGlobal.push(est);});}});});}
+
 function dispararVueloAleatorio(e){
+
 const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;if(!pool.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
+
 const cv=pool.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&!l.includes('[Pegá tu link');});
+
 if(!cv.length){showToast('No hay videos disponibles.','ph-warning-circle','danger');return;}
+
 userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abrirModalVideo(e,bscarPropiedad(cv[Math.floor(Math.random()*cv.length)],'Link del Video').trim(),false);
+
 }
+
 function actualizarDotsProgreso(){const c=document.getElementById('rounds-progress');if(!c)return;let html='';for(let i=1;i<=5;i++){let cls='round-dot';if(i<guessrRondaActual)cls+=' done';else if(i===guessrRondaActual)cls+=' current';html+=`<div class="${cls}"></div>`;}c.innerHTML=html;}
+
 function iniciarTrivia(){if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();}
+
 function lanzarRondaGuessr(){
+
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
+
 if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
+
 guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));guessrSelectedLatLng=null;actualizarDotsProgreso();
+
 const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
+
 document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.style.background='';btn.style.color='';btn.style.boxShadow='';btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
+
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
+
 setTimeout(()=>{
+
 if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
+
 guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
+
 guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
+
 guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
+
 },600);
+
 }
+
 function procesarArriesgoGuessr(){
+
 const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;btn.setAttribute('data-estado','procesando');btn.disabled=true;
+
 const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
+
 const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
+
 guessrPuntosTotales+=pts;guessrHistorialRondas.push({ronda:guessrRondaActual,estadio:bscarPropiedad(guessrEstadioCorrecto,'Estadio'),distancia:dist,puntos:pts});
+
 if(!isNaN(dist)&&dist<5)userStats.medallaLocalista=true;if(!isNaN(dist)&&dist<1)userStats.guessrUnKm=true;actualizarDotsProgreso();
+
 guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColor:'#111820',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
+
 guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:2,dashArray:'6,8'}).addTo(guessrMapInstance);
+
 guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker,guessrTargetMarker]).getBounds(),{padding:[40,40]});
+
 document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
+
 btn.innerHTML=`${emoji} ${distT} de error &nbsp;·&nbsp; <b>+${pts} pts</b> &nbsp; Siguiente <i class="ph-bold ph-arrow-right"></i>`;
+
 if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
+
 btn.setAttribute('data-estado','resultado');btn.disabled=false;
+
 }
+
 function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrRondaActual++;guessrRondaActual<=5?lanzarRondaGuessr():finalizarJuegoGuessr();}
+
 function finalizarJuegoGuessr(){
+
 const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+
 if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
+
 userStats.partidasJugadas++;if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
+
 if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;guardarStats();agregarXP(guessrPuntosTotales);pendingScore=guessrPuntosTotales;pendingScoreType='guessr';
+
 const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
+
 let histHTML=`<div style="width:100%;max-width:400px;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
+
 guessrHistorialRondas.forEach(item=>{const dT=isNaN(item.distancia)?'?':(item.distancia<1?`${Math.round(item.distancia*1000)} m`:`${item.distancia.toFixed(1)} km`);const starColor=item.puntos>3000?'#00e676':item.puntos>1000?'#ff8f00':'#ff4757';histHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:var(--text-muted);font-size:.75rem;">${dT}</span><b style="color:${starColor};">+${item.puntos}</b></span></div>`;});histHTML+='</div>';
+
 const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
+
 const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
+
 container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
+
 <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
+
 <p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+
 <div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>
+
 ${histHTML}<div style="width:100%;max-width:320px;">${guardarBtn}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
+
 }
+
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
+
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
+
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
+
 async function abrirModalRanking(){
+
 const body=document.getElementById('ranking-modal-body');body.innerHTML='<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';document.getElementById('ranking-modal').style.display='flex';
+
 try{const ranking=await(await fetch(scriptUrlRanking)).json();let html=`<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+
 if(!ranking?.length)html+=`<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay puntajes.</p>`;else ranking.forEach((f,i)=>{const m=['🥇','🥈','🥉'];const med=i<3?m[i]:`<span style="color:var(--text-muted);">${i+1}</span>`;const nivelR=NIVELES[calcularNivelIdx(f[1]||0)];html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i===ranking.length-1?'none':'1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f[0]||'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f[1]||0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;});
+
 html+='</div>';body.innerHTML=html;}catch(e){body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión</b></div>`;}
+
 }
+
 async function abrirModalRankingOrden(modo){
+
 const body=document.getElementById('ranking-modal-body');body.innerHTML='<div style="text-align:center;padding:50px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i></div>';document.getElementById('ranking-modal').style.display='flex';
+
 const url=modo==='capacidad'?scriptUrlCapacidad:scriptUrlAntiguedad;
+
 try{const r=await(await fetch(url)).json();let html=`<div style="text-align:center;margin-bottom:22px;"><h2 style="font-size:1.5rem;font-weight:900;">Top ${modo==='capacidad'?'Capacidad':'Antigüedad'}</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+
 if(!r?.length)html+=`<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin marcas aún.</p>`;else r.forEach((f,i)=>{const m=['🥇','🥈','🥉'];const med=i<3?m[i]:`<span style="color:var(--text-muted);">${i+1}</span>`;html+=`<div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:${i===r.length-1?'none':'1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f[0]}</span><span style="color:var(--accent-color);font-weight:900;">${f[1]} pts</span></div>`;});
+
 html+='</div>';body.innerHTML=html;}catch(e){body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><b>Error de conexión</b></div>`;}
+
 }
+
 function abrirModalOrden(){
+
 document.getElementById('order-modal').style.display='flex';const body=document.getElementById('order-modal-body');
+
 body.innerHTML=`<div style="text-align:center;color:var(--text-main);padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;"><div class="animate-bounce" style="margin-bottom:16px;color:var(--accent-color);font-size:4rem;filter:drop-shadow(0 0 15px var(--accent-glow));"><i class="ph-duotone ph-sort-ascending"></i></div><h2 style="font-size:1.7rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;">Desafío de Orden</h2><p style="color:var(--text-muted);font-size:.95rem;max-width:380px;line-height:1.6;margin-bottom:32px;">Demostrá tu conocimiento. Tocá dos tarjetas para intercambiarlas y ordenalas correctamente.</p><div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:300px;"><button onclick="iniciarJuegoOrden('capacidad')" class="btn-3d primary" style="padding:15px;font-size:1rem;"><i class="ph-duotone ph-users-three"></i> Por Capacidad</button><button onclick="iniciarJuegoOrden('antiguedad')" class="btn-3d secondary" style="padding:15px;font-size:1rem;"><i class="ph-duotone ph-hourglass-high"></i> Por Antigüedad</button><div style="display:flex;gap:10px;margin-top:8px;"><button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="flex:1;padding:10px;font-size:.82rem;"><i class="ph-fill ph-medal"></i> Top Cap.</button><button onclick="abrirModalRankingOrden('antiguedad')" class="btn-3d secondary" style="flex:1;padding:10px;font-size:.82rem;"><i class="ph-fill ph-medal"></i> Top Edad</button></div></div></div>`;
+
 }
+
 function iniciarJuegoOrden(modo){
+
 const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;if(!pool.length){showToast('Esperá un momento...','ph-info','danger');return;}
+
 orderModo=modo;orderSelectedIdx=null;orderPuntosGanados=0;pendingScore=null;pendingScoreType=null;
+
 const validos=pool.filter(f=>{const n=bscarPropiedad(f,'Estadio'),c=bscarPropiedad(f,'Club');if(!n||!c)return false;const raw=String(bscarPropiedad(f,modo==='capacidad'?'Capacidad':'Año')).replace(/[^0-9]/g,'');return raw!==''&&parseInt(raw)>0;});
+
 if(validos.length<5){showToast('No hay suficientes datos.','ph-warning-circle','danger');return;}
+
 let sel=[],copia=[...validos];
+
 while(sel.length<5){const idx=Math.floor(Math.random()*copia.length);const e=copia.splice(idx,1)[0];const val=parseInt(String(bscarPropiedad(e,modo==='capacidad'?'Capacidad':'Año')).replace(/[^0-9]/g,''))||0;sel.push({estadio:bscarPropiedad(e,'Estadio'),club:bscarPropiedad(e,'Club'),pais:bscarPropiedad(e,'País')||'Argentina',valor:val,correctIdx:-1});}
+
 const ord=[...sel].sort((a,b)=>modo==='capacidad'?b.valor-a.valor:a.valor-b.valor);sel.forEach(e=>{e.correctIdx=ord.findIndex(o=>o.estadio===e.estadio&&o.club===e.club);});
+
 orderList=[...sel].sort(()=>Math.random()-.5);orderStartTime=performance.now();renderJuegoOrden();
+
 }
+
 function renderJuegoOrden(revelar=false){
+
 const body=document.getElementById('order-modal-body'),titulo=orderModo==='capacidad'?'Mayor a Menor Capacidad':'Del Más Antiguo al Más Moderno',icono=orderModo==='capacidad'?'ph-users-three':'ph-hourglass-high',desc=orderModo==='capacidad'?'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> espectadores':'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>',labelTop=orderModo==='capacidad'?'⬆ MÁS GRANDE':'⬆ MÁS ANTIGUO',labelBot=orderModo==='capacidad'?'⬇ MÁS CHICO':'⬇ MÁS MODERNO';
+
 let slotsHTML='';
+
 orderList.forEach((est,i)=>{
+
 let bgC='var(--surface-color)',brC='var(--border-strong)',badge='',extraStyle='';
+
 let iconL=`<div style="background:var(--bg-color);color:var(--text-muted);border:2px solid var(--border-subtle);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;flex-shrink:0;">${i+1}</div>`;
+
 if(revelar){const ok=i===est.correctIdx;bgC=ok?'rgba(0,230,118,.1)':'rgba(255,71,87,.1)';brC=ok?'var(--accent-color)':'var(--danger-color)';iconL=ok?`<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">✓</div>`:`<div style="background:var(--danger-color);color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">✗</div>`;const v=orderModo==='capacidad'?`${est.valor.toLocaleString('es-AR')} esp.`:`${est.valor}`;badge=`<span style="background:${ok?'var(--accent-color)':'var(--danger-color)'};color:${ok?'#000':'#fff'};font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto;flex-shrink:0;">${v}</span>`;}
+
 else if(orderSelectedIdx===i){brC='var(--accent-color)';bgC='var(--accent-dim)';extraStyle='transform:translateY(-4px) scale(1.01);box-shadow:0 8px 24px var(--accent-glow);';iconL=`<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">↕</div>`;}
+
 slotsHTML+=`<div onclick="${revelar?'':(`seleccionarFilaOrden(${i})`)}" class="order-slot" style="background:${bgC};border:2px solid ${brC};cursor:${revelar?'default':'pointer'};${extraStyle}">${iconL}<div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;"><strong style="font-size:.9rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong><span style="color:var(--text-muted);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span></div>${badge}</div>`;
+
 });
+
 let timerBarHTML=!revelar?`<div style="background:var(--border-subtle);border-radius:20px;height:4px;margin-bottom:12px;overflow:hidden;"><div id="order-timer-bar" style="height:100%;border-radius:20px;background:var(--accent-color);width:100%;transition:width .5s linear;"></div></div>`:'';
+
 let botonera='';
+
 if(!revelar){botonera=`<div style="display:flex;gap:10px;margin-top:10px;flex-shrink:0;"><button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:13px;"><i class="ph-bold ph-arrow-left"></i></button><button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:13px;font-size:1rem;">Confirmar orden <i class="ph-bold ph-check-circle"></i></button></div>`;}
+
 else{
+
 const esGoogle=esUsuarioGoogle(),btnGuardar=esGoogle?`<button onclick="guardarScoreOrden()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar puntaje</button>`:`<button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
+
 const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+
 botonera=`<div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:14px;border-radius:18px;margin-top:10px;flex-shrink:0;box-shadow:0 -5px 20px rgba(0,0,0,.3);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div><div style="font-size:.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:1px;">Puntaje obtenido</div><strong style="font-size:1.8rem;color:var(--accent-color);font-weight:900;">${orderPuntosGanados} <span style="font-size:.9rem;color:var(--text-muted);">Pts</span></strong></div><div style="text-align:right;"><span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span></div></div><div style="display:flex;gap:8px;">${btnGuardar}<button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-fill ph-medal"></i></button><button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-bold ph-arrow-counter-clockwise"></i></button></div></div>`;
+
 }
+
 body.innerHTML=`<div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;"><h2 style="font-size:1.1rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph-duotone ${icono}" style="color:var(--accent-color);font-size:1.4rem;"></i> ${titulo}</h2><p style="color:var(--text-muted);font-size:.84rem;margin-top:4px;line-height:1.5;">${desc}</p></div>${timerBarHTML}<div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 5px 10px;scrollbar-width:thin;"><div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;opacity:.8;">${labelTop}</div>${slotsHTML}<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:2px;opacity:.8;">${labelBot}</div></div>${botonera}`;
+
 if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar');if(bar)bar.style.width='0%';},100);
+
 }
+
 function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=idx;renderJuegoOrden();}else if(orderSelectedIdx===idx){orderSelectedIdx=null;renderJuegoOrden();}else{const t=orderList[orderSelectedIdx];orderList[orderSelectedIdx]=orderList[idx];orderList[idx]=t;orderSelectedIdx=null;renderJuegoOrden();}}
+
 function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
+
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
+
 function calcularLogros(){
+
 const s=userStats;
+
 const logros=[];
+
 function addTierLogro(id,icon,baseName,currentVal,step,unit,rarity='common'){
+
 const val=currentVal||0;
+
 const tierActual=Math.floor(val/step);
+
 const pct=Math.round(((val%step)/step)*100);
+
 if(tierActual>0){
+
 logros.push({
+
 id:`${id}_${tierActual}`,icon,name:`${baseName} ${tierActual}`,rarity,
+
 req:`${val.toLocaleString('es-AR')} de ${(tierActual*step).toLocaleString('es-AR')}${unit}`,
+
 unlocked:true,pct:100,pctLabel:''
+
 });
+
 }
+
 const siguiente=tierActual+1;
+
 const progActual=val-(tierActual*step);
+
 logros.push({
+
 id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,
+
 req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,
+
 unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),
+
 pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`
+
 });
+
 }
+
 addTierLogro('voto','⭐','Catador',s.votosRealizados,5,' califs','common');
+
 addTierLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias','common');
+
 addTierLogro('guessr','✈️','Piloto',s.partidasJugadas,5,' partidas','common');
+
 addTierLogro('liga','🗂️','Explorador',s.ligasExploradas.size,2,' ligas','common');
+
 addTierLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
+
 addTierLogro('racha','🔥','Constante',s.rachaActual||1,7,' días','rare');
+
 addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
+
 addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
+
 logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
+
 logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
+
 logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
+
 logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
+
 logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
+
 logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
+
 return logros;
+
 }
+
 function filtrarLogros(tipo){
+
 logrosTabActual=tipo;
+
 document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));
+
 renderizarGridLogros();
+
 }
+
 function renderizarGridLogros(){
+
 const grid=document.getElementById('logros-grid-v2');if(!grid)return;
+
 const logros=calcularLogros();
+
 let filtrados;
+
 if(logrosTabActual==='todos')filtrados=logros;
+
 else if(logrosTabActual==='desbloqueados')filtrados=logros.filter(l=>l.unlocked);
+
 else if(logrosTabActual==='progreso')filtrados=logros.filter(l=>!l.unlocked&&l.pct>0);
+
 else filtrados=logros.filter(l=>!l.unlocked);
+
 const total=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
+
 const counterEl=document.getElementById('logros-counter');if(counterEl)counterEl.textContent=`${desbloqueados}/${total}`;
+
 if(!filtrados.length){
+
 grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${logrosTabActual==='desbloqueados'?'Aún no desbloqueaste logros. ¡A jugar!':logrosTabActual==='progreso'?'No tenés logros en progreso.':'¡Todos tus logros están desbloqueados!'}</span></div>`;return;
+
 }
+
 const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
+
 grid.innerHTML=filtrados.map(l=>{
+
 const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
+
 const progressBar=(l.pct!==undefined&&!l.unlocked&&l.pct>0)?`<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`:'';
+
 const unlockBadge=l.unlocked?`<div class="logro-unlock-badge">✓</div>`:'';
+
 const statusClass=l.unlocked?'unlocked':(l.pct>0?'in-progress':'locked');
+
 return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
+
 }).join('');
+
 }
+
+
 
 function previsualizarTema(tema){
+
 const card=document.getElementById('fut-card-main');if(!card)return;
-card.className='fut-card '+tema;
-document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));
+
+card.className='fut-card '+tema;document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));
+
+}window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');if(!panel.classList.contains('open')){
+
+panel.classList.add('open');
+
+btn.innerHTML='<i class="ph-bold ph-caret-up"></i> Ocultar personalización';
+
+btn.classList.add('primary');
+
+btn.classList.remove('secondary');
+
+}else{
+
+panel.classList.remove('open');
+
+btn.innerHTML='<i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta';
+
+btn.classList.remove('primary');
+
+btn.classList.add('secondary');
+
 }
 
-window.toggleCustomization=function(){
-const panel=document.getElementById('customization-panel-wrapper');
-const btn=document.getElementById('btn-toggle-custom');
-if(!panel.classList.contains('open')){
-panel.classList.add('open');
-btn.innerHTML='<i class="ph-bold ph-caret-up"></i> Ocultar personalización';
-btn.classList.add('primary');
-btn.classList.remove('secondary');
-}else{
-panel.classList.remove('open');
-btn.innerHTML='<i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta';
-btn.classList.remove('primary');
-btn.classList.add('secondary');
-}
-};
-window.actualizarAvatarLive = function() {
+};window.actualizarAvatarLive = function() {
+
     const h = document.getElementById('avatar-hair-input').value;
+
     const s = document.getElementById('avatar-shirt-input').value;
+
     const c = document.getElementById('avatar-shirt-color-input').value || '#00e676';
+
+    const c2 = document.getElementById('avatar-shirt-color2-input')?.value || '#ffffff';
+
     const n = document.getElementById('avatar-num-input').value || '10';
 
+
+
+    // Mostrar/ocultar selector del segundo color según tipo de camiseta
+
+    const color2Container = document.getElementById('color2-container');
+
+    if (color2Container) {
+
+        color2Container.style.display = (s === 'solid') ? 'none' : 'flex';
+
+    }
+
+
+
     const container = document.getElementById('fut-avatar-live-container');
+
     if(container) {
-        container.innerHTML = generarAvatarHTML(h, s, c, n);
+
+        container.innerHTML = generarAvatarHTML(h, s, c, n, c2);
+
     }
+
     
+
     const posInput = document.getElementById('avatar-pos-input');
+
     if(posInput) {
+
          const futPos = document.getElementById('fut-pos-display');
+
          if(futPos) futPos.textContent = posInput.value;
+
     }
+
+
 
     const logoInput = document.getElementById('avatar-logo-input');
-    if(logoInput) {
-         const futClub = document.getElementById('fut-club-display');
-         if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev'];
-    }
-};
 
-function guardarPersonalizacion(){
-const posSelect=document.getElementById('avatar-pos-input');
-if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
-const themeActualEl=document.querySelector('.theme-dot.active');
-if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
-const nickInput=document.getElementById('avatar-nick-input');
-if(nickInput!==null){
-const newNick=nickInput.value.trim();
-setPref('ev_custom_nick',newNick);
-const futName=document.getElementById('fut-name-display');
-if(futName){
-const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jonathan');
+    if(logoInput) {
+
+         const futClub = document.getElementById('fut-club-display');
+
+         if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev'];
+
+    }
+
+};function guardarPersonalizacion(){const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}const nickInput=document.getElementById('avatar-nick-input');if(nickInput!==null){const newNick=nickInput.value.trim();
+
+setPref('ev_custom_nick',newNick);const futName=document.getElementById('fut-name-display');if(futName){const u=JSON.parse(localStorage.getItem('ev_user_logged'));
+
+futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');
+
 }
-}
-const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
-const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
-const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
-const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
-const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
+
+}const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);const color2Input=document.getElementById('avatar-shirt-color2-input'); if(color2Input) setPref('ev_avatar_color2', color2Input.value);const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
+
+
 
 showToast('¡Personalización guardada! 🎉');
-renderizarBotonLogin();actualizarHeaderNivel();
-const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
-const cardEl=document.getElementById('fut-card-main');
-if(cardEl){
+
+renderizarBotonLogin();actualizarHeaderNivel();const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}const cardEl=document.getElementById('fut-card-main');if(cardEl){
+
     let th=getPref('ev_card_theme','arg');
-    if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi', 'ned', 'bel', 'cro', 'usa', 'jpn'].includes(th)) th = 'arg';
+
+    const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
+
+    if (!validThemes.includes(th)) th = 'arg';
+
     cardEl.className='fut-card '+th;
-}
-if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
-}
 
-function abrirModalPerfil(){
-const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(!u)return;
-const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
-const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;
-const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
+}if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
 
-const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');
-let savedTheme=getPref('ev_card_theme','arg');
-if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi', 'ned', 'bel', 'cro', 'usa', 'jpn'].includes(savedTheme)) savedTheme = 'arg';
+}function abrirModalPerfil(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(!u)return;const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');let savedTheme=getPref('ev_card_theme','arg');const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];if (!validThemes.includes(savedTheme)) savedTheme = 'arg';const savedHair = getPref('ev_avatar_hair', 'spiky');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');const activeCardClass=savedTheme;const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';const temas=[
 
-const savedHair = getPref('ev_avatar_hair', 'spiky');
-const savedShirt = getPref('ev_avatar_shirt', 'solid');
-const savedColor = getPref('ev_avatar_color', '#00e676');
-const savedNum = getPref('ev_avatar_num', '10');
-const savedLogo = getPref('ev_avatar_logo', 'ev');
+{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},
 
-const activeCardClass=savedTheme;
-const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
+{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},
 
-const temas=[
-{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},
-{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},
-{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},
-{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},
-{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},
-{k:'usa',l:'USA'},{k:'jpn',l:'JPN'}
-];
-const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
+{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},
 
-// Calendario dinámico
-const today = new Date();
-const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-const currentYear = today.getFullYear();
-const currentMonth = today.getMonth();
-const firstDay = new Date(currentYear, currentMonth, 1).getDay(); 
-let startOffset = firstDay === 0 ? 6 : firstDay - 1;
-const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},
 
-let calHTML='';
-for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden; border:none;"></div>`; }
-for(let d=1;d<=daysInMonth;d++){
+{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},
+
+{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',l:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},
+
+{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},
+
+{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}
+
+];const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');const today = new Date();const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];const currentYear = today.getFullYear();const currentMonth = today.getMonth();const firstDay = new Date(currentYear, currentMonth, 1).getDay(); let startOffset = firstDay === 0 ? 6 : firstDay - 1;const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();let calHTML='';for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden; border:none;"></div>`; }for(let d=1;d<=daysInMonth;d++){
+
     const dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-    let cl='calendar-cell';
-    if(dateStr === today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0')) {
-        cl+=' current-active';
-    } else if (userStats.activeDates && userStats.activeDates.includes(dateStr)) {
-        cl+=' past-done';
-    }
-    calHTML+=`<div class="${cl}">${d}</div>`;
-}
 
-const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
-document.getElementById('profile-modal-body').innerHTML=`
+    let cl='calendar-cell';
+
+    if(dateStr === today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0')) {
+
+        cl+=' current-active';
+
+    } else if (userStats.activeDates && userStats.activeDates.includes(dateStr)) {
+
+        cl+=' past-done';
+
+    }
+
+    calHTML+=`<div class="${cl}">${d}</div>`;
+
+}const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;document.getElementById('profile-modal-body').innerHTML=`
+
 <div class="split-profile-layout">
+
 <div class="left-fut-column">
+
 <div class="fut-card ${activeCardClass}" id="fut-card-main">
+
 <div class="fut-card-shine"></div>
+
 <div class="fut-top">
+
 <div class="fut-badge-meta">
+
 <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
+
 <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
+
 <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+
 </div>
-<div class="fut-avatar-container" id="fut-avatar-live-container">
-${generarAvatarHTML(savedHair, savedShirt, savedColor, savedNum)}
+
+<div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair, savedShirt, savedColor, savedNum, savedColor2)}
+
 </div>
+
 </div>
+
 <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
+
 <div class="fut-stats-row">
+
 <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
+
 <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
+
 <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
+
 <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
+
 </div>
+
 </div>
+
 ${googleBadge}
+
 <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;">
+
 <i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta
+
 </button>
+
 <div id="customization-panel-wrapper">
+
 <div class="avatar-picker">
+
 <div class="avatar-picker-label"><i class="ph-fill ph-palette"></i> Diseño de la Carta</div>
+
 <div class="theme-preview-strip">${themeStrip}</div>
+
 <div class="avatar-divider"></div>
+
 <label class="avatar-nick-label">Apariencia y Escudo</label>
+
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+
 <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+
 <option value="spiky">Pelo Pincho</option>
+
 <option value="short">Pelo Corto</option>
+
 <option value="long">Pelo Largo</option>
+
 <option value="ponytail">Cola Caballo</option>
+
 <option value="bald">Calvo</option>
+
 </select>
+
 <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+
 <option value="ev">⚽ Estadios Virt.</option>
-<option value="ar">🇦🇷 Argentina</option>
-<option value="br">🇧🇷 Brasil</option>
-<option value="es">🇪🇸 España</option>
-<option value="it">🇮🇹 Italia</option>
-<option value="fr">🇫🇷 Francia</option>
-<option value="de">🇩🇪 Alemania</option>
-<option value="gb-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option>
-<option value="pt">🇵🇹 Portugal</option>
-<option value="uy">🇺🇾 Uruguay</option>
-<option value="co">🇨🇴 Colombia</option>
-<option value="mx">🇲🇽 México</option>
-<option value="cl">🇨🇱 Chile</option>
-<option value="nl">🇳🇱 Países Bajos</option>
-<option value="be">🇧🇪 Bélgica</option>
-<option value="hr">🇭🇷 Croacia</option>
-<option value="us">🇺🇸 EE.UU.</option>
-<option value="jp">🇯🇵 Japón</option>
+
+<option value="ar">🇦🇷 Argentina</option><option value="br">🇧🇷 Brasil</option><option value="es">🇪🇸 España</option>
+
+<option value="it">🇮🇹 Italia</option><option value="fr">🇫🇷 Francia</option><option value="de">🇩🇪 Alemania</option>
+
+<option value="gb-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option><option value="pt">🇵🇹 Portugal</option><option value="uy">🇺🇾 Uruguay</option>
+
+<option value="co">🇨🇴 Colombia</option><option value="mx">🇲🇽 México</option><option value="cl">🇨🇱 Chile</option>
+
+<option value="nl">🇳🇱 Países Bajos</option><option value="be">🇧🇪 Bélgica</option><option value="hr">🇭🇷 Croacia</option>
+
+<option value="us">🇺🇸 EE.UU.</option><option value="jp">🇯🇵 Japón</option>
+
+<option value="can">🇨🇦 Canadá</option><option value="mar">🇲🇦 Marruecos</option><option value="sen">🇸🇳 Senegal</option>
+
+<option value="kor">🇰🇷 Corea del Sur</option><option value="aus">🇦🇺 Australia</option><option value="sui">🇨🇭 Suiza</option>
+
+<option value="ecu">🇪🇨 Ecuador</option><option value="per">🇵🇪 Perú</option><option value="den">🇩🇰 Dinamarca</option>
+
+<option value="srb">🇷🇸 Serbia</option><option value="pol">🇵🇱 Polonia</option><option value="wal">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Gales</option>
+
+<option value="swe">🇸🇪 Suecia</option><option value="civ">🇨🇮 Costa de Marfil</option><option value="cmr">🇨🇲 Camerún</option>
+
+<option value="gha">🇬🇭 Ghana</option><option value="nga">🇳🇬 Nigeria</option><option value="ksa">🇸🇦 Arabia Saudita</option>
+
+<option value="irn">🇮🇷 Irán</option><option value="egy">🇪🇬 Egipto</option><option value="alg">🇩🇿 Argelia</option>
+
+<option value="tun">🇹🇳 Túnez</option><option value="mli">🇲🇱 Malí</option><option value="qat">🇶🇦 Qatar</option>
+
+<option value="par">🇵🇾 Paraguay</option><option value="ven">🇻🇪 Venezuela</option><option value="bol">🇧🇴 Bolivia</option>
+
+<option value="crc">🇨🇷 Costa Rica</option><option value="pan">🇵🇦 Panamá</option><option value="jam">🇯🇲 Jamaica</option>
+
+<option value="nzl">🇳🇿 Nueva Zelanda</option>
+
 </select>
+
 </div>
+
 <label class="avatar-nick-label">Camiseta (Estilo, Color y N°)</label>
-<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+
 <select class="avatar-pos-select" id="avatar-shirt-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+
 <option value="solid">Lisa</option>
+
 <option value="striped">Rayada</option>
+
 <option value="band">Banda</option>
+
 <option value="diagonal">Diagonal</option>
+
 </select>
-<input type="color" id="avatar-shirt-color-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;" value="${savedColor}" oninput="actualizarAvatarLive()">
+
 <input type="number" id="avatar-num-input" class="avatar-nickname-input" style="margin-bottom:0;" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
+
 </div>
+
+<div style="display:flex; gap:10px; margin-bottom:12px;">
+
+<div style="flex:1; display:flex; flex-direction:column; gap:4px;">
+
+<span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR PRINCIPAL</span>
+
+<input type="color" id="avatar-shirt-color-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor}" oninput="actualizarAvatarLive()">
+
+</div>
+
+<div id="color2-container" style="flex:1; display:${savedShirt === 'solid' ? 'none' : 'flex'}; flex-direction:column; gap:4px;">
+
+<span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR SECUNDARIO</span>
+
+<input type="color" id="avatar-shirt-color2-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor2}" oninput="actualizarAvatarLive()">
+
+</div>
+
+</div>
+
 <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
-<option value="POR">POR — Arquero</option>
-<option value="DFC">DFC — Def. Central</option>
-<option value="LD">LD — Lateral Der.</option>
-<option value="LI">LI — Lateral Izq.</option>
-<option value="MCD">MCD — Medio Def.</option>
-<option value="MC">MC — Mediocentro</option>
-<option value="MCO">MCO — Medio Ofensivo</option>
-<option value="MI">MI — Medio Izq.</option>
-<option value="MD">MD — Medio Der.</option>
-<option value="EI">EI — Extremo Izq.</option>
-<option value="ED">ED — Extremo Der.</option>
-<option value="SD">SD — Segundo Del.</option>
-<option value="DC">DC — Delantero</option>
-<option value="DT">DT — Técnico</option>
+
+<option value="POR">POR — Arquero</option><option value="DFC">DFC — Def. Central</option>
+
+<option value="LD">LD — Lateral Der.</option><option value="LI">LI — Lateral Izq.</option>
+
+<option value="MCD">MCD — Medio Def.</option><option value="MC">MC — Mediocentro</option>
+
+<option value="MCO">MCO — Medio Ofensivo</option><option value="MI">MI — Medio Izq.</option>
+
+<option value="MD">MD — Medio Der.</option><option value="EI">EI — Extremo Izq.</option>
+
+<option value="ED">ED — Extremo Der.</option><option value="SD">SD — Segundo Del.</option>
+
+<option value="DC">DC — Delantero</option><option value="DT">DT — Técnico</option>
+
 </select>
+
 <label class="avatar-nick-label">Apodo en el ranking</label>
+
 <div class="avatar-nickname-row">
+
 <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
+
 </div>
+
 <button class="avatar-save-btn" onclick="guardarPersonalizacion()">
+
 <i class="ph-bold ph-check"></i> Guardar cambios
+
 </button>
+
 </div>
+
 </div>
+
 </div>
+
 <div class="right-dashboard-column">
+
 <div class="xp-profile-section">
+
 <div class="xp-level-row">
+
 <div class="xp-level-name">${nivel.emoji} ${nivel.nombre}</div>
+
 <div class="level-badge-inline ${nivel.cssClass}">Nivel ${nivelIdx}</div>
+
 </div>
+
 <div class="xp-bar-big"><div class="xp-bar-big-fill" style="width:${xpPct}%;"></div></div>
+
 <div class="xp-milestones">
+
 <span>${nivel.min.toLocaleString('es-AR')} XP</span>
+
 <span style="color:var(--accent-color);font-weight:800;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
+
 <span>${nivelSig.min===Infinity?'∞':nivelSig.min.toLocaleString('es-AR')} XP</span>
+
 </div>
+
 </div>
+
 <div class="geoguessr-dash-box">
+
 <div class="dash-header-inline">
+
 <div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (${monthNames[currentMonth]})</div>
+
 <div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
+
 </div>
+
 <div class="calendar-matrix">
+
 <div class="calendar-day-label">LUN</div><div class="calendar-day-label">MAR</div><div class="calendar-day-label">MIÉ</div><div class="calendar-day-label">JUE</div><div class="calendar-day-label">VIE</div><div class="calendar-day-label">SÁB</div><div class="calendar-day-label">DOM</div>
+
 ${calHTML}
+
 </div>
+
 </div>
+
 <div class="geoguessr-dash-box">
+
 <div class="dash-header-inline" style="margin-bottom:12px;">
+
 <div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
+
 <div class="streak-fire-badge" id="logros-counter" style="color:var(--text-muted);">${desbloqueados}/${totalLogros}</div>
+
 </div>
+
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+
 <span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
+
 <span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
+
 <span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
+
 </div>
+
 <div class="logros-tabs-row">
+
 <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
+
 <button class="logro-tab-btn" data-tipo="desbloqueados" onclick="filtrarLogros('desbloqueados')">✓ Logrados</button>
+
 <button class="logro-tab-btn" data-tipo="progreso" onclick="filtrarLogros('progreso')">⏳ Progreso</button>
+
 <button class="logro-tab-btn" data-tipo="bloqueados" onclick="filtrarLogros('bloqueados')">🔒 Bloq.</button>
+
 </div>
+
 <div class="logros-grid-v2" id="logros-grid-v2"></div>
+
 </div>
+
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:4px;">
+
 <span style="font-size:.85rem;color:var(--text-muted);font-weight:700;">Nivel actual: <b style="color:${nivel.color};">${nivel.nombre}</b></span>
+
 <button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color);border-color:var(--danger-color);padding:8px 16px;font-size:.82rem;">Cerrar sesión</button>
+
 </div>
+
 </div>
+
 </div>`;
+
 document.getElementById('profile-modal').style.display='flex';
+
 setTimeout(()=>{
+
 const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
+
 const selHair = document.getElementById('avatar-hair-input'); if(selHair) selHair.value = savedHair;
+
 const selShirt = document.getElementById('avatar-shirt-input'); if(selShirt) selShirt.value = savedShirt;
+
 const selNum = document.getElementById('avatar-num-input'); if(selNum) selNum.value = savedNum;
+
 const selLogo = document.getElementById('avatar-logo-input'); if(selLogo) selLogo.value = savedLogo;
 
+
+
 renderizarGridLogros();
+
 },50);
+
 }
+
 function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
+
 function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
+
 window.addEventListener('DOMContentLoaded',()=>{
+
 renderizarBotonLogin();actualizarHeaderNivel();
+
 if(typeof google!=='undefined'&&google.accounts)inicializarGoogleLogin();
+
 else{document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load',inicializarGoogleLogin);setTimeout(inicializarGoogleLogin,2000);}
+
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',function(){const gid=this.getAttribute('data-gid'),nombre=this.querySelector('.tab-name')?.textContent.trim()||this.textContent.trim();activarLiga(gid,nombre);}));
+
 indexarCatalogoMasivo();
+
 const lastGid=localStorage.getItem('ev_last_gid');if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}else mostrarLigas();
+
 guardarStats();
+
 });
+
 </script>
+
 </body>
+
 </html>
+
+
+
+
+
