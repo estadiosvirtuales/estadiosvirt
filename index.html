@@ -178,7 +178,7 @@ body>*{position:relative;z-index:1}
 .card{background:var(--card-bg);border-radius:20px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease;cursor:pointer;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px var(--accent-color)}
 .estadio-foto-container{width:100%;height:190px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:28px;transition:filter .3s}
-.estadio-foto-container::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,20,.9) 0%,rgba(0,0,0,.05) 60%);z-index:1}
+.estadio-foto-container::after{content:'position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,20,.9) 0%,rgba(0,0,0,.05) 60%);z-index:1}
 .card:hover .estadio-foto-container{filter:brightness(1.1)}
 .card-img-logo{max-height:88%;max-width:88%;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,.7));transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:2}
 .card:hover .card-img-logo{transform:scale(1.12) rotate(3deg)}
@@ -782,20 +782,20 @@ const ESCUDOS_MAP = {
   'nzl': 'https://flagcdn.com/w80/nz.png'
 };
 function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
-    let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
-    if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
-    else if(pelo === 'long') peloHTML += `<div style="position:absolute;top:10px;left:-10%;width:120%;height:45px;background:#4a2e1b;border-radius:20px;z-index:-1;"></div>`;
-    else if(pelo === 'ponytail') peloHTML += `<div style="position:absolute;top:5px;right:-15px;width:25px;height:40px;background:#4a2e1b;border-radius:50%;z-index:-1;transform:rotate(-20deg);"></div>`;
-    let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
-    let shirtBg = '';
-    let mainColor = colorCamisa || '#00e676';
-    let secColor = colorCamisa2 || '#ffffff';
-    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, ${mainColor} 0, ${mainColor} 12px, ${secColor} 12px, ${secColor} 24px);`;
-    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, ${mainColor} 35%, ${secColor} 35%, ${secColor} 65%, ${mainColor} 65%);`;
-    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, ${mainColor} 40%, ${secColor} 40%, ${secColor} 60%, ${mainColor} 60%);`;
-    else shirtBg = `background: linear-gradient(135deg, ${mainColor} 0%, color-mix(in srgb, ${mainColor} 40%, #111) 100%);`;
-    let body = `<div class="fut-player-body"><div class="fut-player-neck"></div><div class="fut-player-torso"><div class="fut-player-arm left"></div><div class="fut-player-shirt" style="${shirtBg}"><div class="fut-player-collar"></div><span class="fut-player-number">${numero}</span></div><div class="fut-player-arm right"></div></div></div>`;
-    return `<div style="transform: scale(1.15); transform-origin: bottom center; width: 100%; height: 100%; position: absolute; bottom: 0; display:flex; flex-direction:column; align-items:center;">${acHead}${body}</div>`;
+  let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
+  if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
+  else if(pelo === 'long') peloHTML += `<div style="position:absolute;top:10px;left:-10%;width:120%;height:45px;background:#4a2e1b;border-radius:20px;z-index:-1;"></div>`;
+  else if(pelo === 'ponytail') peloHTML += `<div style="position:absolute;top:5px;right:-15px;width:25px;height:40px;background:#4a2e1b;border-radius:50%;z-index:-1;transform:rotate(-20deg);"></div>`;
+  let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
+  let shirtBg = '';
+  let mainColor = colorCamisa || '#00e676';
+  let secColor = colorCamisa2 || '#ffffff';
+  if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, ${mainColor} 0, ${mainColor} 12px, ${secColor} 12px, ${secColor} 24px);`;
+  else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, ${mainColor} 35%, ${secColor} 35%, ${secColor} 65%, ${mainColor} 65%);`;
+  else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, ${mainColor} 40%, ${secColor} 40%, ${secColor} 60%, ${mainColor} 60%);`;
+  else shirtBg = `background: linear-gradient(135deg, ${mainColor} 0%, color-mix(in srgb, ${mainColor} 40%, #111) 100%);`;
+  let body = `<div class="fut-player-body"><div class="fut-player-neck"></div><div class="fut-player-torso"><div class="fut-player-arm left"></div><div class="fut-player-shirt" style="${shirtBg}"><div class="fut-player-collar"></div><span class="fut-player-number">${numero}</span></div><div class="fut-player-arm right"></div></div></div>`;
+  return `<div style="transform: scale(1.15); transform-origin: bottom center; width: 100%; height: 100%; position: absolute; bottom: 0; display:flex; flex-direction:column; align-items:center;">${acHead}${body}</div>`;
 }
 let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
@@ -840,23 +840,23 @@ localStorage.setItem('ev_migrated_v2','true');
 }
 migrarStatsAntiguos();
 function procesarRachaDiaria() {
-    const today = new Date();
-    const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-    if (!userStats.activeDates) userStats.activeDates = [];
-    if (userStats.activeDates instanceof Set) userStats.activeDates = Array.from(userStats.activeDates);
-    const lastLogin = userStats.lastLoginDate;
-    if (lastLogin !== todayStr) {
-        if (lastLogin) {
-            const lastDate = new Date(lastLogin + 'T00:00:00');
-            const currDate = new Date(todayStr + 'T00:00:00');
-            const diffTime = Math.abs(currDate - lastDate);
-            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-            if (diffDays === 1) { userStats.rachaActual = (userStats.rachaActual || 0) + 1; } else { userStats.rachaActual = 1; }
-        } else { userStats.rachaActual = 1; }
-        userStats.lastLoginDate = todayStr;
-        if (!userStats.activeDates.includes(todayStr)) { userStats.activeDates.push(todayStr); }
-        guardarStats();
-    }
+  const today = new Date();
+  const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  if (!userStats.activeDates) userStats.activeDates = [];
+  if (userStats.activeDates instanceof Set) userStats.activeDates = Array.from(userStats.activeDates);
+  const lastLogin = userStats.lastLoginDate;
+  if (lastLogin !== todayStr) {
+    if (lastLogin) {
+      const lastDate = new Date(lastLogin + 'T00:00:00');
+      const currDate = new Date(todayStr + 'T00:00:00');
+      const diffTime = Math.abs(currDate - lastDate);
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays === 1) { userStats.rachaActual = (userStats.rachaActual || 0) + 1; } else { userStats.rachaActual = 1; }
+    } else { userStats.rachaActual = 1; }
+    userStats.lastLoginDate = todayStr;
+    if (!userStats.activeDates.includes(todayStr)) { userStats.activeDates.push(todayStr); }
+    guardarStats();
+  }
 }
 function cargarStats(){
 const id=getUserId();
@@ -1010,216 +1010,216 @@ for(let k in obj){if(k.toLowerCase().includes(cl))return obj[k];}
 return obj[clave]||'';
 }
 const COLORES_CLUBES={"River Plate": "linear-gradient(135deg, #cc0000, #ffffff)",
-            "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
-            "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Independiente": "linear-gradient(135deg, #b30000, #1a1a1a)",
-            "San Lorenzo": "linear-gradient(135deg, #0f2042, #a61c32)",
-            "Huracán": "linear-gradient(135deg, #ffffff, #e60000)",
-            "Estudiantes de La Plata": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
-            "Gimnasia y Esgrima LP": "linear-gradient(135deg, #ffffff, #002060)",
-            "Rosario Central": "linear-gradient(135deg, #002060, #ffcc00)",
-            "Newell's Old Boys": "linear-gradient(135deg, #000000, #cc0000)",
-            "Vélez Sarsfield": "linear-gradient(135deg, #ffffff, #0000ff)",
-            "Lanús": "linear-gradient(135deg, #5c061e, #2e030f)",
-            "Argentinos Juniors": "linear-gradient(135deg, #e60000, #ffffff)",
-            "Belgrano de Córdoba": "linear-gradient(135deg, #5cb8e4, #ffffff)",
-            "Talleres": "linear-gradient(135deg, #002060, #ffffff, #002060)",
-            "Atlético Tucumán": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Defensa y Justicia": "linear-gradient(135deg, #008000, #ffff00)",
-            "Banfield": "linear-gradient(135deg, #006400, #ffffff)",
-            "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
-            "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
-            "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
-            "Deportivo Riestra": "linear-gradient(135deg, #000000, #333333)",
-            "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
-            "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
-            "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-            "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
-            "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
-            "Almagro": "linear-gradient(135deg, #75aadb, #000000, #ffffff)",
-            "Almirante Brown": "linear-gradient(135deg, #ffff00, #000000)",
-            "Atlanta": "linear-gradient(135deg, #002060, #ffcc00)",
-            "Atlético de Rafaela": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Central Norte": "linear-gradient(135deg, #000000, #333333)",
-            "Chacarita Juniors": "linear-gradient(135deg, #ff0000, #000000, #ffffff)",
-            "Chaco For Ever": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ciudad de Bolívar": "linear-gradient(135deg, #75aadb, #004d00)",
-            "Colegiales": "linear-gradient(135deg, #0000ff, #ff0000, #ffff00)",
-            "Colón": "linear-gradient(135deg, #ff0000, #000000)",
-            "Defensores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
-            "Deportivo Madryn": "linear-gradient(135deg, #ffff00, #000000)",
-            "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
-            "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
-            "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
-            "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
-            "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Güemes (SdE)": "linear-gradient(135deg, #0000ff, #ff0000)",
-            "Los Andes": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Mitre (SdE)": "linear-gradient(135deg, #ffff00, #000000)",
-            "Nueva Chicago": "linear-gradient(135deg, #004d00, #000000)",
-            "Patronato": "linear-gradient(135deg, #ff0000, #000000)",
-            "Quilmes": "linear-gradient(135deg, #ffffff, #000066)",
-            "Racing (CBA)": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "San Martín (SJ)": "linear-gradient(135deg, #004d00, #000000)",
-            "San Martín (T)": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "San Miguel": "linear-gradient(135deg, #004d00, #ffffff, #0000ff)",
-            "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
-            "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
+      "Boca Juniors": "linear-gradient(135deg, #003b46, #07575b, #f4b251)",
+      "Racing Club": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "Independiente": "linear-gradient(135deg, #b30000, #1a1a1a)",
+      "San Lorenzo": "linear-gradient(135deg, #0f2042, #a61c32)",
+      "Huracán": "linear-gradient(135deg, #ffffff, #e60000)",
+      "Estudiantes de La Plata": "linear-gradient(135deg, #ff0000, #ffffff, #ff0000)",
+      "Gimnasia y Esgrima LP": "linear-gradient(135deg, #ffffff, #002060)",
+      "Rosario Central": "linear-gradient(135deg, #002060, #ffcc00)",
+      "Newell's Old Boys": "linear-gradient(135deg, #000000, #cc0000)",
+      "Vélez Sarsfield": "linear-gradient(135deg, #ffffff, #0000ff)",
+      "Lanús": "linear-gradient(135deg, #5c061e, #2e030f)",
+      "Argentinos Juniors": "linear-gradient(135deg, #e60000, #ffffff)",
+      "Belgrano de Córdoba": "linear-gradient(135deg, #5cb8e4, #ffffff)",
+      "Talleres": "linear-gradient(135deg, #002060, #ffffff, #002060)",
+      "Atlético Tucumán": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "Defensa y Justicia": "linear-gradient(135deg, #008000, #ffff00)",
+      "Banfield": "linear-gradient(135deg, #006400, #ffffff)",
+      "Unión de Santa Fe": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "Platense": "linear-gradient(135deg, #6b4423, #ffffff)",
+      "Instituto": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "Central Córdoba (SdE)": "linear-gradient(135deg, #000000, #ffffff)",
+      "Sarmiento de Junín": "linear-gradient(135deg, #004d00, #ffffff)",
+      "Barracas Central": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "Tigre": "linear-gradient(135deg, #0000ff, #ff0000)",
+      "Deportivo Riestra": "linear-gradient(135deg, #000000, #333333)",
+      "Independiente Rivadavia": "linear-gradient(135deg, #000040, #ffffff)",
+      "Aldosivi": "linear-gradient(135deg, #008000, #ffff00)",
+      "Estudiantes de Río Cuarto": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "Gimnasia de Mendoza": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+      "Acassuso": "linear-gradient(135deg, #00529f, #ffffff)",
+      "Agropecuario": "linear-gradient(135deg, #004d00, #ffcc00)",
+      "All Boys": "linear-gradient(135deg, #ffffff, #000000)",
+      "Almagro": "linear-gradient(135deg, #75aadb, #000000, #ffffff)",
+      "Almirante Brown": "linear-gradient(135deg, #ffff00, #000000)",
+      "Atlanta": "linear-gradient(135deg, #002060, #ffcc00)",
+      "Atlético de Rafaela": "linear-gradient(135deg, #ffffff, #75aadb)",
+      "Central Norte": "linear-gradient(135deg, #000000, #333333)",
+      "Chacarita Juniors": "linear-gradient(135deg, #ff0000, #000000, #ffffff)",
+      "Chaco For Ever": "linear-gradient(135deg, #000000, #ffffff)",
+      "Ciudad de Bolívar": "linear-gradient(135deg, #75aadb, #004d00)",
+      "Colegiales": "linear-gradient(135deg, #0000ff, #ff0000, #ffff00)",
+      "Colón": "linear-gradient(135deg, #ff0000, #000000)",
+      "Defensores de Belgrano": "linear-gradient(135deg, #ff0000, #000000)",
+      "Deportivo Madryn": "linear-gradient(135deg, #ffff00, #000000)",
+      "Deportivo Maipú": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "Deportivo Morón": "linear-gradient(135deg, #ffffff, #ff0000)",
+      "Estudiantes (BA)": "linear-gradient(135deg, #000000, #ffffff)",
+      "Ferro Carril Oeste": "linear-gradient(135deg, #004d00, #ffffff)",
+      "Gimnasia (J)": "linear-gradient(135deg, #ffffff, #75aadb)",
+      "Gimnasia y Tiro (Salta)": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "Godoy Cruz": "linear-gradient(135deg, #0000ff, #ffffff)",
+      "Güemes (SdE)": "linear-gradient(135deg, #0000ff, #ff0000)",
+      "Los Andes": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "Mitre (SdE)": "linear-gradient(135deg, #ffff00, #000000)",
+      "Nueva Chicago": "linear-gradient(135deg, #004d00, #000000)",
+      "Patronato": "linear-gradient(135deg, #ff0000, #000000)",
+      "Quilmes": "linear-gradient(135deg, #ffffff, #000066)",
+      "Racing (CBA)": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "San Martín (SJ)": "linear-gradient(135deg, #004d00, #000000)",
+      "San Martín (T)": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "San Miguel": "linear-gradient(135deg, #004d00, #ffffff, #0000ff)",
+      "San Telmo": "linear-gradient(135deg, #0000ff, #75aadb)",
+      "Temperley": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "Tristán Suárez": "linear-gradient(135deg, #0000ff, #ffffff)",
 
-            // INGLATERRA - PREMIER LEAGUE
-            "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
-            "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
-            "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
-            "Brentford": "linear-gradient(135deg, #e30613, #ffffff, #fbcc04)",
-            "Brighton & Hove Albion": "linear-gradient(135deg, #0057b8, #ffffff)",
-            "Chelsea": "linear-gradient(135deg, #034694, #ee242c)",
-            "Coventry City": "linear-gradient(135deg, #84bbf0, #ffffff)",
-            "Crystal Palace": "linear-gradient(135deg, #1b458f, #c4122e)",
-            "Everton": "linear-gradient(135deg, #004a97, #ffffff)",
-            "Fulham": "linear-gradient(135deg, #ffffff, #000000)",
-            "Hull City": "linear-gradient(135deg, #ff9f05, #000000)",
-            "Ipswich Town": "linear-gradient(135deg, #0000ff, #ffffff)",
-            "Leeds United": "linear-gradient(135deg, #ffffff, #ffcd00, #003399)",
-            "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
-            "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
-            "Manchester United": "linear-gradient(135deg, #da291c, #000000)",
-            "Newcastle United": "linear-gradient(135deg, #000000, #ffffff)",
-            "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
-            "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
+      // INGLATERRA - PREMIER LEAGUE
+      "Arsenal": "linear-gradient(135deg, #ef0107, #ffffff)",
+      "Aston Villa": "linear-gradient(135deg, #95bfe5, #670e36)",
+      "Bournemouth": "linear-gradient(135deg, #b50e12, #000000)",
+      "Brentford": "linear-gradient(135deg, #e30613, #ffffff, #fbcc04)",
+      "Brighton & Hove Albion": "linear-gradient(135deg, #0057b8, #ffffff)",
+      "Chelsea": "linear-gradient(135deg, #034694, #ee242c)",
+      "Coventry City": "linear-gradient(135deg, #84bbf0, #ffffff)",
+      "Crystal Palace": "linear-gradient(135deg, #1b458f, #c4122e)",
+      "Everton": "linear-gradient(135deg, #004a97, #ffffff)",
+      "Fulham": "linear-gradient(135deg, #ffffff, #000000)",
+      "Hull City": "linear-gradient(135deg, #ff9f05, #000000)",
+      "Ipswich Town": "linear-gradient(135deg, #0000ff, #ffffff)",
+      "Leeds United": "linear-gradient(135deg, #ffffff, #ffcd00, #003399)",
+      "Liverpool": "linear-gradient(135deg, #c8102e, #f6eb61)",
+      "Manchester City": "linear-gradient(135deg, #6cabdd, #ffffff)",
+      "Manchester United": "linear-gradient(135deg, #da291c, #000000)",
+      "Newcastle United": "linear-gradient(135deg, #000000, #ffffff)",
+      "Nottingham Forest": "linear-gradient(135deg, #dd0000, #ffffff)",
+      "Sunderland": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
+      "Tottenham Hotspur": "linear-gradient(135deg, #ffffff, #132257)",
 
-            // ESPAÑA - LA LIGA
-            "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
-            "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
-            "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
-            "Athletic Club": "linear-gradient(135deg, #ee2524, #ffffff, #000000)",
-            "Real Betis": "linear-gradient(135deg, #00954c, #ffffff)",
-            "Valencia CF": "linear-gradient(135deg, #ffffff, #000000, #ff8200)",
-            "Real Sociedad": "linear-gradient(135deg, #0066bb, #ffffff)",
-            "Sevilla FC": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Villarreal CF": "linear-gradient(135deg, #ffdf1b, #005094)",
-            "CA Osasuna": "linear-gradient(135deg, #ab192d, #1a2f54)",
-            "RC Celta de Vigo": "linear-gradient(135deg, #87adde, #ffffff)",
-            "Deportivo Alavés": "linear-gradient(135deg, #00569e, #ffffff)",
-            "Getafe CF": "linear-gradient(135deg, #004bc0, #ffffff)",
-            "RCD Mallorca": "linear-gradient(135deg, #e2001a, #000000)",
-            "UD Las Palmas": "linear-gradient(135deg, #ffe600, #00529f)",
-            "Rayo Vallecano": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Girona FC": "linear-gradient(135deg, #e2001a, #ffffff)",
-            "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
-            "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
+      // ESPAÑA - LA LIGA
+      "Real Madrid": "linear-gradient(135deg, #ffffff, #e5e5e5, #febe10)",
+      "FC Barcelona": "linear-gradient(135deg, #a50044, #004d98)",
+      "Atlético de Madrid": "linear-gradient(135deg, #cb0000, #ffffff, #000040)",
+      "Athletic Club": "linear-gradient(135deg, #ee2524, #ffffff, #000000)",
+      "Real Betis": "linear-gradient(135deg, #00954c, #ffffff)",
+      "Valencia CF": "linear-gradient(135deg, #ffffff, #000000, #ff8200)",
+      "Real Sociedad": "linear-gradient(135deg, #0066bb, #ffffff)",
+      "Sevilla FC": "linear-gradient(135deg, #ffffff, #e2001a)",
+      "Villarreal CF": "linear-gradient(135deg, #ffdf1b, #005094)",
+      "CA Osasuna": "linear-gradient(135deg, #ab192d, #1a2f54)",
+      "RC Celta de Vigo": "linear-gradient(135deg, #87adde, #ffffff)",
+      "Deportivo Alavés": "linear-gradient(135deg, #00569e, #ffffff)",
+      "Getafe CF": "linear-gradient(135deg, #004bc0, #ffffff)",
+      "RCD Mallorca": "linear-gradient(135deg, #e2001a, #000000)",
+      "UD Las Palmas": "linear-gradient(135deg, #ffe600, #00529f)",
+      "Rayo Vallecano": "linear-gradient(135deg, #ffffff, #e2001a)",
+      "Girona FC": "linear-gradient(135deg, #e2001a, #ffffff)",
+      "CD Leganés": "linear-gradient(135deg, #00529f, #ffffff)",
+      "Real Valladolid": "linear-gradient(135deg, #6c2d84, #ffffff)",
+      "RCD Espanyol": "linear-gradient(135deg, #0087cd, #ffffff)",
 
-            // ITALIA - SERIE A
-            "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
-            "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
-            "AS Roma": "linear-gradient(135deg, #8e1a2f, #f0bc42)",
-            "SS Lazio": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Napoli": "linear-gradient(135deg, #12a0da, #ffffff)",
-            "Fiorentina": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Atalanta": "linear-gradient(135deg, #00529f, #000000)",
-            "Bologna": "linear-gradient(135deg, #1a2f54, #ab192d)",
-            "Torino": "linear-gradient(135deg, #8a1538, #ffffff)",
-            "Udinese": "linear-gradient(135deg, #000000, #ffffff)",
-            "Genoa": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Hellas Verona": "linear-gradient(135deg, #0b2c6c, #ffcc00)",
-            "Empoli": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Lecce": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Monza": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Cagliari": "linear-gradient(135deg, #a51c30, #0b2240)",
-            "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
-            "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
-            "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
+      // ITALIA - SERIE A
+      "Juventus": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+      "Inter de Milán": "linear-gradient(135deg, #00529f, #000000)",
+      "AC Milan": "linear-gradient(135deg, #e30613, #000000)",
+      "AS Roma": "linear-gradient(135deg, #8e1a2f, #f0bc42)",
+      "SS Lazio": "linear-gradient(135deg, #87d3f8, #ffffff)",
+      "Napoli": "linear-gradient(135deg, #12a0da, #ffffff)",
+      "Fiorentina": "linear-gradient(135deg, #4c2384, #ffffff)",
+      "Atalanta": "linear-gradient(135deg, #00529f, #000000)",
+      "Bologna": "linear-gradient(135deg, #1a2f54, #ab192d)",
+      "Torino": "linear-gradient(135deg, #8a1538, #ffffff)",
+      "Udinese": "linear-gradient(135deg, #000000, #ffffff)",
+      "Genoa": "linear-gradient(135deg, #a51c30, #0b2240)",
+      "Hellas Verona": "linear-gradient(135deg, #0b2c6c, #ffcc00)",
+      "Empoli": "linear-gradient(135deg, #00529f, #ffffff)",
+      "Lecce": "linear-gradient(135deg, #ffcc00, #e30613)",
+      "Monza": "linear-gradient(135deg, #e30613, #ffffff)",
+      "Cagliari": "linear-gradient(135deg, #a51c30, #0b2240)",
+      "Parma": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
+      "Como 1907": "linear-gradient(135deg, #1b458f, #ffffff)",
+      "Venezia FC": "linear-gradient(135deg, #113e37, #df6b26, #000000)",
 
-            // FRANCIA - LIGUE 1
-            "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
-            "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
-            "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
-            "Lille": "linear-gradient(135deg, #e30613, #1b458f, #ffffff)",
-            "Monaco": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lens": "linear-gradient(135deg, #ffcc00, #e30613)",
-            "Nice": "linear-gradient(135deg, #e30613, #000000)",
-            "Rennes": "linear-gradient(135deg, #e30613, #000000)",
-            "Strasbourg": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Toulouse": "linear-gradient(135deg, #4c2384, #ffffff)",
-            "Le Havre": "linear-gradient(135deg, #204060, #87d3f8)",
-            "Angers": "linear-gradient(135deg, #000000, #ffffff)",
-            "Auxerre": "linear-gradient(135deg, #ffffff, #00529f)",
-            "Brest": "linear-gradient(135deg, #e30613, #ffffff)",
-            "Lorient": "linear-gradient(135deg, #ff6600, #ffffff, #004d00)",
-            "Le Mans": "linear-gradient(135deg, #ff6600, #ff0000)",
-            "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
-            "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
+      // FRANCIA - LIGUE 1
+      "Paris Saint-Germain": "linear-gradient(135deg, #004170, #e30613, #ffffff)",
+      "Marseille": "linear-gradient(135deg, #87d3f8, #ffffff)",
+      "Lyon": "linear-gradient(135deg, #ffffff, #1b458f, #e30613)",
+      "Lille": "linear-gradient(135deg, #e30613, #1b458f, #ffffff)",
+      "Monaco": "linear-gradient(135deg, #e30613, #ffffff)",
+      "Lens": "linear-gradient(135deg, #ffcc00, #e30613)",
+      "Nice": "linear-gradient(135deg, #e30613, #000000)",
+      "Rennes": "linear-gradient(135deg, #e30613, #000000)",
+      "Strasbourg": "linear-gradient(135deg, #00529f, #ffffff)",
+      "Toulouse": "linear-gradient(135deg, #4c2384, #ffffff)",
+      "Le Havre": "linear-gradient(135deg, #204060, #87d3f8)",
+      "Angers": "linear-gradient(135deg, #000000, #ffffff)",
+      "Auxerre": "linear-gradient(135deg, #ffffff, #00529f)",
+      "Brest": "linear-gradient(135deg, #e30613, #ffffff)",
+      "Lorient": "linear-gradient(135deg, #ff6600, #ffffff, #004d00)",
+      "Le Mans": "linear-gradient(135deg, #ff6600, #ff0000)",
+      "Paris FC": "linear-gradient(135deg, #002060, #87d3f8)",
+      "Troyes": "linear-gradient(135deg, #00529f, #ffffff)",
 
-            // ALEMANIA - BUNDESLIGA
-            "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
-            "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
-            "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
-            "RB Leipzig": "linear-gradient(135deg, #ffffff, #dd013f, #0c2340)",
-            "VfB Stuttgart": "linear-gradient(135deg, #ffffff, #e30613, #ffffff)",
-            "Eintracht Frankfurt": "linear-gradient(135deg, #e30613, #000000, #ffffff)",
-            "SC Freiburg": "linear-gradient(135deg, #e30613, #ffffff)",
-            "TSG Hoffenheim": "linear-gradient(135deg, #00529f, #ffffff)",
-            "Werder Bremen": "linear-gradient(135deg, #008f5d, #ffffff)",
-            "Borussia Mönchengladbach": "linear-gradient(135deg, #ffffff, #000000, #00a651)",
-            "Mainz 05": "linear-gradient(135deg, #e30613, #ffffff)",
-            "FC Augsburg": "linear-gradient(135deg, #ffffff, #ba9b65, #008f5d)",
-            "Union Berlin": "linear-gradient(135deg, #e30613, #ffffff)",
-            "1. FC Köln": "linear-gradient(135deg, #ff0000, #ffffff)",
-            "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
-            "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
-            "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
-            "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
+      // ALEMANIA - BUNDESLIGA
+      "Bayern Munich": "linear-gradient(135deg, #dc052d, #0066b2, #ffffff)",
+      "Borussia Dortmund": "linear-gradient(135deg, #fde100, #000000)",
+      "Bayer Leverkusen": "linear-gradient(135deg, #e30613, #000000)",
+      "RB Leipzig": "linear-gradient(135deg, #ffffff, #dd013f, #0c2340)",
+      "VfB Stuttgart": "linear-gradient(135deg, #ffffff, #e30613, #ffffff)",
+      "Eintracht Frankfurt": "linear-gradient(135deg, #e30613, #000000, #ffffff)",
+      "SC Freiburg": "linear-gradient(135deg, #e30613, #ffffff)",
+      "TSG Hoffenheim": "linear-gradient(135deg, #00529f, #ffffff)",
+      "Werder Bremen": "linear-gradient(135deg, #008f5d, #ffffff)",
+      "Borussia Mönchengladbach": "linear-gradient(135deg, #ffffff, #000000, #00a651)",
+      "Mainz 05": "linear-gradient(135deg, #e30613, #ffffff)",
+      "FC Augsburg": "linear-gradient(135deg, #ffffff, #ba9b65, #008f5d)",
+      "Union Berlin": "linear-gradient(135deg, #e30613, #ffffff)",
+      "1. FC Köln": "linear-gradient(135deg, #ff0000, #ffffff)",
+      "Hamburger SV": "linear-gradient(135deg, #00529f, #ffffff, #ff0000)",
+      "Schalke 04": "linear-gradient(135deg, #004da3, #ffffff)",
+      "SC Paderborn": "linear-gradient(135deg, #00529f, #ffffff, #000000)",
+      "SV Elversberg": "linear-gradient(135deg, #ffffff, #000000, #ffcc00)",
 
-            // BRASIL - BRASILEIRAO
-            "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
-            "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
-            "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
-            "Corinthians": "linear-gradient(135deg, #ffffff, #d5d5d5, #000000)",
-            "Santos": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
-            "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
-            "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
-            "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Atlético Mineire": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
-            "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
-            "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
-            "Athletico Paranaense": "linear-gradient(135deg, #cc0000, #000000)",
-            "Bahía": "linear-gradient(135deg, #0033a0, #ffffff, #e20e0e)",
-            "Bragantino": "linear-gradient(135deg, #ffffff, #e2001a)",
-            "Coritiba": "linear-gradient(135deg, #006437, #ffffff, #006437)",
-            "Chapecoense": "linear-gradient(135deg, #006437, #ffffff)",
-            "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
-            "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
-            "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
+      // BRASIL - BRASILEIRAO
+      "Flamengo": "linear-gradient(135deg, #111111, #c8102e)",
+      "Palmeiras": "linear-gradient(135deg, #006437, #ffffff, #006437)",
+      "São Paulo": "linear-gradient(135deg, #ff0000, #ffffff, #000000)",
+      "Corinthians": "linear-gradient(135deg, #ffffff, #d5d5d5, #000000)",
+      "Santos": "linear-gradient(135deg, #ffffff, #000000, #ffffff)",
+      "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
+      "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
+      "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+      "Atlético Mineire": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+      "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
+      "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
+      "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
+      "Athletico Paranaense": "linear-gradient(135deg, #cc0000, #000000)",
+      "Bahía": "linear-gradient(135deg, #0033a0, #ffffff, #e20e0e)",
+      "Bragantino": "linear-gradient(135deg, #ffffff, #e2001a)",
+      "Coritiba": "linear-gradient(135deg, #006437, #ffffff, #006437)",
+      "Chapecoense": "linear-gradient(135deg, #006437, #ffffff)",
+      "Mirassol": "linear-gradient(135deg, #ffea00, #006437)",
+      "Vitória": "linear-gradient(135deg, #e20e0e, #000000)",
+      "Remo": "linear-gradient(135deg, #001c44, #ffffff)",
 
-            // CHILE - PRIMERA DIVISIÓN
-            "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
-            "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
-            "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
-            "Everton CD": "linear-gradient(135deg, #0033a0, #ffea00, #0033a0)",
-            "Huachipato": "linear-gradient(135deg, #0033a0, #000000, #0055ff)",
-            "Deportes Limache": "linear-gradient(135deg, #ff3300, #000000, #0033a0)",
-            "Palestino": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
-            "Ñublense": "linear-gradient(135deg, #e20e0e, #ffffff)",
-            "Universidad de Chile": "linear-gradient(135deg, #002244, #0033a0, #e20e0e)",
-            "O'Higgins": "linear-gradient(135deg, #75aadb, #ffffff)",
-            "Universidad de Concepción": "linear-gradient(135deg, #ffea00, #0033a0)",
-            "La Serena": "linear-gradient(135deg, #83142c, #ffffff)",
-            "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
-            "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
-            "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
-            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"};
+      // CHILE - PRIMERA DIVISIÓN
+      "Colo Colo": "linear-gradient(135deg, #ffffff, #b5b5b5, #000000)",
+      "Universidad Católica": "linear-gradient(135deg, #ffffff, #0033a0, #ffffff)",
+      "Coquimbo Unido": "linear-gradient(135deg, #ffea00, #000000)",
+      "Everton CD": "linear-gradient(135deg, #0033a0, #ffea00, #0033a0)",
+      "Huachipato": "linear-gradient(135deg, #0033a0, #000000, #0055ff)",
+      "Deportes Limache": "linear-gradient(135deg, #ff3300, #000000, #0033a0)",
+      "Palestino": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
+      "Ñublense": "linear-gradient(135deg, #e20e0e, #ffffff)",
+      "Universidad de Chile": "linear-gradient(135deg, #002244, #0033a0, #e20e0e)",
+      "O'Higgins": "linear-gradient(135deg, #75aadb, #ffffff)",
+      "Universidad de Concepción": "linear-gradient(135deg, #ffea00, #0033a0)",
+      "La Serena": "linear-gradient(135deg, #83142c, #ffffff)",
+      "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
+      "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
+      "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
+      "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"};
 const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)","estados unidos":"linear-gradient(135deg,#002868 0%,#ffffff 50%,#bf0a30 100%)","usa":"linear-gradient(135deg,#002868 0%,#ffffff 50%,#bf0a30 100%)","mexico":"linear-gradient(135deg,#006847 0%,#ffffff 50%,#ce1126 100%)","méxico":"linear-gradient(135deg,#006847 0%,#ffffff 50%,#ce1126 100%)","canada":"linear-gradient(135deg,#d52b1e 0%,#ffffff 50%,#d52b1e 100%)","canadá":"linear-gradient(135deg,#d52b1e 0%,#ffffff 50%,#d52b1e 100%)"};
 function obtenerFondoClub(club,pais){
 if(!club&&!pais)return 'linear-gradient(135deg,#0f1419,#080c10)';
@@ -1350,7 +1350,8 @@ const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d 
 container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);"><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2><p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p><div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>${histHTML}<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">${guardarBtn}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
 }
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
-function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
+function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
 async function abrirModalRanking(){
 const body=document.getElementById('ranking-modal-body');body.innerHTML='<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';document.getElementById('ranking-modal').style.display='flex';
@@ -1403,49 +1404,139 @@ if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar')
 function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=idx;renderJuegoOrden();}else if(orderSelectedIdx===idx){orderSelectedIdx=null;renderJuegoOrden();}else{const t=orderList[orderSelectedIdx];orderList[orderSelectedIdx]=orderList[idx];orderList[idx]=t;orderSelectedIdx=null;renderJuegoOrden();}}
 function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
+
 function calcularLogros(){
-const s=userStats;const logros=[];
-function addTierLogro(id,icon,baseName,currentVal,step,unit,rarity='common'){
-const val=currentVal||0;const tierActual=Math.floor(val/step);const pct=Math.round(((val%step)/step)*100);
-if(tierActual>0){logros.push({id:`${id}_${tierActual}`,icon,name:`${baseName} ${tierActual}`,rarity,req:`${val.toLocaleString('es-AR')} de ${(tierActual*step).toLocaleString('es-AR')}${unit}`,unlocked:true,pct:100,pctLabel:''});}
-const siguiente=tierActual+1;const progActual=val-(tierActual*step);
-logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
+    const s=userStats;const logros=[];
+    
+    function addInfiniteLogro(id,icon,baseName,currentVal,step,unit,rarities){
+        const val=currentVal||0;
+        const tierActual=Math.floor(val/step);
+        const nextTarget=(tierActual+1)*step;
+        
+        // Calculamos el progreso relativo al nivel actual (ej: de 5 a 10, si tenés 6, es 20%)
+        const progresoEnNivel = val - (tierActual * step);
+        const pct = Math.floor((progresoEnNivel / step) * 100);
+        
+        const isBaseUnlocked=tierActual>0;
+        const rarity=rarities[Math.min(tierActual,rarities.length-1)];
+        
+        logros.push({
+            id:id,
+            icon:icon,
+            name:`${baseName} ${tierActual+1}`, // Nombre apunta siempre a la meta actual
+            rarity:rarity,
+            req:`Meta: ${nextTarget.toLocaleString('es-AR')}${unit}`,
+            unlocked:isBaseUnlocked, // Si ya pasó el Lvl 1, se considera desbloqueado (brilla)
+            enProgreso:val>0, // Siempre en progreso si el usuario ya arrancó
+            bloqueado:val===0,
+            pct:pct,
+            pctLabel:`${val.toLocaleString('es-AR')}/${nextTarget.toLocaleString('es-AR')}`,
+            nivelAlcanzado: tierActual // Pasamos el nivel para el diseño visual
+        });
+    }
+    
+    const rCommon=['common','rare','epic'];
+    addInfiniteLogro('voto','⭐','Catador',s.votosRealizados,5,' califs',rCommon);
+    addInfiniteLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias',rCommon);
+    addInfiniteLogro('guessr','✈️','Piloto',s.partidasJugadas,5,' partidas',rCommon);
+    addInfiniteLogro('liga','🗂️','Explorador',s.ligasExploradas.size,2,' ligas',rCommon);
+    addInfiniteLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos',rCommon);
+    addInfiniteLogro('racha','🔥','Constante',s.rachaActual||1,7,' días',['rare','epic','epic']);
+    addInfiniteLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts',['epic','epic','epic']);
+    addInfiniteLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP',['epic','epic','epic']);
+    
+    function addSingleLogro(id,icon,name,rarity,req,condition,progressVal,targetVal){
+        const isUnlocked=!!condition;
+        const val=progressVal||0;
+        const isProgress=!isUnlocked && val>0;
+        const isBlocked=!isUnlocked && val===0;
+        let pct=0; let pctLabel='';
+        if(isUnlocked){pct=100;pctLabel='¡Completado!';}
+        else if(targetVal){pct=Math.min(100,Math.floor((val/targetVal)*100));pctLabel=`${val}/${targetVal}`;}
+        
+        logros.push({id,icon,name,rarity,req,unlocked:isUnlocked,enProgreso:isProgress,bloqueado:isBlocked,pct,pctLabel,nivelAlcanzado:isUnlocked?1:0});
+    }
+    
+    // Logros únicos que solo se completan una vez
+    addSingleLogro('bienvenido','👋','Primer Despegue','common','Abrí la app 1 vez',s.sesionesTotal>=1,s.sesionesTotal,1);
+    addSingleLogro('nick','🪪','Identidad','common','Personalizá tu apodo',!!getPref('ev_custom_nick',''),getPref('ev_custom_nick','')?1:0,1);
+    addSingleLogro('localista','📍','GPS Humano','rare','Adiviná a < 5 km',s.medallaLocalista,s.medallaLocalista?1:0,1);
+    addSingleLogro('unKm','🔬','Ojo de Águila','epic','Adiviná a < 1 km',s.guessrUnKm,s.guessrUnKm?1:0,1);
+    addSingleLogro('perfecto','💎','Perfeccionista','epic','Todo Guessr >4000 pts',s.guessrPerfecto,s.guessrPerfecto?1:0,1);
+    addSingleLogro('ordenPerfecto','🃏','Estratega','epic','Orden perfecto sin fallar',s.ordenSinFallar,s.ordenSinFallar?1:0,1);
+    
+    return logros;
 }
-addTierLogro('voto','⭐','Catador',s.votosRealizados,5,' califs','common');
-addTierLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias','common');
-addTierLogro('guessr','✈️','Piloto',s.partidasJugadas,5,' partidas','common');
-addTierLogro('liga','🗂️','Explorador',s.ligasExploradas.size,2,' ligas','common');
-addTierLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
-addTierLogro('racha','🔥','Constante',s.rachaActual||1,7,' días','rare');
-addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
-addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
-logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
-logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
-logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
-logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
-logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
-return logros;
-}
+
 function filtrarLogros(tipo){logrosTabActual=tipo;document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));renderizarGridLogros();}
+
 function renderizarGridLogros(){
-const grid=document.getElementById('logros-grid-v2');if(!grid)return;
-const logros=calcularLogros();let filtrados;
-if(logrosTabActual==='todos')filtrados=logros;
-else if(logrosTabActual==='desbloqueados')filtrados=logros.filter(l=>l.unlocked);
-else if(logrosTabActual==='progreso')filtrados=logros.filter(l=>!l.unlocked&&l.pct>0);
-else filtrados=logros.filter(l=>!l.unlocked);
-const total=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
-const counterEl=document.getElementById('logros-counter');if(counterEl)counterEl.textContent=`${desbloqueados}/${total}`;
-if(!filtrados.length){grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${logrosTabActual==='desbloqueados'?'Aún no desbloqueaste logros. ¡A jugar!':logrosTabActual==='progreso'?'No tenés logros en progreso.':'¡Todos tus logros están desbloqueados!'}</span></div>`;return;}
-const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
-grid.innerHTML=filtrados.map(l=>{
-const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
-const progressBar=(l.pct!==undefined&&!l.unlocked&&l.pct>0)?`<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`:'';
-const unlockBadge=l.unlocked?`<div class="logro-unlock-badge">✓</div>`:'';const statusClass=l.unlocked?'unlocked':(l.pct>0?'in-progress':'locked');
-return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
-}).join('');
+    const grid=document.getElementById('logros-grid-v2');if(!grid)return;
+    const logros=calcularLogros();let filtrados;
+    
+    if(logrosTabActual==='todos')filtrados=logros;
+    else if(logrosTabActual==='desbloqueados')filtrados=logros.filter(l=>l.unlocked);
+    else if(logrosTabActual==='progreso')filtrados=logros.filter(l=>l.enProgreso);
+    else filtrados=logros.filter(l=>l.bloqueado);
+    
+    const total=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
+    const counterEl=document.getElementById('logros-counter');if(counterEl)counterEl.textContent=`${desbloqueados}/${total}`;
+    
+    if(!filtrados.length){
+        let msg = 'Sin logros aquí.';
+        if(logrosTabActual==='desbloqueados') msg = 'Aún no desbloqueaste logros. ¡A jugar!';
+        else if(logrosTabActual==='progreso') msg = 'No tenés logros en progreso.';
+        else if(logrosTabActual==='bloqueados') msg = '¡Ya empezaste todos los logros!';
+        grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${msg}</span></div>`;
+        return;
+    }
+    
+    const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
+    grid.innerHTML=filtrados.map(l=>{
+        const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
+        const progressBar = `<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`;
+        const statusClass=l.unlocked?'unlocked':(l.enProgreso?'in-progress':'locked');
+        
+        // Distinguir entre logros únicos (✓) e infinitos (Lvl X)
+        const isUnico = l.id === 'bienvenido' || l.id === 'nick' || l.id === 'localista' || l.id === 'unKm' || l.id === 'perfecto' || l.id === 'ordenPerfecto';
+        const badgeContent = (l.nivelAlcanzado > 0 && !isUnico) ? `Lvl ${l.nivelAlcanzado}` : '✓';
+            
+        const unlockBadge=l.unlocked?`<div class="logro-unlock-badge" style="width:auto;padding:0 6px;">${badgeContent}</div>`:'';
+        
+        return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
+    }).join('');
 }
+    const grid=document.getElementById('logros-grid-v2');if(!grid)return;
+    const logros=calcularLogros();let filtrados;
+    
+    if(logrosTabActual==='todos')filtrados=logros;
+    else if(logrosTabActual==='desbloqueados')filtrados=logros.filter(l=>l.unlocked);
+    else if(logrosTabActual==='progreso')filtrados=logros.filter(l=>l.enProgreso);
+    else filtrados=logros.filter(l=>l.bloqueado);
+    
+    const total=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
+    const counterEl=document.getElementById('logros-counter');if(counterEl)counterEl.textContent=`${desbloqueados}/${total}`;
+    
+    if(!filtrados.length){
+        let msg = 'Sin logros aquí.';
+        if(logrosTabActual==='desbloqueados') msg = 'Aún no desbloqueaste logros. ¡A jugar!';
+        else if(logrosTabActual==='progreso') msg = 'No tenés logros en progreso.';
+        else if(logrosTabActual==='bloqueados') msg = '¡Ya empezaste todos los logros!';
+        grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${msg}</span></div>`;
+        return;
+    }
+    
+    const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
+    grid.innerHTML=filtrados.map(l=>{
+        const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
+        const progressBar = `<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`;
+        const statusClass=l.unlocked?'unlocked':(l.enProgreso?'in-progress':'locked');
+        const unlockBadge=l.unlocked?`<div class="logro-unlock-badge" style="width:auto;padding:0 4px;">✓</div>`:'';
+        
+        return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
+    }).join('');
+}
+
 function previsualizarTema(tema){const card=document.getElementById('fut-card-main');if(!card)return;card.className='fut-card '+tema;document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));}
 window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');
 if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<i class="ph-bold ph-caret-up"></i> Ocultar personalización';btn.classList.add('primary');btn.classList.remove('secondary');}
