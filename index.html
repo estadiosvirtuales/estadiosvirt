@@ -252,10 +252,12 @@ body>*{position:relative;z-index:1}
 /* ─── PERFIL SPLIT LAYOUT ─── */
 .split-profile-layout{display:flex;flex-direction:column;gap:28px;width:100%}
 @media(min-width:769px){
-  .split-profile-layout{flex-direction:row;align-items:stretch}
-  .left-fut-column{width:38%;display:flex;flex-direction:column;justify-content:center;align-items:center;border-right:2px dashed var(--border-subtle);padding-right:25px}
-  .right-dashboard-column{width:62%;display:flex;flex-direction:column;justify-content:space-between}
+  .split-profile-layout{flex-direction:row;align-items:flex-start}
+  .left-fut-column{width:38%;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;border-right:2px dashed var(--border-subtle);padding-right:25px;padding-top:10px;}
+  .right-dashboard-column{width:62%;display:flex;flex-direction:column;justify-content:flex-start}
 }
+#customization-panel-wrapper { justify-content: flex-start; }
+#btn-toggle-custom { margin-left: 0; }
 
 /* ─── FUT CARD Y AVATAR ULTRA REALISTA ─── */
 .fut-card{position:relative;width:250px;height:380px;background-size:cover;border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;color:#fff;font-family:'Arial Black',Gadget,sans-serif;box-shadow:var(--shadow-strong);overflow:hidden;user-select:none;border:2px solid rgba(255,255,255,.15);transition:all .4s cubic-bezier(.175,.885,.32,1.275); flex-shrink:0;}
@@ -271,6 +273,12 @@ body>*{position:relative;z-index:1}
 .fut-card.arg{background:linear-gradient(135deg,#74acdf 0%,#ffffff 50%,#74acdf 100%);color:#000;border-color:#74acdf;}
 .fut-card.arg .fut-name{border-bottom-color:rgba(0,0,0,.3);}
 .fut-card.arg .fut-stat-label{opacity:.8;}
+.fut-card.bra{background:linear-gradient(135deg,#009c3b 0%,#ffdf00 45%,#002776 100%);color:#fff;border-color:#009c3b;}
+.fut-card.esp{background:linear-gradient(135deg,#aa151b 0%,#f1bf00 45%,#aa151b 100%);color:#000;border-color:#f1bf00;}
+.fut-card.ita{background:linear-gradient(135deg,#009246 0%,#ffffff 50%,#ce2b37 100%);color:#000;border-color:#009246;}
+.fut-card.fra{background:linear-gradient(135deg,#002395 0%,#ffffff 50%,#ed2939 100%);color:#000;border-color:#002395;}
+.fut-card.ger{background:linear-gradient(135deg,#000000 0%,#dd0000 50%,#ffce00 100%);color:#fff;border-color:#dd0000;}
+
 .fut-card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%,rgba(255,255,255,.04) 100%);pointer-events:none}
 .fut-top{display:flex;width:100%;height:55%;margin-top:15px}
 .fut-badge-meta{width:30%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
@@ -303,6 +311,7 @@ body>*{position:relative;z-index:1}
   filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
   transition: transform 0.3s cubic-bezier(.175,.885,.32,1.275);
   user-select: none;
+  color: #fff;
 }
 .fut-player-body {
   position: absolute;
@@ -418,7 +427,7 @@ body>*{position:relative;z-index:1}
 .emoji-cat-btn:hover:not(.active){background:var(--surface-hover);color:var(--text-main);}
 
 .avatar-grid-v2{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px;min-height:50px;transition:all .2s;}
-.avatar-opt{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;background:var(--bg-color);border:2px solid var(--border-subtle);transition:all .18s cubic-bezier(.175,.885,.32,1.275);}
+.avatar-opt{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;background:var(--bg-color);border:2px solid var(--border-subtle);transition:all .18s cubic-bezier(.175,.885,.32,1.275);color:var(--text-main);}
 .avatar-opt:hover{transform:scale(1.18) translateY(-2px);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 4px 12px var(--accent-glow);}
 .avatar-opt.selected{border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 0 0 3px var(--accent-glow);transform:scale(1.1);}
 
@@ -428,6 +437,7 @@ body>*{position:relative;z-index:1}
 .theme-dot:hover{border-color:rgba(255,255,255,.5);transform:scale(1.08);}
 .theme-dot.active{border-color:var(--accent-color);box-shadow:0 0 12px var(--accent-glow);transform:scale(1.1);}
 .theme-dot::after{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%);pointer-events:none;}
+
 .td-auto{background:linear-gradient(135deg,#eab308 0%,#16a34a 50%,#6d28d9 100%);}
 .td-bronze{background:linear-gradient(135deg,#a855f7,#3b0764);}
 .td-silver{background:linear-gradient(135deg,#9ca3af,#1f2937);}
@@ -437,6 +447,12 @@ body>*{position:relative;z-index:1}
 .td-neon{background:linear-gradient(135deg,#ff007f,#7928ca,#4338ca);}
 .td-retro{background:linear-gradient(135deg,#f59e0b,#b45309);}
 .td-arg{background:linear-gradient(180deg,#74acdf 33%,#fff 33%,#fff 66%,#74acdf 66%);}
+.td-bra{background:linear-gradient(135deg,#009c3b,#ffdf00,#002776);}
+.td-esp{background:linear-gradient(135deg,#aa151b,#f1bf00,#aa151b);}
+.td-ita{background:linear-gradient(135deg,#009246,#fff,#ce2b37);}
+.td-fra{background:linear-gradient(135deg,#002395,#fff,#ed2939);}
+.td-ger{background:linear-gradient(135deg,#000,#dd0000,#ffce00);}
+
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px;}
 
 .avatar-divider{height:1px;background:var(--border-strong);margin:14px 0;}
@@ -459,10 +475,10 @@ body>*{position:relative;z-index:1}
   transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 #customization-panel-wrapper.open {
-  max-height: 700px;
+  max-height: 750px;
   opacity: 1;
 }
 #btn-toggle-custom {
@@ -485,13 +501,13 @@ body>*{position:relative;z-index:1}
 .xp-bar-big{height:10px;border-radius:20px;background:var(--border-subtle);overflow:hidden;margin-bottom:6px}
 .xp-bar-big-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent-color),var(--accent-hover));box-shadow:0 0 10px var(--accent-glow);transition:width 1.5s cubic-bezier(.4,0,.2,1)}
 .xp-milestones{display:flex;justify-content:space-between;font-size:.68rem;color:var(--text-muted)}
-.geoguessr-dash-box{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:18px;margin-bottom:16px}
-.dash-header-inline{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:2px dashed var(--border-subtle)}
+.geoguessr-dash-box{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px 18px;margin-bottom:14px}
+.dash-header-inline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:2px dashed var(--border-subtle)}
 .dash-title-premium{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text-main);display:flex;align-items:center;gap:8px}
 .streak-fire-badge{background:var(--bg-color);color:var(--accent-color);padding:6px 12px;border-radius:20px;font-size:.78rem;font-weight:800;border:2px solid var(--border-strong);display:flex;align-items:center;gap:5px}
-.calendar-matrix{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;margin-top:10px}
-.calendar-day-label{font-size:.62rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;padding-bottom:4px}
-.calendar-cell{font-size:.78rem;padding:7px 0;background:var(--bg-color);border-radius:7px;color:var(--text-main);font-weight:700;border:2px solid var(--border-subtle);transition:all .2s}
+.calendar-matrix{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;margin-top:6px}
+.calendar-day-label{font-size:.55rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;padding-bottom:2px}
+.calendar-cell{font-size:.7rem;padding:4px 0;background:var(--bg-color);border-radius:5px;color:var(--text-main);font-weight:700;border:2px solid var(--border-subtle);transition:all .2s}
 .calendar-cell.past-done{color:var(--text-muted);opacity:.4;border-color:transparent;background:transparent}
 .calendar-cell.current-active{color:#000;background:var(--accent-color);border-color:var(--accent-color);box-shadow:0 4px 12px var(--accent-glow);transform:scale(1.1)}
 
@@ -502,7 +518,7 @@ body>*{position:relative;z-index:1}
 .logro-tab-btn:hover:not(.active){background:var(--surface-hover);color:var(--text-main);}
 
 /* Grid de logros */
-.logros-grid-v2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:310px;overflow-y:auto;padding:2px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;}
+.logros-grid-v2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:480px;overflow-y:auto;padding:2px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;}
 .logro-card-v2{display:flex;flex-direction:column;align-items:center;background:var(--bg-color);padding:12px 6px 10px;border-radius:14px;border:2px solid var(--border-subtle);transition:all .3s cubic-bezier(.175,.885,.32,1.275);cursor:default;position:relative;overflow:hidden;text-align:center;}
 /* Estado: desbloqueado */
 .logro-card-v2.unlocked{border-color:var(--accent-color);background:linear-gradient(135deg,rgba(0,230,118,.07) 0%,var(--bg-color) 70%);}
@@ -890,13 +906,13 @@ const NIVELES=(function(){
 })();
 
 /* ══ EMOJIS POR CATEGORÍA ══ */
-const EMOJI_CATS_DATA={
-  '👤 Personas':['👤','👦','👧','👨','👩','🧔','👱‍♂️','👱‍♀️','👴','👵','🥷'],
-  '⚽ Fútbol':['⚽','🏟️','🥅','🎽','🏆','🥇','🥈','🎯','🎪','🃏','🎭'],
-  '🦁 Animales':['🦁','🐯','🦊','🦅','🐺','🦋','🐉','🦄','🐻','🦀','🦈'],
-  '⭐ Estrellas':['⭐','🌟','🔥','⚡','💎','🚀','🌍','🌊','⛰️','🎸','🎩']
+const AVATAR_CATS_DATA={
+  '👤 Humanos':['<i class="ph-duotone ph-user"></i>','<i class="ph-duotone ph-user-focus"></i>','<i class="ph-duotone ph-user-gear"></i>','<i class="ph-duotone ph-user-circle"></i>','<i class="ph-duotone ph-detective"></i>','<i class="ph-duotone ph-ninja"></i>'],
+  '👾 Criaturas':['<i class="ph-duotone ph-alien"></i>','<i class="ph-duotone ph-robot"></i>','<i class="ph-duotone ph-skull"></i>','<i class="ph-duotone ph-ghost"></i>','<i class="ph-duotone ph-mask-happy"></i>','<i class="ph-duotone ph-smiley-x-eyes"></i>'],
+  '🦁 Animales':['<i class="ph-duotone ph-cat"></i>','<i class="ph-duotone ph-dog"></i>','<i class="ph-duotone ph-bird"></i>','<i class="ph-duotone ph-fish"></i>','<i class="ph-duotone ph-rabbit"></i>','<i class="ph-duotone ph-tortoise"></i>'],
+  '⚽ Fútbol':['<i class="ph-duotone ph-soccer-ball"></i>','<i class="ph-duotone ph-trophy"></i>','<i class="ph-duotone ph-medal"></i>','<i class="ph-duotone ph-t-shirt"></i>','<i class="ph-duotone ph-whistle"></i>','<i class="ph-duotone ph-flag"></i>']
 };
-let emojiCatActual='👤 Personas';
+let avatarCatActual='👤 Humanos';
 let logrosTabActual='todos';
 
 /* ══ STORAGE ══ */
@@ -1058,9 +1074,11 @@ function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if
 
 function renderizarBotonLogin(){
   const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-  const avatarEmoji=getPref('ev_avatar_emoji','👤');const userPos=getPref('ev_user_pos','DT');
+  let avatarEmoji=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
+  if(!avatarEmoji.includes('<i class=')) avatarEmoji='<i class="ph-duotone ph-user"></i>';
+  const userPos=getPref('ev_user_pos','DT');
   if(u){
-    let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:#1a2a1a;box-shadow:0 0 8px var(--accent-glow);">${avatarEmoji}</div>`;
+    let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:#1a2a1a;box-shadow:0 0 8px var(--accent-glow); color:#fff;">${avatarEmoji}</div>`;
     const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
     container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${userPos}</div></div>${avatarHTML}</div>`;
     actualizarHeaderNivel();
@@ -1329,7 +1347,7 @@ function calcularLogros(){
 
   logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
   logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-  logros.push({id:'avatar',icon:'🎨',name:'Estilo Propio',rarity:'rare',req:'Cambiá tu avatar',unlocked:!!(getPref('ev_avatar_emoji','')&&getPref('ev_avatar_emoji','')!=='👤'),pct:0,pctLabel:''});
+  logros.push({id:'avatar',icon:'🎨',name:'Estilo Propio',rarity:'rare',req:'Cambiá tu avatar',unlocked:!!(getPref('ev_avatar_emoji','')&&getPref('ev_avatar_emoji','')!=='<i class="ph-duotone ph-user"></i>'),pct:0,pctLabel:''});
   logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
   logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
   logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
@@ -1379,16 +1397,17 @@ function previsualizarTema(tema){
 }
 
 function cambiarEmojiCat(cat){
-  emojiCatActual=cat;
+  avatarCatActual=cat;
   document.querySelectorAll('.emoji-cat-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
   const grid=document.getElementById('avatar-grid-v2');if(!grid)return;
-  const saved=getPref('ev_avatar_emoji','👤');
-  grid.innerHTML=EMOJI_CATS_DATA[cat].map(em=>`<div class="avatar-opt${em===saved?' selected':''}" onclick="seleccionarAvatarEmoji(this,'${em}')">${em}</div>`).join('');
+  let saved=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
+  if(!saved.includes('<i class=')) saved='<i class="ph-duotone ph-user"></i>';
+  grid.innerHTML=AVATAR_CATS_DATA[cat].map(em=>`<div class="avatar-opt${em===saved?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
 }
 
-function seleccionarAvatarEmoji(el,emoji){
+function seleccionarAvatarEmoji(el){
   document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
-  const disp=document.getElementById('fut-avatar-emoji-display');if(disp)disp.textContent=emoji;
+  const disp=document.getElementById('fut-avatar-emoji-display');if(disp)disp.innerHTML=el.innerHTML;
 }
 
 window.toggleCustomization = function() {
@@ -1409,7 +1428,7 @@ window.toggleCustomization = function() {
 
 function guardarPersonalizacion(){
   const selectedOpt=document.querySelector('#avatar-grid-v2 .avatar-opt.selected');
-  if(selectedOpt){setPref('ev_avatar_emoji',selectedOpt.textContent.trim());}
+  if(selectedOpt){setPref('ev_avatar_emoji',selectedOpt.innerHTML.trim());}
   const posSelect=document.getElementById('avatar-pos-input');
   if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
   
@@ -1445,17 +1464,25 @@ function abrirModalPerfil(){
   const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
   const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;
   const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
-  const savedEmoji=getPref('ev_avatar_emoji','👤'),savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT'),savedTheme=getPref('ev_card_theme','auto');
+  
+  let savedEmoji=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
+  if(!savedEmoji.includes('<i class=')) savedEmoji='<i class="ph-duotone ph-user"></i>';
+
+  const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT'),savedTheme=getPref('ev_card_theme','auto');
   const activeCardClass=savedTheme==='auto'?nivel.cardClass:savedTheme;
   const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
 
   /* Emojis primera cat */
-  const primeraCat='👤 Personas';
-  const emojiOpts=EMOJI_CATS_DATA[primeraCat].map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this,'${em}')">${em}</div>`).join('');
-  const catTabs=Object.keys(EMOJI_CATS_DATA).map(cat=>`<button class="emoji-cat-btn${cat===primeraCat?' active':''}" data-cat="${cat}" onclick="cambiarEmojiCat('${cat}')">${cat}</button>`).join('');
+  const primeraCat='👤 Humanos';
+  const emojiOpts=AVATAR_CATS_DATA[primeraCat].map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
+  const catTabs=Object.keys(AVATAR_CATS_DATA).map(cat=>`<button class="emoji-cat-btn${cat===primeraCat?' active':''}" data-cat="${cat}" onclick="cambiarEmojiCat('${cat}')">${cat.split(' ')[1]}</button>`).join('');
 
-  /* Strip de temas */
-  const temas=[{k:'auto',l:'Auto'},{k:'bronze',l:'Bronz'},{k:'silver',l:'Plata'},{k:'gold',l:'Oro'},{k:'legend',l:'Leyen'},{k:'dark',l:'Dark'},{k:'neon',l:'Neon'},{k:'retro',l:'Retro'},{k:'arg',l:'ARG'}];
+  /* Strip de temas (agregado Selecciones) */
+  const temas=[
+    {k:'auto',l:'Auto'},{k:'bronze',l:'Bronz'},{k:'silver',l:'Plata'},{k:'gold',l:'Oro'},{k:'legend',l:'Leyen'},
+    {k:'dark',l:'Dark'},{k:'neon',l:'Neon'},{k:'retro',l:'Retro'},{k:'arg',l:'ARG'},
+    {k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'}
+  ];
   const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 
   /* Calendario */
