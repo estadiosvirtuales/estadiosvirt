@@ -38,7 +38,6 @@ body>*{position:relative;z-index:1}
 @keyframes pulseGlow{0%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@keyframes goldShine{0%{box-shadow:0 0 15px rgba(234,179,8,.3),0 8px 20px rgba(0,0,0,.4)}100%{box-shadow:0 0 30px rgba(29,185,84,.55),0 8px 20px rgba(0,0,0,.4)}}
 @keyframes floatBall{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(180deg)}}
 @keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
 @keyframes dropPanel{from{opacity:0;transform:translateY(-12px) scaleY(.94)}to{opacity:1;transform:translateY(0) scaleY(1)}}
@@ -47,9 +46,7 @@ body>*{position:relative;z-index:1}
 @keyframes scorePopIn{0%{transform:scale(.5) translateY(10px);opacity:0}70%{transform:scale(1.15) translateY(-3px);opacity:1}100%{transform:scale(1) translateY(0);opacity:1}}
 @keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 @keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 16px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
-@keyframes avatarGlow{0%,100%{filter:drop-shadow(0 0 8px var(--accent-glow))}50%{filter:drop-shadow(0 0 20px var(--accent-color))}}
 @keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
-@keyframes logroUnlock{0%{transform:scale(0) rotate(-15deg);opacity:0}50%{transform:scale(1.3) rotate(3deg);opacity:1}75%{transform:scale(.92) rotate(-1deg)}100%{transform:scale(1) rotate(0);opacity:1}}
 
 .animate-bounce{animation:bounceFun .65s cubic-bezier(.175,.885,.32,1.275) forwards}
 .animate-fade-up{animation:fadeSlideUp .5s ease forwards}
@@ -99,7 +96,7 @@ body>*{position:relative;z-index:1}
 
 .game-modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;width:100%;animation:fadeSlideUp .45s .2s ease both}
 .game-modes button{border:none;border-radius:20px;padding:22px 20px;display:flex;align-items:center;gap:16px;text-align:left;cursor:pointer;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.175,.885,.32,1.275);color:#fff;text-decoration:none}
-.game-modes button::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
+.game-modes button::before{content:'absolute';inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
 .game-modes button::after{content:'';position:absolute;bottom:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
 .game-modes button:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 45px rgba(0,0,0,.5)}
 .game-modes button:active{transform:translateY(-2px) scale(.99)}
@@ -248,16 +245,8 @@ body>*{position:relative;z-index:1}
 #customization-panel-wrapper{justify-content:flex-start}
 #btn-toggle-custom{margin-left:0}
 
+/* Estilos Carta Nacionales */
 .fut-card{position:relative;width:250px;height:380px;background-size:cover;border-radius:18px;padding:20px;display:flex;flex-direction:column;align-items:center;color:#fff;font-family:'Arial Black',Gadget,sans-serif;box-shadow:var(--shadow-strong);overflow:hidden;user-select:none;border:2px solid rgba(255,255,255,.15);transition:all .4s cubic-bezier(.175,.885,.32,1.275);flex-shrink:0}
-.fut-card.bronze{background:linear-gradient(135deg,#a855f7 0%,#7e22ce 50%,#3b0764 100%)}
-.fut-card.silver{background:linear-gradient(135deg,#9ca3af 0%,#4b5563 50%,#1f2937 100%)}
-.fut-card.gold{background:linear-gradient(135deg,#eab308 0%,#ca8a04 40%,#16a34a 80%,#0c0c0c 100%);animation:goldShine 4s infinite alternate}
-.fut-card.legend{background:linear-gradient(135deg,#6d28d9 0%,#4c1d95 30%,#1e1b4b 60%,#312e81 100%);box-shadow:0 0 40px rgba(139,92,246,.5),0 8px 20px rgba(0,0,0,.4)}
-.fut-card.dark{background:linear-gradient(135deg,#1f2937 0%,#111827 50%,#030712 100%);box-shadow:0 0 20px rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
-.fut-card.neon{background:linear-gradient(135deg,#ff007f 0%,#7928ca 50%,#4338ca 100%);box-shadow:0 0 30px rgba(255,0,127,.4);border-color:rgba(255,0,127,.5)}
-.fut-card.retro{background:linear-gradient(135deg,#f59e0b 0%,#d97706 50%,#b45309 100%);color:#000;box-shadow:0 0 20px rgba(245,158,11,.3);border-color:rgba(245,158,11,.5)}
-.fut-card.retro .fut-name{border-bottom-color:rgba(0,0,0,.3)}
-.fut-card.retro .fut-stat-label{opacity:.8}
 .fut-card.arg{background:linear-gradient(135deg,#74acdf 0%,#ffffff 50%,#74acdf 100%);color:#000;border-color:#74acdf}
 .fut-card.arg .fut-name{border-bottom-color:rgba(0,0,0,.3)}
 .fut-card.arg .fut-stat-label{opacity:.8}
@@ -279,8 +268,25 @@ body>*{position:relative;z-index:1}
 .fut-stat-num{font-weight:900}
 .fut-stat-label{opacity:.7}
 
+/* Avatar Estilo Animal Crossing */
 .fut-avatar-container{width:70%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
-.avatar-emoji-head{font-size:4.4rem;z-index:5;position:absolute;bottom:88px;margin-bottom:0;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.4));transition:transform .3s cubic-bezier(.175,.885,.32,1.275);user-select:none;color:#fff}
+
+.ac-avatar { position: absolute; bottom: 84px; z-index: 5; width: 68px; height: 60px; transition: transform .3s cubic-bezier(.175,.885,.32,1.275); }
+.ac-head-base { width: 100%; height: 100%; background: #e2b999; border-radius: 45% 45% 35% 35%; position: relative; box-shadow: inset -4px -4px 10px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.3); border: 2px solid #c89f81; }
+.ac-ear { width: 18px; height: 18px; background: #e2b999; border-radius: 50%; position: absolute; top: 22px; border: 2px solid #c89f81; z-index: -1; }
+.ac-ear.left { left: -8px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1); }
+.ac-ear.right { right: -8px; box-shadow: inset 2px -2px 4px rgba(0,0,0,0.1); }
+.ac-hair-base { width: 110%; height: 26px; background: #4a2e1b; position: absolute; top: -4px; left: -5%; border-radius: 50% 50% 15% 15%; border-bottom: 2px solid #301d10; z-index: 2; }
+.ac-hair-spike { position: absolute; top: -12px; right: 12px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 16px solid #4a2e1b; transform: rotate(20deg); }
+.ac-hair-spike2 { position: absolute; top: -8px; left: 15px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #4a2e1b; transform: rotate(-15deg); }
+.ac-eye { width: 8px; height: 14px; background: #111; border-radius: 50%; position: absolute; top: 26px; z-index: 2;}
+.ac-eye.left { left: 16px; }
+.ac-eye.right { right: 16px; }
+.ac-eye::after { content: ''; position: absolute; top: 2px; right: 2px; width: 3px; height: 4px; background: #fff; border-radius: 50%; }
+.ac-nose { width: 8px; height: 5px; background: #d4a788; border-radius: 50%; position: absolute; top: 38px; left: 30px; z-index: 2;}
+.ac-mouth { width: 14px; height: 7px; border-bottom: 2px solid #a66a41; border-radius: 0 0 50% 50%; position: absolute; top: 43px; left: 27px; z-index: 2;}
+.fut-card:hover .ac-avatar { transform: translateY(-5px); }
+
 .fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
 .fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
 .fut-player-torso{position:relative;width:100%;height:85px;display:flex;justify-content:center;margin-top:-6px}
@@ -296,34 +302,19 @@ body>*{position:relative;z-index:1}
 .avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:20px;margin-top:14px;width:100%;max-width:280px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .avatar-picker-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-color);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .avatar-picker-label i{font-size:1rem}
-.emoji-cat-tabs{display:flex;gap:4px;margin-bottom:10px}
-.emoji-cat-btn{flex:1;padding:6px 4px;border-radius:8px;border:1px solid var(--border-subtle);background:var(--bg-color);color:var(--text-muted);font-size:.65rem;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;letter-spacing:.3px}
-.emoji-cat-btn.active{background:var(--accent-dim);border-color:var(--accent-color);color:var(--accent-color);box-shadow:0 2px 8px var(--accent-glow)}
-.emoji-cat-btn:hover:not(.active){background:var(--surface-hover);color:var(--text-main)}
-.avatar-grid-v2{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px;min-height:50px;transition:all .2s}
-.avatar-opt{width:100%;aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;background:var(--bg-color);border:2px solid var(--border-subtle);transition:all .18s cubic-bezier(.175,.885,.32,1.275);color:var(--text-main)}
-.avatar-opt:hover{transform:scale(1.18) translateY(-2px);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 4px 12px var(--accent-glow)}
-.avatar-opt.selected{border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 0 0 3px var(--accent-glow);transform:scale(1.1)}
+
 .tema-strip-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
-.theme-preview-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px}
+.theme-preview-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:16px}
 .theme-dot{width:100%;aspect-ratio:1.2;border-radius:8px;cursor:pointer;border:2px solid var(--border-subtle);transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.9);overflow:hidden}
 .theme-dot:hover{border-color:rgba(255,255,255,.5);transform:scale(1.08)}
 .theme-dot.active{border-color:var(--accent-color);box-shadow:0 0 12px var(--accent-glow);transform:scale(1.1)}
 .theme-dot::after{content:'';position:absolute;inset:0;border-radius:6px;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%);pointer-events:none}
 
-.td-auto{background:linear-gradient(135deg,#eab308 0%,#16a34a 50%,#6d28d9 100%)}
-.td-bronze{background:linear-gradient(135deg,#a855f7,#3b0764)}
-.td-silver{background:linear-gradient(135deg,#9ca3af,#1f2937)}
-.td-gold{background:linear-gradient(135deg,#eab308,#ca8a04,#16a34a)}
-.td-legend{background:linear-gradient(135deg,#6d28d9,#4c1d95,#312e81)}
-.td-dark{background:linear-gradient(135deg,#374151,#030712)}
-.td-neon{background:linear-gradient(135deg,#ff007f,#7928ca,#4338ca)}
-.td-retro{background:linear-gradient(135deg,#f59e0b,#b45309)}
-.td-arg{background:linear-gradient(180deg,#74acdf 33%,#fff 33%,#fff 66%,#74acdf 66%)}
+.td-arg{background:linear-gradient(180deg,#74acdf 33%,#fff 33%,#fff 66%,#74acdf 66%); color: #000;}
 .td-bra{background:linear-gradient(135deg,#009c3b,#ffdf00,#002776)}
-.td-esp{background:linear-gradient(135deg,#aa151b,#f1bf00,#aa151b)}
-.td-ita{background:linear-gradient(135deg,#009246,#fff,#ce2b37)}
-.td-fra{background:linear-gradient(135deg,#002395,#fff,#ed2939)}
+.td-esp{background:linear-gradient(135deg,#aa151b,#f1bf00,#aa151b); color: #000;}
+.td-ita{background:linear-gradient(135deg,#009246,#fff,#ce2b37); color: #000;}
+.td-fra{background:linear-gradient(135deg,#002395,#fff,#ed2939); color: #000;}
 .td-ger{background:linear-gradient(135deg,#000,#dd0000,#ffce00)}
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
 
@@ -690,6 +681,9 @@ const scriptUrlCapacidad="https://script.google.com/macros/s/AKfycbxIME-M84DhBy3
 const scriptUrlAntiguedad="https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
 const scriptUrlUsuarios="https://script.google.com/macros/s/AKfycby4GOySVikjCt7vtaNcKMI8Xzo6sxrfmhRwtWS3h2OabxJEMbtIA_Q-lukMRwrZu2HztA/exec";
 const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googleusercontent.com";
+
+const acHeadHTML = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base"><div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div><div class="ac-hair-base"></div><div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
+
 let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
@@ -697,11 +691,11 @@ let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrP
 let previewMapInstance=null;
 let orderList=[],orderSelectedIdx=null,orderModo="",orderPuntosGanados=0,orderStartTime=0;
 let pendingScore=null,pendingScoreType=null;
+
 const NIVELES=(function(){
 const n=[];
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
 const baseClasses=["level-pibe","level-volante","level-crack","level-leyenda","level-leyenda","level-leyenda","level-leyenda"];
-const baseCards=["bronze","silver","gold","legend","legend","legend","legend"];
 const baseEmojis=["⚽","🎯","🥈","⭐","🥇","🏆","👑","🔥","⚡","💎","🌟","🚀"];
 const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Goleador","Crack","Ídolo","Capitán","Galáctico","Leyenda","Inmortal","Mito","Dios del Fútbol"];
 for(let i=0;i<1000;i++){
@@ -713,47 +707,81 @@ let tierIndex=Math.floor(i/5);
 let name=(baseNames[Math.min(tierIndex,baseNames.length-1)])+(i>0?` Lvl ${i}`:"");
 let colorIdx=Math.min(Math.floor(i/8),baseColors.length-1);
 let emojiIdx=Math.min(Math.floor(i/4),baseEmojis.length-1);
-n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,cardClass:baseCards[colorIdx]||"legend",color:baseColors[colorIdx]||"#a78bfa",emoji:baseEmojis[emojiIdx]||"✨",cssClass:baseClasses[colorIdx]||"level-leyenda"});
+n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,color:baseColors[colorIdx]||"#a78bfa",emoji:baseEmojis[emojiIdx]||"✨",cssClass:baseClasses[colorIdx]||"level-leyenda"});
 }
 n[999].max=Infinity;
 return n;
 })();
-const AVATAR_CATS_DATA={
-'👤 Humanos':['<i class="ph-duotone ph-user"></i>','<i class="ph-duotone ph-user-focus"></i>','<i class="ph-duotone ph-user-gear"></i>','<i class="ph-duotone ph-user-circle"></i>','<i class="ph-duotone ph-detective"></i>','<i class="ph-duotone ph-ninja"></i>'],
-'👾 Criaturas':['<i class="ph-duotone ph-alien"></i>','<i class="ph-duotone ph-robot"></i>','<i class="ph-duotone ph-skull"></i>','<i class="ph-duotone ph-ghost"></i>','<i class="ph-duotone ph-mask-happy"></i>','<i class="ph-duotone ph-smiley-x-eyes"></i>'],
-'🦁 Animales':['<i class="ph-duotone ph-cat"></i>','<i class="ph-duotone ph-dog"></i>','<i class="ph-duotone ph-bird"></i>','<i class="ph-duotone ph-fish"></i>','<i class="ph-duotone ph-rabbit"></i>','<i class="ph-duotone ph-tortoise"></i>'],
-'⚽ Fútbol':['<i class="ph-duotone ph-soccer-ball"></i>','<i class="ph-duotone ph-trophy"></i>','<i class="ph-duotone ph-medal"></i>','<i class="ph-duotone ph-t-shirt"></i>','<i class="ph-duotone ph-whistle"></i>','<i class="ph-duotone ph-flag"></i>']
-};
-let avatarCatActual='👤 Humanos';
+
 let logrosTabActual='todos';
 function getUserId(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u?u.id:'guest';}
 function getPref(key,def){const id=getUserId();return localStorage.getItem(key+'_'+id)||def;}
 function setPref(key,val){const id=getUserId();localStorage.setItem(key+'_'+id,val);}
 let userStats={};
+
 function migrarStatsAntiguos(){
 if(!localStorage.getItem('ev_migrated_v2')){
 const oldStats=localStorage.getItem('ev_user_stats');
 if(oldStats){localStorage.setItem('ev_user_stats_guest',oldStats);const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)localStorage.setItem('ev_user_stats_'+u.id,oldStats);}
-const e=localStorage.getItem('ev_avatar_emoji'),n=localStorage.getItem('ev_custom_nick'),p=localStorage.getItem('ev_user_pos'),th=localStorage.getItem('ev_card_theme'),id=getUserId();
-if(e)localStorage.setItem('ev_avatar_emoji_'+id,e);if(n)localStorage.setItem('ev_custom_nick_'+id,n);if(p)localStorage.setItem('ev_user_pos_'+id,p);if(th)localStorage.setItem('ev_card_theme_'+id,th);
+const n=localStorage.getItem('ev_custom_nick'),p=localStorage.getItem('ev_user_pos'),th=localStorage.getItem('ev_card_theme'),id=getUserId();
+if(n)localStorage.setItem('ev_custom_nick_'+id,n);if(p)localStorage.setItem('ev_user_pos_'+id,p);if(th)localStorage.setItem('ev_card_theme_'+id,th);
 localStorage.setItem('ev_migrated_v2','true');
 }
 }
 migrarStatsAntiguos();
+
+function procesarRachaDiaria() {
+    const today = new Date();
+    const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+    if (!userStats.activeDates) userStats.activeDates = [];
+    if (userStats.activeDates instanceof Set) userStats.activeDates = Array.from(userStats.activeDates);
+
+    const lastLogin = userStats.lastLoginDate;
+
+    if (lastLogin !== todayStr) {
+        if (lastLogin) {
+            const lastDate = new Date(lastLogin + 'T00:00:00');
+            const currDate = new Date(todayStr + 'T00:00:00');
+            const diffTime = Math.abs(currDate - lastDate);
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 1) {
+                userStats.rachaActual = (userStats.rachaActual || 0) + 1;
+            } else {
+                userStats.rachaActual = 1;
+            }
+        } else {
+            userStats.rachaActual = 1;
+        }
+        userStats.lastLoginDate = todayStr;
+        if (!userStats.activeDates.includes(todayStr)) {
+            userStats.activeDates.push(todayStr);
+        }
+        guardarStats();
+    }
+}
+
 function cargarStats(){
 const id=getUserId();
 const stored=localStorage.getItem('ev_user_stats_'+id);
 if(stored){userStats=JSON.parse(stored);}
-else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,avatarCambiado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0};}
+else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
+
 ['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);if(!(userStats[k] instanceof Set))userStats[k]=new Set();});
+if(!userStats.activeDates) userStats.activeDates = [];
+
 if(userStats.xpTotal===undefined)userStats.xpTotal=userStats.maxScore||0;
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
+
+procesarRachaDiaria();
 }
 cargarStats();
+
 function guardarStats(){
 const id=getUserId();
-const toSave={...userStats,ligas5:[...userStats.ligas5],triviasDescubiertas:[...userStats.triviasDescubiertas],ligasExploradas:[...userStats.ligasExploradas]};
+const toSave={...userStats,ligas5:[...userStats.ligas5],triviasDescubiertas:[...userStats.triviasDescubiertas],ligasExploradas:[...userStats.ligasExploradas],activeDates:[...userStats.activeDates]};
 localStorage.setItem('ev_user_stats_'+id,JSON.stringify(toSave));
 }
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
@@ -866,11 +894,9 @@ const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal
 function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)return u.name.split(' ')[0];return 'Jugador';}
 function renderizarBotonLogin(){
 const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-let avatarEmoji=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
-if(!avatarEmoji.includes('<i class=')) avatarEmoji='<i class="ph-duotone ph-user"></i>';
 const userPos=getPref('ev_user_pos','DT');
 if(u){
-let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:#1a2a1a;box-shadow:0 0 8px var(--accent-glow); color:#fff;">${avatarEmoji}</div>`;
+let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.48); transform-origin: bottom center; position:absolute; bottom: -2px;">${acHeadHTML}</div></div>`;
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${userPos}</div></div>${avatarHTML}</div>`;
 actualizarHeaderNivel();
@@ -1112,7 +1138,6 @@ addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
 addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
 logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
 logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-logros.push({id:'avatar',icon:'🎨',name:'Estilo Propio',rarity:'rare',req:'Cambiá tu avatar',unlocked:!!(getPref('ev_avatar_emoji','')&&getPref('ev_avatar_emoji','')!=='<i class="ph-duotone ph-user"></i>'),pct:0,pctLabel:''});
 logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
 logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
 logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
@@ -1146,25 +1171,13 @@ const statusClass=l.unlocked?'unlocked':(l.pct>0?'in-progress':'locked');
 return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
 }).join('');
 }
+
 function previsualizarTema(tema){
 const card=document.getElementById('fut-card-main');if(!card)return;
-const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
-const claseBase=tema==='auto'?nivel.cardClass:tema;
-card.className='fut-card '+claseBase;
+card.className='fut-card '+tema;
 document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));
 }
-function cambiarEmojiCat(cat){
-avatarCatActual=cat;
-document.querySelectorAll('.emoji-cat-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
-const grid=document.getElementById('avatar-grid-v2');if(!grid)return;
-let saved=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
-if(!saved.includes('<i class=')) saved='<i class="ph-duotone ph-user"></i>';
-grid.innerHTML=AVATAR_CATS_DATA[cat].map(em=>`<div class="avatar-opt${em===saved?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
-}
-function seleccionarAvatarEmoji(el){
-document.querySelectorAll('.avatar-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
-const disp=document.getElementById('fut-avatar-emoji-display');if(disp)disp.innerHTML=el.innerHTML;
-}
+
 window.toggleCustomization=function(){
 const panel=document.getElementById('customization-panel-wrapper');
 const btn=document.getElementById('btn-toggle-custom');
@@ -1181,8 +1194,6 @@ btn.classList.add('secondary');
 }
 };
 function guardarPersonalizacion(){
-const selectedOpt=document.querySelector('#avatar-grid-v2 .avatar-opt.selected');
-if(selectedOpt){setPref('ev_avatar_emoji',selectedOpt.innerHTML.trim());}
 const posSelect=document.getElementById('avatar-pos-input');
 if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
 const themeActualEl=document.querySelector('.theme-dot.active');
@@ -1200,29 +1211,56 @@ futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jonathan');
 showToast('¡Personalización guardada! 🎉');
 renderizarBotonLogin();actualizarHeaderNivel();
 const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
-const cardEl=document.getElementById('fut-card-main');if(cardEl){const th=getPref('ev_card_theme','auto');const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];cardEl.className='fut-card '+(th==='auto'?n.cardClass:th);}
+const cardEl=document.getElementById('fut-card-main');
+if(cardEl){
+    let th=getPref('ev_card_theme','arg');
+    if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger'].includes(th)) th = 'arg';
+    cardEl.className='fut-card '+th;
+}
 if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
 }
+
 function abrirModalPerfil(){
 const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(!u)return;
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
 const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;
 const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
-let savedEmoji=getPref('ev_avatar_emoji','<i class="ph-duotone ph-user"></i>');
-if(!savedEmoji.includes('<i class=')) savedEmoji='<i class="ph-duotone ph-user"></i>';
-const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT'),savedTheme=getPref('ev_card_theme','auto');
-const activeCardClass=savedTheme==='auto'?nivel.cardClass:savedTheme;
+
+const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');
+let savedTheme=getPref('ev_card_theme','arg');
+if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger'].includes(savedTheme)) savedTheme = 'arg';
+
+const activeCardClass=savedTheme;
 const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
-const primeraCat='👤 Humanos';
-const emojiOpts=AVATAR_CATS_DATA[primeraCat].map(em=>`<div class="avatar-opt${em===savedEmoji?' selected':''}" onclick="seleccionarAvatarEmoji(this)">${em}</div>`).join('');
-const catTabs=Object.keys(AVATAR_CATS_DATA).map(cat=>`<button class="emoji-cat-btn${cat===primeraCat?' active':''}" data-cat="${cat}" onclick="cambiarEmojiCat('${cat}')">${cat.split(' ')[1]}</button>`).join('');
+
 const temas=[
-{k:'auto',l:'Auto'},{k:'bronze',l:'Bronz'},{k:'silver',l:'Plata'},{k:'gold',l:'Oro'},{k:'legend',l:'Leyen'},
-{k:'dark',l:'Dark'},{k:'neon',l:'Neon'},{k:'retro',l:'Retro'},{k:'arg',l:'ARG'},
-{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'}
+{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},
+{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'}
 ];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
-let calHTML='';for(let d=1;d<=30;d++){let cl='calendar-cell';if(d<17)cl+=' past-done';if(d===17)cl+=' current-active';calHTML+=`<div class="${cl}">${d}</div>`;}
+
+// Calendario dinámico
+const today = new Date();
+const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const currentYear = today.getFullYear();
+const currentMonth = today.getMonth();
+const firstDay = new Date(currentYear, currentMonth, 1).getDay(); 
+let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+let calHTML='';
+for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden;"></div>`; }
+for(let d=1;d<=daysInMonth;d++){
+    const dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    let cl='calendar-cell';
+    if(dateStr === today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0')) {
+        cl+=' current-active';
+    } else if (userStats.activeDates && userStats.activeDates.includes(dateStr)) {
+        cl+=' past-done';
+    }
+    calHTML+=`<div class="${cl}">${d}</div>`;
+}
+
 const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
 document.getElementById('profile-modal-body').innerHTML=`
 <div class="split-profile-layout">
@@ -1236,7 +1274,7 @@ document.getElementById('profile-modal-body').innerHTML=`
 <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon" onerror="this.style.display='none';">
 </div>
 <div class="fut-avatar-container">
-<div class="avatar-emoji-head" id="fut-avatar-emoji-display" title="Tu avatar">${savedEmoji}</div>
+${acHeadHTML}
 <div class="fut-player-body">
 <div class="fut-player-neck"></div>
 <div class="fut-player-torso">
@@ -1264,11 +1302,7 @@ ${googleBadge}
 </button>
 <div id="customization-panel-wrapper">
 <div class="avatar-picker">
-<div class="avatar-picker-label"><i class="ph-fill ph-smiley"></i> Avatar y Diseño</div>
-<div class="emoji-cat-tabs">${catTabs}</div>
-<div class="avatar-grid-v2" id="avatar-grid-v2">${emojiOpts}</div>
-<div class="avatar-divider"></div>
-<label class="tema-strip-label">Diseño de la carta</label>
+<div class="avatar-picker-label"><i class="ph-fill ph-palette"></i> Diseño de la Carta</div>
 <div class="theme-preview-strip">${themeStrip}</div>
 <div class="avatar-divider"></div>
 <label class="avatar-nick-label">Posición en la cancha</label>
@@ -1313,7 +1347,7 @@ ${googleBadge}
 </div>
 <div class="geoguessr-dash-box">
 <div class="dash-header-inline">
-<div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (Junio)</div>
+<div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (${monthNames[currentMonth]})</div>
 <div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
 </div>
 <div class="calendar-matrix">
