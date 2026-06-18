@@ -569,7 +569,7 @@ body>*{position:relative;z-index:1}
 <li><strong>País</strong> — Argentina.</li>
 <li><strong>Datos Personales</strong> — Cualquier información relacionada con un individuo identificado o identificable.</li>
 <li><strong>Sitio Web</strong> — Estadios Virtuales, accesible desde www.estadiosvirtuales.com.</li>
-<li><strong>Vos / Usted</strong> — El individuo que accede o usa el Servicio.</li>
+<li><strong>Vos / Usted</strong> — El individuo que hace el acceso o usa el Servicio.</li>
 </ul>
 <div class="privacy-section-title">Tipos de Datos que Recopilamos</div>
 <p><strong>Datos Personales:</strong> Al registrarte, podemos solicitarte información identificable como tu nombre completo, dirección de correo electrónico y foto de perfil (cuando usás el inicio de sesión con Google).</p>
@@ -1354,7 +1354,7 @@ function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
 async function abrirModalRanking(){
 const body=document.getElementById('ranking-modal-body');body.innerHTML='<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';document.getElementById('ranking-modal').style.display='flex';
-try{const ranking=await(await fetch(scriptUrlRanking)).json();let html=`<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+try{const ranking=await(await fetch(scriptUrlRanking)).json();let html=`<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:166px;border-radius:16px;overflow:hidden;">`;
 if(!ranking?.length)html+=`<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay puntajes.</p>`;else ranking.forEach((f,i)=>{const m=['🥇','🥈','🥉'];const med=i<3?m[i]:`<span style="color:var(--text-muted);">${i+1}</span>`;const nivelR=NIVELES[calcularNivelIdx(f[1]||0)];html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i===ranking.length-1?'none':'1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f[0]||'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f[1]||0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;});
 html+='</div>';body.innerHTML=html;}catch(e){body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión</b></div>`;}
 }
@@ -1406,10 +1406,12 @@ function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=or
 function calcularLogros(){
 const s=userStats;const logros=[];
 function addTierLogro(id,icon,baseName,currentVal,step,unit,rarity='common'){
-const val=currentVal||0;const tierActual=Math.floor(val/step);const pct=Math.round(((val%step)/step)*100);
-if(tierActual>0){logros.push({id:`${id}_${tierActual}`,icon,name:`${baseName} ${tierActual}`,rarity,req:`${val.toLocaleString('es-AR')} de ${(tierActual*step).toLocaleString('es-AR')}${unit}`,unlocked:true,pct:100,pctLabel:''});}
-const siguiente=tierActual+1;const progActual=val-(tierActual*step);
-logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
+const val=currentVal||0;const tierActual=Math.floor(val/step);
+for(let i=1;i<=tierActual;i++){
+logros.push({id:`${id}_${i}`,icon,name:`${baseName} ${i}`,rarity,req:`Alcanzado: ${(i*step).toLocaleString('es-AR')}${unit}`,unlocked:true,pct:100,pctLabel:''});
+}
+const siguiente=tierActual+1;const progActual=val-(tierActual*step);const pct=Math.min(100,Math.max(0,Math.round((progActual/step)*100)));
+logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:pct,pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
 }
 addTierLogro('voto','⭐','Catador',s.votosRealizados,5,' califs','common');
 addTierLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias','common');
@@ -1515,7 +1517,8 @@ document.getElementById('profile-modal-body').innerHTML=`
 </div>
 <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
 <div class="fut-stats-row">
-<div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
+<div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span>
+<span class="fut-stat-label">VOT</span></div>
 <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
 <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
 <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
@@ -1559,7 +1562,7 @@ ${googleBadge}
 </select>
 <label class="avatar-nick-label">Apodo en el ranking</label>
 <div class="avatar-nickname-row">
-<input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
+<input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\\'")}';">
 </div>
 <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><i class="ph-bold ph-check"></i> Guardar cambios</button>
 </div>
@@ -1611,7 +1614,7 @@ ${calHTML}
 <button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color);border-color:var(--danger-color);padding:8px 16px;font-size:.82rem;">Cerrar sesión</button>
 </div>
 </div>
-</div>`;
+</div>\`;
 document.getElementById('profile-modal').style.display='flex';
 setTimeout(()=>{
 const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
