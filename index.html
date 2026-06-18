@@ -262,6 +262,11 @@ body>*{position:relative;z-index:1}
 .fut-card.mex { background: linear-gradient(135deg, #006847 0%, #ffffff 50%, #ce1126 100%); color: #000; border-color: #006847; }
 .fut-card.col { background: linear-gradient(135deg, #fcd116 0%, #003893 50%, #ce1126 100%); color: #fff; border-color: #fcd116; }
 .fut-card.chi { background: linear-gradient(135deg, #d52b1e 0%, #ffffff 50%, #0039a6 100%); color: #000; border-color: #d52b1e; }
+.fut-card.ned { background: linear-gradient(135deg, #f36c21 0%, #ffffff 50%, #21468b 100%); color: #000; border-color: #f36c21; }
+.fut-card.bel { background: linear-gradient(135deg, #e30613 0%, #fbd600 50%, #000000 100%); color: #fff; border-color: #e30613; }
+.fut-card.cro { background: linear-gradient(135deg, #ed1c24 0%, #ffffff 50%, #005caa 100%); color: #000; border-color: #ed1c24; }
+.fut-card.usa { background: linear-gradient(135deg, #002868 0%, #ffffff 50%, #bf0a30 100%); color: #000; border-color: #002868; }
+.fut-card.jpn { background: linear-gradient(135deg, #000555 0%, #ffffff 50%, #ed1944 100%); color: #000; border-color: #000555; }
 
 .fut-card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%,rgba(255,255,255,.04) 100%);pointer-events:none}
 .fut-top{display:flex;width:100%;height:50%;margin-top:15px}
@@ -296,11 +301,11 @@ body>*{position:relative;z-index:1}
 .fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
 .fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
 .fut-player-torso{position:relative;width:100%;height:85px;display:flex;justify-content:center;margin-top:-6px}
-.fut-player-shirt{width:64px;height:100%;background:linear-gradient(135deg,var(--accent-color) 0%,color-mix(in srgb,var(--accent-color) 40%,#111) 100%);border-radius:18px 18px 5px 5px;z-index:3;position:relative;box-shadow:inset 0 5px 12px rgba(255,255,255,0.25),0 4px 10px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.2);border-bottom:none}
+.fut-player-shirt{width:64px;height:100%;border-radius:18px 18px 5px 5px;z-index:3;position:relative;box-shadow:inset 0 5px 12px rgba(255,255,255,0.25),0 4px 10px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.2);border-bottom:none}
 .fut-player-collar{width:24px;height:10px;border:3px solid rgba(255,255,255,.9);border-top:none;border-radius:0 0 12px 12px;margin-top:0}
 .fut-player-number{font-size:1.6rem;font-weight:900;color:rgba(255,255,255,.9);font-family:'Arial Black',sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.5);margin-top:6px}
 .fut-player-arm{width:15px;height:65px;background:#e2b999;position:absolute;top:6px;border-radius:10px;box-shadow:inset -2px 0 4px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.3);z-index:2}
-.fut-player-arm::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:26px;background:var(--accent-color);border-radius:10px 10px 4px 4px;box-shadow:inset 0 -3px 4px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.15);border-bottom:none}
+.fut-player-arm::before{content:'';position:absolute;top:-1px;left:-1px;right:-1px;height:26px;border-radius:10px 10px 4px 4px;box-shadow:inset 0 -3px 4px rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.15);border-bottom:none}
 .fut-player-arm::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:15px;background:#d4a788;border-radius:10px}
 .fut-player-arm.left{left:12px;transform:rotate(18deg);transform-origin:top center}
 .fut-player-arm.right{right:12px;transform:rotate(-18deg);transform-origin:top center}
@@ -310,7 +315,7 @@ body>*{position:relative;z-index:1}
 .avatar-picker-label i{font-size:1rem}
 
 .tema-strip-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px;display:block}
-.theme-preview-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.theme-preview-strip{display:grid;grid-template-columns:repeat(auto-fill, minmax(45px, 1fr));gap:6px;margin-bottom:16px}
 .theme-dot{width:100%;aspect-ratio:1.3;border-radius:8px;cursor:pointer;border:2px solid var(--border-subtle);transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:rgba(255,255,255,.85);text-shadow:0 1px 3px rgba(0,0,0,.9);overflow:hidden}
 .theme-dot:hover{border-color:rgba(255,255,255,.5);transform:scale(1.08)}
 .theme-dot.active{border-color:var(--accent-color);box-shadow:0 0 12px var(--accent-glow);transform:scale(1.1)}
@@ -328,6 +333,12 @@ body>*{position:relative;z-index:1}
 .td-mex { background: linear-gradient(135deg, #006847, #fff, #ce1126); color: #000; }
 .td-col { background: linear-gradient(135deg, #fcd116, #003893, #ce1126); }
 .td-chi { background: linear-gradient(135deg, #d52b1e, #fff, #0039a6); color: #000; }
+.td-ned { background: linear-gradient(135deg, #f36c21, #fff, #21468b); color: #000; }
+.td-bel { background: linear-gradient(135deg, #e30613, #fbd600, #000); }
+.td-cro { background: linear-gradient(135deg, #ed1c24, #fff, #005caa); color: #000; }
+.td-usa { background: linear-gradient(135deg, #002868, #fff, #bf0a30); color: #000; }
+.td-jpn { background: linear-gradient(135deg, #000555, #fff, #ed1944); color: #000; }
+
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
 
 .avatar-divider{height:1px;background:var(--border-strong);margin:14px 0}
@@ -482,7 +493,6 @@ body>*{position:relative;z-index:1}
 @media(max-width:480px){
 .tabs-container{grid-template-columns:1fr}
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
-.theme-preview-strip { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 </head>
@@ -697,21 +707,41 @@ const scriptUrlAntiguedad="https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7
 const scriptUrlUsuarios="https://script.google.com/macros/s/AKfycby4GOySVikjCt7vtaNcKMI8Xzo6sxrfmhRwtWS3h2OabxJEMbtIA_Q-lukMRwrZu2HztA/exec";
 const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googleusercontent.com";
 
-function generarAvatarHTML(genero, pelo, camisa, numero) {
+const ESCUDOS_MAP = {
+  'ev': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png',
+  'ar': 'https://flagcdn.com/w80/ar.png',
+  'br': 'https://flagcdn.com/w80/br.png',
+  'es': 'https://flagcdn.com/w80/es.png',
+  'it': 'https://flagcdn.com/w80/it.png',
+  'fr': 'https://flagcdn.com/w80/fr.png',
+  'de': 'https://flagcdn.com/w80/de.png',
+  'gb-eng': 'https://flagcdn.com/w80/gb-eng.png',
+  'pt': 'https://flagcdn.com/w80/pt.png',
+  'uy': 'https://flagcdn.com/w80/uy.png',
+  'co': 'https://flagcdn.com/w80/co.png',
+  'mx': 'https://flagcdn.com/w80/mx.png',
+  'cl': 'https://flagcdn.com/w80/cl.png',
+  'nl': 'https://flagcdn.com/w80/nl.png',
+  'be': 'https://flagcdn.com/w80/be.png',
+  'hr': 'https://flagcdn.com/w80/hr.png',
+  'us': 'https://flagcdn.com/w80/us.png',
+  'jp': 'https://flagcdn.com/w80/jp.png'
+};
+
+function generarAvatarHTML(pelo, camisa, colorCamisa, numero) {
     let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
     if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
     else if(pelo === 'long') peloHTML += `<div style="position:absolute;top:10px;left:-10%;width:120%;height:45px;background:#4a2e1b;border-radius:20px;z-index:-1;"></div>`;
     else if(pelo === 'ponytail') peloHTML += `<div style="position:absolute;top:5px;right:-15px;width:25px;height:40px;background:#4a2e1b;border-radius:50%;z-index:-1;transform:rotate(-20deg);"></div>`;
 
-    let extras = genero === 'F' ? `<div style="width:5px;height:3px;background:rgba(255,100,100,0.6);border-radius:50%;position:absolute;top:35px;left:12px;z-index:2;box-shadow: 20px 0 0 rgba(255,100,100,0.6);"></div>` : '';
-
-    let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div>${extras}</div></div>`;
+    let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
 
     let shirtBg = '';
-    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, var(--accent-color) 0, var(--accent-color) 12px, color-mix(in srgb,var(--accent-color) 40%,#111) 12px, color-mix(in srgb,var(--accent-color) 40%,#111) 24px);`;
-    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, var(--accent-color) 35%, color-mix(in srgb,var(--accent-color) 20%,#fff) 35%, color-mix(in srgb,var(--accent-color) 20%,#fff) 65%, var(--accent-color) 65%);`;
-    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, var(--accent-color) 40%, color-mix(in srgb,var(--accent-color) 20%,#fff) 40%, color-mix(in srgb,var(--accent-color) 20%,#fff) 60%, var(--accent-color) 60%);`;
-    else shirtBg = `background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb,var(--accent-color) 40%,#111) 100%);`;
+    let mainColor = colorCamisa || '#00e676';
+    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, ${mainColor} 0, ${mainColor} 12px, color-mix(in srgb, ${mainColor} 40%, #111) 12px, color-mix(in srgb, ${mainColor} 40%, #111) 24px);`;
+    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, ${mainColor} 35%, color-mix(in srgb, ${mainColor} 20%, #fff) 35%, color-mix(in srgb, ${mainColor} 20%, #fff) 65%, ${mainColor} 65%);`;
+    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, ${mainColor} 40%, color-mix(in srgb, ${mainColor} 20%, #fff) 40%, color-mix(in srgb, ${mainColor} 20%, #fff) 60%, ${mainColor} 60%);`;
+    else shirtBg = `background: linear-gradient(135deg, ${mainColor} 0%, color-mix(in srgb, ${mainColor} 40%, #111) 100%);`;
 
     let body = `
     <div class="fut-player-body">
@@ -941,7 +971,7 @@ function renderizarBotonLogin(){
 const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
 const userPos=getPref('ev_user_pos','DT');
 if(u){
-let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_gender','M'), getPref('ev_avatar_hair','spiky'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_num','10'))}</div></div>`;
+let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_hair','spiky'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_color','#00e676'), getPref('ev_avatar_num','10'))}</div></div>`;
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${userPos}</div></div>${avatarHTML}</div>`;
 actualizarHeaderNivel();
@@ -1239,20 +1269,26 @@ btn.classList.add('secondary');
 }
 };
 window.actualizarAvatarLive = function() {
-    const g = document.getElementById('avatar-gender-input').value;
     const h = document.getElementById('avatar-hair-input').value;
     const s = document.getElementById('avatar-shirt-input').value;
+    const c = document.getElementById('avatar-shirt-color-input').value || '#00e676';
     const n = document.getElementById('avatar-num-input').value || '10';
 
     const container = document.getElementById('fut-avatar-live-container');
     if(container) {
-        container.innerHTML = generarAvatarHTML(g, h, s, n);
+        container.innerHTML = generarAvatarHTML(h, s, c, n);
     }
     
     const posInput = document.getElementById('avatar-pos-input');
     if(posInput) {
          const futPos = document.getElementById('fut-pos-display');
          if(futPos) futPos.textContent = posInput.value;
+    }
+
+    const logoInput = document.getElementById('avatar-logo-input');
+    if(logoInput) {
+         const futClub = document.getElementById('fut-club-display');
+         if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev'];
     }
 };
 
@@ -1271,10 +1307,11 @@ const u=JSON.parse(localStorage.getItem('ev_user_logged'));
 futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jonathan');
 }
 }
-const genderInput=document.getElementById('avatar-gender-input'); if(genderInput) setPref('ev_avatar_gender', genderInput.value);
 const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
 const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
+const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
 const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
+const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
 
 showToast('¡Personalización guardada! 🎉');
 renderizarBotonLogin();actualizarHeaderNivel();
@@ -1282,7 +1319,7 @@ const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcu
 const cardEl=document.getElementById('fut-card-main');
 if(cardEl){
     let th=getPref('ev_card_theme','arg');
-    if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi'].includes(th)) th = 'arg';
+    if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi', 'ned', 'bel', 'cro', 'usa', 'jpn'].includes(th)) th = 'arg';
     cardEl.className='fut-card '+th;
 }
 if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
@@ -1296,12 +1333,13 @@ const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/x
 
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');
 let savedTheme=getPref('ev_card_theme','arg');
-if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi'].includes(savedTheme)) savedTheme = 'arg';
+if (!['arg', 'bra', 'esp', 'ita', 'fra', 'ger', 'eng', 'por', 'uru', 'col', 'mex', 'chi', 'ned', 'bel', 'cro', 'usa', 'jpn'].includes(savedTheme)) savedTheme = 'arg';
 
-const savedGender = getPref('ev_avatar_gender', 'M');
 const savedHair = getPref('ev_avatar_hair', 'spiky');
 const savedShirt = getPref('ev_avatar_shirt', 'solid');
+const savedColor = getPref('ev_avatar_color', '#00e676');
 const savedNum = getPref('ev_avatar_num', '10');
+const savedLogo = getPref('ev_avatar_logo', 'ev');
 
 const activeCardClass=savedTheme;
 const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
@@ -1310,7 +1348,9 @@ const temas=[
 {k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},
 {k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},
 {k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},
-{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'}
+{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},
+{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},
+{k:'usa',l:'USA'},{k:'jpn',l:'JPN'}
 ];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 
@@ -1346,10 +1386,10 @@ document.getElementById('profile-modal-body').innerHTML=`
 <div class="fut-badge-meta">
 <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
 <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
-<img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" class="fut-club-icon" onerror="this.style.display='none';">
+<img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
 </div>
 <div class="fut-avatar-container" id="fut-avatar-live-container">
-${generarAvatarHTML(savedGender, savedHair, savedShirt, savedNum)}
+${generarAvatarHTML(savedHair, savedShirt, savedColor, savedNum)}
 </div>
 </div>
 <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
@@ -1369,12 +1409,8 @@ ${googleBadge}
 <div class="avatar-picker-label"><i class="ph-fill ph-palette"></i> Diseño de la Carta</div>
 <div class="theme-preview-strip">${themeStrip}</div>
 <div class="avatar-divider"></div>
-<label class="avatar-nick-label">Apariencia</label>
+<label class="avatar-nick-label">Apariencia y Escudo</label>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-<select class="avatar-pos-select" id="avatar-gender-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-<option value="M">Varón</option>
-<option value="F">Mujer</option>
-</select>
 <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
 <option value="spiky">Pelo Pincho</option>
 <option value="short">Pelo Corto</option>
@@ -1382,16 +1418,37 @@ ${googleBadge}
 <option value="ponytail">Cola Caballo</option>
 <option value="bald">Calvo</option>
 </select>
+<select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+<option value="ev">⚽ Estadios Virt.</option>
+<option value="ar">🇦🇷 Argentina</option>
+<option value="br">🇧🇷 Brasil</option>
+<option value="es">🇪🇸 España</option>
+<option value="it">🇮🇹 Italia</option>
+<option value="fr">🇫🇷 Francia</option>
+<option value="de">🇩🇪 Alemania</option>
+<option value="gb-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option>
+<option value="pt">🇵🇹 Portugal</option>
+<option value="uy">🇺🇾 Uruguay</option>
+<option value="co">🇨🇴 Colombia</option>
+<option value="mx">🇲🇽 México</option>
+<option value="cl">🇨🇱 Chile</option>
+<option value="nl">🇳🇱 Países Bajos</option>
+<option value="be">🇧🇪 Bélgica</option>
+<option value="hr">🇭🇷 Croacia</option>
+<option value="us">🇺🇸 EE.UU.</option>
+<option value="jp">🇯🇵 Japón</option>
+</select>
 </div>
-<label class="avatar-nick-label">Camiseta y Posición</label>
-<div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:12px;">
+<label class="avatar-nick-label">Camiseta (Estilo, Color y N°)</label>
+<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:12px;">
 <select class="avatar-pos-select" id="avatar-shirt-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
 <option value="solid">Lisa</option>
 <option value="striped">Rayada</option>
-<option value="band">Banda Horizontal</option>
-<option value="diagonal">Franja Diagonal</option>
+<option value="band">Banda</option>
+<option value="diagonal">Diagonal</option>
 </select>
-<input type="number" id="avatar-num-input" class="avatar-nickname-input" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
+<input type="color" id="avatar-shirt-color-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;" value="${savedColor}" oninput="actualizarAvatarLive()">
+<input type="number" id="avatar-num-input" class="avatar-nickname-input" style="margin-bottom:0;" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
 </div>
 <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
 <option value="POR">POR — Arquero</option>
@@ -1469,10 +1526,10 @@ ${calHTML}
 document.getElementById('profile-modal').style.display='flex';
 setTimeout(()=>{
 const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
-const selGen = document.getElementById('avatar-gender-input'); if(selGen) selGen.value = savedGender;
 const selHair = document.getElementById('avatar-hair-input'); if(selHair) selHair.value = savedHair;
 const selShirt = document.getElementById('avatar-shirt-input'); if(selShirt) selShirt.value = savedShirt;
 const selNum = document.getElementById('avatar-num-input'); if(selNum) selNum.value = savedNum;
+const selLogo = document.getElementById('avatar-logo-input'); if(selLogo) selLogo.value = savedLogo;
 
 renderizarGridLogros();
 },50);
