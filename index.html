@@ -1412,26 +1412,21 @@ function calcularLogros(){
         const val=currentVal||0;
         const tierActual=Math.floor(val/step);
         const nextTarget=(tierActual+1)*step;
-        
-        // Calculamos el progreso relativo al nivel actual (ej: de 5 a 10, si tenés 6, es 20%)
-        const progresoEnNivel = val - (tierActual * step);
-        const pct = Math.floor((progresoEnNivel / step) * 100);
-        
+        const pct=Math.min(100,Math.floor((val/nextTarget)*100));
         const isBaseUnlocked=tierActual>0;
         const rarity=rarities[Math.min(tierActual,rarities.length-1)];
         
         logros.push({
             id:id,
             icon:icon,
-            name:`${baseName} ${tierActual+1}`, // Nombre apunta siempre a la meta actual
+            name:`${baseName} ${tierActual+1}`,
             rarity:rarity,
-            req:`Meta: ${nextTarget.toLocaleString('es-AR')}${unit}`,
-            unlocked:isBaseUnlocked, // Si ya pasó el Lvl 1, se considera desbloqueado (brilla)
-            enProgreso:val>0, // Siempre en progreso si el usuario ya arrancó
+            req:`Lográ ${nextTarget.toLocaleString('es-AR')}${unit}`,
+            unlocked:isBaseUnlocked,
+            enProgreso:val>0 && !isBaseUnlocked,
             bloqueado:val===0,
             pct:pct,
-            pctLabel:`${val.toLocaleString('es-AR')}/${nextTarget.toLocaleString('es-AR')}`,
-            nivelAlcanzado: tierActual // Pasamos el nivel para el diseño visual
+            pctLabel:`${val.toLocaleString('es-AR')}/${nextTarget.toLocaleString('es-AR')}`
         });
     }
     
@@ -1454,10 +1449,9 @@ function calcularLogros(){
         if(isUnlocked){pct=100;pctLabel='¡Completado!';}
         else if(targetVal){pct=Math.min(100,Math.floor((val/targetVal)*100));pctLabel=`${val}/${targetVal}`;}
         
-        logros.push({id,icon,name,rarity,req,unlocked:isUnlocked,enProgreso:isProgress,bloqueado:isBlocked,pct,pctLabel,nivelAlcanzado:isUnlocked?1:0});
+        logros.push({id,icon,name,rarity,req,unlocked:isUnlocked,enProgreso:isProgress,bloqueado:isBlocked,pct,pctLabel});
     }
     
-    // Logros únicos que solo se completan una vez
     addSingleLogro('bienvenido','👋','Primer Despegue','common','Abrí la app 1 vez',s.sesionesTotal>=1,s.sesionesTotal,1);
     addSingleLogro('nick','🪪','Identidad','common','Personalizá tu apodo',!!getPref('ev_custom_nick',''),getPref('ev_custom_nick','')?1:0,1);
     addSingleLogro('localista','📍','GPS Humano','rare','Adiviná a < 5 km',s.medallaLocalista,s.medallaLocalista?1:0,1);
@@ -1471,41 +1465,6 @@ function calcularLogros(){
 function filtrarLogros(tipo){logrosTabActual=tipo;document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));renderizarGridLogros();}
 
 function renderizarGridLogros(){
-    const grid=document.getElementById('logros-grid-v2');if(!grid)return;
-    const logros=calcularLogros();let filtrados;
-    
-    if(logrosTabActual==='todos')filtrados=logros;
-    else if(logrosTabActual==='desbloqueados')filtrados=logros.filter(l=>l.unlocked);
-    else if(logrosTabActual==='progreso')filtrados=logros.filter(l=>l.enProgreso);
-    else filtrados=logros.filter(l=>l.bloqueado);
-    
-    const total=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
-    const counterEl=document.getElementById('logros-counter');if(counterEl)counterEl.textContent=`${desbloqueados}/${total}`;
-    
-    if(!filtrados.length){
-        let msg = 'Sin logros aquí.';
-        if(logrosTabActual==='desbloqueados') msg = 'Aún no desbloqueaste logros. ¡A jugar!';
-        else if(logrosTabActual==='progreso') msg = 'No tenés logros en progreso.';
-        else if(logrosTabActual==='bloqueados') msg = '¡Ya empezaste todos los logros!';
-        grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${msg}</span></div>`;
-        return;
-    }
-    
-    const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
-    grid.innerHTML=filtrados.map(l=>{
-        const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
-        const progressBar = `<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`;
-        const statusClass=l.unlocked?'unlocked':(l.enProgreso?'in-progress':'locked');
-        
-        // Distinguir entre logros únicos (✓) e infinitos (Lvl X)
-        const isUnico = l.id === 'bienvenido' || l.id === 'nick' || l.id === 'localista' || l.id === 'unKm' || l.id === 'perfecto' || l.id === 'ordenPerfecto';
-        const badgeContent = (l.nivelAlcanzado > 0 && !isUnico) ? `Lvl ${l.nivelAlcanzado}` : '✓';
-            
-        const unlockBadge=l.unlocked?`<div class="logro-unlock-badge" style="width:auto;padding:0 6px;">${badgeContent}</div>`:'';
-        
-        return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
-    }).join('');
-}
     const grid=document.getElementById('logros-grid-v2');if(!grid)return;
     const logros=calcularLogros();let filtrados;
     
