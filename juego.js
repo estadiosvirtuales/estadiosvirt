@@ -15,7 +15,30 @@ try {
 } catch (e) {
     console.error("Error aislado al inicializar Supabase:", e);
 }
+// Memoria global para guardar los promedios de Supabase
+let promediosSupabase = {};
 
+// Función para descargar los promedios de la nube
+async function cargarPromediosSupabase() {
+    if (!supabaseClient) return;
+    try {
+        const { data, error } = await supabaseClient
+            .from('promedios_estadios')
+            .select('*');
+            
+        if (!error && data) {
+            data.forEach(row => {
+                promediosSupabase[row.estadio] = {
+                    promedio: row.promedio_real,
+                    total: row.total_votos
+                };
+            });
+            console.log("¡Promedios en vivo cargados desde Supabase!");
+        }
+    } catch (e) {
+        console.error("Error al traer promedios de Supabase:", e);
+    }
+}
 // Función universal para mandar puntajes a Supabase
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
     if (!supabaseClient) {
@@ -655,10 +678,22 @@ lista.forEach((fila,idx)=>{
 const estadio=bscarPropiedad(fila,'Estadio'),club=bscarPropiedad(fila,'Club');if(!estadio||!club)return;
 const urlFoto=bscarPropiedad(fila,'Foto')?.trim()||'',pais=bscarPropiedad(fila,'País')?.trim()||'Argentina',fond=obtenerFondoClub(club,pais),linkVideo=bscarPropiedad(fila,'Link del Video')?.trim()||'#',latR=bscarPropiedad(fila,'Latitud')?.toString().trim()||'',lngR=bscarPropiedad(fila,'Longitud')?.toString().trim()||'',dato=bscarPropiedad(fila,'Dato Curioso');
 const datoL=(dato||'¡Este estadio esconde grandes historias!').replace(/'/g,"\u2019").replace(/"/g,"\u201C");
-const prom=parseFloat(bscarPropiedad(fila,'Promedio'))||0,vL=obtenerVotoLocal(estadio),est=vL>0?vL:(prom/2);
+const datoSupa = promediosSupabase[estadio];
+        let prom = parseFloat(bscarPropiedad(fila, 'Promedio')) || 0;
+        let textoTotalVotos = "";
+
+        if (datoSupa) {
+            prom = datoSupa.promedio * 2;
+            textoTotalVotos = ` (${datoSupa.total} votos)`;
+        }
+
+        const vL = obtenerVotoLocal(estadio);
+        const est = vL > 0 ? vL : (prom / 2);
 const estadioSafe=estadio.replace(/"/g,'&quot;').replace(/'/g,'&#39;'),clubSafe=club.replace(/"/g,'&quot;').replace(/'/g,'&#39;'),paisSafe=pais.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 let estrellasHTML='';for(let i=1;i<=5;i++){let ic='ph-duotone ph-star';if(i<=Math.floor(est))ic='ph-fill ph-star active';else if(i===Math.ceil(est)&&(est%1>=.5))ic='ph-fill ph-star-half active';estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadioSafe}" data-club="${clubSafe}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;}
-const lRating=vL>0?`Tu voto: ${vL}★${prom>0?` · prom. ${prom.toFixed(1)}/10`:''}`:prom>0?`Calificá · prom. ${prom.toFixed(1)}/10`:'Calificá este estadio';
+const lRating = vL > 0 
+            ? `Tu voto: ${vL}★${prom > 0 ? ` · prom. ${prom.toFixed(1)}/10${textoTotalVotos}` : ''}` 
+            : (prom > 0 ? `Calificá · prom. ${prom.toFixed(1)}/10${textoTotalVotos}` : 'Calificá este estadio');
 const imgHTML=urlFoto?`<img class="card-img-logo" src="${urlFoto}" alt="${clubSafe}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>`:`<div class="placeholder-text">${club}</div>`;
 const t=document.createElement('article');t.className='card animate-fade-up';t.style.animationDelay=`${idx*.04}s`;t.dataset.linkVideo=linkVideo;
 t.innerHTML=`<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="rating-box"><span class="rating-title">${lRating}</span><div class="stars-row">${estrellasHTML}</div></div></div>`;
@@ -1055,7 +1090,8 @@ renderizarGridLogros();
 },50);
 }
 function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
-window.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('DOMContentLoaded', async () => {
+await cargarPromediosSupabase();
 renderizarBotonLogin();ancestralHeaderNivel();
 if(typeof google!=='undefined'&&google.accounts)inicializarGoogleLogin();
 else{document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load',inicializarGoogleLogin);setTimeout(inicializarGoogleLogin,2000);}
