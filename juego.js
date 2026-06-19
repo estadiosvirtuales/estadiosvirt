@@ -1,12 +1,30 @@
-// Conexión oficial con Supabase
+// ========================================================
+// CONEXIÓN OFICIAL CON SUPABASE (CON BLINDAJE ANTI-CRASH)
+// ========================================================
 const SUPABASE_URL = "https://prqqhxyajyhrlqynpocd.supabase.co";
-const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22"; // Acá va tu llave real
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22"; 
+let supabaseClient = null;
+
+try {
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log("¡Supabase inicializado correctamente y listo!");
+    } else {
+        console.warn("Aviso: La librería de Supabase no se detectó en el HTML, pero el juego seguirá funcionando.");
+    }
+} catch (e) {
+    console.error("Error aislado al inicializar Supabase:", e);
+}
+
 // Función universal para mandar puntajes a Supabase
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
+    if (!supabaseClient) {
+        console.error("No se pudo mandar el puntaje: Supabase no está activo.");
+        return;
+    }
     try {
-        const { data, error } = await supabase
-            .from('ranking') // Apuntamos a la tabla que creaste
+        const { data, error } = await supabaseClient
+            .from('ranking') 
             .insert([
                 { 
                     nombre: nombreJugador, 
@@ -25,6 +43,7 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
         console.error("Error inesperado de conexión:", err);
     }
 }
+// ========================================================
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
