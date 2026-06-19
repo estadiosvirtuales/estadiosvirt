@@ -694,18 +694,75 @@ container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(-
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
-async function abrirModalRanking(){
-const body=document.getElementById('ranking-modal-body');body.innerHTML='<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';document.getElementById('ranking-modal').style.display='flex';
-try{const ranking=await(await fetch(scriptUrlRanking)).json();let html=`<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
-if(!ranking?.length)html+=`<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay puntajes.</p>`;else ranking.forEach((f,i)=>{const m=['🥇','🥈','🥉'];const med=i<3?m[i]:`<span style="color:var(--text-muted);">${i+1}</span>`;const nivelR=NIVELES[calcularNivelIdx(f[1]||0)];html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i===ranking.length-1?'none':'1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f[0]||'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f[1]||0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;});
-html+='</div>';body.innerHTML=html;}catch(e){body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión</b></div>`;}
+async function abrirModalRanking() {
+    const body = document.getElementById('ranking-modal-body');
+    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';
+    document.getElementById('ranking-modal').style.display = 'flex';
+    
+    try {
+        // Pedimos a Supabase los 10 mejores de 'guessr'
+        const { data: ranking, error } = await supabaseClient
+            .from('ranking')
+            .select('nombre, puntaje')
+            .eq('juego', 'guessr')
+            .order('puntaje', { ascending: false })
+            .limit(10);
+
+        if (error) throw error;
+
+        let html = `<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+        
+        if (!ranking || !ranking.length) {
+            html += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay puntajes.</p>`;
+        } else {
+            ranking.forEach((f, i) => {
+                const m = ['🥇', '🥈', '🥉'];
+                const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
+                const nivelR = NIVELES[calcularNivelIdx(f.puntaje || 0)];
+                html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre || 'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
+            });
+        }
+        html += '</div>';
+        body.innerHTML = html;
+    } catch (e) {
+        console.error("Error al leer ranking de Supabase:", e);
+        body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
+    }
 }
-async function abrirModalRankingOrden(modo){
-const body=document.getElementById('ranking-modal-body');body.innerHTML='<div style="text-align:center;padding:50px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i></div>';document.getElementById('ranking-modal').style.display='flex';
-const url=modo==='capacidad'?scriptUrlCapacidad:scriptUrlAntiguedad;
-try{const r=await(await fetch(url)).json();let html=`<div style="text-align:center;margin-bottom:22px;"><h2 style="font-size:1.5rem;font-weight:900;">Top ${modo==='capacidad'?'Capacidad':'Antigüedad'}</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
-if(!r?.length)html+=`<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin marcas aún.</p>`;else r.forEach((f,i)=>{const m=['🥇','🥈','🥉'];const med=i<3?m[i]:`<span style="color:var(--text-muted);">${i+1}</span>`;html+=`<div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:${i===r.length-1?'none':'1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f[0]}</span><span style="color:var(--accent-color);font-weight:900;">${f[1]} pts</span></div>`;});
-html+='</div>';body.innerHTML=html;}catch(e){body.innerHTML=`<div style="text-align:center;padding:40px;color:var(--danger-color);"><b>Error de conexión</b></div>`;}
+
+async function abrirModalRankingOrden(modo) {
+    const body = document.getElementById('ranking-modal-body');
+    body.innerHTML = '<div style="text-align:center;padding:50px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i></div>';
+    document.getElementById('ranking-modal').style.display = 'flex';
+    
+    try {
+        // Pedimos los 10 mejores filtrados por la modalidad ('capacidad' o 'antiguedad')
+        const { data: r, error } = await supabaseClient
+            .from('ranking')
+            .select('nombre, puntaje')
+            .eq('juego', modo)
+            .order('puntaje', { ascending: false })
+            .limit(10);
+
+        if (error) throw error;
+
+        let html = `<div style="text-align:center;margin-bottom:22px;"><h2 style="font-size:1.5rem;font-weight:900;">Top ${modo === 'capacidad' ? 'Capacidad' : 'Antigüedad'}</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+        
+        if (!r || !r.length) {
+            html += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin marcas aún.</p>`;
+        } else {
+            r.forEach((f, i) => {
+                const m = ['🥇', '🥈', '🥉'];
+                const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
+                html += `<div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:${i === r.length - 1 ? 'none' : '1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre || 'Anónimo'}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} pts</span></div>`;
+            });
+        }
+        html += '</div>';
+        body.innerHTML = html;
+    } catch (e) {
+        console.error("Error al leer ranking orden de Supabase:", e);
+        body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><b>Error de conexión con la base de datos</b></div>`;
+    }
 }
 function abrirModalOrden(){
 document.getElementById('order-modal').style.display='flex';const body=document.getElementById('order-modal-body');
