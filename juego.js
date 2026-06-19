@@ -337,12 +337,45 @@ ancestralHeaderNivel();
 }
 function guardarVotoLocal(estadio,p){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');v[estadio]=p;localStorage.setItem('ev_votos_locales',JSON.stringify(v));}
 function obtenerVotoLocal(estadio){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');return v[estadio]||0;}
-function registrarVoto(event,estadio,club,puntuacion){
-event.stopPropagation();userStats.votosRealizados++;guardarStats();guardarVotoLocal(estadio,puntuacion);
-const sr=event.target.closest('.stars-row');
-if(sr){sr.querySelectorAll('.star-icon').forEach((s,i)=>{if(i<puntuacion){s.classList.add('active','ph-fill');s.classList.remove('ph-duotone');}else{s.classList.remove('active','ph-fill');s.classList.add('ph-duotone');}});}
-fetch(scriptUrlVotos,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({estadio,club,voto:puntuacion})}).catch(()=>{});
-showToast(`Calificaste ${estadio} con ${puntuacion}★`);agregarXP(50);
+async function registrarVoto(event, estadio, club, puntuacion) {
+    event.stopPropagation();
+    userStats.votosRealizados++;
+    guardarStats();
+    guardarVotoLocal(estadio, puntuacion);
+
+    const sr = event.target.closest('.stars-row');
+    if (sr) {
+        sr.querySelectorAll('.star-icon').forEach((s, i) => {
+            if (i < puntuacion) {
+                s.classList.add('active', 'ph-fill');
+                s.classList.remove('ph-duotone');
+            } else {
+                s.classList.remove('active', 'ph-fill');
+                s.classList.add('ph-duotone');
+            }
+        });
+    }
+
+    // Guardado eficiente en Supabase
+    if (supabaseClient) {
+        try {
+            await supabaseClient
+                .from('votos')
+                .insert([
+                    { 
+                        estadio: estadio, 
+                        club: club, 
+                        voto: puntuacion 
+                    }
+                ]);
+            console.log(`Voto guardado en Supabase: ${estadio} -> ${puntuacion}★`);
+        } catch (err) {
+            console.error("Error al mandar el voto a Supabase:", err);
+        }
+    }
+
+    showToast(`Calificaste ${estadio} con ${puntuacion}★`);
+    agregarXP(50);
 }
 function registrarVotoDesdeAtributo(event,star){registrarVoto(event,star.dataset.estadio,star.dataset.club,parseInt(star.dataset.puntuacion));}
 function bscarPropiedad(obj,clave){
