@@ -1,3 +1,30 @@
+// Conexion oficial con Supabase
+const SUPABASE_URL = "https://prqqhxyajyhrlqynpocd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Funcion universal para mandar puntajes a Supabase
+async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
+    try {
+        const { data, error } = await supabase
+            .from('ranking') // Apuntamos a la tabla que creaste
+            .insert([
+                { 
+                    nombre: nombreJugador, 
+                    puntaje: puntosLogrados, 
+                    email: emailJugador, 
+                    juego: modoJuego 
+                }
+            ]);
+
+        if (error) {
+            console.error("Error de Supabase:", error.message);
+        } else {
+            console.log("¡Puntaje guardado con éxito en la nube!");
+        }
+    } catch (err) {
+        console.error("Error inesperado de conexión:", err);
+    }
+}
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
