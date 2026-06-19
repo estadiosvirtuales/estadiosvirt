@@ -39,22 +39,23 @@ async function cargarPromediosSupabase() {
         console.error("Error al traer promedios de Supabase:", e);
     }
 }
-// Función para guardar o actualizar la experiencia del usuario en Supabase
-async function guardarExperienciaSupabase(email, exp) {
-    if (!supabaseClient || !email) return;
+
+// Función para guardar o actualizar la experiencia del usuario en Supabase (Versión Anónima)
+async function guardarExperienciaSupabase(idUsuario, exp) {
+    if (!supabaseClient || !idUsuario || idUsuario === 'guest') return;
     try {
         const { error } = await supabaseClient
             .from('perfiles')
             .upsert({ 
-                email: email, 
+                id_usuario: idUsuario, 
                 experiencia: exp,
                 updated_at: new Date()
-            }, { onConflict: 'email' });
+            }, { onConflict: 'id_usuario' });
             
         if (error) {
             console.error("No se pudo sincronizar la experiencia:", error);
         } else {
-            console.log("¡Experiencia sincronizada en la nube con éxito!");
+            console.log("¡Experiencia anónima sincronizada en la nube!");
         }
     } catch (e) {
         console.error("Error aislado al guardar experiencia:", e);
@@ -248,13 +249,9 @@ function guardarStats(){
     const toSave = {...userStats, ligas5:[...userStats.ligas5], triviasDescubiertas:[...userStats.triviasDescubiertas]}; // Mantenemos tu guardado local intacto
     localStorage.setItem('ev_user_stats_'+id, JSON.stringify(toSave));
 
-    // --- NUEVO: Sincronización automática con la nube (¡CORREGIDO!) ---
-    // Vamos a buscar directamente el objeto de login para extraer el mail real
-    const datosLogueado = JSON.parse(localStorage.getItem('ev_user_logged'));
-    const emailParaSupa = datosLogueado ? datosLogueado.email : null;
-    
-    if (emailParaSupa && userStats && userStats.xpTotal !== undefined) {
-        guardarExperienciaSupabase(emailParaSupa, userStats.xpTotal);
+    // --- Sincronización automática y 100% anónima con la nube ---
+    if (id && id !== 'guest' && userStats && userStats.xpTotal !== undefined) {
+        guardarExperienciaSupabase(id, userStats.xpTotal);
     }
 }
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
