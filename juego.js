@@ -19,10 +19,10 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
         if (error) {
             console.error("Error de Supabase:", error.message);
         } else {
-            console.log("¡Puntaje guardado con éxito en la nube!");
+            console.log("Puntaje guardado con exito en la nube!");
         }
     } catch (err) {
-        console.error("Error inesperado de conexión:", err);
+        console.error("Error inesperado de conexion:", err);
     }
 }
 
