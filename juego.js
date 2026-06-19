@@ -300,13 +300,27 @@ setTimeout(()=>{const c=document.getElementById('google-signin-btn-container');i
 function cerrarLoginModal(){document.getElementById('login-modal-overlay').classList.remove('active');}
 function manejarClickLogin(){const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
 function esUsuarioGoogle(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u&&u.loginMethod==='google';}
-function guardarScorePendiente(){
-if(pendingScore===null)return;if(!esUsuarioGoogle()){pedirLoginParaGuardar();return;}
-const u=JSON.parse(localStorage.getItem('ev_user_logged'));
-const nombreParaGuardar = getPref('ev_custom_nick', '') || u.name;
-if(pendingScoreType==='guessr'){fetch(scriptUrlRanking,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:nombreParaGuardar,puntaje:pendingScore})}).catch(()=>{});showToast(`¡${pendingScore} pts guardados en el ranking global! 🚀`);}
-else if(pendingScoreType==='capacidad'||pendingScoreType==='antiguedad'){const url=pendingScoreType==='capacidad'?scriptUrlCapacidad:scriptUrlAntiguedad;fetch(url,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:nombreParaGuardar,puntaje:pendingScore})}).catch(()=>{});showToast(`¡${pendingScore} pts guardados! 🚀`);}
-pendingScore=null;pendingScoreType=null;
+function guardarScorePendiente() {
+    if (pendingScore === null) return;
+    
+    if (!esUsuarioGoogle()) {
+        pedirLoginParaGuardar();
+        return;
+    }
+
+    const u = JSON.parse(localStorage.getItem('ev_user_logged'));
+    const nombreParaGuardar = getPref('ev_custom_nick', '') || u.name;
+    const emailParaGuardar = u.email || '';
+
+    // Enviamos el puntaje a Supabase con la columna de juego correspondiente
+    enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
+
+    // Cartel flotante de éxito en pantalla
+    showToast(`¡${pendingScore} pts guardados en Supabase! 🚀`);
+
+    // Limpiamos los datos pendientes para evitar duplicados
+    pendingScore = null;
+    pendingScoreType = null;
 }
 function pedirLoginParaGuardar(){
 const sub=document.querySelector('.login-modal-sub');if(sub)sub.innerHTML=`<b style="color:var(--accent-color);">¡Puntaje listo para guardar!</b><br>Iniciá sesión con Google para guardarlo en el ranking global y no perderlo.`;
