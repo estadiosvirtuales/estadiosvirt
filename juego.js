@@ -816,7 +816,7 @@ guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=nul
 function abrirModalMapa(estadio,pais,lat,lng){
 if(!lat||!lng||!lat.toString().trim()||!lng.toString().trim()){showToast('Coordenadas no disponibles.','ph-warning-circle','danger');return;}
 document.getElementById('map-modal').style.display='flex';const pLat=parseFloat(lat.toString().replace(',','.')),pLng=parseFloat(lng.toString().replace(',','.'));
-setTimeout(()=>{if(previewMapInstance)previewMapInstance.remove();previewMapInstance=L.map('modal-map-container',{attributionControl:false}).setView([pLat,pLng],5);L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19}).addTo(previewMapInstance);L.circleMarker([pLat,pLng],{radius:9,color:'var(--accent-color)',fillColor:'var(--card-bg)',fillOpacity:1,weight:3}).addTo(previewMapInstance).bindPopup(`<b>${estadio}</b><br>${pais}`).openPopup();previewMapInstance.invalidateSize();},250);
+setTimeout(()=>{if(previewMapInstance)previewMapInstance.remove();previewMapInstance=L.map('modal-map-container',{attributionControl:false}).setView([pLat,pLng],5);L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(previewMapInstance);L.circleMarker([pLat,pLng],{radius:9,color:'var(--accent-color)',fillColor:'var(--card-bg)',fillOpacity:1,weight:3}).addTo(previewMapInstance).bindPopup(`<b>${estadio}</b><br>${pais}`).openPopup();previewMapInstance.invalidateSize();},250);
 }
 function cerrarModalMapa(){document.getElementById('map-modal').style.display='none';if(previewMapInstance){previewMapInstance.remove();previewMapInstance=null;}}
 function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
@@ -888,7 +888,7 @@ const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
 setTimeout(()=>{
 if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
-guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18}).addTo(guessrMapInstance);
+guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:18}).addTo(guessrMapInstance);
 guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
 guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
 },600);
