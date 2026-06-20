@@ -41,24 +41,86 @@ async function cargarPromediosSupabase() {
 }
 
 // Función para guardar o actualizar la experiencia del usuario en Supabase (Versión Anónima)
-async function guardarExperienciaSupabase(idUsuario, exp) {
+// Función para sincronizar todo el progreso (XP, Racha y Calendario) en la nube
+async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
     if (!supabaseClient || !idUsuario || idUsuario === 'guest') return;
     try {
+        // Armamos el paquetito con la racha y el calendario para la columna JSONB
+        const datosParaNube = {
+            rachaActual: stats.rachaActual || 1,
+            lastLoginDate: stats.lastLoginDate || "",
+            activeDates: stats.activeDates || []
+        };
+
         const { error } = await supabaseClient
             .from('perfiles')
             .upsert({ 
                 id_usuario: idUsuario, 
                 experiencia: exp,
+                datos_juego: datosParaNube, // <-- Acá se guarda tu calendario completo
                 updated_at: new Date()
             }, { onConflict: 'id_usuario' });
             
         if (error) {
-            console.error("No se pudo sincronizar la experiencia:", error);
+            console.error("No se pudo sincronizar el perfil en la nube:", error);
         } else {
-            console.log("¡Experiencia anónima sincronizada en la nube!");
+            console.log("¡Progreso, racha y calendario sincronizados con éxito!");
         }
     } catch (e) {
-        console.error("Error aislado al guardar experiencia:", e);
+        console.error("Error aislado al sincronizar perfil:", e);
+    }
+}
+// Función para descargar el progreso (XP, Racha y Calendario) desde la nube
+async function cargarProgresoDesdeSupabase() {
+    const id = getUserId();
+    if (!supabaseClient || !id || id === 'guest') return;
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('perfiles')
+            .select('experiencia, datos_juego')
+            .eq('id_usuario', id);
+
+        if (error) {
+            console.error("Error al descargar progreso de la nube:", error);
+            return;
+        }
+
+        if (data && data.length > 0) {
+            const perfilNube = data[0];
+
+            // Sincronizamos la experiencia
+            if (perfilNube.experiencia > userStats.xpTotal || userStats.primeraVez) {
+                userStats.xpTotal = perfilNube.experiencia;
+                userStats.maxScore = Math.max(userStats.maxScore || 0, perfilNube.experiencia);
+                userStats.nivelActual = calcularNivelIdx(userStats.xpTotal);
+                userStats.primeraVez = false;
+            }
+
+            // Sincronizamos los datos del calendario y la racha
+            if (perfilNube.datos_juego) {
+                const dj = perfilNube.datos_juego;
+                if (dj.rachaActual) userStats.rachaActual = dj.rachaActual;
+                if (dj.lastLoginDate) userStats.lastLoginDate = dj.lastLoginDate;
+                
+                if (dj.activeDates && Array.isArray(dj.activeDates)) {
+                    const fechasCombinadas = new Set([...(userStats.activeDates || []), ...dj.activeDates]);
+                    userStats.activeDates = Array.from(fechasCombinadas);
+                }
+            }
+
+            localStorage.setItem('ev_user_stats_' + id, JSON.stringify({
+                ...userStats,
+                ligas5: [...userStats.ligas5],
+                triviasDescubiertas: [...userStats.triviasDescubiertas]
+            }));
+
+            renderizarBotonLogin();
+            if (typeof ancestralHeaderNivel === 'function') ancestralHeaderNivel();
+            console.log("¡Progreso y calendario descargados desde la nube con éxito!");
+        }
+    } catch (e) {
+        console.error("Error aislado al descargar progreso:", e);
     }
 }
 // Función universal para mandar puntajes a Supabase
@@ -249,9 +311,9 @@ function guardarStats(){
     const toSave = {...userStats, ligas5:[...userStats.ligas5], triviasDescubiertas:[...userStats.triviasDescubiertas]}; // Mantenemos tu guardado local intacto
     localStorage.setItem('ev_user_stats_'+id, JSON.stringify(toSave));
 
-    // --- Sincronización automática y 100% anónima con la nube ---
+    // --- Sincronización automática, anónima y completa con la nube ---
     if (id && id !== 'guest' && userStats && userStats.xpTotal !== undefined) {
-        guardarExperienciaSupabase(id, userStats.xpTotal);
+        sincronizarPerfilSupabase(id, userStats.xpTotal, userStats);
     }
 }
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
