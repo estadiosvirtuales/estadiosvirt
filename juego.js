@@ -458,10 +458,10 @@ async function manejarRespuestaGoogle(response){
 }
 // Función de registro seguro y blindado en Supabase (Buzón Ciego)
 // Función de registro seguro en Supabase con diagnóstico de errores
+// Función de registro seguro en Supabase con diagnóstico de errores
 async function registrarUsuarioEnSupabase(user) {
     if (!supabaseClient) return;
     try {
-        // Capturamos el posible error que devuelva la base de datos
         const { error } = await supabaseClient
             .from('usuarios')
             .upsert({ 
@@ -472,13 +472,12 @@ async function registrarUsuarioEnSupabase(user) {
             }, { onConflict: 'id_usuario' });
 
         if (error) {
-            // Si Supabase rechazó el registro, ahora SÍ lo vas a ver en la consola
-            console.error("🚨 Supabase rechazó el registro del usuario:", error.message, error.details);
+            console.error("🚨 Supabase rechazó el registro:", error.message, error.details);
         } else {
-            console.log("👤 Usuario registrado/actualizado con éxito en la tabla 'usuarios'.");
+            console.log("👤 Usuario guardado con éxito en la tabla 'usuarios'.");
         }
     } catch (e) {
-        console.error("Error de red o código en registrarUsuarioEnSupabase:", e);
+        console.error("Error de red en registrarUsuarioEnSupabase:", e);
     }
 }
 function decodeJwt(token){try{const b=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));}catch(e){return null;}}
