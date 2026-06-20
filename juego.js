@@ -886,7 +886,81 @@ if(!cv.length){showToast('No hay videos disponibles.','ph-warning-circle','dange
 userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abrirModalVideo(e,bscarPropiedad(cv[Math.floor(Math.random()*cv.length)],'Link del Video').trim(),false);
 }
 function actualizarDotsProgreso(){const c=document.getElementById('rounds-progress');if(!c)return;let html='';for(let i=1;i<=5;i++){let cls='round-dot';if(i<guessrRondaActual)cls+=' done';else if(i===guessrRondaActual)cls+=' current';html+=`<div class="${cls}"></div>`;}c.innerHTML=html;}
-function iniciarTrivia(){if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();}
+// ========================================================
+// VARIABLES Y LÓGICA DEL MODO MULTIJUGADOR VERSUS (1v1)
+// ========================================================
+let esModoVersus = false;     // El escudo: false = solitario, true = multijugador
+let versusPartidaId = null;   // ID de la partida actual en Supabase
+let versusRol = null;         // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
+let versusEstadios = [];      // Array con la lista fija de estadios para el 1v1
+
+// Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
+function obtener5EstadiosVersus() {
+    const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
+    const disponibles = pool.filter(f => {
+        const l = bscarPropiedad(f, 'Link del Video').toString().trim();
+        return (l.includes('youtube.com') || l.includes('youtu.be')) &&
+               bscarPropiedad(f, 'Latitud').toString().trim() !== '' &&
+               bscarPropiedad(f, 'Longitud').toString().trim() !== '';
+    });
+    const mezclados = [...disponibles].sort(() => Math.random() - 0.5);
+    return mezclados.slice(0, 5);
+}
+
+// Función principal para buscar rival o crear una sala de espera
+async function buscarPartidaVersus() {
+    const idUsuario = getUserId();
+    if (!idUsuario || idUsuario === 'guest') {
+        showToast("Iniciá sesión con Google para jugar el modo Versus 1v1 ⚽", "ph-warning-circle", "danger");
+        pedirLoginParaGuardar();
+        return;
+    }
+
+    showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    const nombresEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+
+    try {
+        const { data, error } = await supabaseClient.rpc('buscar_o_crear_partida', {
+            p_jugador_id: idUsuario,
+            p_estadios_enviados: nombresEstadios
+        });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            const partida = data[0];
+            versusPartidaId = partida.id_partida;
+            versusEstadios = partida.estadios;
+
+            // ACTIVAMOS EL MODO VERSUS PARA EL MOTOR DEL JUEGO
+            esModoVersus = true; 
+
+            if (partida.estado_actual === 'esperando') {
+                versusRol = 'jugador_1';
+                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+                showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
+                // PRÓXIMO PASO: Aquí conectaremos Supabase Realtime para escuchar al rival
+            } else if (partida.estado_actual === 'jugando') {
+                versusRol = 'jugador_2';
+                console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
+                showToast("¡Rival encontrado! Preparando el partido...", "ph-lightning");
+                // PRÓXIMO PASO: Aquí daremos la orden de arranque directo
+            }
+        }
+    } catch (e) {
+        console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
+        showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
+        esModoVersus = false;
+    }
+}
+
+// TU FUNCIÓN CLÁSICA DE SIEMPRE (Ahora con blindaje para el modo solitario)
+function iniciarTrivia(){ 
+    esModoVersus = false; // Si toca el botón común, nos aseguramos de apagar el Versus por completo
+    if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
+    guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
+}
 function lanzarRondaGuessr(){
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
