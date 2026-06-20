@@ -459,22 +459,23 @@ async function manejarRespuestaGoogle(response){
 // Función de registro seguro y blindado en Supabase (Buzón Ciego)
 // Función de registro seguro en Supabase con diagnóstico de errores
 // Función de registro seguro en Supabase con diagnóstico de errores
+// Función de registro 100% blindada mediante canal seguro (RPC)
 async function registrarUsuarioEnSupabase(user) {
     if (!supabaseClient) return;
     try {
+        // Le pasamos los datos al robot interno de Supabase
         const { error } = await supabaseClient
-            .from('usuarios')
-            .upsert({ 
-                id_usuario: user.id, 
-                nombre: user.name, 
-                email: user.email || '', 
-                picture: user.picture || '' 
-            }, { onConflict: 'id_usuario' });
+            .rpc('registrar_usuario', {
+                p_id_usuario: user.id,
+                p_nombre: user.name,
+                p_email: user.email || '',
+                p_picture: user.picture || ''
+            });
 
         if (error) {
-            console.error("🚨 Supabase rechazó el registro:", error.message, error.details);
+            console.error("🚨 Error en el canal seguro de usuarios:", error.message);
         } else {
-            console.log("👤 Usuario guardado con éxito en la tabla 'usuarios'.");
+            console.log("👤 Usuario registrado/actualizado con éxito en el búnker.");
         }
     } catch (e) {
         console.error("Error de red en registrarUsuarioEnSupabase:", e);
