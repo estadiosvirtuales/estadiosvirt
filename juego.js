@@ -17,7 +17,7 @@ try {
 }
 // Memoria global para guardar los promedios de Supabase
 let promediosSupabase = {};
-
+let bloqueasSincronizacionNube = true;
 // Función para descargar los promedios de la nube
 async function cargarPromediosSupabase() {
     if (!supabaseClient) return;
@@ -311,8 +311,8 @@ function guardarStats(){
     const toSave = {...userStats, ligas5:[...userStats.ligas5], triviasDescubiertas:[...userStats.triviasDescubiertas]}; // Mantenemos tu guardado local intacto
     localStorage.setItem('ev_user_stats_'+id, JSON.stringify(toSave));
 
-    // --- Sincronización automática, anónima y completa con la nube ---
-    if (id && id !== 'guest' && userStats && userStats.xpTotal !== undefined) {
+    // --- Sincronización automática, anónima y completa con la nube (CON ESCUDO) ---
+    if (!bloqueasSincronizacionNube && id && id !== 'guest' && userStats && userStats.xpTotal !== undefined) {
         sincronizarPerfilSupabase(id, userStats.xpTotal, userStats);
     }
 }
@@ -401,11 +401,19 @@ async function manejarRespuestaGoogle(response){
     const user = {id:payload.sub, name:payload.name, email:payload.email, picture:payload.picture, loginMethod:'google'};
     localStorage.setItem('ev_user_logged', JSON.stringify(user));
     
-    // --- Cambiamos el viejo Sheets por tu nuevo Supabase blindado ---
+    // Guardamos el usuario en tu tabla de usuarios segura
     await registrarUsuarioEnSupabase(user);
     
-    cargarStats();
-    await cargarProgresoDesdeSupabase(); // Para que también se baje su XP y calendario al entrar
+    // 1. Levantamos el escudo antes de inicializar las estadísticas locales del celular
+    bloqueasSincronizacionNube = true;
+    
+    cargarStats(); // Esto calcula la racha localmente en el celu pero NO la sube todavía
+    
+    // 2. Traemos tus puntos y calendario reales que tenías guardados en la nube
+    await cargarProgresoDesdeSupabase(); 
+    
+    // 3. Ahora que el celu ya tiene tu progreso real de la PC, apagamos el escudo
+    bloqueasSincronizacionNube = false;
     
     cerrarLoginModal();
     renderizarBotonLogin();
@@ -1210,6 +1218,8 @@ renderizarGridLogros();
 function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
 window.addEventListener('DOMContentLoaded', async () => {
 await cargarPromediosSupabase();
+await cargarProgresoDesdeSupabase(); 
+    bloqueasSincronizacionNube = false;
 renderizarBotonLogin();ancestralHeaderNivel();
 if(typeof google!=='undefined'&&google.accounts)inicializarGoogleLogin();
 else{document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load',inicializarGoogleLogin);setTimeout(inicializarGoogleLogin,2000);}
