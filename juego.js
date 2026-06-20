@@ -392,13 +392,42 @@ google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:manejarRespue
 const btnContainer=document.getElementById('google-signin-btn-container');
 if(btnContainer)google.accounts.id.renderButton(btnContainer,{theme:'filled_black',size:'large',shape:'pill',width:300,text:'signin_with'});
 }
-function manejarRespuestaGoogle(response){
-const payload=decodeJwt(response.credential);if(!payload){showToast('Error al procesar la respuesta de Google.','ph-warning-circle','danger');return;}
-const user={id:payload.sub,name:payload.name,email:payload.email,picture:payload.picture,loginMethod:'google'};
-localStorage.setItem('ev_user_logged',JSON.stringify(user));registrarUsuarioEnSheets(user);cargarStats();cerrarLoginModal();renderizarBotonLogin();
-showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);if(pendingScore!==null)setTimeout(()=>guardarScorePendiente(),500);
+async function manejarRespuestaGoogle(response){
+    const payload = decodeJwt(response.credential);
+    if (!payload) {
+        showToast('Error al procesar la respuesta de Google.', 'ph-warning-circle', 'danger');
+        return;
+    }
+    const user = {id:payload.sub, name:payload.name, email:payload.email, picture:payload.picture, loginMethod:'google'};
+    localStorage.setItem('ev_user_logged', JSON.stringify(user));
+    
+    // --- Cambiamos el viejo Sheets por tu nuevo Supabase blindado ---
+    await registrarUsuarioEnSupabase(user);
+    
+    cargarStats();
+    await cargarProgresoDesdeSupabase(); // Para que también se baje su XP y calendario al entrar
+    
+    cerrarLoginModal();
+    renderizarBotonLogin();
+    showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
+    if (pendingScore !== null) setTimeout(() => guardarScorePendiente(), 500);
 }
-function registrarUsuarioEnSheets(user){fetch(scriptUrlUsuarios,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:user.id,name:user.name,email:user.email||'',picture:user.picture||'',emoji:''})}).catch(()=>{});}
+// Función de registro seguro y blindado en Supabase (Buzón Ciego)
+async function registrarUsuarioEnSupabase(user) {
+    if (!supabaseClient) return;
+    try {
+        await supabaseClient
+            .from('usuarios')
+            .upsert({ 
+                id_usuario: user.id, 
+                nombre: user.name, 
+                email: user.email || '', 
+                picture: user.picture || '' 
+            }, { onConflict: 'id_usuario' });
+    } catch (e) {
+        // Lo manejamos en silencio para que no ensucie la consola
+    }
+}
 function decodeJwt(token){try{const b=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));}catch(e){return null;}}
 function abrirModalPrivacy(){document.getElementById('privacy-modal-overlay').style.display='flex';}
 function cerrarModalPrivacy(){document.getElementById('privacy-modal-overlay').style.display='none';}
