@@ -42,14 +42,30 @@ async function cargarPromediosSupabase() {
 
 // Función para guardar o actualizar la experiencia del usuario en Supabase (Versión Anónima)
 // Función para sincronizar todo el progreso (XP, Racha y Calendario) en la nube
+// Función para sincronizar la TOTALIDAD absoluta de la cuenta (Estadísticas + Identidad Visual)
 async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
     if (!supabaseClient || !idUsuario || idUsuario === 'guest') return;
     try {
-        // Armamos el paquetito con la racha y el calendario para la columna JSONB
+        // Armamos el paquete masivo con estadísticas y toda la personalización de la carta
         const datosParaNube = {
-            rachaActual: stats.rachaActual || 1,
-            lastLoginDate: stats.lastLoginDate || "",
-            activeDates: stats.activeDates || []
+            ...stats,
+            ligas5: [...(stats.ligas5 || [])],
+            triviasDescubiertas: [...(stats.triviasDescubiertas || [])],
+            ligasExploradas: [...(stats.ligasExploradas || [])],
+            activeDates: stats.activeDates || [],
+            
+            // NUEVO: Guardamos toda tu identidad estética en la base de datos
+            preferencias: {
+                user_pos: getPref('ev_user_pos', 'DT'),
+                card_theme: getPref('ev_card_theme', 'arg'),
+                custom_nick: getPref('ev_custom_nick', ''),
+                avatar_hair: getPref('ev_avatar_hair', 'short'),
+                avatar_shirt: getPref('ev_avatar_shirt', 'solid'),
+                avatar_color: getPref('ev_avatar_color', '#00e676'),
+                avatar_color2: getPref('ev_avatar_color2', '#ffffff'),
+                avatar_num: getPref('ev_avatar_num', '10'),
+                avatar_logo: getPref('ev_avatar_logo', 'ev')
+            }
         };
 
         const { error } = await supabaseClient
@@ -57,20 +73,21 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
             .upsert({ 
                 id_usuario: idUsuario, 
                 experiencia: exp,
-                datos_juego: datosParaNube, // <-- Acá se guarda tu calendario completo
+                datos_juego: datosParaNube, // <-- Sincronización 100% total de la cuenta
                 updated_at: new Date()
             }, { onConflict: 'id_usuario' });
             
         if (error) {
             console.error("No se pudo sincronizar el perfil en la nube:", error);
         } else {
-            console.log("¡Progreso, racha y calendario sincronizados con éxito!");
+            console.log("¡Cuenta unificada (Progreso + Avatar + Apodo) guardada con éxito!");
         }
     } catch (e) {
         console.error("Error aislado al sincronizar perfil:", e);
     }
 }
 // Función para descargar el progreso (XP, Racha y Calendario) desde la nube
+// Función para descargar la TOTALIDAD de la cuenta desde la nube
 async function cargarProgresoDesdeSupabase() {
     const id = getUserId();
     if (!supabaseClient || !id || id === 'guest') return;
@@ -89,7 +106,7 @@ async function cargarProgresoDesdeSupabase() {
         if (data && data.length > 0) {
             const perfilNube = data[0];
 
-            // Sincronizamos la experiencia
+            // Sincronizamos la experiencia principal
             if (perfilNube.experiencia > userStats.xpTotal || userStats.primeraVez) {
                 userStats.xpTotal = perfilNube.experiencia;
                 userStats.maxScore = Math.max(userStats.maxScore || 0, perfilNube.experiencia);
@@ -97,27 +114,46 @@ async function cargarProgresoDesdeSupabase() {
                 userStats.primeraVez = false;
             }
 
-            // Sincronizamos los datos del calendario y la racha
+            // Sincronizamos el JSON masivo de datos
             if (perfilNube.datos_juego) {
                 const dj = perfilNube.datos_juego;
-                if (dj.rachaActual) userStats.rachaActual = dj.rachaActual;
-                if (dj.lastLoginDate) userStats.lastLoginDate = dj.lastLoginDate;
                 
-                if (dj.activeDates && Array.isArray(dj.activeDates)) {
-                    const fechasCombinadas = new Set([...(userStats.activeDates || []), ...dj.activeDates]);
-                    userStats.activeDates = Array.from(fechasCombinadas);
+                // 1. Restauramos estadísticas, logros y medallas
+                userStats = {
+                    ...userStats,
+                    ...dj,
+                    ligas5: new Set(dj.ligas5 || []),
+                    triviasDescubiertas: new Set(dj.triviasDescubiertas || []),
+                    ligasExploradas: new Set(dj.ligasExploradas || []),
+                    activeDates: dj.activeDates || []
+                };
+
+                // 2. NUEVO: Restauramos toda tu personalización visual en el nuevo dispositivo
+                if (dj.preferencias) {
+                    const p = dj.preferencias;
+                    setPref('ev_user_pos', p.user_pos || 'DT');
+                    setPref('ev_card_theme', p.card_theme || 'arg');
+                    setPref('ev_custom_nick', p.custom_nick || '');
+                    setPref('ev_avatar_hair', p.avatar_hair || 'short');
+                    setPref('ev_avatar_shirt', p.with_shirt || p.avatar_shirt || 'solid');
+                    setPref('ev_avatar_color', p.avatar_color || '#00e676');
+                    setPref('ev_avatar_color2', p.avatar_color2 || '#ffffff');
+                    setPref('ev_avatar_num', p.avatar_num || '10');
+                    setPref('ev_avatar_logo', p.avatar_logo || 'ev');
                 }
             }
 
+            // Guardamos localmente para impactar los cambios de inmediato
             localStorage.setItem('ev_user_stats_' + id, JSON.stringify({
                 ...userStats,
                 ligas5: [...userStats.ligas5],
-                triviasDescubiertas: [...userStats.triviasDescubiertas]
+                triviasDescubiertas: [...userStats.triviasDescubiertas],
+                ligasExploradas: [...userStats.ligasExploradas]
             }));
 
             renderizarBotonLogin();
             if (typeof ancestralHeaderNivel === 'function') ancestralHeaderNivel();
-            console.log("¡Progreso y calendario descargados desde la nube con éxito!");
+            console.log("¡Sincronización completa finalizada! Identidad y progreso restaurados.");
         }
     } catch (e) {
         console.error("Error aislado al descargar progreso:", e);
