@@ -509,7 +509,7 @@ function guardarScorePendiente() {
     enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
 
     // Cartel flotante de éxito en pantalla
-    showToast(`¡${pendingScore} pts guardados en Supabase! 🚀`);
+    showToast(`¡${pendingScore} puntos guardados ! 🚀`);
 
     // Limpiamos los datos pendientes para evitar duplicados
     pendingScore = null;
