@@ -961,33 +961,45 @@ async function buscarPartidaVersus() {
 }
 
 // Función para abrir el WebSocket y escuchar actualizaciones en vivo (Filtro en JS)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Broadcast)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
-    console.log(`[1v1] Abriendo canal Realtime para la partida: ${versusPartidaId}`);
+    console.log(`[1v1] Conectando al canal de la sala directa: sala_${versusPartidaId}`);
 
+    // Creamos el canal de la sala habilitando la mensajería rápida (Broadcast)
     versusChannel = supabaseClient
-        .channel(`cambios_partida_${versusPartidaId}`)
+        .channel(`sala_${versusPartidaId}`, {
+            config: {
+                broadcast: { ack: false, self: false } // self: false evita escucharse a uno mismo
+            }
+        })
+        // ESCUCHAMOS el grito de guerra 'rival_entro'
         .on(
-            'postgres_changes',
-            { event: 'UPDATE', schema: 'public', table: 'partidas' },
-            (payload) => {
-                console.log("[1v1] ¡Llegó una actualización en vivo!", payload);
+            'broadcast',
+            { event: 'rival_entro' },
+            (response) => {
+                console.log("[1v1] ¡Se recibió el aviso directo de que el rival se conectó!", response);
                 
-                // Verificamos si el cambio pertenece a nuestra partida
-                if (payload.new && payload.new.id === versusPartidaId) {
-                    const partidaActualizada = payload.new;
-                    
-                    // Si el Host detecta que la partida pasó a 'jugando', arranca el juego
-                    if (versusRol === 'jugador_1' && partidaActualizada.estado === 'jugando') {
-                        showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
-                        setTimeout(arrancarPartidoVersus, 1500);
-                    }
+                // Si soy el Host (Jugador 1), mi rival me acaba de avisar que ya está listo
+                if (versusRol === 'jugador_1') {
+                    showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
+                    setTimeout(arrancarPartidoVersus, 1500);
                 }
             }
         )
         .subscribe((status) => {
-            console.log(`[1v1] Estado de la conexión Realtime: ${status}`);
+            console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
+            
+            // ¡LA CLAVE! Si soy el Jugador 2 y me acabo de conectar con éxito, le grito al Jugador 1
+            if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
+                console.log("[1v1] Enviando señal de vida instantánea al Jugador 1...");
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'rival_entro',
+                    payload: { listo: true }
+                });
+            }
         });
 }
 
