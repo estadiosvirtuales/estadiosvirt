@@ -1135,8 +1135,10 @@ function confirmarArriesgoLocalVersus() {
 }
 
 // Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa
+// Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa (Versión Blindada)
 function mostrarResultadosMutuosVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
+    console.log("[1v1] Dibujando marcas mutuas en la instancia del mapa Leaflet.");
     const btn = document.getElementById('game-action-btn');
     
     const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
@@ -1157,17 +1159,31 @@ function mostrarResultadosMutuosVersus() {
     if (!isNaN(miDist) && miDist < 1) userStats.guessrUnKm = true;
     actualizarDotsProgreso();
 
+    // 1. Dibujamos el Estadio real (Verde)
     guessrTargetMarker = L.circleMarker([tLat, tLng], {radius: 9, color: '#00e676', fillColor: '#111820', fillOpacity: 1, weight: 3})
         .addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
     
+    // 2. Dibujamos tu línea de error (Roja)
     guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [tLat, tLng]], {color: '#ff4757', weight: 2, dashArray: '6,8'}).addTo(guessrMapInstance);
 
+    // 3. Dibujamos el pin del Rival (Azul)
     const rivalMarker = L.circleMarker([rivalDataRonda.lat, rivalDataRonda.lng], {radius: 8, color: '#2979ff', fillColor: '#111820', fillOpacity: 1, weight: 3})
         .addTo(guessrMapInstance).bindPopup(`<b>Rival (+${rivalDataRonda.puntos} pts)</b>`);
 
+    // 4. Dibujamos la línea de error del Rival (Azul discontinua)
     L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
 
-    guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker, guessrTargetMarker, rivalMarker]).getBounds(), {padding: [50, 50]});
+    // ========================================================
+    // 🛡️ ENCUADRE DE CÁMARA SEGURO ANTI-TRASTRABILLO
+    // ========================================================
+    let marcasParaEncuadrar = [guessrTargetMarker, rivalMarker];
+    if (guessrUserMarker) {
+        marcasParaEncuadrar.push(guessrUserMarker);
+    }
+    
+    // Encuadramos solo usando las capas que existen físicamente en el mapa
+    guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
+    // ========================================================
 
     document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
 
