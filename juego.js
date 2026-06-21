@@ -887,15 +887,13 @@ userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abri
 }
 function actualizarDotsProgreso(){const c=document.getElementById('rounds-progress');if(!c)return;let html='';for(let i=1;i<=5;i++){let cls='round-dot';if(i<guessrRondaActual)cls+=' done';else if(i===guessrRondaActual)cls+=' current';html+=`<div class="${cls}"></div>`;}c.innerHTML=html;}
 // ========================================================
-// ========================================================
 // VARIABLES Y LÓGICA DEL MODO MULTIJUGADOR VERSUS (1v1)
 // ========================================================
-let esModoVersus = false;         // El escudo: false = solitario, true = multijugador
-let versusPartidaId = null;       // ID de la partida actual en Supabase
-let versusRol = null;             // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
-let versusEstadios = [];          // Array con la lista fija de estadios para el 1v1
-let versusChannel = null;         // Canal de WebSocket activo
-let versusPartidaEnCurso = false; // Candado para evitar dobles arranques
+let esModoVersus = false;     // El escudo: false = solitario, true = multijugador
+let versusPartidaId = null;   // ID de la partida actual en Supabase
+let versusRol = null;         // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
+let versusEstadios = [];      // Array con la lista fija de estadios para el 1v1
+let versusChannel = null;     // Canal de WebSocket activo
 
 // VARIABLES PARA EL CONTROL ROUND-BY-ROUND (OPCIÓN 2)
 let miGuessConfirmado = false;
@@ -905,7 +903,6 @@ let miListoSiguiente = false;
 let rivalListoSiguiente = false;
 let versusTimerInterval = null;
 let versusTiempoRestante = 15;
-let handshakeInterval = null;     // Intervalo para el latido de sincronización
 
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 function obtener5EstadiosVersus() {
@@ -928,10 +925,6 @@ async function buscarPartidaVersus() {
         pedirLoginParaGuardar();
         return;
     }
-
-    if (handshakeInterval) clearInterval(handshakeInterval);
-    if (versusTimerInterval) clearInterval(versusTimerInterval);
-    versusPartidaEnCurso = false;
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     const misEstadiosAleatorios = obtener5EstadiosVersus();
@@ -959,8 +952,9 @@ async function buscarPartidaVersus() {
             } else if (partida.estado_actual === 'jugando') {
                 versusRol = 'jugador_2';
                 console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
-                showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
+                showToast("¡Rival encontrado! Preparando el partido...", "ph-lightning");
                 conectarRealtimeVersus();
+                setTimeout(arrancarPartidoVersus, 1500); 
             }
         }
     } catch (e) {
@@ -970,7 +964,7 @@ async function buscarPartidaVersus() {
     }
 }
 
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Broadcast Simplificado)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
@@ -980,38 +974,16 @@ function conectarRealtimeVersus() {
     });
 
     versusChannel
-        // HANDSHAKE 1: El Host escucha los latidos del Rival
         .on('broadcast', { event: 'rival_entro' }, (response) => {
+            console.log("[1v1] El rival entró a la sala.");
             if (versusRol === 'jugador_1') {
-                // Le respondemos inmediatamente al rival confirmando recepción
-                versusChannel.send({
-                    type: 'broadcast',
-                    event: 'host_confirmado',
-                    payload: { listo: true }
-                });
-
-                // Si no iniciamos el juego todavía, damos el silbatazo oficial
-                if (!versusPartidaEnCurso) {
-                    versusPartidaEnCurso = true;
-                    showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
-                    setTimeout(arrancarPartidoVersus, 1000);
-                }
-            }
-        })
-        // HANDSHAKE 2: El Rival recibe la confirmación del Host y apaga el latido
-        .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (versusRol === 'jugador_2' && !versusPartidaEnCurso) {
-                versusPartidaEnCurso = true;
-                if (handshakeInterval) clearInterval(handshakeInterval);
-                handshakeInterval = null;
-                
-                showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
-                setTimeout(arrancarPartidoVersus, 1000);
+                showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
+                setTimeout(arrancarPartidoVersus, 1500);
             }
         })
         // ESCUCHA A: El rival acaba de confirmar su pin en esta ronda
         .on('broadcast', { event: 'rival_voto' }, (response) => {
-            console.log("[1v1] Voto recibido del oponente:", response);
+            console.log("[1v1] 📥 ¡MENSAJE RECIBIDO! El oponente envió su jugada:", response);
             rivalGuessConfirmado = true;
             rivalDataRonda = response.payload;
 
@@ -1031,24 +1003,13 @@ function conectarRealtimeVersus() {
         })
         .subscribe((status) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
-            
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
-                console.log("[1v1] Canal activo. Iniciando ráfaga de latidos de sincronización...");
-                if (handshakeInterval) clearInterval(handshakeInterval);
-                
-                // Enviamos el primer grito de inmediato
-                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
-                
-                // Mantenemos el latido cada 400ms hasta recibir el 'host_confirmado'
-                handshakeInterval = setInterval(() => {
-                    if (versusChannel) {
-                        versusChannel.send({
-                            type: 'broadcast',
-                            event: 'rival_entro',
-                            payload: { listo: true }
-                        });
-                    }
-                }, 400);
+                console.log("[1v1] Enviando señal de vida instantánea al Jugador 1...");
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'rival_entro',
+                    payload: { listo: true }
+                });
             }
         });
 }
@@ -1080,6 +1041,7 @@ function iniciarCuentaRegresivaVersus() {
 function confirmarArriesgoLocalVersus() {
     try {
         if (versusTimerInterval) clearInterval(versusTimerInterval);
+        console.log("[1v1] 📤 Procesando confirmación de pin local...");
         
         const btn = document.getElementById('game-action-btn');
         btn.setAttribute('data-estado', 'procesando');
@@ -1097,12 +1059,13 @@ function confirmarArriesgoLocalVersus() {
 
         miGuessConfirmado = true;
 
-        // Mandamos el paquete directo por el aire
+        // Mandamos el paquete directo por el aire de Supabase Realtime
         versusChannel.send({
             type: 'broadcast',
             event: 'rival_voto',
             payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
         });
+        console.log("[1v1] Paquete 'rival_voto' despachado con éxito.");
 
         if (rivalGuessConfirmado) {
             mostrarResultadosMutuosVersus();
@@ -1228,13 +1191,11 @@ function arrancarPartidoVersus() {
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario)
 function iniciarTrivia(){ 
     esModoVersus = false; 
-    if (handshakeInterval) clearInterval(handshakeInterval);
-    if (versusTimerInterval) clearInterval(versusTimerInterval);
     if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
 
-// MOTOR DEL GUESSR ADAPTADO Y REPARADO SIN EL TYPO DE FILTRO
+// MOTOR DEL GUESSR ADAPTADO (Y CON EL TYPO TOTALMENTE REPARADO)
 function lanzarRondaGuessr(){
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
@@ -1260,34 +1221,19 @@ document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-ba
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
 setTimeout(()=>{
-    if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
-    guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
-    guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
-    guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
+if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
+guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
+guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
+guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
 },600);
 }
 
+// VARIABLES NUEVAS PARA EL CONTROL ROUND-BY-ROUND (OPCIÓN 2)
 function procesarArriesgoGuessr(){
 // CANDADO MULTIJUGADOR: Si es versus, se maneja por su propio motor seguro
 if (esModoVersus) {
     confirmarArriesgoLocalVersus();
     return;
-}
-
-// Tu código solitario clásico de toda la vida sigue acá abajo idéntico:
-const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;btn.setAttribute('data-estado','procesando');btn.disabled=true;
-const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
-const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
-guessrPuntosTotales+=pts;guessrHistorialRondas.push({ronda:guessrRondaActual,estadio:bscarPropiedad(guessrEstadioCorrecto,'Estadio'),distancia:dist,puntos:pts});
-if(!isNaN(dist)&&dist<5)userStats.medallaLocalista=true;if(!isNaN(dist)&&dist<1)userStats.guessrUnKm=true;actualizarDotsProgreso();
-guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColor:'#111820',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
-guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:2,dashArray:'6,8'}).addTo(guessrMapInstance);
-guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker,guessrTargetMarker]).getBounds(),{padding:[40,40]});
-document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
-const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
-btn.innerHTML=`${emoji} ${distT} de error &nbsp;·&nbsp; <b>+${pts} pts</b> &nbsp; Siguiente <i class="ph-bold ph-arrow-right"></i>`;
-if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
-btn.setAttribute('data-estado','resultado');btn.disabled=false;
 }
 
 // Tu código solitario clásico de toda la vida sigue acá abajo idéntico:
