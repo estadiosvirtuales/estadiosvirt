@@ -1635,6 +1635,99 @@ renderizarGridLogros();
 }
 
 function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
+// ========================================================
+// FUNCIONES AUXILIARES DE INTERFAZ, LOGROS Y PROGRESO
+// ========================================================
+
+// Restaura los puntos de progreso visual (Rondas) del juego
+function actualizarDotsProgreso(){
+    const c=document.getElementById('rounds-progress');
+    if(!c)return;
+    let html='';
+    for(let i=1;i<=5;i++){
+        let cls='round-dot';
+        if(i<guessrRondaActual)cls+=' done';
+        else if(i===guessrRondaActual)cls+=' current';
+        html+=`<div class="${cls}"></div>`;
+    }
+    c.innerHTML=html;
+}
+
+// Cambia el diseño de la carta en tiempo real en la vista previa
+function previsualizarTema(tema){
+    const card=document.getElementById('fut-card-main');
+    if(!card)return;
+    card.className='fut-card '+tema;
+    document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));
+}
+
+// Filtra la visualización de los logros según la pestaña seleccionada
+function filtrarLogros(tipo){
+    logrosTabActual=tipo;
+    document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));
+    renderizarGridLogros();
+}
+
+// Renderiza la cuadrícula de medallas y tarjetas de logros dentro del perfil
+function renderizarGridLogros(){
+    const grid=document.getElementById('logros-grid-v2');
+    if(!grid)return;
+    const logros=calcularLogros();
+    let filtrados;
+    if(logrosTabActual==='todos') filtrados=logros;
+    else if(logrosTabActual==='desbloqueados') filtrados=logros.filter(l=>l.unlocked);
+    else if(logrosTabActual==='progreso') filtrados=logros.filter(l=>!l.unlocked&&l.pct>0);
+    else filtrados=logros.filter(l=>!l.unlocked);
+    
+    const total=logros.length, desbloqueados=logros.filter(l=>l.unlocked).length;
+    const counterEl=document.getElementById('logros-counter');
+    if(counterEl) counterEl.textContent=`${desbloqueados}/${total}`;
+    
+    if(!filtrados.length){
+        grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${logrosTabActual==='desbloqueados'?'Aún no desbloqueaste logros. ¡A jugar!':logrosTabActual==='progreso'?'No tenés logros en progreso.':'¡Todos tus logros están desbloqueados!'}</span></div>`;
+        return;
+    }
+    const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
+    grid.innerHTML=filtrados.map(l=>{
+        const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
+        const progressBar=(l.pct!==undefined&&!l.unlocked&&l.pct>0)?`<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`:'';
+        const unlockBadge=l.unlocked?`<div class="logro-unlock-badge">✓</div>`:'';
+        const statusClass=l.unlocked?'unlocked':(l.pct>0?'in-progress':'locked');
+        return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
+    }).join('');
+}
+
+// Calcula matemáticamente el estado y progreso de cada logro del usuario
+function calcularLogros(){
+    const s=userStats;
+    const logros=[];
+    function addTierLogro(id,icon,baseName,currentVal,step,unit,rarity='common'){
+        const val=currentVal||0;
+        const tierActual=Math.floor(val/step);
+        const pct=Math.round(((val%step)/step)*100);
+        if(tierActual>0){
+            logros.push({id:`${id}_${tierActual}`,icon,name:`${baseName} ${tierActual}`,rarity,req:`${val.toLocaleString('es-AR')} de ${(tierActual*step).toLocaleString('es-AR')}${unit}`,unlocked:true,pct:100,pctLabel:''});
+        }
+        const siguiente=tierActual+1;
+        const progActual=val-(tierActual*step);
+        logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
+    }
+    addTierLogro('voto','⭐','Catador',s.votosRealizados,5,' califs','common');
+    addTierLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias','common');
+    addTierLogro('guessr','✈️','Piloto',s.partidasJugadas,5,' partidas','common');
+    addTierLogro('liga','🗂️','Explorador',s.ligasExploradas.size,2,' ligas','common');
+    addTierLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
+    addTierLogro('racha','🔥','Constante',s.rachaActual||1,7,' días','rare');
+    addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
+    addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
+    logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
+    logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
+    logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
+    logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
+    logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
+    logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
+    return logros;
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
 await cargarPromediosSupabase();
