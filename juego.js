@@ -15,9 +15,11 @@ try {
 } catch (e) {
     console.error("Error aislado al inicializar Supabase:", e);
 }
+
 // Memoria global para guardar los promedios de Supabase
 let promediosSupabase = {};
 let bloqueasSincronizacionNube = true;
+
 // Función para descargar los promedios de la nube
 async function cargarPromediosSupabase() {
     if (!supabaseClient) return;
@@ -40,8 +42,6 @@ async function cargarPromediosSupabase() {
     }
 }
 
-// Función para guardar o actualizar la experiencia del usuario en Supabase (Versión Anónima)
-// Función para sincronizar todo el progreso (XP, Racha y Calendario) en la nube
 // Función para sincronizar la TOTALIDAD absoluta de la cuenta (Estadísticas + Identidad Visual)
 async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
     if (!supabaseClient || !idUsuario || idUsuario === 'guest') return;
@@ -54,7 +54,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
             ligasExploradas: [...(stats.ligasExploradas || [])],
             activeDates: stats.activeDates || [],
             
-            // NUEVO: Guardamos toda tu identidad estética en la base de datos
+            // Guardamos toda tu identidad estética en la base de datos
             preferencias: {
                 user_pos: getPref('ev_user_pos', 'DT'),
                 card_theme: getPref('ev_card_theme', 'arg'),
@@ -73,7 +73,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
             .upsert({ 
                 id_usuario: idUsuario, 
                 experiencia: exp,
-                datos_juego: datosParaNube, // <-- Sincronización 100% total de la cuenta
+                datos_juego: datosParaNube, 
                 updated_at: new Date()
             }, { onConflict: 'id_usuario' });
             
@@ -86,7 +86,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
         console.error("Error aislado al sincronizar perfil:", e);
     }
 }
-// Función para descargar el progreso (XP, Racha y Calendario) desde la nube
+
 // Función para descargar la TOTALIDAD de la cuenta desde la nube
 async function cargarProgresoDesdeSupabase() {
     const id = getUserId();
@@ -128,7 +128,7 @@ async function cargarProgresoDesdeSupabase() {
                     activeDates: dj.activeDates || []
                 };
 
-                // 2. NUEVO: Restauramos toda tu personalización visual en el nuevo dispositivo
+                // 2. Restauramos toda tu personalización visual en el dispositivo
                 if (dj.preferencias) {
                     const p = dj.preferencias;
                     setPref('ev_user_pos', p.user_pos || 'DT');
@@ -159,6 +159,7 @@ async function cargarProgresoDesdeSupabase() {
         console.error("Error aislado al descargar progreso:", e);
     }
 }
+
 // Función universal para mandar puntajes a Supabase
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
     if (!supabaseClient) {
@@ -194,13 +195,15 @@ iconRetinaUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
 iconUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
 shadowUrl:'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
+
 const baseSpreadsheetUrl="https://docs.google.com/spreadsheets/d/e/2PACX-1vSOscYU1T4flrTrs9jJMa44jHnsXIOMcPUTBm0ZRycgZZL01yEAky4iuhwZvrDgNa7zterjPY7ZujzG/pub";
 const scriptUrlVotos="https://script.google.com/macros/s/AKfycbzNf5iOxpagt-jwwzLD8pFHs0cWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
 const scriptUrlRanking="https://script.google.com/macros/s/AKfycbwu-fuc2HKntX6rWWWSRo5ZMjL-lDhbAo75eOLrICodzeBNjsJwykEt6VKlKtoqL__2/exec";
 const scriptUrlCapacidad="https://script.google.com/macros/s/AKfycbxIME-M84DhBy3oG4-Y-dtHRhSoTX1G-l476biCk0tgtuMNeM0eHp6-u550yv7h1nkJwQ/exec";
-const scriptUrlAntiguedad="https://script.google.com/macros/s/AKfycbzlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
+const scriptUrlAntiguedad="https://script.google.com/macros/s/AKfycbxlVAmtUZR6V7QZ_1rrykmznsZEolHQ_Sc4SigYI78xBY6zT5f5DSRmNjpvCGBDsiKoMw/exec";
 const scriptUrlUsuarios="https://script.google.com/macros/s/AKfycby4GOySVikjCt7vtaNcKMI8Xzo6sxrfmhRwtWS3h2OabxJEMbtIA_Q-lukMRwrZu2HztA/exec";
 const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googleusercontent.com";
+
 const ESCUDOS_MAP = {
   'ev': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png',
   'ar': 'https://flagcdn.com/w80/ar.png',
@@ -252,6 +255,7 @@ const ESCUDOS_MAP = {
   'jam': 'https://flagcdn.com/w80/jm.png',
   'nzl': 'https://flagcdn.com/w80/nz.png'
 };
+
 function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
     let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
     if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
@@ -268,6 +272,7 @@ function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
     let body = `<div class="fut-player-body"><div class="fut-player-neck"></div><div class="fut-player-torso"><div class="fut-player-arm left"></div><div class="fut-player-shirt" style="${shirtBg}"><div class="fut-player-collar"></div><span class="fut-player-number">${numero}</span></div><div class="fut-player-arm right"></div></div></div>`;
     return `<div style="transform: scale(1.15); transform-origin: bottom center; width: 100%; height: 100%; position: absolute; bottom: 0; display:flex; flex-direction:column; align-items:center;">${acHead}${body}</div>`;
 }
+
 let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
@@ -275,6 +280,7 @@ let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrP
 let previewMapInstance=null;
 let orderList=[],orderSelectedIdx=null,orderModo="",orderPuntosGanados=0,orderStartTime=0;
 let pendingScore=null,pendingScoreType=null;
+
 const NIVELES=(function(){
 const n=[];
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
@@ -295,11 +301,13 @@ n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,color:baseColors[colorIdx]
 n[999].max=Infinity;
 return n;
 })();
+
 let logrosTabActual='todos';
 function getUserId(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u?u.id:'guest';}
 function getPref(key,def){const id=getUserId();return localStorage.getItem(key+'_'+id)||def;}
 function setPref(key,val){const id=getUserId();localStorage.setItem(key+'_'+id,val);}
 let userStats={};
+
 function migrarStatsAntiguos(){
 if(!localStorage.getItem('ev_migrated_v2')){
 const oldStats=localStorage.getItem('ev_user_stats');
@@ -310,6 +318,7 @@ localStorage.setItem('ev_migrated_v2','true');
 }
 }
 migrarStatsAntiguos();
+
 function procesarRachaDiaria() {
     const today = new Date();
     const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
@@ -329,6 +338,7 @@ function procesarRachaDiaria() {
         guardarStats();
     }
 }
+
 function cargarStats(){
 const id=getUserId();
 const stored=localStorage.getItem('ev_user_stats_'+id);
@@ -342,9 +352,10 @@ userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 procesarRachaDiaria();
 }
 cargarStats();
+
 function guardarStats(){
     const id = getUserId();
-    const toSave = {...userStats, ligas5:[...userStats.ligas5], triviasDescubiertas:[...userStats.triviasDescubiertas]}; // Mantenemos tu guardado local intacto
+    const toSave = {...userStats, ligas5:[...userStats.ligas5], triviasDescubiertas:[...userStats.triviasDescubiertas], ligasExploradas:[...userStats.ligasExploradas]}; 
     localStorage.setItem('ev_user_stats_'+id, JSON.stringify(toSave));
 
     // --- Sincronización automática, anónima y completa con la nube (CON ESCUDO) ---
@@ -352,6 +363,7 @@ function guardarStats(){
         sincronizarPerfilSupabase(id, userStats.xpTotal, userStats);
     }
 }
+
 function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELES[i].min)return i;}return 0;}
 function agregarXP(cantidad){
 const nivelAntes=calcularNivelIdx(userStats.xpTotal);
@@ -363,6 +375,7 @@ guardarStats();
 ancestralHeaderNivel();
 if(nivelDespues>nivelAntes)setTimeout(()=>mostrarLevelUp(NIVELES[nivelDespues]),800);
 }
+
 function ancestralHeaderNivel(){
 const badge=document.getElementById('header-level-badge');
 const dot=document.getElementById('header-level-dot');
@@ -371,6 +384,7 @@ const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 const userPos=getPref('ev_user_pos','DT');
 if(badge&&dot&&label){badge.style.display='flex';dot.style.background=nivel.color;dot.style.boxShadow=`0 0 6px ${nivel.color}`;label.textContent=nivel.emoji+' '+userPos;}
 }
+
 function mostrarLevelUp(nivel){
 const overlay=document.getElementById('levelup-overlay');
 document.getElementById('levelup-icon').textContent=nivel.emoji;
@@ -380,6 +394,7 @@ overlay.classList.add('active');
 lanzarConfetti();
 }
 function cerrarLevelUp(){document.getElementById('levelup-overlay').classList.remove('active');}
+
 function lanzarConfetti(){
 const overlay=document.getElementById('levelup-overlay');
 const colors=['#00e676','#eab308','#a78bfa','#ff4757','#2979ff'];
@@ -389,12 +404,14 @@ p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*40}%;background:
 overlay.appendChild(p);setTimeout(()=>p.remove(),1500);
 }
 }
+
 function showToast(msg,icon='ph-check-circle',tipo=''){
 const c=document.getElementById('toast-container');const t=document.createElement('div');
 t.className='toast'+(tipo?' '+tipo:'');
 t.innerHTML=`<i class="ph-fill ${icon}" style="font-size:1.3rem;color:${tipo==='danger'?'var(--danger-color)':'var(--accent-color)'};flex-shrink:0;"></i> ${msg}`;
 c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(20px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),350);},2800);
 }
+
 function toggleTheme(){
 const html=document.documentElement,icon=document.getElementById('theme-icon');
 if(html.getAttribute('data-theme')==='dark'){html.setAttribute('data-theme','light');icon.className='ph-duotone ph-sun';localStorage.setItem('ev_theme','light');}
@@ -404,16 +421,19 @@ else{html.setAttribute('data-theme','dark');icon.className='ph-duotone ph-moon';
 const saved=localStorage.getItem('ev_theme');
 if(saved==='light'){document.documentElement.setAttribute('data-theme','light');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='ph-duotone ph-sun';});}
 })();
+
 let ligasPanelOpen=false;
 const LIGA_COLORS={"0":"#74acdf","861264971":"#74acdf","554922783":"#cf142b","88250864":"#c60b1e","2013531070":"#009246","165565330":"#002395","96716546":"#ffce00","58862486":"#009c3b","304687071":"#d52b1e","879164460":"#1a6b3a"};
 function toggleLigasPanel(){const panel=document.getElementById('ligas-dropdown-panel'),btn=document.getElementById('liga-selector-btn');ligasPanelOpen=!ligasPanelOpen;panel.classList.toggle('open',ligasPanelOpen);btn.classList.toggle('open',ligasPanelOpen);}
 function cerrarLigasPanel(){ligasPanelOpen=false;document.getElementById('ligas-dropdown-panel').classList.remove('open');document.getElementById('liga-selector-btn').classList.remove('open');}
 document.addEventListener('click',(e)=>{const btn=document.getElementById('liga-selector-btn'),panel=document.getElementById('ligas-dropdown-panel');if(btn&&panel&&!btn.contains(e.target)&&!panel.contains(e.target))cerrarLigasPanel();});
+
 window.mostrarLigas=function(){
 document.getElementById('btn-volver-ligas').style.display='none';document.getElementById('liga-elegida-badge').style.display='none';document.getElementById('texto-titulo-grilla').textContent='EXPLORÁ EL CATÁLOGO';
 const labelLiga=document.getElementById('liga-selector-label');if(labelLiga)labelLiga.textContent='Elegir liga';
 document.getElementById('global-search').value='';document.querySelector('.grid').innerHTML='';document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));localStorage.removeItem('ev_last_gid');estadiosCargados=[];cerrarLigasPanel();
 };
+
 function activarLiga(gid,nombre){
 document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));const tab=document.querySelector(`.tab[data-gid="${gid}"]`);if(tab)tab.classList.add('active');
 document.getElementById('btn-volver-ligas').style.display='inline-flex';document.getElementById('texto-titulo-grilla').textContent=nombre.replace(/^[\s\S]*?\s/,'').trim()||nombre;
@@ -422,12 +442,14 @@ dot.style.background=LIGA_COLORS[gid]||'var(--accent-color)';nom.textContent=nom
 document.getElementById('liga-selector-label').textContent=nombre;localStorage.setItem('ev_last_gid',gid);cerrarLigasPanel();
 userStats.ligasExploradas.add(gid);guardarStats();cargarLiga(gid);
 }
+
 function inicializarGoogleLogin(){
 if(typeof google==='undefined'||!google.accounts){setTimeout(inicializarGoogleLogin,500);return;}
 google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:manejarRespuestaGoogle,auto_select:false,cancel_on_tap_outside:true});
 const btnContainer=document.getElementById('google-signin-btn-container');
 if(btnContainer)google.accounts.id.renderButton(btnContainer,{theme:'filled_black',size:'large',shape:'pill',width:300,text:'signin_with'});
 }
+
 async function manejarRespuestaGoogle(response){
     const payload = decodeJwt(response.credential);
     if (!payload) {
@@ -450,20 +472,17 @@ async function manejarRespuestaGoogle(response){
     
     // 3. Ahora que el celu ya tiene tu progreso real de la PC, apagamos el escudo
     bloqueasSincronizacionNube = false;
+    guardarStats();
     
     cerrarLoginModal();
     renderizarBotonLogin();
     showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
     if (pendingScore !== null) setTimeout(() => guardarScorePendiente(), 500);
 }
-// Función de registro seguro y blindado en Supabase (Buzón Ciego)
-// Función de registro seguro en Supabase con diagnóstico de errores
-// Función de registro seguro en Supabase con diagnóstico de errores
-// Función de registro 100% blindada mediante canal seguro (RPC)
+
 async function registrarUsuarioEnSupabase(user) {
     if (!supabaseClient) return;
     try {
-        // Le pasamos los datos al robot interno de Supabase
         const { error } = await supabaseClient
             .rpc('registrar_usuario', {
                 p_id_usuario: user.id,
@@ -506,13 +525,8 @@ function guardarScorePendiente() {
     const nombreParaGuardar = getPref('ev_custom_nick', '') || u.name;
     const emailParaGuardar = u.email || '';
 
-    // Enviamos el puntaje a Supabase con la columna de juego correspondiente
     enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
-
-    // Cartel flotante de éxito en pantalla
     showToast(`¡${pendingScore} puntos guardados ! 🚀`);
-
-    // Limpiamos los datos pendientes para evitar duplicados
     pendingScore = null;
     pendingScoreType = null;
 }
@@ -550,7 +564,6 @@ async function registrarVoto(event, estadio, club, puntuacion) {
         });
     }
 
-    // Guardado eficiente en Supabase
     if (supabaseClient) {
         try {
             await supabaseClient
@@ -574,6 +587,7 @@ async function registrarVoto(event, estadio, club, puntuacion) {
 function registrarVotoDesdeAtributo(event,star){registrarVoto(event,star.dataset.estadio,star.dataset.club,parseInt(star.dataset.puntuacion));}
 function bscarPropiedad(obj,clave){
 if(!obj)return '';const cl=clave.toLowerCase().trim();
+for(let i=0;i<obj.length;i++){}
 for(let k in obj){if(k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g,'').trim()===cl)return obj[k];}
 for(let k in obj){if(k.toLowerCase().includes(cl))return obj[k];}
 return obj[clave]||'';
@@ -790,12 +804,14 @@ const COLORES_CLUBES={"River Plate": "linear-gradient(135deg, #cc0000, #ffffff)"
             "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
             "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"};
 const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)","estados unidos":"linear-gradient(135deg,#002868 0%,#ffffff 50%,#bf0a30 100%)","usa":"linear-gradient(135deg,#002868 0%,#ffffff 50%,#bf0a30 100%)","mexico":"linear-gradient(135deg,#006847 0%,#ffffff 50%,#ce1126 100%)","méxico":"linear-gradient(135deg,#006847 0%,#ffffff 50%,#ce1126 100%)","canada":"linear-gradient(135deg,#d52b1e 0%,#ffffff 50%,#d52b1e 100%)","canadá":"linear-gradient(135deg,#d52b1e 0%,#ffffff 50%,#d52b1e 100%)"};
+
 function obtenerFondoClub(club,pais){
 if(!club&&!pais)return 'linear-gradient(135deg,#0f1419,#080c10)';
 if(club){const cl=club.toLowerCase();for(const k in COLORES_CLUBES){if(k.toLowerCase()===cl)return COLORES_CLUBES[k];}for(const k in COLORES_CLUBES){if(cl.includes(k.toLowerCase())||k.toLowerCase().includes(cl))return COLORES_CLUBES[k];}}
 if(pais){const pl=pais.toLowerCase().trim();for(const k in COLORES_PAISES){if(pl.includes(k)||k.includes(pl))return COLORES_PAISES[k];}}
 return 'linear-gradient(135deg,#0f1419,#1a2233)';
 }
+
 function abrirModalVideo(event,link,esJuego=false){
 if(event)event.preventDefault();if(!link||link==='#'||link.includes('[Pegá tu link')){showToast('Video de este estadio no disponible.','ph-warning-circle','danger');return;}
 const modal=document.getElementById('video-modal'),card=document.getElementById('modal-card'),container=document.getElementById('modal-video-container');container.innerHTML='';
@@ -816,12 +832,14 @@ const attr=esJuego?"autoplay loop muted":"controls autoplay";container.innerHTML
 }else{container.innerHTML=`<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`;}
 modal.style.display='flex';
 }
+
 function cerrarModalVideo(){
 document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
 try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
 try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
 guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
 }
+
 function abrirModalMapa(estadio,pais,lat,lng){
 if(!lat||!lng||!lat.toString().trim()||!lng.toString().trim()){showToast('Coordenadas no disponibles.','ph-warning-circle','danger');return;}
 document.getElementById('map-modal').style.display='flex';const pLat=parseFloat(lat.toString().replace(',','.')),pLng=parseFloat(lng.toString().replace(',','.'));
@@ -831,17 +849,20 @@ function cerrarModalMapa(){document.getElementById('map-modal').style.display='n
 function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
 function cerrarModalOrden(){document.getElementById('order-modal').style.display='none';}
 function cerrarModalRanking(){document.getElementById('ranking-modal').style.display='none';}
+
 function switchTab(event,btn,type,estadio,pais,lat,lng){
 event.stopPropagation();const b=btn.closest('.trivia-balloon');b.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('active'));b.querySelectorAll('.b-content').forEach(c=>c.classList.remove('active'));btn.classList.add('active');const ct=b.querySelector('.b-'+type);if(ct)ct.classList.add('active');
 if(type==='mapa'){abrirModalMapa(estadio,pais,lat,lng);setTimeout(()=>{b.classList.remove('active');b.querySelectorAll('.b-tab')[0].classList.add('active');b.querySelector('.b-trivia').classList.add('active');},100);}
 }
 function switchTabMapa(event,btn){event.stopPropagation();switchTab(event,btn,'mapa',btn.dataset.estadio,btn.dataset.pais,btn.dataset.lat,btn.dataset.lng);}
+
 function toggleTriviaPopup(event,el){
 event.stopPropagation();const g=el.querySelector('.trivia-balloon');const open=g.classList.contains('active');document.querySelectorAll('.trivia-balloon').forEach(x=>x.classList.remove('active'));
 if(!open){g.classList.add('active');userStats.triviasVistas++;const cardTitle=el.closest('.card')?.querySelector('.card-title')?.textContent;if(cardTitle)userStats.triviasDescubiertas.add(cardTitle);guardarStats();gridXP(10);}
 }
 document.addEventListener('click',()=>document.querySelectorAll('.trivia-balloon').forEach(g=>g.classList.remove('active')));
 function mostrarSkeletons(){document.querySelector('.grid').innerHTML=Array(6).fill(0).map(()=>`<div class="loading-card"><div class="loading-card-img skeleton"></div><div class="loading-card-body"><div class="skeleton loading-card-title"></div><div class="skeleton loading-card-sub"></div><div class="skeleton loading-card-btn"></div></div></div>`).join('');}
+
 function renderizarTarjetas(lista){
 const gr=document.querySelector('.grid');gr.innerHTML='';
 if(!lista.length){gr.innerHTML=`<div class="empty-state"><i class="ph-duotone ph-magnifying-glass empty-state-icon"></i><h3>Sin resultados</h3><p>No se encontraron estadios que coincidan.</p></div>`;return;}
@@ -862,7 +883,7 @@ const datoSupa = promediosSupabase[estadio];
         const est = vL > 0 ? vL : (prom / 2);
 const estadioSafe=estadio.replace(/"/g,'&quot;').replace(/'/g,'&#39;'),clubSafe=club.replace(/"/g,'&quot;').replace(/'/g,'&#39;'),paisSafe=pais.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 let estrellasHTML='';for(let i=1;i<=5;i++){let ic='ph-duotone ph-star';if(i<=Math.floor(est))ic='ph-fill ph-star active';else if(i===Math.ceil(est)&&(est%1>=.5))ic='ph-fill ph-star-half active';estrellasHTML+=`<i class="${ic} star-icon" data-estadio="${estadioSafe}" data-club="${clubSafe}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;}
-const lRating = vL > 0 
+const lRating = vL > 0  
             ? `Tu voto: ${vL}★${prom > 0 ? ` · prom. ${prom.toFixed(1)}/10${textoTotalVotos}` : ''}` 
             : (prom > 0 ? `Calificá · prom. ${prom.toFixed(1)}/10${textoTotalVotos}` : 'Calificá este estadio');
 const imgHTML=urlFoto?`<img class="card-img-logo" src="${urlFoto}" alt="${clubSafe}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>`:`<div class="placeholder-text">${club}</div>`;
@@ -871,21 +892,24 @@ t.innerHTML=`<div class="estadio-foto-container" style="background:${fond};" onc
 gr.appendChild(t);
 });
 }
+
 function abrirVideoDesdeCard(event,btn){event.stopPropagation();const c=btn.closest('.card');userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abrirModalVideo(event,c?.dataset.linkVideo||'#',false);}
 document.getElementById('global-search').addEventListener('input',function(e){
 const term=e.target.value.toLowerCase().trim();
 if(term===''){const last=localStorage.getItem('ev_last_gid');if(last)renderizarTarjetas(estadiosCargados);else mostrarLigas();}
 else{document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e.target.value.toUpperCase()}"`;cerrarLigasPanel();renderizarTarjetas(catalogoGlobal.filter(f=>[bscarPropiedad(f,'Estadio'),bscarPropiedad(f,'Club'),bscarPropiedad(f,'País')].some(v=>v.toLowerCase().includes(term))));}
 });
+
 function cargarLiga(gid){mostrarSkeletons();document.getElementById('global-search').value='';Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`,{download:true,header:true,complete:(r)=>{estadiosCargados=r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club'));renderizarTarjetas(estadiosCargados);}});}
 function indexarCatalogoMasivo(){catalogoGlobal=[];todosLosGids.forEach(gid=>{Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`,{download:true,header:true,complete:(r)=>{r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club')).forEach(est=>{const n=bscarPropiedad(est,'Estadio'),c=bscarPropiedad(est,'Club');if(!catalogoGlobal.some(e=>bscarPropiedad(e,'Estadio')===n&&bscarPropiedad(e,'Club')===c))catalogoGlobal.push(est);});}});});}
+
 function dispararVueloAleatorio(e){
 const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;if(!pool.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
 const cv=pool.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&!l.includes('[Pegá tu link');});
 if(!cv.length){showToast('No hay videos disponibles.','ph-warning-circle','danger');return;}
 userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abrirModalVideo(e,bscarPropiedad(cv[Math.floor(Math.random()*cv.length)],'Link del Video').trim(),false);
 }
-function actualizarDotsProgreso(){const c=document.getElementById('rounds-progress');if(!c)return;let html='';for(let i=1;i<=5;i++){let cls='round-dot';if(i<guessrRondaActual)cls+=' done';else if(i===guessrRondaActual)cls+=' current';html+=`<div class="${cls}"></div>`;}c.innerHTML=html;}
+
 // ========================================================
 // VARIABLES Y LÓGICA DEL MODO MULTIJUGADOR VERSUS (1v1)
 // ========================================================
@@ -894,6 +918,7 @@ let versusPartidaId = null;   // ID de la partida actual en Supabase
 let versusRol = null;         // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
 let versusEstadios = [];      // Array con la lista fija de estadios para el 1v1
 let versusChannel = null;     // Canal de WebSocket activo
+let versusPartidaEnCurso = false; // Candado para evitar dobles arranques
 
 // VARIABLES PARA EL CONTROL ROUND-BY-ROUND (OPCIÓN 2)
 let miGuessConfirmado = false;
@@ -903,6 +928,7 @@ let miListoSiguiente = false;
 let rivalListoSiguiente = false;
 let versusTimerInterval = null;
 let versusTiempoRestante = 15;
+let handshakeInterval = null;     // Intervalo para el latido de sincronización
 
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 function obtener5EstadiosVersus() {
@@ -925,6 +951,10 @@ async function buscarPartidaVersus() {
         pedirLoginParaGuardar();
         return;
     }
+
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    versusPartidaEnCurso = false;
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     const misEstadiosAleatorios = obtener5EstadiosVersus();
@@ -952,9 +982,8 @@ async function buscarPartidaVersus() {
             } else if (partida.estado_actual === 'jugando') {
                 versusRol = 'jugador_2';
                 console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
-                showToast("¡Rival encontrado! Preparando el partido...", "ph-lightning");
+                showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
                 conectarRealtimeVersus();
-                setTimeout(arrancarPartidoVersus, 1500); 
             }
         }
     } catch (e) {
@@ -964,7 +993,7 @@ async function buscarPartidaVersus() {
     }
 }
 
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Broadcast Simplificado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
@@ -974,16 +1003,36 @@ function conectarRealtimeVersus() {
     });
 
     versusChannel
+        // HANDSHAKE 1: El Host escucha los latidos del Rival
         .on('broadcast', { event: 'rival_entro' }, (response) => {
-            console.log("[1v1] El rival entró a la sala.");
             if (versusRol === 'jugador_1') {
-                showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
-                setTimeout(arrancarPartidoVersus, 1500);
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'host_confirmado',
+                    payload: { listo: true }
+                });
+
+                if (!versusPartidaEnCurso) {
+                    versusPartidaEnCurso = true;
+                    showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
+                    setTimeout(arrancarPartidoVersus, 1000);
+                }
+            }
+        })
+        // HANDSHAKE 2: El Rival recibe la confirmación del Host y apaga el latido
+        .on('broadcast', { event: 'host_confirmado' }, (response) => {
+            if (versusRol === 'jugador_2' && !versusPartidaEnCurso) {
+                versusPartidaEnCurso = true;
+                if (handshakeInterval) clearInterval(handshakeInterval);
+                handshakeInterval = null;
+                
+                showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
+                setTimeout(arrancarPartidoVersus, 1000);
             }
         })
         // ESCUCHA A: El rival acaba de confirmar su pin en esta ronda
         .on('broadcast', { event: 'rival_voto' }, (response) => {
-            console.log("[1v1] 📥 ¡MENSAJE RECIBIDO! El oponente envió su jugada:", response);
+            console.log("[1v1] Voto recibido del oponente:", response);
             rivalGuessConfirmado = true;
             rivalDataRonda = response.payload;
 
@@ -1003,13 +1052,22 @@ function conectarRealtimeVersus() {
         })
         .subscribe((status) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
+            
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
-                console.log("[1v1] Enviando señal de vida instantánea al Jugador 1...");
-                versusChannel.send({
-                    type: 'broadcast',
-                    event: 'rival_entro',
-                    payload: { listo: true }
-                });
+                console.log("[1v1] Canal activo. Iniciando ráfaga de latidos de sincronización...");
+                if (handshakeInterval) clearInterval(handshakeInterval);
+                
+                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
+                
+                handshakeInterval = setInterval(() => {
+                    if (versusChannel) {
+                        versusChannel.send({
+                            type: 'broadcast',
+                            event: 'rival_entro',
+                            payload: { listo: true }
+                        });
+                    }
+                }, 400);
             }
         });
 }
@@ -1041,7 +1099,6 @@ function iniciarCuentaRegresivaVersus() {
 function confirmarArriesgoLocalVersus() {
     try {
         if (versusTimerInterval) clearInterval(versusTimerInterval);
-        console.log("[1v1] 📤 Procesando confirmación de pin local...");
         
         const btn = document.getElementById('game-action-btn');
         btn.setAttribute('data-estado', 'procesando');
@@ -1059,13 +1116,11 @@ function confirmarArriesgoLocalVersus() {
 
         miGuessConfirmado = true;
 
-        // Mandamos el paquete directo por el aire de Supabase Realtime
         versusChannel.send({
             type: 'broadcast',
             event: 'rival_voto',
             payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
         });
-        console.log("[1v1] Paquete 'rival_voto' despachado con éxito.");
 
         if (rivalGuessConfirmado) {
             mostrarResultadosMutuosVersus();
@@ -1191,6 +1246,8 @@ function arrancarPartidoVersus() {
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario)
 function iniciarTrivia(){ 
     esModoVersus = false; 
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
     if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
@@ -1221,14 +1278,13 @@ document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-ba
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
 setTimeout(()=>{
-if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
-guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
-guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
-guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
+    if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
+    guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
+    guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
+    guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
 },600);
 }
 
-// VARIABLES NUEVAS PARA EL CONTROL ROUND-BY-ROUND (OPCIÓN 2)
 function procesarArriesgoGuessr(){
 // CANDADO MULTIJUGADOR: Si es versus, se maneja por su propio motor seguro
 if (esModoVersus) {
@@ -1251,6 +1307,7 @@ btn.innerHTML=`${emoji} ${distT} de error &nbsp;·&nbsp; <b>+${pts} pts</b> &nbs
 if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
 btn.setAttribute('data-estado','resultado');btn.disabled=false;
 }
+
 function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrRondaActual++;guessrRondaActual<=5?lanzarRondaGuessr():finalizarJuegoGuessr();}
 function finalizarJuegoGuessr(){
 const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
@@ -1264,16 +1321,17 @@ const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuari
 const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
 container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);"><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2><p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p><div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>${histHTML}<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">${guardarBtn}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
 }
+
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
+
 async function abrirModalRanking() {
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
     
     try {
-        // Pedimos a Supabase los 10 mejores de 'guessr'
         const { data: ranking, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
@@ -1309,7 +1367,6 @@ async function abrirModalRankingOrden(modo) {
     document.getElementById('ranking-modal').style.display = 'flex';
     
     try {
-        // Pedimos los 10 mejores filtrados por la modalidad ('capacidad' o 'antiguedad')
         const { data: r, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
@@ -1375,30 +1432,7 @@ if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar')
 function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=idx;renderJuegoOrden();}else if(orderSelectedIdx===idx){orderSelectedIdx=null;renderJuegoOrden();}else{const t=orderList[orderSelectedIdx];orderList[orderSelectedIdx]=orderList[idx];orderList[idx]=t;orderSelectedIdx=null;renderJuegoOrden();}}
 function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
-function calcularLogros(){
-const s=userStats;const logros=[];
-function addTierLogro(id,icon,baseName,currentVal,step,unit,rarity='common'){
-const val=currentVal||0;const tierActual=Math.floor(val/step);const pct=Math.round(((val%step)/step)*100);
-if(tierActual>0){logros.push({id:`${id}_${tierActual}`,icon,name:`${baseName} ${tierActual}`,rarity,req:`${val.toLocaleString('es-AR')} de ${(tierActual*step).toLocaleString('es-AR')}${unit}`,unlocked:true,pct:100,pctLabel:''});}
-const siguiente=tierActual+1;const progActual=val-(tierActual*step);
-logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
-}
-addTierLogro('voto','⭐','Catador',s.votosRealizados,5,' califs','common');
-addTierLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias','common');
-addTierLogro('guessr','✈️','Piloto',s.partidasJugadas,5,' partidas','common');
-addTierLogro('liga','🗂️','Explorador',s.ligasExploradas.size,2,' ligas','common');
-addTierLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
-addTierLogro('racha','🔥','Constante',s.rachaActual||1,7,' días','rare');
-addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
-addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
-logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
-logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
-logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
-logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
-logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
-return logros;
-}
+
 function filtrarLogros(tipo){logrosTabActual=tipo;document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));renderizarGridLogros();}
 function renderizarGridLogros(){
 const grid=document.getElementById('logros-grid-v2');if(!grid)return;
@@ -1436,23 +1470,28 @@ window.actualizarAvatarLive = function() {
     const posInput = document.getElementById('avatar-pos-input');if(posInput) { const futPos = document.getElementById('fut-pos-display');if(futPos) futPos.textContent = posInput.value; }
     const logoInput = document.getElementById('avatar-logo-input');if(logoInput) { const futClub = document.getElementById('fut-club-display');if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev']; }
 };
+
 function guardarPersonalizacion(){
 const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
 const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
-const nickInput=document.getElementById('avatar-nick-input');if(nickInput!==null){const newNick=nickInput.value.trim();setPref('ev_custom_nick',newNick);const futName=document.getElementById('fut-name-display');if(futName){const u=JSON.parse(localStorage.getItem('ev_user_logged'));futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}}
+const nickInput=document.getElementById('avatar-nick-input');if(nickInput!==null){const newNick=nickInput.value.trim();setPref('ev_custom_nick',newNick);const futName=document.getElementById('fut-name-display');if(futName){const u = JSON.parse(localStorage.getItem('ev_user_logged'));futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}}
 const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
 const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
 const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
 const color2Input=document.getElementById('avatar-shirt-color2-input'); if(color2Input) setPref('ev_avatar_color2', color2Input.value);
 const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
 const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
+
 showToast('¡Personalización guardada! 🎉');renderizarBotonLogin();ancestralHeaderNivel();
+guardarStats(); // <--- LLAMADA CRUCIAL AGREGADA PARA SINCRONIZAR AL INSTANTE CON LA NUBE
+
 const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
 const cardEl=document.getElementById('fut-card-main');if(cardEl){
     let th=getPref('ev_card_theme','arg');const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
     if (!validThemes.includes(th)) th = 'arg';cardEl.className='fut-card '+th;
 }if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
 }
+
 function abrirModalPerfil(){
 const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(!u)return;
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
@@ -1462,7 +1501,7 @@ const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col'
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
 const savedHair = getPref('ev_avatar_hair', 'short');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
 const activeCardClass=savedTheme;const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
-const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',l:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
+const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',lGA:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 const today = new Date();const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const currentYear = today.getFullYear();const currentMonth = today.getMonth();const firstDay = new Date(currentYear, currentMonth, 1).getDay();let startOffset = firstDay === 0 ? 6 : firstDay - 1;const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -1594,7 +1633,9 @@ const selLogo = document.getElementById('avatar-logo-input'); if(selLogo) selLog
 renderizarGridLogros();
 },50);
 }
+
 function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
+
 window.addEventListener('DOMContentLoaded', async () => {
 await cargarPromediosSupabase();
 await cargarProgresoDesdeSupabase(); 
