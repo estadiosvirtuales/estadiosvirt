@@ -965,17 +965,19 @@ async function buscarPartidaVersus() {
 }
 
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Broadcast Simplificado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Versión con Estabilizador)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
     console.log(`[1v1] Conectando al canal de la sala directa: sala_${versusPartidaId}`);
+    
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { broadcast: { self: false } }
     });
 
     versusChannel
         .on('broadcast', { event: 'rival_entro' }, (response) => {
-            console.log("[1v1] El rival entró a la sala.");
+            console.log("[1v1] Evento recibido: El oponente se unió al partido.");
             if (versusRol === 'jugador_1') {
                 showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
                 setTimeout(arrancarPartidoVersus, 1500);
@@ -1003,13 +1005,19 @@ function conectarRealtimeVersus() {
         })
         .subscribe((status) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
+            
+            // ¡EL DELAY MÁGICO! Si soy el Jugador 2, esperamos 400ms a que el canal se estabilice
+            // en los servidores de Supabase antes de gritar que entramos.
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
-                console.log("[1v1] Enviando señal de vida instantánea al Jugador 1...");
-                versusChannel.send({
-                    type: 'broadcast',
-                    event: 'rival_entro',
-                    payload: { listo: true }
-                });
+                console.log("[1v1] Canal SUBSCRIBED. Estabilizando caño por 400ms...");
+                setTimeout(() => {
+                    versusChannel.send({
+                        type: 'broadcast',
+                        event: 'rival_entro',
+                        payload: { listo: true }
+                    });
+                    console.log("[1v1] ¡Señal 'rival_entro' despachada con éxito al Jugador 1!");
+                }, 400); 
             }
         });
 }
