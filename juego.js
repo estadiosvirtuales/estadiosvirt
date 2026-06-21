@@ -905,67 +905,7 @@ let rivalListoSiguiente = false;
 let versusTimerInterval = null;
 let versusTiempoRestante = 15;
 
-// Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
-function obtener5EstadiosVersus() {
-    const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
-    const disponibles = pool.filter(f => {
-        const l = bscarPropiedad(f, 'Link del Video').toString().trim();
-        return (l.includes('youtube.com') || l.includes('youtu.be')) &&
-               bscarPropiedad(f, 'Latitud').toString().trim() !== '' &&
-               bscarPropiedad(f, 'Longitud').toString().trim() !== '';
-    });
-    const mezclados = [...disponibles].sort(() => Math.random() - 0.5);
-    return mezclados.slice(0, 5);
-}
-
-// Función principal para buscar rival o crear una sala de espera
-async function buscarPartidaVersus() {
-    const idUsuario = getUserId();
-    if (!idUsuario || idUsuario === 'guest') {
-        showToast("Iniciá sesión con Google para jugar el modo Versus 1v1 ⚽", "ph-warning-circle", "danger");
-        pedirLoginParaGuardar();
-        return;
-    }
-
-    showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
-    const misEstadiosAleatorios = obtener5EstadiosVersus();
-    const nombresEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
-
-    try {
-        const { data, error } = await supabaseClient.rpc('buscar_o_crear_partida', {
-            p_jugador_id: idUsuario,
-            p_estadios_enviados: nombresEstadios
-        });
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-            const partida = data[0];
-            versusPartidaId = partida.id_partida;
-            versusEstadios = partida.estadios;
-            esModoVersus = true; 
-
-            if (partida.estado_actual === 'esperando') {
-                versusRol = 'jugador_1';
-                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-                showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
-                conectarRealtimeVersus();
-            } else if (partida.estado_actual === 'jugando') {
-                versusRol = 'jugador_2';
-                console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
-                showToast("¡Rival encontrado! Preparando el partido...", "ph-lightning");
-                conectarRealtimeVersus();
-                setTimeout(arrancarPartidoVersus, 1500); 
-            }
-        }
-    } catch (e) {
-        console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
-        showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
-        esModoVersus = false;
-    }
-}
-
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Broadcast)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Broadcast con Sensores)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
@@ -973,9 +913,10 @@ function conectarRealtimeVersus() {
 
     versusChannel = supabaseClient
         .channel(`sala_${versusPartidaId}`, {
-            config: { broadcast: { ack: false, self: false } }
+            config: { broadcast: { ack: true, self: false } } // Activamos ack para rastrear entrega
         })
         .on('broadcast', { event: 'rival_entro' }, (response) => {
+            console.log("[1v1] -> Evento 'rival_entro' recibido:", response);
             if (versusRol === 'jugador_1') {
                 showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
                 setTimeout(arrancarPartidoVersus, 1500);
@@ -983,28 +924,33 @@ function conectarRealtimeVersus() {
         })
         // ESCUCHA A: El rival acaba de confirmar su pin en esta ronda
         .on('broadcast', { event: 'rival_voto' }, (response) => {
+            console.log("[1v1] 📥 ¡EVENTO REALTIME RECIBIDO! El rival envió su voto:", response);
             rivalGuessConfirmado = true;
             rivalDataRonda = response.payload;
-            console.log("[1v1] El rival ya arriesgó en esta ronda:", rivalDataRonda);
 
             if (!miGuessConfirmado) {
+                console.log("[1v1] Yo aún no voté. Disparando cuenta regresiva de 15s...");
                 showToast("⚠️ ¡Tu rival ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
                 iniciarCuentaRegresivaVersus();
             } else {
+                console.log("[1v1] Ambos ya votamos. Revelando marcas en el mapa...");
                 mostrarResultadosMutuosVersus();
             }
         })
         // ESCUCHA B: El rival clickeó en avanzar a la siguiente ronda
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
+            console.log("[1v1] -> Evento 'rival_listo_siguiente' recibido:", response);
             rivalListoSiguiente = true;
-            console.log("[1v1] El rival está listo para pasar de ronda.");
             if (miListoSiguiente) {
                 ejecutarPasoDeRondaVersus();
             }
         })
-        .subscribe((status) => {
+        .subscribe((status, err) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
+            if (err) console.error("[1v1] Error de suscripción Realtime:", err);
+            
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
+                console.log("[1v1] Enviando señal de vida instantánea al Jugador 1...");
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'rival_entro',
@@ -1021,8 +967,6 @@ function iniciarCuentaRegresivaVersus() {
     
     versusTimerInterval = setInterval(() => {
         versusTiempoRestante--;
-        
-        // Inyectamos el reloj dinámicamente en el título para no romper tu HTML
         const titleEl = document.getElementById('game-title');
         if (titleEl) {
             titleEl.innerHTML = `<i class="ph-bold ph-timer animate-pulse" style="color:var(--danger-color);"></i> ¡RIVAL ELIGIÓ! TE QUEDAN <span style="color:var(--danger-color); font-weight:900;">${versusTiempoRestante}s</span>`;
@@ -1030,9 +974,10 @@ function iniciarCuentaRegresivaVersus() {
 
         if (versusTiempoRestante <= 0) {
             clearInterval(versusTimerInterval);
+            console.log("[1v1] Se terminó el tiempo de tolerancia. Forzando voto local...");
             showToast("⏱️ ¡Tiempo agotado! Se confirma tu posición actual.", "ph-clock", "danger");
             if (!guessrSelectedLatLng) {
-                guessrSelectedLatLng = { lat: 0, lng: 0 }; // Penalización si no hizo click
+                guessrSelectedLatLng = { lat: 0, lng: 0 }; 
             }
             confirmarArriesgoLocalVersus();
         }
@@ -1040,8 +985,9 @@ function iniciarCuentaRegresivaVersus() {
 }
 
 // Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
-function confirmarArriesgoLocalVersus() {
+async function confirmarArriesgoLocalVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
+    console.log("[1v1] 📤 Iniciando proceso de confirmación de voto local...");
     
     const btn = document.getElementById('game-action-btn');
     btn.setAttribute('data-estado', 'procesando');
@@ -1055,16 +1001,20 @@ function confirmarArriesgoLocalVersus() {
 
     miGuessConfirmado = true;
 
-    // Emitimos nuestra jugada por el aire de Supabase Realtime hacia el Rival
-    versusChannel.send({
+    // Emitimos nuestra jugada por el aire y guardamos la respuesta del envío
+    console.log("[1v1] Despachando paquete 'rival_voto' por el WebSocket...");
+    const respuestaEnvio = await versusChannel.send({
         type: 'broadcast',
         event: 'rival_voto',
         payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
     });
+    console.log("[1v1] Estado de entrega del envío Supabase:", respuestaEnvio);
 
     if (rivalGuessConfirmado) {
+        console.log("[1v1] El rival ya había votado antes que yo. Abriendo el mapa completo...");
         mostrarResultadosMutuosVersus();
     } else {
+        console.log("[1v1] Soy el primero en votar en esta ronda. Esperando respuesta del oponente...");
         btn.innerHTML = `<i class="ph-bold ph-hourglass-medium animate-spin"></i> Esperando al rival...`;
         const titleEl = document.getElementById('game-title');
         if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
@@ -1074,6 +1024,7 @@ function confirmarArriesgoLocalVersus() {
 // Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa
 function mostrarResultadosMutuosVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
+    console.log("[1v1] Ejecutando renderizado mutuo de marcas en el mapa.");
     const btn = document.getElementById('game-action-btn');
     
     const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
@@ -1082,7 +1033,6 @@ function mostrarResultadosMutuosVersus() {
     const miDist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
     const misPts = isNaN(miDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -miDist / 1200)));
     
-    // Sumamos oficialmente a tus estadísticas globales locales
     guessrPuntosTotales += misPts;
     guessrHistorialRondas.push({
         ronda: guessrRondaActual,
@@ -1095,27 +1045,20 @@ function mostrarResultadosMutuosVersus() {
     if (!isNaN(miDist) && miDist < 1) userStats.guessrUnKm = true;
     actualizarDotsProgreso();
 
-    // 1. Dibujamos el Estadio real (Verde)
     guessrTargetMarker = L.circleMarker([tLat, tLng], {radius: 9, color: '#00e676', fillColor: '#111820', fillOpacity: 1, weight: 3})
         .addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
     
-    // 2. Dibujamos tu línea de error (Roja)
     guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [tLat, tLng]], {color: '#ff4757', weight: 2, dashArray: '6,8'}).addTo(guessrMapInstance);
 
-    // 3. Dibujamos el pin del Rival (Azul)
     const rivalMarker = L.circleMarker([rivalDataRonda.lat, rivalDataRonda.lng], {radius: 8, color: '#2979ff', fillColor: '#111820', fillOpacity: 1, weight: 3})
         .addTo(guessrMapInstance).bindPopup(`<b>Rival (+${rivalDataRonda.puntos} pts)</b>`);
 
-    // 4. Dibujamos la línea de error del Rival (Azul discontinua)
     L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
 
-    // Encuadramos la cámara automáticamente para que entren los 3 puntos en pantalla
     guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker, guessrTargetMarker, rivalMarker]).getBounds(), {padding: [50, 50]});
 
-    // Seteamos el título con tus puntos actualizados
     document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
 
-    // Sincronización para el pase de ronda mutuo
     miListoSiguiente = false;
     rivalListoSiguiente = false;
     
@@ -1127,13 +1070,12 @@ function mostrarResultadosMutuosVersus() {
     
     btn.setAttribute('data-estado', 'resultado');
     btn.disabled = false;
-    
-    // Cambiamos el evento click para que espere al rival antes de cambiar de ronda físicamente
     btn.onclick = () => solicitarSiguienteRondaVersus();
 }
 
 // Avisa por canal rápido que estás listo para cambiar de ronda
 function solicitarSiguienteRondaVersus() {
+    console.log("[1v1] El jugador local solicita pasar a la siguiente ronda...");
     const btn = document.getElementById('game-action-btn');
     miListoSiguiente = true;
     btn.disabled = true;
@@ -1152,12 +1094,12 @@ function solicitarSiguienteRondaVersus() {
 
 // Vacía el mapa e inicia formalmente la ronda que sigue
 function ejecutarPasoDeRondaVersus() {
+    console.log("[1v1] Limpiando el tablero. Iniciando siguiente ronda física.");
     [guessrUserMarker, guessrTargetMarker, guessrPolyline].forEach(m => {
         try { if (m) m.remove(); } catch (e) {}
     });
     guessrUserMarker = guessrTargetMarker = guessrPolyline = null;
 
-    // Reseteamos banderas del Versus para la nueva ronda
     miGuessConfirmado = false;
     rivalGuessConfirmado = false;
     rivalDataRonda = null;
@@ -1174,6 +1116,7 @@ function ejecutarPasoDeRondaVersus() {
 
 // Resetea a cero los contadores generales del 1v1
 function arrancarPartidoVersus() {
+    console.log("[1v1] Iniciando ciclo de partido desde Ronda 1.");
     guessrRondaActual = 1;
     guessrPuntosTotales = 0;
     guessrEstadiosJugados = [];
@@ -1198,11 +1141,12 @@ function iniciarTrivia(){
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
 
-// MOTOR DEL GUESSR ADAPTADO PARA AMBOS MODOS
+// MOTOR DEL GUESSR ADAPTADO Y REPARADO SIN EL TYPO DE FILTRO
 function lanzarRondaGuessr(){
-const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(fpx=bscarPropiedad(f,'Longitud').toString().trim()!=='')&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
+const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
 if (esModoVersus) {
+    console.log(`[1v1] Cargando configuración fija para Ronda ${guessrRondaActual}`);
     const nombreEstadioOficial = versusEstadios[guessrRondaActual - 1];
     guessrEstadioCorrecto = (catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados).find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioOficial);
     
@@ -1213,9 +1157,23 @@ if (esModoVersus) {
     }
     guessrEstadiosJugados.push(nombreEstadioOficial);
 } else {
+    console.log("[Modo Solo] Seleccionando ubicación aleatoria...");
     if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
     guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];
     guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
+}
+
+guessrSelectedLatLng=null;actualizarDotsProgreso();
+const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
+document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
+abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
+setTimeout(()=>{
+if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
+guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
+guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
+guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
+},600);
 }
 
 guessrSelectedLatLng=null;actualizarDotsProgreso();
