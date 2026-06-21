@@ -887,12 +887,14 @@ userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abri
 }
 function actualizarDotsProgreso(){const c=document.getElementById('rounds-progress');if(!c)return;let html='';for(let i=1;i<=5;i++){let cls='round-dot';if(i<guessrRondaActual)cls+=' done';else if(i===guessrRondaActual)cls+=' current';html+=`<div class="${cls}"></div>`;}c.innerHTML=html;}
 // ========================================================
+// ========================================================
 // VARIABLES Y LÓGICA DEL MODO MULTIJUGADOR VERSUS (1v1)
 // ========================================================
 let esModoVersus = false;     // El escudo: false = solitario, true = multijugador
 let versusPartidaId = null;   // ID de la partida actual en Supabase
 let versusRol = null;         // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
 let versusEstadios = [];      // Array con la lista fija de estadios para el 1v1
+let versusChannel = null;     // Canal de WebSocket activo
 
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 function obtener5EstadiosVersus() {
@@ -932,20 +934,23 @@ async function buscarPartidaVersus() {
             const partida = data[0];
             versusPartidaId = partida.id_partida;
             versusEstadios = partida.estadios;
-
-            // ACTIVAMOS EL MODO VERSUS PARA EL MOTOR DEL JUEGO
             esModoVersus = true; 
 
             if (partida.estado_actual === 'esperando') {
                 versusRol = 'jugador_1';
                 console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
                 showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
-                // PRÓXIMO PASO: Aquí conectaremos Supabase Realtime para escuchar al rival
+                
+                // Abrimos el canal en tiempo real para escuchar al rival
+                conectarRealtimeVersus();
             } else if (partida.estado_actual === 'jugando') {
                 versusRol = 'jugador_2';
                 console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
                 showToast("¡Rival encontrado! Preparando el partido...", "ph-lightning");
-                // PRÓXIMO PASO: Aquí daremos la orden de arranque directo
+                
+                // Conectamos el canal e iniciamos el juego al toque
+                conectarRealtimeVersus();
+                setTimeout(arrancarPartidoVersus, 1500); 
             }
         }
     } catch (e) {
@@ -955,16 +960,78 @@ async function buscarPartidaVersus() {
     }
 }
 
-// TU FUNCIÓN CLÁSICA DE SIEMPRE (Ahora con blindaje para el modo solitario)
+// Función para abrir el WebSocket y escuchar actualizaciones en vivo (Filtro en JS)
+function conectarRealtimeVersus() {
+    if (!supabaseClient || !versusPartidaId) return;
+
+    console.log(`[1v1] Abriendo canal Realtime para la partida: ${versusPartidaId}`);
+
+    versusChannel = supabaseClient
+        .channel(`cambios_partida_${versusPartidaId}`)
+        .on(
+            'postgres_changes',
+            { event: 'UPDATE', schema: 'public', table: 'partidas' },
+            (payload) => {
+                console.log("[1v1] ¡Llegó una actualización en vivo!", payload);
+                
+                // Verificamos si el cambio pertenece a nuestra partida
+                if (payload.new && payload.new.id === versusPartidaId) {
+                    const partidaActualizada = payload.new;
+                    
+                    // Si el Host detecta que la partida pasó a 'jugando', arranca el juego
+                    if (versusRol === 'jugador_1' && partidaActualizada.estado === 'jugando') {
+                        showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
+                        setTimeout(arrancarPartidoVersus, 1500);
+                    }
+                }
+            }
+        )
+        .subscribe((status) => {
+            console.log(`[1v1] Estado de la conexión Realtime: ${status}`);
+        });
+}
+
+// Setea los contadores del juego e inicia el partido multijugador
+function arrancarPartidoVersus() {
+    guessrRondaActual = 1;
+    guessrPuntosTotales = 0;
+    guessrEstadiosJugados = [];
+    guessrHistorialRondas = [];
+    pendingScore = null;
+    pendingScoreType = null;
+    lanzarRondaGuessr();
+}
+
+// TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario)
 function iniciarTrivia(){ 
-    esModoVersus = false; // Si toca el botón común, nos aseguramos de apagar el Versus por completo
+    esModoVersus = false; 
     if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
+
+// MOTOR DEL GUESSR ADAPTADO PARA AMBOS MODOS
 function lanzarRondaGuessr(){
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
-if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
-guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));guessrSelectedLatLng=null;actualizarDotsProgreso();
+
+// SI ESTAMOS EN VERSUS, FORZAMOS EL ESTADIO QUE DICTÓ SUPABASE
+if (esModoVersus) {
+    const nombreEstadioOficial = versusEstadios[guessrRondaActual - 1];
+    guessrEstadioCorrecto = (catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados).find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioOficial);
+    
+    if (!guessrEstadioCorrecto) {
+        showToast("Error al cargar el estadio del versus 🚨", "ph-warning-circle", "danger");
+        cerrarModalVideo();
+        return;
+    }
+    guessrEstadiosJugados.push(nombreEstadioOficial);
+} else {
+    // MODO SOLO CLÁSICO: Elige al azar como hizo siempre
+    if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
+    guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];
+    guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
+}
+
+guessrSelectedLatLng=null;actualizarDotsProgreso();
 const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
 document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
