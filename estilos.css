@@ -525,6 +525,7 @@ body>*{position:relative;z-index:1}
     margin-top: auto; /* Empuja los botones hacia el fondo de la tarjeta */
     padding: 4px;
     box-sizing: border-box;
+    border-radius: 12px;
 }
 
 /* Estilo estilizado para los dos botones internos */
