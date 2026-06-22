@@ -911,13 +911,11 @@ userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abri
 }
 
 // ========================================================
-// VARIABLES Y LÓGICA DEL MODO MULTIJUGADOR VERSUS (1v1)
-// ========================================================
-let esModoVersus = false;     // El escudo: false = solitario, true = multijugador
-let versusPartidaId = null;   // ID de la partida actual en Supabase
-let versusRol = null;         // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
-let versusEstadios = [];      // Array con la lista fija de estadios para el 1v1
-let versusChannel = null;     // Canal de WebSocket activo
+let esModoVersus = false;         // El escudo: false = solitario, true = multijugador
+let versusPartidaId = null;       // ID de la partida actual en Supabase
+let versusRol = null;             // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
+let versusEstadios = [];          // Array con la lista fija de estadios para el 1v1
+let versusChannel = null;         // Canal de WebSocket activo
 let versusPartidaEnCurso = false; // Candado para evitar dobles arranques
 
 // VARIABLES PARA EL CONTROL ROUND-BY-ROUND (OPCIÓN 2)
@@ -929,6 +927,7 @@ let rivalListoSiguiente = false;
 let versusTimerInterval = null;
 let versusTiempoRestante = 15;
 let handshakeInterval = null;     // Intervalo para el latido de sincronización
+let rivalPuntosTotales = 0;       // Acumulador oficial del oponente
 
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 function obtener5EstadiosVersus() {
@@ -1052,20 +1051,13 @@ function conectarRealtimeVersus() {
         })
         .subscribe((status) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
-            
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
-                console.log("[1v1] Canal activo. Iniciando ráfaga de latidos de sincronización...");
                 if (handshakeInterval) clearInterval(handshakeInterval);
-                
                 versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
                 
                 handshakeInterval = setInterval(() => {
                     if (versusChannel) {
-                        versusChannel.send({
-                            type: 'broadcast',
-                            event: 'rival_entro',
-                            payload: { listo: true }
-                        });
+                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
                     }
                 }, 400);
             }
@@ -1135,10 +1127,8 @@ function confirmarArriesgoLocalVersus() {
 }
 
 // Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa
-// Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa (Versión Blindada)
 function mostrarResultadosMutuosVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
-    console.log("[1v1] Dibujando marcas mutuas en la instancia del mapa Leaflet.");
     const btn = document.getElementById('game-action-btn');
     
     const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
@@ -1148,6 +1138,8 @@ function mostrarResultadosMutuosVersus() {
     const misPts = isNaN(miDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -miDist / 1200)));
     
     guessrPuntosTotales += misPts;
+    rivalPuntosTotales += rivalDataRonda.puntos; 
+
     guessrHistorialRondas.push({
         ronda: guessrRondaActual,
         estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
@@ -1159,31 +1151,19 @@ function mostrarResultadosMutuosVersus() {
     if (!isNaN(miDist) && miDist < 1) userStats.guessrUnKm = true;
     actualizarDotsProgreso();
 
-    // 1. Dibujamos el Estadio real (Verde)
     guessrTargetMarker = L.circleMarker([tLat, tLng], {radius: 9, color: '#00e676', fillColor: '#111820', fillOpacity: 1, weight: 3})
         .addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
     
-    // 2. Dibujamos tu línea de error (Roja)
     guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [tLat, tLng]], {color: '#ff4757', weight: 2, dashArray: '6,8'}).addTo(guessrMapInstance);
 
-    // 3. Dibujamos el pin del Rival (Azul)
     const rivalMarker = L.circleMarker([rivalDataRonda.lat, rivalDataRonda.lng], {radius: 8, color: '#2979ff', fillColor: '#111820', fillOpacity: 1, weight: 3})
         .addTo(guessrMapInstance).bindPopup(`<b>Rival (+${rivalDataRonda.puntos} pts)</b>`);
 
-    // 4. Dibujamos la línea de error del Rival (Azul discontinua)
     L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
 
-    // ========================================================
-    // 🛡️ ENCUADRE DE CÁMARA SEGURO ANTI-TRASTRABILLO
-    // ========================================================
     let marcasParaEncuadrar = [guessrTargetMarker, rivalMarker];
-    if (guessrUserMarker) {
-        marcasParaEncuadrar.push(guessrUserMarker);
-    }
-    
-    // Encuadramos solo usando las capas que existen físicamente en el mapa
+    if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
     guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
-    // ========================================================
 
     document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
 
@@ -1191,7 +1171,13 @@ function mostrarResultadosMutuosVersus() {
     rivalListoSiguiente = false;
     
     const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
-    btn.innerHTML = `Sumaste +${misPts} pts (${miDistT}) | Rival: +${rivalDataRonda.puntos} pts. Avanzar <i class="ph-bold ph-arrow-right"></i>`;
+    
+    if (guessrRondaActual < 5) {
+        btn.innerHTML = `Sumaste +${misPts} pts (${miDistT}) | Rival: +${rivalDataRonda.puntos} pts. Avanzar <i class="ph-bold ph-arrow-right"></i>`;
+    } else {
+        btn.innerHTML = `Finalizar Partido Mano a Mano 🏁`;
+    }
+    
     btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
     btn.style.color = "#000";
     btn.style.boxShadow = "0 5px 0 #0d5332";
@@ -1206,7 +1192,7 @@ function solicitarSiguienteRondaVersus() {
     const btn = document.getElementById('game-action-btn');
     miListoSiguiente = true;
     btn.disabled = true;
-    btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Esperando que el rival avance...`;
+    btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Esperando oponente...`;
 
     versusChannel.send({
         type: 'broadcast',
@@ -1244,6 +1230,7 @@ function ejecutarPasoDeRondaVersus() {
 function arrancarPartidoVersus() {
     guessrRondaActual = 1;
     guessrPuntosTotales = 0;
+    rivalPuntosTotales = 0;
     guessrEstadiosJugados = [];
     guessrHistorialRondas = [];
     pendingScore = null;
@@ -1302,13 +1289,11 @@ setTimeout(()=>{
 }
 
 function procesarArriesgoGuessr(){
-// CANDADO MULTIJUGADOR: Si es versus, se maneja por su propio motor seguro
 if (esModoVersus) {
     confirmarArriesgoLocalVersus();
     return;
 }
 
-// Tu código solitario clásico de toda la vida sigue acá abajo idéntico:
 const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;btn.setAttribute('data-estado','procesando');btn.disabled=true;
 const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
 const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
@@ -1325,9 +1310,53 @@ btn.setAttribute('data-estado','resultado');btn.disabled=false;
 }
 
 function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrRondaActual++;guessrRondaActual<=5?lanzarRondaGuessr():finalizarJuegoGuessr();}
-function finalizarJuegoGuessr(){
+
+// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
+async function finalizarJuegoGuessr(){
 const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
 if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
+
+if (esModoVersus) {
+    const id = getUserId();
+    const nombreLocal = getPref('ev_custom_nick', '') || JSON.parse(localStorage.getItem('ev_user_logged'))?.name || 'Jugador';
+    
+    let cartelResultado = "";
+    let colorResultado = "#ffea00";
+    
+    if (guessrPuntosTotales > rivalPuntosTotales) {
+        cartelResultado = "¡VICTORIA TOTAL! 🏆";
+        colorResultado = "#00e676";
+        showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
+        
+        try {
+            await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal }]);
+            console.log("[1v1] Victoria registrada con éxito en la nube.");
+        } catch(err) {
+            console.error("Error al asentar victoria:", err);
+        }
+    } else if (guessrPuntosTotales < rivalPuntosTotales) {
+        cartelResultado = "DERROTA EN EL VERSUS ❌";
+        colorResultado = "#ff4757";
+        showToast("Derrota. ¡A entrenar para la revancha! ⚽", "ph-x-circle", "danger");
+    } else {
+        cartelResultado = "¡EMPATE DE CRACKS! 🤝";
+        colorResultado = "#2979ff";
+    }
+
+    container.innerHTML = `
+    <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
+        <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:${colorResultado};">${cartelResultado}</h2>
+        <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
+        <div style="display:flex;align-items:center;gap:30px;background:var(--surface-color);border:2px solid var(--border-strong);padding:20px 40px;border-radius:16px;margin-bottom:30px;">
+            <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">VOS</div><strong style="font-size:1.8rem;color:#00e676;">${guessrPuntosTotales}</strong></div>
+            <div style="font-size:1.5rem;font-weight:900;color:var(--border-strong);">VS</div>
+            <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">RIVAL</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
+        </div>
+        <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
+    </div>`;
+    return;
+}
+
 userStats.partidasJugadas++;if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
 if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;guardarStats();agregarXP(guessrPuntosTotales);pendingScore=guessrPuntosTotales;pendingScoreType='guessr';
 const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
@@ -1342,41 +1371,79 @@ function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType=
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
 
-async function abrirModalRanking() {
+// SISTEMA DE RANKINGS INTEGRADO CON PESTAÑAS (SOLO, VERSUS TOTAL Y VERSUS SEMANAL)
+async function abrirModalRanking(modoEspecifico = 'solo') {
     const body = document.getElementById('ranking-modal-body');
-    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Cargando Top 10...</div>';
+    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando al búnker...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
     
+    let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
+    let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
+    let activeVSem = modoSpecifico === 'v_semanal' ? 'active' : '';
+    
+    let subMenuHTML = `
+    <div class="logros-tabs-row" style="margin-bottom:18px; display:flex; gap:5px;">
+        <button class="logro-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">👤 Solo (Puntos)</button>
+        <button class="logro-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">🏆 1v1 Histórico</button>
+        <button class="logro-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">🔥 1v1 Semanal</button>
+    </div>`;
+
     try {
-        const { data: ranking, error } = await supabaseClient
-            .from('ranking')
-            .select('nombre, puntaje')
-            .eq('juego', 'guessr')
-            .order('puntaje', { ascending: false })
-            .limit(10);
-
-        if (error) throw error;
-
-        let html = `<div style="text-align:center;margin-bottom:22px;"><div style="font-size:2.8rem;color:var(--accent-color);margin-bottom:10px;"><i class="ph-duotone ph-trophy"></i></div><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;">TOP 10 Global</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+        let htmlContenido = "";
         
-        if (!ranking || !ranking.length) {
-            html += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay puntajes.</p>`;
+        if (modoEspecifico === 'solo') {
+            const { data: ranking, error } = await supabaseClient
+                .from('ranking')
+                .select('nombre, puntaje')
+                .eq('juego', 'guessr')
+                .order('puntaje', { ascending: false })
+                .limit(10);
+            if (error) throw error;
+
+            htmlContenido += `<div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+            if (!ranking || !ranking.length) {
+                htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay registros solitarios.</p>`;
+            } else {
+                ranking.forEach((f, i) => {
+                    const m = ['🥇', '🥈', '🥉'];
+                    const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
+                    const nivelR = NIVELES[calcularNivelIdx(f.puntaje || 0)];
+                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre || 'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
+                });
+            }
+            htmlContenido += '</div>';
+            
         } else {
-            ranking.forEach((f, i) => {
-                const m = ['🥇', '🥈', '🥉'];
-                const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                const nivelR = NIVELES[calcularNivelIdx(f.puntaje || 0)];
-                html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre || 'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
-            });
+            const tipoRpc = modoEspecifico === 'v_semanal' ? 'semanal' : 'historico';
+            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus', { p_tipo: tipoRpc });
+            if (error) throw error;
+
+            htmlContenido += `<div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+            if (!ranking || !ranking.length) {
+                htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
+            } else {
+                ranking.forEach((f, i) => {
+                    const m = ['🥇', '🥈', '🥉'];
+                    const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
+                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre_jugador || 'Anónimo'}</span><span style="color:var(--accent-color);font-weight:900;">${f.victorias_acumuladas || 0} <span style="font-size:.78rem;color:var(--text-muted);">W</span></span></div>`;
+                });
+            }
+            htmlContenido += '</div>';
         }
-        html += '</div>';
-        body.innerHTML = html;
+
+        body.innerHTML = `
+        <div style="text-align:center;margin-bottom:15px;">
+            <div style="font-size:2.5rem;color:var(--accent-color);margin-bottom:5px;"><i class="ph-duotone ph-trophy"></i></div>
+            <h2 style="font-size:1.4rem;font-weight:900;text-transform:uppercase;">Salón de la Fama</h2>
+        </div>
+        ${subMenuHTML}
+        ${htmlContenido}`;
+        
     } catch (e) {
-        console.error("Error al leer ranking de Supabase:", e);
+        console.error("Error al leer ranking global:", e);
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
-
 async function abrirModalRankingOrden(modo) {
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i></div>';

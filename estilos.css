@@ -512,3 +512,63 @@ body>*{position:relative;z-index:1}
 .tabs-container{grid-template-columns:1fr}
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
 }
+/* ========================================================
+   BOTONERA DE MODOS PARA STADIUM GUESSR (VERSUS 1V1)
+   ======================================================== */
+
+/* Contenedor de los dos botones dentro de la tarjeta */
+.card-modes-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+/* Estilo base para ambos botones */
+.btn-menu-action {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #111820; /* Color oscuro para el texto */
+}
+
+/* Botón Modo Solo: Verde clásico de tu app */
+.btn-menu-action.solo {
+    background: #00e676;
+    box-shadow: 0 4px 0 #0d9652;
+}
+.btn-menu-action.solo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #0d9652;
+}
+.btn-menu-action.solo:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #0d9652;
+}
+
+/* Botón Modo Versus: Degradado Eléctrico Azul/Violeta */
+.btn-menu-action.versus {
+    background: linear-gradient(135deg, #2979ff, #a78bfa);
+    color: #ffffff; /* Texto blanco para que resalte */
+    box-shadow: 0 4px 0 #1b4bbd;
+}
+.btn-menu-action.versus:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #1b4bbd;
+    filter: brightness(1.1);
+}
+.btn-menu-action.versus:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #1b4bbd;
+}

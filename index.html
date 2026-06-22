@@ -99,11 +99,24 @@
 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
 </div>
 <div class="game-modes">
-<button class="game-card btn-guessr" onclick="iniciarTrivia()">
-<div class="game-card-icon"><i class="ph-duotone ph-map-pin-line"></i></div>
-<div class="game-card-text"><strong>StadiumGuessr</strong><span>Adiviná la ubicación</span></div>
-<span class="game-card-badge">5 rondas</span>
-</button>
+<div class="game-card btn-guessr" style="cursor: default; display: flex; flex-direction: column; gap: 12px;">
+    <!-- Contenedor superior con la info clásica del estadio -->
+    <div style="display: flex; align-items: center; width: 100%; position: relative; gap: 12px;">
+        <div class="game-card-icon"><i class="ph-duotone ph-map-pin-line"></i></div>
+        <div class="game-card-text"><strong>StadiumGuessr</strong><span>Adiviná la ubicación</span></div>
+        <span class="game-card-badge" style="margin-left: auto;">5 rondas</span>
+    </div>
+    
+    <!-- Botonera interna para elegir el modo -->
+    <div class="card-modes-buttons">
+        <button class="btn-menu-action solo" onclick="iniciarTrivia()">
+            <i class="ph-bold ph-user"></i> Solo
+        </button>
+        <button class="btn-menu-action versus" onclick="buscarPartidaVersus()">
+            <i class="ph-bold ph-lightning"></i> Versus 1v1
+        </button>
+    </div>
+</div>
 <button class="game-card btn-order" onclick="abrirModalOrden()">
 <div class="game-card-icon"><i class="ph-duotone ph-sort-ascending"></i></div>
 <div class="game-card-text"><strong>Ordenar Estadios</strong><span>Capacidad y Edad</span></div>
