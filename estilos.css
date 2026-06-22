@@ -518,13 +518,28 @@ body>*{position:relative;z-index:1}
 
 /* Contenedor de los dos botones dentro de la tarjeta */
 /* Contenedor de modos (Tarjeta Verde) */
+/* Contenedor de modos (Tarjeta Verde) - Base para PC */
 .card-modes-buttons {
     display: flex;
     gap: 8px;
     width: 100%;
     margin-top: auto; 
-    padding: 0 12px 12px 12px; /* ← Cambiamos esto para darle aire a los costados y abajo */
+    padding: 0 12px 12px 12px; 
     box-sizing: border-box;
+}
+
+/* 📱 ADAPTACIÓN PARA CELULARES (Pantallas de menos de 480px) */
+@media (max-width: 480px) {
+    .card-modes-buttons {
+        flex-direction: column; /* ↑ Los botones se apilan verticalmente */
+        gap: 6px;
+        padding: 0 16px 16px 16px; /* Más aire en las esquinas del celu */
+    }
+    
+    .btn-menu-action {
+        width: 100%; /* El botón ocupa todo el ancho disponible */
+        padding: 14px 10px; /* Un toque más altos para que sea cómodo dar el "tap" */
+    }
 }
 
 /* Estilo estilizado para los dos botones internos */
