@@ -624,58 +624,58 @@ body>*{position:relative;z-index:1}
     box-shadow: 0 1px 0 #1b4bbd;
 }
 /* ========================================================
-   REDISEÑO VERTICAL COMPACTO DE BOTONES (STADIUMGUESSR)
+   REDISEÑO INMUTABLE Y COMPACTO DE LA BOTONERA STADIUMGUESSR
    ======================================================== */
 
-/* Contenedor principal: Separación mucho más ajustada */
-.card-modes-buttons.stacked-layout {
-    display: flex;
-    flex-direction: column; 
-    gap: 8px;              /* Espacio mínimo y prolijo entre filas */
-    width: 100%;
-    padding: 6px 12px 12px 12px;
-    box-sizing: border-box;
-}
-
-/* Botones versión estilizada y chiquita */
-.card-modes-buttons.stacked-layout .btn-menu-action {
+/* Forzamos que la botonera se apile en filas finas, sí o sí */
+.card-modes-buttons {
+    display: flex !important;
+    flex-direction: column !important; /* Uno abajo del otro */
+    gap: 6px !important;               /* Distancia bien corta */
     width: 100% !important;
-    height: 36px !important;  /* 🔥 Altura super compacta */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 0.85rem !important; /* Letra más chica acorde al botón */
-    font-weight: 700;
-    text-transform: uppercase;
-    border-radius: 8px;       /* Esquinas más finas para este tamaño */
-    border: none;
-    cursor: pointer;
-    white-space: nowrap; 
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    padding: 8px 12px !important;
+    box-sizing: border-box !important;
 }
 
-/* Colores y sombras en 3D reducidas (3px de relieve) */
-.card-modes-buttons.stacked-layout .btn-menu-action.solo {
-    background: #00e676;
-    color: #000;
-    box-shadow: 0 3px 0 #0b934c;
+/* Forzamos tamaño chico e inmutable a los 3 botones */
+.card-modes-buttons button,
+.card-modes-buttons .btn-menu-action {
+    width: 100% !important;
+    height: 34px !important;     /* 🔥 Altura ultra chiquita y fija */
+    min-height: 34px !important; /* Candado para que nada lo estire */
+    max-height: 34px !important; /* Candado definitivo */
+    
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    
+    font-size: 0.82rem !important; /* Letra chica para que entre en una línea */
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    border-radius: 6px !important;
+    border: none !important;
+    white-space: nowrap !important; /* Prohibido quebrarse en dos líneas */
+    cursor: pointer !important;
 }
 
-.card-modes-buttons.stacked-layout .btn-menu-action.versus {
-    background: linear-gradient(135deg, #2979ff, #a78bfa);
-    color: #fff;
-    box-shadow: 0 3px 0 #1b50aa;
+/* Estilos de relieve 3D adaptados al tamaño micro */
+.card-modes-buttons button.solo {
+    background: #00e676 !important;
+    color: #000 !important;
+    box-shadow: 0 2px 0 #0b934c !important;
+}
+.card-modes-buttons button.versus {
+    background: linear-gradient(135deg, #2979ff, #a78bfa) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 0 #1b50aa !important;
+}
+.card-modes-buttons button.ranking-btn {
+    background: #eab308 !important;
+    color: #000 !important;
+    box-shadow: 0 2px 0 #a17a06 !important;
 }
 
-.card-modes-buttons.stacked-layout .btn-menu-action.ranking-btn {
-    background: #eab308;
-    color: #000;
-    box-shadow: 0 3px 0 #a17a06;
-}
-
-/* Efecto click sutil */
-.card-modes-buttons.stacked-layout .btn-menu-action:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-}
+/* Efecto click rápido */
+.card-modes-buttons button:active {
+    transform: translateY(2px) !important;
