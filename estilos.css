@@ -522,10 +522,9 @@ body>*{position:relative;z-index:1}
     display: flex;
     gap: 8px;
     width: 100%;
-    margin-top: auto; /* Empuja los botones hacia el fondo de la tarjeta */
-    padding: 4px;
+    margin-top: auto; 
+    padding: 0 12px 12px 12px; /* ← Cambiamos esto para darle aire a los costados y abajo */
     box-sizing: border-box;
-    border-radius: 12px;
 }
 
 /* Estilo estilizado para los dos botones internos */
