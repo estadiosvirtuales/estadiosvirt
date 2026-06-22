@@ -629,44 +629,115 @@ body {
 .game-modes button.btn-random:hover::after { background: #2979ff !important; }
 
 /* ========================================================
-   3. ARREGLO TOTAL DEL MODO CLARO (CONTRAGOLPE)
+   /* ========================================================
+   3. REDISEÑO PREMIUM DEL MODO CLARO (CÉSPED DIURNO)
    ======================================================== */
+
+/* Fondo: Simula un partido de tarde soleada con reflectores apagados */
 [data-theme="light"],
 [data-theme="light"] body {
-    background-color: var(--bg-color) !important;
-    background-image: none !important;
-    color: var(--text-main) !important;
+    background-color: #f3f8f5 !important;
+    background-image: 
+        radial-gradient(at 85% 0%, rgba(22, 163, 74, 0.06) 0px, transparent 50%),
+        radial-gradient(at 15% 100%, rgba(218, 238, 224, 0.4) 0px, transparent 70%) !important;
+    color: #0d2416 !important;
 }
-[data-theme="light"] .welcome-heading { text-shadow: none !important; color: var(--text-main) !important; }
-[data-theme="light"] .welcome-heading .accent-word { text-shadow: none !important; color: var(--accent-color) !important; }
-[data-theme="light"] .search-bar { background: var(--card-bg) !important; border: 2px solid var(--border-strong) !important; color: var(--text-main) !important; }
 
-/* Restablece las tarjetas claras originales */
+/* Títulos corpóreos con sombras suaves tipo cal de la cancha */
+[data-theme="light"] .welcome-heading {
+    text-shadow: 2px 2px 0px rgba(22, 163, 74, 0.12) !important;
+    color: #0d2416 !important;
+}
+[data-theme="light"] .welcome-heading .accent-word {
+    text-shadow: 2px 2px 0px rgba(13, 36, 22, 0.08) !important;
+    color: #16a34a !important;
+}
+
+/* Cuadro de búsqueda estilo mesa de entrada de prensa */
+[data-theme="light"] .search-bar {
+    background: #ffffff !important;
+    border: 2px solid #c8e4d0 !important;
+    color: #0d2416 !important;
+    box-shadow: 0 8px 24px rgba(13, 36, 22, 0.04) !important;
+}
+[data-theme="light"] .search-bar:focus {
+    border-color: #16a34a !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 15px rgba(22, 163, 74, 0.15) !important;
+}
+
+/* Tarjetas principales: Acrílicos blancos pulidos con relieve y sombras profundas */
 [data-theme="light"] .game-modes button,
 [data-theme="light"] .game-card.btn-guessr {
-    background: var(--card-bg) !important;
-    border: 2px solid var(--border-strong) !important;
-    color: var(--text-main) !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
+    background: #ffffff !important;
+    border: 2px solid #e2f0e6 !important;
+    color: #0d2416 !important;
+    box-shadow: 0 12px 30px rgba(13, 36, 22, 0.05) !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
+[data-theme="light"] .game-modes button:hover,
+[data-theme="light"] .game-card.btn-guessr:hover {
+    transform: translateY(-4px) !important;
+    border-color: #16a34a !important;
+    box-shadow: 0 16px 35px rgba(13, 36, 22, 0.1) !important;
+}
+
+/* Reactivamos la línea de cal interactiva en la base de las tarjetas para el modo claro */
 [data-theme="light"] .game-modes button::after,
-[data-theme="light"] .game-card.btn-guessr::after { display: none !important; }
+[data-theme="light"] .game-card.btn-guessr::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 4px !important;
+    background: #e2f0e6 !important; /* Cal apagada */
+    display: block !important;
+    transition: background 0.22s ease !important;
+}
+[data-theme="light"] .game-modes button.btn-guessr:hover::after, 
+[data-theme="light"] .game-card.btn-guessr:hover::after { background: #16a34a !important; }
+[data-theme="light"] .game-modes button.btn-order:hover::after  { background: #eab308 !important; }
+[data-theme="light"] .game-modes button.btn-random:hover::after { background: #2979ff !important; }
 
-/* 🧠 FIX DE ÍCONOS BLANCO SOBRE BLANCO */
+/* Íconos de tarjetas en modo claro (El pin, el avión, etc.) */
 [data-theme="light"] .game-card-icon {
-    background: var(--surface-color) !important; /* Recupera el fondo verde suave legible */
-    color: var(--text-main) !important;         /* El dibujo pasa a oscuro */
-    border: 1px solid var(--border-strong) !important;
+    background: #eef6f0 !important; /* Fondo verde césped ultra suave */
+    color: #16a34a !important;         /* Iconografía verde nítida */
+    border: 1px solid #c8e4d0 !important;
+    box-shadow: none !important;
 }
 
-/* Botones internos adaptados al modo claro */
+/* 🎮 BOTONES DE MODOS INTERNOS (Dejan de ser rectángulos grises aburridos) */
 [data-theme="light"] .card-modes-buttons button,
 [data-theme="light"] .card-modes-buttons .btn-menu-action {
-    background: rgba(0, 0, 0, 0.04) !important;   
-    color: var(--text-main) !important;           
-    border: 1px solid var(--border-strong) !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+    background: #f5faf6 !important; /* Fondo sutilmente satinado */
+    color: #0d2416 !important;
+    border: 1px solid #daeee0 !important;
+    box-shadow: 0 2px 5px rgba(13, 36, 22, 0.03) !important;
+    font-weight: 700 !important;
 }
-[data-theme="light"] .card-modes-buttons button.solo:hover { background: #00e676 !important; color: #000 !important; }
-[data-theme="light"] .card-modes-buttons button.versus:hover { background: linear-gradient(135deg, #2979ff, #a78bfa) !important; color: #fff !important; }
-[data-theme="light"] .card-modes-buttons button.ranking-btn:hover { background: #eab308 !important; color: #000 !important; }
+
+/* Hover Solo: Explota en el verde original de tu app */
+[data-theme="light"] .card-modes-buttons button.solo:hover {
+    background: #16a34a !important;
+    color: #ffffff !important;
+    border-color: #15803d !important;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25) !important;
+}
+
+/* Hover Versus: Explosión eléctrica para competir de día */
+[data-theme="light"] .card-modes-buttons button.versus:hover {
+    background: linear-gradient(135deg, #2979ff, #7c4dff) !important;
+    color: #ffffff !important;
+    border-color: #1b50aa !important;
+    box-shadow: 0 4px 12px rgba(41, 121, 255, 0.25) !important;
+}
+
+/* Hover Ranking: Dorado copa pulida de tarde */
+[data-theme="light"] .card-modes-buttons button.ranking-btn:hover {
+    background: #eab308 !important;
+    color: #000000 !important;
+    border-color: #ca8a04 !important;
+    box-shadow: 0 4px 12px rgba(234, 179, 8, 0.25) !important;
+}
