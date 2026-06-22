@@ -679,3 +679,103 @@ body>*{position:relative;z-index:1}
 /* Efecto click rápido */
 .card-modes-buttons button:active {
     transform: translateY(2px) !important;
+    /* ==========================================
+   PASO 1: LA ATMÓSFERA DEL ESTADIO NOCTURNO
+   ========================================== */
+body {
+    /* 1. Color base: Azul noche profundo tirando a negro */
+    background-color: #05070f !important;
+    
+    /* 2. Capa de luces: Simulamos los reflectores del estadio */
+    background-image: 
+        /* Reflector izquierdo (Verde Césped Fósforo) */
+        radial-gradient(at 15% 0%, rgba(0, 255, 119, 0.15) 0px, transparent 45%),
+        /* Reflector derecho (Azul Eléctrico de transmisión) */
+        radial-gradient(at 85% 0%, rgba(41, 121, 255, 0.12) 0px, transparent 45%),
+        /* El brillo del campo de juego abajo en el centro */
+        radial-gradient(at 50% 100%, rgba(10, 35, 21, 0.8) 0px, transparent 70%) !important;
+        
+    /* 3. Ajustes de tipografía global */
+    color: #ffffff !important;
+    font-family: 'Nunito', 'Segoe UI', sans-serif !important;
+    min-height: 100vh;
+    margin: 0;
+}
+/* ==========================================
+   PASO 2: TÍTULOS CON ESTILO DE MARCADOR DE TV
+   ========================================== */
+h1, .main-title {
+    font-size: 3.2rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important; /* Fuerza todo a mayúsculas deportivas */
+    letter-spacing: -1px !important;       /* Junta las letras para más impacto */
+    color: #ffffff !important;
+    
+    /* Sombra negra, dura y desplazada (Estilo marcador de la tele) */
+    text-shadow: 3px 3px 0px #000000 !important; 
+}
+
+/* El toque especial para la palabra "Virtuales" */
+h1 span, .main-title b {
+    color: #00ff77 !important; /* Verde botín fosforito */
+    /* Le sumamos un leve resplandor neón además de la sombra dura */
+    text-shadow: 0 0 20px rgba(0, 255, 119, 0.4), 3px 3px 0px #000000 !important;
+}/* ==========================================
+   PASO 3: CUADRO DE BÚSQUEDA TÁCTICO
+   ========================================== */
+#global-search {
+    background: #0d1122 !important; /* Fondo azul búnker muy oscuro */
+    border: 2px solid #1e2942 !important; /* Borde gris azulado metal */
+    color: #ffffff !important;
+    border-radius: 10px !important; /* Menos redondo, más formal de consola */
+    padding: 14px 20px !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Cuando el usuario hace click adentro para escribir (Focus) */
+#global-search:focus {
+    border-color: #00ff77 !important; /* El borde se enciende en verde césped */
+    outline: none !important;
+    box-shadow: 0 0 15px rgba(0, 255, 119, 0.25) !important; /* Brillo sutil */
+}/* ==========================================
+   PASO 4: TARJETAS MODO ACRIÍLICO VESTUARIO
+   ========================================== */
+.game-card, 
+.card-modes-buttons.stacked-layout {
+    /* Fondo oscuro traslúcido que deja ver los reflectores de atrás */
+    background: linear-gradient(180deg, rgba(14, 20, 43, 0.85) 0%, rgba(7, 10, 23, 0.95) 100%) !important;
+    border: 2px solid #1b243c !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+    position: relative;
+    overflow: hidden; /* Clave para que la línea de luz no se escape */
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Reacción cuando el jugador pasa el mouse por arriba (Hover) */
+.game-card:hover {
+    transform: translateY(-5px) !important; /* Levanta la carta sutilmente */
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 🚨 El truco del "Zócalo de Luz" en la base de la tarjeta */
+.game-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* Una delgada línea de cal en la base */
+    background: #1b243c; /* Apagada por defecto */
+    transition: background 0.25s ease;
+}
+
+/* Encendemos el zócalo con el color de cada juego al hacer hover */
+.game-card.btn-guessr:hover::after { background: #00ff77 !important; } /* Verde StadiumGuessr */
+.game-card.btn-order:hover::after  { background: #eab308 !important; } /* Dorado Ordenar */
+.game-card.btn-flight:hover::after { background: #2979ff !important; } /* Azul Vuelo Aleatorio */
