@@ -1329,12 +1329,17 @@ if (esModoVersus) {
         colorResultado = "#00e676";
         showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
         
+        // 🏅 Registramos la victoria en tus estadísticas locales del perfil y guardamos
+        userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
+        guardarStats(); 
+        
         try {
             await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal }]);
             console.log("[1v1] Victoria registrada con éxito en la nube.");
         } catch(err) {
             console.error("Error al asentar victoria:", err);
         }
+    }
     } else if (guessrPuntosTotales < rivalPuntosTotales) {
         cartelResultado = "DERROTA EN EL VERSUS ❌";
         colorResultado = "#ff4757";
