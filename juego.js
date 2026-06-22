@@ -1314,6 +1314,7 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
+// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 async function finalizarJuegoGuessr(){
 const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
 if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
