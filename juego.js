@@ -1044,12 +1044,17 @@ function conectarRealtimeVersus() {
             }
         })
         // ESCUCHA B: El rival clickeó en avanzar a la siguiente ronda
-        .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
-            rivalListoSiguiente = true;
-            if (miListoSiguiente) {
-                ejecutarPasoDeRondaVersus();
-            }
-        })
+    .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
+        rivalListoSiguiente = true;
+        if (miListoSiguiente) {
+            ejecutarPasoDeRondaVersus();
+        }
+    })
+    // ESCUCHA C: El rival cerró la pestaña o abandonó la partida
+    .on('broadcast', { event: 'rival_abandono' }, (response) => {
+        console.log("[1v1] El oponente abandonó la sesión.");
+        manejarAbandonoRival();
+    })
         .subscribe((status) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
@@ -1826,7 +1831,20 @@ logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'
 logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
     return logros;
 }
-
+// Función para rescatar al jugador si el oponente se desconecta o abandona
+function manejarAbandonoRival() {
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    
+    showToast("⚠️ Tu rival abandonó el partido o cerró la pestaña.", "ph-x-circle", "danger");
+    
+    // Le damos 3 segundos para que lea el cartel y lo sacamos limpiamente de la pantalla de juego
+    setTimeout(() => {
+        cerrarModalVideo();
+        esModoVersus = false;
+        versusPartidaEnCurso = false;
+    }, 3000);
+}
 window.addEventListener('DOMContentLoaded', async () => {
 await cargarPromediosSupabase();
 await cargarProgresoDesdeSupabase(); 
