@@ -107,13 +107,16 @@
         <span class="game-card-badge" style="margin-left: auto;">5 rondas</span>
     </div>
     
-    <!-- Botonera interna para elegir el modo -->
-    <div class="card-modes-buttons">
+    <!-- Botonera interna rediseñada: 3 filas limpias -->
+<div class="card-modes-buttons stacked-layout">
     <button class="btn-menu-action solo" onclick="iniciarTrivia()">
         <i class="ph-bold ph-user"></i> Partida individual
     </button>
     <button class="btn-menu-action versus" onclick="buscarPartidaVersus()">
-        <i class="ph-bold ph-lightning"></i> Partida 1 versus 1
+        <i class="ph-bold ph-lightning"></i> Partida 1 vs 1
+    </button>
+    <button class="btn-menu-action ranking-btn" onclick="abrirModalRanking('v_historico')">
+        <i class="ph-bold ph-trophy"></i> Tabla de Posiciones
     </button>
 </div>
 </div>
