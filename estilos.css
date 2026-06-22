@@ -513,178 +513,70 @@ body>*{position:relative;z-index:1}
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
 }
 /* ========================================================
-   BOTONERA DE MODOS PARA STADIUM GUESSR (VERSUS 1V1)
+   1. BOTONERA COMPACTA STADIUMGUESSR (ESTILO CONSOLA)
    ======================================================== */
 
-/* Contenedor de los dos botones dentro de la tarjeta */
-/* Contenedor de modos (Tarjeta Verde) */
-/* Contenedor de modos (Tarjeta Verde) - Base para PC */
-.card-modes-buttons {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    margin-top: auto; 
-    padding: 0 12px 12px 12px; 
-    box-sizing: border-box;
-}
-
-/* 📱 ADAPTACIÓN PARA CELULARES (Pantallas de menos de 480px) */
-@media (max-width: 480px) {
-    .card-modes-buttons {
-        flex-direction: column; /* ↑ Los botones se apilan verticalmente */
-        gap: 6px;
-        padding: 0 16px 16px 16px; /* Más aire en las esquinas del celu */
-    }
-    
-    .btn-menu-action {
-        width: 100%; /* El botón ocupa todo el ancho disponible */
-        padding: 14px 10px; /* Un toque más altos para que sea cómodo dar el "tap" */
-    }
-}
-
-/* Estilo estilizado para los dos botones internos */
-.btn-menu-action {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 12px 10px; /* Un poco más de aire vertical */
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    border-radius: 12px; /* Esquinas redondeadas idénticas a las tarjetas grandes */
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #111820;
-}
-/* Forzar a la tarjeta verde a mantener sus esquinas redondeadas y recortar bordes rectos */
-.game-card.btn-guessr {
-    border-radius: 16px; /* Si notas que le falta curva para igualar a las otras, subilo a 20px */
-    overflow: hidden; /* ← La clave: recorta cualquier capa o fondo recto que intente sobresalir */
-}
-/* Modo Solo: Verde con relieve fino */
-.btn-menu-action.solo {
-    background: #00e676;
-    box-shadow: 0 4px 0 #0d9652;
-}
-.btn-menu-action.solo:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 #0d9652;
-}
-.btn-menu-action.solo:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 #0d9652;
-}
-
-/* Modo Versus: Degradado Eléctrico Redondeado */
-.btn-menu-action.versus {
-    background: linear-gradient(135deg, #2979ff, #a78bfa);
-    color: #ffffff;
-    box-shadow: 0 4px 0 #1b4bbd;
-}
-.btn-menu-action.versus:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 #1b4bbd;
-    filter: brightness(1.1);
-}
-.btn-menu-action.versus:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 #1b4bbd;
-}
-
-/* Botón Modo Solo: Verde clásico de tu app */
-.btn-menu-action.solo {
-    background: #00e676;
-    box-shadow: 0 4px 0 #0d9652;
-}
-.btn-menu-action.solo:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 #0d9652;
-}
-.btn-menu-action.solo:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 #0d9652;
-}
-
-/* Botón Modo Versus: Degradado Eléctrico Azul/Violeta */
-.btn-menu-action.versus {
-    background: linear-gradient(135deg, #2979ff, #a78bfa);
-    color: #ffffff; /* Texto blanco para que resalte */
-    box-shadow: 0 4px 0 #1b4bbd;
-}
-.btn-menu-action.versus:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 0 #1b4bbd;
-    filter: brightness(1.1);
-}
-.btn-menu-action.versus:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 #1b4bbd;
-}
-/* ========================================================
-   REDISEÑO INMUTABLE Y COMPACTO DE LA BOTONERA STADIUMGUESSR
-   ======================================================== */
-
-/* Forzamos que la botonera se apile en filas finas, sí o sí */
+/* Contenedor principal de los tres botones apilados */
 .card-modes-buttons {
     display: flex !important;
-    flex-direction: column !important; /* Uno abajo del otro */
-    gap: 6px !important;               /* Distancia bien corta */
+    flex-direction: column !important; 
+    gap: 6px !important;               
     width: 100% !important;
     padding: 8px 12px !important;
     box-sizing: border-box !important;
+    margin-top: auto !important;
 }
 
-/* Forzamos tamaño chico e inmutable a los 3 botones */
+/* Forzamos el tamaño chico e idéntico para los 3 botones */
 .card-modes-buttons button,
 .card-modes-buttons .btn-menu-action {
     width: 100% !important;
-    height: 34px !important;     /* 🔥 Altura ultra chiquita y fija */
-    min-height: 34px !important; /* Candado para que nada lo estire */
-    max-height: 34px !important; /* Candado definitivo */
-    
+    height: 34px !important;     
+    min-height: 34px !important; 
+    max-height: 34px !important; 
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    
-    font-size: 0.82rem !important; /* Letra chica para que entre en una línea */
+    font-size: 0.82rem !important; 
     font-weight: 700 !important;
     text-transform: uppercase !important;
     border-radius: 6px !important;
     border: none !important;
-    white-space: nowrap !important; /* Prohibido quebrarse en dos líneas */
+    white-space: nowrap !important; 
     cursor: pointer !important;
+    
+    /* Look Stealth acrílico por defecto en Modo Oscuro */
+    background: rgba(255, 255, 255, 0.03) !important; 
+    color: #ffffff !important;                         
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease-in-out !important;
 }
 
-/* Estilos de relieve 3D adaptados al tamaño micro */
-.card-modes-buttons button.solo {
-    background: #00e676 !important;
-    color: #000 !important;
-    box-shadow: 0 2px 0 #0b934c !important;
+/* 🚀 EFECTOS HOVER: Se iluminan con su neón al pasar el mouse */
+.card-modes-buttons button.solo:hover {
+    background: rgba(0, 255, 119, 0.08) !important;
+    border-color: #00ff77 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 119, 0.25) !important;
 }
-.card-modes-buttons button.versus {
-    background: linear-gradient(135deg, #2979ff, #a78bfa) !important;
-    color: #fff !important;
-    box-shadow: 0 2px 0 #1b50aa !important;
+.card-modes-buttons button.versus:hover {
+    background: rgba(41, 121, 255, 0.08) !important;
+    border-color: #2979ff !important;
+    box-shadow: 0 0 15px rgba(41, 121, 255, 0.25) !important;
 }
-.card-modes-buttons button.ranking-btn {
-    background: #eab308 !important;
-    color: #000 !important;
-    box-shadow: 0 2px 0 #a17a06 !important;
+.card-modes-buttons button.ranking-btn:hover {
+    background: rgba(234, 179, 8, 0.08) !important;
+    border-color: #eab308 !important;
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.25) !important;
 }
-
-/* Efecto click rápido (¡Ahora con la llave cerrada!) */
 .card-modes-buttons button:active {
     transform: translateY(2px) !important;
-    box-shadow: 0 0px 0 transparent !important;
+    box-shadow: none !important;
 }
 
 /* ========================================================
-   /* ========================================================
-   PASO 1: LA ATMÓSFERA DE ESTADIO NOCTURNO (EA SPORTS FC)
+   2. REDISEÑO DE ENTRETELONES EN MODO OSCURO (EA SPORTS FC)
    ======================================================== */
 body {
     background-color: #05070f !important;
@@ -695,84 +587,49 @@ body {
     color: #ffffff !important;
     min-height: 100vh;
 }
-
-/* ========================================================
-   PASO 2: TÍTULOS CON ESTILO DE TRANSMISIÓN DE TV
-   ======================================================== */
 .welcome-heading {
     font-size: 3.2rem !important;
     font-weight: 900 !important;
     text-transform: uppercase !important; 
     letter-spacing: -1px !important;       
-    color: #ffffff !important;
     text-shadow: 3px 3px 0px #000000 !important;
 }
-
 .welcome-heading .accent-word {
     color: #00ff77 !important; 
     text-shadow: 0 0 20px rgba(0, 255, 119, 0.4), 3px 3px 0px #000000 !important;
 }
-
-/* ========================================================
-   PASO 3: CUADRO DE BÚSQUEDA TÁCTICO DE FICHAJES
-   ======================================================== */
 .search-bar {
     background: #0d1122 !important; 
     border: 2px solid #1e2942 !important; 
     color: #ffffff !important;
     border-radius: 10px !important; 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
 }
-
 .search-bar:focus {
     border-color: #00ff77 !important; 
     background: #12182e !important;
-    box-shadow: 0 0 15px rgba(0, 255, 119, 0.25) !important;
 }
 
-/* ========================================================
-   PASO 4: ACRIÍLICO PARA TODAS LAS TARJETAS (UNIFICADO)
-   ======================================================== */
+/* Unificamos las 3 tarjetas en acrílico traslúcido simétrico */
 .game-modes button,
 .game-card.btn-guessr {
-    /* 🔥 Forzamos que StadiumGuessr y las demás compartan el mismo ADN acrílico */
     background: linear-gradient(180deg, rgba(14, 20, 43, 0.85) 0%, rgba(7, 10, 23, 0.95) 100%) !important;
     border: 2px solid #1b243c !important;
     border-radius: 16px !important;
     position: relative;
     overflow: hidden; 
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
-
-.game-modes button:hover,
-.game-card.btn-guessr:hover {
-    transform: translateY(-5px) !important; 
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7) !important;
-}
-
-/* Tira de neón en la base */
 .game-modes button::after,
 .game-card.btn-guessr::after {
-    content: '' !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 4px !important; 
-    background: #1b243c !important; 
-    transition: background 0.25s ease !important;
+    content: '' !important; position: absolute !important; bottom: 0 !important; left: 0 !important;
+    width: 100% !important; height: 4px !important; background: #1b243c !important; transition: background 0.25s ease !important;
 }
-
-.game-modes button.btn-guessr:hover::after,
-.game-card.btn-guessr:hover::after { background: #00ff77 !important; }
+.game-modes button.btn-guessr:hover::after, .game-card.btn-guessr:hover::after { background: #00ff77 !important; }
 .game-modes button.btn-order:hover::after  { background: #eab308 !important; }
 .game-modes button.btn-random:hover::after { background: #2979ff !important; }
 
-
 /* ========================================================
-   PASO 5: CONTRAGOLPE AL MODO CLARO (RESETEO INTELIGENTE)
+   3. ARREGLO TOTAL DEL MODO CLARO (CONTRAGOLPE)
    ======================================================== */
 [data-theme="light"],
 [data-theme="light"] body {
@@ -780,33 +637,36 @@ body {
     background-image: none !important;
     color: var(--text-main) !important;
 }
+[data-theme="light"] .welcome-heading { text-shadow: none !important; color: var(--text-main) !important; }
+[data-theme="light"] .welcome-heading .accent-word { text-shadow: none !important; color: var(--accent-color) !important; }
+[data-theme="light"] .search-bar { background: var(--card-bg) !important; border: 2px solid var(--border-strong) !important; color: var(--text-main) !important; }
 
-[data-theme="light"] .welcome-heading {
-    color: var(--text-main) !important;
-    text-shadow: none !important;
-}
-
-[data-theme="light"] .welcome-heading .accent-word {
-    color: var(--accent-color) !important;
-    text-shadow: none !important;
-}
-
-[data-theme="light"] .search-bar {
-    background: var(--card-bg) !important;
-    border: 2px solid var(--border-strong) !important;
-    color: var(--text-main) !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;
-}
-
+/* Restablece las tarjetas claras originales */
 [data-theme="light"] .game-modes button,
 [data-theme="light"] .game-card.btn-guessr {
     background: var(--card-bg) !important;
     border: 2px solid var(--border-strong) !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
     color: var(--text-main) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
+}
+[data-theme="light"] .game-modes button::after,
+[data-theme="light"] .game-card.btn-guessr::after { display: none !important; }
+
+/* 🧠 FIX DE ÍCONOS BLANCO SOBRE BLANCO */
+[data-theme="light"] .game-card-icon {
+    background: var(--surface-color) !important; /* Recupera el fondo verde suave legible */
+    color: var(--text-main) !important;         /* El dibujo pasa a oscuro */
+    border: 1px solid var(--border-strong) !important;
 }
 
-[data-theme="light"] .game-modes button::after,
-[data-theme="light"] .game-card.btn-guessr::after {
-    display: none !important; /* Apagamos las tiras de neón en el modo claro */
+/* Botones internos adaptados al modo claro */
+[data-theme="light"] .card-modes-buttons button,
+[data-theme="light"] .card-modes-buttons .btn-menu-action {
+    background: rgba(0, 0, 0, 0.04) !important;   
+    color: var(--text-main) !important;           
+    border: 1px solid var(--border-strong) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
 }
+[data-theme="light"] .card-modes-buttons button.solo:hover { background: #00e676 !important; color: #000 !important; }
+[data-theme="light"] .card-modes-buttons button.versus:hover { background: linear-gradient(135deg, #2979ff, #a78bfa) !important; color: #fff !important; }
+[data-theme="light"] .card-modes-buttons button.ranking-btn:hover { background: #eab308 !important; color: #000 !important; }
