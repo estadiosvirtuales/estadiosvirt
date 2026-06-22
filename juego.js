@@ -1386,7 +1386,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     
     let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
     let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
-    let activeVSem = modoSpecifico === 'v_semanal' ? 'active' : '';
+    let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : ''; // 100% Reparado con su "e"
     
     let subMenuHTML = `
     <div class="logros-tabs-row" style="margin-bottom:18px; display:flex; gap:5px;">
