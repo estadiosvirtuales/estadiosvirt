@@ -931,6 +931,7 @@ let handshakeInterval = null;     // Intervalo para el latido de sincronización
 let rivalPuntosTotales = 0;       // Acumulador oficial del oponente
 
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
+// Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 function obtener5EstadiosVersus() {
     const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
     const disponibles = pool.filter(f => {
@@ -939,8 +940,19 @@ function obtener5EstadiosVersus() {
                bscarPropiedad(f, 'Latitud').toString().trim() !== '' &&
                bscarPropiedad(f, 'Longitud').toString().trim() !== '';
     });
-    const mezclados = [...disponibles].sort(() => Math.random() - 0.5);
-    return mezclados.slice(0, 5);
+
+    // Sorteo Fisher-Yates: Extrae elementos al azar uno a uno sin repetir pesos
+    let resultado = [];
+    let copia = [...disponibles];
+    const cantidadAExtraer = Math.min(5, copia.length);
+
+    for (let i = 0; i < cantidadAExtraer; i++) {
+        const idxAleatorio = Math.floor(Math.random() * copia.length);
+        // Despatarramos el elemento de la copia y lo metemos en la canasta oficial
+        resultado.push(copia.splice(idxAleatorio, 1)[0]);
+    }
+
+    return resultado;
 }
 
 // Función principal para buscar rival o crear una sala de espera
