@@ -1344,7 +1344,7 @@ if (esModoVersus) {
     let colorResultado = "#ffea00";
     
     if (guessrPuntosTotales > rivalPuntosTotales) {
-        cartelResultado = "¡VICTORIA TOTAL! 🏆";
+        cartelResultado = "¡VICTORIA! 🏆";
         colorResultado = "#00e676";
         showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
         
@@ -1359,7 +1359,7 @@ if (esModoVersus) {
             console.error("Error al asentar victoria:", err);
         }
     } else if (guessrPuntosTotales < rivalPuntosTotales) {
-        cartelResultado = "DERROTA EN EL VERSUS ❌";
+        cartelResultado = "DERROTA ❌";
         colorResultado = "#ff4757";
         showToast("Derrota. ¡A entrenar para la revancha! ⚽", "ph-x-circle", "danger");
     } else {
