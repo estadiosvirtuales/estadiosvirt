@@ -544,7 +544,11 @@ body>*{position:relative;z-index:1}
     transition: all 0.2s ease;
     color: #111820;
 }
-
+/* Forzar a la tarjeta verde a mantener sus esquinas redondeadas y recortar bordes rectos */
+.game-card.btn-guessr {
+    border-radius: 16px; /* Si notas que le falta curva para igualar a las otras, subilo a 20px */
+    overflow: hidden; /* ← La clave: recorta cualquier capa o fondo recto que intente sobresalir */
+}
 /* Modo Solo: Verde con relieve fino */
 .btn-menu-action.solo {
     background: #00e676;
