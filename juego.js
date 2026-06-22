@@ -343,10 +343,11 @@ function cargarStats(){
 const id=getUserId();
 const stored=localStorage.getItem('ev_user_stats_'+id);
 if(stored){userStats=JSON.parse(stored);}
-else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
+else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,partidasGanadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
 ['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);if(!(userStats[k] instanceof Set))userStats[k]=new Set();});
 if(!userStats.activeDates) userStats.activeDates = [];
 if(userStats.xpTotal===undefined)userStats.xpTotal=userStats.maxScore||0;
+if(userStats.partidasGanadas===undefined) userStats.partidasGanadas = 0; // 🛡️ Evita que de undefined en cuentas viejas
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 procesarRachaDiaria();
