@@ -1313,6 +1313,7 @@ btn.setAttribute('data-estado','resultado');btn.disabled=false;
 function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrRondaActual++;guessrRondaActual<=5?lanzarRondaGuessr():finalizarJuegoGuessr();}
 
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
+// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 async function finalizarJuegoGuessr(){
 const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
 if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
@@ -1339,7 +1340,6 @@ if (esModoVersus) {
         } catch(err) {
             console.error("Error al asentar victoria:", err);
         }
-    }
     } else if (guessrPuntosTotales < rivalPuntosTotales) {
         cartelResultado = "DERROTA EN EL VERSUS ❌";
         colorResultado = "#ff4757";
@@ -1363,6 +1363,7 @@ if (esModoVersus) {
     return;
 }
 
+// Código solitario clásico (Sigue intacto abajo de tu filtro Versus)
 userStats.partidasJugadas++;if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
 if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;guardarStats();agregarXP(guessrPuntosTotales);pendingScore=guessrPuntosTotales;pendingScoreType='guessr';
 const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
@@ -1371,7 +1372,7 @@ guessrHistorialRondas.forEach(item=>{const dT=isNaN(item.distancia)?'?':(item.di
 const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
 const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
 container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);"><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2><p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p><div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>${histHTML}<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">${guardarBtn}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
-
+}
 
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
