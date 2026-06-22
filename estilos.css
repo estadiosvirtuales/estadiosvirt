@@ -517,30 +517,62 @@ body>*{position:relative;z-index:1}
    ======================================================== */
 
 /* Contenedor de los dos botones dentro de la tarjeta */
+/* Contenedor de modos (Tarjeta Verde) */
 .card-modes-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    margin-top: 5px;
+    margin-top: auto; /* Empuja los botones hacia el fondo de la tarjeta */
+    padding: 4px;
     box-sizing: border-box;
 }
 
-/* Estilo base para ambos botones */
+/* Estilo estilizado para los dos botones internos */
 .btn-menu-action {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 10px 12px;
-    font-size: 0.8rem;
+    padding: 12px 10px; /* Un poco más de aire vertical */
+    font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
-    border-radius: 8px;
+    border-radius: 12px; /* Esquinas redondeadas idénticas a las tarjetas grandes */
     border: none;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #111820; /* Color oscuro para el texto */
+    color: #111820;
+}
+
+/* Modo Solo: Verde con relieve fino */
+.btn-menu-action.solo {
+    background: #00e676;
+    box-shadow: 0 4px 0 #0d9652;
+}
+.btn-menu-action.solo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #0d9652;
+}
+.btn-menu-action.solo:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #0d9652;
+}
+
+/* Modo Versus: Degradado Eléctrico Redondeado */
+.btn-menu-action.versus {
+    background: linear-gradient(135deg, #2979ff, #a78bfa);
+    color: #ffffff;
+    box-shadow: 0 4px 0 #1b4bbd;
+}
+.btn-menu-action.versus:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #1b4bbd;
+    filter: brightness(1.1);
+}
+.btn-menu-action.versus:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #1b4bbd;
 }
 
 /* Botón Modo Solo: Verde clásico de tu app */
