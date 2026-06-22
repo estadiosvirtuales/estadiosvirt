@@ -1810,13 +1810,19 @@ function calcularLogros(){
     addTierLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
     addTierLogro('racha','🔥','Constante',s.rachaActual||1,7,' días','rare');
     addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
-    addTierLogro('xptotal','🚀','Acumulador',s.xpTotal||0,10000,' XP','epic');
-    logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
-    logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-    logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
-    logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
-    logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
-    logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
+   addTierLogro('xptotal','🎨','Acumulador',s.xpTotal||0,10000,' XP','epic');
+
+// ⚔️ NUEVOS LOGROS COMPETITIVOS DEL VERSUS 1V1
+addTierLogro('versus_win','👑','Dominante',s.partidasGanadas||0,3,' victorias','epic');
+
+logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
+logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
+logros.push({id:'primer_versus',icon:'⚡',name:'Bautismo de Fuego',rarity:'common',req:'Ganá tu primer Versus 1v1',unlocked:(s.partidasGanadas||0)>=1,pct:(s.partidasGanadas||0)>=1?100:0,pctLabel:''});
+
+logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
+logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
+logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
+logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
     return logros;
 }
 
