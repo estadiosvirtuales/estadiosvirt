@@ -10,34 +10,34 @@
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
 }
 [data-theme="light"]{
-  /* 🏟️ La paleta diurna de alta competición */
-  --bg-color:#f0f7f3;        /* Blanco deportivo con tinte de césped limpio */
-  --card-bg:#ffffff;         /* Blanco puro reflectivo para los paneles principales */
-  --surface-color:#daeee0;   /* Menta claro premium para los contenedores */
-  --surface-hover:#c5e7cc;   /* Resalte de interacción dinámico */
-  --text-main:#061a0d;       /* Negro profundo botella para máxima lectura */
-  --text-muted:#3b664a;      /* Verde oliva táctico para textos secundarios */
-  --text-inverse:#ffffff;
+  /* 🏟️ Paleta Match Day: Contraste agresivo y limpio */
+  --bg-color: #f3f8f5;        /* Blanco satinado con tinte de césped natural */
+  --card-bg: #ffffff;         /* Blanco puro reflectivo para el pop de las cartas */
+  --surface-color: #e3f2e8;   /* Verde menta eSports para subpaneles y contenedores */
+  --surface-hover: #cbead7;   /* Transición de enfoque fluida */
+  --text-main: #04160a;       /* Verde botella profundo (casi negro) para máxima nitidez */
+  --text-muted: #386146;      /* Verde oliva táctico para textos secundarios y etiquetas */
+  --text-inverse: #ffffff;
   
-  /* Energizamos los acentos de la tarde */
-  --accent-color:#10b981;    /* Esmeralda brillante de transmisión diurna */
-  --accent-hover:#059669;    
-  --accent-dim:rgba(16, 185, 129, 0.12);
-  --accent-glow:rgba(16, 185, 129, 0.35);
-  --danger-color:#ef4444;
+  /* 🔥 Energizamos los acentos diurnos estilo FIFA Ultimate Team */
+  --accent-color: #00cc66;    /* Verde esmeralda eléctrico de alta visibilidad */
+  --accent-hover: #009944;    
+  --accent-dim: rgba(0, 204, 102, 0.08);
+  --accent-glow: rgba(0, 204, 102, 0.3);
+  --danger-color: #e11d48;
   
-  /* Bordes limpios con corte orgánico */
-  --border-subtle:rgba(16, 185, 129, 0.08);
-  --border-strong:rgba(6, 26, 13, 0.12);
-  --glass-bg:rgba(255, 255, 255, 0.92);
-  --modal-overlay:rgba(215, 235, 222, 0.90);
+  /* Bordes de cal pulidos */
+  --border-subtle: rgba(0, 204, 102, 0.08);
+  --border-strong: rgba(4, 22, 10, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.94);
+  --modal-overlay: rgba(210, 232, 216, 0.88);
   
-  /* Sombras corpóreas para que las tarjetas parezcan fichas reales flotando */
-  --shadow-soft:0 8px 30px rgba(6, 26, 13, 0.06);
-  --shadow-strong:0 20px 60px rgba(6, 26, 13, 0.12);
+  /* 🧱 Sombras cromáticas: eliminan el gris sucio usando la refracción del césped */
+  --shadow-soft: 0 10px 35px rgba(4, 22, 10, 0.04);
+  --shadow-strong: 0 24px 60px rgba(4, 22, 10, 0.1);
   
-  /* 🏟️ TRAMA DE CANCHA: Líneas de cal sutiles cruzadas de día */
-  --pitch-line:rgba(16, 185, 129, 0.045);
+  /* Líneas de cal sutiles cruzadas para el entramado general */
+  --pitch-line: rgba(0, 204, 102, 0.05);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 html{scroll-behavior:smooth}
@@ -666,61 +666,63 @@ body {
 .game-modes button.btn-random:hover::after { background: #2979ff !important; }
 
 /* ========================================================
-   /* ========================================================
    3. REDISEÑO PREMIUM DEL MODO CLARO (CÉSPED DIURNO)
    ======================================================== */
 
-/* Fondo: Simula un partido de tarde soleada con reflectores apagados */
+/* Fondo: Simula un campo de juego premium bajo el sol de la tarde con patrón de corte de césped */
 [data-theme="light"],
 [data-theme="light"] body {
     background-color: var(--bg-color) !important;
     background-image: 
-        /* Cono de iluminación suave desde la esquina de transmisión */
-        radial-gradient(at 80% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 50%),
-        /* Sombreado de base en la tribuna inferior */
-        radial-gradient(at 20% 100%, rgba(218, 238, 224, 0.5) 0px, transparent 70%) !important;
+        /* Efecto de franjas de corte de césped verticales paralelas de estadio profesional */
+        linear-gradient(90deg, rgba(0, 204, 102, 0.015) 50%, transparent 50%),
+        /* Reflector de sol diurno en la esquina superior */
+        radial-gradient(at 85% 0%, rgba(0, 204, 102, 0.05) 0px, transparent 55%),
+        /* Sombra ambiental base */
+        radial-gradient(at 15% 100%, rgba(227, 242, 232, 0.6) 0px, transparent 75%) !important;
+    background-size: 160px 100%, 100% 100%, 100% 100% !important;
 }
 
-/* Títulos corpóreos con sombras suaves tipo cal de la cancha */
+/* Títulos corpóreos nítidos con sombra de cal limpia */
 [data-theme="light"] .welcome-heading {
-    text-shadow: 2px 2px 0px rgba(22, 163, 74, 0.12) !important;
-    color: #0d2416 !important;
+    text-shadow: 2px 2px 0px rgba(0, 204, 102, 0.12) !important;
+    color: var(--text-main) !important;
 }
 [data-theme="light"] .welcome-heading .accent-word {
-    text-shadow: 2px 2px 0px rgba(13, 36, 22, 0.08) !important;
-    color: #16a34a !important;
+    text-shadow: 2px 2px 0px rgba(4, 22, 10, 0.08) !important;
+    color: var(--accent-color) !important;
 }
 
-/* Cuadro de búsqueda estilo mesa de entrada de prensa */
+/* Buscador limpio estilo palco de prensa */
 [data-theme="light"] .search-bar {
     background: #ffffff !important;
-    border: 2px solid #c8e4d0 !important;
-    color: #0d2416 !important;
-    box-shadow: 0 8px 24px rgba(13, 36, 22, 0.04) !important;
+    border: 2px solid var(--border-strong) !important;
+    color: var(--text-main) !important;
+    box-shadow: var(--shadow-soft), inset 0 2px 4px rgba(4, 22, 10, 0.02) !important;
 }
 [data-theme="light"] .search-bar:focus {
-    border-color: #16a34a !important;
+    border-color: var(--accent-color) !important;
     background: #ffffff !important;
-    box-shadow: 0 0 15px rgba(22, 163, 74, 0.15) !important;
+    box-shadow: 0 0 0 4px var(--accent-dim), var(--shadow-soft) !important;
 }
 
-/* Tarjetas principales: Acrílicos blancos pulidos con relieve y sombras profundas */
+/* Tarjetas principales estilo placas acrílicas pulidas con relieve inferior */
 [data-theme="light"] .game-modes button,
 [data-theme="light"] .game-card.btn-guessr {
     background: #ffffff !important;
-    border: 2px solid #e2f0e6 !important;
-    color: #0d2416 !important;
-    box-shadow: 0 12px 30px rgba(13, 36, 22, 0.05) !important;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    border: 2px solid rgba(0, 204, 102, 0.08) !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 10px 25px rgba(4, 22, 10, 0.04), inset 0 1px 0 #ffffff !important;
+    transition: transform 0.25s cubic-bezier(.175,.885,.32,1.15), border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 [data-theme="light"] .game-modes button:hover,
 [data-theme="light"] .game-card.btn-guessr:hover {
-    transform: translateY(-4px) !important;
-    border-color: #16a34a !important;
-    box-shadow: 0 16px 35px rgba(13, 36, 22, 0.1) !important;
+    transform: translateY(-5px) !important;
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 16px 35px rgba(4, 22, 10, 0.08), 0 0 0 1px var(--accent-dim) !important;
 }
 
-/* Reactivamos la línea de cal interactiva en la base de las tarjetas para el modo claro */
+/* Línea de cal interactiva en la base de las tarjetas */
 [data-theme="light"] .game-modes button::after,
 [data-theme="light"] .game-card.btn-guessr::after {
     content: '' !important;
@@ -729,53 +731,66 @@ body {
     left: 0 !important;
     width: 100% !important;
     height: 4px !important;
-    background: #e2f0e6 !important; /* Cal apagada */
+    background: var(--surface-color) !important; 
     display: block !important;
     transition: background 0.22s ease !important;
 }
 [data-theme="light"] .game-modes button.btn-guessr:hover::after, 
-[data-theme="light"] .game-card.btn-guessr:hover::after { background: #16a34a !important; }
-[data-theme="light"] .game-modes button.btn-order:hover::after  { background: #eab308 !important; }
-[data-theme="light"] .game-modes button.btn-random:hover::after { background: #2979ff !important; }
+[data-theme="light"] .game-card.btn-guessr:hover::after { background: var(--accent-color) !important; }
+[data-theme="light"] .game-modes button.btn-order:hover::after  { background: var(--xp-gold) !important; }
+[data-theme="light"] .game-modes button.btn-random:hover::after { background: var(--btn-random) !important; }
 
-/* Íconos de tarjetas en modo claro (El pin, el avión, etc.) */
+/* Íconos internos de las tarjetas */
 [data-theme="light"] .game-card-icon {
-    background: #eef6f0 !important; /* Fondo verde césped ultra suave */
-    color: #16a34a !important;         /* Iconografía verde nítida */
-    border: 1px solid #c8e4d0 !important;
-    box-shadow: none !important;
+    background: var(--bg-color) !important; 
+    color: var(--text-muted) !important;         
+    border: 1px solid var(--border-strong) !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.02) !important;
+}
+[data-theme="light"] .game-modes button:hover .game-card-icon {
+    color: var(--text-main) !important;
+    background: var(--surface-color) !important;
+    border-color: var(--accent-color) !important;
 }
 
-/* 🎮 BOTONES DE MODOS INTERNOS (Dejan de ser rectángulos grises aburridos) */
+/* 🎮 BOTONERA DE TURNOS ESTILO CONSOLA MODO CLARO (CON RELIEVE 3D REAL) */
 [data-theme="light"] .card-modes-buttons button,
 [data-theme="light"] .card-modes-buttons .btn-menu-action {
-    background: #f5faf6 !important; /* Fondo sutilmente satinado */
-    color: #0d2416 !important;
-    border: 1px solid #daeee0 !important;
-    box-shadow: 0 2px 5px rgba(13, 36, 22, 0.03) !important;
+    background: #ffffff !important; 
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border-strong) !important;
+    box-shadow: 0 3px 0 var(--surface-hover), 0 4px 8px rgba(0,0,0,0.03) !important;
     font-weight: 700 !important;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s !important;
 }
 
-/* Hover Solo: Explota en el verde original de tu app */
+/* Hover Solo: Verde eSports Diurno */
 [data-theme="light"] .card-modes-buttons button.solo:hover {
-    background: #16a34a !important;
-    color: #ffffff !important;
-    border-color: #15803d !important;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25) !important;
+    background: var(--accent-color) !important;
+    color: #000000 !important;
+    border-color: var(--accent-hover) !important;
+    box-shadow: 0 3px 0 #0a7a3a, 0 6px 15px var(--accent-glow) !important;
 }
 
-/* Hover Versus: Explosión eléctrica para competir de día */
+/* Hover Versus: Neón Eléctrico de Competencia */
 [data-theme="light"] .card-modes-buttons button.versus:hover {
-    background: linear-gradient(135deg, #2979ff, #7c4dff) !important;
+    background: linear-gradient(135deg, #2979ff, #651fff) !important;
     color: #ffffff !important;
-    border-color: #1b50aa !important;
-    box-shadow: 0 4px 12px rgba(41, 121, 255, 0.25) !important;
+    border-color: #1a237e !important;
+    box-shadow: 0 3px 0 #0d47a1, 0 6px 15px rgba(41, 121, 255, 0.3) !important;
 }
 
-/* Hover Ranking: Dorado copa pulida de tarde */
+/* Hover Ranking: Dorado Copa Pulida */
 [data-theme="light"] .card-modes-buttons button.ranking-btn:hover {
-    background: #eab308 !important;
+    background: var(--xp-gold) !important;
     color: #000000 !important;
     border-color: #ca8a04 !important;
-    box-shadow: 0 4px 12px rgba(234, 179, 8, 0.25) !important;
+    box-shadow: 0 3px 0 #854d0e, 0 6px 15px rgba(234, 179, 8, 0.3) !important;
+}
+
+/* Comportamiento mecánico de click físico para los tres botones */
+[data-theme="light"] .card-modes-buttons button:active,
+[data-theme="light"] .card-modes-buttons .btn-menu-action:active {
+    transform: translateY(3px) !important;
+    box-shadow: 0 0 0 transparent, 0 1px 2px rgba(0,0,0,0.05) !important;
 }
