@@ -1645,6 +1645,7 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
+// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
     const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
@@ -1699,7 +1700,7 @@ async function finalizarJuegoGuessr(){
         return;
     }
 
-    // Código solitario clásico (Resguardado correctamente dentro de la función original)
+    // Código solitario clásico (Perfectamente resguardado dentro de la función original)
     userStats.partidasJugadas++;
     if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
     if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
