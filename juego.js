@@ -930,6 +930,7 @@ let versusTiempoRestante = 15;
 let handshakeInterval = null;     // Intervalo para el latido de sincronización
 let rivalPuntosTotales = 0;       // Acumulador oficial del oponente
 let rivalForcedTimeout = false;
+let resultadosRondaMostrados = false;
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 function obtener5EstadiosVersus() {
@@ -1006,6 +1007,7 @@ async function buscarPartidaVersus() {
 }
 
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
@@ -1056,17 +1058,22 @@ function conectarRealtimeVersus() {
             }
         })
         // ESCUCHA B: El rival clickeó en avanzar a la siguiente ronda
-    .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
-        rivalListoSiguiente = true;
-        if (miListoSiguiente) {
+        .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
+            rivalListoSiguiente = true;
+            if (miListoSiguiente) {
+                ejecutarPasoDeRondaVersus();
+            }
+        })
+        // ESCUCHA C: Avance forzado por inactividad prolongada del oponente
+        .on('broadcast', { event: 'forzar_siguiente_ronda' }, (response) => {
+            console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
-        }
-    })
-    // ESCUCHA C: El rival cerró la pestaña o abandonó la partida
-    .on('broadcast', { event: 'rival_abandono' }, (response) => {
-        console.log("[1v1] El oponente abandonó la sesión.");
-        manejarAbandonoRival();
-    })
+        })
+        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida
+        .on('broadcast', { event: 'rival_abandono' }, (response) => {
+            console.log("[1v1] El oponente abandonó la sesión.");
+            manejarAbandonoRival();
+        })
         .subscribe((status) => {
             console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
@@ -1173,7 +1180,71 @@ function iniciarRelojEsperaRivalVersus() {
         }
     }, 1000);
 }
+// Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa
+function mostrarResultadosMutuosVersus() {
+    if (resultadosRondaMostrados) return; 
+    resultadosRondaMostrados = true;
 
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    const btn = document.getElementById('game-action-btn');
+    
+    const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+    const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+
+    const miDist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
+    const misPts = isNaN(miDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -miDist / 1200)));
+    
+    guessrPuntosTotales += misPts;
+    rivalPuntosTotales += rivalDataRonda.puntos; 
+
+    guessrHistorialRondas.push({
+        ronda: guessrRondaActual,
+        estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
+        distancia: miDist,
+        puntos: misPts
+    });
+
+    if (!isNaN(miDist) && miDist < 5) userStats.medallaLocalista = true;
+    if (!isNaN(miDist) && miDist < 1) userStats.guessrUnKm = true;
+    actualizarDotsProgreso();
+
+    guessrTargetMarker = L.circleMarker([tLat, tLng], {radius: 9, color: '#00e676', fillColor: '#111820', fillOpacity: 1, weight: 3})
+        .addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
+    
+    guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [tLat, tLng]], {color: '#ff4757', weight: 2, dashArray: '6,8'}).addTo(guessrMapInstance);
+
+    const rivalMarker = L.circleMarker([rivalDataRonda.lat, rivalDataRonda.lng], {radius: 8, color: '#2979ff', fillColor: '#111820', fillOpacity: 1, weight: 3})
+        .addTo(guessrMapInstance).bindPopup(`<b>Rival (+${rivalDataRonda.puntos} pts)</b>`);
+
+    L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
+
+    let marcasParaEncuadrar = [guessrTargetMarker, rivalMarker];
+    if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
+    guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
+
+    document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+
+    miListoSiguiente = false;
+    rivalListoSiguiente = false;
+    
+    const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
+    
+    if (guessrRondaActual < 5) {
+        btn.innerHTML = `Sumaste +${misPts} pts (${miDistT}) | Rival: +${rivalDataRonda.puntos} pts. Avanzar <i class="ph-bold ph-arrow-right"></i>`;
+    } else {
+        btn.innerHTML = `Finalizar Partido Mano a Mano 🏁`;
+    }
+    
+    btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
+    btn.style.color = "#000";
+    btn.style.boxShadow = "0 5px 0 #0d5332";
+    
+    btn.setAttribute('data-estado', 'resultado');
+    btn.disabled = false;
+    btn.onclick = () => solicitarSiguienteRondaVersus();
+}
+
+// Avisa por canal rápido que estás listo para cambiar de ronda
 // Avisa por canal rápido que estás listo para cambiar de ronda
 // Avisa por canal rápido que estás listo para cambiar de ronda
 function solicitarSiguienteRondaVersus() {
@@ -1182,15 +1253,24 @@ function solicitarSiguienteRondaVersus() {
     btn.disabled = true;
     btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Esperando oponente...`;
 
-    versusChannel.send({
-        type: 'broadcast',
-        event: 'rival_listo_siguiente',
-        payload: { listo: true }
-    });
-
-    // 🔥 Si el oponente entró en timeout en esta ronda, saltamos su confirmación y avanzamos
-    if (rivalListoSiguiente || rivalForcedTimeout) {
+    if (rivalForcedTimeout) {
+        // Le avisamos al oponente colgado que saltamos de fase obligatoriamente
+        versusChannel.send({
+            type: 'broadcast',
+            event: 'forzar_siguiente_ronda',
+            payload: {}
+        });
         ejecutarPasoDeRondaVersus();
+    } else {
+        versusChannel.send({
+            type: 'broadcast',
+            event: 'rival_listo_siguiente',
+            payload: { listo: true }
+        });
+
+        if (rivalListoSiguiente) {
+            ejecutarPasoDeRondaVersus();
+        }
     }
 }
 
@@ -1208,7 +1288,7 @@ function ejecutarPasoDeRondaVersus() {
     miListoSiguiente = false;
     rivalListoSiguiente = false;
     rivalForcedTimeout = false; // 🔥 Reseteamos el bypass para evaluar el siguiente estadio
-
+    resultadosRondaMostrados = false;
     guessrRondaActual++;
     if (guessrRondaActual <= 5) {
         lanzarRondaGuessr();
@@ -1232,6 +1312,7 @@ function arrancarPartidoVersus() {
     rivalDataRonda = null;
     miListoSiguiente = false;
     rivalListoSiguiente = false;
+    resultadosRondaMostrados = false;
     if (versusTimerInterval) clearInterval(versusTimerInterval);
 
     lanzarRondaGuessr();
@@ -1871,4 +1952,14 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',function
 indexarCatalogoMasivo();
 const lastGid=localStorage.getItem('ev_last_gid');if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}else mostrarLigas();
 guardarStats();
+});
+// Si un jugador cierra la pestaña o el navegador de prepo, gatilla el abandono al rival activo antes de destruir el socket
+window.addEventListener('beforeunload', () => {
+    if (esModoVersus && versusChannel) {
+        versusChannel.send({
+            type: 'broadcast',
+            event: 'rival_abandono',
+            payload: {}
+        });
+    }
 });
