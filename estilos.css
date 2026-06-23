@@ -10,13 +10,34 @@
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
 }
 [data-theme="light"]{
-  --bg-color:#eef6f0;--card-bg:#fff;--surface-color:#daeee0;--surface-hover:#c8e4d0;
-  --text-main:#0d2416;--text-muted:#4a7a5c;--text-inverse:#fff;--accent-color:#16a34a;
-  --accent-hover:#15803d;--accent-dim:rgba(22,163,74,.1);--accent-glow:rgba(22,163,74,.3);
-  --danger-color:#dc2626;--border-subtle:rgba(22,163,74,.12);--border-strong:rgba(22,163,74,.25);
-  --glass-bg:rgba(255,255,255,.94);--modal-overlay:rgba(220,235,225,.88);
-  --shadow-soft:0 4px 20px rgba(22,163,74,.12);--shadow-strong:0 16px 50px rgba(22,163,74,.2);
-  --pitch-line:rgba(22,163,74,.1)
+  /* 🏟️ La paleta diurna de alta competición */
+  --bg-color:#f0f7f3;        /* Blanco deportivo con tinte de césped limpio */
+  --card-bg:#ffffff;         /* Blanco puro reflectivo para los paneles principales */
+  --surface-color:#daeee0;   /* Menta claro premium para los contenedores */
+  --surface-hover:#c5e7cc;   /* Resalte de interacción dinámico */
+  --text-main:#061a0d;       /* Negro profundo botella para máxima lectura */
+  --text-muted:#3b664a;      /* Verde oliva táctico para textos secundarios */
+  --text-inverse:#ffffff;
+  
+  /* Energizamos los acentos de la tarde */
+  --accent-color:#10b981;    /* Esmeralda brillante de transmisión diurna */
+  --accent-hover:#059669;    
+  --accent-dim:rgba(16, 185, 129, 0.12);
+  --accent-glow:rgba(16, 185, 129, 0.35);
+  --danger-color:#ef4444;
+  
+  /* Bordes limpios con corte orgánico */
+  --border-subtle:rgba(16, 185, 129, 0.08);
+  --border-strong:rgba(6, 26, 13, 0.12);
+  --glass-bg:rgba(255, 255, 255, 0.92);
+  --modal-overlay:rgba(215, 235, 222, 0.90);
+  
+  /* Sombras corpóreas para que las tarjetas parezcan fichas reales flotando */
+  --shadow-soft:0 8px 30px rgba(6, 26, 13, 0.06);
+  --shadow-strong:0 20px 60px rgba(6, 26, 13, 0.12);
+  
+  /* 🏟️ TRAMA DE CANCHA: Líneas de cal sutiles cruzadas de día */
+  --pitch-line:rgba(16, 185, 129, 0.045);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 html{scroll-behavior:smooth}
