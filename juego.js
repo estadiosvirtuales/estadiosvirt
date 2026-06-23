@@ -944,13 +944,29 @@ function abrirLobbyEspera() {
     const lobby = document.createElement('div');
     lobby.id = 'matchmaking-lobby';
     lobby.style.cssText = `
-        position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
-        background: var(--glass-bg); border: 2px solid var(--border-strong);
-        padding: 14px 28px; border-radius: 16px; z-index: 99999;
-        display: flex; align-items: center; gap: 14px; font-weight: 800;
-        color: var(--text-main); box-shadow: var(--shadow-strong);
-        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-        font-size: 0.95rem; letter-spacing: -0.2px;
+        position: fixed; 
+        top: 24px; 
+        left: 0; 
+        right: 0; 
+        margin: 0 auto;
+        width: max-content;
+        max-width: 90%;
+        background: var(--glass-bg); 
+        border: 2px solid var(--border-strong);
+        padding: 14px 28px; 
+        border-radius: 16px; 
+        z-index: 99999;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        gap: 14px; 
+        font-weight: 800;
+        color: var(--text-main); 
+        box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(12px); 
+        -webkit-backdrop-filter: blur(12px);
+        font-size: 0.95rem; 
+        letter-spacing: -0.2px;
         animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     `;
     
