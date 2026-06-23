@@ -1035,6 +1035,11 @@ async function buscarPartidaVersus() {
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
+    // 🛡️ ESCUDO ANTI-ZOMBIE: Desconectamos canales residuales de pruebas previas
+if (versusChannel) {
+    versusChannel.unsubscribe();
+    versusChannel = null;
+}
     versusPartidaEnCurso = false;
     esModoBot = false; 
 
@@ -1128,10 +1133,11 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado con Telemetría)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
 
-    console.log(`[1v1] Conectando al canal de la sala directa: sala_${versusPartidaId}`);
+    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} como [${versusRol.toUpperCase()}]`);
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { broadcast: { self: false } }
     });
@@ -1139,7 +1145,9 @@ function conectarRealtimeVersus() {
     versusChannel
         // HANDSHAKE 1: El Host escucha los latidos del Rival
         .on('broadcast', { event: 'rival_entro' }, (response) => {
+            console.log(`[1v1] 📥 [HOST] ¡Recibí pulso 'rival_entro' desde la otra pantalla!`, response);
             if (versusRol === 'jugador_1') {
+                console.log(`[1v1] 📤 [HOST] Respondiendo con 'host_confirmado'...`);
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
@@ -1155,6 +1163,7 @@ function conectarRealtimeVersus() {
         })
         // HANDSHAKE 2: El Rival recibe la confirmación del Host y apaga el latido
         .on('broadcast', { event: 'host_confirmado' }, (response) => {
+            console.log(`[1v1] 📥 [RIVAL] ¡Recibí confirmación 'host_confirmado' del Host! Se cierra la negociación de red.`, response);
             if (versusRol === 'jugador_2' && !versusPartidaEnCurso) {
                 versusPartidaEnCurso = true;
                 if (handshakeInterval) clearInterval(handshakeInterval);
@@ -1189,19 +1198,24 @@ function conectarRealtimeVersus() {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        // ESCUCHA D: El rival cerró la pestaña o abandoná la partida
+        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
         })
         .subscribe((status) => {
-            console.log(`[1v1] Estado de la conexión a la sala: ${status}`);
+            console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
             if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
+                console.log(`[1v1] 🚀 [RIVAL] Suscripción exitosa. Iniciando ráfaga de pulsos 'rival_entro'...`);
                 if (handshakeInterval) clearInterval(handshakeInterval);
+                
+                // Primer disparo instantáneo obligatorio
                 versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
                 
+                // Ráfaga continua de acople cada 400ms
                 handshakeInterval = setInterval(() => {
                     if (versusChannel) {
+                        console.log(`[1v1] 📤 [RIVAL] Enviando pulso latido 'rival_entro'...`);
                         versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
                     }
                 }, 400);
