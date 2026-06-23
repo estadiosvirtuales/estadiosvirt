@@ -933,8 +933,56 @@ let rivalForcedTimeout = false;
 let resultadosRondaMostrados = false;
 let esModoBot = false;             // Bandera para saber si el oponente actual es una IA
 let versusTimeoutBusqueda = null;  // Temporizador que mide la espera en el vestuario
+let matchmakingInterval = null;    // Contador de tiempo en cola en vivo
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
+// ⏳ CREA EL CONTADOR VISUAL FLOTANTE DE TIEMPO EN COLA
+function abrirLobbyEspera() {
+    cerrarLobbyEspera(); 
+    let tiempoSegundos = 0;
+    
+    const lobby = document.createElement('div');
+    lobby.id = 'matchmaking-lobby';
+    lobby.style.cssText = `
+        position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+        background: var(--glass-bg); border: 2px solid var(--border-strong);
+        padding: 14px 28px; border-radius: 16px; z-index: 99999;
+        display: flex; align-items: center; gap: 14px; font-weight: 800;
+        color: var(--text-main); box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        font-size: 0.95rem; letter-spacing: -0.2px;
+        animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    `;
+    
+    lobby.innerHTML = `
+        <i class="ph-bold ph-circle-notch animate-spin" style="color:var(--accent-color); font-size:1.2rem;"></i>
+        <span>Buscando rival... <b style="color:var(--accent-color); margin-left: 4px;">0:00</b></span>
+    `;
+    document.body.appendChild(lobby);
+
+    matchmakingInterval = setInterval(() => {
+        tiempoSegundos++;
+        const mins = Math.floor(tiempoSegundos / 60);
+        const secs = tiempoSegundos % 60;
+        const tiempoFormateado = `${mins}:${secs.toString().padStart(2, '0')}`;
+        
+        const textoLobby = lobby.querySelector('span');
+        if (textoLobby) {
+            textoLobby.innerHTML = `Buscando rival... <b style="color:var(--accent-color); margin-left: 4px;">${tiempoFormateado}</b>`;
+        }
+    }, 1000);
+}
+
+// ⏳ DESTRUYE EL CONTADOR VISUAL FLOTANTE
+function cerrarLobbyEspera() {
+    if (matchmakingInterval) {
+        clearInterval(matchmakingInterval);
+        matchmakingInterval = null;
+    }
+    const lobby = document.getElementById('matchmaking-lobby');
+    if (lobby) lobby.remove();
+}
+
 function obtener5EstadiosVersus() {
     const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
     const disponibles = pool.filter(f => {
@@ -970,11 +1018,13 @@ async function buscarPartidaVersus() {
 
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
-    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // Limpiamos temporizador anterior
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
     versusPartidaEnCurso = false;
-    esModoBot = false; // Forzamos inicio humano limpio en cada búsqueda
+    esModoBot = false; 
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
+    abrirLobbyEspera(); // 🔥 ENCIENDE EL CONTADOR DE TIEMPO EN VIVO
+    
     const misEstadiosAleatorios = obtener5EstadiosVersus();
     const nombresEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
 
@@ -1004,7 +1054,6 @@ async function buscarPartidaVersus() {
                 conectarRealtimeVersus();
             }
 
-            // 🔥 RELOJ DE RESCATE CONFIGURADO CORRECTAMENTE INSIDE EL IF
             if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
             versusTimeoutBusqueda = setTimeout(() => {
                 if (!versusPartidaEnCurso) {
@@ -1015,13 +1064,17 @@ async function buscarPartidaVersus() {
         }
     } catch (e) {
         console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
+        cerrarLobbyEspera(); // 🔥 APAGA EL RELOJ SI DA ERROR DE RED
         showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
         esModoVersus = false;
     }
 }
 
 // Activa un jugador virtual creíble para que el usuario no quede colgado
+// Activa un jugador virtual creíble para que el usuario no quede colgado
 function activarBotDeRescate() {
+    cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Apaga el cronómetro visual porque ya entra el Bot
+    
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
     
@@ -1387,7 +1440,10 @@ function ejecutarPasoDeRondaVersus() {
 // Resetea a cero los contadores generales del 1v1
 // Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 // Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
+// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 function arrancarPartidoVersus() {
+    cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Apaga el cronómetro visual porque ya encontramos un humano real
+
     // 🤖 Matamos el temporizador de búsqueda de 20s porque ya entramos a la cancha
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
 
@@ -1411,7 +1467,10 @@ function arrancarPartidoVersus() {
 }
 
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
+// TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
 function iniciarTrivia(){ 
+    cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Limpieza preventiva por si venías de cancelar un Versus
+    
     esModoVersus = false; 
     esModoBot = false; // 🤖 Desactivamos el bot de raíz para que no interfiera en solitario
     
