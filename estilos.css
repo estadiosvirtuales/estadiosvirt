@@ -10,34 +10,33 @@
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
 }
 [data-theme="light"]{
-  /* 🏟️ Paleta Match Day: Contraste agresivo y limpio */
-  --bg-color: #f3f8f5;        /* Blanco satinado con tinte de césped natural */
-  --card-bg: #ffffff;         /* Blanco puro reflectivo para el pop de las cartas */
-  --surface-color: #e3f2e8;   /* Verde menta eSports para subpaneles y contenedores */
-  --surface-hover: #cbead7;   /* Transición de enfoque fluida */
+  /* 🏟️ Paleta Match Day: Reajustada para evitar fatiga visual y dar relieve */
+  --bg-color: #e2e8e4;        /* Gris-césped profundo asentado: hace que las tarjetas blancas "exploten" hacia el frente */
+  --card-bg: #ffffff;         /* Blanco puro reflectivo para las cartas */
+  --surface-color: #d1e4da;   /* Verde menta eSports más oscuro para subpaneles */
+  --surface-hover: #b9dac9;   /* Transición de enfoque fluida */
   --text-main: #04160a;       /* Verde botella profundo (casi negro) para máxima nitidez */
-  --text-muted: #386146;      /* Verde oliva táctico para textos secundarios y etiquetas */
+  --text-muted: #2c4930;      /* Oscurecido para que las etiquetas secundarias lean perfecto */
   --text-inverse: #ffffff;
   
   /* 🔥 Energizamos los acentos diurnos estilo FIFA Ultimate Team */
   --accent-color: #00cc66;    /* Verde esmeralda eléctrico de alta visibilidad */
   --accent-hover: #009944;    
-  --accent-dim: rgba(0, 204, 102, 0.08);
-  --accent-glow: rgba(0, 204, 102, 0.3);
+  --accent-dim: rgba(0, 204, 102, 0.12);
+  --accent-glow: rgba(0, 204, 102, 0.35);
   --danger-color: #e11d48;
   
-  /* Bordes de cal pulidos */
-  --border-subtle: rgba(0, 204, 102, 0.08);
-  --border-strong: rgba(4, 22, 10, 0.12);
-  --glass-bg: rgba(255, 255, 255, 0.94);
-  --modal-overlay: rgba(210, 232, 216, 0.88);
+  /* Bordes y Estructuras */
+  --border-subtle: rgba(4, 22, 10, 0.08);
+  --border-strong: #a4bdae;   /* Bordes de cal definidos para recortar las figuras limpiamente */
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --modal-overlay: rgba(6, 12, 20, 0.5); /* Oscurece el fondo al abrir modales para concentrar la vista */
   
-  /* 🧱 Sombras cromáticas: eliminan el gris sucio usando la refracción del césped */
-  --shadow-soft: 0 10px 35px rgba(4, 22, 10, 0.04);
-  --shadow-strong: 0 24px 60px rgba(4, 22, 10, 0.1);
+  /* 🧱 Sombras cromáticas profundas */
+  --shadow-soft: 0 8px 24px rgba(4, 22, 10, 0.08);
+  --shadow-strong: 0 20px 45px rgba(4, 22, 10, 0.18);
   
-  /* Líneas de cal sutiles cruzadas para el entramado general */
-  --pitch-line: rgba(0, 204, 102, 0.05);
+  --pitch-line: rgba(0, 204, 102, 0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 html{scroll-behavior:smooth}
@@ -793,4 +792,54 @@ body {
 [data-theme="light"] .card-modes-buttons .btn-menu-action:active {
     transform: translateY(3px) !important;
     box-shadow: 0 0 0 transparent, 0 1px 2px rgba(0,0,0,0.05) !important;
+}
+
+
+/* ========================================================
+   💥 ESCUDO DE CONTRASTE PARA MODO CLARO (RANKINGS Y COMPONENTES)
+   ======================================================== */
+
+/* Fuerza a los textos de los modales y desgloses a usar el color oscuro principal */
+[data-theme="light"] .modal-content,
+[data-theme="light"] #ranking-modal-body,
+[data-theme="light"] #modal-video-container,
+[data-theme="light"] .order-slot,
+[data-theme="light"] .trivia-balloon {
+    color: var(--text-main) !important;
+}
+
+/* Evita que los subtítulos y desgloses de rondas queden lavados */
+[data-theme="light"] #modal-video-container h2,
+[data-theme="light"] #modal-video-container strong,
+[data-theme="light"] #modal-video-container b,
+[data-theme="light"] .order-slot strong {
+    color: var(--text-main) !important;
+}
+
+[data-theme="light"] #modal-video-container p,
+[data-theme="light"] #modal-video-container span,
+[data-theme="light"] .order-slot span {
+    color: var(--text-muted) !important;
+}
+
+/* Corrige los botones inactivos del ranking para que tengan contraste legible */
+[data-theme="light"] .logro-tab-btn {
+    color: var(--text-muted) !important;
+    font-weight: 700 !important;
+}
+
+/* Al estar activa la pestaña, el texto se vuelve negro puro sobre el verde brillante */
+[data-theme="light"] .logro-tab-btn.active {
+    background: var(--accent-color) !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
+}
+
+/* Asegura que los textos dentro de las celdas del calendario del reto diario se lean bien */
+[data-theme="light"] .calendar-cell {
+    color: var(--text-main) !important;
+}
+[data-theme="light"] .calendar-cell.past-done,
+[data-theme="light"] .calendar-cell.current-active {
+    color: #000000 !important;
 }
