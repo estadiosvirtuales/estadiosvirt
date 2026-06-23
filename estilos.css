@@ -287,23 +287,28 @@ body>*{position:relative;z-index:1}
    REDISEÑO DE AVATAR: VOLUMEN 3D CON ACTITUD DE FUTBOLISTA
    ======================================================== */
 
+/* ========================================================
+   REDISEÑO TOTAL: AVATAR ESTILO SMASH NO CLIP (11_2.PNG)
+   ======================================================== */
+
+/* Contenedor: Lo bajamos a bottom 76px para darle aire arriba y que jamás se corte */
 .ac-avatar { 
     position: absolute; 
-    bottom: 84px; 
+    bottom: 76px; 
     z-index: 5; 
-    width: 74px;   /* Estilizamos las proporciones generales */
-    height: 76px;  
+    width: 72px; 
+    height: 72px; 
     transition: transform .3s cubic-bezier(.175,.885,.32,1.275); 
 }
 
-/* Rostro: Mandíbula definida y degradado radial que simula iluminación esférica real */
+/* Cabeza: Esférica, robusta y con sombreado 3D de arcilla */
 .ac-head-base { 
     width: 100%; 
     height: 100%; 
-    background: radial-gradient(circle at 35% 30%, #f5dfc6 0%, #e2b999 55%, #c29474 100%) !important; 
-    border-radius: 42% 42% 38% 38% !important; 
+    background: radial-gradient(circle at 35% 30%, #f6dfc7 0%, #e2b999 60%, #bd8c70 100%) !important; 
+    border-radius: 46% 46% 42% 42% !important; 
     position: relative; 
-    box-shadow: inset -4px -6px 10px rgba(80, 40, 20, 0.3), 0 8px 16px rgba(0,0,0,0.3) !important; 
+    box-shadow: inset -3px -5px 8px rgba(80, 40, 20, 0.35), 0 6px 12px rgba(0,0,0,0.25) !important; 
     border: 1.5px solid #b5886d !important; 
 }
 
@@ -317,54 +322,55 @@ body>*{position:relative;z-index:1}
     border: 1.5px solid #b5886d; 
     z-index: -1; 
 }
-.ac-ear.left { left: -8px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.15); }
-.ac-ear.right { right: -8px; box-shadow: inset 2px -2px 4px rgba(0,0,0,0.15); }
+.ac-ear.left { left: -8px; box-shadow: inset -1px -1px 3px rgba(0,0,0,0.2); }
+.ac-ear.right { right: -8px; box-shadow: inset 1px -1px 3px rgba(0,0,0,0.2); }
 
-/* Peinado moderno: Castaño con volumen y mechones texturados estilo Smash */
+/* 💇‍♂️ El Pelo de 11_2: Domo redondo arriba (chau corte plano) */
 .ac-hair-base { 
-    width: 106%; 
-    height: 32px; 
-    background: linear-gradient(180deg, #53331c 0%, #301b0e 100%) !important; 
+    width: 104%; 
+    height: 38px; 
+    background: #3e2723 !important; /* Castaño oscuro GeoGuessr/Smash */
     position: absolute; 
     top: -6px; 
-    left: -3%; 
-    border-radius: 45% 45% 15% 15% !important; 
-    border-bottom: 2px solid #1f1007 !important; 
+    left: -2%; 
+    border-radius: 50% 50% 0 0 !important; /* Domo esférico perfecto */
     z-index: 2; 
 }
+
+/* Flequillo en "Zig-Zag" apuntando HACIA ABAJO sobre la frente */
 .ac-hair-spike { 
     position: absolute; 
-    top: -14px; 
-    right: 18px; 
-    border-left: 11px solid transparent; 
+    bottom: -12px; /* Sobresale hacia abajo del casco */
+    left: 10px; 
+    width: 0; height: 0;
+    border-top: 14px solid #3e2723; /* Triángulo invertido */
+    border-left: 9px solid transparent; 
     border-right: 9px solid transparent; 
-    border-bottom: 20px solid #53331c; 
-    transform: rotate(14deg); 
+    transform: rotate(5deg);
 }
 .ac-hair-spike2 { 
     position: absolute; 
-    top: -10px; 
-    left: 16px; 
-    border-left: 8px solid transparent; 
-    border-right: 11px solid transparent; 
-    border-bottom: 16px solid #432614; 
-    transform: rotate(-12deg); 
+    bottom: -12px; 
+    right: 10px; 
+    width: 0; height: 0;
+    border-top: 14px solid #3e2723; 
+    border-left: 9px solid transparent; 
+    border-right: 9px solid transparent; 
+    transform: rotate(-5deg);
 }
 
-/* Ojos: Amplios y brillantes estilo Animación 3D, pero enfocados al frente */
+/* Ojos: Grandes y ovalados estilo Smash, con el puntito blanco de reflejo */
 .ac-eye { 
-    width: 12px; 
-    height: 18px; 
-    background: #16161c !important; 
+    width: 13px; 
+    height: 19px; 
+    background: #1a1a24 !important; 
     border-radius: 50% !important; 
     position: absolute; 
     top: 28px; 
     z-index: 3;
 }
-.ac-eye.left { left: 17px; transform: rotate(-2deg); }
-.ac-eye.right { right: 17px; transform: rotate(2deg); }
-
-/* Brillo ocular (Catchlight) */
+.ac-eye.left { left: 16px; }
+.ac-eye.right { right: 16px; }
 .ac-eye::after { 
     content: '' !important; 
     position: absolute !important; 
@@ -376,45 +382,45 @@ body>*{position:relative;z-index:1}
     border-radius: 50% !important; 
 }
 
-/* 🤨 PARCHE DE CEJAS COMPETITIVAS: Le quita la cara de nene desorientado y le da actitud */
+/* 🤨 Aura de Futbolista: Cejas de concentración competitiva sobre los ojos */
 .ac-eye::before {
     content: '' !important;
     position: absolute !important;
-    top: -7px !important;
+    top: -6px !important;
     left: -2px !important;
-    width: 16px !important;
-    height: 4px !important;
-    background: #1f1007 !important;
-    border-radius: 2px !important;
+    width: 17px !important;
+    height: 4.5px !important;
+    background: #27140b !important;
+    border-radius: 3px !important;
     z-index: 4 !important;
 }
-.ac-eye.left::before { transform: rotate(10deg) !important; }  /* Inclinación sutil de concentración */
-.ac-eye.right::before { transform: rotate(-10deg) !important; }
+.ac-eye.left::before { transform: rotate(12deg) !important; }  /* Mirada letal de enganche */
+.ac-eye.right::before { transform: rotate(-12deg) !important; }
 
-/* 🦊 LA NARIZ TRIANGULAR DE ARCILLA (Fiel al Aldeano de la imagen 11) */
+/* 🎯 La Nariz de 11_2: Triángulo de arcilla terracota con volumen propio */
 .ac-nose { 
-    width: 14px !important; 
-    height: 9px !important; 
-    background: #df977a !important; /* Color teja/terracota característico de sombreado AC */
-    border-radius: 40% 40% 50% 50% !important; 
+    width: 16px !important; 
+    height: 12px !important; 
+    background: #d86a43 !important; /* El tono naranja característico */
     position: absolute !important; 
     top: 42px !important; 
-    left: 30px !important; 
+    left: 28px !important; 
     z-index: 3 !important;
-    box-shadow: inset 0 1px 2px rgba(255,255,255,0.25), 0 2px 4px rgba(80,40,20,0.15) !important;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%) !important; /* Forma triangular nítida */
+    filter: drop-shadow(0 2px 2px rgba(80,40,20,0.25));
 }
 
-/* Boca: Gesto de suficiencia/confianza de jugador que sabe lo que hace */
+/* Boca: Sonrisa gardeliana, confianza pura de quien va a patear el quinto penal */
 .ac-mouth { 
     width: 16px !important; 
     height: 8px !important; 
-    border-bottom: 3px solid #8f4f2e !important; 
+    border-bottom: 3.5px solid #8a482b !important; 
     border-radius: 0 0 50% 50% !important; 
     position: absolute !important; 
-    top: 52px !important; 
-    left: 29px !important; 
+    top: 53px !important; 
+    left: 28px !important; 
     z-index: 3 !important;
-    transform: rotate(-1.5deg) !important; /* Levemente ladeada para dar personalidad */
+    transform: rotate(-1deg) !important;
 }
 .fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
 .fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
