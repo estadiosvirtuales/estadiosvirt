@@ -931,6 +931,8 @@ let handshakeInterval = null;     // Intervalo para el latido de sincronización
 let rivalPuntosTotales = 0;       // Acumulador oficial del oponente
 let rivalForcedTimeout = false;
 let resultadosRondaMostrados = false;
+let esModoBot = false;             // Bandera para saber si el oponente actual es una IA
+let versusTimeoutBusqueda = null;  // Temporizador que mide la espera en el vestuario
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 function obtener5EstadiosVersus() {
@@ -966,8 +968,10 @@ async function buscarPartidaVersus() {
     }
 
     if (handshakeInterval) clearInterval(handshakeInterval);
-    if (versusTimerInterval) clearInterval(versusTimerInterval);
-    versusPartidaEnCurso = false;
+if (versusTimerInterval) clearInterval(versusTimerInterval);
+if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // 🔥 Limpiamos temporizador anterior
+versusPartidaEnCurso = false;
+esModoBot = false; // 🔥 Forzamos inicio humano limpio en cada búsqueda
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     const misEstadiosAleatorios = obtener5EstadiosVersus();
@@ -982,22 +986,32 @@ async function buscarPartidaVersus() {
         if (error) throw error;
 
         if (data && data.length > 0) {
-            const partida = data[0];
-            versusPartidaId = partida.id_partida;
-            versusEstadios = partida.estadios;
-            esModoVersus = true; 
+        const partida = data[0];
+        versusPartidaId = partida.id_partida;
+        versusEstadios = partida.estadios;
+        esModoVersus = true; 
 
-            if (partida.estado_actual === 'esperando') {
-                versusRol = 'jugador_1';
-                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-                showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
-                conectarRealtimeVersus();
-            } else if (partida.estado_actual === 'jugando') {
-                versusRol = 'jugador_2';
-                console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
-                showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
-                conectarRealtimeVersus();
+        if (partida.estado_actual === 'esperando') {
+            versusRol = 'jugador_1';
+            console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+            showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
+            conectarRealtimeVersus();
+        } else if (partida.estado_actual === 'jugando') {
+            versusRol = 'jugador_2';
+            console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
+            showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
+            conectarRealtimeVersus();
+        }
+
+        // 🔥 AQUÍ AGREGAMOS EL RELOJ DE RESCATE:
+        if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+        versusTimeoutBusqueda = setTimeout(() => {
+            if (!versusPartidaEnCurso) {
+                console.log("[1v1] Tiempo de espera humano excedido. Activando Bot camuflado.");
+                activarBotDeRescate();
             }
+        }, 20000); // 20 segundos de tolerancia antes de activar el bot
+    }
         }
     } catch (e) {
         console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
@@ -1006,6 +1020,43 @@ async function buscarPartidaVersus() {
     }
 }
 
+// Activa un jugador virtual creíble para que el usuario no quede colgado
+function activarBotDeRescate() {
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    
+    // Desconectamos el canal real para no dejar basura en Supabase
+    if (versusChannel) {
+        versusChannel.unsubscribe();
+        versusChannel = null;
+    }
+
+    esModoVersus = true;
+    versusPartidaEnCurso = true;
+    esModoBot = true; // Gatillo de simulación activo
+    versusRol = 'jugador_1'; // Nos auto-asignamos como host del partido simulado
+    
+    // Pool de nombres camuflados para que parezcan usuarios comunes de la app
+    const nombresFakes = [
+        "Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", 
+        "Gonza_23", "Matias_EV", "Rulo_94", "Juani_Albiceleste", "Toto_Cancha"
+    ];
+    const botNick = nombresFakes[Math.floor(Math.random() * nombresFakes.length)];
+    
+    showToast(`¡Rival encontrado: ${botNick}! Sincronizando... ⚽`, "ph-user-switch", "success");
+    
+    // Si la sala de Supabase no llegó a poblar los estadios, los generamos localmente
+    if (!versusEstadios || versusEstadios.length === 0) {
+        const misEstadiosAleatorios = obtener5EstadiosVersus();
+        versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+    }
+
+    // Le damos un pequeño delay de carga para mantener el efecto de red
+    setTimeout(arrancarPartidoVersus, 1200);
+}
+
+
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 function conectarRealtimeVersus() {
@@ -1069,7 +1120,7 @@ function conectarRealtimeVersus() {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida
+        // ESCUCHA D: El rival cerró la pestaña o abandoná la partida
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
@@ -1134,11 +1185,14 @@ function confirmarArriesgoLocalVersus() {
 
         miGuessConfirmado = true;
 
-        versusChannel.send({
-            type: 'broadcast',
-            event: 'rival_voto',
-            payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
-        });
+        // 🛡️ ESCUDO DE RED: Solo transmitimos datos si jugamos contra un humano real
+        if (!esModoBot && versusChannel) {
+            versusChannel.send({
+                type: 'broadcast',
+                event: 'rival_voto',
+                payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
+            });
+        }
 
         if (rivalGuessConfirmado) {
             mostrarResultadosMutuosVersus();
@@ -1147,8 +1201,33 @@ function confirmarArriesgoLocalVersus() {
             const titleEl = document.getElementById('game-title');
             if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
             
-            // 🔥 ACTIVACIÓN DEL SALVAVIDAS: Si el rival no responde en 15s, forzamos la resolución
-            iniciarRelojEsperaRivalVersus();
+            // 🤖 COMPORTAMIENTO DEL BOT CALIBRADO (100% Humano y Camuflado)
+            if (esModoBot) {
+                setTimeout(() => {
+                    // Generamos un error en KM creíble (Entre 80km y 850km de distancia del estadio)
+                    const kmErrorAleatorio = 80 + Math.random() * 770;
+                    const anguloGrad = Math.random() * Math.PI * 2;
+                    
+                    // Traducimos los KM a desfase de coordenadas Leaflet reales
+                    const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
+                    const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
+                    
+                    const botLat = tLat + desfaseLat;
+                    const botLng = tLng + desfaseLng;
+                    
+                    const botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
+                    const botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
+                    
+                    rivalGuessConfirmado = true;
+                    rivalDataRonda = { lat: botLat, lng: botLng, puntos: botPts, distancia: botDist };
+                    
+                    // Abrimos la pantalla de resultados de la ronda
+                    mostrarResultadosMutuosVersus();
+                }, 1500 + Math.random() * 2000); // Tarda entre 1.5s y 3.5s en responder (Simula arrastrar el mapa)
+            } else {
+                // Si es humano, encendemos el reloj de arena clásico de resguardo
+                iniciarRelojEsperaRivalVersus();
+            }
         }
     } catch (error) {
         console.error("🚨 Error crítico al intentar enviar el voto local:", error);
@@ -1247,11 +1326,19 @@ function mostrarResultadosMutuosVersus() {
 // Avisa por canal rápido que estás listo para cambiar de ronda
 // Avisa por canal rápido que estás listo para cambiar de ronda
 // Avisa por canal rápido que estás listo para cambiar de ronda
+// Avisa por canal rápido que estás listo para cambiar de ronda (Bypass para Bot)
+// Avisa por canal rápido que estás listo para cambiar de ronda (Bypass para Bot)
 function solicitarSiguienteRondaVersus() {
     const btn = document.getElementById('game-action-btn');
     miListoSiguiente = true;
     btn.disabled = true;
     btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Esperando oponente...`;
+
+    // 🤖 SI ES UN BOT: No hay WebSocket activo, evitamos la espera de red y pasamos de estadio ya mismo
+    if (esModoBot) {
+        ejecutarPasoDeRondaVersus();
+        return;
+    }
 
     if (rivalForcedTimeout) {
         // Le avisamos al oponente colgado que saltamos de fase obligatoriamente
@@ -1298,7 +1385,12 @@ function ejecutarPasoDeRondaVersus() {
 }
 
 // Resetea a cero los contadores generales del 1v1
+// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
+// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 function arrancarPartidoVersus() {
+    // 🤖 Matamos el temporizador de búsqueda de 20s porque ya entramos a la cancha
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+
     guessrRondaActual = 1;
     guessrPuntosTotales = 0;
     rivalPuntosTotales = 0;
@@ -1318,11 +1410,15 @@ function arrancarPartidoVersus() {
     lanzarRondaGuessr();
 }
 
-// TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario)
+// TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
 function iniciarTrivia(){ 
     esModoVersus = false; 
+    esModoBot = false; // 🤖 Desactivamos el bot de raíz para que no interfiera en solitario
+    
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // Limpieza de seguridad de búsqueda
+    
     if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
@@ -1394,6 +1490,13 @@ if (esModoVersus) {
     const id = getUserId();
     const nombreLocal = getPref('ev_custom_nick', '') || JSON.parse(localStorage.getItem('ev_user_logged'))?.name || 'Jugador';
     
+    // 🤖 CAMUFLAJE FINAL: Si es un bot, inventamos un nick aleatorio para el marcador final
+    let nombreRivalFinal = "RIVAL";
+    if (esModoBot) {
+        const nicksFinales = ["Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", "Gonza_23", "Matias_EV", "Toto_Cancha"];
+        nombreRivalFinal = nicksFinales[Math.floor(Math.random() * nicksFinales.length)].toUpperCase();
+    }
+    
     let cartelResultado = "";
     let colorResultado = "#ffea00";
     
@@ -1428,11 +1531,22 @@ if (esModoVersus) {
         <div style="display:flex;align-items:center;gap:30px;background:var(--surface-color);border:2px solid var(--border-strong);padding:20px 40px;border-radius:16px;margin-bottom:30px;">
             <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">VOS</div><strong style="font-size:1.8rem;color:#00e676;">${guessrPuntosTotales}</strong></div>
             <div style="font-size:1.5rem;font-weight:900;color:var(--border-strong);">VS</div>
-            <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">RIVAL</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
+            <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">${nombreRivalFinal}</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
         </div>
         <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
     </div>`;
     return;
+}
+
+// Código solitario clásico (Sigue intacto abajo de tu filtro Versus)
+userStats.partidasJugadas++;if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
+if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;guardarStats();agregarXP(guessrPuntosTotales);pendingScore=guessrPuntosTotales;pendingScoreType='guessr';
+const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
+let histHTML=`<div style="width:100%;max-width:400px;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
+guessrHistorialRondas.forEach(item=>{const dT=isNaN(item.distancia)?'?':(item.distancia<1?`${Math.round(item.distancia*1000)} m`:`${item.distancia.toFixed(1)} km`);const starColor=item.puntos>3000?'#00e676':item.puntos>1000?'#ff8f00':'#ff4757';histHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:var(--text-muted);font-size:.75rem;">${dT}</span><b style="color:${starColor};">+${item.puntos}</b></span></div>`;});histHTML+='</div>';
+const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
+const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
+container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);"><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2><p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p><div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>${histHTML}<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">${guardarBtn}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
 }
 
 // Código solitario clásico (Sigue intacto abajo de tu filtro Versus)
