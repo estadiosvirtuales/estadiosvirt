@@ -1199,6 +1199,7 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado con Telemetría)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     const idUsuario = getUserId();
@@ -1209,6 +1210,13 @@ function conectarRealtimeVersus() {
     });
 
     versusChannel
+        // 🟢 SENSOR DE PRESENCIA: Si el rival cierra la pestaña, el navegador o pierde internet, el servidor nos avisa al instante
+        .on('presence', { event: 'leave' }, ({ leftPresences }) => {
+            console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence de Supabase:", leftPresences);
+            if (versusPartidaEnCurso && !esModoBot) {
+                manejarAbandonoRival();
+            }
+        })
         // Ambos escuchan los pulsos de entrada. Si viene de otra cuenta, responden y avanzan.
         .on('broadcast', { event: 'rival_entro' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
@@ -1263,7 +1271,7 @@ function conectarRealtimeVersus() {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        // ESCUCHA D: El rival cerró la pestaña o abandoná la partida
+        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida de forma manual
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
@@ -1271,6 +1279,9 @@ function conectarRealtimeVersus() {
         .subscribe((status) => {
             console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
             if (status === 'SUBSCRIBED') {
+                // 🟢 SEÑAL DE RASTREO: Le decimos al servidor que vigile la existencia de esta pestaña
+                versusChannel.track({ id: idUsuario });
+
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
                 // AMBOS envían ráfagas independientes para asegurar el acople inmediato
