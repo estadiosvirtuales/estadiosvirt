@@ -935,6 +935,7 @@ let esModoBot = false;             // Bandera para saber si el oponente actual e
 let versusTimeoutBusqueda = null;  // Temporizador que mide la espera en el vestuario
 let matchmakingInterval = null;    // Contador de tiempo en cola en vivo
 let botAntesTimer = null;          // 🔥 Controla el ataque anticipado del Bot
+let versusRivalNombre = "RIVAL";   // 🏆 variable GLOBAL para fijar el nombre del oponente
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 // ⏳ CREA EL CONTADOR VISUAL FLOTANTE DE TIEMPO EN COLA
@@ -1127,12 +1128,11 @@ function ejecutarVotoBotDinamico() {
     }
 }
 function activarBotDeRescate() {
-    cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Apaga el cronómetro visual porque ya entra el Bot
+    cerrarLobbyEspera(); 
     
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
     
-    // Desconectamos el canal real para no dejar basura en Supabase
     if (versusChannel) {
         versusChannel.unsubscribe();
         versusChannel = null;
@@ -1140,25 +1140,23 @@ function activarBotDeRescate() {
 
     esModoVersus = true;
     versusPartidaEnCurso = true;
-    esModoBot = true; // Gatillo de simulación activo
-    versusRol = 'jugador_1'; // Nos auto-asignamos como host del partido simulado
+    esModoBot = true; 
+    versusRol = 'jugador_1'; 
     
-    // Pool de nombres camuflados para que parezcan usuarios comunes de la app
     const nombresFakes = [
         "Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", 
         "Gonza_23", "Matias_EV", "Rulo_94", "Juani_Albiceleste", "Toto_Cancha"
     ];
-    const botNick = nombresFakes[Math.floor(Math.random() * nombresFakes.length)];
+    // Asignamos el nombre a la variable global
+    versusRivalNombre = nombresFakes[Math.floor(Math.random() * nombresFakes.length)];
     
-    showToast(`¡Rival encontrado: ${botNick}! Sincronizando... ⚽`, "ph-user-switch", "success");
+    showToast(`¡Rival encontrado: ${versusRivalNombre}! Sincronizando... ⚽`, "ph-user-switch", "success");
     
-    // Si la sala de Supabase no llegó a poblar los estadios, los generamos localmente
     if (!versusEstadios || versusEstadios.length === 0) {
         const misEstadiosAleatorios = obtener5EstadiosVersus();
         versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
     }
 
-    // Le damos un pequeño delay de carga para mantener el efecto de red
     setTimeout(arrancarPartidoVersus, 1200);
 }
 
@@ -1167,24 +1165,25 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado con Telemetría)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
+    const idUsuario = getUserId();
 
-    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} como [${versusRol.toUpperCase()}]`);
+    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId}`);
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { broadcast: { self: false } }
     });
 
     versusChannel
-        // HANDSHAKE 1: El Host escucha los latidos del Rival
+        // Ambos escuchan los pulsos de entrada. Si viene de otra cuenta, responden y avanzan.
         .on('broadcast', { event: 'rival_entro' }, (response) => {
-            console.log(`[1v1] 📥 [HOST] ¡Recibí pulso 'rival_entro' desde la otra pantalla!`, response);
-            if (versusRol === 'jugador_1') {
-                console.log(`[1v1] 📤 [HOST] Respondiendo con 'host_confirmado'...`);
+            if (response.payload && response.payload.id !== idUsuario) {
+                console.log(`[1v1] 📥 Pulso detectado del oponente de confianza.`);
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
-                    payload: { listo: true }
+                    payload: { id: idUsuario }
                 });
 
                 if (!versusPartidaEnCurso) {
@@ -1194,10 +1193,10 @@ function conectarRealtimeVersus() {
                 }
             }
         })
-        // HANDSHAKE 2: El Rival recibe la confirmación del Host y apaga el latido
+        // Ambos escuchan la confirmación. Si viene del otro, apagan la ráfaga de red.
         .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            console.log(`[1v1] 📥 [RIVAL] ¡Recibí confirmación 'host_confirmado' del Host! Se cierra la negociación de red.`, response);
-            if (versusRol === 'jugador_2' && !versusPartidaEnCurso) {
+            if (response.payload && response.payload.id !== idUsuario && !versusPartidaEnCurso) {
+                console.log(`[1v1] 📥 Confirmación recíproca recibida con éxito.`);
                 versusPartidaEnCurso = true;
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 handshakeInterval = null;
@@ -1231,25 +1230,22 @@ function conectarRealtimeVersus() {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida
+        // ESCUCHA D: El rival cerró la pestaña o abandoná la partida
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
         })
         .subscribe((status) => {
             console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
-            if (status === 'SUBSCRIBED' && versusRol === 'jugador_2') {
-                console.log(`[1v1] 🚀 [RIVAL] Suscripción exitosa. Iniciando ráfaga de pulsos 'rival_entro'...`);
+            if (status === 'SUBSCRIBED') {
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // Primer disparo instantáneo obligatorio
-                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
+                // AMBOS envían ráfagas independientes para asegurar el acople inmediato
+                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario } });
                 
-                // Ráfaga continua de acople cada 400ms
                 handshakeInterval = setInterval(() => {
                     if (versusChannel) {
-                        console.log(`[1v1] 📤 [RIVAL] Enviando pulso latido 'rival_entro'...`);
-                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { listo: true } });
+                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario } });
                     }
                 }, 400);
             }
@@ -1562,14 +1558,13 @@ setTimeout(()=>{
     guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
     guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
 },600);
-// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes)
+// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes entre 12 y 24s)
     if (esModoBot) {
         if (botAntesTimer) clearTimeout(botAntesTimer);
         if (Math.random() < 0.5) {
-            // El bot va a "arriesgar" entre 6 y 14 segundos después de arrancar el video
             botAntesTimer = setTimeout(() => {
                 ejecutarVotoBotDinamico();
-            }, 6000 + Math.random() * 8000);
+            }, 12000 + Math.random() * 12000); // Elige exactamente entre 12000ms y 24000ms
         }
     }
 }
@@ -1601,6 +1596,7 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
+// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
     const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
@@ -1611,8 +1607,8 @@ async function finalizarJuegoGuessr(){
         
         let nombreRivalFinal = "RIVAL";
         if (esModoBot) {
-            const nicksFinales = ["Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", "Gonza_23", "Matias_EV", "Toto_Cancha"];
-            nombreRivalFinal = nicksFinales[Math.floor(Math.random() * nicksFinales.length)].toUpperCase();
+            // 🤖 SOLUCIONADO: Mantiene estrictamente el mismo nombre fijado al inicio
+            nombreRivalFinal = versusRivalNombre.toUpperCase();
         }
         
         let cartelResultado = "";
@@ -1655,7 +1651,7 @@ async function finalizarJuegoGuessr(){
         return;
     }
 
-    // Código solitario clásico (Sigue intacto abajo de tu filtro Versus)
+    // Código solitario clásico (Perfectamente resguardado dentro de la misma función)
     userStats.partidasJugadas++;
     if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
     if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
