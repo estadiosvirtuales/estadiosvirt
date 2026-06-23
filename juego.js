@@ -929,7 +929,7 @@ let versusTimerInterval = null;
 let versusTiempoRestante = 15;
 let handshakeInterval = null;     // Intervalo para el latido de sincronización
 let rivalPuntosTotales = 0;       // Acumulador oficial del oponente
-
+let rivalForcedTimeout = false;
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 function obtener5EstadiosVersus() {
@@ -1149,6 +1149,7 @@ function confirmarArriesgoLocalVersus() {
 }
 
 // Reloj de resguardo que evita que el primer jugador se quede colgado si el rival se congela
+// Reloj de resguardo que evita que el primer jugador se quede colgado si el rival se congela
 function iniciarRelojEsperaRivalVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     versusTiempoRestante = 15;
@@ -1164,7 +1165,8 @@ function iniciarRelojEsperaRivalVersus() {
             clearInterval(versusTimerInterval);
             showToast("⏱️ El oponente no respondió a tiempo. Procesando ronda.", "ph-clock", "warning");
             
-            // Forzamos datos vacíos de penalización para el rival y abrimos la pantalla
+            // 🔥 Forzamos el bypass de tiempo para avanzar sin esperarlo en la transición
+            rivalForcedTimeout = true; 
             rivalGuessConfirmado = true;
             rivalDataRonda = { lat: 0, lng: 0, puntos: 0, distancia: 9999 };
             mostrarResultadosMutuosVersus();
@@ -1172,6 +1174,7 @@ function iniciarRelojEsperaRivalVersus() {
     }, 1000);
 }
 
+// Avisa por canal rápido que estás listo para cambiar de ronda
 // Avisa por canal rápido que estás listo para cambiar de ronda
 function solicitarSiguienteRondaVersus() {
     const btn = document.getElementById('game-action-btn');
@@ -1185,11 +1188,13 @@ function solicitarSiguienteRondaVersus() {
         payload: { listo: true }
     });
 
-    if (rivalListoSiguiente) {
+    // 🔥 Si el oponente entró en timeout en esta ronda, saltamos su confirmación y avanzamos
+    if (rivalListoSiguiente || rivalForcedTimeout) {
         ejecutarPasoDeRondaVersus();
     }
 }
 
+// Vacía el mapa e inicia formalmente la ronda que sigue
 // Vacía el mapa e inicia formalmente la ronda que sigue
 function ejecutarPasoDeRondaVersus() {
     [guessrUserMarker, guessrTargetMarker, guessrPolyline].forEach(m => {
@@ -1202,6 +1207,7 @@ function ejecutarPasoDeRondaVersus() {
     rivalDataRonda = null;
     miListoSiguiente = false;
     rivalListoSiguiente = false;
+    rivalForcedTimeout = false; // 🔥 Reseteamos el bypass para evaluar el siguiente estadio
 
     guessrRondaActual++;
     if (guessrRondaActual <= 5) {
