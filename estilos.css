@@ -283,20 +283,139 @@ body>*{position:relative;z-index:1}
 .fut-stat-num{font-weight:900;font-size:1.15rem}
 .fut-stat-label{opacity:.8;font-size:.8rem;align-self:flex-end;margin-bottom:1px}
 .fut-avatar-container{width:65%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
-.ac-avatar { position: absolute; bottom: 84px; z-index: 5; width: 68px; height: 60px; transition: transform .3s cubic-bezier(.175,.885,.32,1.275); }
-.ac-head-base { width: 100%; height: 100%; background: #e2b999; border-radius: 45% 45% 35% 35%; position: relative; box-shadow: inset -4px -4px 10px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.3); border: 2px solid #c89f81; }
-.ac-ear { width: 18px; height: 18px; background: #e2b999; border-radius: 50%; position: absolute; top: 22px; border: 2px solid #c89f81; z-index: -1; }
-.ac-ear.left { left: -8px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1); }
-.ac-ear.right { right: -8px; box-shadow: inset 2px -2px 4px rgba(0,0,0,0.1); }
-.ac-hair-base { width: 110%; height: 26px; background: #4a2e1b; position: absolute; top: -4px; left: -5%; border-radius: 50% 50% 15% 15%; border-bottom: 2px solid #301d10; z-index: 2; }
-.ac-hair-spike { position: absolute; top: -12px; right: 12px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 16px solid #4a2e1b; transform: rotate(20deg); }
-.ac-hair-spike2 { position: absolute; top: -8px; left: 15px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #4a2e1b; transform: rotate(-15deg); }
-.ac-eye { width: 8px; height: 14px; background: #111; border-radius: 50%; position: absolute; top: 26px; z-index: 2;}
-.ac-eye.left { left: 16px; }
-.ac-eye.right { right: 16px; }
-.ac-eye::after { content: ''; position: absolute; top: 2px; right: 2px; width: 3px; height: 4px; background: #fff; border-radius: 50%; }
-.ac-nose { width: 8px; height: 5px; background: #d4a788; border-radius: 50%; position: absolute; top: 38px; left: 30px; z-index: 2;}
-.ac-mouth { width: 14px; height: 7px; border-bottom: 2px solid #a66a41; border-radius: 0 0 50% 50%; position: absolute; top: 43px; left: 27px; z-index: 2;}
+/* ========================================================
+   REDISEÑO DE AVATAR: VOLUMEN 3D CON ACTITUD DE FUTBOLISTA
+   ======================================================== */
+
+.ac-avatar { 
+    position: absolute; 
+    bottom: 84px; 
+    z-index: 5; 
+    width: 74px;   /* Estilizamos las proporciones generales */
+    height: 76px;  
+    transition: transform .3s cubic-bezier(.175,.885,.32,1.275); 
+}
+
+/* Rostro: Mandíbula definida y degradado radial que simula iluminación esférica real */
+.ac-head-base { 
+    width: 100%; 
+    height: 100%; 
+    background: radial-gradient(circle at 35% 30%, #f5dfc6 0%, #e2b999 55%, #c29474 100%) !important; 
+    border-radius: 42% 42% 38% 38% !important; 
+    position: relative; 
+    box-shadow: inset -4px -6px 10px rgba(80, 40, 20, 0.3), 0 8px 16px rgba(0,0,0,0.3) !important; 
+    border: 1.5px solid #b5886d !important; 
+}
+
+.ac-ear { 
+    width: 18px; 
+    height: 18px; 
+    background: #e2b999; 
+    border-radius: 50%; 
+    position: absolute; 
+    top: 30px; 
+    border: 1.5px solid #b5886d; 
+    z-index: -1; 
+}
+.ac-ear.left { left: -8px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.15); }
+.ac-ear.right { right: -8px; box-shadow: inset 2px -2px 4px rgba(0,0,0,0.15); }
+
+/* Peinado moderno: Castaño con volumen y mechones texturados estilo Smash */
+.ac-hair-base { 
+    width: 106%; 
+    height: 32px; 
+    background: linear-gradient(180deg, #53331c 0%, #301b0e 100%) !important; 
+    position: absolute; 
+    top: -6px; 
+    left: -3%; 
+    border-radius: 45% 45% 15% 15% !important; 
+    border-bottom: 2px solid #1f1007 !important; 
+    z-index: 2; 
+}
+.ac-hair-spike { 
+    position: absolute; 
+    top: -14px; 
+    right: 18px; 
+    border-left: 11px solid transparent; 
+    border-right: 9px solid transparent; 
+    border-bottom: 20px solid #53331c; 
+    transform: rotate(14deg); 
+}
+.ac-hair-spike2 { 
+    position: absolute; 
+    top: -10px; 
+    left: 16px; 
+    border-left: 8px solid transparent; 
+    border-right: 11px solid transparent; 
+    border-bottom: 16px solid #432614; 
+    transform: rotate(-12deg); 
+}
+
+/* Ojos: Amplios y brillantes estilo Animación 3D, pero enfocados al frente */
+.ac-eye { 
+    width: 12px; 
+    height: 18px; 
+    background: #16161c !important; 
+    border-radius: 50% !important; 
+    position: absolute; 
+    top: 28px; 
+    z-index: 3;
+}
+.ac-eye.left { left: 17px; transform: rotate(-2deg); }
+.ac-eye.right { right: 17px; transform: rotate(2deg); }
+
+/* Brillo ocular (Catchlight) */
+.ac-eye::after { 
+    content: '' !important; 
+    position: absolute !important; 
+    top: 3px !important; 
+    right: 2px !important; 
+    width: 4px !important; 
+    height: 6px !important; 
+    background: #ffffff !important; 
+    border-radius: 50% !important; 
+}
+
+/* 🤨 PARCHE DE CEJAS COMPETITIVAS: Le quita la cara de nene desorientado y le da actitud */
+.ac-eye::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -7px !important;
+    left: -2px !important;
+    width: 16px !important;
+    height: 4px !important;
+    background: #1f1007 !important;
+    border-radius: 2px !important;
+    z-index: 4 !important;
+}
+.ac-eye.left::before { transform: rotate(10deg) !important; }  /* Inclinación sutil de concentración */
+.ac-eye.right::before { transform: rotate(-10deg) !important; }
+
+/* 🦊 LA NARIZ TRIANGULAR DE ARCILLA (Fiel al Aldeano de la imagen 11) */
+.ac-nose { 
+    width: 14px !important; 
+    height: 9px !important; 
+    background: #df977a !important; /* Color teja/terracota característico de sombreado AC */
+    border-radius: 40% 40% 50% 50% !important; 
+    position: absolute !important; 
+    top: 42px !important; 
+    left: 30px !important; 
+    z-index: 3 !important;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.25), 0 2px 4px rgba(80,40,20,0.15) !important;
+}
+
+/* Boca: Gesto de suficiencia/confianza de jugador que sabe lo que hace */
+.ac-mouth { 
+    width: 16px !important; 
+    height: 8px !important; 
+    border-bottom: 3px solid #8f4f2e !important; 
+    border-radius: 0 0 50% 50% !important; 
+    position: absolute !important; 
+    top: 52px !important; 
+    left: 29px !important; 
+    z-index: 3 !important;
+    transform: rotate(-1.5deg) !important; /* Levemente ladeada para dar personalidad */
+}
 .fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
 .fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
 .fut-player-torso{position:relative;width:100%;height:85px;display:flex;justify-content:center;margin-top:-6px}
