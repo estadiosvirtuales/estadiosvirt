@@ -939,6 +939,7 @@ let versusRivalNombre = "RIVAL";   // 🏆 variable GLOBAL para fijar el nombre 
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 // ⏳ CREA EL CONTADOR VISUAL FLOTANTE DE TIEMPO EN COLA
+// ⏳ CREA EL CONTADOR VISUAL FLOTANTE DE TIEMPO EN COLA
 function abrirLobbyEspera() {
     cerrarLobbyEspera(); 
     let tiempoSegundos = 0;
@@ -972,9 +973,14 @@ function abrirLobbyEspera() {
         animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     `;
     
+    // Inyectamos el spinner, el cronómetro y la X de cancelación con hover interactivo
     lobby.innerHTML = `
         <i class="ph-bold ph-circle-notch animate-spin" style="color:var(--accent-color); font-size:1.2rem;"></i>
         <span>Buscando rival... <b style="color:var(--accent-color); margin-left: 4px;">0:00</b></span>
+        <i class="ph-bold ph-x" style="cursor:pointer; margin-left: 12px; color:var(--text-muted); font-size:1.1rem; transition:color 0.2s;" 
+           onmouseover="this.style.color='var(--danger-color)'" 
+           onmouseout="this.style.color='var(--text-muted)'" 
+           onclick="cancelarBusquedaVersus()"></i>
     `;
     document.body.appendChild(lobby);
 
@@ -989,6 +995,33 @@ function abrirLobbyEspera() {
             textoLobby.innerHTML = `Buscando rival... <b style="color:var(--accent-color); margin-left: 4px;">${tiempoFormateado}</b>`;
         }
     }, 1000);
+}
+
+// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
+function cancelarBusquedaVersus() {
+    cerrarLobbyEspera(); // Borra el cartel flotante de la pantalla
+    
+    // Matamos los timers de búsqueda de la app
+    if (versusTimeoutBusqueda) {
+        clearTimeout(versusTimeoutBusqueda);
+        versusTimeoutBusqueda = null;
+    }
+    if (handshakeInterval) {
+        clearInterval(handshakeInterval);
+        handshakeInterval = null;
+    }
+    
+    // Desconectamos el canal activo de Supabase de raíz
+    if (versusChannel) {
+        versusChannel.unsubscribe();
+        versusChannel = null;
+    }
+    
+    // Reseteamos las banderas globales competitivas
+    esModoVersus = false;
+    versusPartidaEnCurso = false;
+    
+    showToast("Búsqueda cancelada con éxito 🛑", "ph-x-circle", "info");
 }
 
 // ⏳ DESTRUYE EL CONTADOR VISUAL FLOTANTE
