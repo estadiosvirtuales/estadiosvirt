@@ -673,11 +673,12 @@ body {
 /* Fondo: Simula un partido de tarde soleada con reflectores apagados */
 [data-theme="light"],
 [data-theme="light"] body {
-    background-color: #f3f8f5 !important;
+    background-color: var(--bg-color) !important;
     background-image: 
-        radial-gradient(at 85% 0%, rgba(22, 163, 74, 0.06) 0px, transparent 50%),
-        radial-gradient(at 15% 100%, rgba(218, 238, 224, 0.4) 0px, transparent 70%) !important;
-    color: #0d2416 !important;
+        /* Cono de iluminación suave desde la esquina de transmisión */
+        radial-gradient(at 80% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 50%),
+        /* Sombreado de base en la tribuna inferior */
+        radial-gradient(at 20% 100%, rgba(218, 238, 224, 0.5) 0px, transparent 70%) !important;
 }
 
 /* Títulos corpóreos con sombras suaves tipo cal de la cancha */
