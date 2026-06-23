@@ -1,3 +1,4 @@
+
 :root{
   --bg-color:#0e141b;--card-bg:#18212c;--surface-color:#1e2936;--surface-hover:#263445;
   --text-main:#f0f4f8;--text-muted:#7a8fa6;--text-inverse:#000;
@@ -9,13 +10,34 @@
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
 }
 [data-theme="light"]{
-  --bg-color:#eef6f0;--card-bg:#fff;--surface-color:#daeee0;--surface-hover:#c8e4d0;
-  --text-main:#0d2416;--text-muted:#4a7a5c;--text-inverse:#fff;--accent-color:#16a34a;
-  --accent-hover:#15803d;--accent-dim:rgba(22,163,74,.1);--accent-glow:rgba(22,163,74,.3);
-  --danger-color:#dc2626;--border-subtle:rgba(22,163,74,.12);--border-strong:rgba(22,163,74,.25);
-  --glass-bg:rgba(255,255,255,.94);--modal-overlay:rgba(220,235,225,.88);
-  --shadow-soft:0 4px 20px rgba(22,163,74,.12);--shadow-strong:0 16px 50px rgba(22,163,74,.2);
-  --pitch-line:rgba(22,163,74,.1)
+  /* 🏟️ La paleta diurna de alta competición */
+  --bg-color:#f0f7f3;        /* Blanco deportivo con tinte de césped limpio */
+  --card-bg:#ffffff;         /* Blanco puro reflectivo para los paneles principales */
+  --surface-color:#daeee0;   /* Menta claro premium para los contenedores */
+  --surface-hover:#c5e7cc;   /* Resalte de interacción dinámico */
+  --text-main:#061a0d;       /* Negro profundo botella para máxima lectura */
+  --text-muted:#3b664a;      /* Verde oliva táctico para textos secundarios */
+  --text-inverse:#ffffff;
+  
+  /* Energizamos los acentos de la tarde */
+  --accent-color:#10b981;    /* Esmeralda brillante de transmisión diurna */
+  --accent-hover:#059669;    
+  --accent-dim:rgba(16, 185, 129, 0.12);
+  --accent-glow:rgba(16, 185, 129, 0.35);
+  --danger-color:#ef4444;
+  
+  /* Bordes limpios con corte orgánico */
+  --border-subtle:rgba(16, 185, 129, 0.08);
+  --border-strong:rgba(6, 26, 13, 0.12);
+  --glass-bg:rgba(255, 255, 255, 0.92);
+  --modal-overlay:rgba(215, 235, 222, 0.90);
+  
+  /* Sombras corpóreas para que las tarjetas parezcan fichas reales flotando */
+  --shadow-soft:0 8px 30px rgba(6, 26, 13, 0.06);
+  --shadow-strong:0 20px 60px rgba(6, 26, 13, 0.12);
+  
+  /* 🏟️ TRAMA DE CANCHA: Líneas de cal sutiles cruzadas de día */
+  --pitch-line:rgba(16, 185, 129, 0.045);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
 html{scroll-behavior:smooth}
@@ -283,214 +305,46 @@ body>*{position:relative;z-index:1}
 .fut-stat-label{opacity:.8;font-size:.8rem;align-self:flex-end;margin-bottom:1px}
 .fut-avatar-container{width:65%;height:100%;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;overflow:hidden}
 /* ========================================================
-   AVATAR DE CUERPO COMPLETO: JUGADOR 2D FLAT VECTOR
-   Mismas clases que antes (no requiere tocar el HTML/JS).
-   Cabeza + cuello + torso + brazos + short + piernas quedan
-   apilados sin huecos ni superposiciones, y todo el cuerpo
-   entra dentro de .fut-avatar-container sin recortarse.
+   NUEVO AVATAR: ACABADO INTERACTIVO 3D ESTILO "CRACK"
    ======================================================== */
 
-/* ── A. LA CABEZA ── */
-.ac-avatar {
-    position: absolute;
-    bottom: 126px !important; /* justo arriba del cuello, con leve solape prolijo */
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 6;
-    width: 50px !important;
-    height: 50px !important;
-    transition: transform .3s cubic-bezier(.175,.885,.32,1.275);
-}
+/* Contenedor: Lo bajamos a bottom 72px para ganar espacio arriba y evitar cortes de cabeza */
+/* ========================================================
+   REDISEÑO DE AVATAR: JUGADOR 2D FLAT VECTOR (ESTILO 27.PNG)
+   ======================================================== */
 
-.ac-head-base {
-    width: 100%; height: 100%;
-    background: #ffe3cc !important;
-    border-radius: 50% !important;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08) !important;
-    border: none !important;
-}
+/* ── A. LA CABEZA (FORMA DE GLOBO Y EXPRESIÓN VECTORIAL) ── */
+/* ========================================================
+   RESTAURACIÓN: AVATAR ORIGINAL ESTILO BLOCK (10_3.PNG)
+   ======================================================== */
 
-/* Orejas */
-.ac-ear {
-    width: 11px; height: 11px; background: #ffe3cc; border-radius: 50%;
-    position: absolute; top: 21px !important; z-index: -1;
-}
-.ac-ear.left { left: -3px; }
-.ac-ear.right { right: -3px; }
+.ac-avatar { position: absolute; bottom: 84px; z-index: 5; width: 68px; height: 60px; transition: transform .3s cubic-bezier(.175,.885,.32,1.275); }
+.ac-head-base { width: 100%; height: 100%; background: #e2b999; border-radius: 45% 45% 35% 35%; position: relative; box-shadow: inset -4px -4px 10px rgba(0,0,0,0.15), 0 6px 12px rgba(0,0,0,0.3); border: 2px solid #c89f81; }
+.ac-ear { width: 18px; height: 18px; background: #e2b999; border-radius: 50%; position: absolute; top: 22px; border: 2px solid #c89f81; z-index: -1; }
+.ac-ear.left { left: -8px; box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1); }
+.ac-ear.right { right: -8px; box-shadow: inset 2px -2px 4px rgba(0,0,0,0.1); }
+.ac-hair-base { width: 110%; height: 26px; background: #4a2e1b; position: absolute; top: -4px; left: -5%; border-radius: 50% 50% 15% 15%; border-bottom: 2px solid #301d10; z-index: 2; }
+.ac-hair-spike { position: absolute; top: -12px; right: 12px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-bottom: 16px solid #4a2e1b; transform: rotate(20deg); }
+.ac-hair-spike2 { position: absolute; top: -8px; left: 15px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 12px solid #4a2e1b; transform: rotate(-15deg); }
+.ac-eye { width: 8px; height: 14px; background: #111; border-radius: 50%; position: absolute; top: 26px; z-index: 2;}
+.ac-eye.left { left: 16px; }
+.ac-eye.right { right: 16px; }
+.ac-eye::after { content: ''; position: absolute; top: 2px; right: 2px; width: 3px; height: 4px; background: #fff; border-radius: 50%; }
+.ac-nose { width: 8px; height: 5px; background: #d4a788; border-radius: 50%; position: absolute; top: 38px; left: 30px; z-index: 2;}
+.ac-mouth { width: 14px; height: 7px; border-bottom: 2px solid #a66a41; border-radius: 0 0 50% 50%; position: absolute; top: 43px; left: 27px; z-index: 2;}
 
-/* Pelo: casco base + crestas */
-.ac-hair-base {
-    width: 104%; height: 28px;
-    background: #2c303a !important;
-    position: absolute; top: -4px !important; left: -2%;
-    border-radius: 50% 50% 15% 15% !important; z-index: 2;
-}
-.ac-hair-spike {
-    position: absolute; bottom: -5px; left: 8px; width: 0; height: 0;
-    border-top: 8px solid #2c303a; border-left: 5px solid transparent; border-right: 5px solid transparent;
-}
-.ac-hair-spike2 {
-    position: absolute; bottom: -5px; right: 8px; width: 0; height: 0;
-    border-top: 8px solid #2c303a; border-left: 5px solid transparent; border-right: 5px solid transparent;
-}
+.fut-player-body { position: absolute; bottom: -5px; width: 120px; height: 100px; display: flex; flex-direction: column; align-items: center; z-index: 4; }
+.fut-player-neck { width: 16px; height: 18px; background: #e2b999; border-radius: 0 0 8px 8px; position: relative; z-index: 2; box-shadow: inset 0 3px 5px rgba(0,0,0,0.3); }
+.fut-player-torso { position: relative; width: 100%; height: 85px; display: flex; justify-content: center; margin-top: -6px; }
+.fut-player-shirt { width: 64px; height: 100%; border-radius: 18px 18px 5px 5px; z-index: 3; position: relative; box-shadow: inset 0 5px 12px rgba(255,255,255,0.25), 0 4px 10px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; border: 1px solid rgba(255,255,255,0.2); border-bottom: none; }
+.fut-player-collar { width: 24px; height: 10px; border: 3px solid rgba(255,255,255,.9); border-top: none; border-radius: 0 0 12px 12px; margin-top: 0; }
+.fut-player-number { font-size: 1.6rem; font-weight: 900; color: rgba(255,255,255,.9); font-family: 'Arial Black', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,.5); margin-top: 6px; }
 
-/* Ojos con cejas y brillo */
-.ac-eye {
-    width: 7px !important; height: 10px !important; background: #16161c !important;
-    border-radius: 50% !important; position: absolute; top: 16px !important; z-index: 3;
-}
-.ac-eye.left { left: 10px; }
-.ac-eye.right { right: 10px; }
-.ac-eye::after {
-    content: '' !important; position: absolute !important; top: 1px !important; right: 1px !important;
-    width: 2px !important; height: 3px !important; background: #ffffff !important; border-radius: 50% !important;
-}
-.ac-eye::before {
-    content: '' !important; position: absolute !important; top: -3px !important; left: -1px !important;
-    width: 9px !important; height: 2px !important; background: #221207 !important; border-radius: 2px !important; z-index: 4 !important;
-}
-.ac-eye.left::before { transform: rotate(10deg) !important; }
-.ac-eye.right::before { transform: rotate(-10deg) !important; }
-
-/* Nariz */
-.ac-nose {
-    width: 8px !important; height: 6px !important; background: #df977a !important;
-    position: absolute !important; top: 25px !important; left: 21px !important; z-index: 3 !important;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%) !important;
-    border-radius: 0% !important; box-shadow: none !important;
-}
-
-/* Boca */
-.ac-mouth {
-    width: 11px !important; height: 7px !important;
-    background: #7f1d1d !important;
-    border-radius: 0 0 9px 9px !important;
-    position: absolute !important; top: 32px !important; left: 19px !important;
-    z-index: 3 !important; overflow: hidden !important; border: none !important;
-}
-.ac-mouth::after {
-    content: '' !important; position: absolute !important;
-    bottom: -2px !important; left: 2px !important;
-    width: 7px !important; height: 5px !important;
-    background: #ff8a80 !important;
-    border-radius: 50% 50% 0 0 !important;
-}
-
-/* Cachetes rosados */
-.ac-head-base::before {
-    content: '' !important; position: absolute !important;
-    top: 28px !important; left: 4px !important;
-    width: 8px !important; height: 4px !important;
-    background: #ff8a80 !important; opacity: 0.6 !important; border-radius: 50% !important; z-index: 2 !important;
-}
-.ac-head-base::after {
-    content: '' !important; position: absolute !important;
-    top: 28px !important; right: 4px !important;
-    width: 8px !important; height: 4px !important;
-    background: #ff8a80 !important; opacity: 0.6 !important; border-radius: 50% !important; z-index: 2 !important;
-}
-
-/* ── B. CUERPO COMPLETO ──
-   Todas las piezas usan "bottom" relativo a .fut-player-body,
-   apiladas de pie a cabeza sin espacios:
-   piernas (50px) + short (15px) + torso (54px) + cuello (14px) = 133px */
-.fut-player-body {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 70px !important;
-    height: 133px !important;
-    display: block !important;
-    z-index: 4;
-}
-
-/* Cuello: une la cabeza con el torso sin huecos */
-.fut-player-neck {
-    width: 18px !important; height: 14px !important;
-    background: #ffe3cc !important;
-    position: absolute !important; bottom: 119px !important; left: 50% !important;
-    transform: translateX(-50%) !important;
-    border-radius: 0 !important; box-shadow: none !important; z-index: 2;
-}
-
-.fut-player-torso {
-    position: absolute !important;
-    bottom: 65px !important;
-    left: 5px !important;
-    width: 60px !important;
-    height: 54px !important;
-    display: block !important; margin: 0 !important;
-}
-
-/* Camiseta */
-.fut-player-shirt {
-    width: 100% !important; height: 100% !important;
-    border-radius: 10px 10px 4px 4px !important;
-    z-index: 3; position: relative;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
-}
-.fut-player-collar {
-    width: 22px !important; height: 6px !important;
-    border: 2px solid #ff5722 !important;
-    border-top: none !important; border-radius: 0 0 10px 10px !important;
-    margin: 0 auto !important; background: transparent !important;
-}
-.fut-player-number { font-size: 1.1rem !important; margin-top: 3px !important; text-shadow: none !important; }
-
-/* Short: cuelga justo debajo del torso, sin solapar ni dejar hueco */
-.fut-player-torso::after {
-    content: '' !important; position: absolute !important;
-    bottom: -15px !important; left: 0 !important;
-    width: 100% !important; height: 15px !important;
-    background: #191c26 !important;
-    border-radius: 0 0 6px 6px !important; z-index: 4;
-}
-
-/* Piernas: apoyadas en la base del contenedor, separadas a la altura de los hombros */
-.fut-player-body::before {
-    content: '' !important; position: absolute !important;
-    bottom: 0 !important; left: 17px !important;
-    width: 14px !important; height: 50px !important;
-    background: linear-gradient(180deg, #ffe3cc 0%, #ffe3cc 26%, #ffffff 26%, #ffffff 78%, #2979ff 78%) !important;
-    border-radius: 0 0 5px 5px !important; z-index: 2; box-shadow: none !important;
-}
-.fut-player-body::after {
-    content: '' !important; position: absolute !important;
-    bottom: 0 !important; right: 17px !important;
-    width: 14px !important; height: 50px !important;
-    background: linear-gradient(180deg, #ffe3cc 0%, #ffe3cc 26%, #ffffff 26%, #ffffff 78%, #2979ff 78%) !important;
-    border-radius: 0 0 5px 5px !important; z-index: 2; box-shadow: none !important;
-}
-
-/* Brazos: cuelgan desde el hombro (tope del torso) hasta la altura del short */
-.fut-player-arm.left {
-    width: 10px !important; height: 61px !important;
-    background: #ffe3cc !important; position: absolute;
-    bottom: 58px !important; left: -2px !important;
-    border-radius: 4px; transform: rotate(8deg); transform-origin: top center; z-index: 2;
-    box-shadow: none !important; border: none !important;
-}
-.fut-player-arm.left::before {
-    content: '' !important; position: absolute !important; top: -1px; left: 0; width: 100%; height: 14px;
-    background: inherit !important; border-bottom: 2px solid #ff5722 !important;
-}
-
-.fut-player-arm.right {
-    width: 10px !important; height: 61px !important;
-    background: #ffe3cc !important; position: absolute;
-    bottom: 58px !important; right: -2px !important;
-    border-radius: 4px; transform: rotate(-8deg); transform-origin: top center; z-index: 2;
-    box-shadow: none !important; border: none !important;
-}
-.fut-player-arm.right::before {
-    content: '' !important; position: absolute !important; top: -1px; left: 0; width: 100%; height: 14px;
-    background: inherit !important; border-bottom: 2px solid #ff5722 !important;
-}
-
-/* Apagamos selectores huérfanos del pasado */
-.fut-player-arm::after { display: none !important; }
+.fut-player-arm { width: 15px; height: 65px; background: #e2b999; position: absolute; top: 6px; border-radius: 10px; box-shadow: inset -2px 0 4px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.3); z-index: 2; }
+.fut-player-arm::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 26px; border-radius: 10px 10px 4px 4px; box-shadow: inset 0 -3px 4px rgba(0,0,0,.2); border: 1px solid rgba(255,255,255,0.15); border-bottom: none; }
+.fut-player-arm::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 15px; background: #d4a788; border-radius: 10px; }
+.fut-player-arm.left { left: 12px; transform: rotate(18deg); transform-origin: top center; }
+.fut-player-arm.right { right: 12px; transform: rotate(-18deg); transform-origin: top center; }
 .avatar-picker{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:20px;margin-top:14px;width:100%;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .avatar-picker-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-main);background:var(--bg-color);border:2px solid var(--border-strong);padding:10px 12px;border-radius:12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;user-select:none;transition:all .2s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)}
 .avatar-picker-label:hover{border-color:var(--accent-color);color:var(--accent-color);background:var(--surface-hover);transform:translateY(-1px)}
@@ -819,11 +673,12 @@ body {
 /* Fondo: Simula un partido de tarde soleada con reflectores apagados */
 [data-theme="light"],
 [data-theme="light"] body {
-    background-color: #f3f8f5 !important;
+    background-color: var(--bg-color) !important;
     background-image: 
-        radial-gradient(at 85% 0%, rgba(22, 163, 74, 0.06) 0px, transparent 50%),
-        radial-gradient(at 15% 100%, rgba(218, 238, 224, 0.4) 0px, transparent 70%) !important;
-    color: #0d2416 !important;
+        /* Cono de iluminación suave desde la esquina de transmisión */
+        radial-gradient(at 80% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 50%),
+        /* Sombreado de base en la tribuna inferior */
+        radial-gradient(at 20% 100%, rgba(218, 238, 224, 0.5) 0px, transparent 70%) !important;
 }
 
 /* Títulos corpóreos con sombras suaves tipo cal de la cancha */
