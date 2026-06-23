@@ -1630,6 +1630,7 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 // CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
+// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
     const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
@@ -1640,7 +1641,6 @@ async function finalizarJuegoGuessr(){
         
         let nombreRivalFinal = "RIVAL";
         if (esModoBot) {
-            // 🤖 SOLUCIONADO: Mantiene estrictamente el mismo nombre fijado al inicio
             nombreRivalFinal = versusRivalNombre.toUpperCase();
         }
         
