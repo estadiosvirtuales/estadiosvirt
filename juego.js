@@ -1106,6 +1106,7 @@ function iniciarCuentaRegresivaVersus() {
 }
 
 // Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
+// Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
 function confirmarArriesgoLocalVersus() {
     try {
         if (versusTimerInterval) clearInterval(versusTimerInterval);
@@ -1138,71 +1139,37 @@ function confirmarArriesgoLocalVersus() {
             btn.innerHTML = `<i class="ph-bold ph-hourglass-medium animate-spin"></i> Esperando al rival...`;
             const titleEl = document.getElementById('game-title');
             if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
+            
+            // 🔥 ACTIVACIÓN DEL SALVAVIDAS: Si el rival no responde en 15s, forzamos la resolución
+            iniciarRelojEsperaRivalVersus();
         }
     } catch (error) {
         console.error("🚨 Error crítico al intentar enviar el voto local:", error);
     }
 }
 
-// Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa
-function mostrarResultadosMutuosVersus() {
+// Reloj de resguardo que evita que el primer jugador se quede colgado si el rival se congela
+function iniciarRelojEsperaRivalVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
-    const btn = document.getElementById('game-action-btn');
+    versusTiempoRestante = 15;
     
-    const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
-    const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+    versusTimerInterval = setInterval(() => {
+        versusTiempoRestante--;
+        const titleEl = document.getElementById('game-title');
+        if (titleEl) {
+            titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; Esperando oponente... <span style="color:var(--danger-color); font-weight:900;">${versusTiempoRestante}s</span>`;
+        }
 
-    const miDist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
-    const misPts = isNaN(miDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -miDist / 1200)));
-    
-    guessrPuntosTotales += misPts;
-    rivalPuntosTotales += rivalDataRonda.puntos; 
-
-    guessrHistorialRondas.push({
-        ronda: guessrRondaActual,
-        estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
-        distancia: miDist,
-        puntos: misPts
-    });
-
-    if (!isNaN(miDist) && miDist < 5) userStats.medallaLocalista = true;
-    if (!isNaN(miDist) && miDist < 1) userStats.guessrUnKm = true;
-    actualizarDotsProgreso();
-
-    guessrTargetMarker = L.circleMarker([tLat, tLng], {radius: 9, color: '#00e676', fillColor: '#111820', fillOpacity: 1, weight: 3})
-        .addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto, 'Estadio')}</b>`).openPopup();
-    
-    guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [tLat, tLng]], {color: '#ff4757', weight: 2, dashArray: '6,8'}).addTo(guessrMapInstance);
-
-    const rivalMarker = L.circleMarker([rivalDataRonda.lat, rivalDataRonda.lng], {radius: 8, color: '#2979ff', fillColor: '#111820', fillOpacity: 1, weight: 3})
-        .addTo(guessrMapInstance).bindPopup(`<b>Rival (+${rivalDataRonda.puntos} pts)</b>`);
-
-    L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
-
-    let marcasParaEncuadrar = [guessrTargetMarker, rivalMarker];
-    if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
-    guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
-
-    document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
-
-    miListoSiguiente = false;
-    rivalListoSiguiente = false;
-    
-    const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
-    
-    if (guessrRondaActual < 5) {
-        btn.innerHTML = `Sumaste +${misPts} pts (${miDistT}) | Rival: +${rivalDataRonda.puntos} pts. Avanzar <i class="ph-bold ph-arrow-right"></i>`;
-    } else {
-        btn.innerHTML = `Finalizar Partido Mano a Mano 🏁`;
-    }
-    
-    btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
-    btn.style.color = "#000";
-    btn.style.boxShadow = "0 5px 0 #0d5332";
-    
-    btn.setAttribute('data-estado', 'resultado');
-    btn.disabled = false;
-    btn.onclick = () => solicitarSiguienteRondaVersus();
+        if (versusTiempoRestante <= 0) {
+            clearInterval(versusTimerInterval);
+            showToast("⏱️ El oponente no respondió a tiempo. Procesando ronda.", "ph-clock", "warning");
+            
+            // Forzamos datos vacíos de penalización para el rival y abrimos la pantalla
+            rivalGuessConfirmado = true;
+            rivalDataRonda = { lat: 0, lng: 0, puntos: 0, distancia: 9999 };
+            mostrarResultadosMutuosVersus();
+        }
+    }, 1000);
 }
 
 // Avisa por canal rápido que estás listo para cambiar de ronda
@@ -1843,19 +1810,49 @@ logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'
 logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
     return logros;
 }
-// Función para rescatar al jugador si el oponente se desconecta o abandona
-function manejarAbandonoRival() {
+// Función para rescatar al jugador si el oponente se desconecta o abandona (Adjudica Victoria)
+async function manejarAbandonoRival() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (handshakeInterval) clearInterval(handshakeInterval);
     
-    showToast("⚠️ Tu rival abandonó el partido o cerró la pestaña.", "ph-x-circle", "danger");
+    showToast("🏆 ¡Victoria por abandono! Tu oponente se retiró de la cancha.", "ph-trophy", "success");
     
-    // Le damos 3 segundos para que lea el cartel y lo sacamos limpiamente de la pantalla de juego
-    setTimeout(() => {
-        cerrarModalVideo();
-        esModoVersus = false;
-        versusPartidaEnCurso = false;
-    }, 3000);
+    const id = getUserId();
+    const nombreLocal = getPref('ev_custom_nick', '') || JSON.parse(localStorage.getItem('ev_user_logged'))?.name || 'Jugador';
+    
+    // 🏅 COMPUTACIÓN REGLAMENTARIA: Sumamos victoria al perfil local y otorgamos XP de bonificación
+    userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
+    guardarStats();
+    agregarXP(1000); 
+    
+    // Impactamos el triunfo en la base de datos remota de Supabase
+    try {
+        if (supabaseClient && id && id !== 'guest') {
+            await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal }]);
+            console.log("[1v1] Victoria por abandono asentada en la nube de Supabase.");
+        }
+    } catch(err) {
+        console.error("Error al registrar victoria por abandono en la nube:", err);
+    }
+
+    // Desarmamos la interfaz del mapa y le clavamos la pantalla de victoria inmediata en el modal
+    const container = document.getElementById('modal-video-container');
+    document.getElementById('game-ui').style.display = 'none';
+    document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    if (guessrMapInstance) {
+        try { guessrMapInstance.remove(); } catch (e) {}
+        guessrMapInstance = null;
+    }
+
+    container.innerHTML = `
+    <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
+        <h2 style="font-size:2rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;filter:drop-shadow(0 0 10px var(--accent-glow));">¡VICTORIA POR ABANDONO! 🏆</h2>
+        <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;max-width:340px;line-height:1.5;">Tu oponente abandonó la sesión o se quedó sin datos. Te quedás con los puntos del partido y una bonificación especial de +1000 XP.</p>
+        <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
+    </div>`;
+    
+    esModoVersus = false;
+    versusPartidaEnCurso = false;
 }
 window.addEventListener('DOMContentLoaded', async () => {
 await cargarPromediosSupabase();
