@@ -290,7 +290,7 @@ body>*{position:relative;z-index:1}
 /* Contenedor: Lo bajamos a bottom 72px para ganar espacio arriba y evitar cortes de cabeza */
 .ac-avatar { 
     position: absolute; 
-    bottom: 72px !important; 
+    bottom: 112px !important; 
     z-index: 5; 
     width: 68px !important; 
     height: 68px !important; 
@@ -419,9 +419,78 @@ body>*{position:relative;z-index:1}
     z-index: 3 !important;
     transform: rotate(-1deg) !important;
 }
-.fut-player-body{position:absolute;bottom:-5px;width:120px;height:100px;display:flex;flex-direction:column;align-items:center;z-index:4}
-.fut-player-neck{width:16px;height:18px;background:#e2b999;border-radius:0 0 8px 8px;position:relative;z-index:2;box-shadow:inset 0 3px 5px rgba(0,0,0,0.3)}
-.fut-player-torso{position:relative;width:100%;height:85px;display:flex;justify-content:center;margin-top:-6px}
+/* ========================================================
+   ESTRUCTURA DEL CUERPO ENTERO (REPARACIÓN DE CAMISETA 100%)
+   ======================================================== */
+
+.fut-player-body {
+    position: absolute;
+    bottom: 42px !important; /* Lo subimos para despegarlo del nombre TRULI y dar lugar abajo */
+    width: 120px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 4;
+}
+
+.fut-player-neck {
+    width: 16px;
+    height: 18px;
+    background: #e2b999;
+    border-radius: 0 0 8px 8px;
+    position: relative;
+    z-index: 2;
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.3);
+}
+
+.fut-player-torso {
+    position: relative;
+    width: 100%;
+    height: 52px !important; /* 🔥 Al achicar el torso a 52px, tu remera al 100% se encoge sola perfectamente */
+    display: flex;
+    justify-content: center;
+    margin-top: -6px;
+}
+
+/* 🩳 SHORTS: Enganchados directo en la base de la remera */
+.fut-player-torso::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -14px !important; /* Cuelga justo abajo de la camiseta */
+    width: 64px !important;   /* Mismo ancho exacto que la remera */
+    height: 15px !important;
+    background: #111116 !important; /* Shorts oscuros estilo eSports */
+    border-radius: 0 0 6px 6px !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2) !important;
+    z-index: 3;
+}
+
+/* 🦵 PIERNA IZQUIERDA (Piel + Media Alta + Botín de 151.jpg) */
+.fut-player-body::before {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -38px !important; /* Caen al fondo de la estructura */
+    left: 36px !important;    /* Alineada al short izquierdo */
+    width: 12px !important;
+    height: 40px !important;
+    background: linear-gradient(180deg, #ebd4b9 0%, #ebd4b9 25%, #ffffff 25%, #ffffff 70%, #2979ff 70%) !important;
+    border-radius: 0 0 3px 2px !important;
+    z-index: 2;
+}
+
+/* 🦵 PIERNA DERECHA (Piel + Media Alta + Botín de 151.jpg) */
+.fut-player-body::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -38px !important;
+    right: 36px !important;   /* Alineada al short derecho */
+    width: 12px !important;
+    height: 40px !important;
+    background: linear-gradient(180deg, #ebd4b9 0%, #ebd4b9 25%, #ffffff 25%, #ffffff 70%, #2979ff 70%) !important;
+    border-radius: 0 0 2px 3px !important;
+    z-index: 2;
+}
 .fut-player-shirt{width:64px;height:100%;border-radius:18px 18px 5px 5px;z-index:3;position:relative;box-shadow:inset 0 5px 12px rgba(255,255,255,0.25),0 4px 10px rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.2);border-bottom:none}
 .fut-player-collar{width:24px;height:10px;border:3px solid rgba(255,255,255,.9);border-top:none;border-radius:0 0 12px 12px;margin-top:0}
 .fut-player-number{font-size:1.6rem;font-weight:900;color:rgba(255,255,255,.9);font-family:'Arial Black',sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.5);margin-top:6px}
