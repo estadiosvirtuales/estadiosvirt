@@ -959,6 +959,7 @@ function obtener5EstadiosVersus() {
 }
 
 // Función principal para buscar rival o crear una sala de espera
+// Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
     const idUsuario = getUserId();
     if (!idUsuario || idUsuario === 'guest') {
@@ -968,10 +969,10 @@ async function buscarPartidaVersus() {
     }
 
     if (handshakeInterval) clearInterval(handshakeInterval);
-if (versusTimerInterval) clearInterval(versusTimerInterval);
-if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // 🔥 Limpiamos temporizador anterior
-versusPartidaEnCurso = false;
-esModoBot = false; // 🔥 Forzamos inicio humano limpio en cada búsqueda
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // Limpiamos temporizador anterior
+    versusPartidaEnCurso = false;
+    esModoBot = false; // Forzamos inicio humano limpio en cada búsqueda
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     const misEstadiosAleatorios = obtener5EstadiosVersus();
@@ -986,32 +987,31 @@ esModoBot = false; // 🔥 Forzamos inicio humano limpio en cada búsqueda
         if (error) throw error;
 
         if (data && data.length > 0) {
-        const partida = data[0];
-        versusPartidaId = partida.id_partida;
-        versusEstadios = partida.estadios;
-        esModoVersus = true; 
+            const partida = data[0];
+            versusPartidaId = partida.id_partida;
+            versusEstadios = partida.estadios;
+            esModoVersus = true; 
 
-        if (partida.estado_actual === 'esperando') {
-            versusRol = 'jugador_1';
-            console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-            showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
-            conectarRealtimeVersus();
-        } else if (partida.estado_actual === 'jugando') {
-            versusRol = 'jugador_2';
-            console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
-            showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
-            conectarRealtimeVersus();
-        }
-
-        // 🔥 AQUÍ AGREGAMOS EL RELOJ DE RESCATE:
-        if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
-        versusTimeoutBusqueda = setTimeout(() => {
-            if (!versusPartidaEnCurso) {
-                console.log("[1v1] Tiempo de espera humano excedido. Activando Bot camuflado.");
-                activarBotDeRescate();
+            if (partida.estado_actual === 'esperando') {
+                versusRol = 'jugador_1';
+                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+                showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
+                conectarRealtimeVersus();
+            } else if (partida.estado_actual === 'jugando') {
+                versusRol = 'jugador_2';
+                console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
+                showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
+                conectarRealtimeVersus();
             }
-        }, 20000); // 20 segundos de tolerancia antes de activar el bot
-    }
+
+            // 🔥 RELOJ DE RESCATE CONFIGURADO CORRECTAMENTE INSIDE EL IF
+            if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+            versusTimeoutBusqueda = setTimeout(() => {
+                if (!versusPartidaEnCurso) {
+                    console.log("[1v1] Tiempo de espera humano excedido. Activando Bot camuflado.");
+                    activarBotDeRescate();
+                }
+            }, 20000); 
         }
     } catch (e) {
         console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
