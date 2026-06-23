@@ -285,7 +285,7 @@ const NIVELES=(function(){
 const n=[];
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
 const baseClasses=["level-pibe","level-volante","level-crack","level-leyenda","level-leyenda","level-leyenda","level-leyenda"];
-const baseEmojis=["⚽","🎯","🥈","⭐","🥇","🏆","👑","🔥","⚡","💎","🌟","🚀"];
+const baseEmojis=["⚽","🎯","⭐","🥇","🏆","👑","🔥","⚡","💎","🌟","🚀"];
 const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Goleador","Crack","Ídolo","Capitán","Galáctico","Leyenda","Inmortal","Mito","Dios del Fútbol"];
 for(let i=0;i<1000;i++){
 let xpReq=i===0?0:Math.floor(8000*Math.pow(i,1.5));
