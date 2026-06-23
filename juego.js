@@ -934,6 +934,7 @@ let resultadosRondaMostrados = false;
 let esModoBot = false;             // Bandera para saber si el oponente actual es una IA
 let versusTimeoutBusqueda = null;  // Temporizador que mide la espera en el vestuario
 let matchmakingInterval = null;    // Contador de tiempo en cola en vivo
+let botAntesTimer = null;          // 🔥 Controla el ataque anticipado del Bot
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 // ⏳ CREA EL CONTADOR VISUAL FLOTANTE DE TIEMPO EN COLA
@@ -1093,6 +1094,38 @@ if (versusChannel) {
 
 // Activa un jugador virtual creíble para que el usuario no quede colgado
 // Activa un jugador virtual creíble para que el usuario no quede colgado
+// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT
+function ejecutarVotoBotDinamico() {
+    if (!esModoBot || rivalGuessConfirmado) return;
+
+    const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+    const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+
+    // Generamos el error en KM creíble (Entre 80km y 850km)
+    const kmErrorAleatorio = 80 + Math.random() * 770;
+    const anguloGrad = Math.random() * Math.PI * 2;
+    
+    const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
+    const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
+    
+    const botLat = tLat + desfaseLat;
+    const botLng = tLng + desfaseLng;
+    
+    const botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
+    const botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
+    
+    rivalGuessConfirmado = true;
+    rivalDataRonda = { lat: botLat, lng: botLng, puntos: botPts, distancia: botDist };
+
+    // 🎯 SI VOS TODAVÍA NO ELEGISTE: Te mete la presión de los 15 segundos clásicos
+    if (!miGuessConfirmado) {
+        showToast("⚠️ ¡Tu oponente ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
+        iniciarCuentaRegresivaVersus();
+    } else {
+        // Si vos ya elegiste, abre el mapa de resultados directo
+        mostrarResultadosMutuosVersus();
+    }
+}
 function activarBotDeRescate() {
     cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Apaga el cronómetro visual porque ya entra el Bot
     
@@ -1251,7 +1284,8 @@ function iniciarCuentaRegresivaVersus() {
 function confirmarArriesgoLocalVersus() {
     try {
         if (versusTimerInterval) clearInterval(versusTimerInterval);
-        
+        if (botAntesTimer) clearTimeout(botAntesTimer); // 🛡️ Frenamos el tiro anticipado si vos jugaste primero
+
         const btn = document.getElementById('game-action-btn');
         btn.setAttribute('data-estado', 'procesando');
         btn.disabled = true;
@@ -1268,7 +1302,7 @@ function confirmarArriesgoLocalVersus() {
 
         miGuessConfirmado = true;
 
-        // 🛡️ ESCUDO DE RED: Solo transmitimos datos si jugamos contra un humano real
+        // Transmitimos datos solo si jugamos contra un humano real
         if (!esModoBot && versusChannel) {
             versusChannel.send({
                 type: 'broadcast',
@@ -1284,31 +1318,12 @@ function confirmarArriesgoLocalVersus() {
             const titleEl = document.getElementById('game-title');
             if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
             
-            // 🤖 COMPORTAMIENTO DEL BOT CALIBRADO (100% Humano y Camuflado)
             if (esModoBot) {
+                // Como vos elegiste primero, el bot reacciona entre 1.5s y 3.5s después de forma fluida
                 setTimeout(() => {
-                    // Generamos un error en KM creíble (Entre 80km y 850km de distancia del estadio)
-                    const kmErrorAleatorio = 80 + Math.random() * 770;
-                    const anguloGrad = Math.random() * Math.PI * 2;
-                    
-                    // Traducimos los KM a desfase de coordenadas Leaflet reales
-                    const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
-                    const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
-                    
-                    const botLat = tLat + desfaseLat;
-                    const botLng = tLng + desfaseLng;
-                    
-                    const botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
-                    const botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
-                    
-                    rivalGuessConfirmado = true;
-                    rivalDataRonda = { lat: botLat, lng: botLng, puntos: botPts, distancia: botDist };
-                    
-                    // Abrimos la pantalla de resultados de la ronda
-                    mostrarResultadosMutuosVersus();
-                }, 1500 + Math.random() * 2000); // Tarda entre 1.5s y 3.5s en responder (Simula arrastrar el mapa)
+                    ejecutarVotoBotDinamico();
+                }, 1500 + Math.random() * 2000);
             } else {
-                // Si es humano, encendemos el reloj de arena clásico de resguardo
                 iniciarRelojEsperaRivalVersus();
             }
         }
@@ -1446,7 +1461,11 @@ function solicitarSiguienteRondaVersus() {
 
 // Vacía el mapa e inicia formalmente la ronda que sigue
 // Vacía el mapa e inicia formalmente la ronda que sigue
+// Vacía el mapa e inicia formalmente la ronda que sigue
 function ejecutarPasoDeRondaVersus() {
+    // 🛡️ LIMPIEZA DE SEGURIDAD: Matamos el temporizador de iniciativa del bot por si quedó corriendo
+    if (botAntesTimer) clearTimeout(botAntesTimer);
+
     [guessrUserMarker, guessrTargetMarker, guessrPolyline].forEach(m => {
         try { if (m) m.remove(); } catch (e) {}
     });
@@ -1457,24 +1476,24 @@ function ejecutarPasoDeRondaVersus() {
     rivalDataRonda = null;
     miListoSiguiente = false;
     rivalListoSiguiente = false;
-    rivalForcedTimeout = false; // 🔥 Reseteamos el bypass para evaluar el siguiente estadio
+    rivalForcedTimeout = false; // Reseteamos el bypass para evaluar el siguiente estadio
     resultadosRondaMostrados = false;
     guessrRondaActual++;
+    
     if (guessrRondaActual <= 5) {
         lanzarRondaGuessr();
     } else {
         finalizarJuegoGuessr();
     }
 }
-
-// Resetea a cero los contadores generales del 1v1
-// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
-// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 // Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 function arrancarPartidoVersus() {
-    cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Apaga el cronómetro visual porque ya encontramos un humano real
+    // 🛡️ LIMPIEZA DE SEGURIDAD: Cancelamos cualquier temporizador previo del bot
+    if (botAntesTimer) clearTimeout(botAntesTimer);
+    
+    cerrarLobbyEspera(); // Apaga el cronómetro visual porque ya encontramos un rival
 
-    // 🤖 Matamos el temporizador de búsqueda de 20s porque ya entramos a la cancha
+    // Matamos el temporizador de búsqueda de 20s porque ya entramos a la cancha
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
 
     guessrRondaActual = 1;
@@ -1543,6 +1562,16 @@ setTimeout(()=>{
     guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
     guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
 },600);
+// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes)
+    if (esModoBot) {
+        if (botAntesTimer) clearTimeout(botAntesTimer);
+        if (Math.random() < 0.5) {
+            // El bot va a "arriesgar" entre 6 y 14 segundos después de arrancar el video
+            botAntesTimer = setTimeout(() => {
+                ejecutarVotoBotDinamico();
+            }, 6000 + Math.random() * 8000);
+        }
+    }
 }
 
 function procesarArriesgoGuessr(){
