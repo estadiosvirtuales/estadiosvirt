@@ -1081,7 +1081,105 @@ function obtener5EstadiosVersus() {
 
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
+async function buscarPartidaVersus() {
+    // 1. Obtenemos el ID local
+    let idUsuario = getUserId();
 
+    // 2. Si no está logueado, le asignamos un ID temporal único para esta sesión de juego
+    if (!idUsuario || idUsuario === 'guest') {
+        let guestId = sessionStorage.getItem('ev_guest_versus_id');
+        if (!guestId) {
+            // Genera algo como: guest_x8d2f1a (id único por sesión)
+            guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+            sessionStorage.setItem('ev_guest_versus_id', guestId);
+        }
+        idUsuario = guestId;
+
+        // 🎫 CONTROL DE APODO PARA INVITADOS: Si no tiene apodo guardado, se lo pedimos antes de buscar partida
+        let nickExistente = getPref('ev_custom_nick', '');
+        if (!nickExistente) {
+            let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
+            
+            // Si el pibe toca "Cancelar", frena la búsqueda limpiamente para que no quede colgado
+            if (nuevoNick === null) return; 
+            
+            nuevoNick = nuevoNick.trim();
+            // Si le dio a "Aceptar" en blanco, le asignamos un genérico aleatorio copado
+            if (!nuevoNick) {
+                nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+            }
+            // Recorte de seguridad reglamentario por si se pasa de rosca escribiendo
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            
+            // Lo guardamos localmente bajo la clave del invitado
+            setPref('ev_custom_nick', nuevoNick);
+        }
+    }
+
+    // 3. Limpieza preventiva de intervalos previos antes de iniciar la búsqueda
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
+    
+    // 🛡️ ESCUDO ANTI-ZOMBIE COMPLETO: Desconectamos cualquier rastro de red previo de Supabase
+    if (versusChannel) {
+        supabaseClient.removeChannel(versusChannel);
+        versusChannel = null;
+    }
+    
+    versusPartidaEnCurso = false;
+    esModoBot = false; 
+
+    showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
+    abrirLobbyEspera(); // 🔥 ENCIENDE EL CONTADOR DE TIEMPO EN VIVO
+    
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    const nombresEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+
+    try {
+        const { data, error } = await supabaseClient.rpc('buscar_o_crear_partida', {
+            p_jugador_id: idUsuario,
+            p_estadios_enviados: nombresEstadios
+        });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            const partida = data[0];
+            versusPartidaId = partida.id_partida;
+            versusEstadios = partida.estadios;
+            esModoVersus = true; 
+
+            if (partida.estado_actual === 'esperando') {
+                versusRol = 'jugador_1';
+                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+                showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
+                conectarRealtimeVersus();
+            } else if (partida.estado_actual === 'jugando') {
+                versusRol = 'jugador_2';
+                console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
+                showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
+                conectarRealtimeVersus();
+            }
+
+            // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
+            const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
+
+            if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+            versusTimeoutBusqueda = setTimeout(() => {
+                if (!versusPartidaEnCurso) {
+                    console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
+                    activarBotDeRescate();
+                }
+            }, tiempoEsperaAleatorio); 
+        }
+    } catch (e) {
+        console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
+        cerrarLobbyEspera(); // 🔥 APAGA EL RELOJ SI DA ERROR DE RED
+        showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
+        esModoVersus = false;
+    }
+}
 
 // Activa un jugador virtual creíble para que el usuario no quede colgado
 // Activa un jugador virtual creíble para que el usuario no quede colgado
