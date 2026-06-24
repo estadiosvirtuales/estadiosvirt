@@ -2272,6 +2272,46 @@ indexarCatalogoMasivo();
 const lastGid=localStorage.getItem('ev_last_gid');if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}else mostrarLigas();
 guardarStats();
 });
+
+// Abre o cierra el buzón flotante de sugerencias
+function toggleBuzonSugerencias() {
+    const box = document.getElementById('sugerencias-box');
+    if (!box) return;
+    const estaAbierto = box.style.display === 'block';
+    box.style.display = estaAbierto ? 'none' : 'block';
+    if (!estaAbierto) {
+        document.getElementById('sugerencia-texto').value = '';
+        document.getElementById('sugerencia-texto').focus();
+    }
+}
+
+// Envía el texto directo al búnker de sugerencias en la nube
+async function enviarSugerenciaServidor() {
+    const textarea = document.getElementById('sugerencia-texto');
+    const texto = textarea ? textarea.value.trim() : '';
+    
+    if (!texto) {
+        showToast("¡Escribí algo antes de enviar! ✍️", "ph-warning-circle", "danger");
+        return;
+    }
+
+    try {
+        if (!supabaseClient) return;
+        const idUsuario = getUserId(); // Identifica si es cuenta real o el ID de invitado temporal
+
+        const { error } = await supabaseClient
+            .from('sugerencias')
+            .insert([{ id_usuario: idUsuario, texto: texto }]);
+
+        if (error) throw error;
+
+        showToast("¡Sugerencia enviada! Gracias por el feedback 🏆", "ph-paper-plane-tilt", "success");
+        toggleBuzonSugerencias();
+    } catch (err) {
+        console.error("Error al enviar la sugerencia:", err.message);
+        showToast("No se pudo enviar. Intentá más tarde.", "ph-x-circle", "danger");
+    }
+}
 // Si un jugador cierra la pestaña o el navegador de prepo, gatilla el abandono al rival activo antes de destruir el socket
 window.addEventListener('beforeunload', () => {
     if (esModoVersus && versusChannel) {
