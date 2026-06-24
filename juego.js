@@ -1094,7 +1094,29 @@ async function buscarPartidaVersus() {
             sessionStorage.setItem('ev_guest_versus_id', guestId);
         }
         idUsuario = guestId;
+
+        // 🎫 CONTROL DE APODO PARA INVITADOS: Si no tiene apodo guardado, se lo pedimos antes de buscar partida
+        let nickExistente = getPref('ev_custom_nick', '');
+        if (!nickExistente) {
+            let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
+            
+            // Si el pibe toca "Cancelar", frena la búsqueda limpiamente para que no quede colgado
+            if (nuevoNick === null) return; 
+            
+            nuevoNick = nuevoNick.trim();
+            // Si le dio a "Aceptar" en blanco, le asignamos un genérico aleatorio copado
+            if (!nuevoNick) {
+                nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+            }
+            // Recorte de seguridad reglamentario por si se pasa de rosca escribiendo
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            
+            // Lo guardamos localmente bajo la clave del invitado
+            setPref('ev_custom_nick', nuevoNick);
+        }
     }
+
+    // 3. El resto de la función se mantiene IGUAL (acá continúa tu código original)
 
     // 3. El resto de la función se mantiene IGUAL (acá continúa tu código original)
     if (handshakeInterval) clearInterval(handshakeInterval);
