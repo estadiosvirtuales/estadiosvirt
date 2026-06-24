@@ -1188,24 +1188,48 @@ if (partida.estado_actual === 'esperando') {
 // Activa un jugador virtual creíble para que el usuario no quede colgado
 // Activa un jugador virtual creíble para que el usuario no quede colgado
 // 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT
-function ejecutarVotoBotDinamico() {
+// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT (CON SENSOR DE TIERRA FIRME ANTI-MAR)
+async function ejecutarVotoBotDinamico() {
     if (!esModoBot || rivalGuessConfirmado) return;
 
     const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
     const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
 
-    // Generamos el error en KM creíble (Entre 80km y 850km)
-    const kmErrorAleatorio = 80 + Math.random() * 770;
-    const anguloGrad = Math.random() * Math.PI * 2;
-    
-    const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
-    const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
-    
-    const botLat = tLat + desfaseLat;
-    const botLng = tLng + desfaseLng;
-    
-    const botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
-    const botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
+    let botLat = tLat;
+    let botLng = tLng;
+    let botDist = 0;
+    let botPts = 0;
+
+    // 🔄 BUCLE DE CONTROL: Intentamos hasta 4 veces encontrar un punto que caiga en tierra firme
+    for (let intento = 0; intento < 4; intento++) {
+        // Generamos el error en KM creíble (Entre 80km y 850km)
+        const kmErrorAleatorio = 80 + Math.random() * 770;
+        const anguloGrad = Math.random() * Math.PI * 2;
+        
+        const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
+        const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
+        
+        botLat = tLat + desfaseLat;
+        botLng = tLng + desfaseLng;
+        
+        botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
+        botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
+
+        // 🛰️ SENSOR DE AGUA: Validamos la coordenada con un servicio de geolocalización rápido y gratuito
+        try {
+            const respuesta = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${botLat}&longitude=${botLng}&localityLanguage=es`);
+            const datosGeograficos = await respuesta.json();
+            
+            // Si la API nos devuelve un 'countryCode' válido, significa que el punto cayó dentro de un país (tierra firme)
+            if (datosGeograficos && datosGeograficos.countryCode) {
+                console.log(`[Bot Inteligente] Tiro válido en tierra firme (${datosGeograficos.countryName}) al intento N° ${intento + 1}`);
+                break; // Rompemos el bucle porque el tiro es perfecto
+            }
+        } catch (e) {
+            console.warn("Error temporal de red en el sensor del bot, usando tiro por defecto.", e);
+            break; // Si la API falla por time-out, salimos para no trabar el juego del usuario
+        }
+    }
     
     rivalGuessConfirmado = true;
     rivalDataRonda = { lat: botLat, lng: botLng, puntos: botPts, distancia: botDist };
