@@ -1696,7 +1696,8 @@ async function finalizarJuegoGuessr(){
     if (esModoVersus) {
         const id = getUserId();
         const nombreLocal = getPref('ev_custom_nick', '') || JSON.parse(localStorage.getItem('ev_user_logged'))?.name || 'Jugador';
-        
+        userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
+
         let nombreRivalFinal = "RIVAL";
         if (esModoBot) {
             // 🤖 Mantiene de principio a fin el mismo nombre fijado al inicio de la partida
@@ -1744,7 +1745,7 @@ async function finalizarJuegoGuessr(){
     }
 
     // Código solitario clásico (Perfectamente resguardado dentro de la función original)
-    userStats.partidasJugadas++;
+
     if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
     if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
     if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
@@ -2225,6 +2226,8 @@ async function manejarAbandonoRival() {
     
     // 🏅 COMPUTACIÓN REGLAMENTARIA: Sumamos victoria al perfil local y otorgamos XP de bonificación
     userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
+    // 🔥 INYECTAMOS ACÁ: Suma también el partido jugado por abandono, manteniendo el balance perfecto
+    userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
     guardarStats();
     agregarXP(1000); 
     
