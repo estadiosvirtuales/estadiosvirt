@@ -437,7 +437,8 @@ document.getElementById('global-search').value='';document.querySelector('.grid'
 
 function activarLiga(gid,nombre){
 document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));const tab=document.querySelector(`.tab[data-gid="${gid}"]`);if(tab)tab.classList.add('active');
-document.getElementById('btn-volver-ligas').style.display='inline-flex';document.getElementById('texto-titulo-grilla').textContent=nombre.replace(/^[\s\S]*?\s/,'').trim()||nombre;
+document.getElementById('btn-volver-ligas').style.display='inline-flex';
+document.getElementById('texto-titulo-grilla').textContent=''; // 🛡️ ELIMINACIÓN QUIRÚRGICA: Vaciamos el texto blanco residual para limpiar la cabecera
 const badge=document.getElementById('liga-elegida-badge'),dot=document.getElementById('liga-badge-dot'),nom=document.getElementById('liga-badge-nombre');
 dot.style.background=LIGA_COLORS[gid]||'var(--accent-color)';nom.textContent=nombre;badge.style.display='inline-flex';
 document.getElementById('liga-selector-label').textContent=nombre;localStorage.setItem('ev_last_gid',gid);cerrarLigasPanel();
