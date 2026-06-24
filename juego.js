@@ -835,10 +835,31 @@ modal.style.display='flex';
 }
 
 function cerrarModalVideo(){
-document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
-try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
-guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
+    // 🛡️ ESCUDO DE ABANDONO MANUAL: Si cerrás la ventana con la cruz en medio de un Versus, liquidamos la sesión
+    if (esModoVersus && versusChannel) {
+        try {
+            // Le avisamos al rival en tiempo real para otorgarle su victoria instantánea
+            versusChannel.send({ type: 'broadcast', event: 'rival_abandono', payload: {} });
+            if (supabaseClient) supabaseClient.removeChannel(versusChannel);
+        } catch(err) { 
+            console.error("Error al remover canal en cierre manual:", err); 
+        }
+        
+        // Apagamos todos los motores e intervalos de la partida en esta pestaña
+        if (handshakeInterval) clearInterval(handshakeInterval);
+        if (versusTimerInterval) clearInterval(versusTimerInterval);
+        if (botAntesTimer) clearTimeout(botAntesTimer);
+        handshakeInterval = versusTimerInterval = botAntesTimer = null;
+        
+        esModoVersus = false;
+        versusPartidaEnCurso = false;
+    }
+
+    // Código clásico de limpieza visual (Sigue haciendo lo mismo de siempre abajo)
+    document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
+    try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
+    guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
 }
 
 function abrirModalMapa(estadio,pais,lat,lng){
