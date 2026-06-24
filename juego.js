@@ -1116,16 +1116,12 @@ async function buscarPartidaVersus() {
         }
     }
 
-    // 3. El resto de la función se mantiene IGUAL (acá continúa tu código original)
-
-    // 3. El resto de la función se mantiene IGUAL (acá continúa tu código original)
+    // 3. Limpieza preventiva de intervalos previos antes de iniciar la búsqueda
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
     
-    // ... sigue con el resto de tu código sin cambios 
-    
-    // 🛡️ ESCUDO ANTI-ZOMBIE COMPLETO: Desconectamos y removemos cualquier rastro de red previo de Supabase
+    // 🛡️ ESCUDO ANTI-ZOMBIE COMPLETO: Desconectamos cualquier rastro de red previo de Supabase
     if (versusChannel) {
         supabaseClient.removeChannel(versusChannel);
         versusChannel = null;
@@ -1154,34 +1150,29 @@ async function buscarPartidaVersus() {
             versusEstadios = partida.estadios;
             esModoVersus = true; 
 
-            // MODIFICÁ ESTA PARTE PARA QUE QUEDE ASÍ:
-if (partida.estado_actual === 'esperando') {
-    versusRol = 'jugador_1';
-    console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-    // Mantenemos un mensaje claro de que estás solo esperando
-    showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
-    conectarRealtimeVersus();
-} else if (partida.estado_actual === 'jugando') {
-    versusRol = 'jugador_2';
-    console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
-    // Cambiamos el texto para que diga "Estableciendo conexión", NO "Rival encontrado"
-    showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
-    conectarRealtimeVersus();
-}
-
-           // REEMPLAZALO POR ESTO:
-        // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
-        const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
-
-        if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
-        versusTimeoutBusqueda = setTimeout(() => {
-            if (!versusPartidaEnCurso) {
-                console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
-                activarBotDeRescate();
+            if (partida.estado_actual === 'esperando') {
+                versusRol = 'jugador_1';
+                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+                showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
+                conectarRealtimeVersus();
+            } else if (partida.estado_actual === 'jugando') {
+                versusRol = 'jugador_2';
+                console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
+                showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
+                conectarRealtimeVersus();
             }
-        }, tiempoEsperaAleatorio); // Inyectamos el tiempo variable
-    }
-} catch (e) {
+
+            // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
+            const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
+
+            if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+            versusTimeoutBusqueda = setTimeout(() => {
+                if (!versusPartidaEnCurso) {
+                    console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
+                    activarBotDeRescate();
+                }
+            }, tiempoEsperaAleatorio); 
+        }
     } catch (e) {
         console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
         cerrarLobbyEspera(); // 🔥 APAGA EL RELOJ SI DA ERROR DE RED
