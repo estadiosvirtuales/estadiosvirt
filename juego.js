@@ -1070,11 +1070,13 @@ async function buscarPartidaVersus() {
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
-    // 🛡️ ESCUDO ANTI-ZOMBIE: Desconectamos canales residuales de pruebas previas
-if (versusChannel) {
-    versusChannel.unsubscribe();
-    versusChannel = null;
-}
+    
+    // 🛡️ ESCUDO ANTI-ZOMBIE COMPLETO: Desconectamos y removemos cualquier rastro de red previo de Supabase
+    if (versusChannel) {
+        supabaseClient.removeChannel(versusChannel);
+        versusChannel = null;
+    }
+    
     versusPartidaEnCurso = false;
     esModoBot = false; 
 
@@ -2237,6 +2239,7 @@ window.addEventListener('beforeunload', () => {
             event: 'rival_abandono',
             payload: {}
         });
-        versusChannel.unsubscribe(); // 🔥 FORZAMOS EL CIERRE LIMPIO: Vacía el buffer de red al instante
+        // 🛡️ CIERRE REGLEMENTARIO INSTANTÁNEO: Corta el socket en la nube para activar el leave del rival al milisegundo
+        supabaseClient.removeChannel(versusChannel);
     }
 });
