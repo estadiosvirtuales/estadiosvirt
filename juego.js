@@ -1207,7 +1207,10 @@ function conectarRealtimeVersus() {
 
     console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId}`);
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
-        config: { broadcast: { self: false } }
+        config: { 
+            broadcast: { self: false },
+            presence: { key: idUsuario } // 🔥 FIJA TU ID EN EL SENSOR DE PRESENCIA DEL SERVIDOR
+        }
     });
 
     versusChannel
@@ -2234,5 +2237,6 @@ window.addEventListener('beforeunload', () => {
             event: 'rival_abandono',
             payload: {}
         });
+        versusChannel.unsubscribe(); // 🔥 FORZAMOS EL CIERRE LIMPIO: Vacía el buffer de red al instante
     }
 });
