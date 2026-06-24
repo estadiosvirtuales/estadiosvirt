@@ -1154,17 +1154,20 @@ async function buscarPartidaVersus() {
             versusEstadios = partida.estadios;
             esModoVersus = true; 
 
-            if (partida.estado_actual === 'esperando') {
-                versusRol = 'jugador_1';
-                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-                showToast("Sala creada. Esperando que se conecte un rival...", "ph-hourglass");
-                conectarRealtimeVersus();
-            } else if (partida.estado_actual === 'jugando') {
-                versusRol = 'jugador_2';
-                console.log("[1v1] ¡Rival encontrado! Partida ID:", versusPartidaId);
-                showToast("¡Rival encontrado! Sincronizando pantallas...", "ph-lightning");
-                conectarRealtimeVersus();
-            }
+            // MODIFICÁ ESTA PARTE PARA QUE QUEDE ASÍ:
+if (partida.estado_actual === 'esperando') {
+    versusRol = 'jugador_1';
+    console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+    // Mantenemos un mensaje claro de que estás solo esperando
+    showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
+    conectarRealtimeVersus();
+} else if (partida.estado_actual === 'jugando') {
+    versusRol = 'jugador_2';
+    console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
+    // Cambiamos el texto para que diga "Estableciendo conexión", NO "Rival encontrado"
+    showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
+    conectarRealtimeVersus();
+}
 
             if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
             versusTimeoutBusqueda = setTimeout(() => {
@@ -1295,7 +1298,12 @@ function conectarRealtimeVersus() {
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
-                    showToast("¡Rival conectado! Que empiece el partido... 🚀", "ph-lightning", "success");
+                    
+                    // 🔔 CORRECCIÓN DISCRETA: Solo el Jugador 1 (Host) reacciona visualmente acá
+                    if (versusRol === 'jugador_1') {
+                        showToast("¡Rival conectado! Sincronizando cancha... 🚀", "ph-lightning", "success");
+                    }
+                    
                     setTimeout(arrancarPartidoVersus, 1000);
                 }
             }
@@ -1308,7 +1316,9 @@ function conectarRealtimeVersus() {
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 handshakeInterval = null;
                 
+                // 🔔 CORRECCIÓN DISCRETA: El Jugador 2 (Invitado) festeja su conexión exitosa acá
                 showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
+                
                 setTimeout(arrancarPartidoVersus, 1000);
             }
         })
