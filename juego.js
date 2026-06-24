@@ -1095,7 +1095,7 @@ async function buscarPartidaVersus() {
         }
         idUsuario = guestId;
 
-        // 🎫 CONTROL DE APODO PARA INVITADOS: Si no tiene apodo guardado, se lo pedimos antes de buscar partida
+        // 🎫 CONTROL DE APODO: Se pide al principio de todo para no retrasar el reloj de la base de datos
         let nickExistente = getPref('ev_custom_nick', '');
         if (!nickExistente) {
             let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
@@ -1116,7 +1116,7 @@ async function buscarPartidaVersus() {
         }
     }
 
-    // 3. Limpieza preventiva de intervalos previos antes de iniciar la búsqueda
+    // 3. Limpieza preventiva de intervalos previos antes de iniciar la búsqueda de red
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
@@ -1319,9 +1319,11 @@ function conectarRealtimeVersus() {
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
                     
-                    // 🔔 CORRECCIÓN DISCRETA: Solo el Jugador 1 (Host) reacciona visualmente acá
+                    // 🔔 FEEDBACK SIMÉTRICO: Cada rol recibe su aviso correspondiente en el milisegundo exacto
                     if (versusRol === 'jugador_1') {
                         showToast("¡Rival conectado! Sincronizando cancha... 🚀", "ph-lightning", "success");
+                    } else {
+                        showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
                     }
                     
                     setTimeout(arrancarPartidoVersus, 1000);
@@ -1333,11 +1335,10 @@ function conectarRealtimeVersus() {
             if (response.payload && response.payload.id !== idUsuario && !versusPartidaEnCurso) {
                 console.log(`[1v1] 📥 Confirmación recíproca recibida con éxito.`);
                 versusPartidaEnCurso = true;
-                if (handshakeInterval) clearInterval(handshakeInterval);
-                handshakeInterval = null;
                 
-                // 🔔 CORRECCIÓN DISCRETA: El Jugador 2 (Invitado) festeja su conexión exitosa acá
-                showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
+                if (versusRol === 'jugador_2') {
+                    showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
+                }
                 
                 setTimeout(arrancarPartidoVersus, 1000);
             }
@@ -1623,14 +1624,19 @@ function ejecutarPasoDeRondaVersus() {
     }
 }
 // Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
+// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 function arrancarPartidoVersus() {
-    // 🛡️ LIMPIEZA DE SEGURIDAD: Cancelamos cualquier temporizador previo del bot
+    // 🛡️ LIMPIEZA DE SEGURIDAD ABSOLUTA: Cancelamos timers de bots y búsqueda
     if (botAntesTimer) clearTimeout(botAntesTimer);
-    
-    cerrarLobbyEspera(); // Apaga el cronómetro visual porque ya encontramos un rival
-
-    // Matamos el temporizador de búsqueda de 20s porque ya entramos a la cancha
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    
+    // 📡 CENTRALIZADO: Apagamos el bucle del Handshake por completo para que no mande ráfagas de red en medio del juego
+    if (handshakeInterval) {
+        clearInterval(handshakeInterval);
+        handshakeInterval = null;
+    }
+    
+    cerrarLobbyEspera(); // Apaga el cronómetro visual del lobby porque ya arranca el partido
 
     guessrRondaActual = 1;
     guessrPuntosTotales = 0;
