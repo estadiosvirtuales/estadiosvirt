@@ -1235,20 +1235,26 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
-    const idUsuario = getUserId();
+    
+    // 🌐 CAPTURA DE ID BLINDADA: Si es invitado, extrae su ID único de sesión para evitar colisiones de red
+    let idUsuario = getUserId();
+    if (!idUsuario || idUsuario === 'guest') {
+        idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
+    }
 
-    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId}`);
+    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Identificador de red: ${idUsuario}`);
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { 
             broadcast: { self: false },
-            presence: { key: idUsuario } // 🔥 FIJA TU ID EN EL SENSOR DE PRESENCIA DEL SERVIDOR
+            presence: { key: idUsuario } // Fija el ID real o de sesión en el sensor de la nube
         }
     });
 
     versusChannel
-        // 🟢 DETECTOR DE PRESENCIA: Si el rival cierra la pestaña o pierde red de golpe, el servidor nos avisa al instante
+        // DETECTOR DE PRESENCIA: Si el rival cierra la pestaña o pierde red de golpe, el servidor nos avisa al instante
         .on('presence', { event: 'leave' }, ({ leftPresences }) => {
             console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence de Supabase:", leftPresences);
             if (versusPartidaEnCurso && !esModoBot) {
@@ -1309,7 +1315,7 @@ function conectarRealtimeVersus() {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        // ESCUCHA D: El rival cerró la pestaña o abandoná la partida de forma manual
+        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida de forma manual
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
@@ -1317,7 +1323,7 @@ function conectarRealtimeVersus() {
         .subscribe((status) => {
             console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
             if (status === 'SUBSCRIBED') {
-                // 🟢 RASTREO ACTIVO: Registra esta pestaña en el búnker de presencia
+                // RASTREO ACTIVO: Registra esta pestaña en el búnker de presencia con el ID verificado
                 versusChannel.track({ id: idUsuario });
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
