@@ -467,7 +467,7 @@ body>*{position:relative;z-index:1}
 .logros-empty i{font-size:2rem;color:var(--border-strong)}
 #login-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9000;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
 #login-modal-overlay.active{display:flex}
-.login-modal-box{background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:440px;padding:36px;display:flex;flex-direction:column;align-items:center;box-shadow:var(--shadow-strong);animation:bounceFun .4s ease}
+.login-modal-box{position: relative; background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:440px;padding:36px;display:flex;flex-direction:column;align-items:center;box-shadow:var(--shadow-strong);animation:bounceFun .4s ease}
 .login-modal-logo{width:56px;height:56px;border-radius:16px;border:2px solid var(--accent-color);object-fit:cover;margin-bottom:18px;box-shadow:0 0 18px var(--accent-glow)}
 .login-modal-title{font-size:1.4rem;font-weight:900;margin-bottom:6px;color:var(--text-main)}
 .login-modal-sub{font-size:.9rem;color:var(--text-muted);margin-bottom:28px;text-align:center;line-height:1.5}
