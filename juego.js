@@ -1169,14 +1169,19 @@ if (partida.estado_actual === 'esperando') {
     conectarRealtimeVersus();
 }
 
-            if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
-            versusTimeoutBusqueda = setTimeout(() => {
-                if (!versusPartidaEnCurso) {
-                    console.log("[1v1] Tiempo de espera humano excedido. Activando Bot camuflado.");
-                    activarBotDeRescate();
-                }
-            }, 20000); 
-        }
+           // REEMPLAZALO POR ESTO:
+        // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
+        const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
+
+        if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+        versusTimeoutBusqueda = setTimeout(() => {
+            if (!versusPartidaEnCurso) {
+                console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
+                activarBotDeRescate();
+            }
+        }, tiempoEsperaAleatorio); // Inyectamos el tiempo variable
+    }
+} catch (e) {
     } catch (e) {
         console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
         cerrarLobbyEspera(); // 🔥 APAGA EL RELOJ SI DA ERROR DE RED
