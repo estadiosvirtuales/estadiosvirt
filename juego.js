@@ -1082,16 +1082,26 @@ function obtener5EstadiosVersus() {
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
-    const idUsuario = getUserId();
+    // 1. Obtenemos el ID local
+    let idUsuario = getUserId();
+
+    // 2. Si no está logueado, le asignamos un ID temporal único para esta sesión de juego
     if (!idUsuario || idUsuario === 'guest') {
-        showToast("Iniciá sesión con Google para jugar el modo Versus 1v1 ⚽", "ph-warning-circle", "danger");
-        pedirLoginParaGuardar();
-        return;
+        let guestId = sessionStorage.getItem('ev_guest_versus_id');
+        if (!guestId) {
+            // Genera algo como: guest_x8d2f1a (id único por sesión)
+            guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+            sessionStorage.setItem('ev_guest_versus_id', guestId);
+        }
+        idUsuario = guestId;
     }
 
+    // 3. El resto de la función se mantiene IGUAL (acá continúa tu código original)
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
+    
+    // ... sigue con el resto de tu código sin cambios 
     
     // 🛡️ ESCUDO ANTI-ZOMBIE COMPLETO: Desconectamos y removemos cualquier rastro de red previo de Supabase
     if (versusChannel) {
