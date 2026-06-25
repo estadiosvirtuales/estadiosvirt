@@ -1209,22 +1209,38 @@ async function buscarPartidaVersus() {
         if (error) throw error;
 
         if (data && data.length > 0) {
-            const partida = data[0];
-            versusPartidaId = partida.id_partida;
-            versusEstadios = partida.estadios;
-            esModoVersus = true; 
+        const partida = data[0];
+        
+        // 🎯 Usamos los nombres EXACTOS de tus columnas en Supabase
+        versusPartidaId = partida.id;
+        
+        // 🚨 ACÁ ESTABA EL ERROR: Javascript buscaba 'estadios' pero tu DB manda 'estadios_ids'
+        versusEstadios = partida.estadios_ids; 
+        
+        // 🛡️ PARCHE DE SEGURIDAD EXTRA: Por si Supabase devuelve el array como un string de texto
+        if (typeof versusEstadios === 'string') {
+            try { versusEstadios = JSON.parse(versusEstadios); } 
+            catch(e) { versusEstadios = versusEstadios.split(','); }
+        }
 
-            if (partida.estado_actual === 'esperando') {
-                versusRol = 'jugador_1';
-                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-                showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
-                conectarRealtimeVersus();
-            } else if (partida.estado_actual === 'jugando') {
-                versusRol = 'jugador_2';
-                console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
-                showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
-                conectarRealtimeVersus();
-            }
+        esModoVersus = true; 
+
+        // Usamos el nombre exacto de la columna estado
+        const estadoPartida = String(partida.estado).toLowerCase();
+
+        if (estadoPartida === 'esperando') {
+            versusRol = 'jugador_1';
+            console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+            showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
+            conectarRealtimeVersus();
+        } else {
+            // Si no estás 'esperando', entonces sos el jugador 2
+            versusRol = 'jugador_2';
+            console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
+            showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
+            conectarRealtimeVersus();
+        }
+    }
 
             // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
             const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
