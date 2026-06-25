@@ -988,7 +988,6 @@ async function indexarCatalogoMasivo() {
         if (error) throw error;
 
         // Mapeamos los datos para que tu código viejo siga funcionando sin tocar nada más
-        // Transformamos las minúsculas de la base de datos a tu formato de Diccionario/Sheet
         catalogoGlobal = data.map(fila => ({
             'Estadio': fila.estadio,
             'Club': fila.club,
@@ -997,7 +996,12 @@ async function indexarCatalogoMasivo() {
             'Link del Video': fila.link_video,
             'Latitud': fila.latitud,
             'Longitud': fila.longitud,
-            'Dato Curioso': fila.dato_curioso
+            'Dato Curioso': fila.dato_curioso,
+            // 👇 ESTO FALTABA: Agregamos Capacidad, Año y las demás para que los minijuegos funcionen
+            'Capacidad': fila.capacidad,
+            'Año': fila.anio,
+            'Promedio': fila.promedio,
+            'GID': fila.gid
         }));
 
         console.log(`¡Catálogo global migrado y cargado en memoria! (${catalogoGlobal.length} estadios)`);
