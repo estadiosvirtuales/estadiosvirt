@@ -312,7 +312,12 @@ function obtenerUsuarioLogueado() {
     // Si no lo tenemos, lo buscamos en el disco (LocalStorage)
     const stored = localStorage.getItem('ev_user_logged');
     if (stored) {
-        usuarioLogueadoCache = JSON.parse(stored);
+        try {
+            usuarioLogueadoCache = JSON.parse(stored);
+        } catch (e) {
+            // Si el texto del disco está corrupto, lo borramos de la memoria
+            usuarioLogueadoCache = null;
+        }
     } else {
         usuarioLogueadoCache = null;
     }
@@ -1139,8 +1144,9 @@ function obtener5EstadiosVersus() {
 
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
+// Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
-    // 🛡️ ESCUDO DE SEGURIDAD CRUCIAL: Si las canchas todavía se están descargando de Google Sheets, frenamos acá
+    // 🛡️ ESCUDO DE SEGURIDAD CRUCIAL
     const misEstadiosAleatorios = obtener5EstadiosVersus();
     if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
         showToast("Esperá un segundo que termine de cargar el catálogo de estadios... ⚽", "ph-circle-notch", "warning");
@@ -1154,39 +1160,30 @@ async function buscarPartidaVersus() {
     if (!idUsuario || idUsuario === 'guest') {
         let guestId = sessionStorage.getItem('ev_guest_versus_id');
         if (!guestId) {
-            // Genera algo como: guest_x8d2f1a (id único por sesión)
             guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
             sessionStorage.setItem('ev_guest_versus_id', guestId);
         }
         idUsuario = guestId;
 
-        // 🎫 CONTROL DE APODO: Se pide al principio de todo para no retrasar el reloj de la base de datos
+        // 🎫 CONTROL DE APODO
         let nickExistente = getPref('ev_custom_nick', '');
         if (!nickExistente) {
             let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
-            
-            // Si el pibe toca "Cancelar", frena la búsqueda limpiamente para que no quede colgado
             if (nuevoNick === null) return; 
-            
             nuevoNick = nuevoNick.trim();
-            // Si le dio a "Aceptar" en blanco, le asignamos un genérico aleatorio copado
             if (!nuevoNick) {
                 nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
             }
-            // Recorte de seguridad reglamentario por si se pasa de rosca escribiendo
             if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
-            
-            // Lo guardamos localmente bajo la clave del invitado
             setPref('ev_custom_nick', nuevoNick);
         }
     }
 
-    // 3. Limpieza preventiva de intervalos previos antes de iniciar la búsqueda de red
+    // 3. Limpieza preventiva de intervalos
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
     
-    // 🛡️ ESCUDO ANTI-ZOMBIE COMPLETO: Desconectamos cualquier rastro de red previo de Supabase
     if (versusChannel) {
         supabaseClient.removeChannel(versusChannel);
         versusChannel = null;
@@ -1196,7 +1193,7 @@ async function buscarPartidaVersus() {
     esModoBot = false; 
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
-    abrirLobbyEspera(); // 🔥 ENCIENDE EL CONTADOR DE TIEMPO EN VIVO
+    abrirLobbyEspera(); 
     
     const nombresEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
 
@@ -1209,38 +1206,34 @@ async function buscarPartidaVersus() {
         if (error) throw error;
 
         if (data && data.length > 0) {
-        const partida = data[0];
-        
-        // 🎯 Usamos los nombres EXACTOS de tus columnas en Supabase
-        versusPartidaId = partida.id;
-        
-        // 🚨 ACÁ ESTABA EL ERROR: Javascript buscaba 'estadios' pero tu DB manda 'estadios_ids'
-        versusEstadios = partida.estadios_ids; 
-        
-        // 🛡️ PARCHE DE SEGURIDAD EXTRA: Por si Supabase devuelve el array como un string de texto
-        if (typeof versusEstadios === 'string') {
-            try { versusEstadios = JSON.parse(versusEstadios); } 
-            catch(e) { versusEstadios = versusEstadios.split(','); }
-        }
+            const partida = data[0];
+            
+            // 🎯 Usamos los nombres EXACTOS de tus columnas en Supabase
+            versusPartidaId = partida.id;
+            versusEstadios = partida.estadios_ids; 
+            
+            // 🛡️ PARCHE DE SEGURIDAD EXTRA
+            if (typeof versusEstadios === 'string') {
+                try { versusEstadios = JSON.parse(versusEstadios); } 
+                catch(e) { versusEstadios = versusEstadios.split(','); }
+            }
 
-        esModoVersus = true; 
+            esModoVersus = true; 
 
-        // Usamos el nombre exacto de la columna estado
-        const estadoPartida = String(partida.estado).toLowerCase();
+            // Usamos el nombre exacto de la columna estado
+            const estadoPartida = String(partida.estado).toLowerCase();
 
-        if (estadoPartida === 'esperando') {
-            versusRol = 'jugador_1';
-            console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-            showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
-            conectarRealtimeVersus();
-        } else {
-            // Si no estás 'esperando', entonces sos el jugador 2
-            versusRol = 'jugador_2';
-            console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
-            showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
-            conectarRealtimeVersus();
-        }
-    }
+            if (estadoPartida === 'esperando') {
+                versusRol = 'jugador_1';
+                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+                showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
+                conectarRealtimeVersus();
+            } else {
+                versusRol = 'jugador_2';
+                console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
+                showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
+                conectarRealtimeVersus();
+            }
 
             // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
             const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
@@ -1255,10 +1248,11 @@ async function buscarPartidaVersus() {
         }
     } catch (e) {
         console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
-        cerrarLobbyEspera(); // 🔥 APAGA EL RELOJ SI DA ERROR DE RED
+        cerrarLobbyEspera(); 
         showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
         esModoVersus = false;
     }
+}
 
 
 // Activa un jugador virtual creíble para que el usuario no quede colgado
