@@ -1082,6 +1082,13 @@ function obtener5EstadiosVersus() {
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
+    // 🛡️ ESCUDO DE SEGURIDAD CRUCIAL: Si las canchas todavía se están descargando de Google Sheets, frenamos acá
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
+        showToast("Esperá un segundo que termine de cargar el catálogo de estadios... ⚽", "ph-circle-notch", "warning");
+        return;
+    }
+
     // 1. Obtenemos el ID local
     let idUsuario = getUserId();
 
@@ -1133,7 +1140,6 @@ async function buscarPartidaVersus() {
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     abrirLobbyEspera(); // 🔥 ENCIENDE EL CONTADOR DE TIEMPO EN VIVO
     
-    const misEstadiosAleatorios = obtener5EstadiosVersus();
     const nombresEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
 
     try {
