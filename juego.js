@@ -1290,7 +1290,6 @@ function activarBotDeRescate() {
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     
-    // 🌐 CAPTURA DE ID BLINDADA: Si es invitado, extrae su ID único de sesión para evitar colisiones de red
     let idUsuario = getUserId();
     if (!idUsuario || idUsuario === 'guest') {
         idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
@@ -1300,56 +1299,48 @@ function conectarRealtimeVersus() {
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { 
             broadcast: { self: false },
-            presence: { key: idUsuario } // Fija el ID real o de sesión en el sensor de la nube
+            presence: { key: idUsuario }
         }
     });
 
     versusChannel
-        // DETECTOR DE PRESENCIA: Si el rival cierra la pestaña o pierde red de golpe, el servidor nos avisa al instante
         .on('presence', { event: 'leave' }, ({ leftPresences }) => {
             console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence de Supabase:", leftPresences);
             if (versusPartidaEnCurso && !esModoBot) {
                 manejarAbandonoRival();
             }
         })
-        // Ambos escuchan los pulsos de entrada. Si viene de otra cuenta, responden y avanzan.
+        // 🏠 EL HOST (Jugador 1) escucha que entró el invitado y arranca la máquina
         .on('broadcast', { event: 'rival_entro' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Pulso detectado del oponente de confianza.`);
+                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
+                
+                // Le devolvemos el saludo al invitado para que él también avance
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
                     payload: { id: idUsuario }
                 });
 
-                if (!versusPartidaEnCurso) {
+                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
                     versusPartidaEnCurso = true;
-                    
-                    // 🔔 FEEDBACK SIMÉTRICO: Cada rol recibe su aviso correspondiente en el milisegundo exacto
-                    if (versusRol === 'jugador_1') {
-                        showToast("¡Rival conectado! Sincronizando cancha... 🚀", "ph-lightning", "success");
-                    } else {
-                        showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
-                    }
-                    
+                    showToast("¡Rival conectado! Sincronizando cancha... 🚀", "ph-lightning", "success");
                     setTimeout(arrancarPartidoVersus, 1000);
                 }
             }
         })
-        // Ambos escuchan la confirmación. Si viene del otro, apagan la ráfaga de red.
+        // 📡 EL INVITADO (Jugador 2) escucha la confirmación del Host y arranca en paralelo
         .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario && !versusPartidaEnCurso) {
-                console.log(`[1v1] 📥 Confirmación recíproca recibida con éxito.`);
-                versusPartidaEnCurso = true;
+            if (response.payload && response.payload.id !== idUsuario) {
+                console.log(`[1v1] 📥 Invitado recibió confirmación del Host.`);
                 
-                if (versusRol === 'jugador_2') {
+                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                    versusPartidaEnCurso = true;
                     showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
+                    setTimeout(arrancarPartidoVersus, 1000);
                 }
-                
-                setTimeout(arrancarPartidoVersus, 1000);
             }
         })
-        // ESCUCHA A: El rival acaba de confirmar su pin en esta ronda
         .on('broadcast', { event: 'rival_voto' }, (response) => {
             console.log("[1v1] Voto recibido del oponente:", response);
             rivalGuessConfirmado = true;
@@ -1362,19 +1353,16 @@ function conectarRealtimeVersus() {
                 mostrarResultadosMutuosVersus();
             }
         })
-        // ESCUCHA B: El rival clickeó en avanzar a la siguiente ronda
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
             if (miListoSiguiente) {
                 ejecutarPasoDeRondaVersus();
             }
         })
-        // ESCUCHA C: Avance forzado por inactividad prolongada del oponente
         .on('broadcast', { event: 'forzar_siguiente_ronda' }, (response) => {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        // ESCUCHA D: El rival cerró la pestaña o abandonó la partida de forma manual
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
@@ -1382,14 +1370,14 @@ function conectarRealtimeVersus() {
         .subscribe((status) => {
             console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
             if (status === 'SUBSCRIBED') {
-                // RASTREO ACTIVO: Registra esta pestaña en el búnker de presencia con el ID verificado
                 versusChannel.track({ id: idUsuario });
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // AMBOS envían ráfagas independientes para asegurar el acople inmediato
+                // Mandamos el pulso inicial de entrada
                 versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario } });
                 
+                // Mantenemos las ráfagas hasta que "arrancarPartidoVersus" las limpie por completo
                 handshakeInterval = setInterval(() => {
                     if (versusChannel) {
                         versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario } });
