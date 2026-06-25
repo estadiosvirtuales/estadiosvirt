@@ -1259,7 +1259,7 @@ async function buscarPartidaVersus() {
         showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
         esModoVersus = false;
     }
-}
+
 
 // Activa un jugador virtual creíble para que el usuario no quede colgado
 // Activa un jugador virtual creíble para que el usuario no quede colgado
