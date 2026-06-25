@@ -1964,26 +1964,6 @@ function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=
 function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
 
-function filtrarLogros(tipo){logrosTabActual=tipo;document.querySelectorAll('.logro-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tipo===tipo));renderizarGridLogros();}
-function renderizarGridLogros(){
-const grid=document.getElementById('logros-grid-v2');if(!grid)return;
-const logros=calcularLogros();let filtrados;
-if(logrosTabActual==='todos')filtrados=logros;
-else if(logrosTabActual==='desbloqueados')filtrados=logros.filter(l=>l.unlocked);
-else if(logrosTabActual==='progreso')filtrados=logros.filter(l=>!l.unlocked&&l.pct>0);
-else filtrados=logros.filter(l=>!l.unlocked);
-const total=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
-const counterEl=document.getElementById('logros-counter');if(counterEl)counterEl.textContent=`${desbloqueados}/${total}`;
-if(!filtrados.length){grid.innerHTML=`<div class="logros-empty"><i class="ph-duotone ph-smiley-wink"></i><span>${logrosTabActual==='desbloqueados'?'Aún no desbloqueaste logros. ¡A jugar!':logrosTabActual==='progreso'?'No tenés logros en progreso.':'¡Todos tus logros están desbloqueados!'}</span></div>`;return;}
-const rarityLabel={common:'Común',rare:'Raro',epic:'Épico'};
-grid.innerHTML=filtrados.map(l=>{
-const rarityClass=l.rarity==='epic'?'epic':l.rarity==='rare'?'rare':'';
-const progressBar=(l.pct!==undefined&&!l.unlocked&&l.pct>0)?`<div class="logro-progress-mini"><div class="logro-progress-bar-bg"><div class="logro-progress-bar-fill" style="width:${l.pct}%;"></div></div><div class="logro-progress-text">${l.pctLabel||''}</div></div>`:'';
-const unlockBadge=l.unlocked?`<div class="logro-unlock-badge">✓</div>`:'';const statusClass=l.unlocked?'unlocked':(l.pct>0?'in-progress':'locked');
-return `<div class="logro-card-v2 ${rarityClass} ${statusClass}">${unlockBadge}<div class="logro-icon-v2">${l.icon}</div><div class="logro-name-v2">${l.name}</div><div class="logro-req-v2">${l.req}</div>${progressBar}<div class="logro-rarity-pill">${rarityLabel[l.rarity]||'Común'}</div></div>`;
-}).join('');
-}
-function previsualizarTema(tema){const card=document.getElementById('fut-card-main');if(!card)return;card.className='fut-card '+tema;document.querySelectorAll('.theme-dot').forEach(d=>d.classList.toggle('active',d.dataset.tema===tema));}
 window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');
 if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<i class="ph-bold ph-caret-up"></i> Ocultar personalización';btn.classList.add('primary');btn.classList.remove('secondary');}
 else{panel.classList.remove('open');btn.innerHTML='<i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta';btn.classList.remove('primary');btn.classList.add('secondary');}
