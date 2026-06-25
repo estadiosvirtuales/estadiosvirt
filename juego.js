@@ -277,6 +277,7 @@ let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
 let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrPolyline=null,guessrSelectedLatLng=null;
+let usuarioLogueadoCache = undefined;
 let previewMapInstance=null;
 let orderList=[],orderSelectedIdx=null,orderModo="",orderPuntosGanados=0,orderStartTime=0;
 let pendingScore=null,pendingScoreType=null;
@@ -303,7 +304,22 @@ return n;
 })();
 
 let logrosTabActual='todos';
-function getUserId(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u?u.id:'guest';}
+
+function obtenerUsuarioLogueado() {
+    // Si ya lo leímos en esta sesión, devolvemos la memoria RAM (súper rápido)
+    if (usuarioLogueadoCache !== undefined) return usuarioLogueadoCache;
+    
+    // Si no lo tenemos, lo buscamos en el disco (LocalStorage)
+    const stored = localStorage.getItem('ev_user_logged');
+    if (stored) {
+        usuarioLogueadoCache = JSON.parse(stored);
+    } else {
+        usuarioLogueadoCache = null;
+    }
+    return usuarioLogueadoCache;
+}
+
+function getUserId(){const u=obtenerUsuarioLogueado();return u?u.id:'guest';}
 function getPref(key,def){const id=getUserId();return localStorage.getItem(key+'_'+id)||def;}
 function setPref(key,val){const id=getUserId();localStorage.setItem(key+'_'+id,val);}
 let userStats={};
@@ -311,7 +327,7 @@ let userStats={};
 function migrarStatsAntiguos(){
 if(!localStorage.getItem('ev_migrated_v2')){
 const oldStats=localStorage.getItem('ev_user_stats');
-if(oldStats){localStorage.setItem('ev_user_stats_guest',oldStats);const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)localStorage.setItem('ev_user_stats_'+u.id,oldStats);}
+if(oldStats){localStorage.setItem('ev_user_stats_guest',oldStats);const u=obtenerUsuarioLogueado();if(u)localStorage.setItem('ev_user_stats_'+u.id,oldStats);}
 const n=localStorage.getItem('ev_custom_nick'),p=localStorage.getItem('ev_user_pos'),th=localStorage.getItem('ev_card_theme'),id=getUserId();
 if(n)localStorage.setItem('ev_custom_nick_'+id,n);if(p)localStorage.setItem('ev_user_pos_'+id,p);if(th)localStorage.setItem('ev_card_theme_'+id,th);
 localStorage.setItem('ev_migrated_v2','true');
@@ -460,6 +476,8 @@ async function manejarRespuestaGoogle(response){
     }
     const user = {id:payload.sub, name:payload.name, email:payload.email, picture:payload.picture, loginMethod:'google'};
     localStorage.setItem('ev_user_logged', JSON.stringify(user));
+
+    usuarioLogueadoCache = user;
     
     // Guardamos el usuario en tu tabla de usuarios segura
     await registrarUsuarioEnSupabase(user);
@@ -514,7 +532,7 @@ setTimeout(()=>{const c=document.getElementById('google-signin-btn-container');i
 }
 function cerrarLoginModal(){document.getElementById('login-modal-overlay').classList.remove('active');}
 function manejarClickLogin(){const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
-function esUsuarioGoogle(){const u=JSON.parse(localStorage.getItem('ev_user_logged'));return u&&u.loginMethod==='google';}
+function esUsuarioGoogle(){const u=obtenerUsuarioLogueado();return u&&u.loginMethod==='google';}
 function guardarScorePendiente() {
     if (pendingScore === null) return;
     
@@ -523,7 +541,7 @@ function guardarScorePendiente() {
         return;
     }
 
-    const u = JSON.parse(localStorage.getItem('ev_user_logged'));
+    const u = obtenerUsuarioLogueado();
     const nombreParaGuardar = getPref('ev_custom_nick', '') || u.name;
     const emailParaGuardar = u.email || '';
 
@@ -535,9 +553,9 @@ function guardarScorePendiente() {
 function pedirLoginParaGuardar(){
 const sub=document.querySelector('.login-modal-sub');if(sub)sub.innerHTML=`<b style="color:var(--accent-color);">¡Puntaje listo para guardar!</b><br>Iniciá sesión con Google para guardarlo en el ranking global y no perderlo.`;
 const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
-function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(u)return u.name.split(' ')[0];return 'Jugador';}
+function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=obtenerUsuarioLogueado();if(u)return u.name.split(' ')[0];return 'Jugador';}
 function renderizarBotonLogin(){
-const container=document.getElementById('hero-google-profile');const u=JSON.parse(localStorage.getItem('ev_user_logged'));
+const container=document.getElementById('hero-google-profile');const u=obtenerUsuarioLogueado();
 if(u){
 let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_hair','short'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_color','#00e676'), getPref('ev_avatar_num','10'), getPref('ev_avatar_color2','#ffffff'))}</div></div>`;
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
@@ -587,9 +605,23 @@ async function registrarVoto(event, estadio, club, puntuacion) {
     agregarXP(50);
 }
 function registrarVotoDesdeAtributo(event,star){registrarVoto(event,star.dataset.estadio,star.dataset.club,parseInt(star.dataset.puntuacion));}
+// ========================================================
+// ESCUDO ANTI-XSS (Sanitización de HTML)
+// ========================================================
+function sanitizarHTML(texto) {
+    if (!texto) return '';
+    const mapa = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    };
+    return texto.toString().replace(/[&<>"']/g, m => mapa[m]);
+}
 function bscarPropiedad(obj,clave){
 if(!obj)return '';const cl=clave.toLowerCase().trim();
-for(let i=0;i<obj.length;i++){}
+
 for(let k in obj){if(k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g,'').trim()===cl)return obj[k];}
 for(let k in obj){if(k.toLowerCase().includes(cl))return obj[k];}
 return obj[clave]||'';
@@ -775,7 +807,7 @@ const COLORES_CLUBES={"River Plate": "linear-gradient(135deg, #cc0000, #ffffff)"
             "Vasco da Gama": "linear-gradient(135deg, #000000, #ffffff, #c8102e)",
             "Fluminense": "linear-gradient(135deg, #83142c, #ffffff, #006437)",
             "Botafogo": "linear-gradient(135deg, #000000, #ffffff, #000000)",
-            "Atlético Mineire": "linear-gradient(135deg, #000000, #ffffff, #000000)",
+            "Atlético Mineiro": "linear-gradient(135deg, #000000, #ffffff, #000000)",
             "Cruzeiro": "linear-gradient(135deg, #0033a0, #ffffff)",
             "Grêmio": "linear-gradient(135deg, #00a4e4, #000000, #ffffff)",
             "Internacional": "linear-gradient(135deg, #e20e0e, #ffffff)",
@@ -924,7 +956,33 @@ else{document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e
 });
 
 function cargarLiga(gid){mostrarSkeletons();document.getElementById('global-search').value='';Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`,{download:true,header:true,complete:(r)=>{estadiosCargados=r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club'));renderizarTarjetas(estadiosCargados);}});}
-function indexarCatalogoMasivo(){catalogoGlobal=[];todosLosGids.forEach(gid=>{Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`,{download:true,header:true,complete:(r)=>{r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club')).forEach(est=>{const n=bscarPropiedad(est,'Estadio'),c=bscarPropiedad(est,'Club');if(!catalogoGlobal.some(e=>bscarPropiedad(e,'Estadio')===n&&bscarPropiedad(e,'Club')===c))catalogoGlobal.push(est);});}});});}
+async function indexarCatalogoMasivo() {
+    catalogoGlobal = [];
+    for (const gid of todosLosGids) {
+        await new Promise((resolve) => {
+            Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`, {
+                download: true,
+                header: true,
+                complete: (r) => {
+                    r.data.filter(f => bscarPropiedad(f, 'Estadio') && bscarPropiedad(f, 'Club')).forEach(est => {
+                        const n = bscarPropiedad(est, 'Estadio'), c = bscarPropiedad(est, 'Club');
+                        if (!catalogoGlobal.some(e => bscarPropiedad(e, 'Estadio') === n && bscarPropiedad(e, 'Club') === c)) {
+                            catalogoGlobal.push(est);
+                        }
+                    });
+                    resolve();
+                },
+                error: (err) => {
+                    console.error(`Error cargando GID ${gid}:`, err);
+                    resolve(); // Resuelve igual para que no se trabe la cadena completa
+                }
+            });
+        });
+        // Micropausa de 200ms para no saturar los servidores de Google
+        await new Promise(r => setTimeout(r, 200));
+    }
+    console.log("¡Catálogo global masivo indexado correctamente!");
+}
 
 function dispararVueloAleatorio(e){
 const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;if(!pool.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
@@ -1747,7 +1805,7 @@ async function finalizarJuegoGuessr(){
 
     if (esModoVersus) {
         const id = getUserId();
-        const nombreLocal = getPref('ev_custom_nick', '') || JSON.parse(localStorage.getItem('ev_user_logged'))?.name || 'Jugador';
+        const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
 
         let nombreRivalFinal = "RIVAL";
@@ -1856,7 +1914,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     const m = ['🥇', '🥈', '🥉'];
                     const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
                     const nivelR = NIVELES[calcularNivelIdx(f.puntaje || 0)];
-                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre || 'Anónimo'} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
+                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
                 });
             }
             htmlContenido += '</div>';
@@ -1873,7 +1931,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 ranking.forEach((f, i) => {
                     const m = ['🥇', '🥈', '🥉'];
                     const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre_jugador || 'Anónimo'}</span><span style="color:var(--accent-color);font-weight:900;">${f.victorias_acumuladas || 0} <span style="font-size:.78rem;color:var(--text-muted);">W</span></span></div>`;
+                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre_jugador || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.victorias_acumuladas || 0} <span style="font-size:.78rem;color:var(--text-muted);">W</span></span></div>`;
                 });
             }
             htmlContenido += '</div>';
@@ -1915,7 +1973,7 @@ async function abrirModalRankingOrden(modo) {
             r.forEach((f, i) => {
                 const m = ['🥇', '🥈', '🥉'];
                 const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                html += `<div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:${i === r.length - 1 ? 'none' : '1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${f.nombre || 'Anónimo'}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} pts</span></div>`;
+                html += `<div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:${i === r.length - 1 ? 'none' : '1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} pts</span></div>`;
             });
         }
         html += '</div>';
@@ -1985,7 +2043,7 @@ window.actualizarAvatarLive = function() {
 function guardarPersonalizacion(){
 const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
 const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
-const nickInput=document.getElementById('avatar-nick-input');if(nickInput!==null){const newNick=nickInput.value.trim();setPref('ev_custom_nick',newNick);const futName=document.getElementById('fut-name-display');if(futName){const u = JSON.parse(localStorage.getItem('ev_user_logged'));futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}}
+const nickInput=document.getElementById('avatar-nick-input');if(nickInput!==null){const newNick=nickInput.value.trim();setPref('ev_custom_nick',newNick);const futName=document.getElementById('fut-name-display');if(futName){const u = obtenerUsuarioLogueado();futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}}
 const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
 const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
 const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
@@ -2004,7 +2062,7 @@ const cardEl=document.getElementById('fut-card-main');if(cardEl){
 }
 
 function abrirModalPerfil(){
-const u=JSON.parse(localStorage.getItem('ev_user_logged'));if(!u)return;
+const u=obtenerUsuarioLogueado();if(!u)return;
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
 const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');let savedTheme=getPref('ev_card_theme','arg');
@@ -2012,7 +2070,7 @@ const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col'
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
 const savedHair = getPref('ev_avatar_hair', 'short');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
 const activeCardClass=savedTheme;const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
-const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',lGA:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
+const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',l:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 const today = new Date();const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const currentYear = today.getFullYear();const currentMonth = today.getMonth();const firstDay = new Date(currentYear, currentMonth, 1).getDay();let startOffset = firstDay === 0 ? 6 : firstDay - 1;const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -2146,7 +2204,17 @@ renderizarGridLogros();
 },50);
 }
 
-function cerrarSesion(){localStorage.removeItem('ev_user_logged');cargarStats();cerrarModalPerfil();renderizarBotonLogin();showToast('¡Hasta la próxima!','ph-hand-waving');}
+function cerrarSesion() {
+    localStorage.removeItem('ev_user_logged');
+    
+    // 👇 ESTA ES LA LÍNEA NUEVA: Vaciamos la memoria RAM porque el usuario se fue
+    usuarioLogueadoCache = null; 
+    
+    cargarStats();
+    cerrarModalPerfil();
+    renderizarBotonLogin();
+    showToast('¡Hasta la próxima!','ph-hand-waving');
+}
 // ========================================================
 // FUNCIONES AUXILIARES DE INTERFAZ, LOGROS Y PROGRESO
 // ========================================================
@@ -2254,7 +2322,7 @@ async function manejarAbandonoRival() {
     showToast("🏆 ¡Victoria por abandono! Tu oponente se retiró de la cancha.", "ph-trophy", "success");
     
     const id = getUserId();
-    const nombreLocal = getPref('ev_custom_nick', '') || JSON.parse(localStorage.getItem('ev_user_logged'))?.name || 'Jugador';
+    const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
     
     // 🏅 COMPUTACIÓN REGLAMENTARIA: Sumamos victoria al perfil local y otorgamos XP de bonificación
     userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
