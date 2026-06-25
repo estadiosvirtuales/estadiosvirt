@@ -1196,13 +1196,24 @@ async function buscarPartidaVersus() {
 
         if (error) throw error;
 
-        if (data && data.length > 0) {
-            const partida = data[0];
+        if (data) {
+            // A veces Supabase devuelve un array, a veces el objeto directo. Esto lo ataja en ambos casos:
+            const partida = Array.isArray(data) ? data[0] : data;
             
-            // 🎯 Usamos los nombres EXACTOS de tus columnas en Supabase
-            versusPartidaId = partida.id;
-            versusEstadios = partida.estadios_ids; 
+            // 🔍 ESTO ES CLAVE: Nos va a mostrar en consola qué columnas exactas mandó tu base de datos
+            console.log("[1v1] 🔍 Datos crudos de la base de datos:", partida);
             
+            // Búsqueda inteligente (Fallbacks): Si no se llama 'id', busca 'partida_id', etc.
+            versusPartidaId = partida.id || partida.partida_id || partida.id_partida;
+            versusEstadios = partida.estadios_ids || partida.estadios || partida.lista_estadios;
+            
+            // Si el ID sigue siendo undefined, frenamos todo antes de que se rompa el juego
+            if (!versusPartidaId) {
+                console.error("🚨 Falla crítica: Supabase no devolvió un ID de partida reconocible.");
+                cerrarLobbyEspera();
+                return;
+            }
+
             // 🛡️ PARCHE DE SEGURIDAD EXTRA
             if (typeof versusEstadios === 'string') {
                 try { versusEstadios = JSON.parse(versusEstadios); } 
@@ -1211,8 +1222,9 @@ async function buscarPartidaVersus() {
 
             esModoVersus = true; 
 
-            // Usamos el nombre exacto de la columna estado
-            const estadoPartida = String(partida.estado).toLowerCase();
+            // Búsqueda inteligente del estado
+            const estadoRaw = partida.estado || partida.estado_partida || partida.status || '';
+            const estadoPartida = String(estadoRaw).toLowerCase();
 
             if (estadoPartida === 'esperando') {
                 versusRol = 'jugador_1';
