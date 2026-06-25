@@ -5,16 +5,7 @@ const SUPABASE_URL = "https://prqqhxyajyhrlqynpocd.supabase.co";
 const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22"; 
 let supabaseClient = null;
 
-try {
-    if (window.supabase && typeof window.supabase.createClient === 'function') {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log("¡Supabase inicializado correctamente y listo!");
-    } else {
-        console.warn("Aviso: La librería de Supabase no se detectó en el HTML, pero el juego seguirá funcionando.");
-    }
-} catch (e) {
-    console.error("Error aislado al inicializar Supabase:", e);
-}
+
 
 // Memoria global para guardar los promedios de Supabase
 let promediosSupabase = {};
@@ -1378,22 +1369,45 @@ function conectarRealtimeVersus() {
                 manejarAbandonoRival();
             }
         })
-        // 🏠 EL HOST (Jugador 1) escucha que entró el invitado y arranca la máquina
+       // PEGAR ESTO REEMPLAZANDO LOS DOS EVENTOS ANTERIORES ('rival_entro' y 'host_confirmado'):
         .on('broadcast', { event: 'rival_entro' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
                 console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
                 
-                // Le devolvemos el saludo al invitado para que él también avance
+                // El Host le dice al invitado: "Te vi, prepará la cancha"
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
                     payload: { id: idUsuario }
                 });
+            }
+        })
+        .on('broadcast', { event: 'host_confirmado' }, (response) => {
+            if (response.payload && response.payload.id !== idUsuario) {
+                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
+                
+                // El Invitado le avisa al Host que ya está 100% listo para arrancar
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'invitado_listo',
+                    payload: { id: idUsuario }
+                });
 
+                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                    versusPartidaEnCurso = true;
+                    showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
+                    arrancarPartidoVersus(); // Arranca directo
+                }
+            }
+        })
+        // 🛡️ NUEVO EVENTO: El Host solo arranca cuando el invitado le dice que está listo
+        .on('broadcast', { event: 'invitado_listo' }, (response) => {
+            if (response.payload && response.payload.id !== idUsuario) {
                 if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
+                    console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
                     versusPartidaEnCurso = true;
                     showToast("¡Rival conectado! Sincronizando cancha... 🚀", "ph-lightning", "success");
-                    setTimeout(arrancarPartidoVersus, 1000);
+                    arrancarPartidoVersus(); // Arranca directo
                 }
             }
         })
@@ -1760,12 +1774,37 @@ const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hin
 document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
-setTimeout(()=>{
-    if(guessrMapInstance)guessrMapInstance.remove();const mapContainer=document.getElementById('map-guess-container');if(!mapContainer)return;
-    guessrMapInstance=L.map(mapContainer,{attributionControl:false,zoomControl:false}).setView([20,0],1);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(guessrMapInstance);
-    guessrMapInstance.on('click',e=>{if(btn.getAttribute('data-estado')==='resultado'||btn.getAttribute('data-estado')==='procesando')return;guessrSelectedLatLng=e.latlng;if(guessrUserMarker)guessrUserMarker.setLatLng(guessrSelectedLatLng);else guessrUserMarker=L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);const hint=document.getElementById('map-hint-overlay');if(hint)hint.style.opacity='0';btn.innerHTML=`<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;btn.className="btn-3d primary";btn.disabled=false;});
-    guessrMapInstance.invalidateSize();setTimeout(()=>{if(guessrMapInstance)guessrMapInstance.invalidateSize();},300);
-},600);
+// PEGAR ESTO REEMPLAZANDO EL SETTIMEOUT(..., 600) DE lanzarRondaGuessr:
+    setTimeout(() => {
+        if (guessrMapInstance) guessrMapInstance.remove();
+        const mapContainer = document.getElementById('map-guess-container');
+        if (!mapContainer) return;
+
+        guessrMapInstance = L.map(mapContainer, { attributionControl: false, zoomControl: false }).setView([20, 0], 1);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(guessrMapInstance);
+        
+        guessrMapInstance.on('click', e => {
+            if (btn.getAttribute('data-estado') === 'resultado' || btn.getAttribute('data-estado') === 'procesando') return;
+            guessrSelectedLatLng = e.latlng;
+            if (guessrUserMarker) guessrUserMarker.setLatLng(guessrSelectedLatLng);
+            else guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
+            const hint = document.getElementById('map-hint-overlay');
+            if (hint) hint.style.opacity = '0';
+            btn.innerHTML = `<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;
+            btn.className = "btn-3d primary";
+            btn.disabled = false;
+        });
+
+        // 🛡️ ResizeObserver: Garantiza que el mapa se dibuje bien apenas el contenedor es visible (Mejor que un setTimeout)
+        const resizeObserver = new ResizeObserver(() => {
+            if (guessrMapInstance) guessrMapInstance.invalidateSize();
+        });
+        resizeObserver.observe(mapContainer);
+
+        // Limpiamos el observer cuando el mapa se remueva para no gastar memoria
+        guessrMapInstance.on('unload', () => resizeObserver.disconnect());
+
+    }, 300); // Podemos bajarlo a 300ms porque el ResizeObserver lo ataja seguro
 // 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes entre 12 y 24s)
     if (esModoBot) {
         if (botAntesTimer) clearTimeout(botAntesTimer);
@@ -2370,17 +2409,54 @@ async function manejarAbandonoRival() {
     esModoVersus = false;
     versusPartidaEnCurso = false;
 }
+// PEGAR ESTO REEMPLAZANDO EL DOMContentLoaded ANTERIOR:
+async function inicializarSupabaseSeguro() {
+    let intentos = 0;
+    while (!window.supabase && intentos < 15) {
+        await new Promise(r => setTimeout(r, 200)); // Espera 200ms por intento
+        intentos++;
+    }
+    
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        console.log("¡Supabase inicializado de forma segura y listo!");
+    } else {
+        console.warn("Supabase no cargó después de 3 segundos. El juego seguirá en modo offline.");
+    }
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
-await cargarPromediosSupabase();
-await cargarProgresoDesdeSupabase(); 
+    await inicializarSupabaseSeguro(); // 🛡️ Ahora esperamos que cargue sí o sí
+
+    await cargarPromediosSupabase();
+    await cargarProgresoDesdeSupabase(); 
     bloqueasSincronizacionNube = false;
-renderizarBotonLogin();ancestralHeaderNivel();
-if(typeof google!=='undefined'&&google.accounts)inicializarGoogleLogin();
-else{document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load',inicializarGoogleLogin);setTimeout(inicializarGoogleLogin,2000);}
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',function(){const gid=this.getAttribute('data-gid'),nombre=this.querySelector('.tab-name')?.textContent.trim()||this.textContent.trim();activarLiga(gid,nombre);}));
-indexarCatalogoMasivo();
-const lastGid=localStorage.getItem('ev_last_gid');if(lastGid){const tab=document.querySelector(`.tab[data-gid="${lastGid}"]`);if(tab){const nombre=tab.querySelector('.tab-name')?.textContent.trim()||tab.textContent.trim();activarLiga(lastGid,nombre);}else mostrarLigas();}else mostrarLigas();
-guardarStats();
+    
+    renderizarBotonLogin();
+    ancestralHeaderNivel();
+    
+    if (typeof google !== 'undefined' && google.accounts) inicializarGoogleLogin();
+    else {
+        document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load', inicializarGoogleLogin);
+        setTimeout(inicializarGoogleLogin, 2000);
+    }
+    
+    document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
+        const gid = this.getAttribute('data-gid'), nombre = this.querySelector('.tab-name')?.textContent.trim() || this.textContent.trim();
+        activarLiga(gid, nombre);
+    }));
+    
+    indexarCatalogoMasivo();
+    const lastGid = localStorage.getItem('ev_last_gid');
+    if (lastGid) {
+        const tab = document.querySelector(`.tab[data-gid="${lastGid}"]`);
+        if (tab) {
+            const nombre = tab.querySelector('.tab-name')?.textContent.trim() || tab.textContent.trim();
+            activarLiga(lastGid, nombre);
+        } else mostrarLigas();
+    } else mostrarLigas();
+    
+    guardarStats();
 });
 
 // Abre o cierra el buzón flotante de sugerencias
@@ -2432,5 +2508,38 @@ window.addEventListener('beforeunload', () => {
         });
         // 🛡️ CIERRE REGLEMENTARIO INSTANTÁNEO: Corta el socket en la nube para activar el leave del rival al milisegundo
         supabaseClient.removeChannel(versusChannel);
+    }
+});
+
+// ========================================================
+// ESCUDO ANTI-ABANDONO MÓVIL (VISIBILITY API)
+// ========================================================
+let timerAbandono = null;
+
+document.addEventListener("visibilitychange", () => {
+    // Si estamos en medio de un partido multijugador humano
+    if (esModoVersus && !esModoBot && versusPartidaEnCurso && versusChannel) {
+        if (document.hidden) {
+            console.warn("[1v1] ⚠️ Jugador minimizó la app. Iniciando cuenta regresiva de abandono...");
+            // Le damos 15 segundos de gracia por si fue a contestar un mensaje rápido
+            timerAbandono = setTimeout(() => {
+                if (document.hidden) {
+                    console.log("[1v1] 🚨 Tiempo agotado. Disparando abandono técnico.");
+                    try {
+                        versusChannel.send({ type: 'broadcast', event: 'rival_abandono', payload: {} });
+                        supabaseClient.removeChannel(versusChannel);
+                    } catch(e) {}
+                    manejarAbandonoRival();
+                    esModoVersus = false;
+                }
+            }, 15000);
+        } else {
+            // Si vuelve antes de los 15 segundos, le perdonamos la vida
+            if (timerAbandono) {
+                console.log("[1v1] ✅ Jugador volvió a la pestaña a tiempo.");
+                clearTimeout(timerAbandono);
+                timerAbandono = null;
+            }
+        }
     }
 });
