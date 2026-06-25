@@ -953,31 +953,41 @@ else{document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e
 
 function cargarLiga(gid){mostrarSkeletons();document.getElementById('global-search').value='';Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`,{download:true,header:true,complete:(r)=>{estadiosCargados=r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club'));renderizarTarjetas(estadiosCargados);}});}
 async function indexarCatalogoMasivo() {
-    catalogoGlobal = [];
-    for (const gid of todosLosGids) {
-        await new Promise((resolve) => {
-            Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`, {
-                download: true,
-                header: true,
-                complete: (r) => {
-                    r.data.filter(f => bscarPropiedad(f, 'Estadio') && bscarPropiedad(f, 'Club')).forEach(est => {
-                        const n = bscarPropiedad(est, 'Estadio'), c = bscarPropiedad(est, 'Club');
-                        if (!catalogoGlobal.some(e => bscarPropiedad(e, 'Estadio') === n && bscarPropiedad(e, 'Club') === c)) {
-                            catalogoGlobal.push(est);
-                        }
-                    });
-                    resolve();
-                },
-                error: (err) => {
-                    console.error(`Error cargando GID ${gid}:`, err);
-                    resolve(); // Resuelve igual para que no se trabe la cadena completa
-                }
-            });
-        });
-        // Micropausa de 200ms para no saturar los servidores de Google
-        await new Promise(r => setTimeout(r, 200));
+    if (!supabaseClient) {
+        console.error("Supabase no está listo para cargar el catálogo.");
+        return;
     }
-    console.log("¡Catálogo global masivo indexado correctamente!");
+
+    try {
+        // Traemos todos los estadios de una sola vez
+        const { data, error } = await supabaseClient
+            .from('estadios_catalogo')
+            .select('*');
+
+        if (error) throw error;
+
+        // Mapeamos los datos para que tu código viejo siga funcionando sin tocar nada más
+        // Transformamos las minúsculas de la base de datos a tu formato de Diccionario/Sheet
+        catalogoGlobal = data.map(fila => ({
+            'Estadio': fila.estadio,
+            'Club': fila.club,
+            'País': fila.pais,
+            'Foto': fila.foto,
+            'Link del Video': fila.link_video,
+            'Latitud': fila.latitud,
+            'Longitud': fila.longitud,
+            'Dato Curioso': fila.dato_curioso
+        }));
+
+        console.log(`¡Catálogo global migrado y cargado en memoria! (${catalogoGlobal.length} estadios)`);
+        
+        // Si tenías estadios cargados para una liga específica, los mapeamos por defecto
+        estadiosCargados = [...catalogoGlobal];
+        
+    } catch (err) {
+        console.error("Error al descargar el catálogo masivo:", err);
+        showToast("Error al cargar los estadios.", "ph-warning-circle", "danger");
+    }
 }
 
 function dispararVueloAleatorio(e){
