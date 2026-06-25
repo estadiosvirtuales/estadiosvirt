@@ -332,22 +332,43 @@ localStorage.setItem('ev_migrated_v2','true');
 migrarStatsAntiguos();
 
 function procesarRachaDiaria() {
-    const today = new Date();
-    const todayStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
     if (!userStats.activeDates) userStats.activeDates = [];
     if (userStats.activeDates instanceof Set) userStats.activeDates = Array.from(userStats.activeDates);
+    
+    // Obtenemos la fecha local exacta del usuario y la normalizamos
+    const ahora = new Date();
+    // Formato forzado YYYY-MM-DD para evitar desfasajes horarios
+    const todayStr = ahora.getFullYear() + '-' + String(ahora.getMonth() + 1).padStart(2, '0') + '-' + String(ahora.getDate()).padStart(2, '0');
+    
     const lastLogin = userStats.lastLoginDate;
+
     if (lastLogin !== todayStr) {
         if (lastLogin) {
+            // Parseamos las fechas forzando la medianoche local para un cálculo matemático exacto
             const lastDate = new Date(lastLogin + 'T00:00:00');
             const currDate = new Date(todayStr + 'T00:00:00');
-            const diffTime = Math.abs(currDate - lastDate);
+            
+            // Calculamos la diferencia en días enteros
+            const diffTime = currDate.getTime() - lastDate.getTime();
             const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-            if (diffDays === 1) { userStats.rachaActual = (userStats.rachaActual || 0) + 1; } else { userStats.rachaActual = 1; }
-        } else { userStats.rachaActual = 1; }
+            
+            if (diffDays === 1) {
+                // Jugó ayer y hoy. ¡Suma racha!
+                userStats.rachaActual = (userStats.rachaActual || 0) + 1;
+            } else if (diffDays > 1) {
+                // Se salteó un día o más. Racha reiniciada.
+                userStats.rachaActual = 1;
+            }
+        } else {
+            // Primer login en la historia
+            userStats.rachaActual = 1;
+        }
+        
         userStats.lastLoginDate = todayStr;
-        if (!userStats.activeDates.includes(todayStr)) { userStats.activeDates.push(todayStr); }
-        guardarStats();
+        if (!userStats.activeDates.includes(todayStr)) {
+            userStats.activeDates.push(todayStr);
+        }
+        guardarStats(); // Inyecta el cambio en localStorage y Supabase
     }
 }
 
