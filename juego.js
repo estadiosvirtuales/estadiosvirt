@@ -1024,6 +1024,7 @@ userStats.vuelosAleatorios=(userStats.vuelosAleatorios||0)+1;guardarStats();abri
 
 // ========================================================
 let esModoVersus = false;         // El escudo: false = solitario, true = multijugador
+let estadiosDiariosList = [];
 let versusPartidaId = null;       // ID de la partida actual en Supabase
 let versusRol = null;             // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
 let versusEstadios = [];          // Array con la lista fija de estadios para el 1v1
@@ -1779,6 +1780,73 @@ function arrancarPartidoVersus() {
 
     lanzarRondaGuessr();
 }
+// ==========================================
+// LÓGICA DEL RETO DIARIO (TIPO WORDLE)
+// ==========================================
+function obtenerEstadiosRetoDiario() {
+    // 1. Filtramos los estadios que tienen video y coordenadas válidas
+    let pool = catalogoGlobal.filter(f => {
+        const l = String(bscarPropiedad(f, 'Link del Video')).trim();
+        return (l.includes('youtube') || l.includes('youtu.be')) && 
+               String(bscarPropiedad(f, 'Latitud')).trim() !== '' && 
+               String(bscarPropiedad(f, 'Longitud')).trim() !== '';
+    });
+
+    // 2. ORDEN CLAVE: Los ordenamos por nombre para que la base sea idéntica en todo el mundo
+    pool.sort((a, b) => String(bscarPropiedad(a, 'Estadio')).localeCompare(String(bscarPropiedad(b, 'Estadio'))));
+
+    // 3. Creamos una "semilla" numérica basada en la fecha de hoy (Ej: 20260625)
+    const hoy = new Date();
+    let seed = hoy.getFullYear() * 10000 + (hoy.getMonth() + 1) * 100 + hoy.getDate();
+
+    // 4. Generador aleatorio atado a la semilla (siempre da el mismo resultado el mismo día)
+    function randomSeeded() {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+
+    let seleccionados = [];
+    let copia = [...pool];
+
+    // 5. Elegimos 5 estadios. Para todos hoy van a ser los mismos 5.
+    for (let i = 0; i < 5; i++) {
+        if (copia.length === 0) break;
+        const idx = Math.floor(randomSeeded() * copia.length);
+        seleccionados.push(copia.splice(idx, 1)[0]);
+    }
+
+    // Retornamos solo los nombres
+    return seleccionados.map(e => bscarPropiedad(e, 'Estadio'));
+}
+
+function iniciarRetoDiario() {
+    cerrarLobbyEspera(); // Limpiamos por las dudas
+    if (!catalogoGlobal.length) {
+        showToast('Esperá que cargue el catálogo de estadios...', 'ph-info', 'warning');
+        return;
+    }
+
+    // Configuramos el juego
+    esModoVersus = false; 
+    esModoBot = false;
+    esModoDiario = true; // 🔥 ACTIVAMOS EL RETO
+    
+    // Obtenemos los 5 estadios bloqueados de hoy
+    estadiosDiariosList = obtenerEstadiosRetoDiario();
+
+    // Reseteamos marcadores de la partida
+    guessrRondaActual = 1;
+    guessrPuntosTotales = 0;
+    guessrEstadiosJugados = [];
+    guessrHistorialRondas = [];
+    pendingScore = null;
+    pendingScoreType = null;
+    
+    // Arrancamos
+    lanzarRondaGuessr();
+}
 
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
@@ -1787,6 +1855,7 @@ function iniciarTrivia(){
     
     esModoVersus = false; 
     esModoBot = false; // 🤖 Desactivamos el bot de raíz para que no interfiera en solitario
+    esModoDiario = false;
     
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
@@ -1800,6 +1869,7 @@ function iniciarTrivia(){
 function lanzarRondaGuessr(){
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
+// === REEMPLAZA DESDE ACÁ ===
 if (esModoVersus) {
     const nombreEstadioOficial = versusEstadios[guessrRondaActual - 1];
     guessrEstadioCorrecto = (catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados).find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioOficial);
@@ -1810,7 +1880,15 @@ if (esModoVersus) {
         return;
     }
     guessrEstadiosJugados.push(nombreEstadioOficial);
+    
+} else if (esModoDiario) {
+    // 🌍 LÓGICA NUEVA: RETO DIARIO
+    const nombreEstadioDiario = estadiosDiariosList[guessrRondaActual - 1];
+    guessrEstadioCorrecto = catalogoGlobal.find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioDiario);
+    guessrEstadiosJugados.push(nombreEstadioDiario);
+
 } else {
+    // LÓGICA CLÁSICA: MODO INDIVIDUAL ALEATORIO
     if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
     guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];
     guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
@@ -1966,12 +2044,44 @@ async function finalizarJuegoGuessr(){
     guessrHistorialRondas.forEach(item=>{const dT=isNaN(item.distancia)?'?':(item.distancia<1?`${Math.round(item.distancia*1000)} m`:`${item.distancia.toFixed(1)} km`);const starColor=item.puntos>3000?'#00e676':item.puntos>1000?'#ff8f00':'#ff4757';histHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:var(--text-muted);font-size:.75rem;">${dT}</span><b style="color:${starColor};">+${item.puntos}</b></span></div>`;});histHTML+='</div>';
     const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
     const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados and aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
+    
+    let botonCompartirDiario = '';
+    if (esModoDiario) {
+        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d" style="background:#2979ff; color:#fff; width:100%; padding:14px; margin-top:10px; box-shadow: 0 5px 0 #004ba0; font-size: 1rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
+    }
+    
     container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);"><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2><p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p><div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>${histHTML}<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">${guardarBtn}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
 }
 
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
+
+function compartirRetoDiarioWordle() {
+    const hoy = new Date();
+    const fechaText = String(hoy.getDate()).padStart(2, '0') + '/' + String(hoy.getMonth() + 1).padStart(2, '0');
+    
+    let texto = `🏟️ StadiumGuessr Diario (${fechaText})\n`;
+    texto += `🎯 ${guessrPuntosTotales} Pts\n\n`;
+
+    let emojisRondas = '';
+    guessrHistorialRondas.forEach(ronda => {
+        // Colores según puntos de la ronda (Múltiplos de 5000 max)
+        if (ronda.puntos >= 4000) emojisRondas += '🟩 ';
+        else if (ronda.puntos >= 2000) emojisRondas += '🟨 ';
+        else emojisRondas += '🟥 ';
+    });
+
+    texto += emojisRondas.trim() + `\n\n✈️ Jugalo en: estadiosvirtuales.com`;
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(texto).then(() => {
+            showToast("¡Resultado copiado para compartir! 🚀", "ph-copy", "success");
+        }).catch(err => {
+            showToast("Tu navegador no soporta copiado directo.", "ph-warning-circle", "warning");
+        });
+    }
+}
 
 // SISTEMA DE RANKINGS INTEGRADO CON PESTAÑAS (SOLO, VERSUS TOTAL Y VERSUS SEMANAL)
 async function abrirModalRanking(modoEspecifico = 'solo') {
