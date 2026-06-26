@@ -1459,6 +1459,7 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Restaurado + Nombres)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     
@@ -1467,6 +1468,7 @@ function conectarRealtimeVersus() {
         idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
     }
 
+    // 👇 Capturamos el nombre local de manera segura
     let miNombreLocal = obtenerNombreDisplay();
 
     console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Identificador de red: ${idUsuario}`);
@@ -1477,52 +1479,73 @@ function conectarRealtimeVersus() {
         }
     });
 
-    // Función unificada para arrancar sin depender del rol de la base de datos
-    const confirmarYArrancar = (nombreRival) => {
-        if (!versusPartidaEnCurso) {
-            versusPartidaEnCurso = true;
-            versusRivalNombre = nombreRival || "RIVAL";
-            showToast(`¡Conectado con ${versusRivalNombre}! Sincronizando... 🚀`, "ph-lightning", "success");
-            setTimeout(arrancarPartidoVersus, 800);
-        }
-    };
-
     versusChannel
         .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-            console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence:", leftPresences);
-            if (versusPartidaEnCurso && !esModoBot) manejarAbandonoRival();
+            console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence de Supabase:", leftPresences);
+            if (versusPartidaEnCurso && !esModoBot) {
+                manejarAbandonoRival();
+            }
         })
-        
-        // 1. ESCUCHAMOS EL LATIDO (PING) DEL RIVAL
-        .on('broadcast', { event: 'ping_presencia' }, (response) => {
+        .on('broadcast', { event: 'rival_entro' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Ping recibido de ${response.payload.nombre}. ¡Oponente detectado!`);
+                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
                 
-                // Le avisamos que nosotros también estamos listos
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre; // Atrapa el nombre
+
                 versusChannel.send({
                     type: 'broadcast',
-                    event: 'estoy_listo',
-                    payload: { id: idUsuario, nombre: miNombreLocal }
+                    event: 'host_confirmado',
+                    payload: { id: idUsuario, nombre: miNombreLocal } // Lo enviamos
                 });
-                
-                // Arrancamos nuestra partida
-                confirmarYArrancar(response.payload.nombre);
             }
         })
-        
-        // 2. ESCUCHAMOS LA CONFIRMACIÓN (PONG) DEL RIVAL
-        .on('broadcast', { event: 'estoy_listo' }, (response) => {
+        .on('broadcast', { event: 'host_confirmado' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Confirmación final recibida de ${response.payload.nombre}.`);
-                confirmarYArrancar(response.payload.nombre);
+                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
+                
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre; // Atrapa el nombre
+
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'invitado_listo',
+                    payload: { id: idUsuario, nombre: miNombreLocal } // Lo enviamos
+                });
+
+                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                    versusPartidaEnCurso = true;
+                    showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
+                    arrancarPartidoVersus(); // Arranca directo
+                }
             }
         })
-        
-        // === LA LÓGICA DEL JUEGO SE MANTIENE EXACTAMENTE IGUAL ===
+        .on('broadcast', { event: 'invitado_listo' }, (response) => {
+            if (response.payload && response.payload.id !== idUsuario) {
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre; // Atrapa el nombre
+
+                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
+                    console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
+                    versusPartidaEnCurso = true;
+                    showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
+                    arrancarPartidoVersus(); // Arranca directo
+                }
+            }
+        })
+        .on('broadcast', { event: 'host_confirmado' }, (response) => {
+            if (response.payload && response.payload.id !== idUsuario) {
+                console.log(`[1v1] 📥 Invitado recibió confirmación del Host.`);
+                
+                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                    versusPartidaEnCurso = true;
+                    showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
+                    setTimeout(arrancarPartidoVersus, 1000);
+                }
+            }
+        })
         .on('broadcast', { event: 'rival_voto' }, (response) => {
             console.log("[1v1] Voto recibido del oponente:", response);
             rivalGuessConfirmado = true;
             rivalDataRonda = response.payload;
+
             if (!miGuessConfirmado) {
                 showToast("⚠️ ¡Tu rival ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
                 iniciarCuentaRegresivaVersus();
@@ -1532,39 +1555,36 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
-            if (miListoSiguiente) ejecutarPasoDeRondaVersus();
+            if (miListoSiguiente) {
+                ejecutarPasoDeRondaVersus();
+            }
         })
         .on('broadcast', { event: 'forzar_siguiente_ronda' }, (response) => {
+            console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
+            console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
         })
-        
-        // === SUSCRIPCIÓN AL CANAL ===
         .subscribe((status) => {
-            console.log(`[1v1] 🚦 Estado de la conexión WebSocket: ${status}`);
+            console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
             if (status === 'SUBSCRIBED') {
                 versusChannel.track({ id: idUsuario });
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // Mandamos un pulso inmediato al entrar
-                versusChannel.send({ type: 'broadcast', event: 'ping_presencia', payload: { id: idUsuario, nombre: miNombreLocal } });
+                // Enviamos nombre en los latidos
+                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                 
-                // Latido constante de 1 segundo (más seguro para evitar bloqueos por rate-limit)
                 handshakeInterval = setInterval(() => {
-                    if (versusChannel && !versusPartidaEnCurso) {
-                        versusChannel.send({ type: 'broadcast', event: 'ping_presencia', payload: { id: idUsuario, nombre: miNombreLocal } });
-                    } else if (versusPartidaEnCurso) {
-                        // Apagado de emergencia por si la función de arranque no lo mató
-                        clearInterval(handshakeInterval);
+                    if (versusChannel) {
+                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                     }
-                }, 1000);
+                }, 400);
             }
         });
 }
-
 // Reloj de arena visual de 15 segundos si el rival arriesga primero
 function iniciarCuentaRegresivaVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
