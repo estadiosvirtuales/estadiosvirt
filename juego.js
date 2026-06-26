@@ -1403,6 +1403,7 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     
@@ -1410,6 +1411,9 @@ function conectarRealtimeVersus() {
     if (!idUsuario || idUsuario === 'guest') {
         idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
     }
+
+    // 👇 MAGIA NUEVA: Agarramos tu apodo para mandárselo al rival
+    let miNombreLocal = obtenerNombreDisplay();
 
     console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Identificador de red: ${idUsuario}`);
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
@@ -1426,16 +1430,15 @@ function conectarRealtimeVersus() {
                 manejarAbandonoRival();
             }
         })
-       // PEGAR ESTO REEMPLAZANDO LOS DOS EVENTOS ANTERIORES ('rival_entro' y 'host_confirmado'):
         .on('broadcast', { event: 'rival_entro' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
                 console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
                 
-                // El Host le dice al invitado: "Te vi, prepará la cancha"
+                // El Host le manda su confirmación Y SU NOMBRE al invitado
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
-                    payload: { id: idUsuario }
+                    payload: { id: idUsuario, nombre: miNombreLocal }
                 });
             }
         })
@@ -1443,40 +1446,31 @@ function conectarRealtimeVersus() {
             if (response.payload && response.payload.id !== idUsuario) {
                 console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
                 
-                // El Invitado le avisa al Host que ya está 100% listo para arrancar
+                // El Invitado le avisa al Host que ya está 100% listo Y LE MANDA SU NOMBRE
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'invitado_listo',
-                    payload: { id: idUsuario }
+                    payload: { id: idUsuario, nombre: miNombreLocal }
                 });
 
                 if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
                     versusPartidaEnCurso = true;
-                    showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
-                    arrancarPartidoVersus(); // Arranca directo
+                    // Guardamos el nombre real del Host para el cartel final
+                    versusRivalNombre = response.payload.nombre || "RIVAL";
+                    showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
+                    setTimeout(arrancarPartidoVersus, 1000);
                 }
             }
         })
-        // 🛡️ NUEVO EVENTO: El Host solo arranca cuando el invitado le dice que está listo
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
                 if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
                     console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
                     versusPartidaEnCurso = true;
-                    showToast("¡Rival conectado! Sincronizando cancha... 🚀", "ph-lightning", "success");
-                    arrancarPartidoVersus(); // Arranca directo
-                }
-            }
-        })
-        // 📡 EL INVITADO (Jugador 2) escucha la confirmación del Host y arranca en paralelo
-        .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Invitado recibió confirmación del Host.`);
-                
-                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
-                    versusPartidaEnCurso = true;
-                    showToast("¡Conexión establecida! Que empiece el partido... 🚀", "ph-lightning", "success");
-                    setTimeout(arrancarPartidoVersus, 1000);
+                    // Guardamos el nombre real del Invitado para el cartel final
+                    versusRivalNombre = response.payload.nombre || "RIVAL";
+                    showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando... 🚀`, "ph-lightning", "success");
+                    arrancarPartidoVersus(); 
                 }
             }
         })
@@ -1513,13 +1507,12 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // Mandamos el pulso inicial de entrada
-                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario } });
+                // Mandamos el pulso inicial de entrada CON NOMBRE
+                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                 
-                // Mantenemos las ráfagas hasta que "arrancarPartidoVersus" las limpie por completo
                 handshakeInterval = setInterval(() => {
                     if (versusChannel) {
-                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario } });
+                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                     }
                 }, 400);
             }
@@ -2003,11 +1996,7 @@ async function finalizarJuegoGuessr(){
         const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
 
-        let nombreRivalFinal = "RIVAL";
-        if (esModoBot) {
-            // 🤖 Mantiene de principio a fin el mismo nombre fijado al inicio de la partida
-            nombreRivalFinal = versusRivalNombre.toUpperCase();
-        }
+        let nombreRivalFinal = (versusRivalNombre || "RIVAL").toUpperCase();
         
         let cartelResultado = "";
         let colorResultado = "#ffea00";
