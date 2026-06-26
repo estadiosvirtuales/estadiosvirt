@@ -847,13 +847,49 @@ body {
 /* OPTIMIZACIÓN VISUAL EXCLUSIVA PARA MÓVILES */
 /* ========================================== */
 @media (max-width: 768px) {
-    /* 1. Ocultamos la píldora verde superior (solo en celu) para ganar altura */
+    
+    /* ========================================== */
+    /* A. FRANJA SUPERIOR (HEADER) SÚPER COMPACTA */
+    /* ========================================== */
+    header, .top-bar, .navbar {
+        padding: 5px 10px !important;
+        min-height: auto !important;
+        align-items: center !important;
+    }
+
+    /* Achicamos el texto "Estadios Virtuales" de la barra y forzamos 1 sola línea */
+    header h1, header h2, .logo-title, .header-brand-name {
+        font-size: 1.1rem !important;
+        line-height: 1.1 !important;
+        margin-bottom: 2px !important;
+        white-space: nowrap !important; 
+    }
+
+    /* Achicamos el texto verde "EL MUNDO DESDE EL AIRE" a 1 sola línea */
+    header p, header span, .logo-subtitle, .header-slogan {
+        font-size: 0.55rem !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Achicamos botón de luna y perfil derecho */
+    .theme-toggle, #theme-icon, .hero-profile-wrapper, #hero-google-profile {
+        transform: scale(0.85) !important;
+        transform-origin: right center !important;
+        margin-left: 5px !important;
+    }
+
+    /* ========================================== */
+    /* B. CUERPO PRINCIPAL DEL SITIO              */
+    /* ========================================== */
+    
+    /* Ocultamos la píldora verde central "Tour aéreo..." para ganar altura */
     .hero-badge-container, 
-    .hero-pill { /* Nota: cambialo por la clase exacta que tenga tu píldora verde */
+    .hero-pill {
         display: none !important;
     }
 
-    /* 2. Achicamos el título principal y el subtítulo */
+    /* Achicamos el título central gigante y su bajada */
     h1 {
         font-size: 2.2rem !important;
         margin-bottom: 10px !important;
@@ -863,13 +899,13 @@ body {
         line-height: 1.4 !important;
     }
 
-    /* 3. Achicamos el espacio interno de las tarjetas de juego */
+    /* Reducimos el espacio vacío (padding) adentro de las tarjetas de juego */
     .game-card {
         padding: 15px !important;
         margin-bottom: 12px !important;
     }
 
-    /* 4. Hacemos más chiquitos los botones flotantes de redes sociales y los bajamos un poco */
+    /* Hacemos más chiquitos los botones flotantes de YouTube y Mail */
     .social-floating-container {
         transform: scale(0.75);
         bottom: 5px !important;
