@@ -100,31 +100,17 @@
 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
 </div>
 <div class="game-modes">
-<div class="game-card btn-guessr" style="cursor: default; display: flex; flex-direction: column; gap: 12px;">
-    <!-- Contenedor superior con la info clásica del estadio -->
-    <div style="display: flex; align-items: center; width: 100%; position: relative; gap: 12px;">
+<button class="game-card btn-guessr" onclick="abrirModalGuessr()" style="text-align: left; cursor: pointer;">
+    <div style="display: flex; align-items: center; width: 100%; gap: 12px;">
         <div class="game-card-icon"><i class="ph-duotone ph-map-pin-line"></i></div>
-        <div class="game-card-text"><strong>StadiumGuessr</strong><span>Adiviná la ubicación</span></div>
+        <div class="game-card-text">
+            <strong>StadiumGuessr</strong>
+            <span>Adiviná la ubicación</span>
+        </div>
         <span class="game-card-badge" style="margin-left: auto;">5 rondas</span>
     </div>
-    
-    <!-- Botonera interna rediseñada: 3 filas limpias -->
-<div class="card-modes-buttons stacked-layout">
-    
-    <button class="btn-menu-action" onclick="iniciarRetoDiario()" style="border: 1px solid #ffea00; color: #ffea00; background: rgba(255, 234, 0, 0.05);">
-        <i class="ph-duotone ph-calendar-star"></i> Reto Diario (Nuevo)
-    </button>
-    <button class="btn-menu-action solo" onclick="iniciarTrivia()">
-        <i class="ph-bold ph-user"></i> Partida individual
-    </button>
-    <button class="btn-menu-action versus" onclick="buscarPartidaVersus()">
-        <i class="ph-bold ph-lightning"></i> Partida 1 vs 1
-    </button>
-    <button class="btn-menu-action ranking-btn" onclick="abrirModalRanking('v_historico')">
-        <i class="ph-bold ph-trophy"></i> Tabla de Posiciones
-    </button>
-</div>
-</div>
+</button>
+
 <button class="game-card btn-order" onclick="abrirModalOrden()">
 <div class="game-card-icon"><i class="ph-duotone ph-sort-ascending"></i></div>
 <div class="game-card-text"><strong>Ordenar Estadios</strong><span>Capacidad y Edad</span></div>
@@ -205,6 +191,36 @@
 <button class="close-btn" onclick="cerrarModalPerfil()"><i class="ph-bold ph-x"></i></button>
 <div id="profile-modal-body"></div>
 </div>
+</div>
+<div class="modal-overlay" id="guessr-modal" style="display:none;" onclick="cerrarModalGuessr()">
+    <div class="modal-content" style="max-width: 380px; padding: 0;" onclick="event.stopPropagation()">
+        <div class="modal-header" style="padding: 15px 20px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="modal-title" style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;"><i class="ph-duotone ph-map-pin"></i> StadiumGuessr</h3>
+            <button class="close-btn" onclick="cerrarModalGuessr()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;"><i class="ph-bold ph-x"></i></button>
+        </div>
+        
+        <div class="modal-body" style="padding: 24px; text-align: center;">
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem;">Elegí un modo de juego para empezar.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button onclick="cerrarModalGuessr(); iniciarRetoDiario()" class="btn-3d" style="background: rgba(255, 234, 0, 0.1); border: 1px solid #ffea00; color: #ffea00; padding: 14px; font-size: 1rem; width: 100%;">
+                    <i class="ph-duotone ph-calendar-star"></i> Reto Diario (Nuevo)
+                </button>
+                
+                <button onclick="cerrarModalGuessr(); iniciarTrivia()" class="btn-3d primary" style="padding: 14px; font-size: 1rem; width: 100%;">
+                    <i class="ph-bold ph-user"></i> Partida Individual
+                </button>
+                
+                <button onclick="cerrarModalGuessr(); buscarPartidaVersus()" class="btn-3d secondary" style="padding: 14px; font-size: 1rem; width: 100%;">
+                    <i class="ph-bold ph-lightning" style="color: var(--accent-color);"></i> Partida 1 vs 1
+                </button>
+                
+                <button onclick="cerrarModalGuessr(); abrirModalRanking('v_historico')" class="btn-3d secondary" style="padding: 14px; font-size: 1rem; width: 100%;">
+                    <i class="ph-bold ph-trophy"></i> Tabla de Posiciones
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="order-modal" class="modal-overlay" onclick="cerrarModalOrden()">
 <div class="modal-content" style="max-width:580px;height:85vh;padding:20px 25px;display:flex;flex-direction:column;" onclick="event.stopPropagation()">

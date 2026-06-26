@@ -922,6 +922,14 @@ function cerrarModalPerfil(){document.getElementById('profile-modal').style.disp
 function cerrarModalOrden(){document.getElementById('order-modal').style.display='none';}
 function cerrarModalRanking(){document.getElementById('ranking-modal').style.display='none';}
 
+function abrirModalGuessr() {
+    document.getElementById('guessr-modal').style.display = 'flex';
+}
+
+function cerrarModalGuessr() {
+    document.getElementById('guessr-modal').style.display = 'none';
+}
+
 function switchTab(event,btn,type,estadio,pais,lat,lng){
 event.stopPropagation();const b=btn.closest('.trivia-balloon');b.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('active'));b.querySelectorAll('.b-content').forEach(c=>c.classList.remove('active'));btn.classList.add('active');const ct=b.querySelector('.b-'+type);if(ct)ct.classList.add('active');
 if(type==='mapa'){abrirModalMapa(estadio,pais,lat,lng);setTimeout(()=>{b.classList.remove('active');b.querySelectorAll('.b-tab')[0].classList.add('active');b.querySelector('.b-trivia').classList.add('active');},100);}
