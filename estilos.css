@@ -927,3 +927,21 @@ body {
         transform-origin: bottom left;
     }
 }
+/* ========================================== */
+/* BOTÓN RETO DIARIO (ADAPTATIVO CLARO/OSCURO)*/
+/* ========================================== */
+
+/* Por defecto (Modo Oscuro): Amarillo brillante */
+.btn-reto-diario {
+    background: rgba(255, 234, 0, 0.08) !important;
+    border: 1px solid #ffea00 !important;
+    color: #ffea00 !important;
+}
+
+/* Cuando el sistema detecta que el Modo Claro está activo: Naranja fuerte */
+[data-theme="light"] .btn-reto-diario {
+    background: rgba(230, 81, 0, 0.08) !important;
+    border: 1px solid #e65100 !important;
+    color: #e65100 !important;
+    font-weight: 800 !important;
+}
