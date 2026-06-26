@@ -1257,65 +1257,101 @@ async function buscarPartidaVersus() {
             p_estadios_enviados: nombresEstadios
         });
 
-        if (error) throw error;
-
-        if (data) {
-            // A veces Supabase devuelve un array, a veces el objeto directo. Esto lo ataja en ambos casos:
-            const partida = Array.isArray(data) ? data[0] : data;
-            
-            // 🔍 ESTO ES CLAVE: Nos va a mostrar en consola qué columnas exactas mandó tu base de datos
-            console.log("[1v1] 🔍 Datos crudos de la base de datos:", partida);
-            
-            // Búsqueda inteligente (Fallbacks): Si no se llama 'id', busca 'partida_id', etc.
-            versusPartidaId = partida.id || partida.partida_id || partida.id_partida;
-            versusEstadios = partida.estadios_ids || partida.estadios || partida.lista_estadios;
-            
-            // Si el ID sigue siendo undefined, frenamos todo antes de que se rompa el juego
-            if (!versusPartidaId) {
-                console.error("🚨 Falla crítica: Supabase no devolvió un ID de partida reconocible.");
-                cerrarLobbyEspera();
-                return;
-            }
-
-            // 🛡️ PARCHE DE SEGURIDAD EXTRA
-            if (typeof versusEstadios === 'string') {
-                try { versusEstadios = JSON.parse(versusEstadios); } 
-                catch(e) { versusEstadios = versusEstadios.split(','); }
-            }
-
-            esModoVersus = true; 
-
-            // Búsqueda inteligente del estado
-            const estadoRaw = partida.estado || partida.estado_partida || partida.status || '';
-            const estadoPartida = String(estadoRaw).toLowerCase();
-
-            if (estadoPartida === 'esperando') {
-                versusRol = 'jugador_1';
-                console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
-                showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
-                conectarRealtimeVersus();
-            } else {
-                versusRol = 'jugador_2';
-                console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
-                showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
-                conectarRealtimeVersus();
-            }
-
-            // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15.000ms (15s) y 20.000ms (20s)
-            const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
-
-            if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
-            versusTimeoutBusqueda = setTimeout(() => {
-                if (!versusPartidaEnCurso) {
-                    console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
-                    activarBotDeRescate();
-                }
-            }, tiempoEsperaAleatorio); 
+        // 🛡️ ESCUDO 1: Falla de red o error interno de la base de datos SQL
+        if (error) {
+            console.error("🚨 Error de Supabase al buscar/crear sala:", error.message);
+            cerrarLobbyEspera(); // Cortamos el cartel de búsqueda
+            showToast("Problemas de red. Intentá de nuevo.", "ph-warning-circle", "danger");
+            esModoVersus = false;
+            return; // Abortamos la ejecución de la función
         }
+
+        // 🛡️ ESCUDO 2: La base de datos respondió, pero vino completamente vacía
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+            console.error("🚨 La base de datos devolvió una respuesta vacía.");
+            cerrarLobbyEspera();
+            showToast("No se pudo conectar a la sala. Reintentando...", "ph-warning-circle", "warning");
+            esModoVersus = false;
+            return;
+        }
+
+        // A veces Supabase devuelve un array [{}], a veces el objeto directo {}. Esto lo unifica:
+        const partida = Array.isArray(data) ? data[0] : data;
+        
+        // 🛡️ ESCUDO 3: El objeto se extrajo, pero es null o undefined
+        if (!partida) {
+            console.error("🚨 El objeto de la partida es inválido.");
+            cerrarLobbyEspera();
+            showToast("Error de lectura en la sala.", "ph-warning-circle", "danger");
+            esModoVersus = false;
+            return;
+        }
+
+        // Búsqueda inteligente (Fallbacks): Si no se llama 'id', busca 'partida_id', etc.
+        versusPartidaId = partida.id || partida.partida_id || partida.id_partida;
+        versusEstadios = partida.estadios_ids || partida.estadios || partida.lista_estadios;
+        
+        // 🛡️ ESCUDO 4: El objeto existe, pero le faltan los datos vitales para jugar
+        if (!versusPartidaId) {
+            console.error("🚨 Falla crítica: La base de datos no devolvió un ID reconocible.", partida);
+            cerrarLobbyEspera();
+            showToast("Sala corrupta. Volvé a buscar.", "ph-warning-circle", "danger");
+            esModoVersus = false;
+            return;
+        }
+
+        if (!versusEstadios) {
+            console.error("🚨 Falla crítica: La partida no tiene estadios asignados.", partida);
+            cerrarLobbyEspera();
+            showToast("Error al cargar los mapas del partido.", "ph-warning-circle", "danger");
+            esModoVersus = false;
+            return;
+        }
+
+        // 🛡️ PARCHE DE SEGURIDAD EXTRA (Tu código original para desarmar strings JSON)
+        if (typeof versusEstadios === 'string') {
+            try { versusEstadios = JSON.parse(versusEstadios); } 
+            catch(e) { versusEstadios = versusEstadios.split(','); }
+        }
+
+        // ====================================================================
+        // SI LLEGAMOS HASTA ACÁ, ES PORQUE LOS DATOS SON 100% PUROS Y SEGUROS
+        // ====================================================================
+        
+        esModoVersus = true; 
+
+        // Búsqueda inteligente del estado
+        const estadoRaw = partida.estado || partida.estado_partida || partida.status || '';
+        const estadoPartida = String(estadoRaw).toLowerCase();
+
+        if (estadoPartida === 'esperando') {
+            versusRol = 'jugador_1';
+            console.log("[1v1] Sala creada. ID:", versusPartidaId, "Esperando rival...");
+            showToast("Sala de espera creada. Esperando oponente...", "ph-hourglass", "info");
+            conectarRealtimeVersus();
+        } else {
+            versusRol = 'jugador_2';
+            console.log("[1v1] ¡Conectando a sala existente! Partida ID:", versusPartidaId);
+            showToast("Estableciendo conexión con la sala... 📡", "ph-circle-notch", "info");
+            conectarRealtimeVersus();
+        }
+
+        // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15s y 20s para el bot
+        const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
+
+        if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+        versusTimeoutBusqueda = setTimeout(() => {
+            if (!versusPartidaEnCurso) {
+                console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
+                activarBotDeRescate();
+            }
+        }, tiempoEsperaAleatorio); 
+        
     } catch (e) {
-        console.error("🚨 Error crítico en el matchmaking del Versus:", e.message);
+        // ESCUDO FINAL: Si Javascript se rompe por alguna otra razón (ej. falta de RAM)
+        console.error("🚨 Error crítico inesperado en el matchmaking del Versus:", e.message);
         cerrarLobbyEspera(); 
-        showToast("No se pudo conectar al servidor de emparejamiento.", "ph-warning-circle", "danger");
+        showToast("Error crítico en el emparejamiento.", "ph-x-circle", "danger");
         esModoVersus = false;
     }
 }
@@ -1422,6 +1458,7 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     
@@ -1430,7 +1467,6 @@ function conectarRealtimeVersus() {
         idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
     }
 
-    // 👇 MAGIA NUEVA: Agarramos tu apodo para mandárselo al rival
     let miNombreLocal = obtenerNombreDisplay();
 
     console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Identificador de red: ${idUsuario}`);
@@ -1441,62 +1477,52 @@ function conectarRealtimeVersus() {
         }
     });
 
+    // Función unificada para arrancar sin depender del rol de la base de datos
+    const confirmarYArrancar = (nombreRival) => {
+        if (!versusPartidaEnCurso) {
+            versusPartidaEnCurso = true;
+            versusRivalNombre = nombreRival || "RIVAL";
+            showToast(`¡Conectado con ${versusRivalNombre}! Sincronizando... 🚀`, "ph-lightning", "success");
+            setTimeout(arrancarPartidoVersus, 800);
+        }
+    };
+
     versusChannel
         .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-            console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence de Supabase:", leftPresences);
-            if (versusPartidaEnCurso && !esModoBot) {
-                manejarAbandonoRival();
-            }
+            console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence:", leftPresences);
+            if (versusPartidaEnCurso && !esModoBot) manejarAbandonoRival();
         })
-        .on('broadcast', { event: 'rival_entro' }, (response) => {
+        
+        // 1. ESCUCHAMOS EL LATIDO (PING) DEL RIVAL
+        .on('broadcast', { event: 'ping_presencia' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
+                console.log(`[1v1] 📥 Ping recibido de ${response.payload.nombre}. ¡Oponente detectado!`);
                 
-                // El Host le manda su confirmación Y SU NOMBRE al invitado
+                // Le avisamos que nosotros también estamos listos
                 versusChannel.send({
                     type: 'broadcast',
-                    event: 'host_confirmado',
+                    event: 'estoy_listo',
                     payload: { id: idUsuario, nombre: miNombreLocal }
                 });
-            }
-        })
-        .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
                 
-                // El Invitado le avisa al Host que ya está 100% listo Y LE MANDA SU NOMBRE
-                versusChannel.send({
-                    type: 'broadcast',
-                    event: 'invitado_listo',
-                    payload: { id: idUsuario, nombre: miNombreLocal }
-                });
-
-                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
-                    versusPartidaEnCurso = true;
-                    // Guardamos el nombre real del Host para el cartel final
-                    versusRivalNombre = response.payload.nombre || "RIVAL";
-                    showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
-                    setTimeout(arrancarPartidoVersus, 1000);
-                }
+                // Arrancamos nuestra partida
+                confirmarYArrancar(response.payload.nombre);
             }
         })
-        .on('broadcast', { event: 'invitado_listo' }, (response) => {
+        
+        // 2. ESCUCHAMOS LA CONFIRMACIÓN (PONG) DEL RIVAL
+        .on('broadcast', { event: 'estoy_listo' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
-                    console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
-                    versusPartidaEnCurso = true;
-                    // Guardamos el nombre real del Invitado para el cartel final
-                    versusRivalNombre = response.payload.nombre || "RIVAL";
-                    showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); 
-                }
+                console.log(`[1v1] 📥 Confirmación final recibida de ${response.payload.nombre}.`);
+                confirmarYArrancar(response.payload.nombre);
             }
         })
+        
+        // === LA LÓGICA DEL JUEGO SE MANTIENE EXACTAMENTE IGUAL ===
         .on('broadcast', { event: 'rival_voto' }, (response) => {
             console.log("[1v1] Voto recibido del oponente:", response);
             rivalGuessConfirmado = true;
             rivalDataRonda = response.payload;
-
             if (!miGuessConfirmado) {
                 showToast("⚠️ ¡Tu rival ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
                 iniciarCuentaRegresivaVersus();
@@ -1506,33 +1532,35 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
-            if (miListoSiguiente) {
-                ejecutarPasoDeRondaVersus();
-            }
+            if (miListoSiguiente) ejecutarPasoDeRondaVersus();
         })
         .on('broadcast', { event: 'forzar_siguiente_ronda' }, (response) => {
-            console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
         .on('broadcast', { event: 'rival_abandono' }, (response) => {
-            console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
         })
+        
+        // === SUSCRIPCIÓN AL CANAL ===
         .subscribe((status) => {
-            console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
+            console.log(`[1v1] 🚦 Estado de la conexión WebSocket: ${status}`);
             if (status === 'SUBSCRIBED') {
                 versusChannel.track({ id: idUsuario });
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // Mandamos el pulso inicial de entrada CON NOMBRE
-                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
+                // Mandamos un pulso inmediato al entrar
+                versusChannel.send({ type: 'broadcast', event: 'ping_presencia', payload: { id: idUsuario, nombre: miNombreLocal } });
                 
+                // Latido constante de 1 segundo (más seguro para evitar bloqueos por rate-limit)
                 handshakeInterval = setInterval(() => {
-                    if (versusChannel) {
-                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
+                    if (versusChannel && !versusPartidaEnCurso) {
+                        versusChannel.send({ type: 'broadcast', event: 'ping_presencia', payload: { id: idUsuario, nombre: miNombreLocal } });
+                    } else if (versusPartidaEnCurso) {
+                        // Apagado de emergencia por si la función de arranque no lo mató
+                        clearInterval(handshakeInterval);
                     }
-                }, 400);
+                }, 1000);
             }
         });
 }
