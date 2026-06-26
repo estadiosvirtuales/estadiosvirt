@@ -1836,6 +1836,18 @@ function iniciarRetoDiario() {
         return;
     }
 
+    // 👇 CONTROL DIARIO: REVISA SI YA JUGÓ HOY 👇
+    const idUsuario = getUserId();
+    const hoy = new Date();
+    const fechaHoy = hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+    const ultimoRetoJugado = localStorage.getItem('ev_reto_diario_fecha_' + idUsuario);
+
+    if (ultimoRetoJugado === fechaHoy) {
+        showToast("¡Ya completaste el reto de hoy! Volvé mañana. ⏳", "ph-calendar-check", "warning");
+        return; // Frena la ejecución y no lo deja jugar
+    }
+    // 👆 FIN DEL CONTROL DIARIO 👆
+
     // Configuramos el juego
     esModoVersus = false; 
     esModoBot = false;
@@ -2038,6 +2050,15 @@ async function finalizarJuegoGuessr(){
 
     // Código solitario clásico (Perfectamente resguardado dentro de la función original)
 
+    // 👇 SELLA EL RETO DIARIO PARA QUE NO LO PUEDA REPETIR HOY 👇
+    if (esModoDiario) {
+        const idUsuario = getUserId();
+        const hoy = new Date();
+        const fechaHoy = hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+        localStorage.setItem('ev_reto_diario_fecha_' + idUsuario, fechaHoy);
+    }
+    // 👆 -------------------------------------------------------- 👆
+
     if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
     if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
     if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
@@ -2069,22 +2090,24 @@ function compartirRetoDiarioWordle() {
     const hoy = new Date();
     const fechaText = String(hoy.getDate()).padStart(2, '0') + '/' + String(hoy.getMonth() + 1).padStart(2, '0');
     
-    let texto = `🏟️ StadiumGuessr Diario (${fechaText})\n`;
-    texto += `🎯 ${guessrPuntosTotales} Pts\n\n`;
+    let texto = `✈️🌍 ¡Misión completada en StadiumGuessr!\n`;
+    texto += `📅 Reto Diario: ${fechaText}\n`;
+    texto += `🏆 Puntaje Final: ${guessrPuntosTotales} Pts\n\n`;
 
     let emojisRondas = '';
     guessrHistorialRondas.forEach(ronda => {
-        // Colores según puntos de la ronda (Múltiplos de 5000 max)
-        if (ronda.puntos >= 4000) emojisRondas += '🟩 ';
-        else if (ronda.puntos >= 2000) emojisRondas += '🟨 ';
+        // Colores según puntos de la ronda (Más exigente y vistoso)
+        if (ronda.puntos >= 4500) emojisRondas += '🟩 ';
+        else if (ronda.puntos >= 3000) emojisRondas += '🟨 ';
+        else if (ronda.puntos >= 1000) emojisRondas += '🟧 ';
         else emojisRondas += '🟥 ';
     });
 
-    texto += emojisRondas.trim() + `\n\n✈️ Jugalo en: estadiosvirtuales.com`;
+    texto += emojisRondas.trim() + `\n\n👀 ¿Podés superar mi marca de hoy?\n⚽ Jugalo acá: estadiosvirtuales.com`;
 
     if (navigator.clipboard) {
         navigator.clipboard.writeText(texto).then(() => {
-            showToast("¡Resultado copiado para compartir! 🚀", "ph-copy", "success");
+            showToast("¡Resultado copiado! Listo para pegar en WhatsApp 🚀", "ph-copy", "success");
         }).catch(err => {
             showToast("Tu navegador no soporta copiado directo.", "ph-warning-circle", "warning");
         });
