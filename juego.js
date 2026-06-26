@@ -981,7 +981,25 @@ if(term===''){const last=localStorage.getItem('ev_last_gid');if(last)renderizarT
 else{document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e.target.value.toUpperCase()}"`;cerrarLigasPanel();renderizarTarjetas(catalogoGlobal.filter(f=>[bscarPropiedad(f,'Estadio'),bscarPropiedad(f,'Club'),bscarPropiedad(f,'País')].some(v=>v.toLowerCase().includes(term))));}
 });
 
-function cargarLiga(gid){mostrarSkeletons();document.getElementById('global-search').value='';Papa.parse(`${baseSpreadsheetUrl}?gid=${gid}&single=true&output=csv`,{download:true,header:true,complete:(r)=>{estadiosCargados=r.data.filter(f=>bscarPropiedad(f,'Estadio')&&bscarPropiedad(f,'Club'));renderizarTarjetas(estadiosCargados);}});}
+function cargarLiga(gid){
+    mostrarSkeletons();
+    document.getElementById('global-search').value='';
+    
+    // 🛡️ ESCUDO: Si el catálogo de Supabase tarda un milisegundo de más en cargar, reintentamos
+    if (!catalogoGlobal || catalogoGlobal.length === 0) {
+        setTimeout(() => cargarLiga(gid), 200);
+        return;
+    }
+    
+    // En lugar de ir a internet, filtramos el catálogo que ya tenemos en memoria por su GID
+    estadiosCargados = catalogoGlobal.filter(f => 
+        String(bscarPropiedad(f, 'GID')).trim() === String(gid).trim() &&
+        bscarPropiedad(f, 'Estadio') && 
+        bscarPropiedad(f, 'Club')
+    );
+    
+    renderizarTarjetas(estadiosCargados);
+}
 async function indexarCatalogoMasivo() {
     if (!supabaseClient) {
         console.error("Supabase no está listo para cargar el catálogo.");
@@ -2624,7 +2642,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         activarLiga(gid, nombre);
     }));
     
-    indexarCatalogoMasivo();
+    await indexarCatalogoMasivo();
     const lastGid = localStorage.getItem('ev_last_gid');
     if (lastGid) {
         const tab = document.querySelector(`.tab[data-gid="${lastGid}"]`);
