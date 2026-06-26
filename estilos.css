@@ -852,12 +852,11 @@ body {
     /* A. FRANJA SUPERIOR (HEADER) SÚPER COMPACTA */
     /* ========================================== */
     header, .top-bar, .navbar {
-        padding: 5px 10px !important;
+        padding: 8px 12px !important;
         min-height: auto !important;
-        align-items: center !important;
     }
 
-    /* Achicamos el texto "Estadios Virtuales" de la barra y forzamos 1 sola línea */
+    /* Achicamos el texto del logo y forzamos 1 sola línea */
     header h1, header h2, .logo-title, .header-brand-name {
         font-size: 1.1rem !important;
         line-height: 1.1 !important;
@@ -865,47 +864,63 @@ body {
         white-space: nowrap !important; 
     }
 
-    /* Achicamos el texto verde "EL MUNDO DESDE EL AIRE" a 1 sola línea */
+    /* Achicamos el subtítulo verde a 1 sola línea */
     header p, header span, .logo-subtitle, .header-slogan {
         font-size: 0.55rem !important;
         line-height: 1 !important;
         white-space: nowrap !important;
     }
 
-    /* Achicamos botón de luna y perfil derecho */
-    .theme-toggle, #theme-icon, .hero-profile-wrapper, #hero-google-profile {
-        transform: scale(0.85) !important;
+    /* Arreglo de la Luna: Centrada perfecta y pegada al perfil */
+    .theme-toggle, #theme-btn {
+        transform: none !important; /* Sacamos el scale que la rompía */
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-right: 8px !important; /* La empuja contra tu perfil */
+        padding: 0 !important;
+    }
+
+    /* El perfil se achica apenitas desde la derecha */
+    .hero-profile-wrapper, #hero-google-profile {
+        transform: scale(0.9) !important;
         transform-origin: right center !important;
-        margin-left: 5px !important;
     }
 
     /* ========================================== */
     /* B. CUERPO PRINCIPAL DEL SITIO              */
     /* ========================================== */
     
-    /* Ocultamos la píldora verde central "Tour aéreo..." para ganar altura */
-    .hero-badge-container, 
-    .hero-pill {
+    /* 1. Ocultamos la píldora verde (Usamos comodines por si la clase cambia) */
+    .hero-badge-container, .hero-pill, .badge-container, [class*="tour-"] {
         display: none !important;
     }
 
-    /* Achicamos el título central gigante y su bajada */
-    h1 {
-        font-size: 2.2rem !important;
-        margin-bottom: 10px !important;
-    }
-    p {
-        font-size: 0.9rem !important;
-        line-height: 1.4 !important;
+    /* 2. Achicamos radicalmente ESTADIOS VIRTUALES para que ocupe menos vertical */
+    h1, .hero-title {
+        font-size: 1.6rem !important; /* Antes estaba en 2.2rem */
+        line-height: 1.1 !important;
+        margin-top: 5px !important;
+        margin-bottom: 8px !important;
     }
 
-    /* Reducimos el espacio vacío (padding) adentro de las tarjetas de juego */
+    /* 3. Subtítulo más compacto */
+    p, .hero-subtitle {
+        font-size: 0.85rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 15px !important;
+        padding: 0 10px !important;
+    }
+
+    /* Reducimos el espacio vacío adentro de las tarjetas de juego */
     .game-card {
         padding: 15px !important;
         margin-bottom: 12px !important;
     }
 
-    /* Hacemos más chiquitos los botones flotantes de YouTube y Mail */
+    /* Botones de YouTube y Mail más chiquitos */
     .social-floating-container {
         transform: scale(0.75);
         bottom: 5px !important;
