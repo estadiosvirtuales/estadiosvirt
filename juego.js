@@ -118,6 +118,7 @@ async function cargarProgresoDesdeSupabase() {
                     ligasExploradas: new Set(dj.ligasExploradas || []),
                     activeDates: dj.activeDates || []
                 };
+                procesarRachaDiaria();
 
                 // 2. Restauramos toda tu personalización visual en el dispositivo
                 if (dj.preferencias) {
