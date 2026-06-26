@@ -1199,6 +1199,7 @@ function obtener5EstadiosVersus() {
 // MOTOR DE SALAS PRIVADAS (DESAFÍO POR WHATSAPP)
 // ==========================================
 function crearSalaPrivada() {
+    cerrarModalGuessr(); // 👇 AGREGAMOS ESTO PARA DESPEJAR LA PANTALLA
     // 1. Validamos que haya estadios cargados
     const misEstadiosAleatorios = obtener5EstadiosVersus();
     if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
@@ -1559,6 +1560,7 @@ function activarBotDeRescate() {
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
 // Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Restaurado + Nombres)
+// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres + Estadios)
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     
@@ -1567,7 +1569,6 @@ function conectarRealtimeVersus() {
         idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
     }
 
-    // 👇 Capturamos el nombre local de manera segura
     let miNombreLocal = obtenerNombreDisplay();
 
     console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Identificador de red: ${idUsuario}`);
@@ -1587,14 +1588,14 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'rival_entro' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
+                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación con estadios.`);
                 
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
 
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
-                    // 👇 MAGIA: El Host le manda su lista de estadios al invitado por la red
+                    // 👇 ACÁ ESTÁ LA MAGIA: El Host le manda los estadios al invitado 👇
                     payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
                 });
             }
@@ -1605,8 +1606,8 @@ function conectarRealtimeVersus() {
                 
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
                 
-                // 👇 MAGIA: El invitado recibe la lista de estadios y los guarda
-                if (response.payload.estadios && response.payload.estadios.length === 5) {
+                // 👇 ACÁ ESTÁ LA OTRA MAGIA: El invitado atrapa los estadios y los guarda 👇
+                if (response.payload.estadios && response.payload.estadios.length > 0) {
                     versusEstadios = response.payload.estadios;
                 }
 
@@ -1625,24 +1626,13 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
             if (response.payload && response.payload.id !== idUsuario) {
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre; // Atrapa el nombre
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
 
                 if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
                     console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
                     versusPartidaEnCurso = true;
                     showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
                     arrancarPartidoVersus(); // Arranca directo
-                }
-            }
-        })
-        .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Invitado recibió confirmación del Host.`);
-                
-                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
-                    versusPartidaEnCurso = true;
-                    showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
-                    setTimeout(arrancarPartidoVersus, 1000);
                 }
             }
         })
@@ -1679,7 +1669,6 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // Enviamos nombre en los latidos
                 versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                 
                 handshakeInterval = setInterval(() => {
