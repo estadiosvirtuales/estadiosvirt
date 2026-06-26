@@ -1195,7 +1195,106 @@ function obtener5EstadiosVersus() {
 
     return resultado;
 }
+// ==========================================
+// MOTOR DE SALAS PRIVADAS (DESAFÍO POR WHATSAPP)
+// ==========================================
+function crearSalaPrivada() {
+    // 1. Validamos que haya estadios cargados
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
+        showToast("Esperá un segundo que termine de cargar el catálogo...", "ph-circle-notch", "warning");
+        return;
+    }
 
+    // 2. Generamos un código único para la sala (Ej: PRIV_A8F3X)
+    const idSala = Math.random().toString(36).substring(2, 8).toUpperCase();
+    versusPartidaId = 'PRIV_' + idSala;
+    versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+    
+    // 3. Seteamos las banderas globales
+    versusRol = 'jugador_1'; // El que crea la sala es el Host
+    esModoVersus = true;
+    esModoBot = false;
+    versusPartidaEnCurso = false;
+
+    // 4. Armamos el link mágico para WhatsApp
+    const urlLimpia = window.location.origin + window.location.pathname;
+    const linkACompartir = `${urlLimpia}?sala=${versusPartidaId}`;
+
+    // 5. Abrimos el lobby y conectamos la red
+    abrirLobbyPrivado(linkACompartir, idSala);
+    conectarRealtimeVersus();
+}
+
+function abrirLobbyPrivado(link, codigo) {
+    cerrarLobbyEspera(); 
+    const lobby = document.createElement('div');
+    lobby.id = 'matchmaking-lobby';
+    lobby.style.cssText = `
+        position: fixed; top: 24px; left: 0; right: 0; margin: 0 auto; width: max-content; 
+        max-width: 90%; background: var(--glass-bg); border: 2px solid #25D366; 
+        padding: 20px 28px; border-radius: 16px; z-index: 99999; display: flex; 
+        flex-direction: column; align-items: center; justify-content: center; gap: 14px; 
+        font-weight: 800; color: var(--text-main); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); 
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: fadeSlideUp 0.3s both;
+    `;
+    
+    lobby.innerHTML = `
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+            <span style="color:#25D366; font-size:1.1rem;"><i class="ph-fill ph-users-three"></i> Duelo Privado</span>
+            <i class="ph-bold ph-x" style="cursor:pointer; color:var(--text-muted);" onclick="cancelarBusquedaVersus()"></i>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Pasale este link a tu rival y esperalo acá:</p>
+        <button onclick="compartirLinkPrivado('${link}')" class="btn-3d" style="background:#25D366; color:#fff; width:100%; padding:14px; font-size:1rem; margin-top:5px; box-shadow: 0 5px 0 #128C7E;">
+            <i class="ph-bold ph-whatsapp-logo"></i> Invitar por WhatsApp
+        </button>
+    `;
+    document.body.appendChild(lobby);
+}
+
+window.compartirLinkPrivado = function(link) {
+    const msg = `⚽ ¡Te reté a un duelo en StadiumGuessr! 🌍\nEntrá a este link para jugar contra mí en vivo:\n\n${link}`;
+    if (navigator.share) {
+        navigator.share({ title: 'Duelo StadiumGuessr', text: msg, url: link }).catch(()=>{});
+    } else {
+        navigator.clipboard.writeText(msg).then(()=>showToast('¡Link copiado al portapapeles!')).catch(()=>showToast('Copiá el link de la URL.'));
+    }
+}
+
+function unirseSalaPrivada(salaId) {
+    let idUsuario = getUserId();
+    if (!idUsuario || idUsuario === 'guest') {
+        let guestId = sessionStorage.getItem('ev_guest_versus_id');
+        if (!guestId) {
+            guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
+            sessionStorage.setItem('ev_guest_versus_id', guestId);
+        }
+        idUsuario = guestId;
+
+        let nickExistente = getPref('ev_custom_nick', '');
+        if (!nickExistente) {
+            let nuevoNick = prompt("🏆 ¡Te desafiaron a un duelo! Ingresá tu apodo para entrar a la cancha:");
+            if (nuevoNick === null) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return; 
+            }
+            nuevoNick = nuevoNick.trim() || ("Jugador_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+            setPref('ev_custom_nick', nuevoNick.substring(0, 16));
+        }
+    }
+
+    versusPartidaId = salaId;
+    versusRol = 'jugador_2'; // El que entra por el link es el Invitado
+    esModoVersus = true;
+    esModoBot = false;
+    versusPartidaEnCurso = false;
+
+    // Borramos el código de la barra de direcciones para que quede limpio
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    showToast("Entrando a la sala privada... 📡", "ph-circle-notch", "info");
+    conectarRealtimeVersus();
+}
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
@@ -1490,12 +1589,13 @@ function conectarRealtimeVersus() {
             if (response.payload && response.payload.id !== idUsuario) {
                 console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación.`);
                 
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre; // Atrapa el nombre
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
 
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
-                    payload: { id: idUsuario, nombre: miNombreLocal } // Lo enviamos
+                    // 👇 MAGIA: El Host le manda su lista de estadios al invitado por la red
+                    payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
                 });
             }
         })
@@ -1503,12 +1603,17 @@ function conectarRealtimeVersus() {
             if (response.payload && response.payload.id !== idUsuario) {
                 console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
                 
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre; // Atrapa el nombre
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
+                
+                // 👇 MAGIA: El invitado recibe la lista de estadios y los guarda
+                if (response.payload.estadios && response.payload.estadios.length === 5) {
+                    versusEstadios = response.payload.estadios;
+                }
 
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'invitado_listo',
-                    payload: { id: idUsuario, nombre: miNombreLocal } // Lo enviamos
+                    payload: { id: idUsuario, nombre: miNombreLocal } 
                 });
 
                 if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
@@ -2701,6 +2806,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     } else mostrarLigas();
     
     guardarStats();
+    // 👇 ESCANEO DE LINK: Revisa si alguien nos mandó un link de sala privada
+    const urlParams = new URLSearchParams(window.location.search);
+    const salaPrivadaId = urlParams.get('sala');
+    if (salaPrivadaId) {
+        unirseSalaPrivada(salaPrivadaId);
+    }
 });
 
 // Abre o cierra el buzón flotante de sugerencias
