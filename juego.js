@@ -2929,20 +2929,25 @@ document.addEventListener("visibilitychange", () => {
     if (esModoVersus && !esModoBot && versusPartidaEnCurso && versusChannel) {
         if (document.hidden) {
             console.warn("[1v1] ⚠️ Jugador minimizó la app. Iniciando cuenta regresiva de abandono...");
-            // Le damos 15 segundos de gracia por si fue a contestar un mensaje rápido
+            // Le damos 60 segundos de gracia para que pueda contestar un WhatsApp rápido o vos puedas testear en PC
             timerAbandono = setTimeout(() => {
                 if (document.hidden) {
                     console.log("[1v1] 🚨 Tiempo agotado. Disparando abandono técnico.");
                     try {
+                        // Le avisamos al RIVAL que nosotros nos fuimos (ÉL GANA)
                         versusChannel.send({ type: 'broadcast', event: 'rival_abandono', payload: {} });
                         supabaseClient.removeChannel(versusChannel);
                     } catch(e) {}
-                    manejarAbandonoRival();
+                    
+                    // NOSOTROS PERDEMOS POR DESCONEXIÓN (Cortamos la partida sin darnos la victoria)
                     esModoVersus = false;
+                    versusPartidaEnCurso = false;
+                    cerrarModalVideo(); // Cierra la cancha
+                    showToast("Desconectado por inactividad prolongada ❌", "ph-x-circle", "danger");
                 }
-            }, 15000);
+            }, 60000); // <-- Aumentado a 60.000 milisegundos (60 segs)
         } else {
-            // Si vuelve antes de los 15 segundos, le perdonamos la vida
+            // Si vuelve a la pestaña antes de los 60 segundos, le perdonamos la vida
             if (timerAbandono) {
                 console.log("[1v1] ✅ Jugador volvió a la pestaña a tiempo.");
                 clearTimeout(timerAbandono);
