@@ -2091,6 +2091,7 @@ function iniciarRetoDiario() {
     guessrPuntosTotales = 0;
     guessrEstadiosJugados = [];
     guessrHistorialRondas = [];
+    guessrHistorialCoordenadas = [];
     pendingScore = null;
     pendingScoreType = null;
     
@@ -2112,6 +2113,7 @@ function iniciarTrivia(){
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // Limpieza de seguridad de búsqueda
     
     if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
+    guessrHistorialCoordenadas = [];
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
 
