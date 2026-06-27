@@ -1335,6 +1335,7 @@ function unirseSalaPrivada(salaId) {
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
 // Función principal para buscar rival o crear una sala de espera
+// Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
     // 🛡️ ESCUDO DE SEGURIDAD CRUCIAL
     const misEstadiosAleatorios = obtener5EstadiosVersus();
@@ -1478,7 +1479,6 @@ async function buscarPartidaVersus() {
         if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
         versusTimeoutBusqueda = setTimeout(() => {
             if (!versusPartidaEnCurso) {
-                // 👇 Magia: Borramos el console.log que delataba al bot
                 activarBotDeRescate();
             }
         }, tiempoEsperaAleatorio); 
