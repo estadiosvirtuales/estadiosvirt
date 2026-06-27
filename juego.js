@@ -1329,12 +1329,23 @@ function unirseSalaPrivada(salaId) {
     // Borramos el código de la barra de direcciones para que quede limpio
     window.history.replaceState({}, document.title, window.location.pathname);
 
-    showToast("Entrando a la sala privada... 📡", "ph-circle-notch", "info");
+    showToast("Buscando al creador de la sala... 📡", "ph-circle-notch", "info");
+    
+    // 👇 MAGIA 1: Le abrimos el cartelito de "Buscando rival" para que sepa que está cargando
+    abrirLobbyEspera(); 
     conectarRealtimeVersus();
+
+    // 👇 MAGIA 2: ESCUDO DE CADUCIDAD 👇
+    // Si en 15 segundos el anfitrión no responde, cortamos la conexión y le avisamos.
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    versusTimeoutBusqueda = setTimeout(() => {
+        if (!versusPartidaEnCurso) {
+            cancelarBusquedaVersus(); // Apaga la red y limpia la pantalla
+            showToast("El creador de la sala ya no está conectado. ❌", "ph-warning-circle", "danger");
+        }
+    }, 15000); 
 }
-// Función principal para buscar rival o crear una sala de espera
-// Función principal para buscar rival o crear una sala de espera
-// Función principal para buscar rival o crear una sala de espera
+
 // Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
     // 🛡️ ESCUDO DE SEGURIDAD CRUCIAL
