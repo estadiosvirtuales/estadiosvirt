@@ -2152,6 +2152,14 @@ async function finalizarJuegoGuessr(){
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
 
     if (esModoVersus) {
+        // 👇 MAGIA NUEVA: Cierre pacífico. El partido terminó legalmente, apagamos la red para que nadie "abandone" por error.
+        versusPartidaEnCurso = false;
+        if (versusChannel) {
+            try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+            versusChannel = null;
+        }
+        // 👆 FIN MAGIA NUEVA 👆
+
         const id = getUserId();
         const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
