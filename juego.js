@@ -1593,7 +1593,7 @@ function activarBotDeRescate() {
         versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
     }
 
-    setTimeout(arrancarPartidoVersus, 1200);
+    seTimeout(arrancarPartidoVersus, 1200);
 }
 
 
