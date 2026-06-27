@@ -865,33 +865,47 @@ return 'linear-gradient(135deg,#0f1419,#1a2233)';
 }
 
 function abrirModalVideo(event,link,esJuego=false){
-if(event)event.preventDefault();if(!link||link==='#'||link.includes('[Pegá tu link')){showToast('Video de este estadio no disponible.','ph-warning-circle','danger');return;}
-const modal=document.getElementById('video-modal'),card=document.getElementById('modal-card'),container=document.getElementById('modal-video-container');container.innerHTML='';
-const gameUi=document.getElementById('game-ui');
-if(esJuego){card.classList.add('stadium-guessr-layout');gameUi.style.display='block';}else{card.classList.remove('stadium-guessr-layout');gameUi.style.display='none';container.style.height='100%';}
-let url=link;
-if(link.includes('youtube.com')||link.includes('youtu.be')){
-let vid='';
-if(link.includes('youtube.com')||link.includes('youtu.be')){
+    if(event)event.preventDefault();
+    if(!link||link==='#'||link.includes('[Pegá tu link')){
+        showToast('Video de este estadio no disponible.','ph-warning-circle','danger');
+        return;
+    }
+    
+    const modal=document.getElementById('video-modal'),card=document.getElementById('modal-card'),container=document.getElementById('modal-video-container');
+    container.innerHTML='';
+    const gameUi=document.getElementById('game-ui');
+    
+    if(esJuego){
+        card.classList.add('stadium-guessr-layout');
+        gameUi.style.display='block';
+    }else{
+        card.classList.remove('stadium-guessr-layout');
+        gameUi.style.display='none';
+        container.style.height='100%';
+    }
+    
+    let url=link;
+    if(link.includes('youtube.com')||link.includes('youtu.be')){
         let vid='';
         if(link.includes('youtu.be/'))vid=link.split('youtu.be/')[1].split('?')[0];
         else if(link.includes('watch'))vid=new URLSearchParams(new URL(link).search).get('v');
         else if(link.includes('shorts/'))vid=link.split('shorts/')[1].split('?')[0];
         
-        // 👇 MAGIA NUEVA: Agregamos mute=1 y playsinline=1 para forzar el autoplay en celulares
+        // Autoplay forzado para móviles
         const qp=esJuego?"?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1":"?autoplay=1&playsinline=1&rel=0&modestbranding=1";
         
         if(vid)url=`https://www.youtube.com/embed/${vid}${qp}`;
         const est=esJuego?"width:100%;height:calc(100% + 55px);border:none;margin-top:-55px;":"width:100%;height:100%;border:none;";
         container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
-        // 👇 MAGIA NUEVA: Agregamos playsinline a los mp4 para que iOS no los bloquee
+        // Video MP4 nativo con playsinline para iOS
         const attr=esJuego?"autoplay loop muted playsinline":"controls autoplay playsinline";
         container.innerHTML=`<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
     }else{
         container.innerHTML=`<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`;
     }
-modal.style.display='flex';
+    
+    modal.style.display='flex';
 }
 
 function cerrarModalVideo(){
