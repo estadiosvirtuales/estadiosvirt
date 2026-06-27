@@ -1160,7 +1160,8 @@ function abrirLobbyEspera() {
 }
 
 // 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
-function cancelarBusquedaVersus() {
+// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
+async function cancelarBusquedaVersus() {
     cerrarLobbyEspera(); // Borra el cartel flotante de la pantalla
     
     // Matamos los timers de búsqueda de la app
@@ -1178,6 +1179,14 @@ function cancelarBusquedaVersus() {
         versusChannel.unsubscribe();
         versusChannel = null;
     }
+
+    // 👇 ESCUDO ANTI-ZOMBIES: Si cancelamos la búsqueda, marcamos la sala como cancelada en la BD
+    if (versusPartidaId && !versusPartidaId.startsWith('PRIV_') && !versusPartidaEnCurso) {
+        try {
+            await supabaseClient.from('partidas').update({ estado: 'cancelada' }).eq('id', versusPartidaId);
+        } catch(e) { console.warn("No se pudo limpiar la sala en la nube."); }
+    }
+    // 👆 FIN DEL ESCUDO 👆
     
     // Reseteamos las banderas globales competitivas
     esModoVersus = false;
@@ -1269,8 +1278,8 @@ function abrirLobbyPrivado(link, codigo) {
             <i class="ph-bold ph-x" style="cursor:pointer; color:var(--text-muted);" onclick="cancelarBusquedaVersus()"></i>
         </div>
         <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Pasale este link a tu rival y esperalo acá:</p>
-        <button onclick="compartirLinkPrivado('${link}')" class="btn-3d" style="background:#25D366; color:#fff; width:100%; padding:14px; font-size:1rem; margin-top:5px; box-shadow: 0 5px 0 #128C7E;">
-            <i class="ph-bold ph-whatsapp-logo"></i> Invitar por WhatsApp
+        <button id="btn-copiar-privado" onclick="compartirLinkPrivado('${link}')" class="btn-3d" style="background:#25D366; color:#fff; width:100%; padding:14px; font-size:1rem; margin-top:5px; box-shadow: 0 5px 0 #128C7E;">
+            <i class="ph-bold ph-copy"></i> Copiar link de invitación
         </button>
     `;
     document.body.appendChild(lobby);
@@ -1278,11 +1287,15 @@ function abrirLobbyPrivado(link, codigo) {
 
 window.compartirLinkPrivado = function(link) {
     const msg = `⚽ ¡Te reté a un duelo en StadiumGuessr! 🌍\nEntrá a este link para jugar contra mí en vivo:\n\n${link}`;
-    if (navigator.share) {
-        navigator.share({ title: 'Duelo StadiumGuessr', text: msg, url: link }).catch(()=>{});
-    } else {
-        navigator.clipboard.writeText(msg).then(()=>showToast('¡Link copiado al portapapeles!')).catch(()=>showToast('Copiá el link de la URL.'));
-    }
+    // Forzamos el copiado directo al portapapeles
+    navigator.clipboard.writeText(msg).then(() => {
+        showToast('¡Copiado! Ahora pegalo en tu chat de WhatsApp.', 'ph-check-circle', 'success');
+        // Le cambiamos el texto al botón para darle feedback visual
+        const btn = document.getElementById('btn-copiar-privado');
+        if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Copiado!`;
+    }).catch(() => {
+        showToast('Error al copiar. Seleccionalo de la barra de arriba.', 'ph-warning-circle', 'danger');
+    });
 }
 
 function unirseSalaPrivada(salaId) {
@@ -2874,15 +2887,23 @@ async function enviarSugerenciaServidor() {
     }
 }
 // Si un jugador cierra la pestaña o el navegador de prepo, gatilla el abandono al rival activo antes de destruir el socket
+// Si un jugador cierra la pestaña o el navegador de prepo, gatilla el abandono al rival activo antes de destruir el socket
 window.addEventListener('beforeunload', () => {
-    if (esModoVersus && versusChannel) {
-        versusChannel.send({
-            type: 'broadcast',
-            event: 'rival_abandono',
-            payload: {}
-        });
-        // 🛡️ CIERRE REGLEMENTARIO INSTANTÁNEO: Corta el socket en la nube para activar el leave del rival al milisegundo
-        supabaseClient.removeChannel(versusChannel);
+    if (esModoVersus) {
+        if (versusChannel) {
+            versusChannel.send({
+                type: 'broadcast',
+                event: 'rival_abandono',
+                payload: {}
+            });
+            // 🛡️ CIERRE REGLEMENTARIO INSTANTÁNEO
+            supabaseClient.removeChannel(versusChannel);
+        }
+
+        // 👇 ESCUDO ANTI-ZOMBIES: Si cierra la pestaña del navegador mientras está buscando rival
+        if (versusPartidaId && !versusPartidaEnCurso && !versusPartidaId.startsWith('PRIV_')) {
+            supabaseClient.from('partidas').update({ estado: 'cancelada' }).eq('id', versusPartidaId).then();
+        }
     }
 });
 
