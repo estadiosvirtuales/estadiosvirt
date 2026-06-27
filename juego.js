@@ -887,16 +887,23 @@ function abrirModalVideo(event,link,esJuego=false){
     let url=link;
     if(link.includes('youtube.com')||link.includes('youtu.be')){
         let vid='';
-        if(link.includes('youtu.be/'))vid=link.split('youtu.be/')[1].split('?')[0];
-        else if(link.includes('watch'))vid=new URLSearchParams(new URL(link).search).get('v');
-        else if(link.includes('shorts/'))vid=link.split('shorts/')[1].split('?')[0];
         
-        // Autoplay forzado para móviles
+        // 👇 MAGIA NUEVA: Escáner blindado que encuentra el ID del video sin importar cómo se haya pegado
+        const match = link.match(/(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/)|youtu\.be\/)([\w\-]{11})/i);
+        if (match && match[1]) {
+            vid = match[1];
+        }
+        
+        // Autoplay forzado para móviles (Silenciado)
         const qp=esJuego?"?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1":"?autoplay=1&playsinline=1&rel=0&modestbranding=1";
         
-        if(vid)url=`https://www.youtube.com/embed/${vid}${qp}`;
+        if(vid) {
+            url=`https://www.youtube.com/embed/${vid}${qp}`;
+        }
+        
         const est=esJuego?"width:100%;height:calc(100% + 55px);border:none;margin-top:-55px;":"width:100%;height:100%;border:none;";
         container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+        
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
         // Video MP4 nativo con playsinline para iOS
         const attr=esJuego?"autoplay loop muted playsinline":"controls autoplay playsinline";
