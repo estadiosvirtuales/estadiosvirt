@@ -1580,7 +1580,7 @@ function activarBotDeRescate() {
     versusRol = 'jugador_1'; 
     
     const nombresFakes = [
-        "Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", "Juani8794", "Pulga10", "Panhito"
+        "Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", "Juani8794", "Pulga10", "Panhito",
         "Gonza_23", "Matias14", "Rulo_94", "Juani_Albiceleste", "Toto_Cancha", "Láser", "Nari", "Gordo12"
     ];
     // Asignamos el nombre a la variable global
