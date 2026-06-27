@@ -2202,7 +2202,14 @@ if (esModoVersus) {
 const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;btn.setAttribute('data-estado','procesando');btn.disabled=true;
 const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
 const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
-guessrPuntosTotales+=pts;guessrHistorialRondas.push({ronda:guessrRondaActual,estadio:bscarPropiedad(guessrEstadioCorrecto,'Estadio'),distancia:dist,puntos:pts});
+guessrPuntosTotales+=pts;
+guessrHistorialRondas.push({
+    ronda: guessrRondaActual,
+    estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
+    club: bscarPropiedad(guessrEstadioCorrecto, 'Club'),
+    distancia: dist,
+    puntos: pts
+});
 // 👇 AGREGAMOS ESTE BLOQUE PARA GUARDAR EL TIRO CRUDO 👇
 guessrHistorialCoordenadas.push({
     estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
@@ -2227,24 +2234,51 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
-    const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    const container=document.getElementById('modal-video-container');
+    document.getElementById('game-ui').style.display='none';
+    container.style.height='100%';
+    document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
 
+    // 👇 1. ARMAMOS LA TABLA DE DESGLOSE PARA TODOS LOS MODOS 👇
+    let histHTML=`<div style="width:100%;max-width:400px;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
+    
+    guessrHistorialRondas.forEach(item => {
+        const dT = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
+        const starColor = item.puntos > 3000 ? '#00e676' : item.puntos > 1000 ? '#ff8f00' : '#ff4757';
+        
+        // Estructura Flexbox prolija: Nombre cortado con "..." si es muy largo, y Club chiquito abajo
+        histHTML += `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;">
+            <div style="display:flex;flex-direction:column;overflow:hidden;max-width:55%;">
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span>
+                <span style="font-size:0.7rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;">${item.club || ''}</span>
+            </div>
+            <span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+                <span style="color:var(--text-muted);font-size:.75rem;">${dT}</span>
+                <b style="color:${starColor};">+${item.puntos}</b>
+            </span>
+        </div>`;
+    });
+    histHTML+='</div>';
+    // 👆 FIN DE LA TABLA 👆
+
+    // ==========================================
+    // CIERRE MODO VERSUS (1v1)
+    // ==========================================
     if (esModoVersus) {
-        // 👇 MAGIA NUEVA: Cierre pacífico. El partido terminó legalmente, apagamos la red para que nadie "abandone" por error.
         versusPartidaEnCurso = false;
         if (versusChannel) {
             try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
             versusChannel = null;
         }
-        // 👆 FIN MAGIA NUEVA 👆
 
         const id = getUserId();
         const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
 
         let nombreRivalFinal = (versusRivalNombre || "RIVAL").toUpperCase();
-        
         let cartelResultado = "";
         let colorResultado = "#ffea00";
         
@@ -2252,16 +2286,9 @@ async function finalizarJuegoGuessr(){
             cartelResultado = "¡VICTORIA! 🏆";
             colorResultado = "#00e676";
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
-            
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
             guardarStats(); 
-            
-            try {
-                await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal }]);
-                console.log("[1v1] Victoria registrada con éxito en la nube.");
-            } catch(err) {
-                console.error("Error al asentar victoria:", err);
-            }
+            try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal }]); } catch(err) {}
         } else if (guessrPuntosTotales < rivalPuntosTotales) {
             cartelResultado = "DERROTA ❌";
             colorResultado = "#ff4757";
@@ -2272,29 +2299,30 @@ async function finalizarJuegoGuessr(){
         }
 
         container.innerHTML = `
-        <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
+        <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
             <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:${colorResultado};">${cartelResultado}</h2>
-            <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
-            <div style="display:flex;align-items:center;gap:30px;background:var(--surface-color);border:2px solid var(--border-strong);padding:20px 40px;border-radius:16px;margin-bottom:30px;">
+            <p style="color:var(--text-muted);margin-bottom:20px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
+            
+            <div style="display:flex;align-items:center;gap:30px;background:var(--surface-color);border:2px solid var(--border-strong);padding:15px 30px;border-radius:16px;margin-bottom:20px;width:100%;max-width:400px;justify-content:center;">
                 <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">VOS</div><strong style="font-size:1.8rem;color:#00e676;">${guessrPuntosTotales}</strong></div>
                 <div style="font-size:1.5rem;font-weight:900;color:var(--border-strong);">VS</div>
                 <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">${nombreRivalFinal}</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
             </div>
-            <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
+            
+            ${histHTML} <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
         </div>`;
         return;
     }
 
-    // Código solitario clásico (Perfectamente resguardado dentro de la función original)
-
-    // 👇 SELLA EL RETO DIARIO PARA QUE NO LO PUEDA REPETIR HOY 👇
+    // ==========================================
+    // CIERRE MODO SOLITARIO / RETO DIARIO
+    // ==========================================
     if (esModoDiario) {
         const idUsuario = getUserId();
         const hoy = new Date();
         const fechaHoy = hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
         localStorage.setItem('ev_reto_diario_fecha_' + idUsuario, fechaHoy);
     }
-    // 👆 -------------------------------------------------------- 👆
 
     if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
     if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
@@ -2306,17 +2334,35 @@ async function finalizarJuegoGuessr(){
     pendingScoreType='guessr';
 
     const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
-    let histHTML=`<div style="width:100%;max-width:400px;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
-    guessrHistorialRondas.forEach(item=>{const dT=isNaN(item.distancia)?'?':(item.distancia<1?`${Math.round(item.distancia*1000)} m`:`${item.distancia.toFixed(1)} km`);const starColor=item.puntos>3000?'#00e676':item.puntos>1000?'#ff8f00':'#ff4757';histHTML+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:var(--text-muted);font-size:.75rem;">${dT}</span><b style="color:${starColor};">+${item.puntos}</b></span></div>`;});histHTML+='</div>';
     const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
-    const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados and aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
+    const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
     
     let botonCompartirDiario = '';
     if (esModoDiario) {
         botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d" style="background:#2979ff; color:#fff; width:100%; padding:14px; margin-top:10px; box-shadow: 0 5px 0 #004ba0; font-size: 1rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     }
     
-    container.innerHTML=`<div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);"><h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2><p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p><div class="result-score-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/><circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/></svg><div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div></div>${histHTML}<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">${guardarBtn}${botonCompartirDiario}<div style="display:flex;gap:10px;margin-top:10px;"><button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button><button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button></div></div></div>`;
+    container.innerHTML=`
+    <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
+        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
+        <p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+        
+        <div class="result-score-ring">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
+                <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/>
+            </svg>
+            <div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div>
+        </div>
+        
+        ${histHTML} <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;">
+            ${guardarBtn}${botonCompartirDiario}
+            <div style="display:flex;gap:10px;margin-top:10px;">
+                <button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button>
+                <button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>
+            </div>
+        </div>
+    </div>`;
 }
 
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
