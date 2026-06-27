@@ -10,6 +10,7 @@ let supabaseClient = null;
 // Memoria global para guardar los promedios de Supabase
 let promediosSupabase = {};
 let bloqueasSincronizacionNube = true;
+let guessrHistorialCoordenadas = [];
 
 // Función para descargar los promedios de la nube
 async function cargarPromediosSupabase() {
@@ -153,27 +154,46 @@ async function cargarProgresoDesdeSupabase() {
 }
 
 // Función universal para mandar puntajes a Supabase
+// Función universal y segura para mandar puntajes a Supabase (Modo Híbrido)
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
     if (!supabaseClient) {
         console.error("No se pudo mandar el puntaje: Supabase no está activo.");
         return;
     }
     try {
-        const { data, error } = await supabaseClient
-            .from('ranking') 
-            .insert([
-                { 
-                    nombre: nombreJugador, 
-                    puntaje: puntosLogrados, 
-                    email: emailJugador, 
-                    juego: modoJuego 
-                }
-            ]);
+        if (modoJuego === 'guessr') {
+            // MODO GUESSR: Inserción hiper-segura calculada por el servidor
+            console.log("📡 Solicitando verificación de partida e inserción segura en el servidor...");
+            const { data: puntajeVerificado, error } = await supabaseClient.rpc('guardar_partida_segura', {
+                p_nombre_jugador: nombreJugador,
+                p_email_jugador: emailJugador || '',
+                p_modo_juego: modoJuego,
+                p_rondas_json: guessrHistorialCoordenadas // Mandamos los 5 tiros crudos
+            });
 
-        if (error) {
-            console.error("Error de Supabase:", error.message);
+            if (error) {
+                console.error("Error en el canal seguro de rankings:", error.message);
+            } else {
+                console.log(`¡Puntaje verificado por el servidor (+${puntajeVerificado} Pts) guardado con éxito!`);
+            }
         } else {
-            console.log("¡Puntaje guardado con éxito en la nube!");
+            // OTROS MINIJUEGOS (Orden Capacidad/Antigüedad): Inserción clásica
+            const { data, error } = await supabaseClient
+                .from('ranking') 
+                .insert([
+                    { 
+                        nombre: nombreJugador, 
+                        puntaje: puntosLogrados, 
+                        email: emailJugador, 
+                        juego: modoJuego 
+                    }
+                ]);
+
+            if (error) {
+                console.error("Error de Supabase:", error.message);
+            } else {
+                console.log(`¡Puntaje de ${modoJuego} guardado con éxito en la nube!`);
+            }
         }
     } catch (err) {
         console.error("Error inesperado de conexión:", err);
@@ -1984,6 +2004,7 @@ function arrancarPartidoVersus() {
     rivalPuntosTotales = 0;
     guessrEstadiosJugados = [];
     guessrHistorialRondas = [];
+    guessrHistorialCoordenadas = [];
     pendingScore = null;
     pendingScoreType = null;
     
@@ -2180,6 +2201,13 @@ const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-e
 const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
 const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
 guessrPuntosTotales+=pts;guessrHistorialRondas.push({ronda:guessrRondaActual,estadio:bscarPropiedad(guessrEstadioCorrecto,'Estadio'),distancia:dist,puntos:pts});
+// 👇 AGREGAMOS ESTE BLOQUE PARA GUARDAR EL TIRO CRUDO 👇
+guessrHistorialCoordenadas.push({
+    estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
+    lat: guessrSelectedLatLng.lat,
+    lng: guessrSelectedLatLng.lng
+});
+// 👆 FIN DEL BLOQUE 👇
 if(!isNaN(dist)&&dist<5)userStats.medallaLocalista=true;if(!isNaN(dist)&&dist<1)userStats.guessrUnKm=true;actualizarDotsProgreso();
 guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColor:'#111820',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
 guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:2,dashArray:'6,8'}).addTo(guessrMapInstance);
@@ -2193,14 +2221,8 @@ btn.setAttribute('data-estado','resultado');btn.disabled=false;
 
 function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrRondaActual++;guessrRondaActual<=5?lanzarRondaGuessr():finalizarJuegoGuessr();}
 
-// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
-// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
-// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
-// CIERRE DEL JUEGO ADAPTADO PARA DETERMINAR EL GANADOR DEL VERSUS
-// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
-// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
-// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
-// CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
+
+
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
     const container=document.getElementById('modal-video-container');document.getElementById('game-ui').style.display='none';container.style.height='100%';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
