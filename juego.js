@@ -1478,14 +1478,14 @@ async function buscarPartidaVersus() {
         if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
         versusTimeoutBusqueda = setTimeout(() => {
             if (!versusPartidaEnCurso) {
-                console.log(`[1v1] Tiempo de espera excedido (${(tiempoEsperaAleatorio/1000).toFixed(1)}s). Activando Bot camuflado.`);
+                // 👇 Magia: Borramos el console.log que delataba al bot
                 activarBotDeRescate();
             }
         }, tiempoEsperaAleatorio); 
         
     } catch (e) {
-        // ESCUDO FINAL: Si Javascript se rompe por alguna otra razón (ej. falta de RAM)
-        console.error("🚨 Error crítico inesperado en el matchmaking del Versus:", e.message);
+        // ESCUDO FINAL: Si Javascript se rompe por alguna otra razón
+        console.error("🚨 Error crítico inesperado en el matchmaking:", e.message);
         cerrarLobbyEspera(); 
         showToast("Error crítico en el emparejamiento.", "ph-x-circle", "danger");
         esModoVersus = false;
@@ -1497,6 +1497,7 @@ async function buscarPartidaVersus() {
 // Activa un jugador virtual creíble para que el usuario no quede colgado
 // 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT
 // 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT (CON SENSOR DE TIERRA FIRME ANTI-MAR)
+// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT (SILENCIOSO)
 async function ejecutarVotoBotDinamico() {
     if (!esModoBot || rivalGuessConfirmado) return;
 
@@ -1523,18 +1524,18 @@ async function ejecutarVotoBotDinamico() {
         botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
         botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
 
-        // 🛰️ SENSOR DE AGUA: Validamos la coordenada con un servicio de geolocalización rápido y gratuito
+        // 🛰️ SENSOR DE AGUA: Validamos la coordenada con un servicio de geolocalización
         try {
             const respuesta = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${botLat}&longitude=${botLng}&localityLanguage=es`);
             const datosGeograficos = await respuesta.json();
             
-            // Si la API nos devuelve un 'countryCode' válido, significa que el punto cayó dentro de un país (tierra firme)
+            // Si la API nos devuelve un 'countryCode' válido, el punto cayó en tierra firme
             if (datosGeograficos && datosGeograficos.countryCode) {
-                console.log(`[Bot Inteligente] Tiro válido en tierra firme (${datosGeograficos.countryName}) al intento N° ${intento + 1}`);
+                // 👇 Magia: Borramos el console.log que delataba al bot
                 break; // Rompemos el bucle porque el tiro es perfecto
             }
         } catch (e) {
-            console.warn("Error temporal de red en el sensor del bot, usando tiro por defecto.", e);
+            // 👇 Magia: Borramos el console.warn para que no salten errores rojos
             break; // Si la API falla por time-out, salimos para no trabar el juego del usuario
         }
     }
@@ -1568,8 +1569,8 @@ function activarBotDeRescate() {
     versusRol = 'jugador_1'; 
     
     const nombresFakes = [
-        "Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", 
-        "Gonza_23", "Matias_EV", "Rulo_94", "Juani_Albiceleste", "Toto_Cancha"
+        "Nico_88", "Santi_Casla", "Faca_Gamer", "PibeFUT", "ElDiego_DT", "Juani8794", "Pulga10", "Panhito"
+        "Gonza_23", "Matias14", "Rulo_94", "Juani_Albiceleste", "Toto_Cancha", "Láser", "Nari", "Gordo12"
     ];
     // Asignamos el nombre a la variable global
     versusRivalNombre = nombresFakes[Math.floor(Math.random() * nombresFakes.length)];
