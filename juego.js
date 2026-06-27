@@ -1875,6 +1875,7 @@ function mostrarResultadosMutuosVersus() {
     guessrHistorialRondas.push({
         ronda: guessrRondaActual,
         estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
+        club: bscarPropiedad(guessrEstadioCorrecto, 'Club'), // <- ACÁ AGREGAMOS EL CLUB
         distancia: miDist,
         puntos: misPts
     });
