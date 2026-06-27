@@ -945,3 +945,8 @@ body {
     color: #e65100 !important;
     font-weight: 800 !important;
 }
+/* Que el menú de selección abrace el contenido y no deje espacio negro abajo */
+#guessr-modal .modal-content {
+    height: auto !important;
+    min-height: fit-content !important;
+}

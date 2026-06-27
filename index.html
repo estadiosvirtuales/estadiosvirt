@@ -193,34 +193,56 @@
 </div>
 </div>
 <div class="modal-overlay" id="guessr-modal" style="display:none;" onclick="cerrarModalGuessr()">
-    <div class="modal-content" style="max-width: 380px; padding: 0;" onclick="event.stopPropagation()">
-        <div class="modal-header" style="padding: 15px 20px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
-            <h3 class="modal-title" style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;"><i class="ph-duotone ph-map-pin"></i> StadiumGuessr</h3>
-            <button class="close-btn" onclick="cerrarModalGuessr()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;"><i class="ph-bold ph-x"></i></button>
-        </div>
+    <div class="modal-content" style="max-width: 440px;" onclick="event.stopPropagation()">
+        <!-- Botón de cerrar cruz -->
+        <div class="close-btn" onclick="cerrarModalGuessr()"><i class="ph-bold ph-x"></i></div>
         
-        <div class="modal-body" style="padding: 24px; text-align: center;">
-            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem;">Elegí un modo de juego para empezar.</p>
-            
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <button onclick="cerrarModalGuessr(); iniciarRetoDiario()" class="btn-3d btn-reto-diario" style="padding: 14px; font-size: 1rem; width: 100%;">
-    <i class="ph-duotone ph-calendar-star"></i> Reto Diario (Nuevo)
-</button>
+        <div style="padding: 32px 24px;">
+            <div style="text-align:center; margin-bottom: 26px;">
+                <div style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 8px;"><i class="ph-duotone ph-map-pin-line"></i></div>
+                <h2 style="font-size:1.6rem; font-weight:900; color:var(--text-main); text-transform:uppercase; letter-spacing:-0.5px;">StadiumGuessr</h2>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;">Elegí un modo de reconocimiento.</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
                 
-                <button onclick="cerrarModalGuessr(); iniciarTrivia()" class="btn-3d primary" style="padding: 14px; font-size: 1rem; width: 100%;">
-                    <i class="ph-bold ph-user"></i> Partida Individual
-                </button>
+                <!-- BLOQUE 1: Un Jugador -->
+                <div>
+                    <div style="font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">Un Jugador</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <button onclick="cerrarModalGuessr(); iniciarRetoDiario()" class="btn-3d" style="background: rgba(255, 234, 0, 0.08); border: 2px solid #ffea00; color: #ffea00; padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
+                            <i class="ph-duotone ph-calendar-star" style="font-size: 2rem;"></i> 
+                            <span>Reto Diario</span>
+                        </button>
+                        <button onclick="cerrarModalGuessr(); iniciarTrivia()" class="btn-3d primary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
+                            <i class="ph-duotone ph-user" style="font-size: 2rem;"></i> 
+                            <span>Individual</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 2: Multijugador -->
+                <div>
+                    <div style="font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">Multijugador (En Vivo)</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <button onclick="cerrarModalGuessr(); buscarPartidaVersus()" class="btn-3d secondary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
+                            <i class="ph-duotone ph-lightning" style="font-size: 2rem; color: #2979ff;"></i> 
+                            <span>1 vs 1 Global</span>
+                        </button>
+                        <button onclick="cerrarModalGuessr(); crearSalaPrivada()" class="btn-3d secondary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
+                            <i class="ph-duotone ph-users-three" style="font-size: 2rem; color: #a78bfa;"></i> 
+                            <span>Sala Privada</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 3: Tabla de Posiciones -->
+                <div style="margin-top: 6px;">
+                    <button onclick="cerrarModalGuessr(); abrirModalRanking()" class="btn-3d secondary" style="width: 100%; padding: 14px; font-size: 0.95rem;">
+                        <i class="ph-duotone ph-trophy" style="color: var(--xp-gold); font-size: 1.3rem;"></i> Tabla de Posiciones
+                    </button>
+                </div>
                 
-                <button onclick="cerrarModalGuessr(); buscarPartidaVersus()" class="btn-3d secondary" style="padding: 14px; font-size: 1rem; width: 100%;">
-                    <i class="ph-bold ph-lightning" style="color: var(--accent-color);"></i> Partida 1 vs 1
-                </button>
-                <button onclick="crearSalaPrivada()" class="btn-3d secondary" style="width:100%; padding:14px; margin-top:10px; font-size: 1rem; text-transform: uppercase;">
-    <i class="ph-duotone ph-link"></i> Invitar a sala privada
-</button>
-                
-                <button onclick="cerrarModalGuessr(); abrirModalRanking('v_historico')" class="btn-3d secondary" style="padding: 14px; font-size: 1rem; width: 100%;">
-                    <i class="ph-bold ph-trophy"></i> Tabla de Posiciones
-                </button>
             </div>
         </div>
     </div>
