@@ -1265,21 +1265,21 @@ function abrirLobbyPrivado(link, codigo) {
     lobby.id = 'matchmaking-lobby';
     lobby.style.cssText = `
         position: fixed; top: 24px; left: 0; right: 0; margin: 0 auto; width: max-content; 
-        max-width: 90%; background: var(--glass-bg); border: 2px solid #25D366; 
+        max-width: 90%; background: var(--glass-bg); border: 2px solid var(--border-strong); 
         padding: 20px 28px; border-radius: 16px; z-index: 99999; display: flex; 
         flex-direction: column; align-items: center; justify-content: center; gap: 14px; 
-        font-weight: 800; color: var(--text-main); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); 
+        font-weight: 800; color: var(--text-main); box-shadow: var(--shadow-strong); 
         backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: fadeSlideUp 0.3s both;
     `;
     
     lobby.innerHTML = `
         <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-            <span style="color:#25D366; font-size:1.1rem;"><i class="ph-fill ph-users-three"></i> Duelo Privado</span>
+            <span style="color:var(--accent-color); font-size:1.1rem;"><i class="ph-fill ph-users-three"></i> Duelo Privado</span>
             <i class="ph-bold ph-x" style="cursor:pointer; color:var(--text-muted);" onclick="cancelarBusquedaVersus()"></i>
         </div>
         <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Pasale este link a tu rival y esperalo acá:</p>
-        <button id="btn-copiar-privado" onclick="compartirLinkPrivado('${link}')" class="btn-3d" style="background:#25D366; color:#fff; width:100%; padding:14px; font-size:1rem; margin-top:5px; box-shadow: 0 5px 0 #128C7E;">
-            <i class="ph-bold ph-copy"></i> Copiar link de invitación
+        <button id="btn-copiar-privado" onclick="compartirLinkPrivado('${link}')" class="btn-3d primary" style="width:100%; padding:14px; font-size:1rem; margin-top:5px;">
+            <i class="ph-bold ph-copy"></i> Invitar a sala privada
         </button>
     `;
     document.body.appendChild(lobby);
