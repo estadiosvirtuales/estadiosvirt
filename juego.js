@@ -1523,7 +1523,7 @@ async function buscarPartidaVersus() {
         }
 
         // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15s y 20s para el bot
-        const tiempoEsperaAleatorio = 15000 + Math.random() * 5000;
+        const tiempoEsperaAleatorio = 29000 + Math.random() * 5000;
 
         if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
         versusTimeoutBusqueda = setTimeout(() => {
