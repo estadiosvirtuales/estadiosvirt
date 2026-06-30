@@ -1141,6 +1141,13 @@ let versusTimeoutBusqueda = null;  // Temporizador que mide la espera en el vest
 let matchmakingInterval = null;    // Contador de tiempo en cola en vivo
 let botAntesTimer = null;          // 🔥 Controla el ataque anticipado del Bot
 let versusRivalNombre = "RIVAL";   // 🏆 variable GLOBAL para fijar el nombre del oponente
+
+// ==========================================
+// VARIABLES PARA DESAFÍOS 1v1 DENTRO DE LA LIGA DE AMIGOS
+// ==========================================
+let nombreLigaActivaCache = "";    // Nombre de la liga que se está viendo ahora mismo en el modal
+let miNombreRankingLiga = "";      // Cache de mi nombre tal cual figura en la tabla de la liga
+let timeoutRetoDirecto = null;     // Si el rival no entra a la sala a tiempo, avisamos y cancelamos
 // Función auxiliar para obtener 5 estadios válidos de tu catálogo para el Versus
 // Función auxiliar para obtener 5 estadios válidos con azar 100% perfecto y uniforme
 // ⏳ CREA EL CONTADOR VISUAL FLOTANTE DE TIEMPO EN COLA
@@ -2023,6 +2030,7 @@ function arrancarPartidoVersus() {
     // 🛡️ LIMPIEZA DE SEGURIDAD ABSOLUTA: Cancelamos timers de bots y búsqueda
     if (botAntesTimer) clearTimeout(botAntesTimer);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    if (timeoutRetoDirecto) { clearTimeout(timeoutRetoDirecto); timeoutRetoDirecto = null; }
     
     // 📡 CENTRALIZADO: Apagamos el bucle del Handshake por completo para que no mande ráfagas de red en medio del juego
     if (handshakeInterval) {
@@ -3394,6 +3402,11 @@ function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreRanking) {
 }
 
 window.desafiarAmigoDirecto = function(nombreRival) {
+    if (esModoVersus) {
+        showToast("Ya estás en una partida en curso. Terminala antes de retar a otro. ⚠️", "ph-warning-circle", "danger");
+        return;
+    }
+
     const misEstadiosAleatorios = obtener5EstadiosVersus();
     if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
         showToast("Esperá un segundo que termine de cargar el catálogo... ⚽", "ph-circle-notch", "warning");
@@ -3412,18 +3425,33 @@ window.desafiarAmigoDirecto = function(nombreRival) {
     esModoBot = false;
     versusPartidaEnCurso = false;
 
-    if (ligaAmigosChannel) {
-        ligaAmigosChannel.send({
-            type: 'broadcast',
-            event: 'reto_directo',
-            payload: { de: miNombreRanking, para: nombreRival, salaId: versusPartidaId, estadios: versusEstadios }
-        });
+    if (!ligaAmigosChannel) {
+        showToast("Se perdió la conexión con la liga, reabrila e intentá de nuevo. 📡", "ph-warning-circle", "danger");
+        esModoVersus = false;
+        versusPartidaId = null;
+        return;
     }
+
+    ligaAmigosChannel.send({
+        type: 'broadcast',
+        event: 'reto_directo',
+        payload: { de: miNombreRanking, para: nombreRival, salaId: versusPartidaId }
+    });
 
     cerrarModalLigaAmigosPrivada();
     const urlLimpia = window.location.origin + window.location.pathname;
     abrirLobbyPrivado(`${urlLimpia}?sala=${versusPartidaId}`, idSala);
     conectarRealtimeVersus();
+
+    // 🕒 Si en 30s el rival no entró a la sala (no llegó el handshake 'rival_entro'), avisamos y cortamos
+    if (timeoutRetoDirecto) clearTimeout(timeoutRetoDirecto);
+    timeoutRetoDirecto = setTimeout(() => {
+        if (!versusPartidaEnCurso) {
+            cancelarBusquedaVersus();
+            showToast(`${nombreRival} no respondió al desafío a tiempo. ⏱️`, "ph-warning-circle", "danger");
+        }
+        timeoutRetoDirecto = null;
+    }, 30000);
 };
 
 function cerrarModalLigaAmigosPrivada() {
@@ -3434,4 +3462,154 @@ function cerrarModalLigaAmigosPrivada() {
         supabaseClient.removeChannel(ligaAmigosChannel);
         ligaAmigosChannel = null;
     }
+    usuariosOnlineLiga = [];
+}
+
+// ==========================================
+// MOTOR DE PRESENCIA Y DESAFÍOS EN VIVO DE LA LIGA
+// ==========================================
+
+// 🚪 Abre el modal de "Mi Liga": si todavía no estás en ninguna, muestra el form de crear/unirte;
+// si ya pertenecés a una, trae la tabla de posiciones y conecta la presencia en vivo.
+async function abrirModalLigaAmigosPrivada() {
+    const modal = document.getElementById('liga-amigos-modal');
+    if (modal) modal.style.display = 'flex';
+
+    const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
+    const body = document.getElementById('liga-amigos-modal-body');
+
+    // CASO 1: Todavía no pertenezco a ninguna liga -> mostramos el formulario de crear/unirse
+    if (!nombreLiga) {
+        if (body) {
+            body.innerHTML = `
+            <div style="text-align:center; margin-bottom:16px;">
+                <div style="font-size:2.4rem; color:var(--accent-color); margin-bottom:4px;"><i class="ph-duotone ph-users-three"></i></div>
+                <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Liga Privada de Amigos</h3>
+                <p style="font-size:.85rem; color:var(--text-muted); margin-top:6px;">Creá una liga o unite con el código exacto que te pasó un amigo.</p>
+            </div>
+            <input id="input-codigo-liga" maxlength="20" placeholder="NOMBRE_DE_LA_LIGA"
+                   style="width:100%; padding:14px; border-radius:12px; border:2px solid var(--border-strong); background:var(--bg-color); color:var(--text-main); font-weight:800; text-align:center; text-transform:uppercase; margin-bottom:12px;">
+            <div style="display:flex; gap:10px;">
+                <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="flex:1; padding:14px;"><i class="ph-bold ph-plus-circle"></i> Crear liga</button>
+                <button onclick="crearOCargarLigaAmigos(false)" class="btn-3d secondary" style="flex:1; padding:14px;"><i class="ph-bold ph-sign-in"></i> Unirme</button>
+            </div>`;
+        }
+        // Por las dudas, si veníamos de una liga anterior, apagamos cualquier canal viejo
+        if (ligaAmigosChannel) { supabaseClient.removeChannel(ligaAmigosChannel); ligaAmigosChannel = null; }
+        usuariosOnlineLiga = [];
+        return;
+    }
+
+    // CASO 2: Ya pertenezco a una liga -> traemos el ranking y conectamos la presencia en vivo
+    nombreLigaActivaCache = nombreLiga;
+    const u = obtenerUsuarioLogueado();
+    miNombreRankingLiga = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+
+    if (body) {
+        body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:var(--accent-color);"></i></div>`;
+    }
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('ranking')
+            .select('nombre, puntaje')
+            .eq('juego', 'guessr_' + nombreLiga)
+            .order('puntaje', { ascending: false })
+            .limit(15);
+
+        if (error) throw error;
+
+        cacheTop15Ligas = data || [];
+        renderizarCuerpoLiga(cacheTop15Ligas, nombreLiga, miNombreRankingLiga);
+    } catch (e) {
+        console.error("Error al cargar la tabla de la liga:", e);
+        showToast("No se pudo cargar la tabla de tu liga. 📡", "ph-warning-circle", "danger");
+        if (body) body.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px 0;">No se pudo cargar la liga. Cerrá y volvé a intentar.</p>`;
+        return;
+    }
+
+    conectarPresenciaLiga(nombreLiga, miNombreRankingLiga);
+}
+
+// 📡 Crea y suscribe el canal de presencia + desafíos de la liga activa.
+// Mientras este canal esté vivo: (a) sabemos quién está mirando la liga ahora mismo,
+// y (b) podemos recibir/emitir desafíos directos ('reto_directo').
+function conectarPresenciaLiga(nombreLiga, miNombre) {
+    // Si ya había un canal abierto de una sesión anterior del modal, lo tiramos primero
+    if (ligaAmigosChannel) {
+        supabaseClient.removeChannel(ligaAmigosChannel);
+        ligaAmigosChannel = null;
+    }
+
+    ligaAmigosChannel = supabaseClient.channel(`liga_${nombreLiga}`, {
+        config: { presence: { key: miNombre } }
+    });
+
+    ligaAmigosChannel
+        .on('presence', { event: 'sync' }, () => {
+            const estado = ligaAmigosChannel.presenceState();
+            usuariosOnlineLiga = Object.keys(estado);
+            // Repintamos con el cache que ya tenemos (sin volver a pegarle a la base de datos)
+            renderizarCuerpoLiga(cacheTop15Ligas, nombreLigaActivaCache, miNombreRankingLiga);
+        })
+        .on('broadcast', { event: 'reto_directo' }, (response) => {
+            const data = response.payload || response;
+            if (!data || data.para !== miNombre) return; // El desafío no es para mí, lo ignoro
+
+            if (esModoVersus) return; // Ya estoy jugando otra partida, no puedo aceptar ahora
+
+            mostrarNotificacionDesafio(data.de, data.salaId);
+        })
+        .subscribe((status) => {
+            if (status === 'SUBSCRIBED') {
+                ligaAmigosChannel.track({ online_at: new Date().toISOString() });
+            }
+        });
+}
+
+// 🔔 Muestra el cartel flotante de "Fulano te desafió" con botones de Aceptar / Rechazar
+function mostrarNotificacionDesafio(deNombre, salaId) {
+    const existente = document.getElementById('reto-directo-popup');
+    if (existente) existente.remove();
+
+    const popup = document.createElement('div');
+    popup.id = 'reto-directo-popup';
+    popup.style.cssText = `
+        position: fixed; top: 24px; left: 0; right: 0; margin: 0 auto; width: max-content; max-width: 92%;
+        background: var(--glass-bg); border: 2px solid var(--accent-color); padding: 18px 22px; border-radius: 16px;
+        z-index: 100000; display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center;
+        box-shadow: var(--shadow-strong); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    `;
+    popup.innerHTML = `
+        <div style="font-weight:900; font-size:1rem;"><i class="ph-duotone ph-swords" style="color:var(--accent-color);"></i> ¡${sanitizarHTML(deNombre)} te desafió a un duelo!</div>
+        <div style="display:flex; gap:10px; width:100%;">
+            <button onclick="responderDesafio(true,'${salaId}')" class="btn-3d primary" style="flex:1; padding:12px;"><i class="ph-bold ph-check"></i> Aceptar</button>
+            <button onclick="responderDesafio(false,'${salaId}')" class="btn-3d secondary" style="flex:1; padding:12px;"><i class="ph-bold ph-x"></i> Rechazar</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    // Si no responde en 20s, hacemos desaparecer el cartel (el desafiante igual tiene su propio timeout de 30s)
+    setTimeout(() => {
+        const p = document.getElementById('reto-directo-popup');
+        if (p) p.remove();
+    }, 20000);
+}
+
+window.responderDesafio = function(aceptar, salaId) {
+    const popup = document.getElementById('reto-directo-popup');
+    if (popup) popup.remove();
+    if (!aceptar) return;
+
+    cerrarModalLigaAmigosPrivada(); // Cierra la tabla de la liga y apaga su canal de presencia
+    unirseSalaPrivada(salaId);      // Entra a la sala 1v1 que ya armó el rival (mismo motor que el link de WhatsApp)
+};
+
+// 🚪 Salir de la liga actual: vuelve a mostrar el formulario de crear/unirse
+function salirLigaAmigos() {
+    if (!confirm("¿Seguro que querés salir de tu liga privada? Vas a dejar de ver esta tabla de posiciones.")) return;
+    localStorage.removeItem('ev_codigo_liga_amigos');
+    cerrarModalLigaAmigosPrivada();
+    abrirModalLigaAmigosPrivada();
 }
