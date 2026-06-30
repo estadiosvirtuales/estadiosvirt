@@ -1673,28 +1673,30 @@ function conectarRealtimeVersus() {
             }
         })
         .on('broadcast', { event: 'rival_entro' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación con estadios.`);
+            const data = response.payload || response;
+            // BLINDAJE 1: Solo el Host (jugador_1) procesa los ingresos y decide la secuencia de estadios
+            if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
+                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación oficial con estadios.`);
                 
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
+                if (data.nombre) versusRivalNombre = data.nombre;
 
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
-                    // 👇 ACÁ ESTÁ LA MAGIA: El Host le manda los estadios al invitado 👇
                     payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
                 });
             }
         })
         .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
+            const data = response.payload || response;
+            // BLINDAJE 2: Solo el Invitado (jugador_2) recibe y acata la configuración del Host
+            if (data && data.id !== idUsuario && versusRol === 'jugador_2') {
+                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Sincronizando mapas y respondiendo...`);
                 
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
+                if (data.nombre) versusRivalNombre = data.nombre;
                 
-                // 👇 ACÁ ESTÁ LA OTRA MAGIA: El invitado atrapa los estadios y los guarda 👇
-                if (response.payload.estadios && response.payload.estadios.length > 0) {
-                    versusEstadios = response.payload.estadios;
+                if (data.estadios && data.estadios.length > 0) {
+                    versusEstadios = data.estadios;
                 }
 
                 versusChannel.send({
@@ -1703,29 +1705,33 @@ function conectarRealtimeVersus() {
                     payload: { id: idUsuario, nombre: miNombreLocal } 
                 });
 
-                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
                     showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); // Arranca directo
+                    arrancarPartidoVersus();
                 }
             }
         })
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
+            const data = response.payload || response;
+            // BLINDAJE 3: Solo el Host (jugador_1) reacciona al silbato del invitado para dar el puntapié inicial
+            if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
+                if (data.nombre) versusRivalNombre = data.nombre;
 
-                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
-                    console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
+                if (!versusPartidaEnCurso) {
+                    console.log(`[1v1] 📥 Host confirma que el invitado entró a la cancha. ¡Arrancando partido!`);
                     versusPartidaEnCurso = true;
                     showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); // Arranca directo
+                    arrancarPartidoVersus();
                 }
             }
         })
         .on('broadcast', { event: 'rival_voto' }, (response) => {
-            console.log("[1v1] Voto recibido del oponente:", response);
+            const data = response.payload || response;
+            console.log("[1v1] Voto recibido del oponente:", data);
+            
             rivalGuessConfirmado = true;
-            rivalDataRonda = response.payload;
+            rivalDataRonda = data;
 
             if (!miGuessConfirmado) {
                 showToast("⚠️ ¡Tu rival ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
@@ -1734,12 +1740,12 @@ function conectarRealtimeVersus() {
                 mostrarResultadosMutuosVersus();
             }
         })
-        // 👇 RECEPTOR NUEVO PASO 1 👇
-.on('broadcast', { event: 'rival_taunt' }, (response) => {
-    if (response.payload && response.payload.emoji) {
-        mostrarTauntEnPantalla(response.payload.emoji, false);
-    }
-})
+        .on('broadcast', { event: 'rival_taunt' }, (response) => {
+            const data = response.payload || response;
+            if (data && data.emoji) {
+                mostrarTauntEnPantalla(data.emoji, false);
+            }
+        })
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
             if (miListoSiguiente) {
@@ -1761,10 +1767,12 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
+                // Primer disparo de presencia inmediato
                 versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                 
+                // Mantenemos el pulso de búsqueda activo de forma limpia
                 handshakeInterval = setInterval(() => {
-                    if (versusChannel) {
+                    if (versusChannel && !versusPartidaEnCurso) {
                         versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                     }
                 }, 400);
