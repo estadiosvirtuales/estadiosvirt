@@ -1672,11 +1672,27 @@ function conectarRealtimeVersus() {
                 manejarAbandonoRival();
             }
         })
-        // 1. EL INVITADO ESCUCHA EL LATIDO DEL HOST
-        .on('broadcast', { event: 'host_esperando' }, (response) => {
-            if (versusRol === 'jugador_2' && response.payload && response.payload.id !== idUsuario) {
+        .on('broadcast', { event: 'rival_entro' }, (response) => {
+            if (response.payload && response.payload.id !== idUsuario) {
+                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación con estadios.`);
+                
+                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
+
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'host_confirmado',
+                    // 👇 ACÁ ESTÁ LA MAGIA: El Host le manda los estadios al invitado 👇
+                    payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
+                });
+            }
+        })
+        .on('broadcast', { event: 'host_confirmado' }, (response) => {
+            if (response.payload && response.payload.id !== idUsuario) {
+                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
+                
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
                 
+                // 👇 ACÁ ESTÁ LA OTRA MAGIA: El invitado atrapa los estadios y los guarda 👇
                 if (response.payload.estadios && response.payload.estadios.length > 0) {
                     versusEstadios = response.payload.estadios;
                 }
@@ -1687,26 +1703,22 @@ function conectarRealtimeVersus() {
                     payload: { id: idUsuario, nombre: miNombreLocal } 
                 });
 
-                if (!versusPartidaEnCurso) {
+                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
                     versusPartidaEnCurso = true;
                     showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); 
+                    arrancarPartidoVersus(); // Arranca directo
                 }
             }
         })
-        // 2. EL HOST ESCUCHA LA CONFIRMACIÓN DEL INVITADO
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
-            if (versusRol === 'jugador_1' && response.payload && response.payload.id !== idUsuario) {
+            if (response.payload && response.payload.id !== idUsuario) {
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
 
-                if (!versusPartidaEnCurso) {
+                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
+                    console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
                     versusPartidaEnCurso = true;
-                    if (handshakeInterval) {
-                        clearInterval(handshakeInterval);
-                        handshakeInterval = null;
-                    }
                     showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); 
+                    arrancarPartidoVersus(); // Arranca directo
                 }
             }
         })
@@ -1722,11 +1734,12 @@ function conectarRealtimeVersus() {
                 mostrarResultadosMutuosVersus();
             }
         })
-        .on('broadcast', { event: 'rival_taunt' }, (response) => {
-            if (response.payload && response.payload.emoji) {
-                mostrarTauntEnPantalla(response.payload.emoji, false);
-            }
-        })
+        // 👇 RECEPTOR NUEVO PASO 1 👇
+.on('broadcast', { event: 'rival_taunt' }, (response) => {
+    if (response.payload && response.payload.emoji) {
+        mostrarTauntEnPantalla(response.payload.emoji, false);
+    }
+})
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
             if (miListoSiguiente) {
@@ -1748,23 +1761,13 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                if (versusRol === 'jugador_1') {
-                    versusChannel.send({ 
-                        type: 'broadcast', 
-                        event: 'host_esperando', 
-                        payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
-                    });
-                    
-                    handshakeInterval = setInterval(() => {
-                        if (versusChannel) {
-                            versusChannel.send({ 
-                                type: 'broadcast', 
-                                event: 'host_esperando', 
-                                payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
-                            });
-                        }
-                    }, 500); 
-                }
+                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
+                
+                handshakeInterval = setInterval(() => {
+                    if (versusChannel) {
+                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
+                    }
+                }, 400);
             }
         });
 }
@@ -3192,6 +3195,7 @@ function dispararJuicinessRonda(distancia) {
 // SPRINT VIRAL - PASO 5: SISTEMA DE MINI LIGAS PRIVADAS
 // ========================================================
 async function crearOCargarLigaAmigos(esCreacion) {
+    // 🔐 ESCUDO DE REGISTRO OBLIGATORIO: Si no es usuario Google, bloqueamos y abrimos el login
     if (!esUsuarioGoogle()) {
         showToast("¡Iniciá sesión con Google para crear o unirte a una liga! 🔐", "ph-lock", "danger");
         manejarClickLogin();
@@ -3201,6 +3205,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
     const input = document.getElementById('input-codigo-liga');
     let nombreLiga = input ? input.value.trim().toUpperCase() : "";
 
+    // Reemplazamos espacios por guiones bajos para estandarizar el registro en la base de datos
     nombreLiga = nombreLiga.replace(/\s+/g, '_');
 
     if (!nombreLiga || nombreLiga.length < 3) {
@@ -3208,6 +3213,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
         return;
     }
 
+    // Filtro estricto: Solo permitimos letras, números y guiones bajos (Escudo Anti-Injection)
     const regexValida = /^[A-Z0-9_]+$/;
     if (!regexValida.test(nombreLiga)) {
         showToast("Usá solo letras, números o espacios. 🚫", "ph-warning-circle", "danger");
@@ -3217,6 +3223,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
     const idUsuario = getUserId();
 
     if (esCreacion) {
+        // 🛡️ MODO CREACIÓN CON SEGURIDAD TOTAL: Intentamos insertar directamente en la tabla de control
         try {
             const { error } = await supabaseClient
                 .from('ligas')
@@ -3225,6 +3232,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 ]);
 
             if (error) {
+                // Si el error es por duplicado (código SQL 23505 o texto descriptivo)
                 if (error.code === '23505' || error.message.includes('already exists')) {
                     showToast("Ese nombre de liga ya está registrado. ¡Elegí otro! 🚫", "ph-warning-circle", "danger");
                 } else {
@@ -3234,8 +3242,10 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 return;
             }
 
+            // Si el servidor dio el OK, guardamos localmente y fundamos el torneo
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
 
+            // 🎯 FICHAMOS AL CREADOR CON 0 PTS: Para que figure de inmediato como integrante activo
             try {
                 const u = obtenerUsuarioLogueado();
                 const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
@@ -3258,6 +3268,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
             return;
         }
     } else {
+        // 🛡️ MODO UNIRME CON VALIDACIÓN DE EXISTENCIA: Verificamos si la liga realmente existe antes de entrar
         try {
             const { data, error } = await supabaseClient
                 .from('ligas')
@@ -3272,9 +3283,10 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 return;
             }
 
-            // Guardamos el identificador de la liga de amigos de manera segura
+            // Si la liga existe en la tabla oficial, lo dejamos ingresar de forma segura
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
 
+            // 🎯 FICHAMOS AL NUEVO INTEGRANTE CON 0 PTS: Solo si nunca antes jugó en esta liga específica
             try {
                 const u = obtenerUsuarioLogueado();
                 const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
@@ -3287,8 +3299,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                     .eq('nombre', nombreParaFichar)
                     .limit(1);
 
-                // 🛡️ REPARACIÓN ACÁ: Cambiado de !existing a !existente para corregir el ReferenceError
-                if (!existente || existente.length === 0) {
+                if (!existing || existente.length === 0) {
                     await supabaseClient
                         .from('ranking')
                         .insert([
@@ -3308,6 +3319,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
         }
     }
 
+    // Refrescamos el modal para desplegar la tabla de posiciones real
     abrirModalLigaAmigosPrivada();
 }
 
