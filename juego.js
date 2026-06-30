@@ -3245,9 +3245,9 @@ async function abrirModalLigaAmigosPrivada() {
         <div style="text-align:center; padding:10px 0;">
             <div style="font-size: 2.6rem; color: var(--accent-color); margin-bottom: 12px;"><i class="ph-duotone ph-users"></i></div>
             <h3 style="font-size:1.4rem; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:-0.5px;">Liga de Amigos Privada</h3>
-            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:22px; line-height:1.5; padding:0 10px;">Creá una Mini Liga con tus amigos o ingresá el código de una existente para competir en un fixture privado.</p>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:22px; line-height:1.5; padding:0 10px;">Escribí el nombre de tu torneo para crearlo, o poné el nombre exacto de la liga de tus amigos para unirte.</p>
             
-            <input type="text" id="input-codigo-liga" placeholder="CÓDIGO DE 4 LETRAS" maxlength="4" style="text-transform:uppercase; text-align:center; padding:12px; width:100%; max-width:240px; background:var(--bg-color); border:2px solid var(--border-strong); border-radius:10px; color:#fff; font-weight:900; font-size:1.1rem; margin-bottom:18px; outline:none;">
+            <input type="text" id="input-codigo-liga" placeholder="NOMBRE DE TU LIGA" maxlength="20" style="text-transform:uppercase; text-align:center; padding:12px; width:100%; max-width:280px; background:var(--bg-color); border:2px solid var(--border-strong); border-radius:10px; color:#fff; font-weight:900; font-size:1rem; margin-bottom:18px; outline:none;">
             
             <div style="display:flex; gap:12px; justify-content:center; width:100%; max-width:300px; margin:0 auto;">
                 <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="padding:12px 16px; font-size:0.85rem; flex:1;">Crear Nueva</button>
