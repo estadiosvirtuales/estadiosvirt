@@ -1672,17 +1672,15 @@ function conectarRealtimeVersus() {
                 manejarAbandonoRival();
             }
         })
-        -- 1. EL INVITADO ESCUCHA EL LATIDO DEL HOST
+        // 1. EL INVITADO ESCUCHA EL LATIDO DEL HOST
         .on('broadcast', { event: 'host_esperando' }, (response) => {
             if (versusRol === 'jugador_2' && response.payload && response.payload.id !== idUsuario) {
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
                 
-                // Atrapamos la lista fija de estadios que sorteó el Host
                 if (response.payload.estadios && response.payload.estadios.length > 0) {
                     versusEstadios = response.payload.estadios;
                 }
 
-                // El Invitado responde informando que ya se acopló a la cancha
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'invitado_listo',
@@ -1696,14 +1694,13 @@ function conectarRealtimeVersus() {
                 }
             }
         })
-        -- 2. EL HOST ESCUCHA LA CONFIRMACIÓN DEL INVITADO
+        // 2. EL HOST ESCUCHA LA CONFIRMACIÓN DEL INVITADO
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
             if (versusRol === 'jugador_1' && response.payload && response.payload.id !== idUsuario) {
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
-                    // Liquidamos el intervalo para liberar la red inmediatamente
                     if (handshakeInterval) {
                         clearInterval(handshakeInterval);
                         handshakeInterval = null;
@@ -1751,7 +1748,6 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // 🛡️ ENTRADA EFICIENTE: Solo el creador de la sala (Host) inicia el bucle de latidos
                 if (versusRol === 'jugador_1') {
                     versusChannel.send({ 
                         type: 'broadcast', 
@@ -1767,7 +1763,7 @@ function conectarRealtimeVersus() {
                                 payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
                             });
                         }
-                    }, 500); // 500ms es perfecto para no ahogar el socket de Supabase
+                    }, 500); 
                 }
             }
         });
@@ -3196,7 +3192,6 @@ function dispararJuicinessRonda(distancia) {
 // SPRINT VIRAL - PASO 5: SISTEMA DE MINI LIGAS PRIVADAS
 // ========================================================
 async function crearOCargarLigaAmigos(esCreacion) {
-    // 🔐 ESCUDO DE REGISTRO OBLIGATORIO: Si no es usuario Google, bloqueamos y abrimos el login
     if (!esUsuarioGoogle()) {
         showToast("¡Iniciá sesión con Google para crear o unirte a una liga! 🔐", "ph-lock", "danger");
         manejarClickLogin();
@@ -3206,7 +3201,6 @@ async function crearOCargarLigaAmigos(esCreacion) {
     const input = document.getElementById('input-codigo-liga');
     let nombreLiga = input ? input.value.trim().toUpperCase() : "";
 
-    // Reemplazamos espacios por guiones bajos para estandarizar el registro en la base de datos
     nombreLiga = nombreLiga.replace(/\s+/g, '_');
 
     if (!nombreLiga || nombreLiga.length < 3) {
@@ -3214,7 +3208,6 @@ async function crearOCargarLigaAmigos(esCreacion) {
         return;
     }
 
-    // Filtro estricto: Solo permitimos letras, números y guiones bajos (Escudo Anti-Injection)
     const regexValida = /^[A-Z0-9_]+$/;
     if (!regexValida.test(nombreLiga)) {
         showToast("Usá solo letras, números o espacios. 🚫", "ph-warning-circle", "danger");
@@ -3224,7 +3217,6 @@ async function crearOCargarLigaAmigos(esCreacion) {
     const idUsuario = getUserId();
 
     if (esCreacion) {
-        // 🛡️ MODO CREACIÓN CON SEGURIDAD TOTAL: Intentamos insertar directamente en la tabla de control
         try {
             const { error } = await supabaseClient
                 .from('ligas')
@@ -3233,7 +3225,6 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 ]);
 
             if (error) {
-                // Si el error es por duplicado (código SQL 23505 o texto descriptivo)
                 if (error.code === '23505' || error.message.includes('already exists')) {
                     showToast("Ese nombre de liga ya está registrado. ¡Elegí otro! 🚫", "ph-warning-circle", "danger");
                 } else {
@@ -3243,10 +3234,8 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 return;
             }
 
-            // Si el servidor dio el OK, guardamos localmente y fundamos el torneo
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
 
-            // 🎯 FICHAMOS AL CREADOR CON 0 PTS: Para que figure de inmediato como integrante activo
             try {
                 const u = obtenerUsuarioLogueado();
                 const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
@@ -3269,7 +3258,6 @@ async function crearOCargarLigaAmigos(esCreacion) {
             return;
         }
     } else {
-        // 🛡️ MODO UNIRME CON VALIDACIÓN DE EXISTENCIA: Verificamos si la liga realmente existe antes de entrar
         try {
             const { data, error } = await supabaseClient
                 .from('ligas')
@@ -3284,10 +3272,9 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 return;
             }
 
-            // Si la liga existe en la tabla oficial, lo dejamos ingresar de forma segura
+            // Guardamos el identificador de la liga de amigos de manera segura
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
 
-            // 🎯 FICHAMOS AL NUEVO INTEGRANTE CON 0 PTS: Solo si nunca antes jugó en esta liga específica
             try {
                 const u = obtenerUsuarioLogueado();
                 const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
@@ -3300,7 +3287,8 @@ async function crearOCargarLigaAmigos(esCreacion) {
                     .eq('nombre', nombreParaFichar)
                     .limit(1);
 
-                if (!existing || existente.length === 0) {
+                // 🛡️ REPARACIÓN ACÁ: Cambiado de !existing a !existente para corregir el ReferenceError
+                if (!existente || existente.length === 0) {
                     await supabaseClient
                         .from('ranking')
                         .insert([
@@ -3320,7 +3308,6 @@ async function crearOCargarLigaAmigos(esCreacion) {
         }
     }
 
-    // Refrescamos el modal para desplegar la tabla de posiciones real
     abrirModalLigaAmigosPrivada();
 }
 
