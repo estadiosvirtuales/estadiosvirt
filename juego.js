@@ -1923,8 +1923,10 @@ document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85re
     }
     
     btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
-    btn.style.color = "#000";
-    btn.style.boxShadow = "0 5px 0 #0d5332";
+btn.style.color = "#000";
+btn.style.boxShadow = "0 5px 0 #0d5332";
+// 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN VERSUS 👇
+dispararJuicinessRonda(miDist);
     
     btn.setAttribute('data-estado', 'resultado');
     btn.disabled = false;
@@ -2239,6 +2241,8 @@ document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85re
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
 btn.innerHTML=`${emoji} ${distT} de error &nbsp;·&nbsp; <b>+${pts} pts</b> &nbsp; Siguiente <i class="ph-bold ph-arrow-right"></i>`;
 if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
+// 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN SOLITARIO 👇
+dispararJuicinessRonda(dist);
 btn.setAttribute('data-estado','resultado');btn.disabled=false;
 }
 
@@ -3100,4 +3104,37 @@ function obtenerFraseFolklore(dist) {
     if (dist < 600) return "Te cobraron posición adelantada... ¡Le erraste de provincia! 🗺️";
     if (dist < 2000) return "¡La mandaste a la tribuna visitante! Le erraste feo, maestro. 🥶";
     return "¡Mandaste la pelota a la estratosfera! Te saliste del mapa. 🌍🤡";
+}
+// ========================================================
+// SPRINT VIRAL - PASO 3: MOTOR DE AUDIO Y JUICINESS
+// ========================================================
+function dispararJuicinessRonda(distancia) {
+    const card = document.getElementById('modal-card');
+    
+    // 1. Efecto de sonido nativo usando URLs estables de assets libres
+    let sonidoUrl = "";
+    if (distancia < 15) {
+        sonidoUrl = "https://assets.mixkit.co/active_storage/sfx/2043/2043-84.wav"; // Silbato festejo / Gol
+    } else if (distancia < 600) {
+        sonidoUrl = "https://assets.mixkit.co/active_storage/sfx/2039/2043-84.wav"; // Toque seco limpio
+    } else {
+        sonidoUrl = "https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav"; // Alerta / Error gracioso
+    }
+
+    try {
+        const audio = new Audio(sonidoUrl);
+        audio.volume = 0.4;
+        audio.play();
+    } catch (e) {
+        console.log("Audio bloqueado por el navegador hasta que interactúe el usuario.");
+    }
+
+    // 2. Efecto de sacudida de pantalla (Screen Shake) si le erró por mucho
+    if (distancia >= 600 && card) {
+        card.classList.add('animate-wrong');
+        // Limpiamos la clase cuando termina la animación para que pueda volver a sacudirse en la otra ronda
+        setTimeout(() => {
+            card.classList.remove('animate-wrong');
+        }, 400);
+    }
 }
