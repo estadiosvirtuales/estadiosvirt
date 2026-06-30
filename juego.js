@@ -3194,26 +3194,56 @@ function dispararJuicinessRonda(distancia) {
 // ========================================================
 // SPRINT VIRAL - PASO 5: SISTEMA DE MINI LIGAS PRIVADAS
 // ========================================================
-function crearOCargarLigaAmigos(esCreacion) {
+async function crearOCargarLigaAmigos(esCreacion) {
     const input = document.getElementById('input-codigo-liga');
-    let codigo = input ? input.value.trim().toUpperCase() : "";
-    
-    if (esCreacion) {
-        // Generamos un token al azar de 4 letras consonantes/números vistosos
-        const caracteres = "BCDFGHJKLMNPQRSTVWXYZ23456789";
-        codigo = "";
-        for (let i = 0; i < 4; i++) {
-            codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-        }
-    }
+    let nombreLiga = input ? input.value.trim().toUpperCase() : "";
 
-    if (codigo.length < 4) {
-        showToast("¡El código debe tener exactamente 4 caracteres! 👥", "ph-warning-circle", "danger");
+    // Reemplazamos múltiples espacios por guiones bajos para que no se rompan las consultas en la base de datos
+    nombreLiga = nombreLiga.replace(/\s+/g, '_');
+
+    if (!nombreLiga || nombreLiga.length < 3) {
+        showToast("¡El nombre debe tener al menos 3 caracteres! 👥", "ph-warning-circle", "danger");
         return;
     }
 
-    localStorage.setItem('ev_codigo_liga_amigos', codigo);
-    showToast(`¡Te uniste a la Mini Liga: ${codigo}! 👥🔥`, "ph-users-three", "success");
+    // Filtro de seguridad: Solo permitimos letras, números y guiones bajos
+    const regexValida = /^[A-Z0-9_]+$/;
+    if (!regexValida.test(nombreLiga)) {
+        showToast("Usá solo letras, números o espacios comunes. 🚫", "ph-warning-circle", "danger");
+        return;
+    }
+
+    if (esCreacion) {
+        // 🛡️ ESCUDO DE DUPLICADOS: Consultamos rápido a Supabase si el identificador ya existe
+        try {
+            const { data, error } = await supabaseClient
+                .from('ranking')
+                .select('nombre')
+                .eq('juego', 'guessr_' + nombreLiga)
+                .limit(1);
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+                showToast("Ese nombre ya está registrado. ¡Probá con otro! 🚫", "ph-warning-circle", "danger");
+                return;
+            }
+            
+            // Si no encontró registros, el nombre está 100% libre
+            localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
+            showToast(`¡Liga creada: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
+        } catch (err) {
+            console.error("Error al validar duplicado de liga:", err);
+            showToast("Error de conexión al validar el nombre.", "ph-warning-circle", "danger");
+            return;
+        }
+    } else {
+        // MODO UNIRME: Se vincula directo al nombre ingresado
+        localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
+        showToast(`¡Te uniste a la liga: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
+    }
+
+    // Refrescamos el búnker para ver la tabla
     abrirModalLigaAmigosPrivada();
 }
 
