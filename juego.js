@@ -3198,7 +3198,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
     const input = document.getElementById('input-codigo-liga');
     let nombreLiga = input ? input.value.trim().toUpperCase() : "";
 
-    // Reemplazamos múltiples espacios por guiones bajos para que no se rompan las consultas en la base de datos
+    // Reemplazamos espacios por guiones bajos para estandarizar el registro en la base de datos
     nombreLiga = nombreLiga.replace(/\s+/g, '_');
 
     if (!nombreLiga || nombreLiga.length < 3) {
@@ -3206,44 +3206,72 @@ async function crearOCargarLigaAmigos(esCreacion) {
         return;
     }
 
-    // Filtro de seguridad: Solo permitimos letras, números y guiones bajos
+    // Filtro estricto: Solo permitimos letras, números y guiones bajos (Escudo Anti-Injection)
     const regexValida = /^[A-Z0-9_]+$/;
     if (!regexValida.test(nombreLiga)) {
-        showToast("Usá solo letras, números o espacios comunes. 🚫", "ph-warning-circle", "danger");
+        showToast("Usá solo letras, números o espacios. 🚫", "ph-warning-circle", "danger");
         return;
     }
 
+    const idUsuario = getUserId();
+
     if (esCreacion) {
-        // 🛡️ ESCUDO DE DUPLICADOS: Consultamos rápido a Supabase si el identificador ya existe
+        // 🛡️ MODO CREACIÓN CON SEGURIDAD TOTAL: Intentamos insertar directamente en la tabla de control
+        try {
+            const { error } = await supabaseClient
+                .from('ligas')
+                .insert([
+                    { nombre_liga: nombreLiga, creador_id: idUsuario }
+                ]);
+
+            if (error) {
+                // Si el error es por duplicado (código SQL 23505 o texto descriptivo)
+                if (error.code === '23505' || error.message.includes('already exists')) {
+                    showToast("Ese nombre de liga ya está registrado. ¡Elegí otro! 🚫", "ph-warning-circle", "danger");
+                } else {
+                    console.error("Error de Supabase:", error);
+                    showToast("No se pudo crear la liga. Intentá de nuevo.", "ph-warning-circle", "danger");
+                }
+                return;
+            }
+
+            // Si el servidor dio el OK, guardamos localmente y fundamos el torneo
+            localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
+            showToast(`¡Liga creada: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
+
+        } catch (err) {
+            console.error("Error crítico en creación de liga:", err);
+            showToast("Error de conexión con el búnker.", "ph-warning-circle", "danger");
+            return;
+        }
+    } else {
+        // 🛡️ MODO UNIRME CON VALIDACIÓN DE EXISTENCIA: Verificamos si la liga realmente existe antes de entrar
         try {
             const { data, error } = await supabaseClient
-                .from('ranking')
-                .select('nombre')
-                .eq('juego', 'guessr_' + nombreLiga)
+                .from('ligas')
+                .select('nombre_liga')
+                .eq('nombre_liga', nombreLiga)
                 .limit(1);
 
             if (error) throw error;
 
-            if (data && data.length > 0) {
-                showToast("Ese nombre ya está registrado. ¡Probá con otro! 🚫", "ph-warning-circle", "danger");
+            if (!data || data.length === 0) {
+                showToast("La liga no existe. Verificá el nombre exacto con tus amigos. 🚫", "ph-warning-circle", "danger");
                 return;
             }
-            
-            // Si no encontró registros, el nombre está 100% libre
+
+            // Si la liga existe en la tabla oficial, lo dejamos ingresar de forma segura
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
-            showToast(`¡Liga creada: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
+            showToast(`¡Te uniste a la liga: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
+
         } catch (err) {
-            console.error("Error al validar duplicado de liga:", err);
-            showToast("Error de conexión al validar el nombre.", "ph-warning-circle", "danger");
+            console.error("Error crítico al unirse a la liga:", err);
+            showToast("Error al verificar la existencia de la liga.", "ph-warning-circle", "danger");
             return;
         }
-    } else {
-        // MODO UNIRME: Se vincula directo al nombre ingresado
-        localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
-        showToast(`¡Te uniste a la liga: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
     }
 
-    // Refrescamos el búnker para ver la tabla
+    // Refrescamos el modal para desplegar la tabla de posiciones real
     abrirModalLigaAmigosPrivada();
 }
 
