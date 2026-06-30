@@ -2444,7 +2444,6 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         <button class="logro-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">👤 Solo</button>
         <button class="logro-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">🏆 1v1 Hist.</button>
         <button class="logro-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">🔥 Semanal</button>
-        <button class="logro-tab-btn ${activeCardClass || activeSolo}" style="background: ${modoEspecifico==='solo'?'':'var(--accent-color)'}; color: ${modoEspecifico==='solo'?'':'#000'}" onclick="abrirModalRanking('amigos')">👥 Amigos</button>
     </div>`;
 
     try {
