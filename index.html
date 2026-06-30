@@ -229,18 +229,21 @@
 
                 <!-- BLOQUE 2: Multijugador -->
                 <div>
-                    <div style="font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">Multijugador (En Vivo)</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <button onclick="cerrarModalGuessr(); buscarPartidaVersus()" class="btn-3d secondary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
-                            <i class="ph-duotone ph-lightning" style="font-size: 2rem; color: #2979ff;"></i> 
-                            <span>1 vs 1 Global</span>
-                        </button>
-                        <button onclick="cerrarModalGuessr(); crearSalaPrivada()" class="btn-3d secondary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
-                            <i class="ph-duotone ph-users-three" style="font-size: 2rem; color: #a78bfa;"></i> 
-                            <span>Sala Privada</span>
-                        </button>
-                    </div>
-                </div>
+    <div style="font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">Multijugador (En Vivo)</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <button onclick="cerrarModalGuessr(); buscarPartidaVersus()" class="btn-3d secondary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
+            <i class="ph-duotone ph-lightning" style="font-size: 2rem; color: #2979ff;"></i> 
+            <span>1 vs 1 Global</span>
+        </button>
+        <button onclick="cerrarModalGuessr(); crearSalaPrivada()" class="btn-3d secondary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
+            <i class="ph-duotone ph-users-three" style="font-size: 2rem; color: #a78bfa;"></i> 
+            <span>Sala Privada</span>
+        </button>
+    </div>
+    <button onclick="cerrarModalGuessr(); abrirModalLigaAmigosPrivada()" class="btn-3d" style="width: 100%; padding: 14px; font-size: 0.95rem; background: rgba(0, 230, 118, 0.08); border: 2px solid var(--accent-color); color: var(--accent-color); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="ph-duotone ph-users" style="font-size: 1.3rem;"></i> Liga de Amigos Privada
+    </button>
+</div>
 
                 <!-- BLOQUE 3: Tabla de Posiciones -->
                 <div style="margin-top: 6px;">
