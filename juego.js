@@ -3343,7 +3343,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
     abrirModalLigaAmigosPrivada();
 }
 
-function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreLocal) {
+function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreRanking) {
     const body = document.getElementById('liga-amigos-modal-body');
     if (!body) return;
 
@@ -3363,9 +3363,8 @@ function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreLocal) {
         const med = i < 3 ? m[i] : `<span style="color:var(--text-muted); font-weight:700;">${i + 1}</span>`;
         const nombreRival = (f.nombre || 'Anónimo').trim();
         
-        // Evaluamos estados de conexión en tiempo real
         const estaOnline = usuariosOnlineLiga.includes(nombreRival);
-        const esPropio = nombreRival === miNombreLocal;
+        const esPropio = nombreRival === miNombreRanking;
         
         let indicadorOnline = "";
         let botonReto = "";
@@ -3373,8 +3372,8 @@ function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreLocal) {
         if (estaOnline) {
             indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:6px; box-shadow:0 0 6px #00e676;" title="Mirando la liga ahora"></span>`;
             if (!esPropio) {
-                // Si el amigo está online y no soy yo, le clavamos las espadas de desafío directo con hover 3D
-                botonReto = `<i class="ph-fill ph-swords" onclick="desafiarAmigoDirecto('${nombreRival}')" style="cursor:pointer; color:var(--accent-color); margin-left:12px; font-size:1.1rem; transition:transform 0.15s; display:inline-block; vertical-align:middle;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo"></i>`;
+                // CORRECCIÓN DE ICONO: Cambiado a ph-duotone para asegurar renderizado y visibilidad inmediata
+                botonReto = `<i class="ph-duotone ph-swords" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; color:var(--accent-color); margin-left:12px; font-size:1.25rem; transition:transform 0.15s; display:inline-block; vertical-align:middle;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo"></i>`;
             }
         }
         
