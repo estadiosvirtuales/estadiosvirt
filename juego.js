@@ -3306,7 +3306,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                     .eq('nombre', nombreParaFichar)
                     .limit(1);
 
-                if (!existing || existente.length === 0) {
+                if (!existente || existente.length === 0) {
                     await supabaseClient
                         .from('ranking')
                         .insert([
