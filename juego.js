@@ -1674,7 +1674,7 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'rival_entro' }, (response) => {
             const data = response.payload || response;
-            // BLINDAJE 1: Solo el Host (jugador_1) procesa los ingresos y decide la secuencia de estadios
+            // ROLES ESTRICTOS: Solo el Host (jugador_1) procesa y responde a los ingresos de red
             if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
                 console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación oficial con estadios.`);
                 
@@ -1689,7 +1689,7 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'host_confirmado' }, (response) => {
             const data = response.payload || response;
-            // BLINDAJE 2: Solo el Invitado (jugador_2) recibe y acata la configuración del Host
+            // ROLES ESTRICTOS: Solo el Invitado (jugador_2) obedece la configuración y mapas del Host
             if (data && data.id !== idUsuario && versusRol === 'jugador_2') {
                 console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Sincronizando mapas y respondiendo...`);
                 
@@ -1714,7 +1714,7 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
             const data = response.payload || response;
-            // BLINDAJE 3: Solo el Host (jugador_1) reacciona al silbato del invitado para dar el puntapié inicial
+            // ROLES ESTRICTOS: Solo el Host (jugador_1) reacciona al silbato del invitado para dar inicio
             if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
                 if (data.nombre) versusRivalNombre = data.nombre;
 
@@ -1767,10 +1767,10 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                // Primer disparo de presencia inmediato
+                // Primer disparo de red inmediato para agilizar el emparejamiento
                 versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
                 
-                // Mantenemos el pulso de búsqueda activo de forma limpia
+                // Pulso continuo controlado: Se detiene inmediatamente si la partida ya inició
                 handshakeInterval = setInterval(() => {
                     if (versusChannel && !versusPartidaEnCurso) {
                         versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
