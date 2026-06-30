@@ -3365,7 +3365,7 @@ async function abrirModalLigaAmigosPrivada() {
         body.innerHTML = `
         <div style="text-align:center; padding:10px 0;">
             <div style="font-size: 2.6rem; color: var(--accent-color); margin-bottom: 12px;"><i class="ph-duotone ph-users"></i></div>
-            <h3 style="font-size:1.4rem; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:-0.5px;">Liga de Amigos Privada</h3>
+            <h3 style="font-size:1.4rem; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:-0.5px;">Liga de Amigos </h3>
             <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:22px; line-height:1.5; padding:0 10px;">Escribí el nombre de tu torneo para crearlo, o poné el nombre exacto de la liga de tus amigos para unirte.</p>
             
             <input type="text" id="input-codigo-liga" placeholder="NOMBRE DE TU LIGA" maxlength="20" style="text-transform:uppercase; text-align:center; padding:12px; width:100%; max-width:280px; background:var(--bg-color); border:2px solid var(--border-strong); border-radius:10px; color:#fff; font-weight:900; font-size:1rem; margin-bottom:18px; outline:none;">
