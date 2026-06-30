@@ -3381,7 +3381,7 @@ function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreRanking) {
             indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:6px; box-shadow:0 0 6px #00e676;" title="Mirando la liga ahora"></span>`;
             if (!esPropio) {
                 // SOLUCIÓN: Cambiado a ph-duotone para que aparezca visible de inmediato
-                botonReto = `<i class="ph-duotone ph-swords" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; color:var(--accent-color); margin-left:12px; font-size:1.25rem; transition:transform 0.15s; display:inline-block; vertical-align:middle;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo"></i>`;
+                botonReto = `<i class="ph-duotone ph-sword" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; color:var(--accent-color); margin-left:12px; font-size:1.25rem; transition:transform 0.15s; display:inline-block; vertical-align:middle;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo"></i>`;
             }
         }
         
@@ -3582,7 +3582,7 @@ function mostrarNotificacionDesafio(deNombre, salaId) {
         animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     `;
     popup.innerHTML = `
-        <div style="font-weight:900; font-size:1rem;"><i class="ph-duotone ph-swords" style="color:var(--accent-color);"></i> ¡${sanitizarHTML(deNombre)} te desafió a un duelo!</div>
+        <div style="font-weight:900; font-size:1rem;"><i class="ph-duotone ph-sword" style="color:var(--accent-color);"></i> ¡${sanitizarHTML(deNombre)} te desafió a un duelo!</div>
         <div style="display:flex; gap:10px; width:100%;">
             <button onclick="responderDesafio(true,'${salaId}')" class="btn-3d primary" style="flex:1; padding:12px;"><i class="ph-bold ph-check"></i> Aceptar</button>
             <button onclick="responderDesafio(false,'${salaId}')" class="btn-3d secondary" style="flex:1; padding:12px;"><i class="ph-bold ph-x"></i> Rechazar</button>
