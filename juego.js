@@ -3356,13 +3356,32 @@ async function abrirModalLigaAmigosPrivada() {
     } else {
         // Interfaz limpia 2: Traer tabla de posiciones filtrada desde Supabase
         try {
+            // Traemos todos los registros de puntajes para esta liga ordenados de mayor a menor
             const { data: ranking, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
                 .eq('juego', 'guessr_' + codigoLigaGuardado)
-                .order('puntaje', { ascending: false })
-                .limit(15);
+                .order('puntaje', { ascending: false });
+                
             if (error) throw error;
+
+            // 🛡️ FILTRO ANTI-DUPLICADOS: Filtramos en caliente para dejar solo el récord más alto de cada integrante
+            const integrantesUnicos = [];
+            const nombresVistos = new Set();
+
+            if (ranking) {
+                ranking.forEach(fila => {
+                    const nombreLimpio = (fila.nombre || 'Anónimo').trim();
+                    if (!nombresVistos.has(nombreLimpio)) {
+                        nombresVistos.add(nombreLimpio);
+                        integrantesUnicos.push(fila);
+                    }
+                });
+            }
+
+            // Limitamos visualmente el Top a las 15 mejores posiciones únicas
+            const top15Ligas = integrantesUnicos.slice(0, 15);
+            const nombreVisualLiga = codigoLigaGuardado.replace(/_/g, ' ');
 
             let htmlContenido = `
             <div style="text-align:center; margin-bottom:16px;">
@@ -3370,18 +3389,18 @@ async function abrirModalLigaAmigosPrivada() {
                 <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Tabla de tu Liga</h3>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
-                <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${codigoLigaGuardado}</strong></span>
+                <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga}</strong></span>
                 <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir 🚪</button>
             </div>
             <div style="background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px; overflow:hidden;">`;
 
-            if (!ranking || !ranking.length) {
-                htmlContenido += `<p style="color:var(--text-muted); text-align:center; padding:30px; font-size:0.88rem; line-height:1.4;">Nadie registró puntos todavía en la liga <strong>${codigoLigaGuardado}</strong>.<br>¡Jugá un individual para inaugurar el tablero!</p>`;
+            if (!top15Ligas.length) {
+                htmlContenido += `<p style="color:var(--text-muted); text-align:center; padding:30px; font-size:0.88rem; line-height:1.4;">Nadie registró puntos todavía en la liga <strong>${nombreVisualLiga}</strong>.<br>¡Jugá un individual para inaugurar el tablero!</p>`;
             } else {
-                ranking.forEach((f, i) => {
+                top15Ligas.forEach((f, i) => {
                     const m = ['🥇', '🥈', '🥉'];
                     const med = i < 3 ? m[i] : `<span style="color:var(--text-muted); font-weight:700;">${i + 1}</span>`;
-                    htmlContenido += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'}; font-size:.95rem;"><span style="font-weight:700;">${med} &nbsp;${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color); font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted);">pts</span></span></div>`;
+                    htmlContenido += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:${i === top15Ligas.length - 1 ? 'none' : '1px solid var(--border-subtle)'}; font-size:.95rem;"><span style="font-weight:700;">${med} &nbsp;${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color); font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted);">pts</span></span></div>`;
                 });
             }
             htmlContenido += '</div>';
