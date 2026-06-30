@@ -1672,53 +1672,44 @@ function conectarRealtimeVersus() {
                 manejarAbandonoRival();
             }
         })
-        .on('broadcast', { event: 'rival_entro' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Host detectó al invitado. Enviando confirmación con estadios.`);
-                
-                if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
-
-                versusChannel.send({
-                    type: 'broadcast',
-                    event: 'host_confirmado',
-                    // 👇 ACÁ ESTÁ LA MAGIA: El Host le manda los estadios al invitado 👇
-                    payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
-                });
-            }
-        })
-        .on('broadcast', { event: 'host_confirmado' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
-                console.log(`[1v1] 📥 Invitado recibió confirmación del Host. Confirmando que está listo.`);
-                
+        -- 1. EL INVITADO ESCUCHA EL LATIDO DEL HOST
+        .on('broadcast', { event: 'host_esperando' }, (response) => {
+            if (versusRol === 'jugador_2' && response.payload && response.payload.id !== idUsuario) {
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
                 
-                // 👇 ACÁ ESTÁ LA OTRA MAGIA: El invitado atrapa los estadios y los guarda 👇
+                // Atrapamos la lista fija de estadios que sorteó el Host
                 if (response.payload.estadios && response.payload.estadios.length > 0) {
                     versusEstadios = response.payload.estadios;
                 }
 
+                // El Invitado responde informando que ya se acopló a la cancha
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'invitado_listo',
                     payload: { id: idUsuario, nombre: miNombreLocal } 
                 });
 
-                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
                     showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); // Arranca directo
+                    arrancarPartidoVersus(); 
                 }
             }
         })
+        -- 2. EL HOST ESCUCHA LA CONFIRMACIÓN DEL INVITADO
         .on('broadcast', { event: 'invitado_listo' }, (response) => {
-            if (response.payload && response.payload.id !== idUsuario) {
+            if (versusRol === 'jugador_1' && response.payload && response.payload.id !== idUsuario) {
                 if (response.payload.nombre) versusRivalNombre = response.payload.nombre;
 
-                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
-                    console.log(`[1v1] 📥 Host confirma que el invitado está en la cancha. ¡Arrancando!`);
+                if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
+                    // Liquidamos el intervalo para liberar la red inmediatamente
+                    if (handshakeInterval) {
+                        clearInterval(handshakeInterval);
+                        handshakeInterval = null;
+                    }
                     showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
-                    arrancarPartidoVersus(); // Arranca directo
+                    arrancarPartidoVersus(); 
                 }
             }
         })
@@ -1734,12 +1725,11 @@ function conectarRealtimeVersus() {
                 mostrarResultadosMutuosVersus();
             }
         })
-        // 👇 RECEPTOR NUEVO PASO 1 👇
-.on('broadcast', { event: 'rival_taunt' }, (response) => {
-    if (response.payload && response.payload.emoji) {
-        mostrarTauntEnPantalla(response.payload.emoji, false);
-    }
-})
+        .on('broadcast', { event: 'rival_taunt' }, (response) => {
+            if (response.payload && response.payload.emoji) {
+                mostrarTauntEnPantalla(response.payload.emoji, false);
+            }
+        })
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
             if (miListoSiguiente) {
@@ -1761,13 +1751,24 @@ function conectarRealtimeVersus() {
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
                 
-                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
-                
-                handshakeInterval = setInterval(() => {
-                    if (versusChannel) {
-                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
-                    }
-                }, 400);
+                // 🛡️ ENTRADA EFICIENTE: Solo el creador de la sala (Host) inicia el bucle de latidos
+                if (versusRol === 'jugador_1') {
+                    versusChannel.send({ 
+                        type: 'broadcast', 
+                        event: 'host_esperando', 
+                        payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
+                    });
+                    
+                    handshakeInterval = setInterval(() => {
+                        if (versusChannel) {
+                            versusChannel.send({ 
+                                type: 'broadcast', 
+                                event: 'host_esperando', 
+                                payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
+                            });
+                        }
+                    }, 500); // 500ms es perfecto para no ahogar el socket de Supabase
+                }
             }
         });
 }
