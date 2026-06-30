@@ -3195,6 +3195,13 @@ function dispararJuicinessRonda(distancia) {
 // SPRINT VIRAL - PASO 5: SISTEMA DE MINI LIGAS PRIVADAS
 // ========================================================
 async function crearOCargarLigaAmigos(esCreacion) {
+    // 🔐 ESCUDO DE REGISTRO OBLIGATORIO: Si no es usuario Google, bloqueamos y abrimos el login
+    if (!esUsuarioGoogle()) {
+        showToast("¡Iniciá sesión con Google para crear o unirte a una liga! 🔐", "ph-lock", "danger");
+        manejarClickLogin();
+        return;
+    }
+
     const input = document.getElementById('input-codigo-liga');
     let nombreLiga = input ? input.value.trim().toUpperCase() : "";
 
@@ -3292,7 +3299,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                     .eq('nombre', nombreParaFichar)
                     .limit(1);
 
-                if (!existente || existente.length === 0) {
+                if (!existing || existente.length === 0) {
                     await supabaseClient
                         .from('ranking')
                         .insert([
