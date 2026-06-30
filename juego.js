@@ -3249,7 +3249,14 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 return;
             }
 
-            // Si el servidor dio el OK, guardamos localmente y fundamos el torneo
+            // ⚡ BLINDAJE 1: Limpieza inmediata de puntuaciones huérfanas del pasado
+            // Al crearse la sala de forma exitosa en la línea anterior, barremos cualquier rastro viejo con este nombre
+            await supabaseClient
+                .from('ranking')
+                .delete()
+                .eq('juego', 'guessr_' + nombreLiga);
+
+            // Guardamos localmente y fundamos el torneo
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
 
             // 🎯 FICHAMOS AL CREADOR CON 0 PTS: Para que figure de inmediato como integrante activo
@@ -3306,6 +3313,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                     .eq('nombre', nombreParaFichar)
                     .limit(1);
 
+                // BLINDAJE 2: Se corrigió el typo de existing a existente. Ahora corre el insert sin crasheos.
                 if (!existente || existente.length === 0) {
                     await supabaseClient
                         .from('ranking')
