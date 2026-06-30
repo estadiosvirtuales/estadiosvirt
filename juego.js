@@ -936,6 +936,10 @@ function abrirModalVideo(event,link,esJuego=false){
 }
 
 function cerrarModalVideo(){
+    // 👇 OCULTAMOS LA BOTONERA DE REACCIONES AL CERRAR LA CANCHA 👇
+    if (document.getElementById('taunts-container')) {
+        document.getElementById('taunts-container').style.display = 'none';
+    }
     // 🛡️ ESCUDO DE ABANDONO MANUAL: Si cerrás la ventana con la cruz en medio de un Versus, liquidamos la sesión
     if (esModoVersus && versusChannel) {
         try {
@@ -1723,6 +1727,12 @@ function conectarRealtimeVersus() {
                 mostrarResultadosMutuosVersus();
             }
         })
+        // 👇 RECEPTOR NUEVO PASO 1 👇
+.on('broadcast', { event: 'rival_taunt' }, (response) => {
+    if (response.payload && response.payload.emoji) {
+        mostrarTauntEnPantalla(response.payload.emoji, false);
+    }
+})
         .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
             rivalListoSiguiente = true;
             if (miListoSiguiente) {
@@ -2133,6 +2143,7 @@ if (esModoVersus) {
         return;
     }
     guessrEstadiosJugados.push(nombreEstadioOficial);
+    document.getElementById('taunts-container').style.display = 'flex';
     
 } else if (esModoDiario) {
     // 🌍 LÓGICA NUEVA: RETO DIARIO
@@ -3034,3 +3045,45 @@ document.addEventListener("visibilitychange", () => {
         }
     }
 });
+// ========================================================
+// SPRINT VIRAL - PASO 1: SISTEMA DE TAUNTS REALTIME
+// ========================================================
+function mandarTaunt(emoji) {
+    // Si no estamos en un versus real o el canal no está listo, solo lo mostramos local
+    if (!esModoVersus || esModoBot || !versusChannel) {
+        mostrarTauntEnPantalla(emoji, true);
+        return;
+    }
+    
+    // Emitimos el emoji a la pantalla del rival
+    versusChannel.send({
+        type: 'broadcast',
+        event: 'rival_taunt',
+        payload: { emoji: emoji }
+    });
+    
+    // Lo pintamos en nuestra pantalla como confirmación
+    mostrarTauntEnPantalla(emoji, true);
+}
+
+function mostrarTauntEnPantalla(emoji, esMio) {
+    const contenedorPadre = document.getElementById('modal-card');
+    if (!contenedorPadre) return;
+    
+    // Eliminamos burbujas viejas si el usuario spamea botones
+    const viejaBurbuja = document.querySelector('.taunt-bubble');
+    if (viejaBurbuja) viejaBurbuja.remove();
+    
+    const burbuja = document.createElement('div');
+    burbuja.className = `taunt-bubble ${esMio ? 'es-mio' : 'es-rival'}`;
+    
+    const nombreDisplay = esMio ? "Vos" : (versusRivalNombre || "Rival");
+    burbuja.innerHTML = `<span>${nombreDisplay}:</span> <b>${emoji}</b>`;
+    
+    contenedorPadre.appendChild(burbuja);
+    
+    // Limpieza automática cuando termina la animación CSS
+    setTimeout(() => {
+        if (burbuja) burbuja.remove();
+    }, 2300);
+}
