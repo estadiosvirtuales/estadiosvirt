@@ -1908,7 +1908,8 @@ function mostrarResultadosMutuosVersus() {
     if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
     guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
 
-    document.getElementById('game-title').innerHTML = `<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+    const fraseFolkloreVersus = obtenerFraseFolklore(miDist);
+document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: #ffea00; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
 
     miListoSiguiente = false;
     rivalListoSiguiente = false;
@@ -2233,7 +2234,8 @@ if(!isNaN(dist)&&dist<5)userStats.medallaLocalista=true;if(!isNaN(dist)&&dist<1)
 guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColor:'#111820',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
 guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:2,dashArray:'6,8'}).addTo(guessrMapInstance);
 guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker,guessrTargetMarker]).getBounds(),{padding:[40,40]});
-document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+const fraseFolklore = obtenerFraseFolklore(dist);
+document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: #ffea00; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolklore}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
 btn.innerHTML=`${emoji} ${distT} de error &nbsp;·&nbsp; <b>+${pts} pts</b> &nbsp; Siguiente <i class="ph-bold ph-arrow-right"></i>`;
 if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
@@ -3086,4 +3088,16 @@ function mostrarTauntEnPantalla(emoji, esMio) {
     setTimeout(() => {
         if (burbuja) burbuja.remove();
     }, 2300);
+}
+// ========================================================
+// SPRINT VIRAL - PASO 2: MOTOR DE FRASES CON FOLKLORE
+// ========================================================
+function obtenerFraseFolklore(dist) {
+    if (isNaN(dist)) return "¡Se cortó la transmisión de la tribuna! 📻";
+    if (dist < 1)   return "¡Ojo de águila! La clavaste en el ángulo. 🎯⚽";
+    if (dist < 15)  return "¡Huele a pasto! Estás festejando en la tribuna local. 🏟️🔥";
+    if (dist < 150) return "Entraste al área con pelota dominada... Buen tiro. 👟";
+    if (dist < 600) return "Te cobraron posición adelantada... ¡Le erraste de provincia! 🗺️";
+    if (dist < 2000) return "¡La mandaste a la tribuna visitante! Le erraste feo, maestro. 🥶";
+    return "¡Mandaste la pelota a la estratosfera! Te saliste del mapa. 🌍🤡";
 }
