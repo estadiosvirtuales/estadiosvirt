@@ -3442,15 +3442,16 @@ async function abrirModalLigaAmigosPrivada() {
     const body = document.getElementById('liga-amigos-modal-body');
     if (!modal || !body) return;
 
-    // Activamos la ventana visualmente y metemos un spinner de carga nítido
     modal.style.display = 'flex';
     body.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando al búnker de tu liga...</div>';
 
     const codigoLigaGuardado = localStorage.getItem('ev_codigo_liga_amigos');
-    const miNombreLocal = obtenerNombreDisplay();
+    
+    // 🛡️ ALINEACIÓN IDENTITARIA: Extraemos el nombre completo de base de datos para emparejar Presence
+    const u = obtenerUsuarioLogueado();
+    const miNombreRanking = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
     if (!codigoLigaGuardado) {
-        // Interfaz limpia 1: Crear o Unirse
         body.innerHTML = `
         <div style="text-align:center; padding:10px 0;">
             <div style="font-size: 2.6rem; color: var(--accent-color); margin-bottom: 12px;"><i class="ph-duotone ph-users"></i></div>
@@ -3465,9 +3466,7 @@ async function abrirModalLigaAmigosPrivada() {
             </div>
         </div>`;
     } else {
-        // Interfaz limpia 2: Traer tabla de posiciones filtrada desde Supabase
         try {
-            // Traemos todos los registros de puntajes para esta liga ordenados de mayor a menor
             const { data: ranking, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
@@ -3476,7 +3475,6 @@ async function abrirModalLigaAmigosPrivada() {
                 
             if (error) throw error;
 
-            // 🛡️ FILTRO ANTI-DUPLICADOS: Filtramos en caliente para dejar solo el récord más alto de cada integrante
             const integrantesUnicos = [];
             const nombresVistos = new Set();
 
@@ -3490,14 +3488,11 @@ async function abrirModalLigaAmigosPrivada() {
                 });
             }
 
-            // Limitamos visualmente el Top a las 15 mejores posiciones únicas
             cacheTop15Ligas = integrantesUnicos.slice(0, 15);
             const nombreVisualLiga = codigoLigaGuardado.replace(/_/g, ' ');
 
-            // Ejecutamos el primer dibujado limpio de la tabla
-            renderizarCuerpoLiga(cacheTop15Ligas, nombreVisualLiga, miNombreLocal);
+            renderizarCuerpoLiga(cacheTop15Ligas, nombreVisualLiga, miNombreRanking);
 
-            // 📡 ENLACE REALTIME: Montamos canal de monitoreo de actividad exclusivo para esta liga
             if (ligaAmigosChannel) supabaseClient.removeChannel(ligaAmigosChannel);
             
             ligaAmigosChannel = supabaseClient.channel('lobby_liga_' + codigoLigaGuardado, {
@@ -3509,26 +3504,22 @@ async function abrirModalLigaAmigosPrivada() {
                     const state = ligaAmigosChannel.presenceState();
                     usuariosOnlineLiga = [];
                     
-                    // Extraemos los nombres de todos los amigos que están con el modal abierto en este momento
                     Object.keys(state).forEach(key => {
                         if (state[key] && state[key][0]) {
                             usuariosOnlineLiga.push(state[key][0].nombre);
                         }
                     });
                     
-                    // Redibujamos la tabla en caliente con las espadas activas sin volver a golpear la base de datos
-                    renderizarCuerpoLiga(cacheTop15Ligas, nombreVisualLiga, miNombreLocal);
+                    renderizarCuerpoLiga(cacheTop15Ligas, nombreVisualLiga, miNombreRanking);
                 })
                 .on('broadcast', { event: 'reto_directo' }, (response) => {
                     const data = response.payload || response;
                     
-                    // Si el reto va dirigido exactamente a mi apodo local
-                    if (data && data.para === miNombreLocal) {
+                    if (data && data.para === miNombreRanking) {
                         const aceptar = confirm(`⚽ ¡RETADO A DUELO MANO A MANO! Tu amigo "${data.de}" te desafió en vivo ahora mismo. ¿Aceptás entrar a la cancha?`);
                         if (aceptar) {
                             cerrarModalLigaAmigosPrivada();
                             
-                            // Forzamos al motor competitivo a adoptar los datos de la sala privada recibida
                             versusPartidaId = data.salaId;
                             versusRol = 'jugador_2';
                             esModoVersus = true;
@@ -3536,7 +3527,6 @@ async function abrirModalLigaAmigosPrivada() {
                             versusPartidaEnCurso = false;
                             versusEstadios = data.estadios;
                             
-                            // Abrimos el lobby clásico de espera y activamos los sockets del partido
                             abrirLobbyEspera();
                             conectarRealtimeVersus();
                         }
@@ -3544,8 +3534,7 @@ async function abrirModalLigaAmigosPrivada() {
                 })
                 .subscribe(async (status) => {
                     if (status === 'SUBSCRIBED') {
-                        // Publicamos nuestro nombre en el búnker de la liga para avisar que entramos
-                        await ligaAmigosChannel.track({ nombre: miNombreLocal });
+                        await ligaAmigosChannel.track({ nombre: miNombreRanking });
                     }
                 });
 
@@ -3556,12 +3545,92 @@ async function abrirModalLigaAmigosPrivada() {
     }
 }
 
+function renderizarCuerpoLiga(top15Ligas, nombreVisualLiga, miNombreRanking) {
+    const body = document.getElementById('liga-amigos-modal-body');
+    if (!body) return;
+
+    let htmlContenido = `
+    <div style="text-align:center; margin-bottom:16px;">
+        <div style="font-size:2.4rem; color:var(--accent-color); margin-bottom:4px;"><i class="ph-duotone ph-trophy"></i></div>
+        <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Tabla de tu Liga</h3>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
+        <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga}</strong></span>
+        <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir 🚪</button>
+    </div>
+    <div style="background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px; overflow:hidden;">`;
+
+    top15Ligas.forEach((f, i) => {
+        const m = ['🥇', '🥈', '🥉'];
+        const med = i < 3 ? m[i] : `<span style="color:var(--text-muted); font-weight:700;">${i + 1}</span>`;
+        const nombreRival = (f.nombre || 'Anónimo').trim();
+        
+        const estaOnline = usuariosOnlineLiga.includes(nombreRival);
+        const esPropio = nombreRival === miNombreRanking;
+        
+        let indicadorOnline = "";
+        let botonReto = "";
+        
+        if (estaOnline) {
+            indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:6px; box-shadow:0 0 6px #00e676;" title="Mirando la liga ahora"></span>`;
+            if (!esPropio) {
+                botonReto = `<i class="ph-fill ph-swords" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; color:var(--accent-color); margin-left:12px; font-size:1.1rem; transition:transform 0.15s; display:inline-block; vertical-align:middle;" onmouseover="this.style.transform='scale(1.25)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo"></i>`;
+            }
+        }
+        
+        htmlContenido += `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:${i === top15Ligas.length - 1 ? 'none' : '1px solid var(--border-subtle)'}; font-size:.95rem;">
+            <span style="font-weight:700; display:flex; align-items:center;">
+                ${med} &nbsp;${sanitizarHTML(nombreRival)} ${indicadorOnline}
+            </span>
+            <span style="display:flex; align-items:center;">
+                <strong style="color:var(--accent-color); font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></strong>
+                ${botonReto}
+            </span>
+        </div>`;
+    });
+
+    htmlContenido += '</div>';
+    body.innerHTML = htmlContenido;
+}
+
+window.desafiarAmigoDirecto = function(nombreRival) {
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
+        showToast("Esperá un segundo que termine de cargar el catálogo... ⚽", "ph-circle-notch", "warning");
+        return;
+    }
+
+    const u = obtenerUsuarioLogueado();
+    const miNombreRanking = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+
+    const idSala = Math.random().toString(36).substring(2, 8).toUpperCase();
+    versusPartidaId = 'PRIV_' + idSala;
+    versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+    
+    versusRol = 'jugador_1';
+    esModoVersus = true;
+    esModoBot = false;
+    versusPartidaEnCurso = false;
+
+    if (ligaAmigosChannel) {
+        ligaAmigosChannel.send({
+            type: 'broadcast',
+            event: 'reto_directo',
+            payload: { de: miNombreRanking, para: nombreRival, salaId: versusPartidaId, estadios: versusEstadios }
+        });
+    }
+
+    cerrarModalLigaAmigosPrivada();
+    const urlLimpia = window.location.origin + window.location.pathname;
+    abrirLobbyPrivado(`${urlLimpia}?sala=${versusPartidaId}`, idSala);
+    conectarRealtimeVersus();
+};
 
 function cerrarModalLigaAmigosPrivada() {
     const modal = document.getElementById('liga-amigos-modal');
     if (modal) modal.style.display = 'none';
     
-    // Purgamos el canal realtime de la liga al cerrar para optimizar la memoria RAM
     if (ligaAmigosChannel) {
         supabaseClient.removeChannel(ligaAmigosChannel);
         ligaAmigosChannel = null;
