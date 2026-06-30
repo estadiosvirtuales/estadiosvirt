@@ -3225,3 +3225,76 @@ function salirLigaAmigos() {
     showToast("Saliste de la liga privada.", "ph-door", "info");
     abrirModalRanking('amigos');
 }
+// ========================================================
+// CONTROLES EXCLUSIVOS: MODAL PROPIO DE LIGA DE AMIGOS
+// ========================================================
+async function abrirModalLigaAmigosPrivada() {
+    const modal = document.getElementById('liga-amigos-modal');
+    const body = document.getElementById('liga-amigos-modal-body');
+    if (!modal || !body) return;
+
+    // Activamos la ventana visualmente y metemos un spinner de carga nítido
+    modal.style.display = 'flex';
+    body.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando al búnker de tu liga...</div>';
+
+    const codigoLigaGuardado = localStorage.getItem('ev_codigo_liga_amigos');
+
+    if (!codigoLigaGuardado) {
+        // Interfaz limpia 1: Crear o Unirse
+        body.innerHTML = `
+        <div style="text-align:center; padding:10px 0;">
+            <div style="font-size: 2.6rem; color: var(--accent-color); margin-bottom: 12px;"><i class="ph-duotone ph-users"></i></div>
+            <h3 style="font-size:1.4rem; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:-0.5px;">Liga de Amigos Privada</h3>
+            <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:22px; line-height:1.5; padding:0 10px;">Creá una Mini Liga con tus amigos o ingresá el código de una existente para competir en un fixture privado.</p>
+            
+            <input type="text" id="input-codigo-liga" placeholder="CÓDIGO DE 4 LETRAS" maxlength="4" style="text-transform:uppercase; text-align:center; padding:12px; width:100%; max-width:240px; background:var(--bg-color); border:2px solid var(--border-strong); border-radius:10px; color:#fff; font-weight:900; font-size:1.1rem; margin-bottom:18px; outline:none;">
+            
+            <div style="display:flex; gap:12px; justify-content:center; width:100%; max-width:300px; margin:0 auto;">
+                <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="padding:12px 16px; font-size:0.85rem; flex:1;">Crear Nueva</button>
+                <button onclick="crearOCargarLigaAmigos(false)" class="btn-3d secondary" style="padding:12px 16px; font-size:0.85rem; flex:1; border-color:var(--accent-color); color:var(--accent-color);">Unirme</button>
+            </div>
+        </div>`;
+    } else {
+        // Interfaz limpia 2: Traer tabla de posiciones filtrada desde Supabase
+        try {
+            const { data: ranking, error } = await supabaseClient
+                .from('ranking')
+                .select('nombre, puntaje')
+                .eq('juego', 'guessr_' + codigoLigaGuardado)
+                .order('puntaje', { ascending: false })
+                .limit(15);
+            if (error) throw error;
+
+            let htmlContenido = `
+            <div style="text-align:center; margin-bottom:16px;">
+                <div style="font-size:2.4rem; color:var(--accent-color); margin-bottom:4px;"><i class="ph-duotone ph-trophy"></i></div>
+                <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Tabla de tu Liga</h3>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
+                <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${codigoLigaGuardado}</strong></span>
+                <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir 🚪</button>
+            </div>
+            <div style="background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px; overflow:hidden;">`;
+
+            if (!ranking || !ranking.length) {
+                htmlContenido += `<p style="color:var(--text-muted); text-align:center; padding:30px; font-size:0.88rem; line-height:1.4;">Nadie registró puntos todavía en la liga <strong>${codigoLigaGuardado}</strong>.<br>¡Jugá un individual para inaugurar el tablero!</p>`;
+            } else {
+                ranking.forEach((f, i) => {
+                    const m = ['🥇', '🥈', '🥉'];
+                    const med = i < 3 ? m[i] : `<span style="color:var(--text-muted); font-weight:700;">${i + 1}</span>`;
+                    htmlContenido += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'}; font-size:.95rem;"><span style="font-weight:700;">${med} &nbsp;${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color); font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted);">pts</span></span></div>`;
+                });
+            }
+            htmlContenido += '</div>';
+            body.innerHTML = htmlContenido;
+        } catch (e) {
+            console.error(e);
+            body.innerHTML = `<div style="text-align:center;padding:30px;color:var(--danger-color); font-weight:700;"><i class="ph-bold ph-warning-circle" style="font-size:2rem;"></i><br><br>Error al conectar con la base de datos de la liga.</div>`;
+        }
+    }
+}
+
+function cerrarModalLigaAmigosPrivada() {
+    const modal = document.getElementById('liga-amigos-modal');
+    if (modal) modal.style.display = 'none';
+}
