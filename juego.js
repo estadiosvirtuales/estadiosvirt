@@ -2391,24 +2391,30 @@ function compartirRetoDiarioWordle() {
     const hoy = new Date();
     const fechaText = String(hoy.getDate()).padStart(2, '0') + '/' + String(hoy.getMonth() + 1).padStart(2, '0');
     
-    let texto = `✈️🌍 ¡Misión completada en StadiumGuessr!\n`;
-    texto += `📅 Reto Diario: ${fechaText}\n`;
-    texto += `🏆 Puntaje Final: ${guessrPuntosTotales} Pts\n\n`;
+    // Calificación de rendimiento viral según el puntaje total
+    let rangoTexto = "¡Amateur total! 🥶";
+    if (guessrPuntosTotales >= 22000) rangoTexto = "👑 ¡GALÁCTICO ABSOLUTO! (Nivel Dios) 👑";
+    else if (guessrPuntosTotales >= 18000) rangoTexto = "⭐ ¡Crack de Primera! ⭐";
+    else if (guessrPuntosTotales >= 12000) rangoTexto = "🏃 Volante con despliegue 🏃";
+
+    let texto = `🏟️ Misión StadiumGuessr Completada 🌍\n`;
+    texto += `📅 Reto del día: ${fechaText}\n`;
+    texto += `🏆 Puntaje: ${guessrPuntosTotales.toLocaleString('es-AR')} Pts\n`;
+    texto += `📊 Rendimiento: ${rangoTexto}\n\n`;
 
     let emojisRondas = '';
     guessrHistorialRondas.forEach(ronda => {
-        // Colores según puntos de la ronda (Más exigente y vistoso)
-        if (ronda.puntos >= 4500) emojisRondas += '🟩 ';
-        else if (ronda.puntos >= 3000) emojisRondas += '🟨 ';
-        else if (ronda.puntos >= 1000) emojisRondas += '🟧 ';
-        else emojisRondas += '🟥 ';
+        if (ronda.puntos >= 4500) emojisRondas += '🟩 ';      // Clavado al ángulo
+        else if (ronda.puntos >= 3000) emojisRondas += '🟨 '; // En el área
+        else if (ronda.puntos >= 1500) emojisRondas += '🟧 '; // En la tribuna
+        else emojisRondas += '🟥 ';                           // Fuera del estadio
     });
 
-    texto += emojisRondas.trim() + `\n\n👀 ¿Podés superar mi marca de hoy?\n⚽ Jugalo acá: estadiosvirtuales.com`;
+    texto += emojisRondas.trim() + `\n\n👀 ¿Te da la nafta para ganarme o vas a arrugar?\n⚽ Desafiame acá: estadiosvirtuales.com`;
 
     if (navigator.clipboard) {
         navigator.clipboard.writeText(texto).then(() => {
-            showToast("¡Resultado copiado! Listo para pegar en WhatsApp 🚀", "ph-copy", "success");
+            showToast("¡Texto picante copiado! Pegalo en tu grupo de WhatsApp 🚀", "ph-copy", "success");
         }).catch(err => {
             showToast("Tu navegador no soporta copiado directo.", "ph-warning-circle", "warning");
         });
