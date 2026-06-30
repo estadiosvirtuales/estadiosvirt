@@ -584,6 +584,13 @@ function guardarScorePendiente() {
     const emailParaGuardar = u.email || '';
 
     enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
+
+// 👇 SPRINT VIRAL - PASO 5: MÁGIA DE MINI LIGAS DE AMIGOS 👇
+const codigoLigaGuardado = localStorage.getItem('ev_codigo_liga_amigos');
+if (codigoLigaGuardado && pendingScoreType === 'guessr') {
+    enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, 'guessr_' + codigoLigaGuardado);
+    console.log(`Puntaje duplicado con éxito en la Mini Liga: ${codigoLigaGuardado}`);
+}
     showToast(`¡${pendingScore} puntos guardados ! 🚀`);
     pendingScore = null;
     pendingScoreType = null;
@@ -2429,13 +2436,15 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     
     let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
     let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
-    let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : ''; // 100% Reparado con su "e"
+    let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : '';
+    let activeAmigos = modoEspecifico === 'amigos' ? 'active' : '';
     
     let subMenuHTML = `
-    <div class="logros-tabs-row" style="margin-bottom:18px; display:flex; gap:5px;">
-        <button class="logro-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">👤 Solo (Puntos)</button>
-        <button class="logro-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">🏆 1v1 Histórico</button>
-        <button class="logro-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">🔥 1v1 Semanal</button>
+    <div class="logros-tabs-row" style="margin-bottom:18px; display:flex; gap:4px; overflow-x:auto; padding:4px;">
+        <button class="logro-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">👤 Solo</button>
+        <button class="logro-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">🏆 1v1 Hist.</button>
+        <button class="logro-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">🔥 Semanal</button>
+        <button class="logro-tab-btn ${activeCardClass || activeSolo}" style="background: ${modoEspecifico==='solo'?'':'var(--accent-color)'}; color: ${modoEspecifico==='solo'?'':'#000'}" onclick="abrirModalRanking('amigos')">👥 Amigos</button>
     </div>`;
 
     try {
@@ -2463,7 +2472,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             }
             htmlContenido += '</div>';
             
-        } else {
+        } else if (modoEspecifico === 'v_historico' || modoEspecifico === 'v_semanal') {
             const tipoRpc = modoEspecifico === 'v_semanal' ? 'semanal' : 'historico';
             const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus', { p_tipo: tipoRpc });
             if (error) throw error;
@@ -2479,6 +2488,45 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 });
             }
             htmlContenido += '</div>';
+        } else if (modoEspecifico === 'amigos') {
+            const codigoLigaGuardado = localStorage.getItem('ev_codigo_liga_amigos');
+            if (!codigoLigaGuardado) {
+                htmlContenido = `
+                <div style="text-align:center; padding:20px 10px; background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px;">
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:16px; line-height:1.5;">Creá una Mini Liga con tus amigos o ingresá el código de una existente para competir en un fixture privado.</p>
+                    <input type="text" id="input-codigo-liga" placeholder="CÓDIGO DE 4 LETRAS" maxlength="4" style="text-transform:uppercase; text-align:center; padding:12px; width:100%; max-width:240px; background:var(--bg-color); border:2px solid var(--border-strong); border-radius:10px; color:#fff; font-weight:900; font-size:1.1rem; margin-bottom:14px; outline:none;">
+                    <div style="display:flex; gap:10px; justify-content:center; width:100%; max-width:280px; margin:0 auto;">
+                        <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="padding:10px 16px; font-size:0.85rem; flex:1;">Crear Nueva</button>
+                        <button onclick="crearOCargarLigaAmigos(false)" class="btn-3d secondary" style="padding:10px 16px; font-size:0.85rem; flex:1; border-color:var(--accent-color); color:var(--accent-color);">Unirme</button>
+                    </div>
+                </div>`;
+            } else {
+                const { data: ranking, error } = await supabaseClient
+                    .from('ranking')
+                    .select('nombre, puntaje')
+                    .eq('juego', 'guessr_' + codigoLigaGuardado)
+                    .order('puntaje', { ascending: false })
+                    .limit(15);
+                if (error) throw error;
+
+                htmlContenido += `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
+                    <span>Liga Activa: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${codigoLigaGuardado}</strong></span>
+                    <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir de Liga 🚪</button>
+                </div>
+                <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+                
+                if (!ranking || !ranking.length) {
+                    htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Nadie registró puntos todavía en la liga <strong>${codigoLigaGuardado}</strong>. ¡Jugá un individual para inaugurarla!</p>`;
+                } else {
+                    ranking.forEach((f, i) => {
+                        const m = ['🥇', '🥈', '🥉'];
+                        const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
+                        htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
+                    });
+                }
+                htmlContenido += '</div>';
+            }
         }
 
         body.innerHTML = `
@@ -3143,4 +3191,38 @@ function dispararJuicinessRonda(distancia) {
             card.classList.remove('animate-wrong');
         }, 400);
     }
+}
+// ========================================================
+// SPRINT VIRAL - PASO 5: SISTEMA DE MINI LIGAS PRIVADAS
+// ========================================================
+function crearOCargarLigaAmigos(esCreacion) {
+    const input = document.getElementById('input-codigo-liga');
+    let codigo = input ? input.value.trim().toUpperCase() : "";
+    
+    if (esCreacion) {
+        // Generamos un token al azar de 4 letras consonantes/números vistosos
+        const caracteres = "BCDFGHJKLMNPQRSTVWXYZ23456789";
+        codigo = "";
+        for (let i = 0; i < 4; i++) {
+            codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+    }
+
+    if (codigo.length < 4) {
+        showToast("¡El código debe tener exactamente 4 caracteres! 👥", "ph-warning-circle", "danger");
+        return;
+    }
+
+    localStorage.setItem('ev_codigo_liga_amigos', codigo);
+    showToast(`¡Te uniste a la Mini Liga: ${codigo}! 👥🔥`, "ph-users-three", "success");
+    abrirModalRanking('amigos');
+}
+
+function salirLigaAmigos() {
+    const confirmar = confirm("¿Seguro que querés salir de esta Mini Liga privada?");
+    if (!confirmar) return;
+    
+    localStorage.removeItem('ev_codigo_liga_amigos');
+    showToast("Saliste de la liga privada.", "ph-door", "info");
+    abrirModalRanking('amigos');
 }
