@@ -3214,7 +3214,7 @@ function crearOCargarLigaAmigos(esCreacion) {
 
     localStorage.setItem('ev_codigo_liga_amigos', codigo);
     showToast(`¡Te uniste a la Mini Liga: ${codigo}! 👥🔥`, "ph-users-three", "success");
-    abrirModalRanking('amigos');
+    abrirModalLigaAmigosPrivada();
 }
 
 function salirLigaAmigos() {
@@ -3223,7 +3223,7 @@ function salirLigaAmigos() {
     
     localStorage.removeItem('ev_codigo_liga_amigos');
     showToast("Saliste de la liga privada.", "ph-door", "info");
-    abrirModalRanking('amigos');
+    cerrarModalLigaAmigosPrivada();
 }
 // ========================================================
 // CONTROLES EXCLUSIVOS: MODAL PROPIO DE LIGA DE AMIGOS
