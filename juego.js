@@ -3237,6 +3237,22 @@ async function crearOCargarLigaAmigos(esCreacion) {
 
             // Si el servidor dio el OK, guardamos localmente y fundamos el torneo
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
+
+            // 🎯 FICHAMOS AL CREADOR CON 0 PTS: Para que figure de inmediato como integrante activo
+            try {
+                const u = obtenerUsuarioLogueado();
+                const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+                const emailParaFichar = u ? u.email : '';
+                
+                await supabaseClient
+                    .from('ranking')
+                    .insert([
+                        { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'guessr_' + nombreLiga }
+                    ]);
+            } catch (e) { 
+                console.error("Error al autofichar creador:", e); 
+            }
+
             showToast(`¡Liga creada: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
 
         } catch (err) {
@@ -3262,6 +3278,31 @@ async function crearOCargarLigaAmigos(esCreacion) {
 
             // Si la liga existe en la tabla oficial, lo dejamos ingresar de forma segura
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
+
+            // 🎯 FICHAMOS AL NUEVO INTEGRANTE CON 0 PTS: Solo si nunca antes jugó en esta liga específica
+            try {
+                const u = obtenerUsuarioLogueado();
+                const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+                const emailParaFichar = u ? u.email : '';
+
+                const { data: existente } = await supabaseClient
+                    .from('ranking')
+                    .select('nombre')
+                    .eq('juego', 'guessr_' + nombreLiga)
+                    .eq('nombre', nombreParaFichar)
+                    .limit(1);
+
+                if (!existente || existente.length === 0) {
+                    await supabaseClient
+                        .from('ranking')
+                        .insert([
+                            { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'guessr_' + nombreLiga }
+                        ]);
+                }
+            } catch (e) { 
+                console.error("Error al autofichar nuevo miembro:", e); 
+            }
+
             showToast(`¡Te uniste a la liga: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
 
         } catch (err) {
