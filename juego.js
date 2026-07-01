@@ -2235,40 +2235,45 @@ function iniciarTrivia(){
 
 // MOTOR DEL GUESSR ADAPTADO (Y CON EL TYPO TOTALMENTE REPARADO)
 function lanzarRondaGuessr(){
-const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
+    const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
-// === REEMPLAZA DESDE ACÁ ===
-if (esModoVersus) {
-    const nombreEstadioOficial = versusEstadios[guessrRondaActual - 1];
-    guessrEstadioCorrecto = (catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados).find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioOficial);
-    
-    if (!guessrEstadioCorrecto) {
-        showToast("Error al cargar el estadio del versus 🚨", "ph-warning-circle", "danger");
-        cerrarModalVideo();
-        return;
+    if (esModoVersus) {
+        const nombreEstadioOficial = versusEstadios[guessrRondaActual - 1];
+        guessrEstadioCorrecto = (catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados).find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioOficial);
+        
+        if (!guessrEstadioCorrecto) {
+            showToast("Error al cargar el estadio del versus 🚨", "ph-warning-circle", "danger");
+            cerrarModalVideo();
+            return;
+        }
+        guessrEstadiosJugados.push(nombreEstadioOficial);
+        document.getElementById('taunts-container').style.display = 'flex';
+        
+    } else if (esModoDiario) {
+        const nombreEstadioDiario = estadiosDiariosList[guessrRondaActual - 1];
+        guessrEstadioCorrecto = catalogoGlobal.find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioDiario);
+        guessrEstadiosJugados.push(nombreEstadioDiario);
+
+    } else {
+        if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
+        guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];
+        guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
     }
-    guessrEstadiosJugados.push(nombreEstadioOficial);
-    document.getElementById('taunts-container').style.display = 'flex';
+
+    guessrSelectedLatLng=null;actualizarDotsProgreso();
+    const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
+    document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
     
-} else if (esModoDiario) {
-    // 🌍 LÓGICA NUEVA: RETO DIARIO
-    const nombreEstadioDiario = estadiosDiariosList[guessrRondaActual - 1];
-    guessrEstadioCorrecto = catalogoGlobal.find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioDiario);
-    guessrEstadiosJugados.push(nombreEstadioDiario);
-
-} else {
-    // LÓGICA CLÁSICA: MODO INDIVIDUAL ALEATORIO
-    if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
-    guessrEstadioCorrecto=disp[Math.floor(Math.random()*disp.length)];
-    guessrEstadiosJugados.push(bscarPropiedad(guessrEstadioCorrecto,'Estadio'));
-}
-
-guessrSelectedLatLng=null;actualizarDotsProgreso();
-const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
-document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
-const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
-abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
-// PEGAR ESTO REEMPLAZANDO EL SETTIMEOUT(..., 600) DE lanzarRondaGuessr:
+    const btn=document.getElementById('game-action-btn');
+    btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;
+    btn.className="btn-3d secondary";
+    btn.style.width="100%";
+    btn.disabled=true;
+    btn.setAttribute('data-estado','juego');
+    btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
+    
+    abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
+    
     setTimeout(() => {
         if (guessrMapInstance) guessrMapInstance.remove();
         const mapContainer = document.getElementById('map-guess-container');
@@ -2289,23 +2294,21 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
             btn.disabled = false;
         });
 
-        // 🛡️ ResizeObserver: Garantiza que el mapa se dibuje bien apenas el contenedor es visible (Mejor que un setTimeout)
         const resizeObserver = new ResizeObserver(() => {
             if (guessrMapInstance) guessrMapInstance.invalidateSize();
         });
         resizeObserver.observe(mapContainer);
 
-        // Limpiamos el observer cuando el mapa se remueva para no gastar memoria
         guessrMapInstance.on('unload', () => resizeObserver.disconnect());
 
-    }, 300); // Podemos bajarlo a 300ms porque el ResizeObserver lo ataja seguro
-// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes entre 12 y 24s)
+    }, 300); 
+
     if (esModoBot) {
         if (botAntesTimer) clearTimeout(botAntesTimer);
         if (Math.random() < 0.5) {
             botAntesTimer = setTimeout(() => {
                 ejecutarVotoBotDinamico();
-            }, 12000 + Math.random() * 12000); // Elige exactamente entre 12000ms y 24000ms
+            }, 12000 + Math.random() * 12000); 
         }
     }
 }
