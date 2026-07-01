@@ -176,6 +176,56 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
             } else {
                 console.log(`¡Puntaje verificado por el servidor (+${puntajeVerificado} Pts) guardado con éxito!`);
             }
+        } else if (modoJuego.startsWith('guessr_')) {
+            // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA: acá NO insertamos una fila nueva por cada partida.
+            // Buscamos si el jugador ya tiene una fila en esta liga (el fichaje en 0, o una partida anterior)
+            // y la actualizamos SOLO si es un nuevo récord personal. Así cada integrante queda
+            // representado por una única fila en la tabla, siempre con su mejor puntaje.
+            const { data: filaExistente, error: errorSelect } = await supabaseClient
+                .from('ranking')
+                .select('puntaje')
+                .eq('juego', modoJuego)
+                .eq('nombre', nombreJugador)
+                .limit(1);
+
+            if (errorSelect) {
+                console.error("Error al revisar el puntaje previo en la liga:", errorSelect.message);
+                return;
+            }
+
+            if (filaExistente && filaExistente.length > 0) {
+                const mejorPrevio = filaExistente[0].puntaje || 0;
+
+                if (puntosLogrados > mejorPrevio) {
+                    const { error: errorUpdate } = await supabaseClient
+                        .from('ranking')
+                        .update({ puntaje: puntosLogrados, email: emailJugador })
+                        .eq('juego', modoJuego)
+                        .eq('nombre', nombreJugador);
+
+                    if (errorUpdate) {
+                        console.error("Error al actualizar el puntaje de liga:", errorUpdate.message);
+                    } else {
+                        console.log(`🏆 ¡Nuevo récord personal en la liga guardado (${puntosLogrados} pts)!`);
+                    }
+                } else {
+                    console.log("No superaste tu récord anterior en esta liga, la tabla no cambia.");
+                }
+            } else {
+                // Primera vez que este jugador anota un puntaje real en esta liga (no debería pasar seguido,
+                // porque ya lo fichamos en 0 al unirse, pero lo cubrimos por las dudas)
+                const { error: errorInsert } = await supabaseClient
+                    .from('ranking')
+                    .insert([
+                        { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                    ]);
+
+                if (errorInsert) {
+                    console.error("Error al guardar tu primer puntaje en la liga:", errorInsert.message);
+                } else {
+                    console.log("¡Primer puntaje de liga guardado con éxito!");
+                }
+            }
         } else {
             // OTROS MINIJUEGOS (Orden Capacidad/Antigüedad): Inserción clásica
             const { data, error } = await supabaseClient
@@ -2526,13 +2576,27 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     </div>
                 </div>`;
             } else {
-                const { data: ranking, error } = await supabaseClient
+                const { data: rankingCrudo, error } = await supabaseClient
                     .from('ranking')
                     .select('nombre, puntaje')
                     .eq('juego', 'guessr_' + codigoLigaGuardado)
                     .order('puntaje', { ascending: false })
-                    .limit(15);
+                    .limit(500);
                 if (error) throw error;
+
+                // Agrupamos por nombre y nos quedamos con el mejor puntaje de cada integrante
+                // (mismo criterio que la tabla nueva de "Mi Liga", para que no haya filas duplicadas).
+                const mejorPorIntegranteFama = {};
+                (rankingCrudo || []).forEach(row => {
+                    const n = (row.nombre || 'Anónimo').trim();
+                    const p = row.puntaje || 0;
+                    if (!mejorPorIntegranteFama[n] || p > mejorPorIntegranteFama[n].puntaje) {
+                        mejorPorIntegranteFama[n] = { nombre: n, puntaje: p };
+                    }
+                });
+                const ranking = Object.values(mejorPorIntegranteFama)
+                    .sort((a, b) => b.puntaje - a.puntaje)
+                    .slice(0, 15);
 
                 htmlContenido += `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
@@ -3591,16 +3655,32 @@ async function abrirModalLigaAmigosPrivada() {
     }
 
     try {
+        // Traemos un lote grande de filas (puede haber varias por integrante: el fichaje en 0,
+        // partidas viejas de antes de este arreglo, etc.) y después agrupamos nosotros.
         const { data, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
             .eq('juego', 'guessr_' + nombreLiga)
             .order('puntaje', { ascending: false })
-            .limit(15);
+            .limit(500);
 
         if (error) throw error;
 
-        cacheTop15Ligas = data || [];
+        // 🧹 Agrupamos por nombre y nos quedamos con el MEJOR puntaje de cada integrante,
+        // así cada persona aparece una sola vez en la tabla (nunca duplicada por partida o por el 0 inicial).
+        const mejorPorIntegrante = {};
+        (data || []).forEach(row => {
+            const n = (row.nombre || 'Anónimo').trim();
+            const p = row.puntaje || 0;
+            if (!mejorPorIntegrante[n] || p > mejorPorIntegrante[n].puntaje) {
+                mejorPorIntegrante[n] = { nombre: n, puntaje: p };
+            }
+        });
+
+        cacheTop15Ligas = Object.values(mejorPorIntegrante)
+            .sort((a, b) => b.puntaje - a.puntaje)
+            .slice(0, 15);
+
         renderizarCuerpoLiga(cacheTop15Ligas, nombreLiga, miNombreRankingLiga, 'puntaje');
     } catch (e) {
         console.error("Error al cargar la tabla de la liga:", e);
