@@ -336,7 +336,7 @@ function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
 }
 
 let estadiosCargados=[],catalogoGlobal=[];
-const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460"];
+const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119"];
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
 let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrPolyline=null,guessrSelectedLatLng=null;
 let usuarioLogueadoCache = undefined;
@@ -528,7 +528,7 @@ if(saved==='light'){document.documentElement.setAttribute('data-theme','light');
 })();
 
 let ligasPanelOpen=false;
-const LIGA_COLORS={"0":"#74acdf","861264971":"#74acdf","554922783":"#cf142b","88250864":"#c60b1e","2013531070":"#009246","165565330":"#002395","96716546":"#ffce00","58862486":"#009c3b","304687071":"#d52b1e","879164460":"#1a6b3a"};
+const LIGA_COLORS={"0":"#74acdf","861264971":"#74acdf","554922783":"#cf142b","88250864":"#c60b1e","2013531070":"#009246","165565330":"#002395","96716546":"#ffce00","58862486":"#009c3b","304687071":"#d52b1e","879164460":"#1a6b3a","1616215119": "#f36c21"};
 function toggleLigasPanel(){const panel=document.getElementById('ligas-dropdown-panel'),btn=document.getElementById('liga-selector-btn');ligasPanelOpen=!ligasPanelOpen;panel.classList.toggle('open',ligasPanelOpen);btn.classList.toggle('open',ligasPanelOpen);}
 function cerrarLigasPanel(){ligasPanelOpen=false;document.getElementById('ligas-dropdown-panel').classList.remove('open');document.getElementById('liga-selector-btn').classList.remove('open');}
 document.addEventListener('click',(e)=>{const btn=document.getElementById('liga-selector-btn'),panel=document.getElementById('ligas-dropdown-panel');if(btn&&panel&&!btn.contains(e.target)&&!panel.contains(e.target))cerrarLigasPanel();});
@@ -931,7 +931,26 @@ const COLORES_CLUBES={"River Plate": "linear-gradient(135deg, #cc0000, #ffffff)"
             "Audax Italiano": "linear-gradient(135deg, #006437, #ffffff, #e20e0e)",
             "Cobresal": "linear-gradient(135deg, #ff6600, #ffffff, #006437)",
             "Deportes Concepcion": "linear-gradient(135deg, #ae75db, #ffffff)",
-            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)"};
+            "Unión La Calera": "linear-gradient(135deg, #e20e0e, #ffffff)",
+            // PAÍSES BAJOS - EREDIVISIE / EERSTE DIVISIE
+            "Ajax Amsterdam": "linear-gradient(135deg, #ffffff, #d2122e, #ffffff)",
+            "PSV Eindhoven": "linear-gradient(135deg, #e30613, #ffffff, #000000)",
+            "Feyenoord Rotterdam": "linear-gradient(135deg, #e30613, #ffffff, #000000)",
+            "AZ Alkmaar": "linear-gradient(135deg, #e30613, #ffffff)",
+            "FC Twente": "linear-gradient(135deg, #d3001b, #ffffff)",
+            "FC Utrecht": "linear-gradient(135deg, #e30613, #ffffff)",
+            "Heerenveen": "linear-gradient(135deg, #00529f, #ffffff, #e30613)",
+            "FC Groningen": "linear-gradient(135deg, #007844, #ffffff)",
+            "Go Ahead Eagles": "linear-gradient(135deg, #e30613, #ffcc00)",
+            "NEC Nijmegen": "linear-gradient(135deg, #e30613, #000000, #008000)",
+            "Willem II": "linear-gradient(135deg, #e30613, #ffffff, #0033a0)",
+            "ADO Den Haag": "linear-gradient(135deg, #ffcc00, #008000)",
+            "Sparta Rotterdam": "linear-gradient(135deg, #e30613, #ffffff, #000000)",
+            "Excelsior": "linear-gradient(135deg, #000000, #e30613)",
+            "Fortuna Sittard": "linear-gradient(135deg, #ffcc00, #008000)",
+            "PEC Zwolle": "linear-gradient(135deg, #00529f, #ffffff)",
+            "SC Cambuur": "linear-gradient(135deg, #ffcc00, #00529f)",
+            "Telstar": "linear-gradient(135deg, #ffffff, #00529f, #e30613)"};
 const COLORES_PAISES={"argentina":"linear-gradient(135deg,#74acdf,#ffffff,#74acdf)","brasil":"linear-gradient(135deg,#009c3b,#ffdf00,#009c3b)","españa":"linear-gradient(135deg,#c60b1e,#ffc400,#c60b1e)","italia":"linear-gradient(135deg,#009246,#ffffff,#ce2b37)","francia":"linear-gradient(135deg,#002395,#ffffff,#ed2939)","alemania":"linear-gradient(135deg,#000000,#dd0000,#ffce00)","chile":"linear-gradient(135deg,#d52b1e,#ffffff,#0039a6)","estados unidos":"linear-gradient(135deg,#002868 0%,#ffffff 50%,#bf0a30 100%)","usa":"linear-gradient(135deg,#002868 0%,#ffffff 50%,#bf0a30 100%)","mexico":"linear-gradient(135deg,#006847 0%,#ffffff 50%,#ce1126 100%)","méxico":"linear-gradient(135deg,#006847 0%,#ffffff 50%,#ce1126 100%)","canada":"linear-gradient(135deg,#d52b1e 0%,#ffffff 50%,#d52b1e 100%)","canadá":"linear-gradient(135deg,#d52b1e 0%,#ffffff 50%,#d52b1e 100%)"};
 
 function obtenerFondoClub(club,pais){
