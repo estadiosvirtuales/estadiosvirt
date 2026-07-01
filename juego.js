@@ -176,7 +176,7 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
             } else {
                 console.log(`¡Puntaje verificado por el servidor (+${puntajeVerificado} Pts) guardado con éxito!`);
             }
-        } else if (modoJuego.startsWith('guessr_')) {
+        } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
             // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA: acá NO insertamos una fila nueva por cada partida.
             // Buscamos si el jugador ya tiene una fila en esta liga (el fichaje en 0, o una partida anterior)
             // y la actualizamos SOLO si es un nuevo récord personal. Así cada integrante queda
@@ -636,11 +636,7 @@ function guardarScorePendiente() {
     enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
 
 // 👇 SPRINT VIRAL - PASO 5: MÁGIA DE MINI LIGAS DE AMIGOS 👇
-const codigoLigaGuardado = localStorage.getItem('ev_codigo_liga_amigos');
-if (codigoLigaGuardado && pendingScoreType === 'guessr') {
-    enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, 'guessr_' + codigoLigaGuardado);
-    console.log(`Puntaje duplicado con éxito en la Mini Liga: ${codigoLigaGuardado}`);
-}
+
     showToast(`¡${pendingScore} puntos guardados ! 🚀`);
     pendingScore = null;
     pendingScoreType = null;
@@ -2406,16 +2402,8 @@ async function finalizarJuegoGuessr(){
         
         // FIX: Si el duelo nació en una liga, guardamos el puntaje logrado para esa tabla
         if (versusLigaOrigen) {
-            try {
-                await supabaseClient.from('ranking').insert([{
-                    nombre: nombreLocal,
-                    puntaje: guessrPuntosTotales,
-                    email: obtenerUsuarioLogueado()?.email || '',
-                    juego: 'duelo_' + versusLigaOrigen
-                }]);
-            } catch(err) { console.error("No se pudo registrar el puntaje del duelo en la liga:", err); }
-        }
-        
+    await enviarPuntaje(nombreLocal, guessrPuntosTotales, obtenerUsuarioLogueado()?.email || '', 'duelo_' + versusLigaOrigen);
+}
         if (guessrPuntosTotales > rivalPuntosTotales) {
             cartelResultado = "¡VICTORIA! 🏆";
             colorResultado = "#00e676";
@@ -3373,7 +3361,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
             await supabaseClient
                 .from('ranking')
                 .delete()
-                .eq('juego', 'guessr_' + nombreLiga);
+                .in('juego', ['guessr_' + nombreLiga, 'duelo_' + nombreLiga]);
 
             // Guardamos localmente y fundamos el torneo
             localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
@@ -3387,7 +3375,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 await supabaseClient
                     .from('ranking')
                     .insert([
-                        { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'guessr_' + nombreLiga }
+                        { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'duelo_' + nombreLiga }
                     ]);
             } catch (e) { 
                 console.error("Error al autofichar creador:", e); 
@@ -3437,7 +3425,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                     await supabaseClient
                         .from('ranking')
                         .insert([
-                            { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'guessr_' + nombreLiga }
+                            { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'duelo_' + nombreLiga }
                         ]);
                 }
             } catch (e) { 
@@ -3695,7 +3683,7 @@ async function abrirModalLigaAmigosPrivada() {
         const { data, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
-            .eq('juego', 'guessr_' + nombreLiga)
+            .eq('juego', 'duelo_' + nombreLiga)
             .order('puntaje', { ascending: false })
             .limit(500);
 
