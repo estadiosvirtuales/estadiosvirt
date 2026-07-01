@@ -2369,7 +2369,9 @@ async function finalizarJuegoGuessr(){
     // CIERRE MODO VERSUS (1v1)
     // ==========================================
     if (esModoVersus) {
-        versusPartidaEnCurso = false;
+        esModoVersus = false;          // FIX: Libera el candado del modo multijugador
+        versusPartidaEnCurso = false;  // FIX: Permite volver a buscar partida
+        
         if (versusChannel) {
             try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
             versusChannel = null;
@@ -2382,6 +2384,18 @@ async function finalizarJuegoGuessr(){
         let nombreRivalFinal = (versusRivalNombre || "RIVAL").toUpperCase();
         let cartelResultado = "";
         let colorResultado = "#ffea00";
+        
+        // FIX: Si el duelo nació en una liga, guardamos el puntaje logrado para esa tabla
+        if (versusLigaOrigen) {
+            try {
+                await supabaseClient.from('ranking').insert([{
+                    nombre: nombreLocal,
+                    puntaje: guessrPuntosTotales,
+                    email: obtenerUsuarioLogueado()?.email || '',
+                    juego: 'duelo_' + versusLigaOrigen
+                }]);
+            } catch(err) { console.error("No se pudo registrar el puntaje del duelo en la liga:", err); }
+        }
         
         if (guessrPuntosTotales > rivalPuntosTotales) {
             cartelResultado = "¡VICTORIA! 🏆";
@@ -2398,6 +2412,8 @@ async function finalizarJuegoGuessr(){
             cartelResultado = "¡EMPATE DE CRACKS! 🤝";
             colorResultado = "#2979ff";
         }
+
+        versusLigaOrigen = null; // FIX: Liberamos la memoria de la liga para tu próxima partida
 
         container.innerHTML = `
         <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
