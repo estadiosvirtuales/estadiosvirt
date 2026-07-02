@@ -972,6 +972,12 @@ function abrirModalVideo(event,link,esJuego=false){
         container.innerHTML=`<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`;
     }
     
+    modal.onclick = function(e) {
+        if (e.target !== modal) return;
+        if (esModoVersus) return;
+        cerrarModalVideo();
+    };
+
     modal.style.display='flex';
 }
 
@@ -2375,7 +2381,7 @@ async function finalizarJuegoGuessr(){
 
         // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Si el partido nació en una)
         if (ligaJugada) {
-            await enviarPuntaje(nombreLocal, guessrPuntosTotales, obtenerUsuarioLogueado()?.email || '', 'guessr_' + ligaJugada);
+            await enviarPuntaje(nombreLocal, guessrPuntosTotales, obtenerUsuarioLogueado()?.email || '', 'duelo_' + ligaJugada);
         }
         
         if (guessrPuntosTotales > rivalPuntosTotales) {
@@ -2554,7 +2560,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             
         } else if (modoEspecifico === 'v_historico' || modoEspecifico === 'v_semanal') {
             const tipoRpc = modoEspecifico === 'v_semanal' ? 'semanal' : 'historico';
-            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus', { p_tipo: tipoRpc });
+            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: tipoRpc });
             if (error) throw error;
 
             htmlContenido += `<div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
@@ -3398,7 +3404,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
                 const { data: existente } = await supabaseClient
                     .from('ranking')
                     .select('nombre')
-                    .eq('juego', 'guessr_' + nombreLiga)
+                    .eq('juego', 'duelo_' + nombreLiga)
                     .eq('nombre', nombreParaFichar)
                     .limit(1);
 
