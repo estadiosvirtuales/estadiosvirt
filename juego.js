@@ -2390,10 +2390,8 @@ async function finalizarJuegoGuessr(){
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
             guardarStats(); 
-            // Guardamos el triunfo
-            if (ligaJugada) {
-                try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
-            }
+            // Guardamos el triunfo (liga queda en null automáticamente si el duelo no nació en una liga)
+            try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
         } else if (guessrPuntosTotales < rivalPuntosTotales) {
             cartelResultado = "DERROTA ❌";
             colorResultado = "#ff4757";
