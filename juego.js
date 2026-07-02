@@ -155,6 +155,7 @@ async function cargarProgresoDesdeSupabase() {
 
 // Función universal para mandar puntajes a Supabase
 // Función universal y segura para mandar puntajes a Supabase (Modo Híbrido)
+// Función universal para mandar puntajes a Supabase (Modo Híbrido)
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
     if (!supabaseClient) {
         console.error("No se pudo mandar el puntaje: Supabase no está activo.");
@@ -162,25 +163,26 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
     }
     try {
         if (modoJuego === 'guessr') {
-            // MODO GUESSR: Inserción hiper-segura calculada por el servidor
+            // MODO GUESSR GLOBAL
             console.log("📡 Solicitando verificación de partida e inserción segura en el servidor...");
             const { data: puntajeVerificado, error } = await supabaseClient.rpc('guardar_partida_segura', {
                 p_nombre_jugador: nombreJugador,
                 p_email_jugador: emailJugador || '',
                 p_modo_juego: modoJuego,
-                p_rondas_json: guessrHistorialCoordenadas // Mandamos los 5 tiros crudos
+                p_rondas_json: guessrHistorialCoordenadas
             });
 
+            // Paracaídas: si el servidor estricto falla, forzamos el guardado clásico
             if (error) {
-                console.error("Error en el canal seguro de rankings:", error.message);
+                await supabaseClient.from('ranking').insert([
+                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                ]);
             } else {
                 console.log(`¡Puntaje verificado por el servidor (+${puntajeVerificado} Pts) guardado con éxito!`);
             }
-        } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
-            // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA: acá NO insertamos una fila nueva por cada partida.
-            // Buscamos si el jugador ya tiene una fila en esta liga (el fichaje en 0, o una partida anterior)
-            // y la actualizamos SOLO si es un nuevo récord personal. Así cada integrante queda
-            // representado por una única fila en la tabla, siempre con su mejor puntaje.
+        } else if (modoJuego.startsWith('guessr_')) {
+            // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA (NO DUPLICA JUGADORES)
+            // 1. Buscamos si el jugador ya está fichado en esta liga (Ej: si está con 0 puntos)
             const { data: filaExistente, error: errorSelect } = await supabaseClient
                 .from('ranking')
                 .select('puntaje')
@@ -188,62 +190,29 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
                 .eq('nombre', nombreJugador)
                 .limit(1);
 
-            if (errorSelect) {
-                console.error("Error al revisar el puntaje previo en la liga:", errorSelect.message);
-                return;
-            }
-
             if (filaExistente && filaExistente.length > 0) {
+                // Ya existe en la liga. Vemos si superó su propio récord.
                 const mejorPrevio = filaExistente[0].puntaje || 0;
 
                 if (puntosLogrados > mejorPrevio) {
-                    const { error: errorUpdate } = await supabaseClient
-                        .from('ranking')
+                    // ¡REEMPLAZA LOS PUNTOS ANTERIORES! (No hace una fila nueva)
+                    await supabaseClient.from('ranking')
                         .update({ puntaje: puntosLogrados, email: emailJugador })
                         .eq('juego', modoJuego)
                         .eq('nombre', nombreJugador);
-
-                    if (errorUpdate) {
-                        console.error("Error al actualizar el puntaje de liga:", errorUpdate.message);
-                    } else {
-                        console.log(`🏆 ¡Nuevo récord personal en la liga guardado (${puntosLogrados} pts)!`);
-                    }
-                } else {
-                    console.log("No superaste tu récord anterior en esta liga, la tabla no cambia.");
+                    console.log(`🏆 ¡Nuevo récord en liga (${puntosLogrados} pts) ha reemplazado al viejo!`);
                 }
             } else {
-                // Primera vez que este jugador anota un puntaje real en esta liga (no debería pasar seguido,
-                // porque ya lo fichamos en 0 al unirse, pero lo cubrimos por las dudas)
-                const { error: errorInsert } = await supabaseClient
-                    .from('ranking')
-                    .insert([
-                        { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                    ]);
-
-                if (errorInsert) {
-                    console.error("Error al guardar tu primer puntaje en la liga:", errorInsert.message);
-                } else {
-                    console.log("¡Primer puntaje de liga guardado con éxito!");
-                }
+                // Nunca jugó ni fue fichado, lo insertamos por primera vez
+                await supabaseClient.from('ranking').insert([
+                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                ]);
             }
         } else {
-            // OTROS MINIJUEGOS (Orden Capacidad/Antigüedad): Inserción clásica
-            const { data, error } = await supabaseClient
-                .from('ranking') 
-                .insert([
-                    { 
-                        nombre: nombreJugador, 
-                        puntaje: puntosLogrados, 
-                        email: emailJugador, 
-                        juego: modoJuego 
-                    }
-                ]);
-
-            if (error) {
-                console.error("Error de Supabase:", error.message);
-            } else {
-                console.log(`¡Puntaje de ${modoJuego} guardado con éxito en la nube!`);
-            }
+            // OTROS MINIJUEGOS (Orden Capacidad/Antigüedad)
+            await supabaseClient.from('ranking').insert([
+                { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+            ]);
         }
     } catch (err) {
         console.error("Error inesperado de conexión:", err);
@@ -633,11 +602,10 @@ function guardarScorePendiente() {
     const nombreParaGuardar = getPref('ev_custom_nick', '') || u.name;
     const emailParaGuardar = u.email || '';
 
+    // Manda el puntaje exclusivamente a la tabla que corresponde al minijuego (ej: 'guessr' global)
     enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
 
-// 👇 SPRINT VIRAL - PASO 5: MÁGIA DE MINI LIGAS DE AMIGOS 👇
-
-    showToast(`¡${pendingScore} puntos guardados ! 🚀`);
+    showToast(`¡${pendingScore} puntos guardados en el ranking global! 🚀`);
     pendingScore = null;
     pendingScoreType = null;
 }
@@ -2383,9 +2351,12 @@ async function finalizarJuegoGuessr(){
     // ==========================================
     // CIERRE MODO VERSUS (1v1)
     // ==========================================
+   // ==========================================
+    // CIERRE MODO VERSUS (1v1)
+    // ==========================================
     if (esModoVersus) {
-        esModoVersus = false;          // FIX: Libera el candado del modo multijugador
-        versusPartidaEnCurso = false;  // FIX: Permite volver a buscar partida
+        esModoVersus = false;          
+        versusPartidaEnCurso = false;  
         
         if (versusChannel) {
             try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
@@ -2400,17 +2371,23 @@ async function finalizarJuegoGuessr(){
         let cartelResultado = "";
         let colorResultado = "#ffea00";
         
-        // FIX: Si el duelo nació en una liga, guardamos el puntaje logrado para esa tabla
-        if (versusLigaOrigen) {
-    await enviarPuntaje(nombreLocal, guessrPuntosTotales, obtenerUsuarioLogueado()?.email || '', 'duelo_' + versusLigaOrigen);
-}
+        const ligaJugada = versusLigaOrigen; // Rescatamos el nombre de la liga en la que estamos
+
+        // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Si el partido nació en una)
+        if (ligaJugada) {
+            await enviarPuntaje(nombreLocal, guessrPuntosTotales, obtenerUsuarioLogueado()?.email || '', 'guessr_' + ligaJugada);
+        }
+        
         if (guessrPuntosTotales > rivalPuntosTotales) {
             cartelResultado = "¡VICTORIA! 🏆";
             colorResultado = "#00e676";
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
             guardarStats(); 
-            try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: versusLigaOrigen }]); } catch(err) {}
+            // Guardamos el triunfo
+            if (ligaJugada) {
+                try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
+            }
         } else if (guessrPuntosTotales < rivalPuntosTotales) {
             cartelResultado = "DERROTA ❌";
             colorResultado = "#ff4757";
@@ -2420,7 +2397,12 @@ async function finalizarJuegoGuessr(){
             colorResultado = "#2979ff";
         }
 
-        versusLigaOrigen = null; // FIX: Liberamos la memoria de la liga para tu próxima partida
+        versusLigaOrigen = null; // Limpiamos para el próximo partido
+
+        // Botón inteligente: Vuelve a la liga si jugaste por liga, sino al global
+        const botonFinal = ligaJugada 
+            ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
+            : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
 
         container.innerHTML = `
         <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
@@ -2433,7 +2415,7 @@ async function finalizarJuegoGuessr(){
                 <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">${nombreRivalFinal}</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
             </div>
             
-            ${histHTML} <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
+            ${histHTML} ${botonFinal}
         </div>`;
         return;
     }
