@@ -158,7 +158,7 @@ body>*{position:relative;z-index:1}
 .ligas-panel-label::after{content:'';flex:1;height:1px;background:var(--border-strong)}
 .tabs-container{display:flex;flex-direction:column;gap:8px}
 .liga-country-group{width:100%}
-.liga-country-btn{display:flex;align-items:center;gap:10px;width:fit-content;min-width:200px;max-width:300px;padding:12px 16px;border-radius:14px;border:2px solid var(--border-strong);background:var(--bg-color);color:var(--text-main);font-size:.92rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:left;box-shadow:0 3px 0 rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25)}
+.liga-country-btn{display:flex;align-items:center;gap:10px;width:fit-content;min-width:200px;max-width:300px;padding:12px 16px;border-radius:14px;border:2px solid var(--border-strong);background:var(--bg-color);color:var(--text-main);font-size:.92rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:left;box-shadow:0 3px 0 rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);margin:0 auto}
 .liga-country-btn:hover{border-color:var(--accent-color);color:var(--accent-color);transform:translateY(-3px);box-shadow:0 7px 0 rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.4)}
 .liga-country-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3)}
 .liga-country-btn img{width:22px;border-radius:2px;box-shadow:0 0 3px rgba(0,0,0,.5)}
