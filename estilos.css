@@ -156,7 +156,16 @@ body>*{position:relative;z-index:1}
 .ligas-panel-inner{background:var(--card-bg);border:2px solid var(--border-strong);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-subtle)}
 .ligas-panel-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .ligas-panel-label::after{content:'';flex:1;height:1px;background:var(--border-strong)}
-.tabs-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.tabs-container{display:flex;flex-direction:column;gap:8px}
+.liga-country-group{width:100%}
+.liga-country-btn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-radius:14px;border:2px solid var(--border-strong);background:var(--bg-color);color:var(--text-main);font-size:.92rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:left}
+.liga-country-btn:hover{border-color:var(--accent-color);color:var(--accent-color)}
+.liga-country-btn img{width:22px;border-radius:2px;box-shadow:0 0 3px rgba(0,0,0,.5)}
+.liga-country-btn .chevron{margin-left:auto;transition:transform .25s;font-size:.85rem}
+.liga-country-group.open .liga-country-btn{border-color:var(--accent-color);color:var(--accent-color)}
+.liga-country-group.open .liga-country-btn .chevron{transform:rotate(180deg)}
+.liga-country-leagues{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;max-height:0;overflow:hidden;transition:max-height .3s ease,margin-top .3s ease;margin-top:0}
+.liga-country-group.open .liga-country-leagues{max-height:300px;margin-top:10px}
 .tab{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:2px solid transparent;cursor:pointer;font-size:.9rem;font-weight:700;color:#fff;transition:all .2s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;text-align:left;box-shadow:0 3px 0 rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);height:54px;width:100%;}
 .tab-bg{position:absolute;inset:0;z-index:0;transition:opacity .2s}
 .tab::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:1;border-radius:12px;transition:background .2s}
