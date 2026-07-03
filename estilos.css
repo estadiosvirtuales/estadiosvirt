@@ -153,7 +153,7 @@ body>*{position:relative;z-index:1}
 .liga-selector-preview{display:flex;align-items:center;gap:6px}
 .ligas-dropdown-panel{display:none;position:relative;width:100%;margin-bottom:28px}
 .ligas-dropdown-panel.open{display:block;animation:dropPanel .22s cubic-bezier(.4,0,.2,1) forwards}
-.ligas-panel-inner{background:var(--card-bg);border:2px solid var(--border-strong);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-subtle);max-width:360px}
+.ligas-panel-inner{background:var(--card-bg);border:2px solid var(--border-strong);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 0 1px var(--border-subtle);max-width:360px;margin:0 auto}
 .ligas-panel-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .ligas-panel-label::after{content:'';flex:1;height:1px;background:var(--border-strong)}
 .tabs-container{display:flex;flex-direction:column;gap:8px}
