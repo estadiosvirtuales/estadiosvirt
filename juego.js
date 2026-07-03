@@ -3592,7 +3592,8 @@ window.desafiarAmigoDirecto = function(nombreRival) {
     });
 
     cerrarModalLigaAmigosPrivada();
-    abrirLobbyEspera();
+    const urlLimpia = window.location.origin + window.location.pathname;
+    abrirLobbyPrivado(`${urlLimpia}?sala=${versusPartidaId}`, idSala);
     conectarRealtimeVersus();
 
     // 🕒 Si en 30s el rival no entró a la sala (no llegó el handshake 'rival_entro'), avisamos y cortamos
