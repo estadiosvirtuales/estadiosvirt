@@ -120,13 +120,14 @@
 <div class="game-card-text"><strong>Vuelo Aleatorio</strong><span>Descubrí al azar</span></div>
 </button>
 
-<button class="game-card btn-catalog" onclick="document.getElementById('section-ligas').scrollIntoView({behavior:'smooth'})">
+<button class="game-card btn-catalog" onclick="abrirCatalogo()">
 <div class="game-card-icon"><i class="ph-duotone ph-list-dashes"></i></div>
 <div class="game-card-text"><strong>Explorá el Catálogo</strong><span>Países, ligas y clubes</span></div>
 </button>
 </div>
 </div>
 </section>
+<div class="catalogo-layout" id="catalogo-layout">
 <section class="section-ligas">
 <div class="ligas-header">
 <div class="ligas-title-area">
@@ -139,13 +140,6 @@
 </div>
 <button id="btn-volver-ligas" class="btn-3d secondary" onclick="mostrarLigas()">
 <i class="ph-bold ph-arrow-left"></i> Volver
-</button>
-<button class="liga-selector-btn" id="liga-selector-btn" onclick="toggleLigasPanel()">
-<div class="liga-selector-preview" id="liga-selector-preview">
-<i class="ph-duotone ph-trophy"></i>
-<span id="liga-selector-label">Elegir liga</span>
-</div>
-<i class="ph-bold ph-caret-down chevron"></i>
 </button>
 </div>
 <div class="ligas-dropdown-panel" id="ligas-dropdown-panel">
@@ -308,6 +302,7 @@
 </div>
 </div>
 <main class="grid"></main>
+</div>
 </section>
 <div id="video-modal" class="modal-overlay" onclick="cerrarModalVideo()">
 <div id="modal-card" class="modal-content" onclick="event.stopPropagation()">
