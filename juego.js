@@ -936,6 +936,7 @@ function abrirModalVideo(event,link,esJuego=false){
     
     const modal=document.getElementById('video-modal'),card=document.getElementById('modal-card'),container=document.getElementById('modal-video-container');
     container.innerHTML='';
+    card.classList.remove('resultado-final-layout');
     const gameUi=document.getElementById('game-ui');
     
     if(esJuego){
