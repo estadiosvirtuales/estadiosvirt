@@ -938,6 +938,7 @@ function abrirModalVideo(event,link,esJuego=false){
     container.innerHTML='';
     card.classList.remove('resultado-final-layout');
     const gameUi=document.getElementById('game-ui');
+    card.classList.remove('resultado-final');
     
     if(esJuego){
         card.classList.add('stadium-guessr-layout');
@@ -1011,7 +1012,7 @@ function cerrarModalVideo(){
     }
 
     // Código clásico de limpieza visual (Sigue haciendo lo mismo de siempre abajo)
-    document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');document.getElementById('modal-card').classList.remove('resultado-final');
     try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
     try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
     guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
@@ -2332,6 +2333,7 @@ async function finalizarJuegoGuessr(){
     document.getElementById('game-ui').style.display='none';
     container.style.height='100%';
     document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    document.getElementById('modal-card').classList.add('resultado-final');
     document.getElementById('modal-card').classList.add('resultado-final-layout');
     
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
@@ -3040,6 +3042,7 @@ async function manejarAbandonoRival() {
     const container = document.getElementById('modal-video-container');
     document.getElementById('game-ui').style.display = 'none';
     document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    document.getElementById('modal-card').classList.add('resultado-final');
     document.getElementById('modal-card').classList.add('resultado-final-layout');
     if (guessrMapInstance) {
         try { guessrMapInstance.remove(); } catch (e) {}
