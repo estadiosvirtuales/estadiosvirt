@@ -3043,13 +3043,17 @@ async function manejarAbandonoRival() {
         guessrMapInstance = null;
     }
 
+    const botonFinal = versusLigaOrigen
+        ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
+        : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
     container.innerHTML = `
     <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
         <h2 style="font-size:2rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;filter:drop-shadow(0 0 10px var(--accent-glow));">¡VICTORIA POR ABANDONO! 🏆</h2>
         <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;max-width:340px;line-height:1.5;">Tu oponente abandonó la sesión o se quedó sin datos. Te quedás con los puntos del partido y una bonificación especial de +1000 XP.</p>
-        <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:280px;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>
+        ${botonFinal}
     </div>`;
     
+    versusLigaOrigen = null;
     esModoVersus = false;
     versusPartidaEnCurso = false;
 }
