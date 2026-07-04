@@ -502,6 +502,7 @@ function toggleLigasPanel(){const panel=document.getElementById('ligas-dropdown-
 window.toggleLigaCountryGroup=function(btn){const grupo=btn.closest('.liga-country-group');if(grupo)grupo.classList.toggle('open');};
 function cerrarLigasPanel(){ligasPanelOpen=false;document.getElementById('ligas-dropdown-panel').classList.remove('open');document.getElementById('liga-selector-btn').classList.remove('open');}
 window.abrirCatalogo=function(){document.getElementById('catalogo-layout').classList.add('open');document.getElementById('catalogo-layout').scrollIntoView({behavior:'smooth'});};
+window.cerrarCatalogo=function(){document.getElementById('catalogo-layout').classList.remove('open');};
 document.addEventListener('click',(e)=>{const btn=document.getElementById('liga-selector-btn'),panel=document.getElementById('ligas-dropdown-panel');if(btn&&panel&&!btn.contains(e.target)&&!panel.contains(e.target))cerrarLigasPanel();});
 
 window.mostrarLigas=function(){
@@ -1080,7 +1081,7 @@ function abrirVideoDesdeCard(event,btn){event.stopPropagation();const c=btn.clos
 document.getElementById('global-search').addEventListener('input',function(e){
 const term=e.target.value.toLowerCase().trim();
 if(term===''){const last=localStorage.getItem('ev_last_gid');if(last)renderizarTarjetas(estadiosCargados);else mostrarLigas();}
-else{document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e.target.value.toUpperCase()}"`;renderizarTarjetas(catalogoGlobal.filter(f=>[bscarPropiedad(f,'Estadio'),bscarPropiedad(f,'Club'),bscarPropiedad(f,'País')].some(v=>v.toLowerCase().includes(term))));}
+else{document.getElementById('catalogo-layout').classList.add('open');document.getElementById('texto-titulo-grilla').textContent=`BÚSQUEDA: "${e.target.value.toUpperCase()}"`;renderizarTarjetas(catalogoGlobal.filter(f=>[bscarPropiedad(f,'Estadio'),bscarPropiedad(f,'Club'),bscarPropiedad(f,'País')].some(v=>v.toLowerCase().includes(term))));}
 });
 
 function cargarLiga(gid){
