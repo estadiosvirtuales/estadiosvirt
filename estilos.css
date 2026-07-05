@@ -381,6 +381,7 @@ body>*{position:relative;z-index:1}
         grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); 
         gap: 14px; 
         padding: 10px 5px;
+        max-height: none !important; 
         overflow-y: visible !important; 
     }
 }
@@ -562,26 +563,23 @@ body>*{position:relative;z-index:1}
 #customization-panel-wrapper{overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;width:100%;display:flex;justify-content:center;flex-shrink:0;}
 #customization-panel-wrapper.open{max-height:1200px;opacity:1;margin-bottom:20px;}
 
-/* Scrollbars oscuros globales para el modal y sus columnas */
-#profile-modal .modal-content::-webkit-scrollbar,
-.left-fut-column::-webkit-scrollbar,
-.right-dashboard-column::-webkit-scrollbar {
-    width: 8px;
+/* Scrollbars oscuros globales para CUALQUIER elemento dentro del perfil */
+#profile-modal * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
 }
-#profile-modal .modal-content::-webkit-scrollbar-track,
-.left-fut-column::-webkit-scrollbar-track,
-.right-dashboard-column::-webkit-scrollbar-track {
+#profile-modal *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#profile-modal *::-webkit-scrollbar-track {
     background: transparent;
 }
-#profile-modal .modal-content::-webkit-scrollbar-thumb,
-.left-fut-column::-webkit-scrollbar-thumb,
-.right-dashboard-column::-webkit-scrollbar-thumb {
+#profile-modal *::-webkit-scrollbar-thumb {
     background: var(--border-strong);
     border-radius: 10px;
 }
-#profile-modal .modal-content::-webkit-scrollbar-thumb:hover,
-.left-fut-column::-webkit-scrollbar-thumb:hover,
-.right-dashboard-column::-webkit-scrollbar-thumb:hover {
+#profile-modal *::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
 #btn-toggle-custom{transition:all .3s ease}

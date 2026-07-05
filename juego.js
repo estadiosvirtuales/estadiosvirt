@@ -2864,12 +2864,12 @@ document.getElementById('profile-modal-body').innerHTML=`
                     <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.85rem; padding:6px 16px; margin-bottom: 24px;">Nivel ${nivelIdx}</div>
                     
                     <div style="width:100%; max-width: 90%; z-index:1;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.85rem; font-weight:800;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.7rem; font-weight:800; align-items:flex-end;">
                             <span style="color:var(--text-muted);">${nivel.min.toLocaleString('es-AR')} XP</span>
-                            <span style="color:var(--accent-color); font-size:0.95rem;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
+                            <span style="color:var(--accent-color); font-size:0.85rem;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
                             <span style="color:var(--text-muted);">${nivelSig.min===Infinity?'∞':nivelSig.min.toLocaleString('es-AR')} XP</span>
                         </div>
-                        <div class="xp-bar-big" style="height:16px; background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle);"><div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div></div>
+                        <div class="xp-bar-big" style="height:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle);"><div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div></div>
                     </div>
                 </div>
                 
