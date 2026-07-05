@@ -1005,3 +1005,10 @@ body {
 .taunt-bubble.es-rival {
     border-color: var(--danger-color);
 }
+/* Contrae la caja para la tabla de puntajes al finalizar la partida */
+.modal-content.resultado-final-layout {
+    max-width: 580px !important;
+    height: auto !important;
+    max-height: 92vh !important;
+    transition: max-width 0.4s ease, height 0.4s ease !important;
+}

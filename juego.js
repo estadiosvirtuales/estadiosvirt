@@ -941,10 +941,11 @@ function abrirModalVideo(event,link,esJuego=false){
     card.classList.remove('resultado-final');
     
     if(esJuego){
+        card.classList.remove('resultado-final', 'resultado-final-layout');
         card.classList.add('stadium-guessr-layout');
         gameUi.style.display='block';
     }else{
-        card.classList.remove('stadium-guessr-layout');
+        card.classList.remove('stadium-guessr-layout', 'resultado-final', 'resultado-final-layout');
         gameUi.style.display='none';
         container.style.height='100%';
     }
@@ -3041,7 +3042,8 @@ async function manejarAbandonoRival() {
     // Desarmamos la interfaz del mapa y le clavamos la pantalla de victoria inmediata en el modal
     const container = document.getElementById('modal-video-container');
     document.getElementById('game-ui').style.display = 'none';
-    document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
+    document.getElementById('modal-card').classList.remove('stadium-guessr-layout', 'resultado-final', 'resultado-final-layout');
+    document.getElementById('modal-card').classList.add('resultado-final', 'resultado-final-layout');
     document.getElementById('modal-card').classList.add('resultado-final');
     document.getElementById('modal-card').classList.add('resultado-final-layout');
     if (guessrMapInstance) {
