@@ -1006,16 +1006,33 @@ body {
     border-color: var(--danger-color);
 }
 /* ========================================================
-   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS (CON SCROLL)
+   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS (ANCHO ADAPTATIVO Y SCROLL OSCURO)
    ======================================================== */
 .modal-content.resultado-final-layout {
-    max-width: 580px !important;
+    width: 100% !important;
+    max-width: 480px !important; /* Achicamos la caja para que abrace tu tabla a la perfección */
     height: auto !important;
     max-height: 92vh !important;
-    overflow-y: auto !important; /* <--- MAGIA: Habilita el scroll vertical */
+    overflow-y: auto !important; 
     overflow-x: hidden !important;
     transition: max-width 0.4s ease, height 0.4s ease !important;
-    scrollbar-width: thin; /* Hace que la barra de scroll sea más finita y estética */
+    scrollbar-width: thin; 
+    scrollbar-color: var(--border-strong) transparent; /* Oscurece el scroll en Firefox */
+}
+
+/* Oscurece el scroll en Chrome, Edge y Safari (Elimina la franja blanca) */
+.modal-content.resultado-final-layout::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content.resultado-final-layout::-webkit-scrollbar-track {
+    background: transparent;
+}
+.modal-content.resultado-final-layout::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
+}
+.modal-content.resultado-final-layout::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
 
 /* Evita que los contenedores internos traben el scroll de la caja principal */

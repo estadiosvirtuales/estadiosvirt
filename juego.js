@@ -2461,7 +2461,7 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML=`
-    <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
+    <div style="text-align:center;padding:60px 24px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
         <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
         <p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
