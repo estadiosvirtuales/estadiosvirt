@@ -2417,7 +2417,7 @@ async function finalizarJuegoGuessr(){
             : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
 
         container.innerHTML = `
-        <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
+        <div style="text-align:center;padding:60px 24px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
             <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:${colorResultado};">${cartelResultado}</h2>
             <p style="color:var(--text-muted);margin-bottom:20px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
             
