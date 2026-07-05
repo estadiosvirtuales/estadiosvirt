@@ -559,8 +559,31 @@ body>*{position:relative;z-index:1}
 .avatar-save-btn{background:var(--accent-color);color:#000;border:none;border-radius:12px;padding:12px 14px;font-size:.9rem;font-weight:800;cursor:pointer;transition:all .18s;width:100%;box-shadow:0 4px 0 #0a7a3a;display:flex;align-items:center;justify-content:center;gap:8px}
 .avatar-save-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0a7a3a,0 8px 16px var(--accent-glow)}
 .avatar-save-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0a7a3a}
-#customization-panel-wrapper{overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;width:100%;display:flex;justify-content:flex-start}
-#customization-panel-wrapper.open{max-height:1000px;opacity:1}
+#customization-panel-wrapper{overflow:hidden;max-height:0;opacity:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;width:100%;display:flex;justify-content:center;flex-shrink:0;}
+#customization-panel-wrapper.open{max-height:1200px;opacity:1;margin-bottom:20px;}
+
+/* Scrollbars oscuros globales para el modal y sus columnas */
+#profile-modal .modal-content::-webkit-scrollbar,
+.left-fut-column::-webkit-scrollbar,
+.right-dashboard-column::-webkit-scrollbar {
+    width: 8px;
+}
+#profile-modal .modal-content::-webkit-scrollbar-track,
+.left-fut-column::-webkit-scrollbar-track,
+.right-dashboard-column::-webkit-scrollbar-track {
+    background: transparent;
+}
+#profile-modal .modal-content::-webkit-scrollbar-thumb,
+.left-fut-column::-webkit-scrollbar-thumb,
+.right-dashboard-column::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
+}
+#profile-modal .modal-content::-webkit-scrollbar-thumb:hover,
+.left-fut-column::-webkit-scrollbar-thumb:hover,
+.right-dashboard-column::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
 #btn-toggle-custom{transition:all .3s ease}
 #btn-toggle-custom.active-panel{background:var(--accent-dim);border-color:var(--accent-color);color:var(--accent-color)}
 .xp-profile-section{background:var(--bg-color);border:2px solid var(--border-strong);border-radius:16px;padding:16px;margin-bottom:14px}

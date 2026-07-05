@@ -2779,128 +2779,134 @@ for(let d=1;d<=daysInMonth;d++){
     else if (userStats.activeDates && userStats.activeDates.includes(dateStr)) { cl+=' past-done'; }calHTML+=`<div class="${cl}">${d}</div>`;
 }const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
 document.getElementById('profile-modal-body').innerHTML=`
-<div class="split-profile-layout">
-    
-    <div class="left-fut-column">
-        <div class="fut-card ${activeCardClass}" id="fut-card-main">
-            <div class="fut-card-shine"></div>
-            <div class="fut-top">
-                <div class="fut-badge-meta">
-                    <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
-                    <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
-                    <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
-                </div>
-                <div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair, savedShirt, savedColor, savedNum, savedColor2)}</div>
-            </div>
-            <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
-            <div class="fut-stats-row">
-                <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
-                <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
-                <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
-                <div class="fut-stat-item" title="Partidos ganados 1v1"><span class="fut-stat-num">${userStats.partidasGanadas || 0}</span><span class="fut-stat-label">PG</span></div>
-                <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
-            </div>
-        </div>
-        ${googleBadge}
-        <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
+    <div class="split-profile-layout">
         
-        <div id="customization-panel-wrapper">
-            <div class="avatar-picker">
-                <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)"><span style="display:flex;align-items:center;gap:6px;"><i class="ph-fill ph-palette"></i> Diseño de la Carta</span><i class="ph-bold ph-caret-down design-chevron" style="font-size:.9rem;"></i></div>
-                <div class="theme-preview-strip" id="theme-preview-strip-id">${themeStrip}</div>
-                <div class="avatar-divider"></div>
-                <label class="avatar-nick-label">Apariencia y Escudo</label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                    <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                        <option value="short">Pelo Corto</option><option value="long">Pelo Largo</option><option value="ponytail">Cola de Caballo</option><option value="bald">Pelado</option>
-                    </select>
-                    <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                        <option value="ev">⚽ Estadios Virt.</option><option value="ar">🇦🇷 Argentina</option><option value="br">🇧🇷 Brasil</option><option value="es">🇪🇸 España</option><option value="it">🇮🇹 Italia</option><option value="fr">🇫🇷 Francia</option><option value="de">🇩🇪 Alemania</option><option value="gb-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option><option value="pt">🇵🇹 Portugal</option><option value="uy">🇺🇾 Uruguay</option><option value="co">🇨🇴 Colombia</option><option value="mx">🇲🇽 México</option><option value="cl">🇨🇱 Chile</option><option value="nl">🇳🇱 Países Bajos</option><option value="be">🇧🇪 Bélgica</option><option value="hr">🇭🇷 Croacia</option><option value="us">🇺🇸 EE.UU.</option><option value="jp">🇯🇵 Japón</option><option value="can">🇨🇦 Canadá</option><option value="mar">🇲🇦 Marruecos</option><option value="sen">🇸🇳 Senegal</option><option value="kor">🇰🇷 Corea del Sur</option><option value="aus">🇦🇺 Australia</option><option value="sui">🇨🇭 Suiza</option><option value="ecu">🇪🇨 Ecuador</option><option value="per">🇵🇪 Perú</option><option value="den">🇩🇰 Danamarca</option><option value="srb">🇷🇸 Serbia</option><option value="pol">🇵🇱 Polonia</option><option value="wal">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Gales</option><option value="swe">🇸🇪 Suecia</option><option value="civ">🇨🇮 Costa de Marfil</option><option value="cmr">🇨🇲 Camerún</option><option value="gha">🇬🇭 Ghana</option><option value="nga">🇳🇬 Nigeria</option><option value="ksa">🇸🇦 Arabia Saudita</option><option value="irn">🇮🇷 Irán</option><option value="egy">🇪🇬 Egipto</option><option value="alg">🇩🇿 Argelia</option><option value="tun">🇹🇳 Túnez</option><option value="mli">🇲🇱 Malí</option><option value="qat">🇶🇦 Qatar</option><option value="par">🇵🇾 Paraguay</option><option value="ven">🇻🇪 Venezuela</option><option value="bol">🇧🇴 Bolivia</option><option value="crc">🇨🇷 Costa Rica</option><option value="pan">🇵🇦 Panamá</option><option value="jam">🇯🇲 Jamaica</option><option value="nzl">🇳🇿 Nueva Zelanda</option>
-                    </select>
-                </div>
-                <label class="avatar-nick-label">Camiseta (Estilo, Color y N°)</label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-                    <select class="avatar-pos-select" id="avatar-shirt-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                        <option value="solid">Lisa</option><option value="striped">Rayada</option><option value="band">Banda</option><option value="diagonal">Diagonal</option>
-                    </select>
-                    <input type="number" id="avatar-num-input" class="avatar-nickname-input" style="margin-bottom:0;" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
-                </div>
-                <div style="display:flex; gap:10px; margin-bottom:12px;">
-                    <div style="flex:1; display:flex; flex-direction:column; gap:4px;">
-                        <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR 1</span>
-                        <input type="color" id="avatar-shirt-color-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor}" oninput="actualizarAvatarLive()">
+        <div class="left-fut-column">
+            <div class="fut-card ${activeCardClass}" id="fut-card-main">
+                <div class="fut-card-shine"></div>
+                <div class="fut-top">
+                    <div class="fut-badge-meta">
+                        <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
+                        <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
+                        <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
                     </div>
-                    <div id="color2-container" style="flex:1; display:${savedShirt === 'solid' ? 'none' : 'flex'}; flex-direction:column; gap:4px;">
-                        <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR 2</span>
-                        <input type="color" id="avatar-shirt-color2-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor2}" oninput="actualizarAvatarLive()">
-                    </div>
+                    <div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair, savedShirt, savedColor, savedNum, savedColor2)}</div>
                 </div>
-                <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
-                    <option value="POR">POR — Arquero</option><option value="DFC">DFC — Def. Central</option><option value="LD">LD — Lateral Der.</option><option value="LI">LI — Lateral Izq.</option><option value="MCD">MCD — Medio Def.</option><option value="MC">MC — Mediocentro</option><option value="MCO">MCO — Medio Ofensivo</option><option value="MI">MI — Medio Izq.</option><option value="MD">MD — Medio Der.</option><option value="EI">EI — Extremo Izq.</option><option value="ED">ED — Extremo Der.</option><option value="SD">SD — Segundo Del.</option><option value="DC">DC — Delantero</option><option value="DT">DT — Técnico</option>
-                </select>
-                <label class="avatar-nick-label">Apodo en el ranking</label>
-                <div class="avatar-nickname-row">
-                    <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
+                <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
+                <div class="fut-stats-row">
+                    <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
+                    <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
+                    <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
+                    <div class="fut-stat-item" title="Partidos ganados 1v1"><span class="fut-stat-num">${userStats.partidasGanadas || 0}</span><span class="fut-stat-label">PG</span></div>
+                    <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
                 </div>
-                <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><i class="ph-bold ph-check"></i> Guardar cambios</button>
             </div>
-        </div>
-        
-        <div style="margin-top: auto; padding-top: 20px; width: 100%; max-width: 250px;">
-            <button onclick="cerrarSesion()" class="btn-3d secondary" style="width: 100%; color:var(--danger-color);border-color:var(--danger-color);padding:12px;font-size:.9rem;"><i class="ph-bold ph-sign-out"></i> Cerrar sesión</button>
-        </div>
-    </div>
-
-    <div class="right-dashboard-column">
-        
-        <div class="right-dashboard-top-row">
-            <div class="xp-profile-section" style="height:100%;">
-                <div class="xp-level-row">
-                    <div class="xp-level-name">${nivel.emoji} ${nivel.nombre}</div>
-                    <div class="level-badge-inline ${nivel.cssClass}">Nivel ${nivelIdx}</div>
-                </div>
-                <div class="xp-bar-big"><div class="xp-bar-big-fill" style="width:${xpPct}%;"></div></div>
-                <div class="xp-milestones">
-                    <span>${nivel.min.toLocaleString('es-AR')} XP</span>
-                    <span style="color:var(--accent-color);font-weight:800;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
-                    <span>${nivelSig.min===Infinity?'∞':nivelSig.min.toLocaleString('es-AR')} XP</span>
+            ${googleBadge}
+            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
+            
+            <div id="customization-panel-wrapper">
+                <div class="avatar-picker">
+                    <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)"><span style="display:flex;align-items:center;gap:6px;"><i class="ph-fill ph-palette"></i> Diseño de la Carta</span><i class="ph-bold ph-caret-down design-chevron" style="font-size:.9rem;"></i></div>
+                    <div class="theme-preview-strip" id="theme-preview-strip-id">${themeStrip}</div>
+                    <div class="avatar-divider"></div>
+                    <label class="avatar-nick-label">Apariencia y Escudo</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+                        <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+                            <option value="short">Pelo Corto</option><option value="long">Pelo Largo</option><option value="ponytail">Cola de Caballo</option><option value="bald">Pelado</option>
+                        </select>
+                        <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+                            <option value="ev">⚽ Estadios Virt.</option><option value="ar">🇦🇷 Argentina</option><option value="br">🇧🇷 Brasil</option><option value="es">🇪🇸 España</option><option value="it">🇮🇹 Italia</option><option value="fr">🇫🇷 Francia</option><option value="de">🇩🇪 Alemania</option><option value="gb-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option><option value="pt">🇵🇹 Portugal</option><option value="uy">🇺🇾 Uruguay</option><option value="co">🇨🇴 Colombia</option><option value="mx">🇲🇽 México</option><option value="cl">🇨🇱 Chile</option><option value="nl">🇳🇱 Países Bajos</option><option value="be">🇧🇪 Bélgica</option><option value="hr">🇭🇷 Croacia</option><option value="us">🇺🇸 EE.UU.</option><option value="jp">🇯🇵 Japón</option><option value="can">🇨🇦 Canadá</option><option value="mar">🇲🇦 Marruecos</option><option value="sen">🇸🇳 Senegal</option><option value="kor">🇰🇷 Corea del Sur</option><option value="aus">🇦🇺 Australia</option><option value="sui">🇨🇭 Suiza</option><option value="ecu">🇪🇨 Ecuador</option><option value="per">🇵🇪 Perú</option><option value="den">🇩🇰 Danamarca</option><option value="srb">🇷🇸 Serbia</option><option value="pol">🇵🇱 Polonia</option><option value="wal">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Gales</option><option value="swe">🇸🇪 Suecia</option><option value="civ">🇨🇮 Costa de Marfil</option><option value="cmr">🇨🇲 Camerún</option><option value="gha">🇬🇭 Ghana</option><option value="nga">🇳🇬 Nigeria</option><option value="ksa">🇸🇦 Arabia Saudita</option><option value="irn">🇮🇷 Irán</option><option value="egy">🇪🇬 Egipto</option><option value="alg">🇩🇿 Argelia</option><option value="tun">🇹🇳 Túnez</option><option value="mli">🇲🇱 Malí</option><option value="qat">🇶🇦 Qatar</option><option value="par">🇵🇾 Paraguay</option><option value="ven">🇻🇪 Venezuela</option><option value="bol">🇧🇴 Bolivia</option><option value="crc">🇨🇷 Costa Rica</option><option value="pan">🇵🇦 Panamá</option><option value="jam">🇯🇲 Jamaica</option><option value="nzl">🇳🇿 Nueva Zelanda</option>
+                        </select>
+                    </div>
+                    <label class="avatar-nick-label">Camiseta (Estilo, Color y N°)</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                        <select class="avatar-pos-select" id="avatar-shirt-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
+                            <option value="solid">Lisa</option><option value="striped">Rayada</option><option value="band">Banda</option><option value="diagonal">Diagonal</option>
+                        </select>
+                        <input type="number" id="avatar-num-input" class="avatar-nickname-input" style="margin-bottom:0;" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-bottom:12px;">
+                        <div style="flex:1; display:flex; flex-direction:column; gap:4px;">
+                            <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR 1</span>
+                            <input type="color" id="avatar-shirt-color-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor}" oninput="actualizarAvatarLive()">
+                        </div>
+                        <div id="color2-container" style="flex:1; display:${savedShirt === 'solid' ? 'none' : 'flex'}; flex-direction:column; gap:4px;">
+                            <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR 2</span>
+                            <input type="color" id="avatar-shirt-color2-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor2}" oninput="actualizarAvatarLive()">
+                        </div>
+                    </div>
+                    <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
+                        <option value="POR">POR — Arquero</option><option value="DFC">DFC — Def. Central</option><option value="LD">LD — Lateral Der.</option><option value="LI">LI — Lateral Izq.</option><option value="MCD">MCD — Medio Def.</option><option value="MC">MC — Mediocentro</option><option value="MCO">MCO — Medio Ofensivo</option><option value="MI">MI — Medio Izq.</option><option value="MD">MD — Medio Der.</option><option value="EI">EI — Extremo Izq.</option><option value="ED">ED — Extremo Der.</option><option value="SD">SD — Segundo Del.</option><option value="DC">DC — Delantero</option><option value="DT">DT — Técnico</option>
+                    </select>
+                    <label class="avatar-nick-label">Apodo en el ranking</label>
+                    <div class="avatar-nickname-row">
+                        <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
+                    </div>
+                    <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><i class="ph-bold ph-check"></i> Guardar cambios</button>
                 </div>
             </div>
             
-            <div class="geoguessr-dash-box" style="height:100%;">
-                <div class="dash-header-inline">
-                    <div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (${monthNames[currentMonth]})</div>
-                    <div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
-                </div>
-                <div class="calendar-matrix">
-                    <div class="calendar-day-label">LUN</div><div class="calendar-day-label">MAR</div><div class="calendar-day-label">MIÉ</div><div class="calendar-day-label">JUE</div><div class="calendar-day-label">VIE</div><div class="calendar-day-label">SÁB</div><div class="calendar-day-label">DOM</div>
-                    ${calHTML}
-                </div>
+            <div style="margin-top: auto; padding-top: 20px; width: 100%; max-width: 250px; flex-shrink:0;">
+                <button onclick="cerrarSesion()" class="btn-3d secondary" style="width: 100%; color:var(--danger-color);border-color:var(--danger-color);padding:12px;font-size:.9rem;"><i class="ph-bold ph-sign-out"></i> Cerrar sesión</button>
             </div>
         </div>
 
-        <div class="geoguessr-dash-box" style="flex:1; display:flex; flex-direction:column;">
-            <div class="dash-header-inline" style="margin-bottom:12px;">
-                <div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
-                <div class="streak-fire-badge" id="logros-counter" style="color:var(--text-muted);">${desbloqueados}/${totalLogros}</div>
+        <div class="right-dashboard-column">
+            
+            <div class="right-dashboard-top-row">
+                <div class="xp-profile-section" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 30px 20px;">
+                    <div style="position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:var(--accent-color); filter:blur(90px); opacity:0.15; border-radius:50%; pointer-events:none;"></div>
+                    
+                    <div style="font-size:4.5rem; filter:drop-shadow(0 0 15px var(--accent-glow)); margin-bottom:12px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
+                    
+                    <h3 style="font-size:1.7rem; font-weight:900; color:var(--text-main); margin-bottom:6px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nivel.nombre}</h3>
+                    
+                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.85rem; padding:6px 16px; margin-bottom: 24px;">Nivel ${nivelIdx}</div>
+                    
+                    <div style="width:100%; max-width: 90%; z-index:1;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.85rem; font-weight:800;">
+                            <span style="color:var(--text-muted);">${nivel.min.toLocaleString('es-AR')} XP</span>
+                            <span style="color:var(--accent-color); font-size:0.95rem;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
+                            <span style="color:var(--text-muted);">${nivelSig.min===Infinity?'∞':nivelSig.min.toLocaleString('es-AR')} XP</span>
+                        </div>
+                        <div class="xp-bar-big" style="height:16px; background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle);"><div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div></div>
+                    </div>
+                </div>
+                
+                <div class="geoguessr-dash-box" style="height:100%;">
+                    <div class="dash-header-inline">
+                        <div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (${monthNames[currentMonth]})</div>
+                        <div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
+                    </div>
+                    <div class="calendar-matrix">
+                        <div class="calendar-day-label">LUN</div><div class="calendar-day-label">MAR</div><div class="calendar-day-label">MIÉ</div><div class="calendar-day-label">JUE</div><div class="calendar-day-label">VIE</div><div class="calendar-day-label">SÁB</div><div class="calendar-day-label">DOM</div>
+                        ${calHTML}
+                    </div>
+                </div>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-                <span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
-                <span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
-                <span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
-            </div>
-            <div class="logros-tabs-row">
-                <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
-                <button class="logro-tab-btn" data-tipo="desbloqueados" onclick="filtrarLogros('desbloqueados')">✓ Logrados</button>
-                <button class="logro-tab-btn" data-tipo="progreso" onclick="filtrarLogros('progreso')">⏳ Progreso</button>
-                <button class="logro-tab-btn" data-tipo="bloqueados" onclick="filtrarLogros('bloqueados')">🔒 Bloq.</button>
-            </div>
-            <div class="logros-grid-v2" id="logros-grid-v2" style="flex:1;"></div>
-        </div>
 
-    </div>
-</div>`;
-document.getElementById('profile-modal').style.display='flex';
+            <div class="geoguessr-dash-box" style="flex:1; display:flex; flex-direction:column;">
+                <div class="dash-header-inline" style="margin-bottom:12px;">
+                    <div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
+                    <div class="streak-fire-badge" id="logros-counter" style="color:var(--text-muted);">${desbloqueados}/${totalLogros}</div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                    <span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
+                    <span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
+                    <span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
+                </div>
+                <div class="logros-tabs-row">
+                    <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
+                    <button class="logro-tab-btn" data-tipo="desbloqueados" onclick="filtrarLogros('desbloqueados')">✓ Logrados</button>
+                    <button class="logro-tab-btn" data-tipo="progreso" onclick="filtrarLogros('progreso')">⏳ Progreso</button>
+                    <button class="logro-tab-btn" data-tipo="bloqueados" onclick="filtrarLogros('bloqueados')">🔒 Bloq.</button>
+                </div>
+                <div class="logros-grid-v2" id="logros-grid-v2" style="flex:1;"></div>
+            </div>
+
+        </div>
+    </div>`;
+    document.getElementById('profile-modal').style.display='flex';
 setTimeout(()=>{
 const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
 const selHair = document.getElementById('avatar-hair-input'); if(selHair) selHair.value = savedHair;
