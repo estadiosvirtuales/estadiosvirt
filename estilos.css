@@ -1005,10 +1005,22 @@ body {
 .taunt-bubble.es-rival {
     border-color: var(--danger-color);
 }
-/* Contrae la caja para la tabla de puntajes al finalizar la partida */
+/* ========================================================
+   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS (CON SCROLL)
+   ======================================================== */
 .modal-content.resultado-final-layout {
     max-width: 580px !important;
     height: auto !important;
     max-height: 92vh !important;
+    overflow-y: auto !important; /* <--- MAGIA: Habilita el scroll vertical */
+    overflow-x: hidden !important;
     transition: max-width 0.4s ease, height 0.4s ease !important;
+    scrollbar-width: thin; /* Hace que la barra de scroll sea más finita y estética */
+}
+
+/* Evita que los contenedores internos traben el scroll de la caja principal */
+.modal-content.resultado-final-layout #modal-video-container,
+.modal-content.resultado-final-layout #modal-video-container > div {
+    height: auto !important;
+    overflow-y: visible !important;
 }
