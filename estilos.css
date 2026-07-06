@@ -58,21 +58,27 @@ body::after {
     content: ''; 
     position: fixed; 
     inset: 0;
-    /* 1. Creamos un patrón de puntitos infinitos con CSS puro usando tu color de acento */
-    background-image: radial-gradient(var(--accent-color) 1.5px, transparent 1.5px);
-    background-size: 14px 14px; /* Separación entre los puntitos */
+    /* 1. Puntos más grandes y densos para darle "cuerpo" al mapa */
+    background-image: radial-gradient(var(--accent-color) 1.8px, transparent 1.8px);
+    background-size: 12px 12px; 
     
-    /* 2. Usamos la silueta vectorial de un planisferio público como "molde" para recortar los puntos */
+    /* 2. El molde SVG del mundo */
     -webkit-mask-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
     mask-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
-    -webkit-mask-size: 85% auto; 
-    mask-size: 85% auto;
-    -webkit-mask-position: center 30%; 
-    mask-position: center 30%; /* Lo subimos un poco para que quede perfecto de fondo */
+    
+    /* 3. MAGIA: Ocupa el 100% del ancho. El 'auto' bloquea cualquier deformación.
+       El 'max(100vw, 900px)' evita que en el celular quede una franja minúscula. */
+    -webkit-mask-size: max(100vw, 900px) auto; 
+    mask-size: max(100vw, 900px) auto;
+    
+    /* 4. Centrado perfecto absoluto */
+    -webkit-mask-position: center center; 
+    mask-position: center center; 
     -webkit-mask-repeat: no-repeat; 
     mask-repeat: no-repeat;
     
-    opacity: 0.12; /* Súper sutil, un fantasma de fondo */
+    /* 5. Opacidad duplicada para que gane protagonismo */
+    opacity: 0.28; 
     pointer-events: none; 
     z-index: 0;
 }
