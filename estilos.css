@@ -1070,15 +1070,21 @@ body {
         white-space: nowrap !important;
     }
 
-    /* Arreglo de la Luna: Centrada perfecta y pegada al perfil */
-    .theme-toggle, #theme-btn {
-        transform: none !important; /* Sacamos el scale que la rompía */
+    /* Arreglo de la Luna: Centrada en el espacio vacío entre el título y el perfil */
+    .header-actions {
+        flex: 1 !important; /* Deja que el contenedor ocupe todo el ancho disponible */
+    }
+    .theme-toggle-btn, .theme-toggle, #theme-btn {
+        transform: none !important; 
         width: 32px !important;
         height: 32px !important;
+        min-width: 32px !important; 
+        flex-shrink: 0 !important;  
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        margin-right: 3 px !important; /* La empuja contra tu perfil */
+        margin-left: auto !important;  /* MAGIA: Lo empuja lejos del título */
+        margin-right: auto !important; /* MAGIA: Lo empuja lejos del perfil, quedando al centro */
         padding: 0 !important;
     }
 
