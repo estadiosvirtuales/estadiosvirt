@@ -1078,7 +1078,7 @@ body {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        margin-right: 4px !important; /* La empuja contra tu perfil */
+        margin-right: 3 px !important; /* La empuja contra tu perfil */
         padding: 0 !important;
     }
 
