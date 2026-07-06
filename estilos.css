@@ -371,7 +371,7 @@ body>*{position:relative;z-index:1}
     
     /* Forzar a la vitrina a ocupar buen espacio y mostrar los logros sin aplastarse */
     .right-dashboard-column .geoguessr-dash-box:last-child {
-        flex: 1;
+        flex: 1 0 auto !important; /* MAGIA 1: Fuerza a la caja a crecer hacia abajo y anula el estilo en línea */
         min-height: 450px; 
         display: flex;
         flex-direction: column;
@@ -380,8 +380,9 @@ body>*{position:relative;z-index:1}
     .logros-grid-v2 { 
         grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); 
         gap: 14px; 
-        padding: 10px 5px;
-        max-height: none !important; 
+        padding: 10px 5px 20px 5px; /* Un poco más de aire abajo */
+        max-height: none !important; /* MAGIA 2: Destraba el límite de altura base que traía del celular */
+        flex: 1 0 auto !important; /* MAGIA 3: Anula el aplastamiento interno */
         overflow-y: visible !important; 
     }
 }
