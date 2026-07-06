@@ -305,7 +305,7 @@ function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
 }
 
 let estadiosCargados=[],catalogoGlobal=[];
-const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119"];
+const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119","1916896887"];
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
 let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrPolyline=null,guessrSelectedLatLng=null;
 let usuarioLogueadoCache = undefined;
