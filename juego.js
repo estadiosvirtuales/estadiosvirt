@@ -2919,6 +2919,7 @@ renderizarGridLogros();
 
 function cerrarSesion() {
     localStorage.removeItem('ev_user_logged');
+    localStorage.removeItem('ev_codigo_liga_amigos'); // 🛡️ ESCUDO: Borramos el acceso a la liga para proteger la privacidad
     
     // 👇 ESTA ES LA LÍNEA NUEVA: Vaciamos la memoria RAM porque el usuario se fue
     usuarioLogueadoCache = null; 
@@ -3661,8 +3662,24 @@ async function abrirModalLigaAmigosPrivada() {
     const modal = document.getElementById('liga-amigos-modal');
     if (modal) modal.style.display = 'flex';
 
-    const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
+    const u = obtenerUsuarioLogueado();
     const body = document.getElementById('liga-amigos-modal-body');
+
+    // 🔐 ESCUDO DE PRIVACIDAD: Si no hay usuario logueado, bloqueamos la vista por completo
+    if (!u || u.id === 'guest') {
+        if (body) {
+            body.innerHTML = `
+            <div style="text-align:center; padding:40px 20px;">
+                <div style="font-size:3.5rem; color:var(--danger-color); margin-bottom:12px;"><i class="ph-duotone ph-lock-key"></i></div>
+                <h3 style="font-size:1.4rem; font-weight:900; text-transform:uppercase; color:var(--text-main); margin-bottom:8px;">Acceso Restringido</h3>
+                <p style="font-size:.9rem; color:var(--text-muted); margin-bottom:24px; line-height:1.5;">Para ver tu Liga Privada o unirte a una, necesitás iniciar sesión con Google.</p>
+                <button onclick="cerrarModalLigaAmigosPrivada(); manejarClickLogin()" class="btn-3d primary" style="padding:14px 24px; font-size:1rem; width:100%;"><i class="ph-bold ph-sign-in"></i> Iniciar Sesión</button>
+            </div>`;
+        }
+        return;
+    }
+
+    const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
 
     // CASO 1: Todavía no pertenezco a ninguna liga -> mostramos el formulario de crear/unirse
     if (!nombreLiga) {
