@@ -3287,9 +3287,9 @@ function mostrarTauntEnPantalla(emoji, esMio) {
 function obtenerFraseFolklore(dist) {
     if (isNaN(dist)) return "¡Se cortó la transmisión de la tribuna! 📻";
     if (dist < 1)   return "¡Ojo de águila! La clavaste en el ángulo. 🎯⚽";
-    if (dist < 15)  return "¡Huele a pasto! Estás festejando en la tribuna local. 🏟️🔥";
+    if (dist < 15)  return "¡Hay olor a gol! La tribuna corea tu nombre. 🏟️🔥";
     if (dist < 150) return "Entraste al área con pelota dominada... Buen tiro. 👟";
-    if (dist < 600) return "Te cobraron posición adelantada... ¡Le erraste de provincia! 🗺️";
+    if (dist < 600) return "Te cobraron posición adelantada... ¡Te perdiste en la cancha! 🗺️";
     if (dist < 2000) return "¡La mandaste a la tribuna visitante! Le erraste feo, maestro. 🥶";
     return "¡Mandaste la pelota a la estratosfera! Te saliste del mapa. 🌍🤡";
 }
