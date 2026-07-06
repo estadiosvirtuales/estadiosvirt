@@ -3707,7 +3707,6 @@ async function abrirModalLigaAmigosPrivada() {
     nombreLigaActivaCache = nombreLiga;
     vistaLigaActual = 'puntaje';   // Siempre arrancamos en la pestaña de puntaje al reabrir el modal
     cacheTriunfosLiga = null;      // Invalidamos el cache de triunfos: se vuelve a pedir si el usuario abre esa pestaña
-    const u = obtenerUsuarioLogueado();
     miNombreRankingLiga = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
     if (body) {
