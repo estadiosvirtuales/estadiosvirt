@@ -3677,7 +3677,7 @@ async function abrirModalLigaAmigosPrivada() {
             </div>`;
         }
         return;
-    }.
+    }
 
     const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
 
