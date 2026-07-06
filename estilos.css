@@ -160,16 +160,44 @@ body>*{position:relative;z-index:1}
 .ligas-panel-label::after{content:'';flex:1;height:1px;background:var(--border-strong)}
 .tabs-container{display:flex;flex-direction:column;gap:8px}
 .liga-country-group{width:100%}
-.liga-country-btn{display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-radius:14px;border:2px solid var(--border-strong);background:var(--bg-color);color:var(--text-main);font-size:.92rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:left;box-shadow:0 3px 0 rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25)}
-.liga-country-btn:hover{border-color:var(--accent-color);color:var(--accent-color);transform:translateY(-3px);box-shadow:0 7px 0 rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.4)}
-.liga-country-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3)}
-.liga-country-btn img{width:22px;border-radius:2px;box-shadow:0 0 3px rgba(0,0,0,.5)}
-.liga-country-btn .chevron{margin-left:auto;transition:transform .25s;font-size:.85rem}
-.liga-country-group.open .liga-country-btn{border-color:var(--accent-color);color:var(--accent-color)}
-.liga-country-group.open .liga-country-btn .chevron{transform:rotate(180deg)}
-.liga-country-leagues{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;max-height:0;overflow:hidden;transition:max-height .3s ease,margin-top .3s ease;margin-top:0;contain:layout;will-change:max-height}
-.liga-country-group.open .liga-country-leagues{max-height:300px;margin-top:10px}
-.tab{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;border:2px solid transparent;cursor:pointer;font-size:.9rem;font-weight:700;color:#fff;transition:all .2s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden;text-align:left;box-shadow:0 3px 0 rgba(0,0,0,.4),0 4px 12px rgba(0,0,0,.25);min-height:48px;width:100%;}
+/* ========================================================
+   OPTIMIZACIÓN DE RENDIMIENTO MÓVIL: BOTONES Y CATÁLOGO
+   ======================================================== */
+.liga-country-btn {
+    display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; 
+    border-radius: 14px; border: 2px solid var(--border-strong); 
+    background: var(--bg-color); color: var(--text-main); 
+    font-size: .92rem; font-weight: 800; cursor: pointer; text-align: left;
+    box-shadow: 0 3px 0 rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.25);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+    transform: translateZ(0); 
+}
+.liga-country-btn:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-3px) translateZ(0); box-shadow: 0 7px 0 rgba(0,0,0,.4), 0 10px 24px rgba(0,0,0,.4); }
+.liga-country-btn:active { transform: translateY(2px) translateZ(0); box-shadow: 0 1px 0 rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.3); }
+.liga-country-btn img { width: 22px; border-radius: 2px; box-shadow: 0 0 3px rgba(0,0,0,.5); }
+.liga-country-btn .chevron { margin-left: auto; transition: transform .25s ease; font-size: .85rem; }
+.liga-country-group.open .liga-country-btn { border-color: var(--accent-color); color: var(--accent-color); }
+.liga-country-group.open .liga-country-btn .chevron { transform: rotate(180deg); }
+
+.liga-country-leagues {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
+    max-height: 0; overflow: hidden; margin-top: 0; opacity: 0;
+    transition: max-height .3s ease-out, margin-top .3s ease-out, opacity .2s ease-out;
+}
+.liga-country-group.open .liga-country-leagues {
+    max-height: 800px; /* Agrandado a 800px por si en el futuro metés muchos botones de liga en un mismo país */
+    margin-top: 10px; 
+    opacity: 1;
+}
+
+.tab {
+    display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 14px; 
+    border: 2px solid transparent; cursor: pointer; font-size: .9rem; font-weight: 700; 
+    color: #fff; position: relative; overflow: hidden; text-align: left; 
+    box-shadow: 0 3px 0 rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.25); min-height: 48px; width: 100%;
+    transition: transform .2s cubic-bezier(.175,.885,.32,1.275), box-shadow .2s ease, border-color .2s ease;
+    transform: translateZ(0);
+}
 .tab-bg{position:absolute;inset:0;z-index:0;transition:opacity .2s}
 .tab::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:1;border-radius:12px;transition:background .2s}
 .tab:hover::before,.tab.active::before{background:rgba(0,0,0,.22)}
