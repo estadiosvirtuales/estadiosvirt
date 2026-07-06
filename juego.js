@@ -3029,6 +3029,10 @@ logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'
 }
 // Función para rescatar al jugador si el oponente se desconecta o abandona (Adjudica Victoria)
 async function manejarAbandonoRival() {
+    // 🛡️ ESCUDO ANTI-DUPLICADOS: Evita que el servidor y el socket choquen y te sumen doble XP
+    if (!versusPartidaEnCurso) return;
+    versusPartidaEnCurso = false; // Cerramos la puerta al instante
+
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (handshakeInterval) clearInterval(handshakeInterval);
     
