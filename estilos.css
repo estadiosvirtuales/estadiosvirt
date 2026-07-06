@@ -146,7 +146,7 @@ body>*{position:relative;z-index:1}
 #texto-titulo-grilla{font-size:.9rem;font-weight:800;color:var(--text-main);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .liga-elegida-badge{display:none;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:4px 12px 4px 6px;font-size:.8rem;font-weight:700;color:var(--accent-color)}
 .liga-elegida-badge .badge-dot{width:10px;height:10px;border-radius:50%}
-#btn-volver-ligas{display:none;padding:8px 16px;font-size:.82rem;border-radius:10px;flex-shrink:0}
+#btn-volver-ligas{display:none;padding:8px 16px;font-size:.82rem;border-radius:14px;flex-shrink:0}
 .liga-selector-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;border:2px solid var(--border-strong);background:var(--card-bg);color:var(--text-main);font-size:1rem;font-weight:700;cursor:pointer;transition:all .25s;position:relative;box-shadow:0 4px 0 rgba(0,0,0,.35);white-space:nowrap}
 .liga-selector-btn:hover,.liga-selector-btn.open{border-color:var(--accent-color);color:var(--accent-color);background:var(--accent-dim)}
 .liga-selector-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 rgba(0,0,0,.35),0 8px 24px var(--accent-glow)}
