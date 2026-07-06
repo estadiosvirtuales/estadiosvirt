@@ -3711,7 +3711,7 @@ async function abrirModalLigaAmigosPrivada() {
 
     if (body) {
         body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:var(--accent-color);"></i></div>`;
-    }.
+    }
 
     try {
         // Traemos un lote grande de filas (puede haber varias por integrante: el fichaje en 0,
