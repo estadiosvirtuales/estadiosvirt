@@ -3861,6 +3861,10 @@ window.responderDesafio = function(aceptar, salaId) {
 function salirLigaAmigos() {
     if (!confirm("¿Seguro que querés salir de tu liga privada? Vas a dejar de ver esta tabla de posiciones.")) return;
     localStorage.removeItem('ev_codigo_liga_amigos');
+    
+    // 🛡️ ESCUDO: Le avisamos a Supabase en este milisegundo que nos fuimos, para que no nos vuelva a meter al actualizar
+    guardarStats();
+    
     cerrarModalLigaAmigosPrivada();
     abrirModalLigaAmigosPrivada();
 }
