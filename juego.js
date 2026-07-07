@@ -56,7 +56,8 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
                 avatar_color: getPref('ev_avatar_color', '#00e676'),
                 avatar_color2: getPref('ev_avatar_color2', '#ffffff'),
                 avatar_num: getPref('ev_avatar_num', '10'),
-                avatar_logo: getPref('ev_avatar_logo', 'ev')
+                avatar_logo: getPref('ev_avatar_logo', 'ev'),
+                liga_privada: localStorage.getItem('ev_codigo_liga_amigos') || ''
             }
         };
 
@@ -133,6 +134,11 @@ async function cargarProgresoDesdeSupabase() {
                     setPref('ev_avatar_color2', p.avatar_color2 || '#ffffff');
                     setPref('ev_avatar_num', p.avatar_num || '10');
                     setPref('ev_avatar_logo', p.avatar_logo || 'ev');
+                    
+                    // 🛡️ Restauramos la memoria de la liga al volver a entrar
+                    if (p.liga_privada) {
+                        localStorage.setItem('ev_codigo_liga_amigos', p.liga_privada);
+                    }
                 }
             }
 
@@ -3481,6 +3487,9 @@ async function crearOCargarLigaAmigos(esCreacion) {
             return;
         }
     }
+
+    // 🛡️ Forzamos la sincronización para que la nube se aprenda de memoria a qué liga entraste
+    guardarStats();
 
     // Refrescamos el modal para desplegar la tabla de posiciones real
     abrirModalLigaAmigosPrivada();
