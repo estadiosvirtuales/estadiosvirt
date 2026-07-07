@@ -2643,13 +2643,13 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
 
                 htmlContenido += `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
-                    <span>Liga Activa: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${codigoLigaGuardado}</strong></span>
+                    <span>Liga Activa: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${codigoLigaGuardado.replace(/_/g, ' ')}</strong></span>
                     <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir de Liga 🚪</button>
                 </div>
                 <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
                 
                 if (!ranking || !ranking.length) {
-                    htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Nadie registró puntos todavía en la liga <strong>${codigoLigaGuardado}</strong>. ¡Jugá un individual para inaugurarla!</p>`;
+                    htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Nadie registró puntos todavía en la liga <strong>${codigoLigaGuardado.replace(/_/g, ' ')}</strong>. ¡Jugá un individual para inaugurarla!</p>`;
                 } else {
                     ranking.forEach((f, i) => {
                         const m = ['🥇', '🥈', '🥉'];
@@ -3506,7 +3506,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Tabla de tu Liga</h3>
     </div>
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
-        <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga}</strong></span>
+        <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga.replace(/_/g, ' ')}</strong></span>
         <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir 🚪</button>
     </div>
     <div style="display:flex; gap:8px; margin-bottom:12px;">
