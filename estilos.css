@@ -1181,22 +1181,65 @@ body {
     }
 }
 /* ========================================== */
-/* BOTÓN RETO DIARIO (ADAPTATIVO CLARO/OSCURO)*/
+/* BOTONES ESPECIALES DEL MENÚ (RETO Y LIGA)  */
 /* ========================================== */
 
-/* Por defecto (Modo Oscuro): Amarillo brillante */
+/* 1. RETO DIARIO (Animaciones y Colores) */
 .btn-reto-diario {
     background: rgba(255, 234, 0, 0.08) !important;
     border: 2px solid #ffea00 !important;
     color: #ffea00 !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.btn-reto-diario:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+    background: rgba(255, 234, 0, 0.15) !important;
+    box-shadow: 0 8px 20px rgba(255, 234, 0, 0.25) !important;
+}
+.btn-reto-diario:active {
+    transform: translateY(2px) scale(0.95) !important;
+    box-shadow: none !important;
 }
 
-/* Cuando el sistema detecta que el Modo Claro está activo: Azul profundo de alto contraste */
+/* RETO DIARIO (Modo Claro - Azul profundo) */
 [data-theme="light"] .btn-reto-diario {
     background: rgba(41, 121, 255, 0.08) !important;
     border: 2px solid #00529f !important;
     color: #00529f !important;
-    font-weight: 900 !important;
+}
+[data-theme="light"] .btn-reto-diario:hover {
+    background: rgba(41, 121, 255, 0.15) !important;
+    box-shadow: 0 8px 20px rgba(0, 82, 159, 0.25) !important;
+}
+
+/* ------------------------------------------ */
+
+/* 2. LIGA PRIVADA (Animaciones y Colores) */
+.btn-liga-menu {
+    background: rgba(0, 230, 118, 0.08) !important;
+    border: 2px solid #00e676 !important;
+    color: #00e676 !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.btn-liga-menu:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+    background: rgba(0, 230, 118, 0.15) !important;
+    box-shadow: 0 8px 20px rgba(0, 230, 118, 0.25) !important;
+}
+.btn-liga-menu:active {
+    transform: translateY(2px) scale(0.95) !important;
+    box-shadow: none !important;
+}
+
+/* LIGA PRIVADA (Modo Claro - Verde oscuro de contraste) */
+[data-theme="light"] .btn-liga-menu {
+    background: rgba(0, 140, 70, 0.08) !important;
+    border: 2px solid #008c46 !important;
+    color: #008c46 !important;
+}
+[data-theme="light"] .btn-liga-menu:hover {
+    background: rgba(0, 140, 70, 0.15) !important;
+    box-shadow: 0 8px 20px rgba(0, 140, 70, 0.25) !important;
 }
 /* Que el menú de selección abrace el contenido y no deje espacio negro abajo */
 #guessr-modal .modal-content {
