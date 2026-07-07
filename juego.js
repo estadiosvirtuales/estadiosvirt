@@ -3082,16 +3082,23 @@ async function manejarAbandonoRival() {
     agregarXP(1000); 
     
     // Impactamos el triunfo en la base de datos remota de Supabase
-    try {
-        if (supabaseClient && id && id !== 'guest') {
-            await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: versusLigaOrigen }]);
-            console.log("[1v1] Victoria por abandono asentada en la nube de Supabase.");
+        try {
+            if (supabaseClient && id && id !== 'guest') {
+                await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: versusLigaOrigen }]);
+                console.log("[1v1] Victoria por abandono asentada en la nube de Supabase.");
+            }
+            
+            // 🛡️ CASTIGO AL RIVAL: Si estábamos en una liga, el que se queda le anota la derrota al que huyó
+            if (supabaseClient && versusLigaOrigen) {
+                const nombreHuidor = (versusRivalNombre && versusRivalNombre !== "RIVAL") ? versusRivalNombre : "Anónimo";
+                await supabaseClient.from('derrotas_versus').insert([{ id_usuario: 'abandono_tec', nombre: nombreHuidor, liga: versusLigaOrigen }]);
+                console.log("[1v1] Derrota técnica (L) anotada al rival que huyó.");
+            }
+        } catch(err) {
+            console.error("Error al registrar resultado por abandono en la nube:", err);
         }
-    } catch(err) {
-        console.error("Error al registrar victoria por abandono en la nube:", err);
-    }
 
-    // Desarmamos la interfaz del mapa y le clavamos la pantalla de victoria inmediata en el modal
+        // Desarmamos la interfaz del mapa y le clavamos la pantalla de victoria inmediata en el modal
     const container = document.getElementById('modal-video-container');
     document.getElementById('game-ui').style.display = 'none';
     document.getElementById('modal-card').classList.remove('stadium-guessr-layout', 'resultado-final', 'resultado-final-layout');
