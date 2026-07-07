@@ -2430,6 +2430,12 @@ async function finalizarJuegoGuessr(){
             cartelResultado = "DERROTA ❌";
             colorResultado = "#ff4757";
             showToast("Derrota. ¡A entrenar para la revancha! ⚽", "ph-x-circle", "danger");
+            
+            // 🛡️ CANDADO: Solo guarda la derrota (L) si el duelo nació adentro de una Liga Privada
+            if (ligaJugada) {
+                try { await supabaseClient.from('derrotas_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
+            }
+            
         } else {
             cartelResultado = "¡EMPATE DE CRACKS! 🤝";
             colorResultado = "#2979ff";
@@ -3514,7 +3520,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             <i class="ph-bold ph-target"></i> Puntaje máximo
         </button>
         <button onclick="cambiarVistaLiga('triunfos')" style="flex:1; padding:10px; border-radius:10px; border:2px solid var(--accent-color); font-weight:800; font-size:.8rem; text-transform:uppercase; cursor:pointer; background:${tipoVista === 'triunfos' ? 'var(--accent-color)' : 'transparent'}; color:${tipoVista === 'triunfos' ? '#04120a' : 'var(--accent-color)'};">
-            <i class="ph-bold ph-sword"></i> Triunfos
+            <i class="ph-bold ph-sword"></i> Historial (W/L)
         </button>
     </div>
     <div style="background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px; overflow:hidden;">`;
@@ -3545,16 +3551,26 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 }
             }
 
-            const valor = tipoVista === 'triunfos' ? (f.triunfos || 0) : (f.puntaje || 0);
-            const etiqueta = tipoVista === 'triunfos' ? (valor === 1 ? 'triunfo' : 'triunfos') : 'pts';
+            let bloquePuntos = "";
+            if (tipoVista === 'triunfos') {
+                const w = f.triunfos || 0;
+                const l = f.derrotas || 0;
+                bloquePuntos = `<div style="display:flex; align-items:center; gap:6px;">
+                                    <strong style="color:#00e676; font-weight:900;">${w} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">W</span></strong>
+                                    <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
+                                    <strong style="color:#ff4757; font-weight:900;">${l} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">L</span></strong>
+                                </div>`;
+            } else {
+                bloquePuntos = `<strong style="color:var(--accent-color); font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></strong>`;
+            }
             
             htmlContenido += `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:${i === lista.length - 1 ? 'none' : '1px solid var(--border-subtle)'}; font-size:.95rem;">
                 <span style="font-weight:700; display:flex; align-items:center;">
                     ${med} &nbsp;${sanitizarHTML(nombreRival)} ${indicadorOnline}
                 </span>
-                <span style="display:flex; align-items:center;">
-                    <strong style="color:var(--accent-color); font-weight:900;">${valor} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">${etiqueta}</span></strong>
+                <span style="display:flex; align-items:center; gap:12px;">
+                    ${bloquePuntos}
                     ${botonReto}
                 </span>
             </div>`;
@@ -3587,23 +3603,33 @@ window.cambiarVistaLiga = async function(vista) {
     if (body) body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:var(--accent-color);"></i></div>`;
 
     try {
-        const { data, error } = await supabaseClient
-            .from('victorias_versus')
-            .select('nombre')
-            .eq('liga', nombreLigaActivaCache);
+        // Traemos las victorias (W) y las derrotas (L) de esta liga al mismo tiempo
+        const [{ data: dataV, error: errV }, { data: dataD, error: errD }] = await Promise.all([
+            supabaseClient.from('victorias_versus').select('nombre').eq('liga', nombreLigaActivaCache),
+            supabaseClient.from('derrotas_versus').select('nombre').eq('liga', nombreLigaActivaCache)
+        ]);
 
-        if (error) throw error;
+        if (errV) throw errV;
+        if (errD) throw errD;
 
-        // Agrupamos manualmente: cuántas veces aparece cada nombre = cuántos duelos ganó en esta liga
-        const conteo = {};
-        (data || []).forEach(row => {
+        const statsLiga = {};
+        
+        // Contamos las W (Victorias)
+        (dataV || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
-            conteo[n] = (conteo[n] || 0) + 1;
+            if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
+            statsLiga[n].triunfos++;
         });
 
-        cacheTriunfosLiga = Object.keys(conteo)
-            .map(nombre => ({ nombre, triunfos: conteo[nombre] }))
-            .sort((a, b) => b.triunfos - a.triunfos)
+        // Contamos las L (Derrotas)
+        (dataD || []).forEach(row => {
+            const n = (row.nombre || 'Anónimo').trim();
+            if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
+            statsLiga[n].derrotas++;
+        });
+
+        cacheTriunfosLiga = Object.values(statsLiga)
+            .sort((a, b) => b.triunfos - a.triunfos) // El que tiene más victorias va primero
             .slice(0, 15);
 
         vistaLigaActual = 'triunfos';
