@@ -1929,13 +1929,14 @@ function confirmarArriesgoLocalVersus() {
             const titleEl = document.getElementById('game-title');
             if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
             
+            // Arrancamos el reloj visual para mantener la ilusión de la partida
+            iniciarRelojEsperaRivalVersus();
+
             if (esModoBot) {
                 // Como vos elegiste primero, el bot reacciona entre 1.5s y 3.5s después de forma fluida
                 setTimeout(() => {
                     ejecutarVotoBotDinamico();
                 }, 1500 + Math.random() * 2000);
-            } else {
-                iniciarRelojEsperaRivalVersus();
             }
         }
     } catch (error) {
@@ -2493,8 +2494,8 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML=`
-    <div style="text-align:center;padding:60px 24px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
-        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
+    <div style="text-align:center;padding:80px 24px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
+        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:15px;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
         <p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
         <div class="result-score-ring">
