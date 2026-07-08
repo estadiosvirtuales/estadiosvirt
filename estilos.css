@@ -1322,3 +1322,11 @@ body {
     height: auto !important;
     overflow-y: visible !important;
 }
+/* ========================================== */
+/* FORZAR ANCHO COMPLETO DE TARJETAS (MÓVIL)  */
+/* ========================================== */
+@media (max-width: 768px) {
+    .grid {
+        width: 100% !important;
+    }
+}
