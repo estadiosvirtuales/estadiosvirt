@@ -2564,11 +2564,11 @@ function compartirRetoDiarioWordle() {
         else emojisRondas += '🟥 ';                           // Fuera del estadio
     });
 
-    texto += emojisRondas.trim() + `\n\n👀 ¿Te da la nafta para ganarme o vas a arrugar?\n⚽ Desafiame acá: estadiosvirtuales.com`;
+    texto += emojisRondas.trim() + `\n\n👀 ¿Te da para ganarme o vas a arrugar?\n⚽ Desafiame acá: estadiosvirtuales.com`;
 
     if (navigator.clipboard) {
         navigator.clipboard.writeText(texto).then(() => {
-            showToast("¡Texto picante copiado! Pegalo en tu grupo de WhatsApp 🚀", "ph-copy", "success");
+            showToast("¡Reto copiado! Compartilo con tus amigos 🚀", "ph-copy", "success");
         }).catch(err => {
             showToast("Tu navegador no soporta copiado directo.", "ph-warning-circle", "warning");
         });
