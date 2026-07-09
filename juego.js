@@ -2793,24 +2793,56 @@ window.actualizarAvatarLive = function() {
 };
 
 function guardarPersonalizacion(){
-const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
-const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
-const nickInput=document.getElementById('avatar-nick-input');if(nickInput!==null){const newNick=nickInput.value.trim();setPref('ev_custom_nick',newNick);const futName=document.getElementById('fut-name-display');if(futName){const u = obtenerUsuarioLogueado();futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}}
-const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
-const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
-const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
-const color2Input=document.getElementById('avatar-shirt-color2-input'); if(color2Input) setPref('ev_avatar_color2', color2Input.value);
-const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
-const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
+    const u = obtenerUsuarioLogueado();
+    
+    // 🔥 PASO 1: Capturamos tu nombre VIEJO antes de que se cambie
+    const nickViejo = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Anónimo');
 
-showToast('¡Personalización guardada! 🎉');renderizarBotonLogin();ancestralHeaderNivel();
-guardarStats(); // <--- LLAMADA CRUCIAL AGREGADA PARA SINCRONIZAR AL INSTANTE CON LA NUBE
+    const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
+    const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
+    
+    const nickInput=document.getElementById('avatar-nick-input');
+    let nickNuevo = nickViejo; // Guardamos variable para comparar
+    
+    if(nickInput!==null){
+        const newNick=nickInput.value.trim();
+        nickNuevo = newNick || nickViejo; // Si lo deja en blanco, queda el que estaba
+        setPref('ev_custom_nick',newNick);
+        const futName=document.getElementById('fut-name-display');
+        if(futName){futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}
+    }
+    
+    const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
+    const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
+    const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
+    const color2Input=document.getElementById('avatar-shirt-color2-input'); if(color2Input) setPref('ev_avatar_color2', color2Input.value);
+    const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
+    const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
 
-const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
-const cardEl=document.getElementById('fut-card-main');if(cardEl){
-    let th=getPref('ev_card_theme','arg');const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
-    if (!validThemes.includes(th)) th = 'arg';cardEl.className='fut-card '+th;
-}if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
+    showToast('¡Personalización guardada! 🎉');
+    renderizarBotonLogin();
+    ancestralHeaderNivel();
+    guardarStats(); 
+
+    // 🔥 PASO 2: Si cambiaste el nombre, vamos a la DB a pisar los registros de la liga
+    if (nickViejo !== nickNuevo && supabaseClient) {
+        const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
+        if (nombreLiga) {
+            // Actualiza puntos, victorias y derrotas para que no queden "fantasmas"
+            supabaseClient.from('ranking').update({ nombre: nickNuevo }).eq('juego', 'duelo_' + nombreLiga).eq('nombre', nickViejo).then();
+            supabaseClient.from('victorias_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo).then();
+            supabaseClient.from('derrotas_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo).then();
+            
+            // Le manda un grito a los celulares de tus amigos para que refresquen la tabla y vean tu nuevo apodo
+            if (ligaAmigosChannel) ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+        }
+    }
+
+    const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
+    const cardEl=document.getElementById('fut-card-main');if(cardEl){
+        let th=getPref('ev_card_theme','arg');const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
+        if (!validThemes.includes(th)) th = 'arg';cardEl.className='fut-card '+th;
+    }if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
 }
 
 function abrirModalPerfil(){
@@ -3865,6 +3897,11 @@ function conectarPresenciaLiga(nombreLiga, miNombre) {
 
             mostrarNotificacionDesafio(data.de, data.salaId);
         })
+        // 🔥 INYECTAR ESTO ACÁ:
+        .on('broadcast', { event: 'fuerza_refresh' }, () => {
+            // Si alguien se cambió el nombre o se fue para siempre, volvemos a pedir los datos a la DB
+            abrirModalLigaAmigosPrivada(); 
+        })
         .subscribe((status) => {
             if (status === 'SUBSCRIBED') {
                 ligaAmigosChannel.track({ online_at: new Date().toISOString() });
@@ -3914,10 +3951,26 @@ window.responderDesafio = function(aceptar, salaId) {
 
 // 🚪 Salir de la liga actual: vuelve a mostrar el formulario de crear/unirse
 function salirLigaAmigos() {
-    if (!confirm("¿Seguro que querés salir de tu liga privada? Vas a dejar de ver esta tabla de posiciones.")) return;
-    localStorage.removeItem('ev_codigo_liga_amigos');
+    if (!confirm("¿Seguro que querés salir de tu liga privada? Vas a dejar de ver esta tabla de posiciones y tu puntaje desaparecerá para todos.")) return;
     
-    // 🛡️ ESCUDO: Le avisamos a Supabase en este milisegundo que nos fuimos, para que no nos vuelva a meter al actualizar
+    const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
+    const u = obtenerUsuarioLogueado();
+    const miNombre = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+
+    // 🔥 PASO 1: Destruimos tus registros de ESA liga en la Base de Datos
+    if (supabaseClient && nombreLiga) {
+        supabaseClient.from('ranking').delete().eq('juego', 'duelo_' + nombreLiga).eq('nombre', miNombre).then();
+        supabaseClient.from('victorias_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre).then();
+        supabaseClient.from('derrotas_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre).then();
+        
+        // Le pegamos un grito a los amigos para que actualicen sus pantallas al instante
+        if (ligaAmigosChannel) {
+            ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+        }
+    }
+
+    // PASO 2: Limpieza local estándar
+    localStorage.removeItem('ev_codigo_liga_amigos');
     guardarStats();
     
     cerrarModalLigaAmigosPrivada();
