@@ -580,7 +580,7 @@ async function registrarUsuarioEnSupabase(user) {
         if (error) {
             console.error("🚨 Error en el canal seguro de usuarios:", error.message);
         } else {
-            console.log("👤 Usuario registrado/actualizado con éxito en el búnker.");
+            console.log("👤 Usuario registrado/actualizado con éxito.");
         }
     } catch (e) {
         console.error("Error de red en registrarUsuarioEnSupabase:", e);
@@ -2578,7 +2578,7 @@ function compartirRetoDiarioWordle() {
 // SISTEMA DE RANKINGS INTEGRADO CON PESTAÑAS (SOLO, VERSUS TOTAL Y VERSUS SEMANAL)
 async function abrirModalRanking(modoEspecifico = 'solo') {
     const body = document.getElementById('ranking-modal-body');
-    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando al búnker...</div>';
+    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
     
     let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
@@ -3511,7 +3511,7 @@ async function crearOCargarLigaAmigos(esCreacion) {
 
         } catch (err) {
             console.error("Error crítico en creación de liga:", err);
-            showToast("Error de conexión con el búnker.", "ph-warning-circle", "danger");
+            showToast("Error de conexión.", "ph-warning-circle", "danger");
             return;
         }
     } else {
