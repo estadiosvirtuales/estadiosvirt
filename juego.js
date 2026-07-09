@@ -2796,7 +2796,7 @@ function guardarPersonalizacion(){
     const u = obtenerUsuarioLogueado();
     
     // 🔥 PASO 1: Capturamos tu nombre VIEJO antes de que se cambie
-    const nickViejo = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Anónimo');
+    const nickViejo = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
     const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
     const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
@@ -2828,22 +2828,26 @@ function guardarPersonalizacion(){
     if (nickViejo !== nickNuevo && typeof supabaseClient !== 'undefined' && supabaseClient) {
         const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
         if (nombreLiga) {
-            // 1. Actualiza la Base de Datos
-            supabaseClient.from('ranking').update({ nombre: nickNuevo }).eq('juego', 'duelo_' + nombreLiga).eq('nombre', nickViejo).then();
-            supabaseClient.from('victorias_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo).then();
-            supabaseClient.from('derrotas_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo).then();
-            
-            // 2. 🔥 EL FIX: Apagamos el canal de "Online" viejo y lo reiniciamos con el nombre nuevo
-            if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
-                ligaAmigosChannel.untrack(); // Dejamos de transmitir el nombre viejo
-                ligaAmigosChannel.unsubscribe(); // Cortamos la conexión
-                ligaAmigosChannel = null;
-                
-                // Le damos 500ms al sistema para respirar y nos volvemos a conectar (ahora tomará el nickNuevo automáticamente)
-                setTimeout(() => {
-                    if (typeof conectarPresenciaLiga === 'function') conectarPresenciaLiga();
-                }, 500);
-            }
+            // 1. Actualiza la Base de Datos y ESPERAMOS a que las 3 tablas terminen antes de avisar a nadie
+            Promise.all([
+                supabaseClient.from('ranking').update({ nombre: nickNuevo }).eq('juego', 'duelo_' + nombreLiga).eq('nombre', nickViejo),
+                supabaseClient.from('victorias_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo),
+                supabaseClient.from('derrotas_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo)
+            ]).then((resultados) => {
+                resultados.forEach(r => { if (r.error) console.error('Error al renombrar en la liga:', r.error); });
+
+                // 2. Avisamos a mis amigos ANTES de cortar el canal, y recién ahí lo reiniciamos con el nombre nuevo
+                if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
+                    ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+                    ligaAmigosChannel.untrack();
+                    ligaAmigosChannel.unsubscribe();
+                    ligaAmigosChannel = null;
+
+                    setTimeout(() => {
+                        if (typeof conectarPresenciaLiga === 'function') conectarPresenciaLiga(nombreLiga, nickNuevo);
+                    }, 500);
+                }
+            });
         }
     }
 
@@ -3908,8 +3912,11 @@ function conectarPresenciaLiga(nombreLiga, miNombre) {
         })
         // 🔥 INYECTAR ESTO ACÁ:
         .on('broadcast', { event: 'fuerza_refresh' }, () => {
-            // Si alguien se cambió el nombre o se fue para siempre, volvemos a pedir los datos a la DB
-            abrirModalLigaAmigosPrivada(); 
+            // Solo refrescamos si el amigo ya tenía el modal de la liga abierto en pantalla
+            const modal = document.getElementById('liga-amigos-modal');
+            if (modal && modal.style.display === 'flex') {
+                abrirModalLigaAmigosPrivada();
+            }
         })
         .subscribe((status) => {
             if (status === 'SUBSCRIBED') {
@@ -3966,29 +3973,31 @@ function salirLigaAmigos() {
     const u = obtenerUsuarioLogueado();
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
-    if (typeof supabaseClient !== 'undefined' && supabaseClient && nombreLiga) {
-        // 1. Borramos todo rastro tuyo de la Base de Datos
-        supabaseClient.from('ranking').delete().eq('juego', 'duelo_' + nombreLiga).eq('nombre', miNombre).then();
-        supabaseClient.from('victorias_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre).then();
-        supabaseClient.from('derrotas_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre).then();
-        
-        // 2. 🔥 EL FIX: Avisamos que nos vamos y apagamos el transmisor
-        if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
-            ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
-            ligaAmigosChannel.untrack(); // Dejamos de emitir estado "Online"
-            ligaAmigosChannel.unsubscribe(); // Matamos la conexión
-            ligaAmigosChannel = null;
-        }
-    }
-
-    // 3. Limpieza local de tu celular/PC
-    localStorage.removeItem('ev_codigo_liga_amigos');
-    guardarStats();
-    
-    cerrarModalLigaAmigosPrivada();
-    
-    // Le damos un pequeño changüí a la base de datos para borrar antes de recargar tu vista
-    setTimeout(() => {
+    const terminar = () => {
+        localStorage.removeItem('ev_codigo_liga_amigos');
+        guardarStats();
+        cerrarModalLigaAmigosPrivada();
         abrirModalLigaAmigosPrivada();
-    }, 500);
+    };
+
+    if (typeof supabaseClient !== 'undefined' && supabaseClient && nombreLiga) {
+        // 1. Borramos todo rastro tuyo de la Base de Datos y ESPERAMOS a que termine antes de avisar a nadie
+        Promise.all([
+            supabaseClient.from('ranking').delete().eq('juego', 'duelo_' + nombreLiga).eq('nombre', miNombre),
+            supabaseClient.from('victorias_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre),
+            supabaseClient.from('derrotas_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre)
+        ]).then((resultados) => {
+            resultados.forEach(r => { if (r.error) console.error('Error al borrar de la liga:', r.error); });
+
+            if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
+                ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+                ligaAmigosChannel.untrack();
+                ligaAmigosChannel.unsubscribe();
+                ligaAmigosChannel = null;
+            }
+            terminar();
+        });
+    } else {
+        terminar();
+    }
 }
