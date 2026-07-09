@@ -2547,7 +2547,7 @@ function compartirRetoDiarioWordle() {
     
     // Calificación de rendimiento viral según el puntaje total
     let rangoTexto = "¡Amateur total! 🥶";
-    if (guessrPuntosTotales >= 22000) rangoTexto = "👑 ¡GALÁCTICO ABSOLUTO! (Nivel Dios) 👑";
+    if (guessrPuntosTotales >= 22000) rangoTexto = "👑 ¡GALÁCTICO ABSOLUTO! 👑";
     else if (guessrPuntosTotales >= 18000) rangoTexto = "⭐ ¡Crack de Primera! ⭐";
     else if (guessrPuntosTotales >= 12000) rangoTexto = "🏃 Volante con despliegue 🏃";
 
