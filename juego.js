@@ -2797,20 +2797,72 @@ async function guardarPersonalizacion(){
     
     // 🔥 PASO 1: Capturamos tu nombre VIEJO antes de que se cambie
     const nickViejo = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Anónimo');
+    
+    const nickInput = document.getElementById('avatar-nick-input');
+    let nickNuevo = nickViejo; 
+    
+    if (nickInput !== null) {
+        const newNick = nickInput.value.trim();
+        
+        // 🛑 ESCUDO ANTI-CLONES BLINDADO CONTRA FALLOS DE RED
+        if (newNick !== '' && newNick.toLowerCase() !== nickViejo.toLowerCase()) {
+            
+            // Si por algún motivo no hay conexión a Supabase, frenamos antes de crashear
+            if (typeof supabaseClient === 'undefined' || !supabaseClient) {
+                showToast("Sin conexión al servidor para verificar apodos.", "ph-wifi-slash", "danger");
+                return;
+            }
+
+            const btnSave = document.querySelector('.avatar-save-btn');
+            if (btnSave) { 
+                btnSave.disabled = true; 
+                btnSave.innerHTML = '<i class="ph-bold ph-circle-notch animate-spin"></i> Verificando...'; 
+            }
+
+            try {
+                const { data: nombreOcupado, error } = await supabaseClient
+                    .from('ranking')
+                    .select('nombre')
+                    .ilike('nombre', newNick)
+                    .limit(1);
+
+                if (error) throw error; 
+
+                if (btnSave) { 
+                    btnSave.disabled = false; 
+                    btnSave.innerHTML = '<i class="ph-bold ph-check"></i> Guardar cambios'; 
+                }
+
+                if (nombreOcupado && nombreOcupado.length > 0) {
+                    showToast("Ese apodo ya está en uso. ¡Elegí otro!", "ph-warning-circle", "danger");
+                    return; // ⛔ Corta la ejecución acá. Protege la base de datos.
+                }
+            } catch (err) {
+                if (btnSave) { 
+                    btnSave.disabled = false; 
+                    btnSave.innerHTML = '<i class="ph-bold ph-check"></i> Guardar cambios'; 
+                }
+                console.error("Error al consultar apodos:", err);
+                showToast("Error de red al verificar el nombre.", "ph-warning-circle", "danger");
+                return;
+            }
+            
+            nickNuevo = newNick; 
+        } else if (newNick !== '') {
+            nickNuevo = newNick; // Cubre el caso donde solo cambió una minúscula por mayúscula propia
+        }
+    }
+
+    // =========================================================
+    // SI PASÓ EL ESCUDO DE ARRIBA, GUARDAMOS TODO CON NORMALIDAD
+    // =========================================================
 
     const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
     const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
     
-    const nickInput=document.getElementById('avatar-nick-input');
-    let nickNuevo = nickViejo; 
-    
-    if(nickInput!==null){
-        const newNick=nickInput.value.trim();
-        nickNuevo = newNick || nickViejo; 
-        setPref('ev_custom_nick',newNick);
-        const futName=document.getElementById('fut-name-display');
-        if(futName){futName.textContent=newNick||(u?u.name.split(' ')[0]:'Jugador');}
-    }
+    setPref('ev_custom_nick', nickNuevo);
+    const futName=document.getElementById('fut-name-display');
+    if(futName){futName.textContent=nickNuevo||(u?u.name.split(' ')[0]:'Jugador');}
     
     const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
     const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
@@ -2824,25 +2876,22 @@ async function guardarPersonalizacion(){
     ancestralHeaderNivel();
     guardarStats(); 
 
-    // 🔥 PASO 2: FIX DEFINITIVO (Con función RPC segura en el servidor)
+    // 🔥 PASO 2: IMPACTAR EL CAMBIO EN LA BASE DE DATOS Y EN LAS PANTALLAS DE LOS AMIGOS (Vía RPC Seguro)
     if (nickViejo !== nickNuevo && typeof supabaseClient !== 'undefined' && supabaseClient) {
         const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
         if (nombreLiga) {
-            // 1. ESPERAMOS (await) a la llave segura de Supabase para cambiar nombres
             await supabaseClient.rpc('actualizar_apodo_liga', {
                 p_liga: nombreLiga,
                 p_nombre_viejo: nickViejo,
                 p_nombre_nuevo: nickNuevo
             });
             
-            // 2. Apagamos el canal viejo y lo borramos
             if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
                 ligaAmigosChannel.untrack(); 
                 ligaAmigosChannel.unsubscribe(); 
                 ligaAmigosChannel = null;
             }
 
-            // 3. Reconectamos con los PARÁMETROS CORRECTOS y mandamos el refresh a los amigos
             setTimeout(() => {
                 if (typeof conectarPresenciaLiga === 'function') conectarPresenciaLiga(nombreLiga, nickNuevo);
                 if (ligaAmigosChannel) ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
