@@ -2824,17 +2824,26 @@ function guardarPersonalizacion(){
     ancestralHeaderNivel();
     guardarStats(); 
 
-    // 🔥 PASO 2: Si cambiaste el nombre, vamos a la DB a pisar los registros de la liga
-    if (nickViejo !== nickNuevo && supabaseClient) {
+    // 🔥 PASO 2: Si cambiaste el nombre, actualizamos DB y reiniciamos la conexión
+    if (nickViejo !== nickNuevo && typeof supabaseClient !== 'undefined' && supabaseClient) {
         const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
         if (nombreLiga) {
-            // Actualiza puntos, victorias y derrotas para que no queden "fantasmas"
+            // 1. Actualiza la Base de Datos
             supabaseClient.from('ranking').update({ nombre: nickNuevo }).eq('juego', 'duelo_' + nombreLiga).eq('nombre', nickViejo).then();
             supabaseClient.from('victorias_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo).then();
             supabaseClient.from('derrotas_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo).then();
             
-            // Le manda un grito a los celulares de tus amigos para que refresquen la tabla y vean tu nuevo apodo
-            if (ligaAmigosChannel) ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+            // 2. 🔥 EL FIX: Apagamos el canal de "Online" viejo y lo reiniciamos con el nombre nuevo
+            if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
+                ligaAmigosChannel.untrack(); // Dejamos de transmitir el nombre viejo
+                ligaAmigosChannel.unsubscribe(); // Cortamos la conexión
+                ligaAmigosChannel = null;
+                
+                // Le damos 500ms al sistema para respirar y nos volvemos a conectar (ahora tomará el nickNuevo automáticamente)
+                setTimeout(() => {
+                    if (typeof conectarPresenciaLiga === 'function') conectarPresenciaLiga();
+                }, 500);
+            }
         }
     }
 
@@ -3957,22 +3966,29 @@ function salirLigaAmigos() {
     const u = obtenerUsuarioLogueado();
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
-    // 🔥 PASO 1: Destruimos tus registros de ESA liga en la Base de Datos
-    if (supabaseClient && nombreLiga) {
+    if (typeof supabaseClient !== 'undefined' && supabaseClient && nombreLiga) {
+        // 1. Borramos todo rastro tuyo de la Base de Datos
         supabaseClient.from('ranking').delete().eq('juego', 'duelo_' + nombreLiga).eq('nombre', miNombre).then();
         supabaseClient.from('victorias_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre).then();
         supabaseClient.from('derrotas_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre).then();
         
-        // Le pegamos un grito a los amigos para que actualicen sus pantallas al instante
-        if (ligaAmigosChannel) {
+        // 2. 🔥 EL FIX: Avisamos que nos vamos y apagamos el transmisor
+        if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
             ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+            ligaAmigosChannel.untrack(); // Dejamos de emitir estado "Online"
+            ligaAmigosChannel.unsubscribe(); // Matamos la conexión
+            ligaAmigosChannel = null;
         }
     }
 
-    // PASO 2: Limpieza local estándar
+    // 3. Limpieza local de tu celular/PC
     localStorage.removeItem('ev_codigo_liga_amigos');
     guardarStats();
     
     cerrarModalLigaAmigosPrivada();
-    abrirModalLigaAmigosPrivada();
+    
+    // Le damos un pequeño changüí a la base de datos para borrar antes de recargar tu vista
+    setTimeout(() => {
+        abrirModalLigaAmigosPrivada();
+    }, 500);
 }
