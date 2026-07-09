@@ -2824,16 +2824,16 @@ async function guardarPersonalizacion(){
     ancestralHeaderNivel();
     guardarStats(); 
 
-    // 🔥 PASO 2: FIX DEFINITIVO (Con espera asincrónica)
+    // 🔥 PASO 2: FIX DEFINITIVO (Con función RPC segura en el servidor)
     if (nickViejo !== nickNuevo && typeof supabaseClient !== 'undefined' && supabaseClient) {
         const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
         if (nombreLiga) {
-            // 1. ESPERAMOS (await) que la base de datos termine de cambiar todos los nombres
-            await Promise.all([
-                supabaseClient.from('ranking').update({ nombre: nickNuevo }).eq('juego', 'duelo_' + nombreLiga).eq('nombre', nickViejo),
-                supabaseClient.from('victorias_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo),
-                supabaseClient.from('derrotas_versus').update({ nombre: nickNuevo }).eq('liga', nombreLiga).eq('nombre', nickViejo)
-            ]);
+            // 1. ESPERAMOS (await) a la llave segura de Supabase para cambiar nombres
+            await supabaseClient.rpc('actualizar_apodo_liga', {
+                p_liga: nombreLiga,
+                p_nombre_viejo: nickViejo,
+                p_nombre_nuevo: nickNuevo
+            });
             
             // 2. Apagamos el canal viejo y lo borramos
             if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
@@ -3970,12 +3970,11 @@ async function salirLigaAmigos() {
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
     if (typeof supabaseClient !== 'undefined' && supabaseClient && nombreLiga) {
-        // 1. ESPERAMOS (await) que se borre absolutamente todo en la BD
-        await Promise.all([
-            supabaseClient.from('ranking').delete().eq('juego', 'duelo_' + nombreLiga).eq('nombre', miNombre),
-            supabaseClient.from('victorias_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre),
-            supabaseClient.from('derrotas_versus').delete().eq('liga', nombreLiga).eq('nombre', miNombre)
-        ]);
+        // 1. ESPERAMOS (await) a la función RPC segura para borrar todo
+        await supabaseClient.rpc('abandonar_liga_seguro', {
+            p_liga: nombreLiga,
+            p_nombre: miNombre
+        });
         
         // 2. AHORA SÍ, recién cuando la BD nos confirmó el borrado, le avisamos a los demás
         if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
