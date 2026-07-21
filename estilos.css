@@ -461,7 +461,7 @@ body > * {
 #customization-panel-wrapper{justify-content:flex-start}
 #btn-toggle-custom{margin-left:0}
 /* ========================================================
-   CARTA FUT 18 - SILUETA 1:1 EXACTA (CALCO DE PELÉ)
+   CARTA FUT 18 - SILUETA EXACTA CON EFECTOS Y MÍSTICA
    ======================================================== */
 .fut-card {
     position: relative;
@@ -478,17 +478,80 @@ body > * {
     transition: all .4s cubic-bezier(.175, .885, .32, 1.275);
     flex-shrink: 0;
 
-    /* 🛡️ Trazado vectorial continuo y fluido (Escudo oficial FUT 18) */
+    /* 🛡️ Trazado vectorial exacto que ya aprobaste */
     clip-path: path('M 0,32 C 0,24 10,18 25,14 C 65,8 105,5 115,3 C 120,2 122,0 125,0 C 128,0 130,2 135,3 C 145,5 185,8 225,14 C 240,18 250,24 250,32 L 250,305 C 250,335 180,365 125,385 C 70,365 0,335 0,305 Z');
 
-    /* 🌟 Sombra proyectada siguiendo la silueta del escudo */
+    /* 🌟 Sombra proyectada */
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
 }
 
-/* Efecto hover con elevación e iluminación neón */
+/* 1. ✨ Rayos de luz radiantes y textura de fondo (Estilo Ícono FIFA) */
+.fut-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+        radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.35) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 12px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 2. 💿 Reflejo Holográfico / Cromo al pasar el cursor (Hover) */
+.fut-card::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 220%;
+    height: 220%;
+    background: linear-gradient(
+        115deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.15) 45%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.15) 55%,
+        transparent 70%
+    );
+    transform: rotate(25deg) translateY(-100%);
+    transition: transform 0.8s ease-in-out;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Animación del destello holográfico en Hover */
+.fut-card:hover::after {
+    transform: rotate(25deg) translateY(100%);
+}
+
 .fut-card:hover {
     transform: translateY(-8px) scale(1.02);
-    filter: drop-shadow(0 18px 32px rgba(0, 230, 118, 0.35));
+    filter: drop-shadow(0 18px 32px rgba(0, 230, 118, 0.4));
+}
+
+/* Eleva el contenido por encima de las luces */
+.fut-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* 3. 💧 Marca de agua "ESTADIOS VIRTUALES" transparente abajo */
+.fut-stats-row {
+    position: relative;
+}
+.fut-stats-row::after {
+    content: 'ESTADIOS VIRTUALES';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.55rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: -1;
 }
 .fut-card.arg{background:linear-gradient(135deg,#74acdf 0%,#ffffff 50%,#74acdf 100%);color:#000;border-color:#74acdf}
 .fut-card.arg .fut-name{border-bottom-color:rgba(0,0,0,.3)}
