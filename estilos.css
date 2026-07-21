@@ -461,7 +461,7 @@ body > * {
 #customization-panel-wrapper{justify-content:flex-start}
 #btn-toggle-custom{margin-left:0}
 /* ========================================================
-   CARTA FUT 18 - SILUETA EXACTA CON EFECTOS Y MÍSTICA
+   CARTA FUT 18 - SILUETA EXACTA CON EFECTOS SIN SCROLLBAR
    ======================================================== */
 .fut-card {
     position: relative;
@@ -478,18 +478,18 @@ body > * {
     transition: all .4s cubic-bezier(.175, .885, .32, 1.275);
     flex-shrink: 0;
 
-    /* 🛡️ Trazado vectorial exacto que ya aprobaste */
+    /* 🛡️ Silueta de Pelé */
     clip-path: path('M 0,32 C 0,24 10,18 25,14 C 65,8 105,5 115,3 C 120,2 122,0 125,0 C 128,0 130,2 135,3 C 145,5 185,8 225,14 C 240,18 250,24 250,32 L 250,305 C 250,335 180,365 125,385 C 70,365 0,335 0,305 Z');
 
     /* 🌟 Sombra proyectada */
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
 }
 
-/* 1. ✨ Rayos de luz radiantes y textura de fondo (Estilo Ícono FIFA) */
+/* 1. ✨ Rayos de luz radiantes y textura de fondo */
 .fut-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    inset: 0;
     background: 
         radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.35) 0%, transparent 60%),
         repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 12px);
@@ -497,31 +497,29 @@ body > * {
     z-index: 1;
 }
 
-/* 2. 💿 Reflejo Holográfico / Cromo al pasar el cursor (Hover) */
+/* 2. 💿 Reflejo Holográfico (Desplazamiento interno, cero scroll) */
 .fut-card::after {
     content: '';
     position: absolute;
-    top: -60%;
-    left: -60%;
-    width: 220%;
-    height: 220%;
+    inset: 0;
     background: linear-gradient(
         115deg,
-        transparent 30%,
+        transparent 25%,
         rgba(255, 255, 255, 0.15) 45%,
-        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.45) 50%,
         rgba(255, 255, 255, 0.15) 55%,
-        transparent 70%
+        transparent 75%
     );
-    transform: rotate(25deg) translateY(-100%);
-    transition: transform 0.8s ease-in-out;
+    background-size: 250% 250%;
+    background-position: 100% 0%;
+    transition: background-position 0.7s ease-in-out;
     pointer-events: none;
     z-index: 10;
 }
 
-/* Animación del destello holográfico en Hover */
+/* Mueve el degradado de luz internamente en Hover */
 .fut-card:hover::after {
-    transform: rotate(25deg) translateY(100%);
+    background-position: 0% 100%;
 }
 
 .fut-card:hover {
@@ -535,7 +533,7 @@ body > * {
     z-index: 2;
 }
 
-/* 3. 💧 Marca de agua "ESTADIOS VIRTUALES" transparente abajo */
+/* 3. 💧 Marca de agua "ESTADIOS VIRTUALES" */
 .fut-stats-row {
     position: relative;
 }
