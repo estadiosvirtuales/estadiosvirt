@@ -786,8 +786,45 @@ body > * {
     border: 1px dashed var(--border-subtle) !important; 
     opacity: 0.35;
 }
-.logros-tabs-row{display:flex;gap:5px;margin-bottom:14px;background:var(--bg-color);padding:4px;border-radius:12px;border:2px solid var(--border-strong)}
-.logro-tab-btn{flex:1;min-width:50px;padding:7px 8px;border-radius:8px;border:none;background:transparent;color:var(--text-muted);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .2s;white-space:nowrap}
+/* ========================================================
+   PESTAÑAS DE LOGROS MÓVILES (ESPACIADO Y SLIDE)
+   ======================================================== */
+.logros-tabs-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    background: var(--bg-color);
+    padding: 4px;
+    border-radius: 12px;
+    border: 2px solid var(--border-strong);
+    overflow-x: auto; /* Permite desplazamiento si la pantalla es muy chica */
+    scrollbar-width: none; /* Oculta la barra fea de scroll en Firefox */
+}
+
+.logros-tabs-row::-webkit-scrollbar {
+    display: none; /* Oculta la barra de scroll en Chrome/Safari */
+}
+
+.logro-tab-btn {
+    flex: 1 0 auto; /* Evita que las pestañas se aplasten */
+    min-width: max-content;
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: .68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Separación fija e impecable entre el emoticón y el texto */
+}
 .logro-tab-btn.active{background:var(--accent-color);color:#000;box-shadow:0 2px 8px var(--accent-glow)}
 .logro-tab-btn:hover:not(.active){background:var(--surface-hover);color:var(--text-main)}
 .logros-grid-v2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:480px;overflow-y:auto;padding:2px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
