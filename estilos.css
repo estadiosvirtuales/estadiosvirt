@@ -497,27 +497,27 @@ body > * {
     z-index: 1;
 }
 
-/* 2. 💿 Reflejo Holográfico (Desplazamiento interno, cero scroll) */
+/* 2. 💿 Reflejo Holográfico (Entra, cruza toda la carta y desaparece) */
 .fut-card::after {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
         115deg,
-        transparent 25%,
-        rgba(255, 255, 255, 0.15) 45%,
-        rgba(255, 255, 255, 0.45) 50%,
-        rgba(255, 255, 255, 0.15) 55%,
-        transparent 75%
+        transparent 38%,
+        rgba(255, 255, 255, 0.15) 46%,
+        rgba(255, 255, 255, 0.55) 50%,
+        rgba(255, 255, 255, 0.15) 54%,
+        transparent 62%
     );
-    background-size: 250% 250%;
-    background-position: 100% 0%;
-    transition: background-position 0.7s ease-in-out;
+    background-size: 320% 320%;
+    background-position: 100% 0%; /* Posición inicial: 100% oculto a la izquierda */
+    transition: background-position 0.85s ease-in-out;
     pointer-events: none;
     z-index: 10;
 }
 
-/* Mueve el degradado de luz internamente en Hover */
+/* Al pasar el mouse, el destello viaja hasta salir 100% por la derecha */
 .fut-card:hover::after {
     background-position: 0% 100%;
 }
