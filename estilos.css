@@ -667,13 +667,93 @@ body > * {
 .geoguessr-dash-box{background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px 18px;margin-bottom:14px}
 .dash-header-inline{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:2px dashed var(--border-subtle)}
 .dash-title-premium{font-size:.95rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text-main);display:flex;align-items:center;gap:8px}
-.streak-fire-badge{background:var(--bg-color);color:var(--accent-color);padding:6px 12px;border-radius:20px;font-size:.78rem;font-weight:800;border:2px solid var(--border-strong);display:flex;align-items:center;gap:5px}
-.calendar-matrix { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; background: rgba(0,0,0,0.1); border-radius: 12px; padding: 12px; border: 1px solid var(--border-subtle); margin-top: 10px; }
-.calendar-day-label { font-size: .6rem; color: var(--text-muted); font-weight: 800; margin-bottom: 2px; }
-.calendar-cell { font-size: .7rem; width: 24px; height: 24px; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--bg-color); color: var(--text-muted); font-weight: 700; border: 1px solid var(--border-subtle); transition: all .2s; }
-.calendar-cell.past-done { color: #000; background: var(--accent-color); border-color: var(--accent-color); opacity: 0.7; }
-.calendar-cell.current-active { color: #000; background: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 4px 12px var(--accent-glow); transform: scale(1.15); font-weight: 900; opacity: 1; }
-.calendar-cell:not(.past-done):not(.current-active) { opacity: 0.35; }
+/* ========================================================
+   ESTILOS DE CALENDARIO Y RACHA ACTIVA
+   ======================================================== */
+.streak-fire-badge {
+    background: rgba(255, 143, 0, 0.12);
+    color: #ff9f05;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 800;
+    border: 1.5px solid rgba(255, 143, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 0 10px rgba(255, 143, 0, 0.15);
+}
+
+.calendar-matrix { 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 6px; 
+    text-align: center; 
+    background: rgba(0,0,0,0.15); 
+    border-radius: 12px; 
+    padding: 12px; 
+    border: 1px solid var(--border-subtle); 
+    margin-top: 10px; 
+}
+
+.calendar-day-label { 
+    font-size: .6rem; 
+    color: var(--text-muted); 
+    font-weight: 800; 
+    margin-bottom: 2px; 
+}
+
+.calendar-cell { 
+    font-size: .75rem; 
+    width: 26px; 
+    height: 26px; 
+    margin: 0 auto; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 50%; 
+    background: var(--bg-color); 
+    color: var(--text-muted); 
+    font-weight: 700; 
+    border: 1px solid var(--border-subtle); 
+    transition: all .25s ease;
+    position: relative;
+}
+
+/* 🔥 1. Racha Activa (Días de la racha encendida actual) */
+.calendar-cell.streak-active { 
+    color: #000 !important; 
+    background: var(--accent-color) !important; 
+    border-color: var(--accent-color) !important; 
+    box-shadow: 0 0 12px var(--accent-glow), 0 0 4px var(--accent-color) !important; 
+    transform: scale(1.12); 
+    font-weight: 900 !important; 
+    z-index: 2;
+}
+
+/* ✓ 2. Racha Vieja / Días pasados completados (Verde Muted) */
+.calendar-cell.past-done { 
+    color: var(--accent-color) !important; 
+    background: var(--accent-dim) !important; 
+    border-color: rgba(0, 230, 118, 0.3) !important; 
+    font-weight: 700 !important; 
+    opacity: 0.75;
+}
+
+/* ❌ 3. Días pasados sin actividad (Perdidos) */
+.calendar-cell.past-missed { 
+    background: rgba(0, 0, 0, 0.25) !important; 
+    color: rgba(255, 255, 255, 0.25) !important; 
+    border-color: transparent !important;
+}
+
+/* ⚪ 4. Días futuros */
+.calendar-cell.future-day { 
+    background: transparent !important; 
+    color: var(--text-muted) !important; 
+    border: 1px dashed var(--border-subtle) !important; 
+    opacity: 0.35;
+}
 .logros-tabs-row{display:flex;gap:5px;margin-bottom:14px;background:var(--bg-color);padding:4px;border-radius:12px;border:2px solid var(--border-strong)}
 .logro-tab-btn{flex:1;min-width:50px;padding:7px 8px;border-radius:8px;border:none;background:transparent;color:var(--text-muted);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.3px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .logro-tab-btn.active{background:var(--accent-color);color:#000;box-shadow:0 2px 8px var(--accent-glow)}

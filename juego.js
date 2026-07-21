@@ -2909,7 +2909,16 @@ async function guardarPersonalizacion(){
 function abrirModalPerfil(){
 const u=obtenerUsuarioLogueado();if(!u)return;
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
-const xpEnNivel=userStats.xpTotal-nivel.min,xpNivelTotal=nivelSig.min-nivel.min;const xpPct=nivelIdx===NIVELES.length-1?100:Math.min(100,Math.round((xpEnNivel/xpNivelTotal)*100));
+
+// 1. Nombre de rango puro (Sin duplicar "Lvl XX")
+const nombreRangoPuro = nivel.nombre.replace(/\s+Lvl\s+\d+/i, '').trim();
+
+// 2. Cálculo de XP relativo al nivel actual (Sin números de 7 dígitos)
+const xpEnNivel = userStats.xpTotal - nivel.min;
+const xpNivelTotal = nivelSig.min === Infinity ? xpEnNivel : (nivelSig.min - nivel.min);
+const xpFaltante = nivelSig.min === Infinity ? 0 : Math.max(0, nivelSig.min - userStats.xpTotal);
+const xpPct = nivelIdx === NIVELES.length - 1 ? 100 : Math.min(100, Math.round((xpEnNivel / xpNivelTotal) * 100));
+
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');let savedTheme=getPref('ev_card_theme','arg');
 const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
@@ -2917,14 +2926,62 @@ const savedHair = getPref('ev_avatar_hair', 'short');const savedShirt = getPref(
 const activeCardClass=savedTheme;const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
 const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',l:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
-const today = new Date();const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-const currentYear = today.getFullYear();const currentMonth = today.getMonth();const firstDay = new Date(currentYear, currentMonth, 1).getDay();let startOffset = firstDay === 0 ? 6 : firstDay - 1;const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-let calHTML='';for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden; border:none;"></div>`; }
+
+// 3. Algoritmo para separar Racha Activa vs Días Pasados
+const today = new Date();
+const monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const currentYear = today.getFullYear();
+const currentMonth = today.getMonth();
+const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+const activeStreakDates = new Set();
+let curr = new Date(today);
+curr.setHours(0,0,0,0);
+const todayStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+if (!userStats.activeDates || !userStats.activeDates.includes(todayStr)) {
+    curr.setDate(curr.getDate() - 1);
+}
+
+while (true) {
+    const dateStr = curr.getFullYear() + '-' + String(curr.getMonth() + 1).padStart(2, '0') + '-' + String(curr.getDate()).padStart(2, '0');
+    if (userStats.activeDates && userStats.activeDates.includes(dateStr)) {
+        activeStreakDates.add(dateStr);
+        curr.setDate(curr.getDate() - 1);
+    } else {
+        break;
+    }
+}
+
+let calHTML='';
+for(let i = 0; i < startOffset; i++) { calHTML += `<div class="calendar-cell" style="visibility:hidden; border:none;"></div>`; }
+
 for(let d=1;d<=daysInMonth;d++){
-    const dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');let cl='calendar-cell';
-    if(dateStr === today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0')) { cl+=' current-active'; }
-    else if (userStats.activeDates && userStats.activeDates.includes(dateStr)) { cl+=' past-done'; }calHTML+=`<div class="${cl}">${d}</div>`;
-}const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
+    const cellDate = new Date(currentYear, currentMonth, d);
+    cellDate.setHours(0,0,0,0);
+    const todayNormalized = new Date(today);
+    todayNormalized.setHours(0,0,0,0);
+
+    const dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    let cl='calendar-cell';
+
+    if (cellDate > todayNormalized) {
+        cl += ' future-day';
+    } else if (activeStreakDates.has(dateStr)) {
+        cl += ' streak-active';
+    } else if (userStats.activeDates && userStats.activeDates.includes(dateStr)) {
+        cl += ' past-done';
+    } else {
+        cl += ' past-missed';
+    }
+
+    calHTML+=`<div class="${cl}">${d}</div>`;
+}
+
+const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.filter(l=>l.unlocked).length;
+
 document.getElementById('profile-modal-body').innerHTML=`
     <div class="split-profile-layout">
         
@@ -3001,22 +3058,29 @@ document.getElementById('profile-modal-body').innerHTML=`
         <div class="right-dashboard-column">
             
             <div class="right-dashboard-top-row">
-                <div class="xp-profile-section" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 30px 20px;">
+                <!-- TARJETA CENTRAL ENERGIZADA Y REDISEÑADA -->
+                <div class="xp-profile-section" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 28px 20px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
                     <div style="position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:var(--accent-color); filter:blur(90px); opacity:0.15; border-radius:50%; pointer-events:none;"></div>
                     
-                    <div style="font-size:4.5rem; filter:drop-shadow(0 0 15px var(--accent-glow)); margin-bottom:12px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
+                    <div style="font-size:4.5rem; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65)); margin-bottom:10px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
                     
-                    <h3 style="font-size:1.7rem; font-weight:900; color:var(--text-main); margin-bottom:6px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nivel.nombre}</h3>
+                    <h3 style="font-size:1.6rem; font-weight:900; color:var(--text-main); margin-bottom:6px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nombreRangoPuro}</h3>
                     
-                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.85rem; padding:6px 16px; margin-bottom: 24px;">Nivel ${nivelIdx}</div>
+                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.82rem; padding:5px 16px; margin-bottom: 22px;">Nivel ${nivelIdx}</div>
                     
-                    <div style="width:100%; max-width: 90%; z-index:1;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.7rem; font-weight:800; align-items:flex-end;">
-                            <span style="color:var(--text-muted);">${nivel.min.toLocaleString('es-AR')} XP</span>
-                            <span style="color:var(--accent-color); font-size:0.85rem;">${userStats.xpTotal.toLocaleString('es-AR')} XP</span>
-                            <span style="color:var(--text-muted);">${nivelSig.min===Infinity?'∞':nivelSig.min.toLocaleString('es-AR')} XP</span>
+                    <div style="width:100%; max-width: 92%; z-index:1;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; font-weight:800; align-items:center;">
+                            <span style="color:var(--text-muted);">${xpEnNivel.toLocaleString('es-AR')} / ${xpNivelTotal.toLocaleString('es-AR')} XP</span>
+                            <span style="color:var(--accent-color); font-weight:900; font-size:0.85rem;">${xpPct}%</span>
                         </div>
-                        <div class="xp-bar-big" style="height:12px; background:rgba(0,0,0,0.3); border:1px solid var(--border-subtle);"><div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div></div>
+                        <div class="xp-bar-big" style="height:12px; background:rgba(0,0,0,0.4); border:1px solid var(--border-subtle); border-radius:20px; overflow:hidden; margin-bottom:10px;">
+                            <div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div>
+                        </div>
+                        <div style="text-align:center; font-size:0.72rem; color:var(--text-muted); font-weight:700;">
+                            ${nivelSig.min === Infinity
+                                ? '🏆 ¡Alcanzaste el nivel máximo!'
+                                : `Faltan <b style="color:var(--text-main);">${xpFaltante.toLocaleString('es-AR')} XP</b> para el Nivel ${nivelIdx + 1} 🚀`}
+                        </div>
                     </div>
                 </div>
                 
