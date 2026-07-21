@@ -545,7 +545,7 @@ body > * {
     bottom: -6px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.55rem;
+    font-size: 0.35rem;
     font-weight: 900;
     letter-spacing: 2px;
     color: rgba(0, 0, 0, 0.15);
