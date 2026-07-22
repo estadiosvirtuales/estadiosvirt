@@ -1663,10 +1663,17 @@ body {
    AJUSTES DE CONTRASTE Y LEGIBILIDAD EN MODO CLARO (LIGHT)
    ======================================================== */
 
-/* 1. Mantiene la columna de la carta en tono oscuro como barra lateral (sidebar) */
+/* 1. Columna de la carta en Modo Claro: Verde césped suave con textura de puntos */
 [data-theme="light"] .left-fut-column {
-    background: #0f172a !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #b8cfc2 !important; /* Verde mate suave */
+    background-image: 
+        /* Foco de luz verde fresco detrás de la carta */
+        radial-gradient(circle at 50% 30%, rgba(0, 204, 102, 0.25) 0%, transparent 60%),
+        /* Trama de puntos oscuros estilo radar */
+        radial-gradient(rgba(10, 30, 20, 0.22) 1.5px, transparent 1.5px) !important;
+    background-size: 100% 100%, 22px 22px !important;
+    background-position: 0 0, 0 0 !important;
+    border-right: 2px solid #9bb8aa !important;
 }
 
 /* 2. Badge "TOP 5% COMUNIDAD": Fondo dorado suave con texto ámbar/café muy legible */
