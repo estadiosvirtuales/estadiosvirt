@@ -1708,3 +1708,47 @@ body {
         radial-gradient(rgba(15, 23, 42, 0.12) 1.5px, transparent 1.5px) !important;
     background-size: 100% 100%, 100% 100%, 22px 22px !important;
 }
+/* ========================================================
+   REDISEÑO DEL CALENDARIO DE RACHA EN MODO CLARO
+   ======================================================== */
+
+/* 1. Fondo de la tarjeta del calendario: Blanco limpio en lugar del bloque gris oscuro */
+[data-theme="light"] .calendar-matrix {
+    background: #ffffff !important;
+    border: 1px solid #a4bdae !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* 2. Días de la semana (LUN, MAR, MIÉ...): Verde botella legible */
+[data-theme="light"] .calendar-day-label {
+    color: #2c4930 !important;
+    font-weight: 800 !important;
+}
+
+/* 3. Días no jugados (Círculos gris-menta suave, no negros) */
+[data-theme="light"] .calendar-cell.past-missed {
+    background: #e2e8e4 !important;
+    color: #5c7565 !important;
+    border: none !important;
+}
+
+/* 4. Días futuros por jugar */
+[data-theme="light"] .calendar-cell.future-day {
+    color: #8fa090 !important;
+    border: 1px dashed #a4bdae !important;
+}
+
+/* 5. Días con Racha Activa (Verde neón con número negro bien nítido) */
+[data-theme="light"] .calendar-cell.streak-active {
+    background: #00e676 !important;
+    color: #000000 !important;
+    border-color: #00cc66 !important;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.4) !important;
+}
+
+/* 6. Días pasados completados */
+[data-theme="light"] .calendar-cell.past-done {
+    background: rgba(0, 230, 118, 0.22) !important;
+    color: #04160a !important;
+    border-color: #00cc66 !important;
+}
