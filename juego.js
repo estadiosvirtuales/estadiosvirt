@@ -3066,7 +3066,10 @@ document.getElementById('profile-modal-body').innerHTML=`
                     
                     <h3 style="font-size:1.6rem; font-weight:900; color:var(--text-main); margin-bottom:6px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nombreRangoPuro}</h3>
                     
-                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.82rem; padding:5px 16px; margin-bottom: 22px;">Nivel ${nivelIdx}</div>
+                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.82rem; padding:5px 16px; margin-bottom: 10px;">Nivel ${nivelIdx}</div>
+    
+    <!-- 🏆 BADGE DE ESTATUS VIRAL -->
+    <span class="badge-ranking" style="margin-bottom: 18px;">🏆 TOP 5% COMUNIDAD</span>
                     
                     <div style="width:100%; max-width: 92%; z-index:1;">
                         <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; font-weight:800; align-items:center;">
