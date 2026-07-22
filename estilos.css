@@ -497,28 +497,30 @@ body > * {
     z-index: 1;
 }
 
-/* 2. 💿 Reflejo Holográfico (Entra, cruza toda la carta y desaparece) */
+/* 2. 💿 Reflejo Holográfico (Totalmente apagado e invisible por defecto) */
 .fut-card::after {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
         115deg,
-        transparent 38%,
-        rgba(255, 255, 255, 0.15) 46%,
-        rgba(255, 255, 255, 0.55) 50%,
-        rgba(255, 255, 255, 0.15) 54%,
-        transparent 62%
+        transparent 35%,
+        rgba(255, 255, 255, 0.2) 46%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.2) 54%,
+        transparent 65%
     );
-    background-size: 320% 320%;
-    background-position: 100% 0%; /* Posición inicial: 100% oculto a la izquierda */
-    transition: background-position 0.85s ease-in-out;
+    background-size: 350% 350%;
+    background-position: 100% 0%;
+    opacity: 0; /* 🔒 Totalmente invisible al cargar la página */
+    transition: background-position 0.85s ease-in-out, opacity 0.25s ease;
     pointer-events: none;
     z-index: 10;
 }
 
-/* Al pasar el mouse, el destello viaja hasta salir 100% por la derecha */
+/* Al pasar el mouse: se enciende, cruza la carta y al sacar el mouse se apaga al instante */
 .fut-card:hover::after {
+    opacity: 1; /* ✨ Se vuelve visible solo durante el hover */
     background-position: 0% 100%;
 }
 
