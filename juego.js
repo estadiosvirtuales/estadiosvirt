@@ -2910,6 +2910,21 @@ function abrirModalPerfil(){
 const u=obtenerUsuarioLogueado();if(!u)return;
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
 
+// 📊 Cálculo dinámico de estatus según el nivel del jugador
+let textoRankingTop = "⚽ COMUNIDAD";
+if (nivelIdx >= 50) {
+    textoRankingTop = "👑 TOP 0.1% COMUNIDAD";
+} else if (nivelIdx >= 35) {
+    textoRankingTop = "💎 TOP 1% COMUNIDAD";
+} else if (nivelIdx >= 25) {
+    textoRankingTop = "🏆 TOP 5% COMUNIDAD";
+} else if (nivelIdx >= 15) {
+    textoRankingTop = "🔥 TOP 10% COMUNIDAD";
+} else if (nivelIdx >= 5) {
+    textoRankingTop = "🎯 TOP 25% COMUNIDAD";
+} else {
+    textoRankingTop = "🌱 PROMESAS COMUNIDAD";
+}
 // 1. Nombre de rango puro (Sin duplicar "Lvl XX")
 const nombreRangoPuro = nivel.nombre.replace(/\s+Lvl\s+\d+/i, '').trim();
 
@@ -3068,8 +3083,8 @@ document.getElementById('profile-modal-body').innerHTML=`
                     
                     <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.82rem; padding:5px 16px; margin-bottom: 10px;">Nivel ${nivelIdx}</div>
     
-    <!-- 🏆 BADGE DE ESTATUS VIRAL -->
-    <span class="badge-ranking" style="margin-bottom: 18px;">🏆 TOP 5% COMUNIDAD</span>
+    <!-- 🏆 BADGE DE ESTATUS VIRAL DINÁMICO -->
+    <span class="badge-ranking" style="margin-bottom: 18px;">${textoRankingTop}</span>
                     
                     <div style="width:100%; max-width: 92%; z-index:1;">
                         <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; font-weight:800; align-items:center;">
