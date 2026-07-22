@@ -1122,28 +1122,18 @@ body {
    3. REDISEÑO PREMIUM DEL MODO CLARO (CÉSPED DIURNO)
    ======================================================== */
 
-/* ========================================================
-   REDISEÑO CON ONDA MODO CLARO (DÍA DE PARTIDO / MATCHDAY)
-   ======================================================== */
-
-/* 1. Fondo de estadio diurno con reflector de sol y tono césped menta */
+/* Fondo: Simula un campo de juego premium bajo el sol de la tarde con patrón de corte de césped */
 [data-theme="light"],
 [data-theme="light"] body {
-    background-color: #d6e4dc !important;
+    background-color: var(--bg-color) !important;
     background-image: 
-        /* Luz de sol central que ilumina el título "ESTADIOS VIRTUALES" */
-        radial-gradient(circle at 50% 10%, rgba(0, 204, 102, 0.22) 0%, transparent 50%),
-        /* Viñeta suave en los bordes para encuadrar la pantalla */
-        radial-gradient(circle at 50% 100%, rgba(10, 40, 20, 0.1) 0%, transparent 70%),
-        /* Sutil trama de franjas de cancha de fútbol */
-        linear-gradient(90deg, rgba(0, 204, 102, 0.03) 50%, transparent 50%) !important;
-    background-size: 100% 100%, 100% 100%, 140px 100% !important;
-}
-
-/* 2. Hace que el mapa del mundo y el radar resalten claritos en verde oscuro */
-[data-theme="light"] body::after {
-    background-image: radial-gradient(#055225 1.8px, transparent 1.8px) !important;
-    opacity: 0.42 !important;
+        /* Efecto de franjas de corte de césped verticales paralelas de estadio profesional */
+        linear-gradient(90deg, rgba(0, 204, 102, 0.015) 50%, transparent 50%),
+        /* Reflector de sol diurno en la esquina superior */
+        radial-gradient(at 85% 0%, rgba(0, 204, 102, 0.05) 0px, transparent 55%),
+        /* Sombra ambiental base */
+        radial-gradient(at 15% 100%, rgba(227, 242, 232, 0.6) 0px, transparent 75%) !important;
+    background-size: 160px 100%, 100% 100%, 100% 100% !important;
 }
 
 /* Títulos corpóreos nítidos con sombra de cal limpia */
