@@ -1542,3 +1542,92 @@ body {
         width: 100% !important;
     }
 }
+/* ========================================================
+   EFECTOS VISUALES DE GAMIFICACIÓN Y ATMÓSFERA GAMER
+   ======================================================== */
+
+/* 1. ⚡ RAYO NEÓN CON PULSO DE LUZ (Efecto Rango Nivel) */
+.goleador-card img,
+.nivel-icon {
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.6));
+    animation: rayoGlow 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes rayoGlow {
+    0% { 
+        filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.4));
+        transform: scale(1);
+    }
+    100% { 
+        filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.9));
+        transform: scale(1.03);
+    }
+}
+
+/* 2. 🔥 PULSO ADICTIVO EN LA RACHA DIARIA (Efecto Duolingo) */
+.retos-badge-streak,
+.streak-pill {
+    animation: flamePulse 1.8s infinite ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 111, 0, 0.3);
+}
+
+@keyframes flamePulse {
+    0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px rgba(255, 111, 0, 0.5));
+    }
+    50% { 
+        transform: scale(1.06);
+        filter: drop-shadow(0 0 12px rgba(255, 111, 0, 0.9));
+    }
+}
+
+/* 3. 🌌 LUCES AMBIENTALES DE FONDO (Atmósfera 3D para el perfil) */
+.modal-profile-content, 
+.user-dashboard {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Luz verdosa detrás de la carta */
+.modal-profile-content::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(0, 230, 118, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Luz violeta detras de los retos/nivel */
+.modal-profile-content::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: 10%;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(156, 39, 176, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 4. 🏆 BADGE DE RANKING "TOP 5%" / ESTATUS SOCIAL */
+.badge-ranking {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 140, 0, 0.15));
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 20px;
+    color: #ffd700;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
+}
