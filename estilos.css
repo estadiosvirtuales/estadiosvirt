@@ -1122,18 +1122,24 @@ body {
    3. REDISEÑO PREMIUM DEL MODO CLARO (CÉSPED DIURNO)
    ======================================================== */
 
-/* Fondo: Simula un campo de juego premium bajo el sol de la tarde con patrón de corte de césped */
+/* ========================================================
+   MODO CLARO: INVERSIÓN ESPEJO EXACTA DEL MODO OSCURO
+   ======================================================== */
+
+/* 1. Mismo esquema de 3 luces ambientales (Glows) que el modo oscuro sobre fondo gris-menta claro */
 [data-theme="light"],
 [data-theme="light"] body {
-    background-color: var(--bg-color) !important;
+    background-color: #ebf0ee !important;
     background-image: 
-        /* Efecto de franjas de corte de césped verticales paralelas de estadio profesional */
-        linear-gradient(90deg, rgba(0, 204, 102, 0.015) 50%, transparent 50%),
-        /* Reflector de sol diurno en la esquina superior */
-        radial-gradient(at 85% 0%, rgba(0, 204, 102, 0.05) 0px, transparent 55%),
-        /* Sombra ambiental base */
-        radial-gradient(at 15% 100%, rgba(227, 242, 232, 0.6) 0px, transparent 75%) !important;
-    background-size: 160px 100%, 100% 100%, 100% 100% !important;
+        radial-gradient(at 15% 0%, rgba(0, 204, 102, 0.18) 0px, transparent 45%),
+        radial-gradient(at 85% 0%, rgba(41, 121, 255, 0.12) 0px, transparent 45%),
+        radial-gradient(at 50% 100%, rgba(0, 180, 90, 0.10) 0px, transparent 70%) !important;
+}
+
+/* 2. Mapa del mundo e intensidad de puntos espejo de la versión oscura (Verde Bosque legible) */
+[data-theme="light"] body::after {
+    background-image: radial-gradient(#155d31 1.8px, transparent 1.8px) !important;
+    opacity: 0.28 !important;
 }
 
 /* Títulos corpóreos nítidos con sombra de cal limpia */
