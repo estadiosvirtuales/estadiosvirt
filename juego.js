@@ -328,8 +328,8 @@ const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Gole
 for(let i=0;i<1000;i++){
 let xpReq=i===0?0:Math.floor(8000*Math.pow(i,1.5));
 let nextXpReq=Math.floor(8000*Math.pow(i+1,1.5));
-let ovr=Math.min(99,50+Math.floor(i*1.5));
-if(i>32)ovr=99+(i-32);
+// ⚽ Curva progresiva con tope real de 99 OVR en el Nivel 100
+let ovr = Math.min(99, Math.floor(50 + (Math.sqrt(i / 100) * 49)));
 let tierIndex=Math.floor(i/5);
 let name=(baseNames[Math.min(tierIndex,baseNames.length-1)])+(i>0?` Lvl ${i}`:"");
 let colorIdx=Math.min(Math.floor(i/8),baseColors.length-1);
