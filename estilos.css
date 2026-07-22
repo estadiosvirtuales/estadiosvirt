@@ -1659,3 +1659,39 @@ body {
 .left-fut-column {
     background: transparent !important;
 }
+/* ========================================================
+   AJUSTES DE CONTRASTE Y LEGIBILIDAD EN MODO CLARO (LIGHT)
+   ======================================================== */
+
+/* 1. Mantiene la columna de la carta en tono oscuro como barra lateral (sidebar) */
+[data-theme="light"] .left-fut-column {
+    background: #0f172a !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 2. Badge "TOP 5% COMUNIDAD": Fondo dorado suave con texto ámbar/café muy legible */
+[data-theme="light"] .badge-ranking {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    border: 1px solid #f59e0b !important;
+    color: #78350f !important; /* Dorado oscuro/ámbar de alto contraste */
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25) !important;
+}
+
+/* 3. Píldora de Racha Diaria (🔥 2 días) en modo claro */
+[data-theme="light"] .retos-badge-streak,
+[data-theme="light"] .streak-fire-badge {
+    background: #ffedd5 !important;
+    border: 1px solid #fdba74 !important;
+    color: #9a3412 !important; /* Naranja quemado legible */
+}
+
+/* 4. Puntos de la grilla de fondo en modo claro (Gris oscuro suave) */
+[data-theme="light"] #profile-modal-body,
+[data-theme="light"] .split-profile-layout {
+    background-color: #f1f5f9 !important;
+    background-image: 
+        radial-gradient(circle at 80% 25%, rgba(41, 121, 255, 0.08) 0%, transparent 55%),
+        radial-gradient(circle at 50% 85%, rgba(167, 139, 250, 0.08) 0%, transparent 60%),
+        radial-gradient(rgba(15, 23, 42, 0.12) 1.5px, transparent 1.5px) !important;
+    background-size: 100% 100%, 100% 100%, 22px 22px !important;
+}
