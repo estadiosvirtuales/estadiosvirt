@@ -4110,3 +4110,24 @@ async function salirLigaAmigos() {
     // Refrescamos nuestra propia vista (que ahora mostrará el form para unirse a otra liga)
     abrirModalLigaAmigosPrivada();
 }
+/* ========================================================
+   FONDO ATMOSFÉRICO CON MAPA Y LUZ DE ESTADIO EN EL PERFIL
+   ======================================================== */
+#profile-modal .modal-content {
+    background-color: #0d131a !important;
+    background-image: 
+        /* 1. Foco verde neón detrás de la carta FUT */
+        radial-gradient(circle at 18% 35%, rgba(0, 230, 118, 0.12) 0%, transparent 45%),
+        
+        /* 2. Foco azul aéreo detrás del reto diario */
+        radial-gradient(circle at 82% 25%, rgba(41, 121, 255, 0.14) 0%, transparent 50%),
+        
+        /* 3. Resplandor dorado tenue detrás de la vitrina */
+        radial-gradient(circle at 50% 85%, rgba(250, 204, 21, 0.08) 0%, transparent 55%),
+        
+        /* 4. Textura vectorial de mapa/malla aéreos ultra sutil */
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        
+    background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+}
