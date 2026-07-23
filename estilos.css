@@ -1768,7 +1768,7 @@ body {
         height: auto !important;
     }
 
-    /* 2. Grilla con 2 columnas exactamente iguales (50% / 50%) */
+    /* 2. Grilla principal en móvil con 2 columnas (50% / 50%) */
     .split-profile-layout {
         display: grid !important;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
@@ -1776,38 +1776,27 @@ body {
         width: 100% !important;
     }
 
+    .left-fut-column,
     .right-dashboard-column,
     .right-dashboard-top-row {
         display: contents !important;
     }
 
-    /* 3. COLUMNA 1 (Arriba Izquierda): CARTA FUT + BOTONES */
-    .left-fut-column {
+    /* 3. ELEMENTO 1 (Fila 1, Columna 1): CARTA FUT */
+    .fut-card {
         grid-column: 1 !important;
         grid-row: 1 !important;
-        min-width: 0 !important;
-        width: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
-        overflow: visible !important;
-    }
-
-    /* Escala exacta de la Carta FUT para encajar en el 50% de la pantalla */
-    .fut-card {
         transform: scale(0.55) !important;
         transform-origin: top center !important;
         margin-top: 0 !important;
         margin-bottom: -170px !important;
+        justify-self: center !important;
     }
 
-    /* Botones compactos bajo la carta */
-    .left-fut-column #btn-toggle-custom,
-    .left-fut-column button {
+    /* 4. ELEMENTO 2 (Fila 2, Columna 1): BOTÓN EDITAR CARTA */
+    #btn-toggle-custom {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
         padding: 6px 6px !important;
         font-size: 0.68rem !important;
         width: 100% !important;
@@ -1817,12 +1806,13 @@ body {
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        align-self: start !important;
     }
 
-    /* 4. COLUMNA 2 (Arriba Derecha): PROGRESO DE NIVEL / XP */
+    /* 5. ELEMENTO 3 (Fila 1 a 2, Columna 2): PROGRESO DE NIVEL / XP */
     .xp-profile-section {
         grid-column: 2 !important;
-        grid-row: 1 !important;
+        grid-row: 1 / span 2 !important;
         min-width: 0 !important;
         width: 100% !important;
         padding: 10px 8px !important;
@@ -1833,11 +1823,14 @@ body {
         align-items: center !important;
         justify-content: center !important;
         box-sizing: border-box !important;
+        align-self: stretch !important;
+        height: auto !important;
     }
 
-    /* Ajuste de tipografías internas para que no desborde texto */
+    .xp-profile-section div[style*="font-size:3.5rem"],
     .xp-profile-section div[style*="font-size:4.5rem"] {
         font-size: 2.2rem !important;
+        margin-bottom: 2px !important;
     }
 
     .xp-profile-section h3 {
@@ -1859,18 +1852,33 @@ body {
         white-space: nowrap !important;
     }
 
-    .xp-profile-section div[style*="font-size:0.75rem"] {
-        font-size: 0.62rem !important;
+    /* 6. ELEMENTO 4 (Fila 3, Ancho Completo): PANEL DE PERSONALIZACIÓN */
+    #customization-panel-wrapper {
+        grid-column: 1 / span 2 !important;
+        grid-row: 3 !important;
+        width: 100% !important;
     }
 
-    .xp-profile-section div[style*="font-size:0.72rem"] {
-        font-size: 0.6rem !important;
+    .avatar-picker {
+        max-width: 100% !important;
+        padding: 14px 12px !important;
+        margin-top: 6px !important;
     }
 
-    /* 5. FILA 2 (Abajo en ancho completo): CALENDARIO DEL RETO DIARIO */
+    .avatar-picker label {
+        font-size: 0.72rem !important;
+    }
+
+    .avatar-pos-select,
+    .avatar-nickname-input {
+        font-size: 0.8rem !important;
+        padding: 8px 10px !important;
+    }
+
+    /* 7. ELEMENTO 5 (Fila 4, Ancho Completo): CALENDARIO DEL RETO DIARIO */
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
-        grid-row: 2 !important;
+        grid-row: 4 !important;
         padding: 10px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
@@ -1894,10 +1902,10 @@ body {
         font-size: 0.62rem !important;
     }
 
-    /* 6. FILA 3 (Al pie): DESPLEGABLE DE LOGROS */
+    /* 8. ELEMENTO 6 (Fila 5, Ancho Completo): VITRINA DE LOGROS DESPLEGABLE */
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
-        grid-row: 3 !important;
+        grid-row: 5 !important;
         padding: 10px 12px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
@@ -1931,5 +1939,18 @@ body {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
         padding: 2px !important;
+    }
+
+    /* 9. ELEMENTO 7 (Fila 6, Ancho Completo): FOOTER DE SESIÓN Y VINCULACIÓN */
+    .profile-modal-footer {
+        grid-column: 1 / span 2 !important;
+        grid-row: 6 !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 10px 4px 4px 4px !important;
+        margin-top: 6px !important;
+        border-top: 1px dashed var(--border-subtle) !important;
+        width: 100% !important;
     }
 }

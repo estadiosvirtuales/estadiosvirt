@@ -3000,7 +3000,6 @@ const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.fil
 document.getElementById('profile-modal-body').innerHTML=`
     <div class="split-profile-layout">
         
-        <!-- COLUMNA IZQUIERDA: CARTA FUT + BOTÓN EDITAR + PANEL EDICIÓN -->
         <div class="left-fut-column">
             <div class="fut-card ${activeCardClass}" id="fut-card-main">
                 <div class="fut-card-shine"></div>
@@ -3022,7 +3021,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
-            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:14px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
+            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
             
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
@@ -3067,31 +3066,29 @@ document.getElementById('profile-modal-body').innerHTML=`
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA: DASHBOARD DE NIVEL, RETO Y LOGROS -->
         <div class="right-dashboard-column">
             
             <div class="right-dashboard-top-row">
-                <!-- TARJETA CENTRAL DE NIVEL Y XP -->
-                <div class="geoguessr-dash-box xp-profile-section" style="display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 28px 20px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
+                <div class="geoguessr-dash-box xp-profile-section" style="display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 20px 14px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
                     <div style="position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:var(--accent-color); filter:blur(90px); opacity:0.15; border-radius:50%; pointer-events:none;"></div>
                     
-                    <div style="font-size:4.5rem; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65)); margin-bottom:10px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
+                    <div style="font-size:3.5rem; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65)); margin-bottom:6px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
                     
-                    <h3 style="font-size:1.6rem; font-weight:900; color:var(--text-main); margin-bottom:6px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nombreRangoPuro}</h3>
+                    <h3 style="font-size:1.4rem; font-weight:900; color:var(--text-main); margin-bottom:4px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nombreRangoPuro}</h3>
                     
-                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.82rem; padding:5px 16px; margin-bottom: 10px;">Nivel ${nivelIdx}</div>
+                    <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.75rem; padding:4px 12px; margin-bottom: 6px;">Nivel ${nivelIdx}</div>
     
-                    <span class="badge-ranking" style="margin-bottom: 18px;">${textoRankingTop}</span>
+                    <span class="badge-ranking" style="margin-bottom: 12px;">${textoRankingTop}</span>
                     
                     <div style="width:100%; max-width: 92%; z-index:1;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; font-weight:800; align-items:center;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.72rem; font-weight:800; align-items:center;">
                             <span style="color:var(--text-muted);">${xpEnNivel.toLocaleString('es-AR')} / ${xpNivelTotal.toLocaleString('es-AR')} XP</span>
-                            <span style="color:var(--accent-color); font-weight:900; font-size:0.85rem;">${xpPct}%</span>
+                            <span style="color:var(--accent-color); font-weight:900; font-size:0.8rem;">${xpPct}%</span>
                         </div>
-                        <div class="xp-bar-big" style="height:12px; background:rgba(0,0,0,0.4); border:1px solid var(--border-subtle); border-radius:20px; overflow:hidden; margin-bottom:10px;">
+                        <div class="xp-bar-big" style="height:10px; background:rgba(0,0,0,0.4); border:1px solid var(--border-subtle); border-radius:20px; overflow:hidden; margin-bottom:8px;">
                             <div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div>
                         </div>
-                        <div style="text-align:center; font-size:0.72rem; color:var(--text-muted); font-weight:700;">
+                        <div style="text-align:center; font-size:0.68rem; color:var(--text-muted); font-weight:700;">
                             ${nivelSig.min === Infinity
                                 ? '🏆 ¡Alcanzaste el nivel máximo!'
                                 : `Faltan <b style="color:var(--text-main);">${xpFaltante.toLocaleString('es-AR')} XP</b> para el Nivel ${nivelIdx + 1} 🚀`}
@@ -3099,8 +3096,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                     </div>
                 </div>
                 
-                <!-- CALENDARIO RETO DIARIO -->
-                <div class="geoguessr-dash-box" style="height:100%;">
+                <div class="geoguessr-dash-box">
                     <div class="dash-header-inline">
                         <div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (${monthNames[currentMonth]})</div>
                         <div class="streak-fire-badge">🔥 ${userStats.rachaActual||1} días</div>
@@ -3112,7 +3108,6 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
-            <!-- VITRINA DE LOGROS DESPLEGABLE -->
             <div class="geoguessr-dash-box logros-box-mobile" style="flex:1; display:flex; flex-direction:column;">
                 <div class="dash-header-inline logros-header-clickable" onclick="toggleLogrosMobile()">
                     <div class="dash-title-premium">
@@ -3137,12 +3132,9 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
-            <!-- FOOTER DE SESIÓN Y VINCULACIÓN AL PIE DEL MODAL -->
             <div class="profile-modal-footer">
                 ${googleBadge}
-                <button onclick="cerrarSesion()" class="btn-logout-subtle">
-                    <i class="ph-bold ph-sign-out"></i> Cerrar sesión
-                </button>
+                <button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color); border-color:var(--danger-color); padding:10px 18px; font-size:.85rem; font-weight:800;"><i class="ph-bold ph-sign-out"></i> Cerrar sesión</button>
             </div>
 
         </div>
