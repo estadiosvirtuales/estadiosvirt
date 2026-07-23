@@ -1753,47 +1753,10 @@ body {
     border-color: #00cc66 !important;
 }
 /* ========================================================
-   REDISEÑO MÓVIL PERFECCIONADO: PROPORCIONES 50/50 EXACTAS Y CERO ESTIRAMIENTO
+   REDISEÑO MÓVIL PERFECCIONADO: PROPORCIONES 50/50 EXACTAS
    ======================================================== */
-
-/* Fix de estructura general del footer de sesión */
-.xp-profile-section {
-    align-self: start !important;
-    height: auto !important;
-}
-
-.profile-modal-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 6px 4px 6px;
-    margin-top: 10px;
-    border-top: 1px dashed var(--border-subtle);
-    width: 100%;
-}
-
-.btn-logout-subtle {
-    background: rgba(239, 68, 68, 0.12);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.25);
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 0.78rem;
-    font-weight: 800;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-}
-
-.btn-logout-subtle:hover {
-    background: rgba(239, 68, 68, 0.25);
-    color: #ffffff;
-}
-
 @media (max-width: 768px) {
-    /* 1. Modal adaptativo con scroll general */
+    /* 1. Modal adaptativo */
     #profile-modal .modal-content {
         height: auto !important;
         max-height: 92vh !important;
@@ -1870,14 +1833,11 @@ body {
         align-items: center !important;
         justify-content: center !important;
         box-sizing: border-box !important;
-        align-self: start !important;
-        height: auto !important;
     }
 
     /* Ajuste de tipografías internas para que no desborde texto */
     .xp-profile-section div[style*="font-size:4.5rem"] {
         font-size: 2.2rem !important;
-        margin-bottom: 2px !important;
     }
 
     .xp-profile-section h3 {
@@ -1908,7 +1868,7 @@ body {
     }
 
     /* 5. FILA 2 (Abajo en ancho completo): CALENDARIO DEL RETO DIARIO */
-    .right-dashboard-top-row > .geoguessr-dash-box {
+    .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
         grid-row: 2 !important;
         padding: 10px !important;
@@ -1971,11 +1931,5 @@ body {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
         padding: 2px !important;
-    }
-
-    /* 7. FILA 4 (Al pie de todo): FOOTER DE SESIÓN Y VINCULACIÓN */
-    .profile-modal-footer {
-        grid-column: 1 / span 2 !important;
-        grid-row: 4 !important;
     }
 }
