@@ -1753,39 +1753,40 @@ body {
     border-color: #00cc66 !important;
 }
 /* ========================================================
-   REDISEÑO MÓVIL PERFECCIONADO: GRID 2 COLUMNAS + CERO RECORTES
+   REDISEÑO MÓVIL PERFECCIONADO: PROPORCIONES 50/50 EXACTAS
    ======================================================== */
 @media (max-width: 768px) {
-    /* 1. Modal adaptativo que permite ver todo sin bloquear la pantalla */
+    /* 1. Modal adaptativo */
     #profile-modal .modal-content {
         height: auto !important;
         max-height: 92vh !important;
         overflow-y: auto !important;
-        padding: 12px 10px !important;
+        padding: 10px 8px !important;
     }
 
     #profile-modal-body {
         height: auto !important;
     }
 
-    /* 2. Transformamos el contenedor general en una grilla de 2 columnas */
+    /* 2. Grilla con 2 columnas exactamente iguales (50% / 50%) */
     .split-profile-layout {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; /* Fuerza 50/50 simétrico */
+        gap: 8px !important;
         width: 100% !important;
     }
 
-    /* Desenredamos los contenedores internos para que encajen en la grilla principal */
     .right-dashboard-column,
     .right-dashboard-top-row {
         display: contents !important;
     }
 
-    /* 3. COLUMNA 1 (Arriba Izquierda): CARTA FUT COMPLETA */
+    /* 3. COLUMNA 1 (Arriba Izquierda): CARTA FUT + BOTONES */
     .left-fut-column {
         grid-column: 1 !important;
         grid-row: 1 !important;
+        min-width: 0 !important;
+        width: 100% !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -1796,72 +1797,90 @@ body {
         overflow: visible !important;
     }
 
-    /* Escala exacta de la Carta FUT para que NUNCA se corte */
+    /* Escala exacta de la Carta FUT para encajar en el 50% de la pantalla */
     .fut-card {
-        transform: scale(0.62) !important;
+        transform: scale(0.55) !important;
         transform-origin: top center !important;
         margin-top: 0 !important;
-        margin-bottom: -142px !important; /* Compensa el espacio sobrante del escalado */
+        margin-bottom: -170px !important; /* Compensa la altura sobrante del escalado */
     }
 
-    /* Botones bajo la carta ajustados */
+    /* Botones compactos bajo la carta */
     .left-fut-column #btn-toggle-custom,
     .left-fut-column button {
-        padding: 6px 10px !important;
-        font-size: 0.7rem !important;
+        padding: 6px 6px !important;
+        font-size: 0.68rem !important;
         width: 100% !important;
-        max-width: 150px !important;
+        max-width: 100% !important;
         margin-top: 4px !important;
+        box-sizing: border-box !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
-    /* 4. COLUMNA 2 (Arriba Derecha): PROGRESO DE NIVEL Y XP */
+    /* 4. COLUMNA 2 (Arriba Derecha): PROGRESO DE NIVEL / XP */
     .xp-profile-section {
         grid-column: 2 !important;
         grid-row: 1 !important;
-        padding: 12px 8px !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        padding: 10px 8px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        height: 100% !important;
-        min-height: 240px !important;
+        box-sizing: border-box !important;
     }
 
+    /* Ajuste de tipografías internas para que no desborde texto */
     .xp-profile-section div[style*="font-size:4.5rem"] {
-        font-size: 2.8rem !important;
-        margin-bottom: 4px !important;
+        font-size: 2.2rem !important;
+        margin-bottom: 2px !important;
     }
 
     .xp-profile-section h3 {
-        font-size: 1rem !important;
-        margin-bottom: 4px !important;
+        font-size: 0.85rem !important;
+        margin-bottom: 2px !important;
+        text-align: center !important;
     }
 
     .xp-profile-section .level-badge-inline {
-        font-size: 0.68rem !important;
-        padding: 2px 10px !important;
-        margin-bottom: 6px !important;
+        font-size: 0.65rem !important;
+        padding: 2px 8px !important;
+        margin-bottom: 4px !important;
     }
 
     .xp-profile-section .badge-ranking {
-        font-size: 0.62rem !important;
-        padding: 2px 8px !important;
-        margin-bottom: 10px !important;
+        font-size: 0.58rem !important;
+        padding: 2px 6px !important;
+        margin-bottom: 8px !important;
+        white-space: nowrap !important;
     }
 
-    /* 5. FILA 2 (Abajo Ocupando Todo el Ancho): CALENDARIO DEL RETO DIARIO */
+    .xp-profile-section div[style*="font-size:0.75rem"] {
+        font-size: 0.62rem !important;
+    }
+
+    .xp-profile-section div[style*="font-size:0.72rem"] {
+        font-size: 0.6rem !important;
+    }
+
+    /* 5. FILA 2 (Abajo en ancho completo): CALENDARIO DEL RETO DIARIO */
     .right-dashboard-top-row > .geoguessr-dash-box {
         grid-column: 1 / span 2 !important;
         grid-row: 2 !important;
-        padding: 12px !important;
+        padding: 10px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .calendar-matrix {
-        padding: 8px !important;
+        padding: 8px 4px !important;
         gap: 4px !important;
         margin-top: 6px !important;
     }
@@ -1876,13 +1895,15 @@ body {
         font-size: 0.62rem !important;
     }
 
-    /* 6. FILA 3 (Al Pie): BOTÓN DESPLEGABLE DE VITRINA DE LOGROS */
+    /* 6. FILA 3 (Al pie): DESPLEGABLE DE LOGROS */
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
         grid-row: 3 !important;
-        padding: 10px 14px !important;
+        padding: 10px 12px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .logros-header-clickable {
