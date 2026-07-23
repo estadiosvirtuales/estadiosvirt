@@ -1752,3 +1752,53 @@ body {
     color: #04160a !important;
     border-color: #00cc66 !important;
 }
+/* ========================================================
+   COMPACTACIÓN Y LOGROS DESPLEGABLES EN MÓVIL
+   ======================================================== */
+@media (max-width: 768px) {
+    /* 1. Ajuste de escala para que entre la carta FUT sin ocupar toda la pantalla */
+    .left-fut-column {
+        padding: 15px 10px !important;
+    }
+    
+    .fut-card {
+        transform: scale(0.82);
+        margin: -25px 0 -25px 0; /* Compensa el espacio sobrante por el escalado */
+    }
+
+    .right-dashboard-column {
+        padding: 15px 12px !important;
+        gap: 12px !important;
+    }
+
+    .right-dashboard-top-row {
+        gap: 12px !important;
+    }
+
+    .xp-profile-section,
+    .geoguessr-dash-box {
+        padding: 14px 12px !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 2. Formato colapsable para la Vitrina de Logros */
+    .logros-header-clickable {
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 0 !important;
+        border-bottom: none !important;
+    }
+
+    .logros-wrapper-mobile {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    }
+
+    .logros-wrapper-mobile.open {
+        max-height: 500px;
+        opacity: 1;
+        margin-top: 8px;
+    }
+}

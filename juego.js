@@ -3114,23 +3114,28 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
-            <div class="geoguessr-dash-box" style="flex:1; display:flex; flex-direction:column;">
-                <div class="dash-header-inline" style="margin-bottom:12px;">
-                    <div class="dash-title-premium"><i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros</div>
+            <div class="geoguessr-dash-box logros-box-mobile" style="flex:1; display:flex; flex-direction:column;">
+                <div class="dash-header-inline logros-header-clickable" onclick="toggleLogrosMobile()">
+                    <div class="dash-title-premium">
+                        <i class="ph-duotone ph-medal" style="font-size:1.3rem;color:var(--accent-color);"></i> Vitrina de Logros 
+                        <i class="ph-bold ph-caret-down" id="logros-chevron" style="font-size:0.9rem; transition:transform 0.3s; margin-left:4px;"></i>
+                    </div>
                     <div class="streak-fire-badge" id="logros-counter" style="color:var(--text-muted);">${desbloqueados}/${totalLogros}</div>
                 </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-                    <span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
-                    <span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
-                    <span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
+                <div id="logros-content-wrapper" class="logros-wrapper-mobile">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;margin-top:10px;">
+                        <span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
+                        <span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
+                        <span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
+                    </div>
+                    <div class="logros-tabs-row">
+                        <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
+                        <button class="logro-tab-btn" data-tipo="desbloqueados" onclick="filtrarLogros('desbloqueados')">✓ Logrados</button>
+                        <button class="logro-tab-btn" data-tipo="progreso" onclick="filtrarLogros('progreso')">⏳ Progreso</button>
+                        <button class="logro-tab-btn" data-tipo="bloqueados" onclick="filtrarLogros('bloqueados')">🔒 Bloq.</button>
+                    </div>
+                    <div class="logros-grid-v2" id="logros-grid-v2" style="flex:1;"></div>
                 </div>
-                <div class="logros-tabs-row">
-                    <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
-                    <button class="logro-tab-btn" data-tipo="desbloqueados" onclick="filtrarLogros('desbloqueados')">✓ Logrados</button>
-                    <button class="logro-tab-btn" data-tipo="progreso" onclick="filtrarLogros('progreso')">⏳ Progreso</button>
-                    <button class="logro-tab-btn" data-tipo="bloqueados" onclick="filtrarLogros('bloqueados')">🔒 Bloq.</button>
-                </div>
-                <div class="logros-grid-v2" id="logros-grid-v2" style="flex:1;"></div>
             </div>
 
         </div>
@@ -4124,4 +4129,13 @@ async function salirLigaAmigos() {
     
     // Refrescamos nuestra propia vista (que ahora mostrará el form para unirse a otra liga)
     abrirModalLigaAmigosPrivada();
+}
+// 📱 Función para abrir/cerrar la Vitrina de Logros en celulares
+function toggleLogrosMobile() {
+    const wrapper = document.getElementById('logros-content-wrapper');
+    const chev = document.getElementById('logros-chevron');
+    if (wrapper) {
+        const isOpen = wrapper.classList.toggle('open');
+        if (chev) chev.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
 }
