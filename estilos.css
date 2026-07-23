@@ -1666,26 +1666,10 @@ body {
     background: transparent !important;
 }
 /* ========================================================
-   REDISEÑO MODO CLARO PREMIUM (ALTA DEFINICIÓN Y CONTRASTE)
+   MODO CLARO Y RESPONSIVE MÓVIL (BLOQUE CONSOLIDADO Y LIMPIO)
    ======================================================== */
 
-/* 1. Fondo de pantalla modal y layout (Sin puntos únicamente en celulares) */
-@media (max-width: 768px) {
-    [data-theme="light"] #profile-modal-body,
-    [data-theme="light"] .split-profile-layout {
-        background-color: #f1f5f9 !important;
-        background-image: 
-            radial-gradient(circle at 20% 30%, rgba(0, 204, 102, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 25%, rgba(41, 121, 255, 0.12) 0%, transparent 55%) !important;
-        background-size: 100% 100%, 100% 100% !important;
-    }
-}
-
-[data-theme="light"] .left-fut-column {
-    background: transparent !important;
-}
-
-/* 2. Tarjetas principales del dashboard en blanco puro */
+/* 1. Modo Claro: Tarjetas y Legibilidad del Perfil */
 [data-theme="light"] .geoguessr-dash-box,
 [data-theme="light"] .xp-profile-section {
     background: #ffffff !important;
@@ -1693,7 +1677,6 @@ body {
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
 }
 
-/* 3. Textos y títulos de alto contraste */
 [data-theme="light"] .dash-title-premium,
 [data-theme="light"] .xp-profile-section h3,
 [data-theme="light"] .xp-profile-section strong,
@@ -1701,12 +1684,6 @@ body {
     color: #0f172a !important;
 }
 
-[data-theme="light"] .xp-profile-section div[style*="color:var(--text-muted)"],
-[data-theme="light"] .dash-header-inline span {
-    color: #475569 !important;
-}
-
-/* 4. Badges e insignias de estatus */
 [data-theme="light"] .badge-ranking {
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
     border: 1.5px solid #d97706 !important;
@@ -1722,21 +1699,6 @@ body {
     font-weight: 800 !important;
 }
 
-/* 5. Botones interactivos en Modo Claro */
-[data-theme="light"] #btn-toggle-custom {
-    background: #ffffff !important;
-    border: 2px solid #00cc66 !important;
-    color: #047857 !important;
-    box-shadow: 0 4px 12px rgba(0, 204, 102, 0.2) !important;
-    font-weight: 800 !important;
-}
-
-[data-theme="light"] #btn-toggle-custom:hover {
-    background: #00cc66 !important;
-    color: #ffffff !important;
-}
-
-/* 6. Calendario de Reto Diario */
 [data-theme="light"] .calendar-matrix {
     background: #f8fafc !important;
     border: 1px solid #cbd5e1 !important;
@@ -1770,11 +1732,19 @@ body {
     color: #065f46 !important;
     border-color: #10b981 !important;
 }
-/* ========================================================
-   REDISEÑO MÓVIL PERFECCIONADO: PROPORCIONES 50/50 EXACTAS
-   ======================================================== */
+
+/* 2. Maquetación Móvil 50/50 y Limpieza de Fondo */
 @media (max-width: 768px) {
-    /* 1. Modal adaptativo */
+    /* Fondo limpio sin puntos en modo claro solo para celular */
+    [data-theme="light"] #profile-modal-body,
+    [data-theme="light"] .split-profile-layout {
+        background-color: #f1f5f9 !important;
+        background-image: 
+            radial-gradient(circle at 20% 30%, rgba(0, 204, 102, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 25%, rgba(41, 121, 255, 0.12) 0%, transparent 55%) !important;
+        background-size: 100% 100%, 100% 100% !important;
+    }
+
     #profile-modal .modal-content {
         height: auto !important;
         max-height: 92vh !important;
@@ -1786,7 +1756,6 @@ body {
         height: auto !important;
     }
 
-    /* 2. Grilla principal en móvil con 2 columnas (50% / 50%) */
     .split-profile-layout {
         display: grid !important;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
@@ -1800,7 +1769,6 @@ body {
         display: contents !important;
     }
 
-    /* 3. ELEMENTO 1 (Fila 1, Columna 1): CARTA FUT */
     .fut-card {
         grid-column: 1 !important;
         grid-row: 1 !important;
@@ -1811,7 +1779,6 @@ body {
         justify-self: center !important;
     }
 
-    /* 4. ELEMENTO 2 (Fila 2, Columna 1): BOTÓN EDITAR CARTA */
     #btn-toggle-custom {
         grid-column: 1 !important;
         grid-row: 2 !important;
@@ -1827,7 +1794,6 @@ body {
         align-self: start !important;
     }
 
-    /* 5. ELEMENTO 3 (Fila 1 a 2, Columna 2): PROGRESO DE NIVEL / XP */
     .xp-profile-section {
         grid-column: 2 !important;
         grid-row: 1 / span 2 !important;
@@ -1870,7 +1836,6 @@ body {
         white-space: nowrap !important;
     }
 
-    /* 6. ELEMENTO 4 (Fila 3, Ancho Completo): PANEL DE PERSONALIZACIÓN */
     #customization-panel-wrapper {
         grid-column: 1 / span 2 !important;
         grid-row: 3 !important;
@@ -1893,7 +1858,6 @@ body {
         padding: 8px 10px !important;
     }
 
-    /* 7. ELEMENTO 5 (Fila 4, Ancho Completo): CALENDARIO DEL RETO DIARIO */
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
         grid-row: 4 !important;
@@ -1920,7 +1884,6 @@ body {
         font-size: 0.62rem !important;
     }
 
-    /* 8. ELEMENTO 6 (Fila 5, Ancho Completo): VITRINA DE LOGROS DESPLEGABLE */
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
         grid-row: 5 !important;
@@ -1957,18 +1920,5 @@ body {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
         padding: 2px !important;
-    }
-
-    /* 9. ELEMENTO 7 (Fila 6, Ancho Completo): FOOTER DE SESIÓN Y VINCULACIÓN */
-    .profile-modal-footer {
-        grid-column: 1 / span 2 !important;
-        grid-row: 6 !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 10px 4px 4px 4px !important;
-        margin-top: 6px !important;
-        border-top: 1px dashed var(--border-subtle) !important;
-        width: 100% !important;
     }
 }
