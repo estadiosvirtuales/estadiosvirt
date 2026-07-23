@@ -1753,10 +1753,47 @@ body {
     border-color: #00cc66 !important;
 }
 /* ========================================================
-   REDISEÑO MÓVIL PERFECCIONADO: PROPORCIONES 50/50 EXACTAS
+   REDISEÑO MÓVIL PERFECCIONADO: PROPORCIONES 50/50 EXACTAS Y CERO ESTIRAMIENTO
    ======================================================== */
+
+/* Fix de estructura general del footer de sesión */
+.xp-profile-section {
+    align-self: start !important;
+    height: auto !important;
+}
+
+.profile-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 6px 4px 6px;
+    margin-top: 10px;
+    border-top: 1px dashed var(--border-subtle);
+    width: 100%;
+}
+
+.btn-logout-subtle {
+    background: rgba(239, 68, 68, 0.12);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-logout-subtle:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #ffffff;
+}
+
 @media (max-width: 768px) {
-    /* 1. Modal adaptativo */
+    /* 1. Modal adaptativo con scroll general */
     #profile-modal .modal-content {
         height: auto !important;
         max-height: 92vh !important;
@@ -1771,7 +1808,7 @@ body {
     /* 2. Grilla con 2 columnas exactamente iguales (50% / 50%) */
     .split-profile-layout {
         display: grid !important;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; /* Fuerza 50/50 simétrico */
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
         gap: 8px !important;
         width: 100% !important;
     }
@@ -1802,7 +1839,7 @@ body {
         transform: scale(0.55) !important;
         transform-origin: top center !important;
         margin-top: 0 !important;
-        margin-bottom: -170px !important; /* Compensa la altura sobrante del escalado */
+        margin-bottom: -170px !important;
     }
 
     /* Botones compactos bajo la carta */
@@ -1833,6 +1870,8 @@ body {
         align-items: center !important;
         justify-content: center !important;
         box-sizing: border-box !important;
+        align-self: start !important;
+        height: auto !important;
     }
 
     /* Ajuste de tipografías internas para que no desborde texto */
@@ -1932,5 +1971,11 @@ body {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
         padding: 2px !important;
+    }
+
+    /* 7. FILA 4 (Al pie de todo): FOOTER DE SESIÓN Y VINCULACIÓN */
+    .profile-modal-footer {
+        grid-column: 1 / span 2 !important;
+        grid-row: 4 !important;
     }
 }

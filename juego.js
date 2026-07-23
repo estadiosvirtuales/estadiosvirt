@@ -3000,6 +3000,7 @@ const logros=calcularLogros(),totalLogros=logros.length,desbloqueados=logros.fil
 document.getElementById('profile-modal-body').innerHTML=`
     <div class="split-profile-layout">
         
+        <!-- COLUMNA IZQUIERDA: CARTA FUT + BOTÓN EDITAR + PANEL EDICIÓN -->
         <div class="left-fut-column">
             <div class="fut-card ${activeCardClass}" id="fut-card-main">
                 <div class="fut-card-shine"></div>
@@ -3020,8 +3021,8 @@ document.getElementById('profile-modal-body').innerHTML=`
                     <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
                 </div>
             </div>
-            ${googleBadge}
-            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
+
+            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:14px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
             
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
@@ -3064,17 +3065,14 @@ document.getElementById('profile-modal-body').innerHTML=`
                     <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><i class="ph-bold ph-check"></i> Guardar cambios</button>
                 </div>
             </div>
-            
-            <div style="margin-top: auto; padding-top: 20px; width: 100%; max-width: 250px; flex-shrink:0;">
-                <button onclick="cerrarSesion()" class="btn-3d secondary" style="width: 100%; color:var(--danger-color);border-color:var(--danger-color);padding:12px;font-size:.9rem;"><i class="ph-bold ph-sign-out"></i> Cerrar sesión</button>
-            </div>
         </div>
 
+        <!-- COLUMNA DERECHA: DASHBOARD DE NIVEL, RETO Y LOGROS -->
         <div class="right-dashboard-column">
             
             <div class="right-dashboard-top-row">
-                <!-- TARJETA CENTRAL ENERGIZADA Y REDISEÑADA -->
-                <div class="xp-profile-section" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 28px 20px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
+                <!-- TARJETA CENTRAL DE NIVEL Y XP -->
+                <div class="geoguessr-dash-box xp-profile-section" style="display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 28px 20px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
                     <div style="position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:var(--accent-color); filter:blur(90px); opacity:0.15; border-radius:50%; pointer-events:none;"></div>
                     
                     <div style="font-size:4.5rem; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65)); margin-bottom:10px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
@@ -3083,8 +3081,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                     
                     <div class="level-badge-inline ${nivel.cssClass}" style="font-size:0.82rem; padding:5px 16px; margin-bottom: 10px;">Nivel ${nivelIdx}</div>
     
-    <!-- 🏆 BADGE DE ESTATUS VIRAL DINÁMICO -->
-    <span class="badge-ranking" style="margin-bottom: 18px;">${textoRankingTop}</span>
+                    <span class="badge-ranking" style="margin-bottom: 18px;">${textoRankingTop}</span>
                     
                     <div style="width:100%; max-width: 92%; z-index:1;">
                         <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; font-weight:800; align-items:center;">
@@ -3102,6 +3099,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                     </div>
                 </div>
                 
+                <!-- CALENDARIO RETO DIARIO -->
                 <div class="geoguessr-dash-box" style="height:100%;">
                     <div class="dash-header-inline">
                         <div class="dash-title-premium"><i class="ph-duotone ph-calendar-check" style="font-size:1.3rem;color:var(--accent-color);"></i> Reto Diario (${monthNames[currentMonth]})</div>
@@ -3114,6 +3112,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
+            <!-- VITRINA DE LOGROS DESPLEGABLE -->
             <div class="geoguessr-dash-box logros-box-mobile" style="flex:1; display:flex; flex-direction:column;">
                 <div class="dash-header-inline logros-header-clickable" onclick="toggleLogrosMobile()">
                     <div class="dash-title-premium">
@@ -3136,6 +3135,14 @@ document.getElementById('profile-modal-body').innerHTML=`
                     </div>
                     <div class="logros-grid-v2" id="logros-grid-v2" style="flex:1;"></div>
                 </div>
+            </div>
+
+            <!-- FOOTER DE SESIÓN Y VINCULACIÓN AL PIE DEL MODAL -->
+            <div class="profile-modal-footer">
+                ${googleBadge}
+                <button onclick="cerrarSesion()" class="btn-logout-subtle">
+                    <i class="ph-bold ph-sign-out"></i> Cerrar sesión
+                </button>
             </div>
 
         </div>
