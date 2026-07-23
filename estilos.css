@@ -1753,39 +1753,99 @@ body {
     border-color: #00cc66 !important;
 }
 /* ========================================================
-   COMPACTACIÓN Y LOGROS DESPLEGABLES EN MÓVIL
+   MODO MÓVIL ULTRA-COMPACTO: PERFIL EN 1 SOLA PANTALLA (CERO SCROLL)
    ======================================================== */
 @media (max-width: 768px) {
-    /* 1. Ajuste de escala para que entre la carta FUT sin ocupar toda la pantalla */
-    .left-fut-column {
-        padding: 15px 10px !important;
-    }
-    
-    .fut-card {
-        transform: scale(0.82);
-        margin: -25px 0 -25px 0; /* Compensa el espacio sobrante por el escalado */
+    /* 1. Fijamos la altura de la ventana y bloqueamos todo scroll vertical */
+    #profile-modal .modal-content {
+        height: 88vh !important;
+        max-height: 88vh !important;
+        overflow: hidden !important; /* Anula por completo el scroll del perfil */
     }
 
+    #profile-modal-body,
+    .split-profile-layout {
+        height: 100% !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        padding: 8px 10px !important;
+    }
+
+    /* 2. Carta FUT centrada y ajustada sin margen muerto */
+    .left-fut-column {
+        padding: 0 !important;
+        border-bottom: 1px dashed var(--border-subtle) !important;
+        width: 100% !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+    }
+
+    .fut-card {
+        transform: scale(0.65) !important;
+        transform-origin: center top !important;
+        margin: -38px 0 -58px 0 !important;
+    }
+
+    .left-fut-column button {
+        padding: 5px 12px !important;
+        font-size: 0.72rem !important;
+        margin-top: 0 !important;
+    }
+
+    /* 3. Panel de Nivel + Calendario colocados lado a lado para ahorrar vertical */
     .right-dashboard-column {
-        padding: 15px 12px !important;
-        gap: 12px !important;
+        padding: 4px 0 0 0 !important;
+        gap: 6px !important;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        overflow: hidden !important;
     }
 
     .right-dashboard-top-row {
-        gap: 12px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1.15fr !important; /* Nivel a la izq / Calendario a la der */
+        gap: 6px !important;
     }
 
+    /* Micro-ajustes para que encajen las tarjetas dobles */
     .xp-profile-section,
     .geoguessr-dash-box {
-        padding: 14px 12px !important;
+        padding: 8px !important;
         margin-bottom: 0 !important;
+        border-radius: 12px !important;
     }
 
-    /* 2. Formato colapsable para la Vitrina de Logros */
+    .xp-profile-section h3 {
+        font-size: 0.9rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .calendar-matrix {
+        padding: 4px !important;
+        gap: 2px !important;
+        margin-top: 4px !important;
+    }
+
+    .calendar-cell {
+        width: 18px !important;
+        height: 18px !important;
+        font-size: 0.58rem !important;
+    }
+
+    .calendar-day-label {
+        font-size: 0.52rem !important;
+    }
+
+    /* 4. Vitrina de Logros colapsable al pie */
     .logros-header-clickable {
         cursor: pointer;
         user-select: none;
         margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
         border-bottom: none !important;
     }
 
@@ -1793,12 +1853,19 @@ body {
         max-height: 0;
         overflow: hidden;
         opacity: 0;
-        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        transition: max-height 0.35s ease, opacity 0.25s ease;
     }
 
     .logros-wrapper-mobile.open {
-        max-height: 500px;
+        max-height: 160px;
+        overflow-y: auto !important; /* Si se despliega, scrollean solo los logros internamente */
         opacity: 1;
-        margin-top: 8px;
+        margin-top: 6px;
+    }
+
+    .logros-grid-v2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        padding: 2px !important;
     }
 }
