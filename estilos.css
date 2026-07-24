@@ -132,7 +132,71 @@ body > * {
 .hero-bg-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 65%);pointer-events:none;opacity:.5}
 .hero-ball{position:absolute;right:8%;top:20%;font-size:5rem;opacity:.06;animation:floatBall 6s ease-in-out infinite;pointer-events:none;user-select:none}
 .hero-ball-2{position:absolute;left:6%;top:55%;font-size:3rem;opacity:.05;animation:floatBall 8s ease-in-out infinite reverse;pointer-events:none;user-select:none}
+
+/* ========================================================
+   🏟️ ESTADIOS DE FONDO (INTEGRACIÓN LIMPIA Y SIN MANCHAS)
+   ======================================================== */
+.hero-stadium {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* 🔵 La Bombonera */
+.stadium-bombonera {
+    left: -160px;
+    top: 38%;
+    transform: translateY(-50%);
+    width: 680px;
+    max-width: 46vw;
+    opacity: 0.82;
+    -webkit-mask-image: linear-gradient(to right, black 25%, transparent 90%), linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-image: linear-gradient(to right, black 25%, transparent 90%), linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+
+/* 🔴 Maracaná */
+.stadium-maracana {
+    right: -150px;
+    top: 38%;
+    transform: translateY(-50%);
+    width: 720px;
+    max-width: 48vw;
+    opacity: 0.82;
+    -webkit-mask-image: linear-gradient(to left, black 25%, transparent 90%), linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-image: linear-gradient(to left, black 25%, transparent 90%), linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+
+/* ⚪ Estadio Genérico */
+.stadium-generico {
+    right: 0.5%;
+    bottom: 5px;
+    width: 310px;
+    max-width: 25vw;
+    opacity: 0.65;
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 95%), radial-gradient(circle at center, black 40%, transparent 95%);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 95%), radial-gradient(circle at center, black 40%, transparent 95%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+
 .hero-content{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+
+/* Adaptación para pantallas medianas y móviles */
+@media (max-width: 1100px) {
+    .stadium-bombonera { left: -220px; width: 480px; opacity: 0.4; }
+    .stadium-maracana { right: -220px; width: 500px; opacity: 0.4; }
+    .stadium-generico { display: none; }
+}
+
+@media (max-width: 768px) {
+    .hero-stadium { display: none !important; }
+}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--border-strong);border-left:3px solid var(--accent-color);color:var(--accent-color);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;padding:6px 14px;border-radius:6px;margin-bottom:18px;animation:fadeSlideUp .4s ease}
 .welcome-heading{font-size:3.2rem;font-weight:900;margin-bottom:10px;color:var(--text-main);letter-spacing:-1.5px;line-height:1.05;animation:fadeSlideUp .45s .05s ease both}
 .welcome-heading .accent-word{color:var(--accent-color)}
@@ -145,7 +209,7 @@ body > * {
 .game-modes{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;width:100%;animation:fadeSlideUp .45s .2s ease both}
 .game-modes button{border:none;border-radius:20px;padding:22px 20px;display:flex;align-items:center;gap:16px;text-align:left;cursor:pointer;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.175,.885,.32,1.275);color:#fff;text-decoration:none}
 .game-modes button::before{content:'';inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
-.game-modes button::after{content:'';bottom:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none}
+.game-modes button::after{display:none !important}
 .game-modes button:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 45px rgba(0,0,0,.5)}
 .game-modes button:active{transform:translateY(-2px) scale(.99)}
 .btn-guessr{background:linear-gradient(135deg,#00c853 0%,#00695c 100%);box-shadow:0 8px 0 #004d40,0 12px 30px rgba(0,200,83,.25)}
@@ -1002,131 +1066,76 @@ body > * {
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
 }
 /* ========================================================
-   1. BOTONERA COMPACTA STADIUMGUESSR (ESTILO CONSOLA)
+   REDISEÑO MODO OSCURO (ESTILOS EXCLUSIVOS CON DATA-THEME DARK)
    ======================================================== */
-
-/* Contenedor principal de los tres botones apilados */
-.card-modes-buttons {
-    display: flex !important;
-    flex-direction: column !important; 
-    gap: 6px !important;               
-    width: 100% !important;
-    padding: 8px 12px !important;
-    box-sizing: border-box !important;
-    margin-top: auto !important;
-}
-
-/* Forzamos el tamaño chico e idéntico para los 3 botones */
-.card-modes-buttons button,
-.card-modes-buttons .btn-menu-action {
-    width: 100% !important;
-    height: 34px !important;     
-    min-height: 34px !important; 
-    max-height: 34px !important; 
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    font-size: 0.82rem !important; 
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    border-radius: 6px !important;
-    border: none !important;
-    white-space: nowrap !important; 
-    cursor: pointer !important;
-    
-    /* Look Stealth acrílico por defecto en Modo Oscuro */
-    background: rgba(255, 255, 255, 0.03) !important; 
-    color: #ffffff !important;                         
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 10px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.2s ease-in-out !important;
-}
-
-/* 🚀 EFECTOS HOVER: Se iluminan con su neón al pasar el mouse */
-.card-modes-buttons button.solo:hover {
-    background: rgba(0, 255, 119, 0.08) !important;
-    border-color: #00ff77 !important;
-    box-shadow: 0 0 15px rgba(0, 255, 119, 0.25) !important;
-}
-.card-modes-buttons button.versus:hover {
-    background: rgba(41, 121, 255, 0.08) !important;
-    border-color: #2979ff !important;
-    box-shadow: 0 0 15px rgba(41, 121, 255, 0.25) !important;
-}
-.card-modes-buttons button.ranking-btn:hover {
-    background: rgba(234, 179, 8, 0.08) !important;
-    border-color: #eab308 !important;
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.25) !important;
-}
-.card-modes-buttons button:active {
-    transform: translateY(2px) !important;
-    box-shadow: none !important;
-}
-
-/* ========================================================
-   2. REDISEÑO DE ENTRETELONES EN MODO OSCURO (EA SPORTS FC)
-   ======================================================== */
-body {
+[data-theme="dark"] body {
     background-color: #05070f !important;
     background-image: 
         radial-gradient(at 15% 0%, rgba(0, 255, 119, 0.15) 0px, transparent 45%),
         radial-gradient(at 85% 0%, rgba(41, 121, 255, 0.12) 0px, transparent 45%),
         radial-gradient(at 50% 100%, rgba(10, 35, 21, 0.7) 0px, transparent 70%) !important;
     color: #ffffff !important;
-    min-height: 100vh;
 }
-.welcome-heading {
+
+[data-theme="dark"] .welcome-heading {
     font-size: 3.2rem !important;
     font-weight: 900 !important;
     text-transform: uppercase !important; 
     letter-spacing: -1px !important;       
     text-shadow: 3px 3px 0px #000000 !important;
 }
-.welcome-heading .accent-word {
+
+[data-theme="dark"] .welcome-heading .accent-word {
     color: #00ff77 !important; 
     text-shadow: 0 0 20px rgba(0, 255, 119, 0.4), 3px 3px 0px #000000 !important;
 }
-.search-bar {
-    background: #0d1122 !important; 
-    border: 2px solid #1e2942 !important; 
-    color: #ffffff !important;
-    border-radius: 10px !important; 
-}
-.search-bar:focus {
-    border-color: #00ff77 !important; 
-    background: #12182e !important;
+
+[data-theme="dark"] .welcome-sub {
+    color: var(--text-muted) !important;
 }
 
-/* Unificamos las 3 tarjetas en acrílico traslúcido simétrico */
-.game-modes button,
-.game-card.btn-guessr {
-    background: linear-gradient(180deg, rgba(14, 20, 43, 0.85) 0%, rgba(7, 10, 23, 0.95) 100%) !important;
-    border: 2px solid #1b243c !important;
-    border-radius: 16px !important;
+[data-theme="dark"] .search-bar {
+    background: rgba(13, 17, 34, 0.75) !important; 
+    border: 2px solid rgba(0, 255, 119, 0.25) !important; 
+    color: #ffffff !important;
+    border-radius: 14px !important; 
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .search-bar:focus {
+    border-color: #00ff77 !important; 
+    background: rgba(18, 24, 46, 0.9) !important;
+    box-shadow: 0 0 25px rgba(0, 255, 119, 0.35), 0 8px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .game-modes button,
+[data-theme="dark"] .game-card.btn-guessr {
+    background: linear-gradient(135deg, rgba(20, 28, 52, 0.7) 0%, rgba(10, 14, 28, 0.85) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 18px !important;
     position: relative;
     overflow: hidden; 
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
-.game-modes button::after,
-.game-card.btn-guessr::after {
-    content: '' !important; position: absolute !important; bottom: 0 !important; left: 0 !important;
-    width: 100% !important; height: 4px !important; background: #1b243c !important; transition: background 0.25s ease !important;
+
+[data-theme="dark"] .game-modes button strong,
+[data-theme="dark"] .game-modes button span {
+    color: #ffffff !important;
 }
-.game-modes button.btn-guessr:hover::after, .game-card.btn-guessr:hover::after { background: #00ff77 !important; }
-.game-modes button.btn-order:hover::after  { background: #eab308 !important; }
-.game-modes button.btn-random:hover::after { background: #2979ff !important; }
-.game-modes button.btn-catalog:hover::after { background: #a78bfa !important; }
+
+[data-theme="dark"] .btn-guessr .game-card-icon { background: rgba(0, 255, 119, 0.15) !important; color: #00ff77 !important; }
+[data-theme="dark"] .btn-order .game-card-icon { background: rgba(234, 179, 8, 0.15) !important; color: #eab308 !important; }
+[data-theme="dark"] .btn-random .game-card-icon { background: rgba(41, 121, 255, 0.15) !important; color: #2979ff !important; }
+[data-theme="dark"] .btn-catalog .game-card-icon { background: rgba(167, 139, 250, 0.15) !important; color: #a78bfa !important; }
+
 
 /* ========================================================
-   3. REDISEÑO PREMIUM DEL MODO CLARO (CÉSPED DIURNO)
+   REDISEÑO MODO CLARO (CÉSPED DIURNO)
    ======================================================== */
-
-/* ========================================================
-   MODO CLARO: INVERSIÓN ESPEJO EXACTA DEL MODO OSCURO
-   ======================================================== */
-
-/* 1. Mismo esquema de 3 luces ambientales (Glows) que el modo oscuro sobre fondo gris-menta claro */
 [data-theme="light"],
 [data-theme="light"] body {
     background-color: #ebf0ee !important;
@@ -1134,137 +1143,87 @@ body {
         radial-gradient(at 15% 0%, rgba(0, 204, 102, 0.18) 0px, transparent 45%),
         radial-gradient(at 85% 0%, rgba(41, 121, 255, 0.12) 0px, transparent 45%),
         radial-gradient(at 50% 100%, rgba(0, 180, 90, 0.10) 0px, transparent 70%) !important;
+    color: #04160a !important;
 }
 
-/* 2. Mapa del mundo e intensidad de puntos espejo de la versión oscura (Verde Bosque legible) */
 [data-theme="light"] body::after {
     background-image: radial-gradient(#155d31 1.8px, transparent 1.8px) !important;
     opacity: 0.28 !important;
 }
 
-/* Títulos corpóreos nítidos con sombra de cal limpia */
 [data-theme="light"] .welcome-heading {
+    font-size: 3.2rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important; 
+    letter-spacing: -1px !important;       
     text-shadow: 2px 2px 0px rgba(0, 204, 102, 0.12) !important;
-    color: var(--text-main) !important;
-}
-[data-theme="light"] .welcome-heading .accent-word {
-    text-shadow: 2px 2px 0px rgba(4, 22, 10, 0.08) !important;
-    color: var(--accent-color) !important;
+    color: #04160a !important;
 }
 
-/* Buscador limpio estilo palco de prensa */
+[data-theme="light"] .welcome-heading .accent-word {
+    color: #00cc66 !important; 
+    text-shadow: 2px 2px 0px rgba(4, 22, 10, 0.08) !important;
+}
+
+[data-theme="light"] .welcome-sub {
+    color: #2c4930 !important;
+}
+
 [data-theme="light"] .search-bar {
     background: #ffffff !important;
-    border: 2px solid var(--border-strong) !important;
-    color: var(--text-main) !important;
-    box-shadow: var(--shadow-soft), inset 0 2px 4px rgba(4, 22, 10, 0.02) !important;
-}
-[data-theme="light"] .search-bar:focus {
-    border-color: var(--accent-color) !important;
-    background: #ffffff !important;
-    box-shadow: 0 0 0 4px var(--accent-dim), var(--shadow-soft) !important;
+    border: 2px solid #a4bdae !important;
+    color: #04160a !important;
+    box-shadow: 0 4px 20px rgba(4, 22, 10, 0.08) !important;
 }
 
-/* Tarjetas principales estilo placas acrílicas pulidas con relieve inferior */
+[data-theme="light"] .search-bar::placeholder {
+    color: #2c4930 !important;
+}
+
+[data-theme="light"] .search-bar:focus {
+    border-color: #00cc66 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(0, 204, 102, 0.12) !important;
+}
+
 [data-theme="light"] .game-modes button,
 [data-theme="light"] .game-card.btn-guessr {
     background: #ffffff !important;
-    border: 2px solid rgba(0, 204, 102, 0.08) !important;
-    color: var(--text-main) !important;
-    box-shadow: 0 10px 25px rgba(4, 22, 10, 0.04), inset 0 1px 0 #ffffff !important;
-    transition: transform 0.25s cubic-bezier(.175,.885,.32,1.15), border-color 0.2s ease, box-shadow 0.2s ease !important;
-}
-[data-theme="light"] .game-modes button:hover,
-[data-theme="light"] .game-card.btn-guessr:hover {
-    transform: translateY(-5px) !important;
-    border-color: var(--accent-color) !important;
-    box-shadow: 0 16px 35px rgba(4, 22, 10, 0.08), 0 0 0 1px var(--accent-dim) !important;
+    border: 2px solid #cbd5e1 !important;
+    color: #04160a !important;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* Línea de cal interactiva en la base de las tarjetas */
-[data-theme="light"] .game-modes button::after,
-[data-theme="light"] .game-card.btn-guessr::after {
-    content: '' !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 4px !important;
-    background: var(--surface-color) !important; 
-    display: block !important;
-    transition: background 0.22s ease !important;
-}
-[data-theme="light"] .game-modes button.btn-guessr:hover::after, 
-[data-theme="light"] .game-card.btn-guessr:hover::after { background: var(--accent-color) !important; }
-[data-theme="light"] .game-modes button.btn-order:hover::after  { background: var(--xp-gold) !important; }
-[data-theme="light"] .game-modes button.btn-random:hover::after { background: var(--btn-random) !important; }
-[data-theme="light"] .game-modes button.btn-catalog:hover::after { background: var(--xp-legend) !important; }
-
-/* Íconos internos de las tarjetas (Versión luminosa) */
-[data-theme="light"] .game-card-icon {
-    background: var(--accent-dim) !important; 
-    color: var(--accent-color) !important;         
-    border: 1px solid rgba(0, 204, 102, 0.2) !important;
-    box-shadow: none !important;
-}
-[data-theme="light"] .game-modes button:hover .game-card-icon {
-    background: var(--accent-color) !important;
-    color: #ffffff !important;
-}
-[data-theme="light"] .game-modes button:hover .game-card-icon {
-    color: var(--text-main) !important;
-    background: var(--surface-color) !important;
-    border-color: var(--accent-color) !important;
+[data-theme="light"] .game-modes button strong,
+[data-theme="light"] .game-modes button span {
+    color: #04160a !important;
 }
 
-/* 🎮 BOTONERA DE TURNOS ESTILO CONSOLA MODO CLARO (CON RELIEVE 3D REAL) */
-[data-theme="light"] .card-modes-buttons button,
-[data-theme="light"] .card-modes-buttons .btn-menu-action {
-    background: #ffffff !important; 
-    color: var(--text-muted) !important;
-    border: 1px solid var(--border-strong) !important;
-    box-shadow: 0 3px 0 var(--surface-hover), 0 4px 8px rgba(0,0,0,0.03) !important;
-    font-weight: 700 !important;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s !important;
+[data-theme="light"] .btn-guessr .game-card-icon {
+    background: rgba(0, 204, 102, 0.15) !important;
+    color: #009944 !important;
+}
+[data-theme="light"] .btn-order .game-card-icon {
+    background: rgba(234, 179, 8, 0.18) !important;
+    color: #d97706 !important;
+}
+[data-theme="light"] .btn-random .game-card-icon {
+    background: rgba(41, 121, 255, 0.15) !important;
+    color: #2563eb !important;
+}
+[data-theme="light"] .btn-catalog .game-card-icon {
+    background: rgba(167, 139, 250, 0.18) !important;
+    color: #7c3aed !important;
 }
 
-/* Hover Solo: Verde eSports Diurno */
-[data-theme="light"] .card-modes-buttons button.solo:hover {
-    background: var(--accent-color) !important;
-    color: #000000 !important;
-    border-color: var(--accent-hover) !important;
-    box-shadow: 0 3px 0 #0a7a3a, 0 6px 15px var(--accent-glow) !important;
+/* Limpieza total de sombras/manchas en los estadios */
+.stadium-bombonera,
+.stadium-maracana,
+.stadium-generico {
+    filter: none !important;
 }
 
-/* Hover Versus: Neón Eléctrico de Competencia */
-[data-theme="light"] .card-modes-buttons button.versus:hover {
-    background: linear-gradient(135deg, #2979ff, #651fff) !important;
-    color: #ffffff !important;
-    border-color: #1a237e !important;
-    box-shadow: 0 3px 0 #0d47a1, 0 6px 15px rgba(41, 121, 255, 0.3) !important;
-}
-
-/* Hover Ranking: Dorado Copa Pulida */
-[data-theme="light"] .card-modes-buttons button.ranking-btn:hover {
-    background: var(--xp-gold) !important;
-    color: #000000 !important;
-    border-color: #ca8a04 !important;
-    box-shadow: 0 3px 0 #854d0e, 0 6px 15px rgba(234, 179, 8, 0.3) !important;
-}
-
-/* Comportamiento mecánico de click físico para los tres botones */
-[data-theme="light"] .card-modes-buttons button:active,
-[data-theme="light"] .card-modes-buttons .btn-menu-action:active {
-    transform: translateY(3px) !important;
-    box-shadow: 0 0 0 transparent, 0 1px 2px rgba(0,0,0,0.05) !important;
-}
-
-
-/* ========================================================
-   💥 ESCUDO DE CONTRASTE PARA MODO CLARO (RANKINGS Y COMPONENTES)
-   ======================================================== */
-
-/* Fuerza a los textos de los modales y desgloses a usar el color oscuro principal */
+/* Escudo de contraste para Modales en Modo Claro */
 [data-theme="light"] .modal-content,
 [data-theme="light"] #ranking-modal-body,
 [data-theme="light"] #modal-video-container,
@@ -1273,7 +1232,6 @@ body {
     color: var(--text-main) !important;
 }
 
-/* Evita que los subtítulos y desgloses de rondas queden lavados */
 [data-theme="light"] #modal-video-container h2,
 [data-theme="light"] #modal-video-container strong,
 [data-theme="light"] #modal-video-container b,
@@ -1287,23 +1245,21 @@ body {
     color: var(--text-muted) !important;
 }
 
-/* Corrige los botones inactivos del ranking para que tengan contraste legible */
 [data-theme="light"] .logro-tab-btn {
     color: var(--text-muted) !important;
     font-weight: 700 !important;
 }
 
-/* Al estar activa la pestaña, el texto se vuelve negro puro sobre el verde brillante */
 [data-theme="light"] .logro-tab-btn.active {
     background: var(--accent-color) !important;
     color: #000000 !important;
     font-weight: 900 !important;
 }
 
-/* Asegura que los textos dentro de las celdas del calendario del reto diario se lean bien */
 [data-theme="light"] .calendar-cell {
     color: var(--text-main) !important;
 }
+
 [data-theme="light"] .calendar-cell.past-done,
 [data-theme="light"] .calendar-cell.current-active {
     color: #000000 !important;
