@@ -277,7 +277,7 @@ body > * {
 .levelup-sub{font-size:1.1rem;color:var(--text-muted);margin-top:8px}
 .levelup-close{margin-top:28px}
 .confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confetti 1.2s ease-out forwards;pointer-events:none}
-.catalogo-layout{display:none;align-items:flex-start;gap:24px;max-width:1220px;margin:36px auto 18px;padding:0 24px}
+.catalogo-layout{display:none;align-items:flex-start;gap:24px;max-width:1220px;margin:150px auto 18px;padding:0 24px}
 .catalogo-layout.open{display:flex;animation:dropPanel .22s cubic-bezier(.4,0,.2,1) forwards}
 .section-ligas{flex:0 0 360px}
 .ligas-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
@@ -1083,7 +1083,7 @@ body > * {
 .grid{grid-template-columns:1fr;gap:18px;padding:0 16px}
 .tabs-container{grid-template-columns:1fr 1fr}
 .section-ligas{padding:0 16px;flex:0 0 auto;width:100%}
-.catalogo-layout{flex-direction:column;padding:0}
+.catalogo-layout{flex-direction:column;padding:0;margin-top:24px !important}
 .modal-content.stadium-guessr-layout{height:92vh!important}
 .modal-content.stadium-guessr-layout .video-container{height:38%!important;border-radius:22px 22px 0 0!important}
 .modal-content.stadium-guessr-layout #game-ui{height:62%!important;padding:16px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 22px 22px!important}
