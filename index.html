@@ -139,7 +139,17 @@
 <div class="game-card-text"><strong>Explorá el Catálogo</strong><span>Países, ligas y clubes</span></div>
 </button>
 </div>
-</div>
+
+
+<!-- 🧰 BOTÓN RETO DIARIO EN ZONA INFERIOR IZQUIERDA (RECUADRO AZUL DE CAPTURA 8) -->
+<button class="btn-reto-banner" onclick="iniciarRetoDiario()">
+    <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.png" alt="Reto Diario" class="reto-baul-img" onerror="this.src='https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.jpg';">
+    <div class="reto-banner-text">
+        <strong>Reto Diario</strong>
+        <span>Completá el desafío del día</span>
+        <span>¡Adiviná 5 estadios!</span>
+    </div>
+</button>
 </section>
 <div class="catalogo-layout" id="catalogo-layout">
 <section class="section-ligas">
@@ -388,16 +398,10 @@
                 <!-- BLOQUE 1: Un Jugador -->
                 <div>
                     <div style="font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">Un Jugador</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <button onclick="cerrarModalGuessr(); iniciarRetoDiario()" class="btn-3d btn-reto-diario" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
-                            <i class="ph-duotone ph-calendar-star" style="font-size: 2rem;"></i> 
-                            <span>Reto Diario</span>
-                        </button>
-                        <button onclick="cerrarModalGuessr(); iniciarTrivia()" class="btn-3d primary" style="padding: 18px 10px; font-size: 0.85rem; flex-direction: column; gap: 8px;">
-                            <i class="ph-duotone ph-user" style="font-size: 2rem;"></i> 
-                            <span>Individual</span>
-                        </button>
-                    </div>
+                    <button onclick="cerrarModalGuessr(); iniciarTrivia()" class="btn-3d primary" style="width: 100%; padding: 16px 14px; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="ph-duotone ph-user" style="font-size: 1.5rem;"></i> 
+                        <span>Modo Individual</span>
+                    </button>
                 </div>
 
                 <!-- BLOQUE 2: Multijugador -->

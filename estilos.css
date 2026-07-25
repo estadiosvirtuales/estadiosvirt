@@ -128,7 +128,7 @@ body > * {
 .btn-3d.secondary{background:var(--surface-color);color:var(--text-main);border:2px solid var(--border-strong);box-shadow:0 4px 0 rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2)}
 .btn-3d.secondary:hover{border-color:var(--accent-color);color:var(--accent-color);background:var(--accent-dim);transform:translateY(-2px)}
 .btn-3d.secondary:active{box-shadow:1px 0 rgba(0,0,0,.3);transform:translateY(3px)}
-.hero-section{position:relative;padding:60px 20px 70px;text-align:center;overflow:hidden}
+.hero-section{position:relative;padding:60px 20px 70px;text-align:center;overflow:visible}
 .hero-bg-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 65%);pointer-events:none;opacity:.5}
 .hero-ball{position:absolute;right:8%;top:20%;font-size:5rem;opacity:.06;animation:floatBall 6s ease-in-out infinite;pointer-events:none;user-select:none}
 .hero-ball-2{position:absolute;left:6%;top:55%;font-size:3rem;opacity:.05;animation:floatBall 8s ease-in-out infinite reverse;pointer-events:none;user-select:none}
@@ -232,12 +232,23 @@ body > * {
 .game-modes button::after{display:none !important}
 .game-modes button:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 45px rgba(0,0,0,.5)}
 .game-modes button:active{transform:translateY(-2px) scale(.99)}
-.btn-guessr{background:linear-gradient(135deg,#00c853 0%,#00695c 100%);box-shadow:0 8px 0 #004d40,0 12px 30px rgba(0,200,83,.25)}
-.btn-guessr:hover{box-shadow:0 12px 0 #004d40,0 18px 40px rgba(0,200,83,.35)!important}
-.btn-order{background:linear-gradient(135deg,#ff8f00 0%,#e65100 100%);box-shadow:0 8px 0 #bf360c,0 12px 30px rgba(255,143,0,.25)}
-.btn-order:hover{box-shadow:0 12px 0 #bf360c,0 18px 40px rgba(255,143,0,.35)!important}
-.btn-random{background:linear-gradient(135deg,#2979ff 0%,#1565c0 100%);box-shadow:0 8px 0 #0d47a1,0 12px 30px rgba(41,121,255,.25)}
-.btn-random:hover{box-shadow:0 12px 0 #0d47a1,0 18px 40px rgba(41,121,255,.35)!important}
+/* 💡 RESPLANDOR NEÓN LUMINOSO BAJO CADA BOTÓN SEGÚN SU COLOR DE ÍCONO */
+.game-modes button.btn-guessr:hover {
+    border-color: #00ff77 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 255, 119, 0.55) !important;
+}
+.game-modes button.btn-order:hover {
+    border-color: #eab308 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(234, 179, 8, 0.55) !important;
+}
+.game-modes button.btn-random:hover {
+    border-color: #2979ff !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(41, 121, 255, 0.55) !important;
+}
+.game-modes button.btn-catalog:hover {
+    border-color: #a78bfa !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(167, 139, 250, 0.55) !important;
+}
 .game-card-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.18);box-shadow:inset 0 2px 6px rgba(255,255,255,.25),0 4px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:#fff;flex-shrink:0;transition:transform .3s}
 .game-modes button:hover .game-card-icon{transform:rotate(-8deg) scale(1.1)}
 .game-card-text{display:flex;flex-direction:column;z-index:2}
@@ -1897,4 +1908,121 @@ body > * {
         gap: 8px !important;
         padding: 2px !important;
     }
+}
+/* ========================================================
+   🏆 BOTÓN DE RETO DIARIO (UBICACIÓN EN RECUADRO AZUL INFERIOR IZQUIERDO)
+   ======================================================== */
+.btn-reto-banner {
+    position: absolute;
+    left: -14%;
+    bottom: -150px;
+    z-index: 10;
+    width: 350px;
+    padding: 14px 18px 14px 95px;
+    background: linear-gradient(135deg, rgba(14, 20, 43, 0.92) 0%, rgba(7, 10, 23, 0.96) 100%);
+    border: 2px solid rgba(0, 255, 119, 0.4);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 119, 0.2);
+    overflow: visible !important;
+}
+
+.btn-reto-banner:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: #00ff77;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 255, 119, 0.4);
+}
+
+.btn-reto-banner:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+/* 🧰 BAÚL GIGANTE OVERFLOW (MISMOS TAMAÑOS DE FOTO 8 PERO SIN TAPAR EL TEXTO) */
+.reto-baul-img {
+    position: absolute;
+    left: -75px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 222px;
+    height: 222px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 22px rgba(0, 255, 119, 0.85));
+    transition: transform 0.35s ease, filter 0.35s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.btn-reto-banner:hover .reto-baul-img {
+    transform: translateY(-50%) scale(1.1) rotate(-4deg);
+    filter: drop-shadow(0 0 32px rgba(0, 255, 119, 1));
+}
+
+.reto-banner-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    z-index: 1;
+}
+
+.reto-banner-text strong {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #00ff77;
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    text-shadow: 0 0 10px rgba(0, 255, 119, 0.3);
+}
+
+.reto-banner-text span {
+    font-size: 0.78rem;
+    color: #ffffff;
+    font-weight: 600;
+    line-height: 1.3;
+    opacity: 0.9;
+}
+
+/* 📱 Adaptación para Celulares */
+@media (max-width: 1024px) {
+    .btn-reto-banner {
+        position: relative !important;
+        left: auto !important;
+        bottom: auto !important;
+        margin: 20px auto 0 !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        padding-left: 85px !important;
+    }
+    .reto-baul-img {
+        width: 105px !important;
+        height: 105px !important;
+        left: -20px !important;
+    }
+}
+
+/* ☀️ Modo Claro */
+[data-theme="light"] .btn-reto-banner {
+    background: #ffffff !important;
+    border: 2px solid #a4bdae !important;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .btn-reto-banner:hover {
+    border-color: #00cc66 !important;
+    box-shadow: 0 14px 30px rgba(0, 204, 102, 0.2) !important;
+}
+
+[data-theme="light"] .reto-banner-text strong {
+    color: #00cc66 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .reto-banner-text span {
+    color: #04160a !important;
 }
