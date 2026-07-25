@@ -194,8 +194,28 @@ body > * {
     .stadium-generico { display: none; }
 }
 
+/* 📱 Integración prolija y adaptada para pantallas de Celular */
 @media (max-width: 768px) {
-    .hero-stadium { display: none !important; }
+    .hero-stadium {
+        display: block !important;
+    }
+    .stadium-bombonera {
+        left: -100px !important;
+        top: 20% !important;
+        width: 250px !important;
+        max-width: 55vw !important;
+        opacity: 0.45 !important;
+    }
+    .stadium-maracana {
+        right: -100px !important;
+        top: 20% !important;
+        width: 260px !important;
+        max-width: 55vw !important;
+        opacity: 0.45 !important;
+    }
+    .stadium-generico {
+        display: none !important;
+    }
 }
 .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--border-strong);border-left:3px solid var(--accent-color);color:var(--accent-color);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;padding:6px 14px;border-radius:6px;margin-bottom:18px;animation:fadeSlideUp .4s ease}
 .welcome-heading{font-size:3.2rem;font-weight:900;margin-bottom:10px;color:var(--text-main);letter-spacing:-1.5px;line-height:1.05;animation:fadeSlideUp .45s .05s ease both}
