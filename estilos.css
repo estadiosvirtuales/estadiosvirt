@@ -1106,7 +1106,8 @@ body > * {
 
 /* 🎬 REPRODUCTOR DE VIDEO (VUELO ALEATORIO / VER ESTADIO) EN CELULAR */
 #video-modal .modal-content:not(.stadium-guessr-layout):not(.resultado-final-layout) {
-    height: 60vh !important;
+    width: 98% !important;
+    height: 68vh !important;
     padding: 0 !important;
 }
 
@@ -2032,13 +2033,13 @@ body > * {
         margin: 20px auto 0 !important;
         width: calc(100% - 20px) !important;
         max-width: 380px !important;
-        padding-left: 85px !important;
+        padding-left: 95px !important;
         overflow: visible !important;
     }
     .reto-baul-img {
-        width: 100px !important;
-        height: 100px !important;
-        left: -12px !important;
+        width: 135px !important;
+        height: 135px !important;
+        left: -28px !important;
     }
 }
 
