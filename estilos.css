@@ -1084,10 +1084,28 @@ body > * {
 .tabs-container{grid-template-columns:1fr 1fr}
 .section-ligas{padding:0 16px;flex:0 0 auto;width:100%}
 .catalogo-layout{flex-direction:column;padding:0;margin-top:24px !important}
-.modal-content.stadium-guessr-layout{height:92vh!important}
-.modal-content.stadium-guessr-layout .video-container{height:38%!important;border-radius:22px 22px 0 0!important}
-.modal-content.stadium-guessr-layout #game-ui{height:62%!important;padding:16px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 22px 22px!important}
-.modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:200px}
+
+/* 📱 CONTROL COMPACTO Y PROPORCIONADO DE MODALES EN CELULAR */
+.modal-content {
+    width: 92% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    border-radius: 18px !important;
+    padding: 16px 14px !important;
+}
+
+.modal-content.stadium-guessr-layout{height:88vh!important; padding: 0 !important;}
+.modal-content.stadium-guessr-layout .video-container{height:38%!important;border-radius:18px 18px 0 0!important}
+.modal-content.stadium-guessr-layout #game-ui{height:62%!important;padding:12px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 18px 18px!important}
+.modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:180px}
+
+.login-modal-box,
+.privacy-modal-box {
+    padding: 22px 16px !important;
+    border-radius: 18px !important;
+}
+
 .header-level-badge{display:none}
 .logros-grid-v2{grid-template-columns:repeat(2,1fr)}
 .split-profile-layout{flex-direction:column}
@@ -1325,7 +1343,7 @@ body > * {
 
     /* Arreglo de la Luna: Centrada en el espacio vacío entre el título y el perfil */
     .header-actions {
-        flex: 1 !important; /* Deja que el contenedor ocupe todo el ancho disponible */
+        flex: 1 !important; 
     }
     .theme-toggle-btn, .theme-toggle, #theme-btn {
         transform: none !important; 
@@ -1336,8 +1354,8 @@ body > * {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        margin-left: auto !important;  /* MAGIA: Lo empuja lejos del título */
-        margin-right: auto !important; /* MAGIA: Lo empuja lejos del perfil, quedando al centro */
+        margin-left: auto !important;  
+        margin-right: auto !important; 
         padding: 0 !important;
     }
 
@@ -1351,21 +1369,21 @@ body > * {
     /* B. CUERPO PRINCIPAL DEL SITIO              */
     /* ========================================== */
     
-    /* 1. Ocultamos la píldora verde (Usamos comodines por si la clase cambia) */
+    /* 1. Ocultamos la píldora verde */
     .hero-badge-container, .hero-pill, .badge-container, [class*="tour-"] {
         display: none !important;
     }
 
-    /* 2. Achicamos radicalmente ESTADIOS VIRTUALES para que ocupe menos vertical */
-    h1, .hero-title {
-        font-size: 1.6rem !important; /* Antes estaba en 2.2rem */
+    /* 2. Acotamos el título SOLO a la portada hero (sin infectar modales) */
+    .hero-content h1, .welcome-heading {
+        font-size: 1.6rem !important; 
         line-height: 1.1 !important;
         margin-top: 5px !important;
         margin-bottom: 8px !important;
     }
 
-    /* 3. Subtítulo más compacto */
-    p, .hero-subtitle {
+    /* 3. Acotamos el subtítulo SOLO a la portada hero (sin infectar párrafos de modales) */
+    .hero-content p, .welcome-sub {
         font-size: 0.85rem !important;
         line-height: 1.3 !important;
         margin-bottom: 15px !important;
