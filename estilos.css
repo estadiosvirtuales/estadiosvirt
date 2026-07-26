@@ -1104,6 +1104,12 @@ body > * {
     padding: 16px 14px !important;
 }
 
+/* 🎬 REPRODUCTOR DE VIDEO (VUELO ALEATORIO / VER ESTADIO) EN CELULAR */
+#video-modal .modal-content:not(.stadium-guessr-layout):not(.resultado-final-layout) {
+    height: 60vh !important;
+    padding: 0 !important;
+}
+
 .modal-content.stadium-guessr-layout{height:88vh!important; padding: 0 !important;}
 .modal-content.stadium-guessr-layout .video-container{height:38%!important;border-radius:18px 18px 0 0!important}
 .modal-content.stadium-guessr-layout #game-ui{height:62%!important;padding:12px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 18px 18px!important}
