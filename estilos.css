@@ -564,16 +564,17 @@ body > * {
 .modal-content{position:relative;width:90%;max-width:1100px;height:92vh;background:var(--bg-color);border-radius:22px;box-shadow:var(--shadow-strong),0 0 0 1px var(--border-strong);display:flex;flex-direction:column;border:1px solid var(--border-strong);overflow:hidden;animation:bounceFun .4s ease}
 .modal-content.stadium-guessr-layout{width:92%!important;max-width:1200px!important}
 
-/* 🛡️ BLINDAJE DE PANTALLA FINAL: Impide que el modal colapse a 0px al terminar la partida */
+/* 🛡️ PANTALLA DE RESULTADOS REPARADA (SISTEMA MULTIMODO) */
 .modal-content.resultado-final-layout,
 .modal-content.resultado-final {
     display: flex !important;
     flex-direction: column !important;
-    width: 90% !important;
-    max-width: 620px !important;
+    width: 92% !important;
+    max-width: 500px !important;
     height: 88vh !important;
-    min-height: 500px !important;
+    max-height: 90vh !important;
     background: var(--bg-color) !important;
+    border-radius: 22px !important;
     overflow: hidden !important;
     z-index: 2501 !important;
 }
@@ -1775,40 +1776,31 @@ body > * {
     border-color: var(--danger-color);
 }
 /* ========================================================
-   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS (ANCHO ADAPTATIVO Y SCROLL OSCURO)
+   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS Y SCROLL OSCURO
    ======================================================== */
-.modal-content.resultado-final-layout {
+.modal-content.resultado-final-layout #modal-video-container,
+.modal-content.resultado-final #modal-video-container {
     width: 100% !important;
-    max-width: 480px !important; /* Achicamos la caja para que abrace tu tabla a la perfección */
-    height: auto !important;
-    max-height: 92vh !important;
-    overflow-y: auto !important; 
-    overflow-x: hidden !important;
-    transition: max-width 0.4s ease, height 0.4s ease !important;
-    scrollbar-width: thin; 
-    scrollbar-color: var(--border-strong) transparent; /* Oscurece el scroll en Firefox */
+    height: 100% !important;
+    contain: none !important; /* ⚡ DESACTIVA EL AISLAMIENTO QUE HACÍA COLAPSAR A 0px */
+    overflow-y: auto !important;
+    background: var(--bg-color) !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
 }
 
-/* Oscurece el scroll en Chrome, Edge y Safari (Elimina la franja blanca) */
-.modal-content.resultado-final-layout::-webkit-scrollbar {
+.modal-content.resultado-final-layout #modal-video-container::-webkit-scrollbar {
     width: 8px;
 }
-.modal-content.resultado-final-layout::-webkit-scrollbar-track {
+.modal-content.resultado-final-layout #modal-video-container::-webkit-scrollbar-track {
     background: transparent;
 }
-.modal-content.resultado-final-layout::-webkit-scrollbar-thumb {
+.modal-content.resultado-final-layout #modal-video-container::-webkit-scrollbar-thumb {
     background: var(--border-strong);
     border-radius: 10px;
 }
-.modal-content.resultado-final-layout::-webkit-scrollbar-thumb:hover {
+.modal-content.resultado-final-layout #modal-video-container::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
-}
-
-/* Evita que los contenedores internos traben el scroll de la caja principal */
-.modal-content.resultado-final-layout #modal-video-container,
-.modal-content.resultado-final-layout #modal-video-container > div {
-    height: auto !important;
-    overflow-y: visible !important;
 }
 /* ========================================== */
 /* FORZAR ANCHO COMPLETO DE TARJETAS (MÓVIL)  */

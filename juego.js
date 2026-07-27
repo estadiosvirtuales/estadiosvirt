@@ -2416,9 +2416,6 @@ async function finalizarJuegoGuessr(){
     // ==========================================
     // CIERRE MODO VERSUS (1v1)
     // ==========================================
-   // ==========================================
-    // CIERRE MODO VERSUS (1v1)
-    // ==========================================
     if (esModoVersus) {
         esModoVersus = false;          
         versusPartidaEnCurso = false;  
@@ -2474,13 +2471,13 @@ async function finalizarJuegoGuessr(){
             : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
 
         container.innerHTML = `
-        <div style="text-align:center;padding:60px 24px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
-            <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:${colorResultado};">${cartelResultado}</h2>
-            <p style="color:var(--text-muted);margin-bottom:20px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
+        <div style="text-align:center;padding:36px 20px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
+            <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:8px;color:${colorResultado};">${cartelResultado}</h2>
+            <p style="color:var(--text-muted);margin-bottom:16px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
             
-            <div style="display:flex;align-items:center;gap:30px;background:var(--surface-color);border:2px solid var(--border-strong);padding:15px 30px;border-radius:16px;margin-bottom:20px;width:100%;max-width:100%;justify-content:center;">
+            <div style="display:flex;align-items:center;gap:20px;background:var(--surface-color);border:2px solid var(--border-strong);padding:14px 20px;border-radius:16px;margin-bottom:18px;width:100%;max-width:100%;justify-content:center;">
                 <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">VOS</div><strong style="font-size:1.8rem;color:#00e676;">${guessrPuntosTotales}</strong></div>
-                <div style="font-size:1.5rem;font-weight:900;color:var(--border-strong);">VS</div>
+                <div style="font-size:1.4rem;font-weight:900;color:var(--border-strong);">VS</div>
                 <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">${nombreRivalFinal}</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
             </div>
             
@@ -2518,9 +2515,9 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML=`
-    <div style="text-align:center;padding:80px 24px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;overflow-y:auto;background:var(--bg-color);">
-        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:15px;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
-        <p style="color:var(--text-muted);margin-bottom:20px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+    <div style="text-align:center;padding:36px 20px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
+        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:10px;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
+        <p style="color:var(--text-muted);margin-bottom:16px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
         <div class="result-score-ring">
             <svg width="120" height="120" viewBox="0 0 120 120">
