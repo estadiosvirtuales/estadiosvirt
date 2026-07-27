@@ -986,8 +986,8 @@ function abrirModalVideo(event,link,esJuego=false){
             vid = match[1];
         }
         
-        // Autoplay forzado para móviles (Silenciado)
-        const qp=esJuego?"?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1":"?autoplay=1&playsinline=1&rel=0&modestbranding=1";
+        // Autoplay forzado y optimización de rendimiento liviano
+        const qp=esJuego?"?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&enablejsapi=0&iv_load_policy=3":"?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=0&iv_load_policy=3";
         
         if(vid) {
             url=`https://www.youtube.com/embed/${vid}${qp}`;
