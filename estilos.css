@@ -336,9 +336,11 @@ body > * {
     cursor: pointer;
     position: relative;
     overflow: visible !important;
-    transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+    transition: transform .3s cubic-bezier(.175,.885,.32,1.275), box-shadow .3s ease, border-color .3s ease;
     color: #fff;
     text-decoration: none;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .game-modes button::before {
@@ -372,17 +374,19 @@ body > * {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(167, 139, 250, 0.55) !important;
 }
 
-/* 🏆 ÍCONOS 3D DESBORDANTES */
+/* 🏆 ÍCONOS 3D DESBORDANTES (ACELERADOS POR HARDWARE GPU) */
 .game-3d-icon {
     position: absolute;
     left: -32px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) translateZ(0);
     width: 125px;
     height: 125px;
     object-fit: contain;
     pointer-events: none;
     z-index: 5;
+    will-change: transform;
+    backface-visibility: hidden;
     transition: transform 0.35s ease, filter 0.35s ease;
 }
 
@@ -2166,16 +2170,18 @@ body > * {
     transform: translateY(1px) scale(0.99);
 }
 
-/* 🧰 BAÚL GIGANTE OVERFLOW (MISMOS TAMAÑOS DE FOTO 8 PERO SIN TAPAR EL TEXTO) */
+/* 🧰 BAÚL GIGANTE OVERFLOW (OPTIMIZADO CON GPU) */
 .reto-baul-img {
     position: absolute;
     left: -75px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) translateZ(0);
     width: 222px;
     height: 222px;
     object-fit: contain;
     filter: drop-shadow(0 0 22px rgba(0, 255, 119, 0.85));
+    will-change: transform;
+    backface-visibility: hidden;
     transition: transform 0.35s ease, filter 0.35s ease;
     pointer-events: none;
     z-index: 2;
