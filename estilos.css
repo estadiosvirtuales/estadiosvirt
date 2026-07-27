@@ -10,110 +10,26 @@
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
 }
 [data-theme="light"]{
-  /* 🏟️ Paleta Match Day: Reajustada para evitar fatiga visual y dar relieve */
-  --bg-co.game-modes {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
-    width: 100%;
-    animation: fadeSlideUp .45s .2s ease both;
-}
-
-.game-modes button {
-    border: none;
-    border-radius: 20px;
-    padding: 22px 20px 22px 95px !important;
-    display: flex;
-    align-items: center;
-    text-align: left;
-    cursor: pointer;
-    position: relative;
-    overflow: visible !important;
-    transition: all .3s cubic-bezier(.175,.885,.32,1.275);
-    color: #fff;
-    text-decoration: none;
-}
-
-.game-modes button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
-    pointer-events: none;
-}
-
-.game-modes button::after { display: none !important; }
-.game-modes button:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 45px rgba(0,0,0,.5); }
-.game-modes button:active { transform: translateY(-2px) scale(.99); }
-
-/* 💡 RESPLANDOR NEÓN LUMINOSO BAJO CADA BOTÓN SEGÚN SU COLOR DE ÍCONO */
-.game-modes button.btn-guessr:hover {
-    border-color: #00ff77 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 255, 119, 0.55) !important;
-}
-.game-modes button.btn-order:hover {
-    border-color: #eab308 !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(234, 179, 8, 0.55) !important;
-}
-.game-modes button.btn-random:hover {
-    border-color: #2979ff !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(41, 121, 255, 0.55) !important;
-}
-.game-modes button.btn-catalog:hover {
-    border-color: #a78bfa !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(167, 139, 250, 0.55) !important;
-}
-
-/* 🏆 ÍCONOS 3D DESBORDANTES (MISMAS DIMENSIONES Y DESBORDE QUE EL BAÚL) */
-.game-3d-icon {
-    position: absolute;
-    left: -32px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 125px;
-    height: 125px;
-    object-fit: contain;
-    pointer-events: none;
-    z-index: 5;
-    transition: transform 0.35s ease, filter 0.35s ease;
-}
-
-/* Resplandor único para cada elemento 3D */
-.btn-guessr .game-3d-icon { filter: drop-shadow(0 0 18px rgba(0, 255, 119, 0.75)); }
-.btn-order .game-3d-icon { filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75)); }
-.btn-random .game-3d-icon { filter: drop-shadow(0 0 18px rgba(41, 121, 255, 0.75)); }
-.btn-catalog .game-3d-icon { filter: drop-shadow(0 0 18px rgba(167, 139, 250, 0.75)); }
-
-/* Animación de elevación al pasar el mouse */
-.game-modes button:hover .game-3d-icon {
-    transform: translateY(-50%) scale(1.12) rotate(-4deg);
-}
-.btn-guessr:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(0, 255, 119, 0.95)); }
-.btn-order:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(234, 179, 8, 0.95)); }
-.btn-random:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(41, 121, 255, 0.95)); }
-.btn-catalog:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(167, 139, 250, 0.95)); }or: #e2e8e4;        /* Gris-césped profundo asentado: hace que las tarjetas blancas "exploten" hacia el frente */
-  --card-bg: #ffffff;         /* Blanco puro reflectivo para las cartas */
-  --surface-color: #d1e4da;   /* Verde menta eSports más oscuro para subpaneles */
-  --surface-hover: #b9dac9;   /* Transición de enfoque fluida */
-  --text-main: #04160a;       /* Verde botella profundo (casi negro) para máxima nitidez */
-  --text-muted: #2c4930;      /* Oscurecido para que las etiquetas secundarias lean perfecto */
+  /* 🏟️ Paleta Match Day */
+  --bg-color: #e2e8e4;
+  --card-bg: #ffffff;
+  --surface-color: #f1f5f9;
+  --surface-hover: #e2e8f0;
+  --text-main: #04160a;
+  --text-muted: #2c4930;
   --text-inverse: #ffffff;
   
-  /* 🔥 Energizamos los acentos diurnos estilo FIFA Ultimate Team */
-  --accent-color: #00cc66;    /* Verde esmeralda eléctrico de alta visibilidad */
-  --accent-hover: #009944;    
+  --accent-color: #00cc66;
+  --accent-hover: #009944;
   --accent-dim: rgba(0, 204, 102, 0.12);
   --accent-glow: rgba(0, 204, 102, 0.35);
   --danger-color: #e11d48;
   
-  /* Bordes y Estructuras */
-  --border-subtle: rgba(4, 22, 10, 0.08);
-  --border-strong: #a4bdae;   /* Bordes de cal definidos para recortar las figuras limpiamente */
-  --glass-bg: rgba(255, 255, 255, 0.92);
-  --modal-overlay: rgba(6, 12, 20, 0.5); /* Oscurece el fondo al abrir modales para concentrar la vista */
+  --border-subtle: rgba(4, 22, 10, 0.12);
+  --border-strong: #cbd5e1;
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --modal-overlay: rgba(6, 12, 20, 0.5);
   
-  /* 🧱 Sombras cromáticas profundas */
   --shadow-soft: 0 8px 24px rgba(4, 22, 10, 0.08);
   --shadow-strong: 0 20px 45px rgba(4, 22, 10, 0.18);
   
@@ -1776,15 +1692,15 @@ body > * {
     border-color: var(--danger-color);
 }
 /* ========================================================
-   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS Y SCROLL OSCURO
+   AJUSTE DE CAJA PARA PANTALLA DE RESULTADOS Y SCROLL ADAPTATIVO
    ======================================================== */
 .modal-content.resultado-final-layout #modal-video-container,
 .modal-content.resultado-final #modal-video-container {
     width: 100% !important;
     height: 100% !important;
-    contain: none !important; /* ⚡ DESACTIVA EL AISLAMIENTO QUE HACÍA COLAPSAR A 0px */
+    contain: none !important;
     overflow-y: auto !important;
-    background: var(--bg-color) !important;
+    background: transparent !important;
     scrollbar-width: thin;
     scrollbar-color: var(--border-strong) transparent;
 }
@@ -1801,6 +1717,14 @@ body > * {
 }
 .modal-content.resultado-final-layout #modal-video-container::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
+}
+
+/* ☀️ Adaptación a Modo Claro en Resultados */
+[data-theme="light"] .modal-content.resultado-final-layout,
+[data-theme="light"] .modal-content.resultado-final {
+    background: #ffffff !important;
+    border: 2px solid #cbd5e1 !important;
+    color: #04160a !important;
 }
 /* ========================================== */
 /* FORZAR ANCHO COMPLETO DE TARJETAS (MÓVIL)  */

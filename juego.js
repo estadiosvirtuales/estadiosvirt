@@ -2471,7 +2471,7 @@ async function finalizarJuegoGuessr(){
             : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
 
         container.innerHTML = `
-        <div style="text-align:center;padding:36px 20px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
+        <div style="text-align:center;padding:58px 20px 28px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
             <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:8px;color:${colorResultado};">${cartelResultado}</h2>
             <p style="color:var(--text-muted);margin-bottom:16px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
             
@@ -2515,7 +2515,7 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML=`
-    <div style="text-align:center;padding:36px 20px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
+    <div style="text-align:center;padding:58px 20px 28px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
         <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:10px;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
         <p style="color:var(--text-muted);margin-bottom:16px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
