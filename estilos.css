@@ -321,7 +321,7 @@ body > * {
     grid-template-columns: repeat(2, 1fr);
     gap: 22px;
     width: 100%;
-    max-width: 760px; /* ✂️ Acorta el ancho de los 4 botones en PC al punto exacto de la línea azul */
+    max-width: 800px; /* ✂️ Acorta el ancho de los 4 botones en PC al punto exacto de la línea azul */
     margin: 0 auto;
     animation: fadeSlideUp .45s .2s ease both;
 }
