@@ -11,7 +11,88 @@
 }
 [data-theme="light"]{
   /* 🏟️ Paleta Match Day: Reajustada para evitar fatiga visual y dar relieve */
-  --bg-color: #e2e8e4;        /* Gris-césped profundo asentado: hace que las tarjetas blancas "exploten" hacia el frente */
+  --bg-co.game-modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    width: 100%;
+    animation: fadeSlideUp .45s .2s ease both;
+}
+
+.game-modes button {
+    border: none;
+    border-radius: 20px;
+    padding: 22px 20px 22px 95px !important;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    overflow: visible !important;
+    transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+    color: #fff;
+    text-decoration: none;
+}
+
+.game-modes button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.game-modes button::after { display: none !important; }
+.game-modes button:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 45px rgba(0,0,0,.5); }
+.game-modes button:active { transform: translateY(-2px) scale(.99); }
+
+/* 💡 RESPLANDOR NEÓN LUMINOSO BAJO CADA BOTÓN SEGÚN SU COLOR DE ÍCONO */
+.game-modes button.btn-guessr:hover {
+    border-color: #00ff77 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(0, 255, 119, 0.55) !important;
+}
+.game-modes button.btn-order:hover {
+    border-color: #eab308 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(234, 179, 8, 0.55) !important;
+}
+.game-modes button.btn-random:hover {
+    border-color: #2979ff !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(41, 121, 255, 0.55) !important;
+}
+.game-modes button.btn-catalog:hover {
+    border-color: #a78bfa !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(167, 139, 250, 0.55) !important;
+}
+
+/* 🏆 ÍCONOS 3D DESBORDANTES (MISMAS DIMENSIONES Y DESBORDE QUE EL BAÚL) */
+.game-3d-icon {
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 125px;
+    height: 125px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 5;
+    transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+/* Resplandor único para cada elemento 3D */
+.btn-guessr .game-3d-icon { filter: drop-shadow(0 0 18px rgba(0, 255, 119, 0.75)); }
+.btn-order .game-3d-icon { filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75)); }
+.btn-random .game-3d-icon { filter: drop-shadow(0 0 18px rgba(41, 121, 255, 0.75)); }
+.btn-catalog .game-3d-icon { filter: drop-shadow(0 0 18px rgba(167, 139, 250, 0.75)); }
+
+/* Animación de elevación al pasar el mouse */
+.game-modes button:hover .game-3d-icon {
+    transform: translateY(-50%) scale(1.12) rotate(-4deg);
+}
+.btn-guessr:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(0, 255, 119, 0.95)); }
+.btn-order:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(234, 179, 8, 0.95)); }
+.btn-random:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(41, 121, 255, 0.95)); }
+.btn-catalog:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(167, 139, 250, 0.95)); }or: #e2e8e4;        /* Gris-césped profundo asentado: hace que las tarjetas blancas "exploten" hacia el frente */
   --card-bg: #ffffff;         /* Blanco puro reflectivo para las cartas */
   --surface-color: #d1e4da;   /* Verde menta eSports más oscuro para subpaneles */
   --surface-hover: #b9dac9;   /* Transición de enfoque fluida */
@@ -235,12 +316,44 @@ body > * {
 .search-bar{width:100%;padding:18px 20px 18px 54px;border-radius:16px;border:2px solid var(--border-strong);background:var(--card-bg);color:var(--text-main);font-size:1rem;outline:none;transition:all .3s ease;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.3),inset 0 1px 0 var(--border-subtle)}
 .search-bar::placeholder{color:var(--text-muted);font-weight:400}
 .search-bar:focus{border-color:var(--accent-color);box-shadow:0 0 0 4px var(--accent-dim),0 4px 20px rgba(0,0,0,.3);background:var(--surface-color)}
-.game-modes{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;width:100%;animation:fadeSlideUp .45s .2s ease both}
-.game-modes button{border:none;border-radius:20px;padding:22px 20px;display:flex;align-items:center;gap:16px;text-align:left;cursor:pointer;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.175,.885,.32,1.275);color:#fff;text-decoration:none}
-.game-modes button::before{content:'';inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
-.game-modes button::after{display:none !important}
-.game-modes button:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 45px rgba(0,0,0,.5)}
-.game-modes button:active{transform:translateY(-2px) scale(.99)}
+.game-modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    width: 100%;
+    max-width: 680px; /* ✂️ Acorta el ancho de los 4 botones en PC al punto exacto de la línea azul */
+    margin: 0 auto;
+    animation: fadeSlideUp .45s .2s ease both;
+}
+
+.game-modes button {
+    border: none;
+    border-radius: 20px;
+    padding: 22px 20px 22px 95px !important;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    overflow: visible !important;
+    transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+    color: #fff;
+    text-decoration: none;
+}
+
+.game-modes button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.game-modes button::after { display: none !important; }
+.game-modes button:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 45px rgba(0,0,0,.5); }
+.game-modes button:active { transform: translateY(-2px) scale(.99); }
+
 /* 💡 RESPLANDOR NEÓN LUMINOSO BAJO CADA BOTÓN SEGÚN SU COLOR DE ÍCONO */
 .game-modes button.btn-guessr:hover {
     border-color: #00ff77 !important;
@@ -258,8 +371,42 @@ body > * {
     border-color: #a78bfa !important;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 12px 30px rgba(167, 139, 250, 0.55) !important;
 }
-.game-card-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.18);box-shadow:inset 0 2px 6px rgba(255,255,255,.25),0 4px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:#fff;flex-shrink:0;transition:transform .3s}
-.game-modes button:hover .game-card-icon{transform:rotate(-8deg) scale(1.1)}
+
+/* 🏆 ÍCONOS 3D DESBORDANTES */
+.game-3d-icon {
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 125px;
+    height: 125px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 5;
+    transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+/* Resplandor único para cada elemento 3D */
+.btn-guessr .game-3d-icon { filter: drop-shadow(0 0 18px rgba(0, 255, 119, 0.75)); }
+.btn-order .game-3d-icon { filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75)); }
+.btn-random .game-3d-icon { filter: drop-shadow(0 0 18px rgba(41, 121, 255, 0.75)); }
+
+/* 📁 ÍCONO DE CATÁLOGO AGRANDADO (Para igualar la escala visual de los otros 3) */
+.btn-catalog .game-3d-icon { 
+    filter: drop-shadow(0 0 18px rgba(167, 139, 250, 0.75));
+    width: 155px;
+    height: 155px;
+    left: -48px;
+}
+
+/* Animación de elevación al pasar el mouse */
+.game-modes button:hover .game-3d-icon {
+    transform: translateY(-50%) scale(1.12) rotate(-4deg);
+}
+.btn-guessr:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(0, 255, 119, 0.95)); }
+.btn-order:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(234, 179, 8, 0.95)); }
+.btn-random:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(41, 121, 255, 0.95)); }
+.btn-catalog:hover .game-3d-icon { filter: drop-shadow(0 0 28px rgba(167, 139, 250, 0.95)); }
 .game-card-text{display:flex;flex-direction:column;z-index:2}
 .game-card-text strong{font-size:1.2rem;font-weight:800;line-height:1.15;margin-bottom:3px}
 .game-card-text span{font-size:.88rem;font-weight:500;opacity:.9}
@@ -1408,10 +1555,27 @@ body > * {
         padding: 0 10px !important;
     }
 
-    /* Reducimos el espacio vacío adentro de las tarjetas de juego */
+    /* 📱 Adaptación de botones e íconos 3D en celular */
+    .game-modes {
+        max-width: 100% !important;
+    }
+
     .game-card {
-        padding: 15px !important;
+        padding: 18px 16px 18px 80px !important;
         margin-bottom: 12px !important;
+        overflow: visible !important;
+    }
+
+    .game-3d-icon {
+        width: 100px !important;
+        height: 100px !important;
+        left: -22px !important;
+    }
+
+    .btn-catalog .game-3d-icon {
+        width: 112px !important;
+        height: 112px !important;
+        left: -28px !important;
     }
 
     /* Botones sociales estáticos y centrados en móvil */

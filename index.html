@@ -115,28 +115,36 @@
 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
 </div>
 <div class="game-modes">
-<button class="game-card btn-guessr" onclick="abrirModalGuessr()" style="text-align: left; cursor: pointer;">
-    <div style="display: flex; align-items: center; width: 100%; gap: 12px;">
-        <div class="game-card-icon"><i class="ph-duotone ph-map-pin-line"></i></div>
-        <div class="game-card-text">
-            <strong>StadiumGuessr</strong>
-            <span>Adiviná la ubicación</span>
-        </div>
+<button class="game-card btn-guessr" onclick="abrirModalGuessr()">
+    <img src="mundo.jpg" alt="StadiumGuessr" class="game-3d-icon" onerror="this.src='mundo.png';">
+    <div class="game-card-text">
+        <strong>StadiumGuessr</strong>
+        <span>Adiviná la ubicación</span>
     </div>
 </button>
 
 <button class="game-card btn-order" onclick="abrirModalOrden()">
-<div class="game-card-icon"><i class="ph-duotone ph-sort-ascending"></i></div>
-<div class="game-card-text"><strong>Ordenar Estadios</strong><span>Capacidad y Edad</span></div>
+    <img src="podio.jpg" alt="Ordenar Estadios" class="game-3d-icon" onerror="this.src='podio.png';">
+    <div class="game-card-text">
+        <strong>Ordenar Estadios</strong>
+        <span>Capacidad y Edad</span>
+    </div>
 </button>
+
 <button class="game-card btn-random" onclick="dispararVueloAleatorio(event)">
-<div class="game-card-icon"><i class="ph-duotone ph-airplane-tilt"></i></div>
-<div class="game-card-text"><strong>Vuelo Aleatorio</strong><span>Descubrí al azar</span></div>
+    <img src="avion.jpg" alt="Vuelo Aleatorio" class="game-3d-icon" onerror="this.src='avion.png';">
+    <div class="game-card-text">
+        <strong>Vuelo Aleatorio</strong>
+        <span>Descubrí al azar</span>
+    </div>
 </button>
 
 <button class="game-card btn-catalog" onclick="abrirCatalogo()">
-<div class="game-card-icon"><i class="ph-duotone ph-list-dashes"></i></div>
-<div class="game-card-text"><strong>Explorá el Catálogo</strong><span>Países, ligas y clubes</span></div>
+    <img src="catalogo.jpg" alt="Explorá el Catálogo" class="game-3d-icon" onerror="this.src='catalogo.png';">
+    <div class="game-card-text">
+        <strong>Explorá el Catálogo</strong>
+        <span>Países, ligas y clubes</span>
+    </div>
 </button>
 </div>
 
