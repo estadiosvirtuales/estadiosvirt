@@ -495,7 +495,7 @@ body > * {
     z-index: 2501 !important;
 }
 
-/* 🎬 REPRODUCTOR AISLADO EN CAPA GPU EXCLUSIVA (60 FPS FLUIDOS EN CELU Y PC) */
+/* 🎬 REPRODUCTOR DE VIDEO FLUIDO Y ESTABLE EN PC Y CELULAR */
 .video-container{
     width:100%;
     height:100%;
@@ -505,18 +505,12 @@ body > * {
     display:flex;
     justify-content:center;
     align-items:center;
-    transform:translate3d(0,0,0);
-    will-change:transform;
-    contain:strict;
 }
 
 .video-container iframe {
     width: 100%;
     height: 100%;
     border: none;
-    transform: translate3d(0,0,0);
-    will-change: transform;
-    backface-visibility: hidden;
 }
 .close-btn{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.15);padding:0;cursor:pointer;z-index:2020;border-radius:10px;width:38px;height:38px;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
 .close-btn:hover{background:var(--danger-color);border-color:var(--danger-color);transform:scale(1.1) rotate(90deg)}
@@ -1225,9 +1219,10 @@ body > * {
 }
 
 .modal-content.stadium-guessr-layout{height:88vh!important; padding: 0 !important;}
-.modal-content.stadium-guessr-layout .video-container{height:38%!important;border-radius:18px 18px 0 0!important}
-.modal-content.stadium-guessr-layout #game-ui{height:62%!important;padding:12px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 18px 18px!important}
-.modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:180px}
+.modal-content.stadium-guessr-layout .video-container{height:32%!important;border-radius:18px 18px 0 0!important}
+.modal-content.stadium-guessr-layout #game-ui{height:68%!important;padding:10px 12px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 18px 18px!important;overflow-y:auto!important;scrollbar-width:none;}
+.modal-content.stadium-guessr-layout #game-ui::-webkit-scrollbar{display:none;}
+.modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:140px!important;margin-bottom:10px!important}
 
 .login-modal-box,
 .privacy-modal-box {

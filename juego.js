@@ -986,8 +986,8 @@ function abrirModalVideo(event,link,esJuego=false){
             vid = match[1];
         }
         
-        // 🚀 PARÁMETROS DE MÁXIMO RENDIMIENTO PARA YOUTUBE (Cero lag en Celu y PC)
-        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=0&iv_load_policy=3&disablekb=1";
+        // 🚀 PARÁMETROS ESTABLES PARA YOUTUBE (Sin congelamientos en móvil)
+        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1";
         const qp = esJuego ? `?${params}&mute=1&controls=0` : `?${params}`;
         
         if(vid) {
