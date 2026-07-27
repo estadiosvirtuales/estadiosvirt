@@ -986,23 +986,24 @@ function abrirModalVideo(event,link,esJuego=false){
             vid = match[1];
         }
         
-        // 🚀 PARÁMETROS ESTABLES PARA YOUTUBE (Sin congelamientos en móvil)
-        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1";
+        // 🚀 PARÁMETROS BLINDADOS PARA MÓVIL (Sin congelamientos a los 3 segundos)
+        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1";
         const qp = esJuego ? `?${params}&mute=1&controls=0` : `?${params}`;
         
         if(vid) {
             url=`https://www.youtube.com/embed/${vid}${qp}`;
         }
         
-        const est=esJuego?"width:100%;height:calc(100% + 55px);border:none;margin-top:-55px;":"width:100%;height:100%;border:none;";
-        container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" fetchpriority="high"></iframe>`;
+        // ⚡ SIN MARGEN NEGATIVO: El iframe se mantiene 100% visible para evitar el bloqueo del decodificador de Chrome Móvil
+        const est="width:100%;height:100%;border:none;";
+        container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
         
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
         // Video MP4 nativo con playsinline para iOS
         const attr=esJuego?"autoplay loop muted playsinline":"controls autoplay playsinline";
         container.innerHTML=`<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
     }else{
-        container.innerHTML=`<iframe src="${url}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" loading="eager"></iframe>`;
+        container.innerHTML=`<iframe src="${url}" style="width:100%;height:100%;border:none;" allow="autoplay; encrypted-media"></iframe>`;
     }
     
     modal.onclick = function(e) {
