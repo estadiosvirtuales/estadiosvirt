@@ -564,6 +564,20 @@ body > * {
 .modal-content{position:relative;width:90%;max-width:1100px;height:92vh;background:var(--bg-color);border-radius:22px;box-shadow:var(--shadow-strong),0 0 0 1px var(--border-strong);display:flex;flex-direction:column;border:1px solid var(--border-strong);overflow:hidden;animation:bounceFun .4s ease}
 .modal-content.stadium-guessr-layout{width:92%!important;max-width:1200px!important}
 
+/* 🛡️ BLINDAJE DE PANTALLA FINAL: Impide que el modal colapse a 0px al terminar la partida */
+.modal-content.resultado-final-layout,
+.modal-content.resultado-final {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 90% !important;
+    max-width: 620px !important;
+    height: 88vh !important;
+    min-height: 500px !important;
+    background: var(--bg-color) !important;
+    overflow: hidden !important;
+    z-index: 2501 !important;
+}
+
 /* 🎬 REPRODUCTOR AISLADO EN CAPA GPU EXCLUSIVA (60 FPS FLUIDOS EN CELU Y PC) */
 .video-container{
     width:100%;

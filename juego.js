@@ -2382,9 +2382,11 @@ async function finalizarJuegoGuessr(){
     const container=document.getElementById('modal-video-container');
     document.getElementById('game-ui').style.display='none';
     container.style.height='100%';
-    document.getElementById('modal-card').classList.remove('stadium-guessr-layout');
-    document.getElementById('modal-card').classList.add('resultado-final');
-    document.getElementById('modal-card').classList.add('resultado-final-layout');
+    
+    const card = document.getElementById('modal-card');
+    card.classList.remove('stadium-guessr-layout');
+    card.classList.add('resultado-final', 'resultado-final-layout');
+    card.style.display = 'flex'; // 🛡️ Mantiene la visibilidad activa sin importar el estado previo
     
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
 
