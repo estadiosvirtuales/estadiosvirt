@@ -1462,26 +1462,60 @@ body > * {
     filter: none !important;
 }
 
-/* Escudo de contraste para Modales en Modo Claro */
-[data-theme="light"] .modal-content,
-[data-theme="light"] #ranking-modal-body,
-[data-theme="light"] #modal-video-container,
-[data-theme="light"] .order-slot,
-[data-theme="light"] .trivia-balloon {
-    color: var(--text-main) !important;
+/* ☀️ MODALES Y VENTANAS EN MODO CLARO (STADIUMGUESSR, DESAFÍO DE ORDEN Y RANKING) */
+[data-theme="light"] .modal-content {
+    background: #ffffff !important;
+    border: 2px solid #cbd5e1 !important;
+    color: #04160a !important;
+    box-shadow: 0 20px 50px rgba(4, 22, 10, 0.18) !important;
 }
 
-[data-theme="light"] #modal-video-container h2,
+[data-theme="light"] .modal-content h2,
+[data-theme="light"] .modal-content strong,
+[data-theme="light"] .modal-content b,
 [data-theme="light"] #modal-video-container strong,
-[data-theme="light"] #modal-video-container b,
-[data-theme="light"] .order-slot strong {
-    color: var(--text-main) !important;
+[data-theme="light"] #modal-video-container b {
+    color: #04160a !important;
 }
 
-[data-theme="light"] #modal-video-container p,
-[data-theme="light"] #modal-video-container span,
-[data-theme="light"] .order-slot span {
-    color: var(--text-muted) !important;
+[data-theme="light"] .modal-content p,
+[data-theme="light"] #modal-video-container p {
+    color: #2c4930 !important;
+}
+
+/* 🔘 Botones secundarios y fichas de orden en Modo Claro */
+[data-theme="light"] .modal-content .btn-3d.secondary {
+    background: #f8fafc !important;
+    border: 2px solid #cbd5e1 !important;
+    color: #04160a !important;
+    box-shadow: 0 3px 0 #cbd5e1 !important;
+}
+
+[data-theme="light"] .modal-content .btn-3d.secondary:hover {
+    background: rgba(0, 204, 102, 0.1) !important;
+    border-color: #00cc66 !important;
+    color: #009944 !important;
+}
+
+[data-theme="light"] .order-slot {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #04160a !important;
+}
+
+[data-theme="light"] .order-slot strong {
+    color: #04160a !important;
+}
+
+[data-theme="light"] .close-btn {
+    background: #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #04160a !important;
+}
+
+[data-theme="light"] .close-btn:hover {
+    background: #e11d48 !important;
+    color: #ffffff !important;
 }
 
 [data-theme="light"] .logro-tab-btn {
