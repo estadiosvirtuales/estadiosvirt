@@ -980,28 +980,29 @@ function abrirModalVideo(event,link,esJuego=false){
     if(link.includes('youtube.com')||link.includes('youtu.be')){
         let vid='';
         
-        // 👇 MAGIA NUEVA: Escáner blindado que encuentra el ID del video sin importar cómo se haya pegado
+        // 👇 Escáner blindado que encuentra el ID del video sin importar cómo se haya pegado
         const match = link.match(/(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/)|youtu\.be\/)([\w\-]{11})/i);
         if (match && match[1]) {
             vid = match[1];
         }
         
-        // Autoplay forzado y optimización de rendimiento liviano
-        const qp=esJuego?"?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&enablejsapi=0&iv_load_policy=3":"?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=0&iv_load_policy=3";
+        // 🚀 PARÁMETROS DE MÁXIMO RENDIMIENTO PARA YOUTUBE (Cero lag en Celu y PC)
+        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=0&iv_load_policy=3&disablekb=1";
+        const qp = esJuego ? `?${params}&mute=1&controls=0` : `?${params}`;
         
         if(vid) {
             url=`https://www.youtube.com/embed/${vid}${qp}`;
         }
         
         const est=esJuego?"width:100%;height:calc(100% + 55px);border:none;margin-top:-55px;":"width:100%;height:100%;border:none;";
-        container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+        container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="eager" fetchpriority="high"></iframe>`;
         
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
         // Video MP4 nativo con playsinline para iOS
         const attr=esJuego?"autoplay loop muted playsinline":"controls autoplay playsinline";
         container.innerHTML=`<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
     }else{
-        container.innerHTML=`<iframe src="${link}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen"></iframe>`;
+        container.innerHTML=`<iframe src="${url}" style="width:100%;height:100%;border:none;" allow="autoplay; fullscreen" loading="eager"></iframe>`;
     }
     
     modal.onclick = function(e) {
