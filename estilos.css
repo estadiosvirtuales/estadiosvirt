@@ -2132,6 +2132,16 @@ body > * {
     overflow: visible !important;
 }
 
+/* 🎯 ZONA INTERACTIVA EXPANDIDA (HOVER Y CLICK EN TODO EL BAÚL Y MARGEN INFERIOR) */
+.btn-reto-banner::before {
+    content: '';
+    position: absolute;
+    inset: -45px 0 -45px -75px;
+    border-radius: 25px;
+    pointer-events: auto;
+    z-index: 0;
+}
+
 .btn-reto-banner:hover {
     transform: translateY(-4px) scale(1.02);
     border-color: #00ff77;
