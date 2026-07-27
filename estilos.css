@@ -2063,3 +2063,19 @@ body > * {
 [data-theme="light"] .reto-banner-text span {
     color: #04160a !important;
 }
+
+/* ⚽ EFECTO DE BOTÓN INTERACTIVO (HOVER Y CLICK) EN PESTAÑAS DE LIGA PRIVADA */
+#liga-amigos-modal-body button[onclick*="cambiarVistaLiga"] {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, filter 0.2s ease !important;
+}
+
+#liga-amigos-modal-body button[onclick*="cambiarVistaLiga"]:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 18px var(--accent-glow) !important;
+    filter: brightness(1.15);
+}
+
+#liga-amigos-modal-body button[onclick*="cambiarVistaLiga"]:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: none !important;
+}
