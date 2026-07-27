@@ -477,6 +477,24 @@ body > * {
     background: rgba(5, 7, 15, 0.96) !important;
 }
 
+/* 🚀 OPTIMIZACIÓN EXTREMA DE RENDIMIENTO AL ABRIR VIDEO */
+#video-modal .close-btn {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(0, 0, 0, 0.75) !important;
+}
+
+body.video-abierto .hero-ball,
+body.video-abierto .hero-ball-2,
+body.video-abierto .app-subtitle::before {
+    animation-play-state: paused !important;
+}
+
+body.video-abierto main.grid,
+body.video-abierto .hero-section {
+    visibility: hidden !important;
+}
+
 .modal-content{position:relative;width:90%;max-width:1100px;height:92vh;background:var(--bg-color);border-radius:22px;box-shadow:var(--shadow-strong),0 0 0 1px var(--border-strong);display:flex;flex-direction:column;border:1px solid var(--border-strong);overflow:hidden;animation:bounceFun .4s ease}
 .modal-content.stadium-guessr-layout{width:92%!important;max-width:1200px!important}
 

@@ -960,6 +960,8 @@ function abrirModalVideo(event,link,esJuego=false){
         return;
     }
     
+    document.body.classList.add('video-abierto');
+    
     const modal=document.getElementById('video-modal'),card=document.getElementById('modal-card'),container=document.getElementById('modal-video-container');
     container.innerHTML='';
     card.classList.remove('resultado-final-layout');
@@ -1016,6 +1018,8 @@ function abrirModalVideo(event,link,esJuego=false){
 }
 
 function cerrarModalVideo(){
+    document.body.classList.remove('video-abierto');
+    
     // 👇 OCULTAMOS LA BOTONERA DE REACCIONES AL CERRAR LA CANCHA 👇
     if (document.getElementById('taunts-container')) {
         document.getElementById('taunts-container').style.display = 'none';
