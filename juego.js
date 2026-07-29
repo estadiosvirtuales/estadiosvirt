@@ -323,7 +323,7 @@ const NIVELES=(function(){
 const n=[];
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
 const baseClasses=["level-pibe","level-volante","level-crack","level-leyenda","level-leyenda","level-leyenda","level-leyenda"];
-const baseEmojis=["⚽","🎯","⭐","🥇","🏆","👑","🔥","⚡","💎","🌟","🚀"];
+const baseIcons=["pelota.png","precision.png","estrella.png","medalla.png","trofeo.png","coronaoro.png","fuego.png","rayo.png","diamante.png","estrellaplata.png","cohete.png"];
 const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Goleador","Crack","Ídolo","Capitán","Galáctico","Leyenda","Inmortal","Mito","Dios del Fútbol"];
 for(let i=0;i<1000;i++){
 let xpReq=i===0?0:Math.floor(8000*Math.pow(i,1.5));
@@ -333,8 +333,10 @@ let ovr = Math.min(99, Math.floor(50 + (Math.sqrt(i / 100) * 49)));
 let tierIndex=Math.floor(i/5);
 let name=(baseNames[Math.min(tierIndex,baseNames.length-1)])+(i>0?` Lvl ${i}`:"");
 let colorIdx=Math.min(Math.floor(i/8),baseColors.length-1);
-let emojiIdx=Math.min(Math.floor(i/4),baseEmojis.length-1);
-n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,color:baseColors[colorIdx]||"#a78bfa",emoji:baseEmojis[emojiIdx]||"✨",cssClass:baseClasses[colorIdx]||"level-leyenda"});
+let emojiIdx=Math.min(Math.floor(i/4),baseIcons.length-1);
+const iconUrl = baseIcons[emojiIdx] || "pelota.png";
+const iconHtml = `<img src="${iconUrl}" class="level-icon-img" style="width:2.4em; height:2.4em; object-fit:contain; vertical-align:middle; display:inline-block;" alt="icon">`;
+n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,color:baseColors[colorIdx]||"#a78bfa",emoji:iconHtml,iconUrl:iconUrl,cssClass:baseClasses[colorIdx]||"level-leyenda"});
 }
 n[999].max=Infinity;
 return n;
@@ -462,12 +464,12 @@ const dot=document.getElementById('header-level-dot');
 const label=document.getElementById('header-level-label');
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 const userPos=getPref('ev_user_pos','DT');
-if(badge&&dot&&label){badge.style.display='flex';dot.style.background=nivel.color;dot.style.boxShadow=`0 0 6px ${nivel.color}`;label.textContent=nivel.emoji+' '+userPos;}
+if(badge&&dot&&label){badge.style.display='flex';dot.style.background=nivel.color;dot.style.boxShadow=`0 0 6px ${nivel.color}`;label.innerHTML=nivel.emoji+' '+userPos;}
 }
 
 function mostrarLevelUp(nivel){
 const overlay=document.getElementById('levelup-overlay');
-document.getElementById('levelup-icon').textContent=nivel.emoji;
+document.getElementById('levelup-icon').innerHTML=`<img src="${nivel.iconUrl}" style="width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 0 20px ${nivel.color});">`;
 document.getElementById('levelup-title').textContent='¡Subiste de nivel!';
 document.getElementById('levelup-sub').innerHTML=`Ahora sos <b style="color:${nivel.color};">${nivel.nombre}</b>`;
 overlay.classList.add('active');
@@ -992,13 +994,14 @@ function abrirModalVideo(event,link,esJuego=false){
         const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1";
         const qp = esJuego ? `?${params}&mute=1&controls=0` : `?${params}`;
         
-        if(vid) {
+       if(vid) {
             url=`https://www.youtube.com/embed/${vid}${qp}`;
         }
         
         // ⚡ SIN MARGEN NEGATIVO: El iframe se mantiene 100% visible para evitar el bloqueo del decodificador de Chrome Móvil
         const est="width:100%;height:100%;border:none;";
-        container.innerHTML=`<iframe src="${url}" style="${est}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        const mascaraHTML = esJuego ? `<div class="yt-title-mask"><img src="mundo.jpg" alt="Logo" class="yt-mask-icon" onerror="this.src='mundo.png';"><span>STADIUMGUESSR</span></div>` : '';
+        container.innerHTML=`${mascaraHTML}<iframe src="${url}" style="${est}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
         
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
         // Video MP4 nativo con playsinline para iOS
@@ -1007,12 +1010,6 @@ function abrirModalVideo(event,link,esJuego=false){
     }else{
         container.innerHTML=`<iframe src="${url}" style="width:100%;height:100%;border:none;" allow="autoplay; encrypted-media"></iframe>`;
     }
-    
-    modal.onclick = function(e) {
-        if (e.target !== modal) return;
-        if (esModoVersus) return;
-        cerrarModalVideo();
-    };
 
     modal.style.display='flex';
 }
@@ -2040,18 +2037,25 @@ function mostrarResultadosMutuosVersus() {
     guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
 
     const fraseFolkloreVersus = obtenerFraseFolklore(miDist);
-document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: #ffea00; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
+document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
 
     miListoSiguiente = false;
     rivalListoSiguiente = false;
     
     const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
-    
-    if (guessrRondaActual < 5) {
-        btn.innerHTML = `Sumaste +${misPts} pts (${miDistT}) | Rival: +${rivalDataRonda.puntos} pts. Avanzar <i class="ph-bold ph-arrow-right"></i>`;
-    } else {
-        btn.innerHTML = `Finalizar Partido Mano a Mano 🏁`;
-    }
+    const emoji = miDist < 50 ? '🎯' : miDist < 200 ? '✈️' : miDist < 800 ? '🗺️' : '🌍';
+    const textoBoton = guessrRondaActual < 5 ? 'SIGUIENTE' : 'FINALIZAR';
+    const iconoBoton = guessrRondaActual < 5 ? '<i class="ph-bold ph-arrow-right"></i>' : '🏁';
+
+    btn.innerHTML = `
+    <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
+        <span class="btn-action-stats">
+            ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b> <span style="font-size: 0.75rem; opacity: 0.75;">(Rival: +${rivalDataRonda.puntos})</span>
+        </span>
+        <span class="btn-action-text">
+            ${textoBoton} ${iconoBoton}
+        </span>
+    </div>`;
     
     btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
 btn.style.color = "#000";
@@ -2369,9 +2373,19 @@ guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColo
 guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:2,dashArray:'6,8'}).addTo(guessrMapInstance);
 guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker,guessrTargetMarker]).getBounds(),{padding:[40,40]});
 const fraseFolklore = obtenerFraseFolklore(dist);
-document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: #ffea00; font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolklore}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
+document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolklore}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
-btn.innerHTML=`${emoji} ${distT} de error &nbsp;·&nbsp; <b>+${pts} pts</b> &nbsp; Siguiente <i class="ph-bold ph-arrow-right"></i>`;
+const textoBotonSolitario = guessrRondaActual < 5 ? 'SIGUIENTE' : 'FINAL';
+const iconoBotonSolitario = guessrRondaActual < 5 ? '<i class="ph-bold ph-arrow-right"></i>' : '🏁';
+btn.innerHTML=`
+<div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
+    <span class="btn-action-stats">
+        ${emoji} <b>${distT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${pts} pts</b>
+    </span>
+    <span class="btn-action-text">
+        ${textoBotonSolitario} ${iconoBotonSolitario}
+    </span>
+</div>`;
 if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
 // 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN SOLITARIO 👇
 dispararJuicinessRonda(dist);
@@ -2396,22 +2410,22 @@ async function finalizarJuegoGuessr(){
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
 
     // 👇 1. ARMAMOS LA TABLA DE DESGLOSE PARA TODOS LOS MODOS 👇
-    let histHTML=`<div style="width:100%;max-width:100%;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:14px;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
+    let histHTML=`<div style="width:100%;max-width:100%;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:12px 14px;box-sizing:border-box;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
     
     guessrHistorialRondas.forEach(item => {
         const dT = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
-        const starColor = item.puntos > 3000 ? '#00e676' : item.puntos > 1000 ? '#ff8f00' : '#ff4757';
+        const starClass = item.puntos > 3000 ? 'pts-high' : item.puntos > 1000 ? 'pts-mid' : 'pts-low';
         
-        // Estructura Flexbox prolija: Nombre cortado con "..." si es muy largo, y Club chiquito abajo
+        // Estructura Flexbox prolija adaptativa para móviles
         histHTML += `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;">
-            <div style="display:flex;flex-direction:column;overflow:hidden;max-width:55%;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:.88rem;gap:8px;">
+            <div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;">
                 <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span>
                 <span style="font-size:0.7rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;">${item.club || ''}</span>
             </div>
-            <span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
                 <span style="color:var(--text-muted);font-size:.75rem;">${dT}</span>
-                <b style="color:${starColor};">+${item.puntos}</b>
+                <b class="pts-breakdown ${starClass}">+${item.puntos}</b>
             </span>
         </div>`;
     });
@@ -2446,7 +2460,7 @@ async function finalizarJuegoGuessr(){
         }
         
         if (guessrPuntosTotales > rivalPuntosTotales) {
-            cartelResultado = "¡VICTORIA! 🏆";
+            cartelResultado = `<span>¡VICTORIA!</span> <img src="liga-trofeo-header.png" alt="Trofeo" class="vs-result-trophy">`;
             colorResultado = "#00e676";
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
@@ -2454,7 +2468,7 @@ async function finalizarJuegoGuessr(){
             // Guardamos el triunfo (liga queda en null automáticamente si el duelo no nació en una liga)
             try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
         } else if (guessrPuntosTotales < rivalPuntosTotales) {
-            cartelResultado = "DERROTA ❌";
+            cartelResultado = "<span>DERROTA</span> ❌";
             colorResultado = "#ff4757";
             showToast("Derrota. ¡A entrenar para la revancha! ⚽", "ph-x-circle", "danger");
             
@@ -2462,9 +2476,8 @@ async function finalizarJuegoGuessr(){
             if (ligaJugada) {
                 try { await supabaseClient.from('derrotas_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
             }
-            
         } else {
-            cartelResultado = "¡EMPATE DE CRACKS! 🤝";
+            cartelResultado = "<span>¡EMPATE DE CRACKS!</span> 🤝";
             colorResultado = "#2979ff";
         }
 
@@ -2476,14 +2489,14 @@ async function finalizarJuegoGuessr(){
             : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
 
         container.innerHTML = `
-        <div style="text-align:center;padding:58px 20px 28px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
-            <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:8px;color:${colorResultado};">${cartelResultado}</h2>
+        <div style="text-align:center;padding:48px 14px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
+            <h2 style="font-size:1.8rem;font-weight:900;text-transform:uppercase;margin-bottom:8px;color:${colorResultado};display:flex;align-items:center;justify-content:center;gap:10px;">${cartelResultado}</h2>
             <p style="color:var(--text-muted);margin-bottom:16px;font-size:.95rem;">Marcador Final del Mano a Mano</p>
             
-            <div style="display:flex;align-items:center;gap:20px;background:var(--surface-color);border:2px solid var(--border-strong);padding:14px 20px;border-radius:16px;margin-bottom:18px;width:100%;max-width:100%;justify-content:center;">
-                <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">VOS</div><strong style="font-size:1.8rem;color:#00e676;">${guessrPuntosTotales}</strong></div>
-                <div style="font-size:1.4rem;font-weight:900;color:var(--border-strong);">VS</div>
-                <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);">${nombreRivalFinal}</div><strong style="font-size:1.8rem;color:#2979ff;">${rivalPuntosTotales}</strong></div>
+            <div class="vs-card-banner" style="display:flex;align-items:center;gap:20px;background:var(--surface-color);border:2px solid var(--border-strong);padding:14px 20px;border-radius:16px;margin-bottom:18px;width:100%;max-width:100%;justify-content:center;">
+                <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);font-weight:800;letter-spacing:1px;">VOS</div><strong class="vs-user-score" style="font-size:1.8rem;font-weight:900;">${guessrPuntosTotales}</strong></div>
+                <div class="vs-text-divider" style="font-size:1.2rem;font-weight:900;">VS</div>
+                <div style="text-align:center;"><div style="font-size:.8rem;color:var(--text-muted);font-weight:800;letter-spacing:1px;">${nombreRivalFinal}</div><strong class="vs-rival-score" style="font-size:1.8rem;font-weight:900;">${rivalPuntosTotales}</strong></div>
             </div>
             
             ${histHTML} ${botonFinal}
@@ -2520,7 +2533,7 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML=`
-    <div style="text-align:center;padding:58px 20px 28px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
+    <div style="text-align:center;padding:48px 14px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
         <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:10px;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
         <p style="color:var(--text-muted);margin-bottom:16px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
@@ -2585,23 +2598,33 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
-    
+
     let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
     let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
     let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : '';
-    let activeAmigos = modoEspecifico === 'amigos' ? 'active' : '';
-    
-    let subMenuHTML = `
-    <div class="logros-tabs-row" style="margin-bottom:18px; display:flex; gap:4px; overflow-x:auto; padding:4px;">
-        <button class="logro-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">👤 Solo</button>
-        <button class="logro-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">🏆 1v1 Hist.</button>
-        <button class="logro-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">🔥 Semanal</button>
+
+   let subMenuHTML = `
+    <div class="liga-tabs-row ranking-tabs-row" style="margin: 0 auto 16px; max-width: 475px;">
+        <button class="liga-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">
+            <img src="ranking-icon-solo.png" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
+        </button>
+        <button class="liga-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">
+            <img src="ranking-icon-1v1.png" alt="1v1 Historial" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>
+        </button>
+        <button class="liga-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">
+            <img src="ranking-icon-semanal.png" alt="Semanal" class="ranking-tab-img"> <span>Semanal</span>
+        </button>
     </div>`;
 
     try {
         let htmlContenido = "";
-        
-        if (modoEspecifico === 'solo') {
+        const medallas3D = [
+            '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+        ];
+
+       if (modoEspecifico === 'solo') {
             const { data: ranking, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
@@ -2610,98 +2633,60 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 .limit(10);
             if (error) throw error;
 
-            htmlContenido += `<div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+            htmlContenido += `<div class="liga-table-card">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay registros solitarios.</p>`;
             } else {
                 ranking.forEach((f, i) => {
-                    const m = ['🥇', '🥈', '🥉'];
-                    const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                    const nivelR = NIVELES[calcularNivelIdx(f.puntaje || 0)];
-                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')} <span style="font-size:.72rem;color:${nivelR.color};">${nivelR.emoji}</span></span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
+                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    htmlContenido += `
+                    <div class="liga-row-item">
+                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                            ${med} ${sanitizarHTML(f.nombre || 'Anónimo')}
+                        </span>
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                            ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                        </span>
+                    </div>`;
                 });
             }
             htmlContenido += '</div>';
-            
+
         } else if (modoEspecifico === 'v_historico' || modoEspecifico === 'v_semanal') {
             const tipoRpc = modoEspecifico === 'v_semanal' ? 'semanal' : 'historico';
             const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: tipoRpc });
             if (error) throw error;
 
-            htmlContenido += `<div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
+            htmlContenido += `<div class="liga-table-card">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
             } else {
                 ranking.forEach((f, i) => {
-                    const m = ['🥇', '🥈', '🥉'];
-                    const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                    htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre_jugador || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.victorias_acumuladas || 0} <span style="font-size:.78rem;color:var(--text-muted);">W</span></span></div>`;
+                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    htmlContenido += `
+                    <div class="liga-row-item">
+                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                            ${med} ${sanitizarHTML(f.nombre_jugador || 'Anónimo')}
+                        </span>
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                            ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                        </span>
+                    </div>`;
                 });
             }
             htmlContenido += '</div>';
-        } else if (modoEspecifico === 'amigos') {
-            const codigoLigaGuardado = localStorage.getItem('ev_codigo_liga_amigos');
-            if (!codigoLigaGuardado) {
-                htmlContenido = `
-                <div style="text-align:center; padding:20px 10px; background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px;">
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:16px; line-height:1.5;">Creá una Mini Liga con tus amigos o ingresá el código de una existente para competir en un fixture privado.</p>
-                    <input type="text" id="input-codigo-liga" placeholder="CÓDIGO DE 4 LETRAS" maxlength="4" style="text-transform:uppercase; text-align:center; padding:12px; width:100%; max-width:240px; background:var(--bg-color); border:2px solid var(--border-strong); border-radius:10px; color:#fff; font-weight:900; font-size:1.1rem; margin-bottom:14px; outline:none;">
-                    <div style="display:flex; gap:10px; justify-content:center; width:100%; max-width:280px; margin:0 auto;">
-                        <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="padding:10px 16px; font-size:0.85rem; flex:1;">Crear Nueva</button>
-                        <button onclick="crearOCargarLigaAmigos(false)" class="btn-3d secondary" style="padding:10px 16px; font-size:0.85rem; flex:1; border-color:var(--accent-color); color:var(--accent-color);">Unirme</button>
-                    </div>
-                </div>`;
-            } else {
-                const { data: rankingCrudo, error } = await supabaseClient
-                    .from('ranking')
-                    .select('nombre, puntaje')
-                    .eq('juego', 'guessr_' + codigoLigaGuardado)
-                    .order('puntaje', { ascending: false })
-                    .limit(500);
-                if (error) throw error;
-
-                // Agrupamos por nombre y nos quedamos con el mejor puntaje de cada integrante
-                // (mismo criterio que la tabla nueva de "Mi Liga", para que no haya filas duplicadas).
-                const mejorPorIntegranteFama = {};
-                (rankingCrudo || []).forEach(row => {
-                    const n = (row.nombre || 'Anónimo').trim();
-                    const p = row.puntaje || 0;
-                    if (!mejorPorIntegranteFama[n] || p > mejorPorIntegranteFama[n].puntaje) {
-                        mejorPorIntegranteFama[n] = { nombre: n, puntaje: p };
-                    }
-                });
-                const ranking = Object.values(mejorPorIntegranteFama)
-                    .sort((a, b) => b.puntaje - a.puntaje)
-                    .slice(0, 15);
-
-                htmlContenido += `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
-                    <span>Liga Activa: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${codigoLigaGuardado.replace(/_/g, ' ')}</strong></span>
-                    <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir de Liga 🚪</button>
-                </div>
-                <div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
-                
-                if (!ranking || !ranking.length) {
-                    htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Nadie registró puntos todavía en la liga <strong>${codigoLigaGuardado.replace(/_/g, ' ')}</strong>. ¡Jugá un individual para inaugurarla!</p>`;
-                } else {
-                    ranking.forEach((f, i) => {
-                        const m = ['🥇', '🥈', '🥉'];
-                        const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                        htmlContenido += `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:${i === ranking.length - 1 ? 'none' : '1px solid var(--border-subtle)'};font-size:.95rem;"><span style="font-weight:700;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem;color:var(--text-muted);">pts</span></span></div>`;
-                    });
-                }
-                htmlContenido += '</div>';
-            }
         }
 
         body.innerHTML = `
-        <div style="text-align:center;margin-bottom:15px;">
-            <div style="font-size:2.5rem;color:var(--accent-color);margin-bottom:5px;"><i class="ph-duotone ph-trophy"></i></div>
-            <h2 style="font-size:1.4rem;font-weight:900;text-transform:uppercase;">Salón de la Fama</h2>
+        <div class="liga-modal-header" style="margin-bottom: 16px;">
+            <div style="width: 145px; height: 145px; margin: -10px auto 2px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 22px rgba(0, 255, 119, 0.75));">
+                <img src="liga-trofeo-header.png" alt="Trofeo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h2 class="liga-modal-title">Salón de la Fama</h2>
         </div>
         ${subMenuHTML}
         ${htmlContenido}`;
-        
+
     } catch (e) {
         console.error("Error al leer ranking global:", e);
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
@@ -2727,10 +2712,14 @@ async function abrirModalRankingOrden(modo) {
         if (!r || !r.length) {
             html += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin marcas aún.</p>`;
         } else {
+            const medallas3D = [
+                '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+                '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+                '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+            ];
             r.forEach((f, i) => {
-                const m = ['🥇', '🥈', '🥉'];
-                const med = i < 3 ? m[i] : `<span style="color:var(--text-muted);">${i + 1}</span>`;
-                html += `<div style="display:flex;justify-content:space-between;padding:14px 18px;border-bottom:${i === r.length - 1 ? 'none' : '1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} pts</span></div>`;
+                const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === r.length - 1 ? 'none' : '1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} pts</span></div>`;
             });
         }
         html += '</div>';
@@ -2740,9 +2729,65 @@ async function abrirModalRankingOrden(modo) {
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><b>Error de conexión con la base de datos</b></div>`;
     }
 }
-function abrirModalOrden(){
-document.getElementById('order-modal').style.display='flex';const body=document.getElementById('order-modal-body');
-body.innerHTML=`<div style="text-align:center;color:var(--text-main);padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;"><img src="podio.jpg" alt="Ordenar Estadios" style="width:85px;height:80px;object-fit:contain;margin-bottom:12px;filter:drop-shadow(0 0 14px rgba(234, 179, 8, 0.65));" onerror="this.src='podio.png';"><h2 style="font-size:1.7rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;">Desafío de Orden</h2><p style="color:var(--text-muted);font-size:.95rem;max-width:380px;line-height:1.6;margin-bottom:32px;">Demostrá tu conocimiento. Tocá dos tarjetas para intercambiarlas y ordenalas correctamente.</p><div style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:300px;"><button onclick="iniciarJuegoOrden('capacidad')" class="btn-3d primary" style="padding:15px;font-size:1rem;"><i class="ph-duotone ph-users-three"></i> Por Capacidad</button><button onclick="iniciarJuegoOrden('antiguedad')" class="btn-3d secondary" style="padding:15px;font-size:1rem;"><i class="ph-duotone ph-hourglass-high"></i> Por Antigüedad</button><div style="display:flex;gap:10px;margin-top:8px;"><button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="flex:1;padding:10px;font-size:.82rem;"><i class="ph-fill ph-medal"></i> Top Cap.</button><button onclick="abrirModalRankingOrden('antiguedad')" class="btn-3d secondary" style="flex:1;padding:10px;font-size:.82rem;"><i class="ph-fill ph-medal"></i> Top Edad</button></div></div></div>`;
+function abrirModalOrden() {
+    document.getElementById('order-modal').style.display = 'flex';
+    const body = document.getElementById('order-modal-body');
+    
+    body.innerHTML = `
+    <div style="text-align:center; color:var(--text-main); padding: 10px 5px; display:flex; flex-direction:column; align-items:center; width: 100%;">
+        
+        <!-- CABECERA DE PODIO -->
+        <div style="margin-bottom: 18px;">
+            <div style="width: 140px; height: 120px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75));">
+                <img src="podio.jpg" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='podio.png';">
+            </div>
+            <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Orden</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 380px; line-height: 1.45; margin: 0 auto;">
+                Demostrá tu conocimiento. Tocá dos tarjetas para intercambiarlas y ordenalas correctamente.
+            </p>
+        </div>
+
+        <!-- OPCIONES DE JUEGO PREMIUM (TARJETAS CON CRISTAL Y RESPLANDOR) -->
+        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 380px; margin-bottom: 18px;">
+            
+            <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-ranking" style="padding: 14px 18px;">
+                <div class="guessr-option-icon" style="background: rgba(234, 179, 8, 0.15); box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);">
+                    <img src="capacidad.jpg" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='capacidad.png';">
+                </div>
+                <div class="guessr-option-text">
+                    <strong style="font-size: 1rem;">Por Capacidad</strong>
+                    <span>Del más grande al más chico</span>
+                </div>
+            </button>
+
+            <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-privada" style="padding: 14px 18px;">
+                <div class="guessr-option-icon" style="background: rgba(167, 139, 250, 0.15); box-shadow: 0 0 12px rgba(167, 139, 250, 0.25);">
+                    <img src="antiguedad.jpg" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='antiguedad.png';">
+                </div>
+                <div class="guessr-option-text">
+                    <strong style="font-size: 1rem;">Por Antigüedad</strong>
+                    <span>Del más viejo al más moderno</span>
+                </div>
+            </button>
+
+        </div>
+
+        <!-- TABLAS DE POSICIONES -->
+        <div style="width: 100%; max-width: 380px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
+            <div style="font-size: 0.68rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; text-align: center;">
+                Tablas de Posiciones
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="flex: 1; padding: 10px; font-size: 0.82rem; gap: 6px;">
+                    <img src="medalla-oro.png" alt="Top Cap." style="width: 26px; height: 26px; object-fit: contain;"> Top Cap.
+                </button>
+                <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-3d secondary" style="flex: 1; padding: 10px; font-size: 0.82rem; gap: 6px;">
+                    <img src="medalla-plata.png" alt="Top Edad" style="width: 26px; height: 26px; object-fit: contain;"> Top Edad
+                </button>
+            </div>
+        </div>
+
+    </div>`;
 }
 function iniciarJuegoOrden(modo){
 const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;if(!pool.length){showToast('Esperá un momento...','ph-info','danger');return;}
@@ -2755,24 +2800,24 @@ const ord=[...sel].sort((a,b)=>modo==='capacidad'?b.valor-a.valor:a.valor-b.valo
 orderList=[...sel].sort(()=>Math.random()-.5);orderStartTime=performance.now();renderJuegoOrden();
 }
 function renderJuegoOrden(revelar=false){
-const body=document.getElementById('order-modal-body'),titulo=orderModo==='capacidad'?'Mayor a Menor Capacidad':'Del Más Antiguo al Más Moderno',icono=orderModo==='capacidad'?'ph-users-three':'ph-hourglass-high',desc=orderModo==='capacidad'?'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> espectadores':'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>',labelTop=orderModo==='capacidad'?'⬆ MÁS GRANDE':'⬆ MÁS ANTIGUO',labelBot=orderModo==='capacidad'?'⬇ MÁS CHICO':'⬇ MÁS MODERNO';
+const body=document.getElementById('order-modal-body'),titulo=orderModo==='capacidad'?'Mayor a Menor Capacidad':'Del Más Antiguo al Más Moderno',imgIcono=orderModo==='capacidad'?'<img src="capacidad.jpg" alt="Capacidad" style="width:80px;height:80px;object-fit:contain;" onerror="this.src=\'capacidad.png\';">':'<img src="antiguedad.jpg" alt="Antigüedad" style="width:80px;height:80px;object-fit:contain;" onerror="this.src=\'antiguedad.png\';">',desc=orderModo==='capacidad'?'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> espectadores':'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>',labelTop=orderModo==='capacidad'?'⬆ MÁS GRANDE':'⬆ MÁS ANTIGUO',labelBot=orderModo==='capacidad'?'⬇ MÁS CHICO':'⬇ MÁS MODERNO';
 let slotsHTML='';
 orderList.forEach((est,i)=>{
 let bgC='var(--surface-color)',brC='var(--border-strong)',badge='',extraStyle='';
 let iconL=`<div style="background:var(--bg-color);color:var(--text-muted);border:2px solid var(--border-subtle);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;flex-shrink:0;">${i+1}</div>`;
 if(revelar){const ok=i===est.correctIdx;bgC=ok?'rgba(0,230,118,.1)':'rgba(255,71,87,.1)';brC=ok?'var(--accent-color)':'var(--danger-color)';iconL=ok?`<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">✓</div>`:`<div style="background:var(--danger-color);color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">✗</div>`;const v=orderModo==='capacidad'?`${est.valor.toLocaleString('es-AR')} esp.`:`${est.valor}`;badge=`<span style="background:${ok?'var(--accent-color)':'var(--danger-color)'};color:${ok?'#000':'#fff'};font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto;flex-shrink:0;">${v}</span>`;}
 else if(orderSelectedIdx===i){brC='var(--accent-color)';bgC='var(--accent-dim)';extraStyle='transform:translateY(-4px) scale(1.01);box-shadow:0 8px 24px var(--accent-glow);';iconL=`<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">↕</div>`;}
-slotsHTML+=`<div onclick="${revelar?'':(`seleccionarFilaOrden(${i})`)}" class="order-slot" style="background:${bgC};border:2px solid ${brC};cursor:${revelar?'default':'pointer'};${extraStyle}">${iconL}<div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;"><strong style="font-size:.9rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong><span style="color:var(--text-muted);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span></div>${badge}</div>`;
+slotsHTML+=`<div onclick="${revelar?'':(`seleccionarFilaOrden(${i})`)}" class="order-slot" style="background:${bgC};border:2px solid ${brC};cursor:${revelar?'default':'pointer'};margin-bottom:6px;${extraStyle}">${iconL}<div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;"><strong style="font-size:.9rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong><span style="color:var(--text-muted);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span></div>${badge}</div>`;
 });
 let timerBarHTML=!revelar?`<div style="background:var(--border-subtle);border-radius:20px;height:4px;margin-bottom:12px;overflow:hidden;"><div id="order-timer-bar" style="height:100%;border-radius:20px;background:var(--accent-color);width:100%;transition:width .5s linear;"></div></div>`:'';
 let botonera='';
-if(!revelar){botonera=`<div style="display:flex;gap:10px;margin-top:10px;flex-shrink:0;"><button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:13px;"><i class="ph-bold ph-arrow-left"></i></button><button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:13px;font-size:1rem;">Confirmar orden <i class="ph-bold ph-check-circle"></i></button></div>`;}
+if(!revelar){botonera=`<div style="display:flex;gap:10px;margin-top:16px;margin-bottom:12px;flex-shrink:0;"><button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:13px;"><i class="ph-bold ph-arrow-left"></i></button><button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:13px;font-size:1rem;">Confirmar orden <i class="ph-bold ph-check-circle"></i></button></div>`;}
 else{
 const esGoogle=esUsuarioGoogle(),btnGuardar=esGoogle?`<button onclick="guardarScoreOrden()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar puntaje</button>`:`<button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
 const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 botonera=`<div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:14px;border-radius:18px;margin-top:10px;flex-shrink:0;box-shadow:0 -5px 20px rgba(0,0,0,.3);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div><div style="font-size:.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:1px;">Puntaje obtenido</div><strong style="font-size:1.8rem;color:var(--accent-color);font-weight:900;">${orderPuntosGanados} <span style="font-size:.9rem;color:var(--text-muted);">Pts</span></strong></div><div style="text-align:right;"><span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span></div></div><div style="display:flex;gap:8px;">${btnGuardar}<button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-fill ph-medal"></i></button><button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-bold ph-arrow-counter-clockwise"></i></button></div></div>`;
 }
-body.innerHTML=`<div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;"><h2 style="font-size:1.1rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph-duotone ${icono}" style="color:var(--accent-color);font-size:1.4rem;"></i> ${titulo}</h2><p style="color:var(--text-muted);font-size:.84rem;margin-top:4px;line-height:1.5;">${desc}</p></div>${timerBarHTML}<div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 5px 10px;scrollbar-width:thin;"><div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;opacity:.8;">${labelTop}</div>${slotsHTML}<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:2px;opacity:.8;">${labelBot}</div></div>${botonera}`;
+body.innerHTML=`<div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;"><h2 style="font-size:1.1rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;">${imgIcono} ${titulo}</h2><p style="color:var(--text-muted);font-size:.84rem;margin-top:4px;line-height:1.5;">${desc}</p></div>${timerBarHTML}<div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 5px 10px;scrollbar-width:thin;"><div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;opacity:.8;">${labelTop}</div>${slotsHTML}<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:2px;opacity:.8;">${labelBot}</div></div>${botonera}`;
 if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar');if(bar)bar.style.width='0%';},100);
 }
 function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=idx;renderJuegoOrden();}else if(orderSelectedIdx===idx){orderSelectedIdx=null;renderJuegoOrden();}else{const t=orderList[orderSelectedIdx];orderList[orderSelectedIdx]=orderList[idx];orderList[idx]=t;orderSelectedIdx=null;renderJuegoOrden();}}
@@ -2928,7 +2973,7 @@ if (nivelIdx >= 50) {
 } else if (nivelIdx >= 5) {
     textoRankingTop = "🎯 TOP 25% COMUNIDAD";
 } else {
-    textoRankingTop = "🌱 PROMESAS COMUNIDAD";
+    textoRankingTop = "🌱 PROMESA";
 }
 // 1. Nombre de rango puro (Sin duplicar "Lvl XX")
 const nombreRangoPuro = nivel.nombre.replace(/\s+Lvl\s+\d+/i, '').trim();
@@ -3077,7 +3122,9 @@ document.getElementById('profile-modal-body').innerHTML=`
                 <div class="geoguessr-dash-box xp-profile-section" style="display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 20px 14px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
                     <div style="position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:var(--accent-color); filter:blur(90px); opacity:0.15; border-radius:50%; pointer-events:none;"></div>
                     
-                    <div style="font-size:3.5rem; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65)); margin-bottom:6px; animation: floatBall 6s ease-in-out infinite;">${nivel.emoji}</div>
+                    <div style="width:180px; height:180px; margin-bottom:6px; animation: floatBall 6s ease-in-out infinite; display:flex; align-items:center; justify-content:center;">
+    <img src="${nivel.iconUrl}" style="width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65));">
+</div>
                     
                     <h3 style="font-size:1.4rem; font-weight:900; color:var(--text-main); margin-bottom:4px; text-transform:uppercase; letter-spacing:-0.5px; text-align:center;">${nombreRangoPuro}</h3>
                     
@@ -3090,7 +3137,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <span style="color:var(--text-muted);">${xpEnNivel.toLocaleString('es-AR')} / ${xpNivelTotal.toLocaleString('es-AR')} XP</span>
                             <span style="color:var(--accent-color); font-weight:900; font-size:0.8rem;">${xpPct}%</span>
                         </div>
-                        <div class="xp-bar-big" style="height:10px; background:rgba(0,0,0,0.4); border:1px solid var(--border-subtle); border-radius:20px; overflow:hidden; margin-bottom:8px;">
+                        <div class="xp-bar-big" style="height:10px; background:var(--border-subtle); border:1px solid var(--border-strong); border-radius:20px; overflow:hidden; margin-bottom:8px;">
                             <div class="xp-bar-big-fill" style="width:${xpPct}%; box-shadow:0 0 15px var(--accent-glow);"></div>
                         </div>
                         <div style="text-align:center; font-size:0.68rem; color:var(--text-muted); font-weight:700;">
@@ -3123,9 +3170,9 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
                 <div id="logros-content-wrapper" class="logros-wrapper-mobile">
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;margin-top:10px;">
-                        <span style="background:rgba(156,163,175,.18);color:#9ca3af;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Común</span>
-                        <span style="background:rgba(167,139,250,.18);color:#a78bfa;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Raro</span>
-                        <span style="background:rgba(234,179,8,.18);color:#eab308;padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:800;">Épico</span>
+                        <span class="logro-rarity-pill" style="font-size:.6rem; padding:3px 10px;">Común</span>
+                        <span class="logro-rarity-pill rare" style="font-size:.6rem; padding:3px 10px;">Raro</span>
+                        <span class="logro-rarity-pill epic" style="font-size:.6rem; padding:3px 10px;">Épico</span>
                     </div>
                     <div class="logros-tabs-row">
                         <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
@@ -3321,8 +3368,8 @@ async function manejarAbandonoRival() {
         : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
     container.innerHTML = `
     <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
-        <h2 style="font-size:2rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;filter:drop-shadow(0 0 10px var(--accent-glow));">¡VICTORIA POR ABANDONO! 🏆</h2>
-        <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;max-width:340px;line-height:1.5;">Tu oponente abandonó la sesión o se quedó sin datos. Te quedás con los puntos del partido y una bonificación especial de +1000 XP.</p>
+        <h2 style="font-size:2rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;filter:drop-shadow(0 0 10px var(--accent-glow));display:flex;align-items:center;justify-content:center;gap:10px;">¡VICTORIA POR ABANDONO! <img src="liga-trofeo-header.png" alt="Trofeo" class="vs-result-trophy"></h2>
+        <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;max-width:340px;line-height:1.5;">Tu oponente abandonó la sesión o se quedó sin datos.</p>
         ${botonFinal}
     </div>`;
     
@@ -3347,27 +3394,34 @@ async function inicializarSupabaseSeguro() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-    await inicializarSupabaseSeguro(); // 🛡️ Ahora esperamos que cargue sí o sí
-
-    await cargarPromediosSupabase();
-    await cargarProgresoDesdeSupabase(); 
-    bloqueasSincronizacionNube = false;
-    
+    // ⚡ 1. Renderizamos la interfaz visual de inmediato (Perfil de usuario y botones)
     renderizarBotonLogin();
     ancestralHeaderNivel();
     
+    // Activar clicks en pestañas de ligas de inmediato
+    document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
+        const gid = this.getAttribute('data-gid'), nombre = this.querySelector('.tab-name')?.textContent.trim() || this.textContent.trim();
+        activarLiga(gid, nombre);
+    }));
+
+    // Cargar Google Login
     if (typeof google !== 'undefined' && google.accounts) inicializarGoogleLogin();
     else {
         document.querySelector('script[src*="accounts.google.com"]')?.addEventListener('load', inicializarGoogleLogin);
         setTimeout(inicializarGoogleLogin, 2000);
     }
+
+    // 🛡️ 2. Cargas de red independientes (Si una falla, las demás siguen funcionando)
+    try { await inicializarSupabaseSeguro(); } catch(e) { console.warn(e); }
+    try { await cargarPromediosSupabase(); } catch(e) { console.warn(e); }
+    try { await cargarProgresoDesdeSupabase(); } catch(e) { console.warn(e); }
+    bloqueasSincronizacionNube = false;
     
-    document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', function() {
-        const gid = this.getAttribute('data-gid'), nombre = this.querySelector('.tab-name')?.textContent.trim() || this.textContent.trim();
-        activarLiga(gid, nombre);
-    }));
-    
-    await indexarCatalogoMasivo();
+    // Refrescamos el perfil por si bajó datos nuevos de la nube
+    renderizarBotonLogin();
+
+    try { await indexarCatalogoMasivo(); } catch(e) { console.warn(e); }
+
     const lastGid = localStorage.getItem('ev_last_gid');
     if (lastGid) {
         const tab = document.querySelector(`.tab[data-gid="${lastGid}"]`);
@@ -3378,11 +3432,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     } else mostrarLigas();
     
     guardarStats();
+
     // 👇 ESCANEO DE LINK: Revisa si alguien nos mandó un link de sala privada
     const urlParams = new URLSearchParams(window.location.search);
     const salaPrivadaId = urlParams.get('sala');
     if (salaPrivadaId) {
-        versusLigaOrigen = null; // 🏳️ Entró por link de WhatsApp: no cuenta para ningún ranking de triunfos por liga
+        versusLigaOrigen = null;
         unirseSalaPrivada(salaPrivadaId);
     }
 });
@@ -3719,24 +3774,34 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     const body = document.getElementById('liga-amigos-modal-body');
     if (!body) return;
 
+    const esPuntaje = tipoVista === 'puntaje';
+
     let htmlContenido = `
-    <div style="text-align:center; margin-bottom:16px;">
-        <div style="font-size:2.4rem; color:var(--accent-color); margin-bottom:4px;"><i class="ph-duotone ph-trophy"></i></div>
-        <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Tabla de tu Liga</h3>
+    <div class="liga-modal-header">
+        <div style="width: 134px; height: 134px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 16px rgba(0, 255, 119, 0.65));">
+            <img src="liga-trofeo-header.png" alt="Trofeo Liga" style="width: 100%; height: 100%; object-fit: contain;">
+        </div>
     </div>
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; background:var(--accent-dim); border:1px solid var(--accent-color); padding:10px 14px; border-radius:10px; font-size:0.85rem;">
+    
+    <div class="liga-info-banner">
         <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga.replace(/_/g, ' ')}</strong></span>
-        <button onclick="salirLigaAmigos()" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-weight:800; font-size:0.8rem; text-transform:uppercase;">Salir 🚪</button>
-    </div>
-    <div style="display:flex; gap:8px; margin-bottom:12px;">
-        <button onclick="cambiarVistaLiga('puntaje')" style="flex:1; padding:10px; border-radius:10px; border:2px solid var(--accent-color); font-weight:800; font-size:.8rem; text-transform:uppercase; cursor:pointer; background:${tipoVista === 'puntaje' ? 'var(--accent-color)' : 'transparent'}; color:${tipoVista === 'puntaje' ? '#04120a' : 'var(--accent-color)'};">
-            <i class="ph-bold ph-target"></i> Puntaje máximo
-        </button>
-        <button onclick="cambiarVistaLiga('triunfos')" style="flex:1; padding:10px; border-radius:10px; border:2px solid var(--accent-color); font-weight:800; font-size:.8rem; text-transform:uppercase; cursor:pointer; background:${tipoVista === 'triunfos' ? 'var(--accent-color)' : 'transparent'}; color:${tipoVista === 'triunfos' ? '#04120a' : 'var(--accent-color)'};">
-            <i class="ph-bold ph-sword"></i> Historial (W/L)
+        <button onclick="salirLigaAmigos()" class="btn-salir-liga">
+            <i class="ph-bold ph-sign-out" style="font-size: 1rem;"></i> SALIR
         </button>
     </div>
-    <div style="background:var(--surface-color); border:2px solid var(--border-strong); border-radius:16px; overflow:hidden;">`;
+
+    <div class="liga-tabs-row">
+        <button onclick="cambiarVistaLiga('puntaje')" class="liga-tab-btn ${esPuntaje ? 'active' : ''}">
+            <img src="liga-icon-puntaje.png" alt="Puntaje" style="width: 88px; height: 88px; object-fit: contain; margin-left: -28px;"> 
+            <span>Puntaje máximo</span>
+        </button>
+        <button onclick="cambiarVistaLiga('triunfos')" class="liga-tab-btn ${!esPuntaje ? 'active' : ''}">
+            <img src="liga-icon-historial.png" alt="Historial" style="width: 88px; height: 88px; object-fit: contain; margin-left: -28px;"> 
+            <span>Historial (W/L)</span>
+        </button>
+    </div>
+
+    <div class="liga-table-card">`;
 
     if (!lista || lista.length === 0) {
         htmlContenido += `
@@ -3747,20 +3812,24 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         </div>`;
     } else {
         lista.forEach((f, i) => {
-            const m = ['🥇', '🥈', '🥉'];
-            const med = i < 3 ? m[i] : `<span style="color:var(--text-muted); font-weight:700;">${i + 1}</span>`;
+            const medallas3D = [
+                '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+                '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+                '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+            ];
+            const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
             const nombreRival = (f.nombre || 'Anónimo').trim();
-            
+
             const estaOnline = usuariosOnlineLiga.includes(nombreRival);
             const esPropio = nombreRival === miNombreRanking;
-            
+
             let indicadorOnline = "";
             let botonReto = "";
-            
+
             if (estaOnline) {
-                indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:6px; box-shadow:0 0 6px #00e676;" title="Mirando la liga ahora"></span>`;
+                indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:8px; box-shadow:0 0 8px #00e676; animation: pulseGlow 2s infinite;" title="Mirando la liga ahora"></span>`;
                 if (!esPropio) {
-                    botonReto = `<i class="ph-duotone ph-sword" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; color:var(--accent-color); margin-left:12px; font-size:1.25rem; transition:transform 0.15s; display:inline-block; vertical-align:middle;" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo"></i>`;
+                    botonReto = `<img src="liga-icon-historial.png" alt="Desafiar" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; width:28px; height:28px; object-fit:contain; margin-left:8px; transition:transform 0.15s; vertical-align:middle; filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.5));" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo">`;
                 }
             }
 
@@ -3774,13 +3843,13 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                                     <strong style="color:#ff4757; font-weight:900;">${l} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">L</span></strong>
                                 </div>`;
             } else {
-                bloquePuntos = `<strong style="color:var(--accent-color); font-weight:900;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></strong>`;
+                bloquePuntos = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
             }
-            
+
             htmlContenido += `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:${i === lista.length - 1 ? 'none' : '1px solid var(--border-subtle)'}; font-size:.95rem;">
-                <span style="font-weight:700; display:flex; align-items:center;">
-                    ${med} &nbsp;${sanitizarHTML(nombreRival)} ${indicadorOnline}
+            <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
+                <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                    ${med} ${sanitizarHTML(nombreRival)} ${indicadorOnline}
                 </span>
                 <span style="display:flex; align-items:center; gap:12px;">
                     ${bloquePuntos}
@@ -4141,5 +4210,48 @@ function toggleLogrosMobile() {
     if (wrapper) {
         const isOpen = wrapper.classList.toggle('open');
         if (chev) chev.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+}
+// ========================================================
+// CONTROL DE MODALES INSTITUCIONALES DEL FOOTER
+// ========================================================
+function abrirModalAbout() {
+    const m = document.getElementById('about-modal-overlay');
+    if (m) m.classList.add('active');
+}
+function cerrarModalAbout() {
+    const m = document.getElementById('about-modal-overlay');
+    if (m) m.classList.remove('active');
+}
+
+function abrirModalTerms() {
+    const m = document.getElementById('terms-modal-overlay');
+    if (m) m.classList.add('active');
+}
+function cerrarModalTerms() {
+    const m = document.getElementById('terms-modal-overlay');
+    if (m) m.classList.remove('active');
+}
+
+function abrirModalPublicidad() {
+    const m = document.getElementById('ads-modal-overlay');
+    if (m) m.classList.add('active');
+}
+function cerrarModalPublicidad() {
+    const m = document.getElementById('ads-modal-overlay');
+    if (m) m.classList.remove('active');
+}
+
+function abrirModalPrivacyDirecto() {
+    const m = document.getElementById('privacy-modal-overlay');
+    if (m) {
+        m.style.display = 'flex';
+        // Habilitamos el scroll sin exigir la lectura obligatoria cuando entra desde el footer
+        const ind = document.getElementById('privacy-read-indicator');
+        const chk = document.getElementById('privacy-accept-check');
+        const btn = document.getElementById('btn-confirm-privacy');
+        if (ind) ind.style.display = 'none';
+        if (chk) chk.disabled = false;
+        if (btn) btn.disabled = false;
     }
 }

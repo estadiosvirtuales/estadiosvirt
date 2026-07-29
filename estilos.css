@@ -10,11 +10,11 @@
   --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa
 }
 [data-theme="light"]{
-  /* 🏟️ Paleta Match Day */
+  /* 🏟️ Paleta Match Day con tonalidad verde muy claro */
   --bg-color: #e2e8e4;
-  --card-bg: #ffffff;
-  --surface-color: #f1f5f9;
-  --surface-hover: #e2e8f0;
+  --card-bg: #f0f7f3;
+  --surface-color: #e8f3ee;
+  --surface-hover: #dfede7;
   --text-main: #04160a;
   --text-muted: #2c4930;
   --text-inverse: #ffffff;
@@ -27,7 +27,7 @@
   
   --border-subtle: rgba(4, 22, 10, 0.12);
   --border-strong: #cbd5e1;
-  --glass-bg: rgba(255, 255, 255, 0.95);
+  --glass-bg: rgba(240, 247, 243, 0.95);
   --modal-overlay: rgba(6, 12, 20, 0.5);
   
   --shadow-soft: 0 8px 24px rgba(4, 22, 10, 0.08);
@@ -36,6 +36,9 @@
   --pitch-line: rgba(0, 204, 102, 0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+html {
+    height: 100%;
+}
 html, body {
     scroll-behavior: smooth;
     overflow-x: hidden !important;
@@ -43,7 +46,21 @@ html, body {
     max-width: 100vw !important;
     position: relative;
 }
-body{background-color:var(--bg-color);color:var(--text-main);padding-bottom:70px;transition:background-color .35s ease,color .35s ease}
+body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding-bottom: 0 !important;
+    transition: background-color .35s ease, color .35s ease;
+}
+main {
+    flex: 1 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: auto !important;
+}
 /* ========================================================
    FONDO GLOBAL: GRILLA DE CANCHA + PLANISFERIO DE PUNTOS
    ======================================================== */
@@ -107,7 +124,7 @@ body > * {
 .animate-fade-up{animation:fadeSlideUp .5s ease forwards}
 .animate-correct{animation:correctPulse .6s ease}
 .animate-wrong{animation:wrongShake .4s ease}
-.app-header{display:flex;justify-content: space-between;align-items:center;padding:14px 32px;background:var(--glass-bg);border-bottom:1px solid var(--border-subtle);position:sticky;top:0;z-index:1500;backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 1px 0 var(--border-subtle),0 4px 20px rgba(0,0,0,.3);transition:background .35s}
+.app-header{display:flex;justify-content: space-between;align-items:center;padding:14px 32px;background:var(--glass-bg);border-bottom:1px solid var(--border-subtle);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 1px 0 var(--border-subtle),0 4px 20px rgba(0,0,0,.3);transition:background .35s}
 .header-left-line{position:absolute;bottom:0;left:0;height:2px;width:100%;background:linear-gradient(90deg,transparent 0%,var(--accent-color) 30%,var(--accent-color) 70%,transparent 100%);opacity:.4}
 .app-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
 .app-logo{width:44px;height:44px;border-radius:12px;border:2px solid var(--accent-color);object-fit:cover;box-shadow:0 0 12px var(--accent-glow);transition:transform .3s,box-shadow .3s}
@@ -353,7 +370,7 @@ body > * {
 .levelup-sub{font-size:1.1rem;color:var(--text-muted);margin-top:8px}
 .levelup-close{margin-top:28px}
 .confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confetti 1.2s ease-out forwards;pointer-events:none}
-.catalogo-layout{display:none;align-items:flex-start;gap:24px;max-width:1220px;margin:150px auto 18px;padding:0 24px}
+.catalogo-layout{display:none;align-items:flex-start;gap:24px;max-width:1220px;margin:150px auto 18px;padding:0 24px;position:relative;z-index:5}
 .catalogo-layout.open{display:flex;animation:dropPanel .22s cubic-bezier(.4,0,.2,1) forwards}
 .section-ligas{flex:0 0 360px}
 .ligas-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
@@ -468,7 +485,7 @@ body > * {
 .star-icon{font-size:1.5rem;color:var(--border-strong);cursor:pointer;transition:transform .15s cubic-bezier(.175,.885,.32,1.275),color .15s;user-select:none}
 .star-icon:hover{transform:scale(1.35);color:var(--accent-hover)}
 .star-icon.active{color:var(--accent-color)}
-.modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:2500;justify-content:center;align-items:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9999 !important;justify-content:center;align-items:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 
 /* ⚡ LIBERACIÓN TOTAL DE GPU: Elimina el blur en vivo mientras el video reproduce */
 #video-modal.modal-overlay {
@@ -498,7 +515,7 @@ body.video-abierto .hero-section {
 .modal-content{position:relative;width:90%;max-width:1100px;height:92vh;background:var(--bg-color);border-radius:22px;box-shadow:var(--shadow-strong),0 0 0 1px var(--border-strong);display:flex;flex-direction:column;border:1px solid var(--border-strong);overflow:hidden;animation:bounceFun .4s ease}
 .modal-content.stadium-guessr-layout{width:92%!important;max-width:1200px!important}
 
-/* 🛡️ PANTALLA DE RESULTADOS REPARADA (AJUSTE COMPACTO DE ALTURA EN PC) */
+/* 🛡️ PANTALLA DE RESULTADOS REPARADA (AJUSTE COMPACTO DE ALTURA EN PC Y MÓVIL) */
 .modal-content.resultado-final-layout,
 .modal-content.resultado-final {
     display: flex !important;
@@ -510,11 +527,13 @@ body.video-abierto .hero-section {
     background: var(--bg-color) !important;
     border-radius: 22px !important;
     overflow: hidden !important;
+    padding: 0 !important;
     z-index: 2501 !important;
 }
 
 /* 🎬 REPRODUCTOR DE VIDEO FLUIDO Y ESTABLE EN PC Y CELULAR */
 .video-container{
+    position: relative;
     width:100%;
     height:100%;
     border-radius:22px;
@@ -529,6 +548,43 @@ body.video-abierto .hero-section {
     width: 100%;
     height: 100%;
     border: none;
+}
+
+/* 🛡️ MÁSCARA SUPERIOR TAPATÍTULOS PARA STADIUGUESSR */
+.yt-title-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 58px;
+    background: linear-gradient(90deg, #0e5c2f 0%, #0d2847 50%, #0f4c91 100%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    pointer-events: auto;
+    user-select: none;
+    border-bottom: 2px solid #00ff77;
+    box-shadow: inset 35px 0 45px rgba(0, 255, 119, 0.4), inset -35px 0 45px rgba(41, 121, 255, 0.4), 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 255, 119, 0.3);
+}
+
+.yt-mask-icon {
+    width: 6%;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px rgba(0, 255, 119, 0.85));
+}
+
+.yt-title-mask span {
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #00ff77 0%, #ffffff 50%, #00e676 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 119, 0.4));
 }
 .close-btn{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.15);padding:0;cursor:pointer;z-index:2020;border-radius:10px;width:38px;height:38px;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
 .close-btn:hover{background:var(--danger-color);border-color:var(--danger-color);transform:scale(1.1) rotate(90deg)}
@@ -1159,8 +1215,8 @@ body.video-abierto .hero-section {
 .google-wall p{font-size:.88rem;color:var(--text-muted);line-height:1.55;margin:0}
 #privacy-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9999;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
 #privacy-modal-overlay.active{display:flex}
-.privacy-modal-box{background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-strong);overflow:hidden;animation:bounceFun .4s ease}
-.privacy-modal-header{padding:26px 30px 18px;border-bottom:2px dashed var(--border-subtle);flex-shrink:0}
+.privacy-modal-box{position:relative;background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-strong);overflow:hidden;animation:bounceFun .4s ease}
+.privacy-modal-header{padding:26px 55px 18px 30px;border-bottom:2px dashed var(--border-subtle);flex-shrink:0}
 .privacy-modal-header h2{font-size:1.3rem;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:12px;margin-bottom:8px}
 .privacy-modal-header p{font-size:.92rem;color:var(--text-muted);line-height:1.5}
 .privacy-modal-body{padding:22px 28px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
@@ -1263,9 +1319,12 @@ body.video-abierto .hero-section {
 [data-theme="dark"] body {
     background-color: #05070f !important;
     background-image: 
-        radial-gradient(at 15% 0%, rgba(0, 255, 119, 0.15) 0px, transparent 45%),
-        radial-gradient(at 85% 0%, rgba(41, 121, 255, 0.12) 0px, transparent 45%),
-        radial-gradient(at 50% 100%, rgba(10, 35, 21, 0.7) 0px, transparent 70%) !important;
+        radial-gradient(circle at 15% 0%, rgba(0, 255, 119, 0.12) 0%, transparent 65%),
+        radial-gradient(circle at 85% 0%, rgba(41, 121, 255, 0.10) 0%, transparent 65%),
+        radial-gradient(circle at 50% 100%, rgba(10, 35, 21, 0.5) 0%, transparent 75%) !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
     color: #ffffff !important;
 }
 
@@ -1362,7 +1421,7 @@ body.video-abierto .hero-section {
 }
 
 [data-theme="light"] .search-bar {
-    background: #ffffff !important;
+    background: #f0f7f3 !important;
     border: 2px solid #a4bdae !important;
     color: #04160a !important;
     box-shadow: 0 4px 20px rgba(4, 22, 10, 0.08) !important;
@@ -1374,13 +1433,13 @@ body.video-abierto .hero-section {
 
 [data-theme="light"] .search-bar:focus {
     border-color: #00cc66 !important;
-    background: #ffffff !important;
+    background: #f0f7f3 !important;
     box-shadow: 0 0 0 4px rgba(0, 204, 102, 0.12) !important;
 }
 
 [data-theme="light"] .game-modes button,
 [data-theme="light"] .game-card.btn-guessr {
-    background: #ffffff !important;
+    background: #f0f7f3 !important;
     border: 2px solid #cbd5e1 !important;
     color: #04160a !important;
     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06) !important;
@@ -1417,17 +1476,14 @@ body.video-abierto .hero-section {
 
 /* ☀️ MODALES Y VENTANAS EN MODO CLARO (STADIUMGUESSR, DESAFÍO DE ORDEN Y RANKING) */
 [data-theme="light"] .modal-content {
-    background: #ffffff !important;
+    background: #f0f7f3 !important;
     border: 2px solid #cbd5e1 !important;
     color: #04160a !important;
     box-shadow: 0 20px 50px rgba(4, 22, 10, 0.18) !important;
 }
 
 [data-theme="light"] .modal-content h2,
-[data-theme="light"] .modal-content strong,
-[data-theme="light"] .modal-content b,
-[data-theme="light"] #modal-video-container strong,
-[data-theme="light"] #modal-video-container b {
+[data-theme="light"] #modal-video-container strong {
     color: #04160a !important;
 }
 
@@ -1438,7 +1494,7 @@ body.video-abierto .hero-section {
 
 /* 🔘 Botones secundarios y fichas de orden en Modo Claro */
 [data-theme="light"] .modal-content .btn-3d.secondary {
-    background: #f8fafc !important;
+    background: #e8f3ee !important;
     border: 2px solid #cbd5e1 !important;
     color: #04160a !important;
     box-shadow: 0 3px 0 #cbd5e1 !important;
@@ -1451,7 +1507,7 @@ body.video-abierto .hero-section {
 }
 
 [data-theme="light"] .order-slot {
-    background: #f8fafc !important;
+    background: #e8f3ee !important;
     border-color: #cbd5e1 !important;
     color: #04160a !important;
 }
@@ -1733,12 +1789,98 @@ body.video-abierto .hero-section {
     background: var(--text-muted);
 }
 
-/* ☀️ Adaptación a Modo Claro en Resultados */
+/* 🏆 ESTILOS DE MARCADOR FINAL VERSUS (COLORES Y TROFEO 3D NEÓN) */
+.vs-result-trophy {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 14px rgba(0, 230, 118, 0.85)) drop-shadow(0 0 25px rgba(0, 230, 118, 0.4));
+    vertical-align: middle;
+}
+
+.vs-user-score {
+    color: #00e676 !important;
+    text-shadow: 0 0 12px rgba(0, 230, 118, 0.6), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.vs-rival-score {
+    color: #2979ff !important;
+    text-shadow: 0 0 12px rgba(41, 121, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.vs-text-divider {
+    color: #f59e0b !important;
+    background: rgba(245, 158, 11, 0.15) !important;
+    border: 1.5px solid rgba(245, 158, 11, 0.4) !important;
+    padding: 3px 12px !important;
+    border-radius: 12px !important;
+    font-size: 1.1rem !important;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.2) !important;
+}
+
+.pts-breakdown.pts-high { color: #00e676 !important; font-weight: 900; }
+.pts-breakdown.pts-mid { color: #ff8f00 !important; font-weight: 900; }
+.pts-breakdown.pts-low { color: #ff4757 !important; font-weight: 900; }
+
+/* ☀️ Adaptación Rompe-Restricciones para Modo Claro en Resultados */
 [data-theme="light"] .modal-content.resultado-final-layout,
 [data-theme="light"] .modal-content.resultado-final {
-    background: #ffffff !important;
+    background: var(--bg-color) !important;
     border: 2px solid #cbd5e1 !important;
     color: #04160a !important;
+}
+
+[data-theme="light"] .vs-card-banner {
+    background: #ffffff !important;
+    border: 2px solid #a4bdae !important;
+    box-shadow: 0 6px 20px rgba(4, 22, 10, 0.08) !important;
+}
+
+/* VOS: Verde Esmeralda Intenso con Resplandor Neón en Modo Claro */
+[data-theme="light"] .vs-user-score {
+    color: #00c853 !important;
+    text-shadow: 0 0 10px rgba(0, 200, 83, 0.45), 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+    font-weight: 900 !important;
+}
+
+/* RIVAL: Azul Eléctrico Intenso con Resplandor Neón en Modo Claro */
+[data-theme="light"] .vs-rival-score {
+    color: #0066ff !important;
+    text-shadow: 0 0 10px rgba(0, 102, 255, 0.45), 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+    font-weight: 900 !important;
+}
+
+[data-theme="light"] .vs-text-divider {
+    color: #d97706 !important;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    border: 1.5px solid #f59e0b !important;
+    padding: 3px 12px !important;
+    border-radius: 12px !important;
+    font-size: 1.1rem !important;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25) !important;
+}
+
+/* Puntos del Desglose por Ronda en Modo Claro (Vibrante + Alto Contraste) */
+[data-theme="light"] .pts-breakdown.pts-high { 
+    color: #008744 !important; 
+    background: rgba(0, 200, 83, 0.14) !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    font-weight: 900 !important;
+}
+[data-theme="light"] .pts-breakdown.pts-mid { 
+    color: #d97706 !important; 
+    background: rgba(217, 119, 6, 0.14) !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    font-weight: 900 !important;
+}
+[data-theme="light"] .pts-breakdown.pts-low { 
+    color: #dc2626 !important; 
+    background: rgba(220, 38, 38, 0.14) !important;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    font-weight: 900 !important;
 }
 /* ========================================== */
 /* FORZAR ANCHO COMPLETO DE TARJETAS (MÓVIL)  */
@@ -2299,7 +2441,7 @@ body.video-abierto .hero-section {
 
 /* ☀️ Modo Claro */
 [data-theme="light"] .btn-reto-banner {
-    background: #ffffff !important;
+    background: #f0f7f3 !important;
     border: 2px solid #a4bdae !important;
     box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08) !important;
 }
@@ -2332,4 +2474,538 @@ body.video-abierto .hero-section {
 #liga-amigos-modal-body button[onclick*="cambiarVistaLiga"]:active {
     transform: translateY(1px) scale(0.98);
     box-shadow: none !important;
+}
+/* ========================================================
+   🎨 ESTILIZACIÓN DE BOTONES DEL MENÚ STADIUMGUESSR (ESTILO HOMEPAGE)
+   ======================================================== */
+.guessr-menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.guessr-menu-section-title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--border-subtle);
+    padding-bottom: 4px;
+}
+
+.guessr-option-btn {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, rgba(20, 28, 52, 0.75) 0%, rgba(10, 14, 28, 0.88) 100%);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.guessr-option-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.guessr-option-btn:hover {
+    transform: translateY(-4px) scale(1.01);
+}
+
+.guessr-option-btn:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+.guessr-option-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.guessr-option-btn:hover .guessr-option-icon {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+.guessr-option-text {
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.guessr-option-text strong {
+    font-size: 0.98rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-main);
+}
+
+.guessr-option-text span {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* 🟢 Modo Individual (Verde Neón) */
+.btn-opt-solo:hover {
+    border-color: #00ff77 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 119, 0.35) !important;
+}
+.btn-opt-solo .guessr-option-icon {
+    background: rgba(0, 255, 119, 0.15);
+    color: #00ff77;
+    box-shadow: 0 0 12px rgba(0, 255, 119, 0.25);
+}
+
+/* 🔵 1v1 Global (Azul Eléctrico) */
+.btn-opt-versus:hover {
+    border-color: #2979ff !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(41, 121, 255, 0.35) !important;
+}
+.btn-opt-versus .guessr-option-icon {
+    background: rgba(41, 121, 255, 0.15);
+    color: #2979ff;
+    box-shadow: 0 0 12px rgba(41, 121, 255, 0.25);
+}
+
+/* 🟣 Sala Privada (Violeta Púrpura) */
+.btn-opt-privada:hover {
+    border-color: #a78bfa !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(167, 139, 250, 0.35) !important;
+}
+.btn-opt-privada .guessr-option-icon {
+    background: rgba(167, 139, 250, 0.15);
+    color: #a78bfa;
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.25);
+}
+
+/* 🟢 Liga de Amigos Privada(Verde Esmeralda) */
+.btn-opt-liga:hover {
+    border-color: #00e676 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 230, 118, 0.35) !important;
+}
+.btn-opt-liga .guessr-option-icon {
+    background: rgba(0, 230, 118, 0.15);
+    color: #00e676;
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.25);
+}
+
+/* 🟡 Tabla de Posiciones (Dorado) */
+.btn-opt-ranking:hover {
+    border-color: #eab308 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(234, 179, 8, 0.35) !important;
+}
+.btn-opt-ranking .guessr-option-icon {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);
+}
+
+/* ☀️ Adaptación Modo Claro para los botones de StadiumGuessr */
+[data-theme="light"] .guessr-option-btn {
+    background: #f0f7f3 !important;
+    border: 2px solid #cbd5e1 !important;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-theme="light"] .guessr-option-text strong {
+    color: #04160a !important;
+}
+/* ========================================================
+   🏆 ESTILIZACIÓN PREMIUM TABLA LIGA PRIVADA DE AMIGOS
+   ======================================================== */
+.liga-modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.liga-modal-title {
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    color: var(--text-main);
+}
+
+.liga-info-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.12) 0%, rgba(10, 20, 35, 0.6) 100%);
+    border: 1.5px solid rgba(0, 230, 118, 0.4);
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-size: 0.88rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-salir-liga {
+    background: rgba(255, 71, 87, 0.12);
+    border: 1px solid rgba(255, 71, 87, 0.35);
+    color: #ff4757;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-salir-liga:hover {
+    background: rgba(255, 71, 87, 0.25);
+    border-color: #ff4757;
+    box-shadow: 0 0 12px rgba(255, 71, 87, 0.4);
+    transform: translateY(-1px);
+}
+
+.liga-tabs-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.liga-tab-btn {
+    flex: 1; /* Distribuye el espacio 50/50 de forma perfecta */
+    min-width: 0;
+    padding: 4px 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 46px;
+    box-sizing: border-box;
+}
+
+.liga-tab-btn:hover:not(.active) {
+    border-color: var(--border-strong);
+    color: var(--text-main);
+    transform: translateY(-2px);
+}
+
+.liga-tab-btn.active {
+    background: var(--accent-color) !important;
+    color: #000 !important;
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 4px 15px var(--accent-glow) !important;
+    transform: translateY(-1px);
+}
+
+.liga-table-card {
+    background: var(--surface-color);
+    border: 2px solid var(--border-strong);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.liga-row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+}
+
+.liga-row-item:last-child {
+    border-bottom: none;
+}
+
+.liga-row-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.liga-row-item.es-propio {
+    background: rgba(0, 230, 118, 0.06);
+}
+
+/* ☀️ Modo Claro */
+[data-theme="light"] .liga-info-banner {
+    background: #f0f7f3 !important;
+    border-color: #a4bdae !important;
+    color: #04160a !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .liga-tab-btn {
+    background: #e8f3ee !important;
+    border-color: #cbd5e1 !important;
+    color: #475569 !important;
+}
+
+[data-theme="light"] .liga-tab-btn.active {
+    background: #00cc66 !important;
+    color: #ffffff !important;
+    border-color: #00cc66 !important;
+}
+
+[data-theme="light"] .liga-table-card {
+    background: #f0f7f3 !important;
+    border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .liga-row-item:hover {
+    background: #e2ede7 !important;
+}
+/* ========================================================
+   🎨 BARRA DE SCROLLEO OSCURA Y ESTILIZADA PARA MODALES
+   ======================================================== */
+#ranking-modal .modal-content,
+#ranking-modal *,
+#liga-amigos-modal .modal-content,
+#liga-amigos-modal * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+#ranking-modal .modal-content::-webkit-scrollbar,
+#ranking-modal *::-webkit-scrollbar,
+#liga-amigos-modal .modal-content::-webkit-scrollbar,
+#liga-amigos-modal *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+#ranking-modal .modal-content::-webkit-scrollbar-track,
+#ranking-modal *::-webkit-scrollbar-track,
+#liga-amigos-modal .modal-content::-webkit-scrollbar-track,
+#liga-amigos-modal *::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#ranking-modal .modal-content::-webkit-scrollbar-thumb,
+#ranking-modal *::-webkit-scrollbar-thumb,
+#liga-amigos-modal .modal-content::-webkit-scrollbar-thumb,
+#liga-amigos-modal *::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+}
+
+#ranking-modal .modal-content::-webkit-scrollbar-thumb:hover,
+#ranking-modal *::-webkit-scrollbar-thumb:hover,
+#liga-amigos-modal .modal-content::-webkit-scrollbar-thumb:hover,
+#liga-amigos-modal *::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+/* ========================================================
+   🏆 PESTAÑAS DE RANKING RESPONSIVE (PC & MÓVIL)
+   ======================================================== */
+.ranking-tabs-row .liga-tab-btn {
+    flex: 1;
+    justify-content: flex-start;
+    padding-left: 0;
+    border-radius: 25px;
+    min-width: 0;
+}
+
+.ranking-tab-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-left: -12px;
+}
+
+@media (max-width: 768px) {
+    .ranking-tabs-row {
+        gap: 4px !important;
+    }
+    .ranking-tabs-row .liga-tab-btn {
+        justify-content: center !important;
+        padding: 2px 4px !important;
+        height: 42px !important;
+        font-size: 0.65rem !important;
+        border-radius: 16px !important;
+        gap: 3px !important;
+    }
+    .ranking-tab-img {
+        width: 32px !important;
+        height: 32px !important;
+        margin-left: -2px !important;
+    }
+    .ranking-tabs-row .liga-tab-btn span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+/* ========================================================
+   📱 BOTÓN PRINCIPAL DE ACCIÓN DE JUEGO (RESPONSIVE FIX)
+   ======================================================== */
+#game-action-btn {
+    padding: 12px 12px !important;
+    box-sizing: border-box !important;
+}
+
+#game-action-btn .btn-action-stats {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+#game-action-btn .btn-action-text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0; /* 🛡️ Garantiza espacio 100% visible a SIGUIENTE y FINAL */
+}
+
+@media (max-width: 480px) {
+    #game-action-btn {
+        padding: 10px 8px !important;
+    }
+    #game-action-btn .btn-action-wrapper {
+        font-size: 0.78rem !important;
+        gap: 4px !important;
+    }
+    #game-action-btn .btn-action-stats {
+        font-size: 0.74rem !important;
+        gap: 3px !important;
+    }
+    #game-action-btn .btn-action-text {
+        font-size: 0.78rem !important;
+        letter-spacing: 0px !important;
+    }
+}
+/* ========================================================
+   🏆 FOOTER ESTÁTICO INSTITUCIONAL (ESTILO POTRERO COMPACTO)
+   ======================================================== */
+.app-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px 10px;
+    margin-top: auto;
+    flex-shrink: 0;
+    width: 100%;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-strong);
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    border: 1.5px solid var(--accent-color);
+    object-fit: cover;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.footer-brand-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.footer-brand-text strong {
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: var(--text-main);
+}
+
+.footer-brand-text span {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+}
+
+.footer-brand-text .accent-word {
+    color: var(--accent-color);
+}
+
+.footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.footer-link {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.70rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .app-footer {
+        padding: 10px 15px 8px;
+        gap: 6px;
+    }
+    .footer-nav {
+        gap: 10px 12px;
+    }
+    .footer-link {
+        font-size: 0.62rem;
+    }
 }
