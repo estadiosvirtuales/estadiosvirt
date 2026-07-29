@@ -3393,7 +3393,25 @@ async function inicializarSupabaseSeguro() {
     }
 }
 
+function precargarImagenesUI() {
+    const imagenes = [
+        'liga-trofeo-header.png', 'medalla-oro.png', 'medalla-plata.png', 'medalla-bronce.png',
+        'ranking-icon-solo.png', 'ranking-icon-1v1.png', 'ranking-icon-semanal.png',
+        'liga-icon-puntaje.png', 'liga-icon-historial.png',
+        'podio.jpg', 'capacidad.jpg', 'antiguedad.jpg', 'mundo.jpg', 'avion.jpg', 'catalogo.jpg',
+        'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-liga.png', 'icono-ranking.png',
+        'podio.png', 'capacidad.png', 'antiguedad.png', 'mundo.png', 'avion.png', 'catalogo.png'
+    ];
+    imagenes.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
+    // ⚡ Precarga silenciosa en memoria RAM de todos los íconos de modales para evitar flickering
+    precargarImagenesUI();
+
     // ⚡ 1. Renderizamos la interfaz visual de inmediato (Perfil de usuario y botones)
     renderizarBotonLogin();
     ancestralHeaderNivel();
