@@ -2533,8 +2533,8 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML=`
-    <div style="text-align:center;padding:48px 14px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
-        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:10px;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
+    <div style="text-align:center;padding:58px 16px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:100%;box-sizing:border-box;background:var(--bg-color);">
+        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:0;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
         <p style="color:var(--text-muted);margin-bottom:16px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
         <div class="result-score-ring">
@@ -2551,8 +2551,9 @@ async function finalizarJuegoGuessr(){
                 <button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button>
                 <button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>
             </div>
-        </div>
+       </div>
     </div>`;
+    container.scrollTop = 0;
 }
 
 function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}

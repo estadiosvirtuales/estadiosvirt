@@ -518,12 +518,13 @@ body.video-abierto .hero-section {
 /* 🛡️ PANTALLA DE RESULTADOS REPARADA (AJUSTE COMPACTO DE ALTURA EN PC Y MÓVIL) */
 .modal-content.resultado-final-layout,
 .modal-content.resultado-final {
+    position: relative !important;
     display: flex !important;
     flex-direction: column !important;
     width: 92% !important;
     max-width: 500px !important;
-    height: auto !important;
-    max-height: 90vh !important;
+    height: 85vh !important;
+    max-height: 85vh !important;
     background: var(--bg-color) !important;
     border-radius: 22px !important;
     overflow: hidden !important;
