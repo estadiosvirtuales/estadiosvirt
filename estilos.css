@@ -55,6 +55,19 @@ body {
     padding-bottom: 0 !important;
     transition: background-color .35s ease, color .35s ease;
 }
+
+/* 🔒 BLOQUEO DE SCROLL EN EL FONDO CUANDO CUALQUIER MODAL ESTÁ ABIERTO */
+body:has(.modal-overlay[style*="display: flex"]),
+body:has(.modal-overlay[style*="display:flex"]),
+body:has(.modal-overlay.active),
+body:has(#privacy-modal-overlay[style*="display: flex"]),
+body:has(#privacy-modal-overlay[style*="display:flex"]),
+body:has(#privacy-modal-overlay.active),
+body:has(#login-modal-overlay.active),
+body:has(#levelup-overlay.active) {
+    overflow: hidden !important;
+    height: 100dvh !important;
+}
 main {
     flex: 1 0 auto;
     width: 100%;
