@@ -589,17 +589,75 @@ async function registrarUsuarioEnSupabase(user) {
     }
 }
 function decodeJwt(token){try{const b=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));}catch(e){return null;}}
-function abrirModalPrivacy(){document.getElementById('privacy-modal-overlay').style.display='flex';}
-function cerrarModalPrivacy(){document.getElementById('privacy-modal-overlay').style.display='none';}
-function checkPrivacyScrolled(el){if(el.scrollTop+el.clientHeight>=el.scrollHeight-40){const ind=document.getElementById('privacy-read-indicator');ind.innerHTML='<i class="ph-fill ph-check-circle"></i> ¡Leíste todo! Ahora podés aceptar.';ind.classList.add('ready');document.getElementById('privacy-accept-check').disabled=false;}}
-function togglePrivacyBtn(){document.getElementById('btn-confirm-privacy').disabled=!document.getElementById('privacy-accept-check').checked;}
-function confirmarPrivacyYLogin(){localStorage.setItem('ev_privacy_accepted','1');cerrarModalPrivacy();abrirLoginModal();}
+function abrirModalPrivacy(){
+    const m = document.getElementById('privacy-modal-overlay');
+    if (m) {
+        m.style.display = 'flex';
+        m.classList.add('active');
+        const body = document.getElementById('privacy-scroll-body');
+        const ind = document.getElementById('privacy-read-indicator');
+        const chk = document.getElementById('privacy-accept-check');
+        const btn = document.getElementById('btn-confirm-privacy');
+        
+        if (body) body.scrollTop = 0;
+        if (ind) {
+            ind.style.display = 'flex';
+            ind.classList.remove('ready');
+            ind.innerHTML = '<i class="ph-bold ph-arrow-down"></i> Desplázate hasta el final para aceptar los términos';
+        }
+        if (chk) {
+            chk.checked = false;
+            chk.disabled = true;
+        }
+        if (btn) {
+            btn.disabled = true;
+        }
+    }
+}
+function cerrarModalPrivacy(){
+    const m = document.getElementById('privacy-modal-overlay');
+    if (m) {
+        m.style.display = 'none';
+        m.classList.remove('active');
+    }
+}
+function checkPrivacyScrolled(el){
+    if(el.scrollTop + el.clientHeight >= el.scrollHeight - 40){
+        const ind = document.getElementById('privacy-read-indicator');
+        if (ind) {
+            ind.innerHTML = '<i class="ph-fill ph-check-circle"></i> ¡Leíste todo! Ahora podés aceptar.';
+            ind.classList.add('ready');
+        }
+        const chk = document.getElementById('privacy-accept-check');
+        if (chk) chk.disabled = false;
+    }
+}
+function togglePrivacyBtn(){
+    const chk = document.getElementById('privacy-accept-check');
+    const btn = document.getElementById('btn-confirm-privacy');
+    if (chk && btn) btn.disabled = !chk.checked;
+}
+function confirmarPrivacyYLogin(){
+    localStorage.setItem('ev_privacy_accepted', '1');
+    cerrarModalPrivacy();
+    abrirLoginModal();
+}
 function abrirLoginModal(){
-document.getElementById('login-modal-overlay').classList.add('active');
-setTimeout(()=>{const c=document.getElementById('google-signin-btn-container');if(c&&typeof google!=='undefined'&&google.accounts){c.innerHTML='';google.accounts.id.renderButton(c,{theme:'filled_black',size:'large',shape:'pill',width:300,text:'signin_with'});}},100);
+    document.getElementById('login-modal-overlay').classList.add('active');
+    setTimeout(()=>{
+        const c = document.getElementById('google-signin-btn-container');
+        if(c && typeof google !== 'undefined' && google.accounts){
+            c.innerHTML = '';
+            google.accounts.id.renderButton(c, {theme: 'filled_black', size: 'large', shape: 'pill', width: 300, text: 'signin_with'});
+        }
+    }, 100);
 }
 function cerrarLoginModal(){document.getElementById('login-modal-overlay').classList.remove('active');}
-function manejarClickLogin(){const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
+function manejarClickLogin(){
+    const ok = localStorage.getItem('ev_privacy_accepted') === '1';
+    if (ok) abrirLoginModal();
+    else abrirModalPrivacy();
+}
 function esUsuarioGoogle(){const u=obtenerUsuarioLogueado();return u&&u.loginMethod==='google';}
 function guardarScorePendiente() {
     if (pendingScore === null) return;
