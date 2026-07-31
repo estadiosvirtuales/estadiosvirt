@@ -143,9 +143,14 @@
 <button class="close-btn" onclick="if(typeof cerrarModalPrivacy==='function')cerrarModalPrivacy(); document.getElementById('privacy-modal-overlay').style.display='none'; document.getElementById('privacy-modal-overlay').classList.remove('active');"><i class="ph-bold ph-x"></i></button>
 <div class="privacy-modal-header">
 <h2><i class="ph-duotone ph-shield-check" style="color:var(--accent-color);font-size:1.5rem;"></i> Política de Privacidad</h2>
+<div id="privacy-modal-overlay" onclick="if(typeof cerrarModalPrivacy==='function')cerrarModalPrivacy(); document.getElementById('privacy-modal-overlay').style.display='none'; document.getElementById('privacy-modal-overlay').classList.remove('active');">
+<div class="privacy-modal-box" onclick="event.stopPropagation()">
+<button class="close-btn" onclick="if(typeof cerrarModalPrivacy==='function')cerrarModalPrivacy(); document.getElementById('privacy-modal-overlay').style.display='none'; document.getElementById('privacy-modal-overlay').classList.remove('active');"><i class="ph-bold ph-x"></i></button>
+<div class="privacy-modal-header">
+<h2><i class="ph-duotone ph-shield-check" style="color:var(--accent-color);font-size:1.5rem;"></i> Política de Privacidad</h2>
 <p>Información sobre el tratamiento de tus datos personales.</p>
 </div>
-<div class="privacy-modal-body" id="privacy-scroll-body">
+<div class="privacy-modal-body" id="privacy-scroll-body" onscroll="checkPrivacyScrolled(this)">
 <div class="privacy-section-title">Última actualización: 17 de junio de 2026</div>
 <p>Esta Política de Privacidad describe las políticas y procedimientos sobre la recopilación, uso y divulgación de tu información cuando utilizás el Servicio, y te informa sobre tus derechos de privacidad.</p>
 <p>Usamos tus Datos Personales para proveer y mejorar el Servicio. Al usar el Servicio, aceptás la recopilación y uso de información de acuerdo con esta Política de Privacidad. <strong>Estadios Virtuales</strong> — accesible desde <a href="https://www.estadiosvirtuales.com" target="_blank">www.estadiosvirtuales.com</a>.</p>
@@ -160,10 +165,20 @@
 <li><strong>Sitio Web</strong> — Estadios Virtuales, accesible desde www.estadiosvirtuales.com.</li>
 <li><strong>Vos / Usted</strong> — El individuo que accede o usa el Servicio.</li>
 </ul>
-<div class="privacy-section-title">Tipos de Datos que Recopilamos</div>
-<p><strong>Datos Personales:</strong> Al registrarte, podemos solicitarte información identificable como tu nombre completo, dirección de correo electrónico y foto de perfil (cuando usás el inicio de sesión con Google).</p>
 <div class="privacy-section-title">Contacto</div>
 <p>Si tenés preguntas sobre esta Política de Privacidad, contactanos en: <strong>estadiosvirtuales1@gmail.com</strong></p>
+</div>
+<div class="privacy-read-indicator" id="privacy-read-indicator">
+<i class="ph-bold ph-arrow-down"></i> Desplázate hasta el final para aceptar los términos
+</div>
+<div class="privacy-modal-footer">
+<div class="privacy-checkbox-row">
+<input type="checkbox" id="privacy-accept-check" onchange="togglePrivacyBtn()" disabled>
+<label for="privacy-accept-check">Acepto la Política de Privacidad y los Términos de Uso.</label>
+</div>
+<button id="btn-confirm-privacy" class="btn-3d primary" onclick="confirmarPrivacyYLogin()" disabled style="width:100%;">
+Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
+</button>
 </div>
 </div>
 </div>
