@@ -1767,6 +1767,7 @@ body.video-abierto .hero-section {
    ======================================================== */
 .modal-content.resultado-final-layout #modal-video-container,
 .modal-content.resultado-final #modal-video-container {
+    display: block !important;
     width: 100% !important;
     height: 100% !important;
     contain: none !important;
