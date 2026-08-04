@@ -3019,3 +3019,73 @@ body.video-abierto .hero-section {
     display: inline-block;
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 }
+/* ========================================================
+   REDEFINICIÓN DE MODO CLARO (ESPECIFICIDAD REFORZADA)
+   ======================================================== */
+html[data-theme="light"] {
+    --accent-color: #00a854 !important;
+    --accent-dim: rgba(0, 168, 84, 0.12) !important;
+    --accent-glow: rgba(0, 168, 84, 0.25) !important;
+
+    --bg-color: #f8fafc !important;
+    --surface-color: #ffffff !important;
+    --border-strong: #cbd5e1 !important;
+    --border-subtle: #e2e8f0 !important;
+    --text-main: #0f172a !important;
+    --text-muted: #475569 !important; /* Gris oscuro para legibilidad total */
+    --shadow-strong: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Forzar fondo y color en contenedores del modal */
+html[data-theme="light"] #profile-modal-body,
+html[data-theme="light"] .split-profile-layout,
+html[data-theme="light"] .right-dashboard-column {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+}
+
+/* Tarjetas/Contenedores del dashboard */
+html[data-theme="light"] .geoguessr-dash-box {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Forzar visibilidad de textos explicativos (Faltan XP, etc.) */
+html[data-theme="light"] .geoguessr-dash-box *,
+html[data-theme="light"] .xp-profile-section * {
+    color: #0f172a;
+}
+
+/* Calendario: Fuerza color en números inactivos */
+html[data-theme="light"] .calendar-cell {
+    color: #1e293b !important;
+    font-weight: 700 !important;
+}
+html[data-theme="light"] .calendar-cell.future-day,
+html[data-theme="light"] .calendar-cell.past-missed {
+    color: #64748b !important;
+    opacity: 1 !important;
+}
+
+/* Sección de XP y pelota */
+html[data-theme="light"] .xp-profile-section {
+    background: #ffffff !important;
+}
+html[data-theme="light"] .xp-profile-section img {
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.12)) !important;
+}
+
+/* Carta FUT */
+html[data-theme="light"] .fut-card {
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.18) !important;
+}
+
+/* Barra de progreso de XP */
+html[data-theme="light"] .xp-bar-big {
+    background: #e2e8f0 !important;
+}
+html[data-theme="light"] .xp-bar-big-fill {
+    background: #00a854 !important;
+    box-shadow: none !important;
+}
