@@ -51,7 +51,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
                 user_pos: getPref('ev_user_pos', 'DT'),
                 card_theme: getPref('ev_card_theme', 'arg'),
                 custom_nick: getPref('ev_custom_nick', ''),
-                avatar_hair: getPref('ev_avatar_hair', 'short'),
+                avatar_hair: getPref('ev_avatar_hair', '1.png'),
                 avatar_shirt: getPref('ev_avatar_shirt', 'solid'),
                 avatar_color: getPref('ev_avatar_color', '#00e676'),
                 avatar_color2: getPref('ev_avatar_color2', '#ffffff'),
