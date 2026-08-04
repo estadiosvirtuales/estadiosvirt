@@ -51,7 +51,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
                 user_pos: getPref('ev_user_pos', 'DT'),
                 card_theme: getPref('ev_card_theme', 'arg'),
                 custom_nick: getPref('ev_custom_nick', ''),
-                avatar_hair: getPref('ev_avatar_hair', '1.png'),
+                avatar_hair: getPref('ev_avatar_hair', 'short'),
                 avatar_shirt: getPref('ev_avatar_shirt', 'solid'),
                 avatar_color: getPref('ev_avatar_color', '#00e676'),
                 avatar_color2: getPref('ev_avatar_color2', '#ffffff'),
@@ -3346,26 +3346,26 @@ function calcularLogros(){
         const progActual=val-(tierActual*step);
         logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
     }
-    addTierLogro('voto','⭐','Catador',s.votosRealizados,5,' califs','common');
-    addTierLogro('trivia','💡','Curioso',s.triviasVistas,5,' trivias','common');
-    addTierLogro('guessr','✈️','Piloto',s.partidasJugadas,5,' partidas','common');
-    addTierLogro('liga','🗂️','Explorador',s.ligasExploradas.size,2,' ligas','common');
-    addTierLogro('aleat','🎲','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
-    addTierLogro('racha','🔥','Constante',s.rachaActual||1,7,' días','rare');
-    addTierLogro('maxscore','💥','Récord',s.maxScore||0,5000,' pts','epic');
-   addTierLogro('xptotal','🎨','Acumulador',s.xpTotal||0,10000,' XP','epic');
+    addTierLogro('voto','<img src="catador.png" class="logro-img-icon" alt="Catador">','Catador',s.votosRealizados,5,' califs','common');
+    addTierLogro('trivia','<img src="curioso.png" class="logro-img-icon" alt="Curioso">','Curioso',s.triviasVistas,5,' trivias','common');
+    addTierLogro('guessr','<img src="piloto.png" class="logro-img-icon" alt="Piloto">','Piloto',s.partidasJugadas,5,' partidas','common');
+    addTierLogro('liga','<img src="explorador.png" class="logro-img-icon" alt="Explorador">','Explorador',s.ligasExploradas.size,2,' ligas','common');
+    addTierLogro('aleat','<img src="aventurero.png" class="logro-img-icon" alt="Aventurero">','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
+    addTierLogro('racha','<img src="constante.png" class="logro-img-icon" alt="Constante">','Constante',s.rachaActual||1,7,' días','rare');
+    addTierLogro('maxscore','<img src="record.png" class="logro-img-icon" alt="Récord">','Récord',s.maxScore||0,5000,' pts','epic');
+    addTierLogro('xptotal','<img src="acumulador.png" class="logro-img-icon" alt="Acumulador">','Acumulador',s.xpTotal||0,10000,' XP','epic');
 
 // ⚔️ NUEVOS LOGROS COMPETITIVOS DEL VERSUS 1V1
-addTierLogro('versus_win','👑','Dominante',s.partidasGanadas||0,3,' victorias','epic');
+addTierLogro('versus_win','<img src="dominante.png" class="logro-img-icon" alt="Dominante">','Dominante',s.partidasGanadas||0,3,' victorias','epic');
 
-logros.push({id:'bienvenido',icon:'👋',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
-logros.push({id:'nick',icon:'🪪',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-logros.push({id:'primer_versus',icon:'⚡',name:'Bautismo de Fuego',rarity:'common',req:'Ganá tu primer Versus 1v1',unlocked:(s.partidasGanadas||0)>=1,pct:(s.partidasGanadas||0)>=1?100:0,pctLabel:''});
+logros.push({id:'bienvenido',icon:'<img src="primer-despegue.png" class="logro-img-icon" alt="Primer Despegue">',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
+logros.push({id:'nick',icon:'<img src="identidad.png" class="logro-img-icon" alt="Identidad">',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
+logros.push({id:'primer_versus',icon:'<img src="bautismo-de-fuego.png" class="logro-img-icon" alt="Bautismo de Fuego">',name:'Bautismo de Fuego',rarity:'common',req:'Ganá tu primer Versus 1v1',unlocked:(s.partidasGanadas||0)>=1,pct:(s.partidasGanadas||0)>=1?100:0,pctLabel:''});
 
-logros.push({id:'localista',icon:'📍',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
-logros.push({id:'unKm',icon:'🔬',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
-logros.push({id:'perfecto',icon:'💎',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
-logros.push({id:'ordenPerfecto',icon:'🃏',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
+logros.push({id:'localista',icon:'<img src="gps-humano.png" class="logro-img-icon" alt="GPS Humano">',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
+logros.push({id:'unKm',icon:'<img src="ojo-de-aguila.png" class="logro-img-icon" alt="Ojo de Águila">',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
+logros.push({id:'perfecto',icon:'<img src="perfeccionista.png" class="logro-img-icon" alt="Perfeccionista">',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
+logros.push({id:'ordenPerfecto',icon:'<img src="estratega.png" class="logro-img-icon" alt="Estratega">',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
     return logros;
 }
 // Función para rescatar al jugador si el oponente se desconecta o abandona (Adjudica Victoria)
