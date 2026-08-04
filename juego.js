@@ -293,21 +293,11 @@ const ESCUDOS_MAP = {
   'nzl': 'https://flagcdn.com/w80/nz.png'
 };
 
-function generarAvatarHTML(pelo, camisa, colorCamisa, numero, colorCamisa2) {
-    let peloHTML = `<div class="ac-hair-base" ${pelo==='bald'?'style="display:none;"':''}></div>`;
-    if(pelo === 'spiky') peloHTML += `<div class="ac-hair-spike"></div><div class="ac-hair-spike2"></div>`;
-    else if(pelo === 'long') peloHTML += `<div style="position:absolute;top:10px;left:-10%;width:120%;height:45px;background:#4a2e1b;border-radius:20px;z-index:-1;"></div>`;
-    else if(pelo === 'ponytail') peloHTML += `<div style="position:absolute;top:5px;right:-15px;width:25px;height:40px;background:#4a2e1b;border-radius:50%;z-index:-1;transform:rotate(-20deg);"></div>`;
-    let acHead = `<div class="ac-avatar"><div class="ac-ear left"></div><div class="ac-ear right"></div><div class="ac-head-base">${peloHTML}<div class="ac-eye left"></div><div class="ac-eye right"></div><div class="ac-nose"></div><div class="ac-mouth"></div></div></div>`;
-    let shirtBg = '';
-    let mainColor = colorCamisa || '#00e676';
-    let secColor = colorCamisa2 || '#ffffff';
-    if(camisa === 'striped') shirtBg = `background: repeating-linear-gradient(90deg, ${mainColor} 0, ${mainColor} 12px, ${secColor} 12px, ${secColor} 24px);`;
-    else if(camisa === 'band') shirtBg = `background: linear-gradient(180deg, ${mainColor} 35%, ${secColor} 35%, ${secColor} 65%, ${mainColor} 65%);`;
-    else if(camisa === 'diagonal') shirtBg = `background: linear-gradient(135deg, ${mainColor} 40%, ${secColor} 40%, ${secColor} 60%, ${mainColor} 60%);`;
-    else shirtBg = `background: linear-gradient(135deg, ${mainColor} 0%, color-mix(in srgb, ${mainColor} 40%, #111) 100%);`;
-    let body = `<div class="fut-player-body"><div class="fut-player-neck"></div><div class="fut-player-torso"><div class="fut-player-arm left"></div><div class="fut-player-shirt" style="${shirtBg}"><div class="fut-player-collar"></div><span class="fut-player-number">${numero}</span></div><div class="fut-player-arm right"></div></div></div>`;
-    return `<div style="transform: scale(1.15); transform-origin: bottom center; width: 100%; height: 100%; position: absolute; bottom: 0; display:flex; flex-direction:column; align-items:center;">${acHead}${body}</div>`;
+function generarAvatarHTML(avatarImg) {
+    let imgNombre = avatarImg || '1.png';
+    if (!imgNombre.includes('.')) imgNombre += '.png';
+    
+    return `<div class="ac-avatar-full"><img src="${imgNombre}" class="ac-avatar-img-full" alt="Avatar"></div>`;
 }
 
 let estadiosCargados=[],catalogoGlobal=[];
@@ -685,7 +675,7 @@ function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if
 function renderizarBotonLogin(){
 const container=document.getElementById('hero-google-profile');const u=obtenerUsuarioLogueado();
 if(u){
-let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -32px;">${generarAvatarHTML(getPref('ev_avatar_hair','short'), getPref('ev_avatar_shirt','solid'), getPref('ev_avatar_color','#00e676'), getPref('ev_avatar_num','10'), getPref('ev_avatar_color2','#ffffff'))}</div></div>`;
+let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -18px;">${generarAvatarHTML(getPref('ev_avatar_hair','1.png'))}</div></div>`;
 const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
 container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${getPref('ev_user_pos','DT')}</div></div>${avatarHTML}</div>`;
 ancestralHeaderNivel();
@@ -2892,13 +2882,13 @@ const strip=document.getElementById('theme-preview-strip-id');const chev=el.quer
 if(strip){const isOpen=strip.classList.toggle('open');if(chev)chev.className=isOpen?'ph-bold ph-caret-up design-chevron':'ph-bold ph-caret-down design-chevron';}
 };
 window.actualizarAvatarLive = function() {
-    const h = document.getElementById('avatar-hair-input').value;const s = document.getElementById('avatar-shirt-input').value;
-    const c = document.getElementById('avatar-shirt-color-input').value || '#00e676';const c2 = document.getElementById('avatar-shirt-color2-input')?.value || '#ffffff';
-    const n = document.getElementById('avatar-num-input').value || '10';const color2Container = document.getElementById('color2-container');
-    if (color2Container) { color2Container.style.display = (s === 'solid') ? 'none' : 'flex'; }
-    const container = document.getElementById('fut-avatar-live-container');if(container) { container.innerHTML = generarAvatarHTML(h, s, c, n, c2); }
-    const posInput = document.getElementById('avatar-pos-input');if(posInput) { const futPos = document.getElementById('fut-pos-display');if(futPos) futPos.textContent = posInput.value; }
-    const logoInput = document.getElementById('avatar-logo-input');if(logoInput) { const futClub = document.getElementById('fut-club-display');if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev']; }
+    const h = document.getElementById('avatar-hair-input').value;
+    const container = document.getElementById('fut-avatar-live-container');
+    if(container) { container.innerHTML = generarAvatarHTML(h); }
+    const posInput = document.getElementById('avatar-pos-input');
+    if(posInput) { const futPos = document.getElementById('fut-pos-display');if(futPos) futPos.textContent = posInput.value; }
+    const logoInput = document.getElementById('avatar-logo-input');
+    if(logoInput) { const futClub = document.getElementById('fut-club-display');if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev']; }
 };
 
 async function guardarPersonalizacion(){
@@ -2973,11 +2963,7 @@ async function guardarPersonalizacion(){
     const futName=document.getElementById('fut-name-display');
     if(futName){futName.textContent=nickNuevo||(u?u.name.split(' ')[0]:'Jugador');}
     
-    const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
-    const shirtInput=document.getElementById('avatar-shirt-input'); if(shirtInput) setPref('ev_avatar_shirt', shirtInput.value);
-    const colorInput=document.getElementById('avatar-shirt-color-input'); if(colorInput) setPref('ev_avatar_color', colorInput.value);
-    const color2Input=document.getElementById('avatar-shirt-color2-input'); if(color2Input) setPref('ev_avatar_color2', color2Input.value);
-    const numInput=document.getElementById('avatar-num-input'); if(numInput) setPref('ev_avatar_num', numInput.value || '10');
+   const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
     const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
 
     showToast('¡Personalización guardada! 🎉');
@@ -3046,7 +3032,7 @@ const xpPct = nivelIdx === NIVELES.length - 1 ? 100 : Math.min(100, Math.round((
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');let savedTheme=getPref('ev_card_theme','arg');
 const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
-const savedHair = getPref('ev_avatar_hair', 'short');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
+const savedHair = getPref('ev_avatar_hair', '1.png');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
 const activeCardClass=savedTheme;const googleBadge=u.loginMethod==='google'?`<div style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid var(--accent-color);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:800;color:var(--accent-color);margin-top:6px;"><i class="ph-fill ph-google-logo"></i> Vinculado</div>`:'';
 const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',l:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
 const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
@@ -3111,24 +3097,24 @@ document.getElementById('profile-modal-body').innerHTML=`
         
         <div class="left-fut-column">
             <div class="fut-card ${activeCardClass}" id="fut-card-main">
-                <div class="fut-card-shine"></div>
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
-                        <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
-                        <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                        <div class="fut-card-shine"></div>
+                        <div class="fut-top">
+                            <div class="fut-badge-meta">
+                                <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
+                                <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
+                                <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                            </div>
+                            <div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair)}</div>
+                        </div>
+                        <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
+                        <div class="fut-stats-row">
+                            <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
+                            <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
+                            <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
+                            <div class="fut-stat-item" title="Partidos ganados 1v1"><span class="fut-stat-num">${userStats.partidasGanadas || 0}</span><span class="fut-stat-label">PG</span></div>
+                            <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
+                        </div>
                     </div>
-                    <div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair, savedShirt, savedColor, savedNum, savedColor2)}</div>
-                </div>
-                <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
-                    <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
-                    <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
-                    <div class="fut-stat-item" title="Partidos ganados 1v1"><span class="fut-stat-num">${userStats.partidasGanadas || 0}</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
-                </div>
-            </div>
 
             <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
             
@@ -3137,36 +3123,46 @@ document.getElementById('profile-modal-body').innerHTML=`
                     <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)"><span style="display:flex;align-items:center;gap:6px;"><i class="ph-fill ph-palette"></i> Diseño de la Carta</span><i class="ph-bold ph-caret-down design-chevron" style="font-size:.9rem;"></i></div>
                     <div class="theme-preview-strip" id="theme-preview-strip-id">${themeStrip}</div>
                     <div class="avatar-divider"></div>
-                    <label class="avatar-nick-label">Apariencia y Escudo</label>
+                    <label class="avatar-nick-label">Seleccioná tu jugador/a</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
                         <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                            <option value="short">Pelo Corto</option><option value="long">Pelo Largo</option><option value="ponytail">Cola de Caballo</option><option value="bald">Pelado</option>
+                            <option value="1.png">Jugador 1</option>
+                            <option value="2.png">Jugador 2</option>
+                            <option value="3.png">Jugadora 3</option>
+                            <option value="4.png">Jugador 4</option>
+                            <option value="5.png">Jugadora 5</option>
+                            <option value="6.png">Jugador 6</option>
+                            <option value="7.png">Jugador 7</option>
+                            <option value="8.png">Jugadora 8</option>
+                            <option value="9.png">Jugadora 9</option>
+                            <option value="10.png">Jugadora 10</option>
+                            <option value="11.png">Jugadora 11</option>
+                            <option value="12.png">Jugador 12</option>
+                            <option value="13.png">Jugadora 13</option>
+                            <option value="14.png">Jugador 14</option>
+                            <option value="15.png">Jugador 15</option>
+                            <option value="16.png">Jugadora 16</option>
+                            <option value="17.png">Jugadora 17</option>
+                            <option value="18.png">Jugador 18</option>
+                            <option value="19.png">Jugador 19</option>
+                            <option value="20.png">Jugador 20</option>
+                            <option value="21.png">Jugadora 21</option>
+                            <option value="22.png">Jugador 22</option>
+                            <option value="23.png">Jugadora 23</option>
+                            <option value="24.png">Jugador 24</option>
+                            <option value="25.png">Jugadora 25</option>
+                            <option value="26.png">Jugador 26</option>
+                            <option value="27.png">Jugadora 27</option>
+                            <option value="28.png">Jugador 28</option>
                         </select>
                         <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                            <option value="ev">⚽ Estadios Virt.</option><option value="ar">🇦🇷 Argentina</option><option value="br">🇧🇷 Brasil</option><option value="es">🇪🇸 España</option><option value="it">🇮🇹 Italia</option><option value="fr">🇫🇷 Francia</option><option value="de">🇩🇪 Alemania</option><option value="gb-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Inglaterra</option><option value="pt">🇵🇹 Portugal</option><option value="uy">🇺🇾 Uruguay</option><option value="co">🇨🇴 Colombia</option><option value="mx">🇲🇽 México</option><option value="cl">🇨🇱 Chile</option><option value="nl">🇳🇱 Países Bajos</option><option value="be">🇧🇪 Bélgica</option><option value="hr">🇭🇷 Croacia</option><option value="us">🇺🇸 EE.UU.</option><option value="jp">🇯🇵 Japón</option><option value="can">🇨🇦 Canadá</option><option value="mar">🇲🇦 Marruecos</option><option value="sen">🇸🇳 Senegal</option><option value="kor">🇰🇷 Corea del Sur</option><option value="aus">🇦🇺 Australia</option><option value="sui">🇨🇭 Suiza</option><option value="ecu">🇪🇨 Ecuador</option><option value="per">🇵🇪 Perú</option><option value="den">🇩🇰 Danamarca</option><option value="srb">🇷🇸 Serbia</option><option value="pol">🇵🇱 Polonia</option><option value="wal">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Gales</option><option value="swe">🇸🇪 Suecia</option><option value="civ">🇨🇮 Costa de Marfil</option><option value="cmr">🇨🇲 Camerún</option><option value="gha">🇬🇭 Ghana</option><option value="nga">🇳🇬 Nigeria</option><option value="ksa">🇸🇦 Arabia Saudita</option><option value="irn">🇮🇷 Irán</option><option value="egy">🇪🇬 Egipto</option><option value="alg">🇩🇿 Argelia</option><option value="tun">🇹🇳 Túnez</option><option value="mli">🇲🇱 Malí</option><option value="qat">🇶🇦 Qatar</option><option value="par">🇵🇾 Paraguay</option><option value="ven">🇻🇪 Venezuela</option><option value="bol">🇧🇴 Bolivia</option><option value="crc">🇨🇷 Costa Rica</option><option value="pan">🇵🇦 Panamá</option><option value="jam">🇯🇲 Jamaica</option><option value="nzl">🇳🇿 Nueva Zelanda</option>
+                            <option value="ev">Estadios Virt.</option><option value="ar">Argentina</option><option value="br">Brasil</option><option value="es">España</option><option value="it">Italia</option><option value="fr">Francia</option><option value="de">Alemania</option><option value="gb-eng">󠁧󠁢Inglaterra</option><option value="pt">Portugal</option><option value="uy">Uruguay</option><option value="co">Colombia</option><option value="mx">México</option><option value="cl">Chile</option><option value="nl">Países Bajos</option><option value="be">Bélgica</option><option value="hr">Croacia</option><option value="us">EE.UU.</option><option value="jp">Japón</option><option value="can">Canadá</option><option value="mar">Marruecos</option><option value="sen">Senegal</option><option value="kor">Corea del Sur</option><option value="aus">Australia</option><option value="sui">Suiza</option><option value="ecu">Ecuador</option><option value="per">Perú</option><option value="den">Dinamarca</option><option value="srb">Serbia</option><option value="pol">Polonia</option><option value="wal">󠁧󠁢󠁷󠁬Gales</option><option value="swe">Suecia</option><option value="civ">Costa de Marfil</option><option value="cmr">Camerún</option><option value="gha">Ghana</option><option value="nga">Nigeria</option><option value="ksa">Arabia Saudita</option><option value="irn">Irán</option><option value="egy">Egipto</option><option value="alg">Argelia</option><option value="tun">Túnez</option><option value="mli">Malí</option><option value="qat">Qatar</option><option value="par">Paraguay</option><option value="ven">Venezuela</option><option value="bol">Bolivia</option><option value="crc">Costa Rica</option><option value="pan">Panamá</option><option value="jam">Jamaica</option><option value="nzl">Nueva Zelanda</option>
                         </select>
-                    </div>
-                    <label class="avatar-nick-label">Camiseta (Estilo, Color y N°)</label>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-                        <select class="avatar-pos-select" id="avatar-shirt-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                            <option value="solid">Lisa</option><option value="striped">Rayada</option><option value="band">Banda</option><option value="diagonal">Diagonal</option>
-                        </select>
-                        <input type="number" id="avatar-num-input" class="avatar-nickname-input" style="margin-bottom:0;" placeholder="Nº" min="0" max="99" oninput="actualizarAvatarLive()">
-                    </div>
-                    <div style="display:flex; gap:10px; margin-bottom:12px;">
-                        <div style="flex:1; display:flex; flex-direction:column; gap:4px;">
-                            <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR 1</span>
-                            <input type="color" id="avatar-shirt-color-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor}" oninput="actualizarAvatarLive()">
-                        </div>
-                        <div id="color2-container" style="flex:1; display:${savedShirt === 'solid' ? 'none' : 'flex'}; flex-direction:column; gap:4px;">
-                            <span style="font-size:0.65rem; color:var(--text-muted); font-weight:700;">COLOR 2</span>
-                            <input type="color" id="avatar-shirt-color2-input" class="avatar-pos-select" style="padding:2px 4px;height:42px;margin-bottom:0;width:100%;" value="${savedColor2}" oninput="actualizarAvatarLive()">
-                        </div>
                     </div>
                     <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
                         <option value="POR">POR — Arquero</option><option value="DFC">DFC — Def. Central</option><option value="LD">LD — Lateral Der.</option><option value="LI">LI — Lateral Izq.</option><option value="MCD">MCD — Medio Def.</option><option value="MC">MC — Mediocentro</option><option value="MCO">MCO — Medio Ofensivo</option><option value="MI">MI — Medio Izq.</option><option value="MD">MD — Medio Der.</option><option value="EI">EI — Extremo Izq.</option><option value="ED">ED — Extremo Der.</option><option value="SD">SD — Segundo Del.</option><option value="DC">DC — Delantero</option><option value="DT">DT — Técnico</option>
                     </select>
-                    <label class="avatar-nick-label">Apodo en el ranking</label>
+                    <label class="avatar-nick-label">Apodo</label>
                     <div class="avatar-nickname-row">
                         <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
                     </div>
