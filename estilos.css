@@ -3089,3 +3089,16 @@ html[data-theme="light"] .xp-bar-big-fill {
     background: #00a854 !important;
     box-shadow: none !important;
 }
+/* Tamaño base para celular (se mantiene en 180px) */
+.profile-level-icon-wrapper {
+    width: 180px;
+    height: 180px;
+}
+
+/* Tamaño exclusivo para PC / Computadoras (Pantallas de 992px en adelante) */
+@media (min-width: 992px) {
+    .profile-level-icon-wrapper {
+        width: 230px; /* <-- Modificá este número al tamaño que quieras para PC */
+        height: 230px; /* <-- Mismo número acá */
+    }
+}

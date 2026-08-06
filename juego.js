@@ -3177,7 +3177,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                 <div class="geoguessr-dash-box xp-profile-section" style="display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; overflow:hidden; padding: 20px 14px; background: radial-gradient(circle at center 35%, rgba(250, 204, 21, 0.12) 0%, transparent 65%), var(--bg-color);">
                     <div style="position:absolute; top:-50px; right:-50px; width:180px; height:180px; background:var(--accent-color); filter:blur(90px); opacity:0.15; border-radius:50%; pointer-events:none;"></div>
                     
-                    <div style="width:180px; height:180px; margin-bottom:6px; display:flex; align-items:center; justify-content:center;">
+                    <div class="profile-level-icon-wrapper" style="margin-bottom:6px; display:flex; align-items:center; justify-content:center;">
     <img src="${nivel.iconUrl}" style="width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 0 18px rgba(250, 204, 21, 0.65));">
 </div>
                     
