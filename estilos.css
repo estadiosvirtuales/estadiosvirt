@@ -96,8 +96,8 @@ body::after {
     background-size: 12px 12px; 
     
     /* 2. El molde SVG del mundo */
-    -webkit-mask-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
-    mask-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+    -webkit-mask-image: url('world_map.svg');
+    mask-image: url('world_map.svg');
     
     /* 3. MAGIA: Ocupa el 100% del ancho. El 'auto' bloquea cualquier deformación.
        El 'max(100vw, 900px)' evita que en el celular quede una franja minúscula. */

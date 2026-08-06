@@ -3449,18 +3449,28 @@ async function inicializarSupabaseSeguro() {
 }
 
 function precargarImagenesUI() {
+    // Lista limpia sin duplicar extensiones (.jpg / .png)
     const imagenes = [
         'liga-trofeo-header.png', 'medalla-oro.png', 'medalla-plata.png', 'medalla-bronce.png',
         'ranking-icon-solo.png', 'ranking-icon-1v1.png', 'ranking-icon-semanal.png',
         'liga-icon-puntaje.png', 'liga-icon-historial.png',
-        'podio.jpg', 'capacidad.jpg', 'antiguedad.jpg', 'mundo.jpg', 'avion.jpg', 'catalogo.jpg',
         'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-liga.png', 'icono-ranking.png',
-        'podio.png', 'capacidad.png', 'antiguedad.png', 'mundo.png', 'avion.png', 'catalogo.png'
+        'mundo.jpg', 'podio.jpg', 'avion.jpg', 'catalogo.jpg'
     ];
-    imagenes.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
+    
+    // Difiere la descarga para no bloquear el renderizado inicial de la página
+    const ejecutarPrecarga = () => {
+        imagenes.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(ejecutarPrecarga);
+    } else {
+        setTimeout(ejecutarPrecarga, 1500);
+    }
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
