@@ -3098,7 +3098,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* Tamaño exclusivo para PC / Computadoras (Pantallas de 992px en adelante) */
 @media (min-width: 992px) {
     .profile-level-icon-wrapper {
-        width: 250px; /* <-- Modificá este número al tamaño que quieras para PC */
-        height: 250px; /* <-- Mismo número acá */
+        width: 280px; /* <-- Modificá este número al tamaño que quieras para PC */
+        height: 280px; /* <-- Mismo número acá */
     }
 }
