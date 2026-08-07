@@ -2874,8 +2874,8 @@ function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/100
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
 
 window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');
-if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<i class="ph-bold ph-caret-up"></i> Ocultar personalización';btn.classList.add('primary');btn.classList.remove('secondary');}
-else{panel.classList.remove('open');btn.innerHTML='<i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta';btn.classList.remove('primary');btn.classList.add('secondary');}
+if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> OCULTAR PERSONALIZACIÓN ▲';}
+else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 };
 window.toggleCardDesigns=function(el){
 const strip=document.getElementById('theme-preview-strip-id');const chev=el.querySelector('.design-chevron');
@@ -3116,14 +3116,17 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                     </div>
 
-            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:250px;margin-top:16px;flex-shrink:0;"><i class="ph-duotone ph-paint-brush"></i> Personaliza tu carta</button>
+            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:280px;margin-top:16px;flex-shrink:0;"><img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼</button>
             
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
-                    <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)"><span style="display:flex;align-items:center;gap:6px;"><i class="ph-fill ph-palette"></i> Diseño de la Carta</span><i class="ph-bold ph-caret-down design-chevron" style="font-size:.9rem;"></i></div>
+                    <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)">
+                        <span style="display:flex;align-items:center;gap:8px;"><img src="diseño-de-la-carta.png" class="custom-label-icon" alt="Diseño"> DISEÑO DE LA CARTA</span>
+                        <span class="design-chevron">▼</span>
+                    </div>
                     <div class="theme-preview-strip" id="theme-preview-strip-id">${themeStrip}</div>
                     <div class="avatar-divider"></div>
-                    <label class="avatar-nick-label">Seleccioná tu jugador/a</label>
+                    <label class="avatar-nick-label"><img src="selecciona-tu-jugador.png" class="custom-label-icon" alt="Jugador"> SELECCIONÁ TU JUGADOR/A</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
                         <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
                             <option value="1.png">Jugador 1</option>
@@ -3159,14 +3162,15 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <option value="ev">Estadios Virt.</option><option value="ar">Argentina</option><option value="br">Brasil</option><option value="es">España</option><option value="it">Italia</option><option value="fr">Francia</option><option value="de">Alemania</option><option value="gb-eng">󠁧󠁢Inglaterra</option><option value="pt">Portugal</option><option value="uy">Uruguay</option><option value="co">Colombia</option><option value="mx">México</option><option value="cl">Chile</option><option value="nl">Países Bajos</option><option value="be">Bélgica</option><option value="hr">Croacia</option><option value="us">EE.UU.</option><option value="jp">Japón</option><option value="can">Canadá</option><option value="mar">Marruecos</option><option value="sen">Senegal</option><option value="kor">Corea del Sur</option><option value="aus">Australia</option><option value="sui">Suiza</option><option value="ecu">Ecuador</option><option value="per">Perú</option><option value="den">Dinamarca</option><option value="srb">Serbia</option><option value="pol">Polonia</option><option value="wal">󠁧󠁢󠁷󠁬Gales</option><option value="swe">Suecia</option><option value="civ">Costa de Marfil</option><option value="cmr">Camerún</option><option value="gha">Ghana</option><option value="nga">Nigeria</option><option value="ksa">Arabia Saudita</option><option value="irn">Irán</option><option value="egy">Egipto</option><option value="alg">Argelia</option><option value="tun">Túnez</option><option value="mli">Malí</option><option value="qat">Qatar</option><option value="par">Paraguay</option><option value="ven">Venezuela</option><option value="bol">Bolivia</option><option value="crc">Costa Rica</option><option value="pan">Panamá</option><option value="jam">Jamaica</option><option value="nzl">Nueva Zelanda</option>
                         </select>
                     </div>
+                    <label class="avatar-nick-label"><img src="posicion.png" class="custom-label-icon" alt="Posición"> POSICIÓN</label>
                     <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
                         <option value="POR">POR — Arquero</option><option value="DFC">DFC — Def. Central</option><option value="LD">LD — Lateral Der.</option><option value="LI">LI — Lateral Izq.</option><option value="MCD">MCD — Medio Def.</option><option value="MC">MC — Mediocentro</option><option value="MCO">MCO — Medio Ofensivo</option><option value="MI">MI — Medio Izq.</option><option value="MD">MD — Medio Der.</option><option value="EI">EI — Extremo Izq.</option><option value="ED">ED — Extremo Der.</option><option value="SD">SD — Segundo Del.</option><option value="DC">DC — Delantero</option><option value="DT">DT — Técnico</option>
                     </select>
-                    <label class="avatar-nick-label">Apodo</label>
+                    <label class="avatar-nick-label"><img src="apodo.png" class="custom-label-icon" alt="Apodo"> APODO</label>
                     <div class="avatar-nickname-row">
                         <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
                     </div>
-                    <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><i class="ph-bold ph-check"></i> Guardar cambios</button>
+                    <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><img src="guardar-cambios.png" class="btn-custom-icon" alt="Guardar"> GUARDAR CAMBIOS</button>
                 </div>
             </div>
         </div>
