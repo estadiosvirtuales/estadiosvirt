@@ -3117,7 +3117,10 @@ document.getElementById('profile-modal-body').innerHTML=`
                     </div>
 
             <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:280px;margin-top:16px;flex-shrink:0;"><img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼</button>
-            
+            <div class="share-btn-wrapper" style="margin-top:8px;">
+                <button class="btn-3d secondary" id="btn-share-card" onclick="compartirCartaFUT()"><i class="ph-bold ph-share-network"></i></button>
+                <div class="share-tooltip">Compartí tu carta</div>
+            </div>
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
                     <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)">
@@ -4340,5 +4343,70 @@ function abrirModalPrivacyDirecto() {
         if (ind) ind.style.display = 'none';
         if (chk) chk.disabled = false;
         if (btn) btn.disabled = false;
+    }
+}
+async function compartirCartaFUT() {
+    const cardElement = document.getElementById('fut-card-main');
+    if (!cardElement) {
+        showToast("No se encontró la carta para exportar", "ph-warning-circle", "danger");
+        return;
+    }
+
+    showToast("Generando imagen de tu carta...", "ph-hourglass", "info");
+
+    try {
+        // 1. Solución CORS: Convertir imágenes externas (flagcdn, github.io) a Base64 temporalmente
+        const images = cardElement.querySelectorAll('img');
+        const originalSrcs = [];
+
+        for (const img of images) {
+            if (img.src && !img.src.startsWith('data:')) {
+                originalSrcs.push({ img, src: img.src });
+                try {
+                    const response = await fetch(img.src, { mode: 'cors' });
+                    const blob = await response.blob();
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.readAsDataURL(blob);
+                    });
+                    img.src = base64;
+                } catch (e) {
+                    img.crossOrigin = "anonymous";
+                }
+            }
+        }
+
+        // 2. Fondo adaptativo del tema activo para las esquinas exteriores
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor || '#0e141b';
+
+        // 3. Captura en Alta Resolución (3x = 750x1155px ultranítida)
+        const dataUrl = await htmlToImage.toJpeg(cardElement, {
+            quality: 0.95,
+            pixelRatio: 3,
+            backgroundColor: bodyBg,
+            cacheBust: true,
+            style: {
+                transform: 'none',
+                margin: '0'
+            }
+        });
+
+        // 4. Restaurar URLs originales de las imágenes
+        originalSrcs.forEach(({ img, src }) => {
+            img.src = src;
+        });
+
+        // 5. Descarga automática del archivo JPG
+        const link = document.createElement('a');
+        link.download = 'mi-carta-estadiosvirtuales.jpg';
+        link.href = dataUrl;
+        link.click();
+
+        showToast("¡Carta descargada con éxito!", "ph-check-circle", "success");
+
+    } catch (error) {
+        console.error("Error al exportar la carta FUT:", error);
+        showToast("Error al generar la imagen de la carta", "ph-warning-circle", "danger");
     }
 }
