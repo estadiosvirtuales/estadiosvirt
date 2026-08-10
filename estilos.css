@@ -2447,6 +2447,11 @@ body.video-abierto .hero-section {
         align-self: stretch !important;
         height: auto !important;
     }
+    /* 📱 TAMAÑO DE LA ETIQUETA "TOP 25% COMUNIDAD" EXCLUSIVO PARA CELULAR */
+    .badge-ranking {
+        font-size: 0.45rem !important; /* <-- CAMBIÁ ESTE NÚMERO A TU GUSTO (Ej: 0.60rem para achicar o 0.75rem para agrandar) */
+        padding: 3px 8px !important;    /* Espaciado interno opcional */
+    }
 
     #customization-panel-wrapper {
         grid-column: 1 / span 2 !important;
