@@ -2874,7 +2874,7 @@ function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/100
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
 
 window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');
-if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> OCULTAR PERSONALIZACIÓN ▲';}
+if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 };
 window.toggleCardDesigns=function(el){

@@ -2372,16 +2372,29 @@ body.video-abierto .hero-section {
         justify-self: center !important;
     }
 
-    #btn-toggle-custom {
+    /* 1. Botón cuadrado de compartir pasa a la FILA 2 (entre la carta y el botón personalizado) */
+    .share-btn-wrapper {
         grid-column: 1 !important;
         grid-row: 2 !important;
-        padding: 0 10px 0 42px !important;
-        font-size: 0.55rem !important;
         width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: -45px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* 2. Botón "Personalizá tu carta" pasa a la FILA 3 (debajo del botón cuadrado) */
+    #btn-toggle-custom {
+        grid-column: 1 !important;
+        grid-row: 3 !important;
+        padding: 0 8px 0 32px !important;
+        font-size: 0.42rem !important;
+        width: 80% !important;
         max-width: 100% !important;
-        min-height: 44px !important;
-        height: 44px !important;
-        margin-top: 4px !important;
+        min-height: 25px !important;
+        height: 25px !important;
+        margin-top: -60px !important;
+        margin-left: 15px !important;
         box-sizing: border-box !important;
         white-space: nowrap !important;
         align-self: start !important;
@@ -2392,26 +2405,30 @@ body.video-abierto .hero-section {
     }
 
     #btn-toggle-custom .btn-custom-icon {
-        width: 100px !important;
-        height: 100px !important;
-        left: -35px !important;
+        width: 75px !important;
+        height: 75px !important;
+        left: -26px !important;
     }
 
-    .share-btn-wrapper {
-        grid-column: 1 !important;
-        grid-row: 3 !important;
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        margin-top: -30px !important;
-    }
-
+    /* 📱 CONTROL LIBRE EN CELULAR DEL BOTÓN CUADRADO DE COMPARTIR CARTA */
     #btn-share-card {
-        width: 38px !important;
-        min-height: 38px !important;
-        height: 38px !important;
-        font-size: 1.2rem !important;
-        border-radius: 12px !important;
+        width: 25px !important;          /* <-- Modificá el ANCHO */
+        height: 25px !important;         /* <-- Modificá el ALTO */
+        font-size: 0.7rem !important;      /* <-- Modificá el TAMAÑO DEL ÍCONO */
+        border-radius: 8px !important;   /* <-- Modificá los BORDES */
+
+        /* Márgenes libres por si querés moverlo */
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        margin-bottom: 0px !important;
+
+        min-width: 0 !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: 0 !important;
+        flex-shrink: 0 !important;
     }
 
     .xp-profile-section {
@@ -3404,29 +3421,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .avatar-save-btn .btn-custom-icon {
     width: 135px !important;  /* <-- Modificá este valor para achicar o agrandar */
     height: 135px !important; /* <-- Mantenelo igual al width */
-}/* Emparejamiento de dimensiones y estética del botón Compartir Carta */
-#btn-share-card {
-    min-height: 48px !important;
-    height: 48px !important;
-    padding: 0 16px !important;
-    font-size: 0.8rem !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.8px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-sizing: border-box !important;
-}
-
-@media (max-width: 768px) {
-    #btn-share-card {
-        min-height: 44px !important;
-        height: 44px !important;
-        font-size: 0.68rem !important;
-        padding: 0 10px !important;
-    }
-}
-/* Botón chico cuadrado con tooltip al posar el cursor */
+}/* Botón chico cuadrado con tooltip al posar el cursor (Base PC) */
 .share-btn-wrapper {
     position: relative;
     display: flex;
@@ -3434,16 +3429,15 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 #btn-share-card {
-    min-height: 48px !important;
-    height: 48px !important;
-    width: 48px !important;
-    padding: 0 !important;
-    font-size: 1.3rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-sizing: border-box !important;
-    border-radius: 14px !important;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 14px;
 }
 
 .share-tooltip {
