@@ -3008,15 +3008,15 @@ const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivel
 // 📊 Cálculo dinámico de estatus según el nivel del jugador
 let textoRankingTop = "⚽ COMUNIDAD";
 if (nivelIdx >= 50) {
-    textoRankingTop = "👑 TOP 0.1% COMUNIDAD";
+    textoRankingTop = "TOP 0.1% COMUNIDAD";
 } else if (nivelIdx >= 35) {
-    textoRankingTop = "💎 TOP 1% COMUNIDAD";
+    textoRankingTop = "TOP 1% COMUNIDAD";
 } else if (nivelIdx >= 25) {
-    textoRankingTop = "🏆 TOP 5% COMUNIDAD";
+    textoRankingTop = "TOP 5% COMUNIDAD";
 } else if (nivelIdx >= 15) {
-    textoRankingTop = "🔥 TOP 10% COMUNIDAD";
+    textoRankingTop = "TOP 10% COMUNIDAD";
 } else if (nivelIdx >= 5) {
-    textoRankingTop = "🎯 TOP 25% COMUNIDAD";
+    textoRankingTop = "TOP 25% COMUNIDAD";
 } else {
     textoRankingTop = "🌱 PROMESA";
 }
