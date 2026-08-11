@@ -3160,6 +3160,28 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <option value="26.png">Jugador 26</option>
                             <option value="27.png">Jugadora 27</option>
                             <option value="28.png">Jugador 28</option>
+                            <option value="29.png">Jugador 29</option>
+                            <option value="30.png">Jugador 30</option>
+                            <option value="31.png">Jugador 31</option>
+                            <option value="32.png">Jugador 32</option>
+                            <option value="33.png">Jugador 33</option>
+                            <option value="34.png">Jugador 34</option>
+                            <option value="35.png">Jugador 35</option>
+                            <option value="36.png">Jugador 36</option>
+                            <option value="37.png">Jugador 37</option>
+                            <option value="38.png">Jugador 38</option>
+                            <option value="39.png">Jugador 39</option>
+                            <option value="40.png">Jugador 40</option>
+                            <option value="41.png">Jugador 41</option>
+                            <option value="42.png">Jugador 42</option>
+                            <option value="43.png">Jugadora 43</option>
+                            <option value="44.png">Jugador 44</option>
+                            <option value="45.png">Jugador 45</option>
+                            <option value="46.png">Jugador 46</option>
+                            <option value="47.png">Jugador 47</option>
+                            <option value="48.png">Jugador 48</option>
+                            <option value="49.png">Jugador 49</option>
+                            <option value="50.png">Jugador 50</option>
                         </select>
                         <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
                             <option value="ev">Estadios Virt.</option><option value="ar">Argentina</option><option value="br">Brasil</option><option value="es">España</option><option value="it">Italia</option><option value="fr">Francia</option><option value="de">Alemania</option><option value="gb-eng">󠁧󠁢Inglaterra</option><option value="pt">Portugal</option><option value="uy">Uruguay</option><option value="co">Colombia</option><option value="mx">México</option><option value="cl">Chile</option><option value="nl">Países Bajos</option><option value="be">Bélgica</option><option value="hr">Croacia</option><option value="us">EE.UU.</option><option value="jp">Japón</option><option value="can">Canadá</option><option value="mar">Marruecos</option><option value="sen">Senegal</option><option value="kor">Corea del Sur</option><option value="aus">Australia</option><option value="sui">Suiza</option><option value="ecu">Ecuador</option><option value="per">Perú</option><option value="den">Dinamarca</option><option value="srb">Serbia</option><option value="pol">Polonia</option><option value="wal">󠁧󠁢󠁷󠁬Gales</option><option value="swe">Suecia</option><option value="civ">Costa de Marfil</option><option value="cmr">Camerún</option><option value="gha">Ghana</option><option value="nga">Nigeria</option><option value="ksa">Arabia Saudita</option><option value="irn">Irán</option><option value="egy">Egipto</option><option value="alg">Argelia</option><option value="tun">Túnez</option><option value="mli">Malí</option><option value="qat">Qatar</option><option value="par">Paraguay</option><option value="ven">Venezuela</option><option value="bol">Bolivia</option><option value="crc">Costa Rica</option><option value="pan">Panamá</option><option value="jam">Jamaica</option><option value="nzl">Nueva Zelanda</option>
