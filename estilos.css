@@ -1220,8 +1220,21 @@ body.video-abierto .hero-section {
 #profile-modal *::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
-#btn-toggle-custom{transition:all .3s ease}
-#btn-toggle-custom.active-panel{background:var(--accent-dim);border-color:var(--accent-color);color:var(--accent-color)}
+##btn-toggle-custom { transition: all .3s ease; }
+
+/* Mantiene el tono neutro/oscuro al pasar el mouse, hacer clic o tener el panel abierto */
+#btn-toggle-custom:hover,
+#btn-toggle-custom:active,
+#btn-toggle-custom:focus,
+#btn-toggle-custom.active-panel,
+#btn-share-card:hover,
+#btn-share-card:active,
+#btn-share-card:focus {
+    background: var(--surface-color) !important;
+    border-color: var(--border-strong) !important;
+    color: var(--text-main) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
 .xp-profile-section{background:var(--bg-color);border:2px solid var(--border-strong);border-radius:16px;padding:16px;margin-bottom:14px}
 .xp-level-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .xp-level-name{font-size:1rem;font-weight:900}
