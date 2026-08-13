@@ -2372,32 +2372,36 @@ body.video-abierto .hero-section {
         justify-self: center !important;
     }
 
-    /* 1. Botón cuadrado de compartir pasa a la FILA 2 (entre la carta y el botón personalizado) */
+    /* 1. Botón cuadrado de compartir ubicado a la derecha */
     .share-btn-wrapper {
         grid-column: 1 !important;
         grid-row: 2 !important;
-        width: 100% !important;
+        width: auto !important;
         display: flex !important;
-        justify-content: center !important;
-        margin-top: -45px !important;
-        margin-bottom: 8px !important;
+        justify-content: flex-end !important;
+        justify-self: end !important;
+        align-self: start !important;
+        margin-top: -55px !important;
+        margin-right: 2px !important;
     }
 
-    /* 2. Botón "Personalizá tu carta" pasa a la FILA 3 (debajo del botón cuadrado) */
+    /* 2. Botón "Personalizá tu carta" alineado correctamente sin sobresalir */
     #btn-toggle-custom {
         grid-column: 1 !important;
-        grid-row: 3 !important;
-        padding: 0 8px 0 32px !important;
-        font-size: 0.42rem !important;
-        width: 80% !important;
+        grid-row: 2 !important;
+        padding: 0 6px 0 20px !important;
+        font-size: 0.36rem !important;
+        letter-spacing: 0.2px !important;
+        width: calc(100% - 48px) !important;
         max-width: 100% !important;
         min-height: 25px !important;
         height: 25px !important;
-        margin-top: -60px !important;
-        margin-left: 15px !important;
+        margin-top: -55px !important;
+        margin-left: 16px !important;
         box-sizing: border-box !important;
         white-space: nowrap !important;
         align-self: start !important;
+        justify-self: start !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -2407,7 +2411,7 @@ body.video-abierto .hero-section {
     #btn-toggle-custom .btn-custom-icon {
         width: 75px !important;
         height: 75px !important;
-        left: -35px !important;
+        left: -32px !important;
     }
 
     /* 📱 CONTROL LIBRE EN CELULAR DEL BOTÓN CUADRADO DE COMPARTIR CARTA */
@@ -2433,7 +2437,7 @@ body.video-abierto .hero-section {
 
     .xp-profile-section {
         grid-column: 2 !important;
-        grid-row: 1 / span 3 !important;
+        grid-row: 1 / span 2 !important;
         min-width: 0 !important;
         width: 100% !important;
         padding: 10px 8px !important;
@@ -2447,74 +2451,16 @@ body.video-abierto .hero-section {
         align-self: stretch !important;
         height: auto !important;
     }
-    /* 📱 TAMAÑO DE LA ETIQUETA "TOP 25% COMUNIDAD" EXCLUSIVO PARA CELULAR */
-    .badge-ranking {
-        font-size: 0.45rem !important; /* <-- CAMBIÁ ESTE NÚMERO A TU GUSTO (Ej: 0.60rem para achicar o 0.75rem para agrandar) */
-        padding: 3px 8px !important;    /* Espaciado interno opcional */
-    }
 
     #customization-panel-wrapper {
         grid-column: 1 / span 2 !important;
-        grid-row: 4 !important;
+        grid-row: 3 !important;
         width: 100% !important;
-    }
-
-    .avatar-picker {
-        max-width: 100% !important;
-        padding: 14px 12px !important;
-        margin-top: 6px !important;
-    }
-
-    .avatar-picker label {
-        font-size: 0.72rem !important;
-    }
-
-    .avatar-pos-select,
-    .avatar-nickname-input {
-        font-size: 0.8rem !important;
-        padding: 8px 10px !important;
-    }
-
-    /* 🖼️ CONTROL INDIVIDUAL DE ÍCONOS EN CELULAR */
-
-    /* 1. Ícono de "DISEÑO DE LA CARTA" */
-    .avatar-picker img[src*="diseño-de-la-carta"] {
-        width: 100px !important;  /* <-- Modificá tamaño exclusivo */
-        height: 100px !important;
-        left: -25px !important;  /* <-- Modificá posición exclusiva */
-    }
-
-    /* 2. Ícono de "SELECCIONÁ TU JUGADOR/A" */
-    .avatar-picker img[src*="selecciona-tu-jugador"] {
-        width: 90px !important;  /* <-- Modificá tamaño exclusivo */
-        height: 90px !important;
-        left: -15px !important;  /* <-- Modificá posición exclusiva */
-    }
-
-    /* 3. Ícono de "POSICIÓN" */
-    .avatar-picker img[src*="posicion"] {
-        width: 60px !important;  /* <-- Modificá tamaño exclusivo */
-        height: 60px !important;
-        left: -2px !important;  /* <-- Modificá posición exclusiva */
-    }
-
-    /* 4. Ícono de "APODO" */
-    .avatar-picker img[src*="apodo"] {
-        width: 60px !important;  /* <-- Modificá tamaño exclusivo */
-        height: 60px !important;
-        left: -5px !important;  /* <-- Modificá posición exclusiva */
-    }
-
-    /* 5. Ícono de "GUARDAR CAMBIOS" */
-    .avatar-save-btn .btn-custom-icon {
-        width: 120px !important;  /* <-- Modificá tamaño exclusivo */
-        height: 120px !important;
-        left: -50px !important;  /* <-- Modificá posición exclusiva */
     }
 
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
-        grid-row: 5 !important;
+        grid-row: 4 !important;
         padding: 10px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
@@ -2522,25 +2468,9 @@ body.video-abierto .hero-section {
         box-sizing: border-box !important;
     }
 
-    .calendar-matrix {
-        padding: 8px 4px !important;
-        gap: 4px !important;
-        margin-top: 6px !important;
-    }
-
-    .calendar-cell {
-        width: 26px !important;
-        height: 26px !important;
-        font-size: 0.72rem !important;
-    }
-
-    .calendar-day-label {
-        font-size: 0.62rem !important;
-    }
-
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
-        grid-row: 6 !important;
+        grid-row: 5 !important;
         padding: 10px 12px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
