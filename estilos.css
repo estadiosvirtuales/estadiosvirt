@@ -1113,6 +1113,67 @@ body.video-abierto .hero-section {
     pointer-events: none;
     z-index: 5;
 }
+.avatar-stepper-box {
+    width: 100%;
+    background: rgba(8, 12, 20, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0 4px;
+    height: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    transition: all .25s ease;
+    user-select: none;
+}
+.avatar-stepper-box:hover, .avatar-stepper-box:focus-within {
+    border-color: var(--accent-color);
+    background-color: rgba(12, 20, 32, 0.95);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+.avatar-stepper-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    width: 28px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    transition: transform 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
+}
+.avatar-stepper-btn:hover {
+    color: var(--accent-hover);
+    transform: scale(1.2);
+}
+.avatar-stepper-btn:active {
+    transform: scale(0.9);
+}
+.avatar-stepper-label {
+    font-size: .85rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-align: center;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2px;
+}
+
+[data-theme="light"] .avatar-stepper-box {
+    background-color: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+}
+[data-theme="light"] .avatar-stepper-label {
+    color: #0f172a !important;
+}
+
 .avatar-nickname-row {
     display: flex;
     gap: 7px;

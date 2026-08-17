@@ -2881,6 +2881,45 @@ window.toggleCardDesigns=function(el){
 const strip=document.getElementById('theme-preview-strip-id');const chev=el.querySelector('.design-chevron');
 if(strip){const isOpen=strip.classList.toggle('open');if(chev)chev.className=isOpen?'ph-bold ph-caret-up design-chevron':'ph-bold ph-caret-down design-chevron';}
 };
+const AVATARES_LISTA = [
+    { id: '1.png', label: 'Jugador 1' }, { id: '2.png', label: 'Jugador 2' }, { id: '3.png', label: 'Jugador 3' },
+    { id: '4.png', label: 'Jugador 4' }, { id: '5.png', label: 'Jugador 5' }, { id: '6.png', label: 'Jugador 6' },
+    { id: '7.png', label: 'Jugador 7' }, { id: '8.png', label: 'Jugador 8' }, { id: '9.png', label: 'Jugador 9' },
+    { id: '10.png', label: 'Jugador 10' }, { id: '11.png', label: 'Jugador 11' }, { id: '12.png', label: 'Jugador 12' },
+    { id: '13.png', label: 'Jugador 13' }, { id: '14.png', label: 'Jugador 14' }, { id: '15.png', label: 'Jugador 15' },
+    { id: '16.png', label: 'Jugador 16' }, { id: '17.png', label: 'Jugador 17' }, { id: '18.png', label: 'Jugador 18' },
+    { id: '19.png', label: 'Jugador 19' }, { id: '20.png', label: 'Jugador 20' }, { id: '21.png', label: 'Jugador 21' },
+    { id: '22.png', label: 'Jugador 22' }, { id: '23.png', label: 'Jugador 23' }, { id: '24.png', label: 'Jugador 24' },
+    { id: '25.png', label: 'Jugador 25' }, { id: '26.png', label: 'Jugador 26' }, { id: '27.png', label: 'Jugador 27' },
+    { id: '28.png', label: 'Jugador 28' }, { id: '29.png', label: 'Jugador 29' }, { id: '30.png', label: 'Jugador 30' },
+    { id: '31.png', label: 'Jugadora 31' }, { id: '32.png', label: 'Jugador 32' }, { id: '33.png', label: 'Jugadora 33' },
+    { id: '34.png', label: 'Jugador 34' }, { id: '35.png', label: 'Jugador 35' }, { id: '36.png', label: 'Jugador 36' },
+    { id: '37.png', label: 'Jugadora 37' }, { id: '38.png', label: 'Jugador 38' }, { id: '39.png', label: 'Jugador 39' },
+    { id: '40.png', label: 'Jugadora 40' }, { id: '41.png', label: 'Jugador 41' }, { id: '42.png', label: 'Jugador 42' },
+    { id: '43.png', label: 'Jugadora 43' }, { id: '44.png', label: 'Jugador 44' }, { id: '45.png', label: 'Jugadora 45' },
+    { id: '46.png', label: 'Jugador 46' }, { id: '47.png', label: 'Jugador 47' }, { id: '48.png', label: 'Jugadora 48' },
+    { id: '49.png', label: 'Jugador 49' }, { id: '50.png', label: 'Jugador 50' }
+];
+
+function obtenerNombreAvatar(id) {
+    const item = AVATARES_LISTA.find(a => a.id === id);
+    return item ? item.label : 'Jugador 1';
+}
+
+window.cambiarAvatarPaso = function(direccion) {
+    const input = document.getElementById('avatar-hair-input');
+    const label = document.getElementById('avatar-hair-label');
+    if (!input) return;
+    let valActual = input.value || '1.png';
+    let idx = AVATARES_LISTA.findIndex(a => a.id === valActual);
+    if (idx === -1) idx = 0;
+    idx = (idx + direccion + AVATARES_LISTA.length) % AVATARES_LISTA.length;
+    const nuevo = AVATARES_LISTA[idx];
+    input.value = nuevo.id;
+    if (label) label.textContent = nuevo.label;
+    actualizarAvatarLive();
+};
+
 window.actualizarAvatarLive = function() {
     const h = document.getElementById('avatar-hair-input').value;
     const container = document.getElementById('fut-avatar-live-container');
@@ -3131,58 +3170,12 @@ document.getElementById('profile-modal-body').innerHTML=`
                     <div class="avatar-divider"></div>
                     <label class="avatar-nick-label"><img src="selecciona-tu-jugador.png" class="custom-label-icon" alt="Jugador"> SELECCIONÁ TU JUGADOR/A</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                        <select class="avatar-pos-select" id="avatar-hair-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                            <option value="1.png">Jugador 1</option>
-                            <option value="2.png">Jugador 2</option>
-                            <option value="3.png">Jugador 3</option>
-                            <option value="4.png">Jugador 4</option>
-                            <option value="5.png">Jugador 5</option>
-                            <option value="6.png">Jugador 6</option>
-                            <option value="7.png">Jugador 7</option>
-                            <option value="8.png">Jugador 8</option>
-                            <option value="9.png">Jugador 9</option>
-                            <option value="10.png">Jugador 10</option>
-                            <option value="11.png">Jugador 11</option>
-                            <option value="12.png">Jugador 12</option>
-                            <option value="13.png">Jugador 13</option>
-                            <option value="14.png">Jugador 14</option>
-                            <option value="15.png">Jugador 15</option>
-                            <option value="16.png">Jugador 16</option>
-                            <option value="17.png">Jugador 17</option>
-                            <option value="18.png">Jugador 18</option>
-                            <option value="19.png">Jugador 19</option>
-                            <option value="20.png">Jugador 20</option>
-                            <option value="21.png">Jugador 21</option>
-                            <option value="22.png">Jugador 22</option>
-                            <option value="23.png">Jugador 23</option>
-                            <option value="24.png">Jugador 24</option>
-                            <option value="25.png">Jugador 25</option>
-                            <option value="26.png">Jugador 26</option>
-                            <option value="27.png">Jugador 27</option>
-                            <option value="28.png">Jugador 28</option>
-                            <option value="29.png">Jugador 29</option>
-                            <option value="30.png">Jugador 30</option>
-                            <option value="31.png">Jugadora 31</option>
-                            <option value="32.png">Jugador 32</option>
-                            <option value="33.png">Jugadora 33</option>
-                            <option value="34.png">Jugador 34</option>
-                            <option value="35.png">Jugador 35</option>
-                            <option value="36.png">Jugador 36</option>
-                            <option value="37.png">Jugadora 37</option>
-                            <option value="38.png">Jugador 38</option>
-                            <option value="39.png">Jugador 39</option>
-                            <option value="40.png">Jugadora 40</option>
-                            <option value="41.png">Jugador 41</option>
-                            <option value="42.png">Jugador 42</option>
-                            <option value="43.png">Jugadora 43</option>
-                            <option value="44.png">Jugador 44</option>
-                            <option value="45.png">Jugadora 45</option>
-                            <option value="46.png">Jugador 46</option>
-                            <option value="47.png">Jugador 47</option>
-                            <option value="48.png">Jugadora 48</option>
-                            <option value="49.png">Jugador 49</option>
-                            <option value="50.png">Jugador 50</option>
-                        </select>
+                        <div class="avatar-stepper-box">
+                            <button type="button" class="avatar-stepper-btn" onclick="cambiarAvatarPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
+                            <span class="avatar-stepper-label" id="avatar-hair-label">${obtenerNombreAvatar(savedHair)}</span>
+                            <button type="button" class="avatar-stepper-btn" onclick="cambiarAvatarPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
+                            <input type="hidden" id="avatar-hair-input" value="${savedHair}">
+                        </div>
                         <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
                             <option value="ev">Estadios Virt.</option><option value="ar">Argentina</option><option value="br">Brasil</option><option value="es">España</option><option value="it">Italia</option><option value="fr">Francia</option><option value="de">Alemania</option><option value="gb-eng">󠁧󠁢Inglaterra</option><option value="pt">Portugal</option><option value="uy">Uruguay</option><option value="co">Colombia</option><option value="mx">México</option><option value="cl">Chile</option><option value="nl">Países Bajos</option><option value="be">Bélgica</option><option value="hr">Croacia</option><option value="us">EE.UU.</option><option value="jp">Japón</option><option value="can">Canadá</option><option value="mar">Marruecos</option><option value="sen">Senegal</option><option value="kor">Corea del Sur</option><option value="aus">Australia</option><option value="sui">Suiza</option><option value="ecu">Ecuador</option><option value="per">Perú</option><option value="den">Dinamarca</option><option value="srb">Serbia</option><option value="pol">Polonia</option><option value="wal">󠁧󠁢󠁷󠁬Gales</option><option value="swe">Suecia</option><option value="civ">Costa de Marfil</option><option value="cmr">Camerún</option><option value="gha">Ghana</option><option value="nga">Nigeria</option><option value="ksa">Arabia Saudita</option><option value="irn">Irán</option><option value="egy">Egipto</option><option value="alg">Argelia</option><option value="tun">Túnez</option><option value="mli">Malí</option><option value="qat">Qatar</option><option value="par">Paraguay</option><option value="ven">Venezuela</option><option value="bol">Bolivia</option><option value="crc">Costa Rica</option><option value="pan">Panamá</option><option value="jam">Jamaica</option><option value="nzl">Nueva Zelanda</option>
                         </select>
