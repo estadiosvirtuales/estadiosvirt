@@ -550,18 +550,18 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <button class="close-btn" onclick="cerrarModalVideo()"><i class="ph-bold ph-x"></i></button>
 <div id="modal-video-container" class="video-container"></div>
 <div id="game-ui">
+<div id="taunts-container" style="display: none; gap: 8px; justify-content: center; margin-bottom: 8px; width: 100%;">
+    <button onclick="mandarTaunt('🥶')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🥶</button>
+    <button onclick="mandarTaunt('🔥')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🔥</button>
+    <button onclick="mandarTaunt('👑')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">👑</button>
+    <button onclick="mandarTaunt('🤡')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🤡</button>
+</div>
 <div class="rounds-progress" id="rounds-progress"></div>
 <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
 <div id="map-guess-container">
 <div class="map-hint-overlay" id="map-hint-overlay">
 <div class="map-hint-text"><i class="ph-bold ph-map-pin" style="color:var(--accent-color);"></i> Tocá el mapa para clavar un pin</div>
 </div>
-</div>
-<div id="taunts-container" style="display: none; gap: 8px; justify-content: center; margin-bottom: 12px; width: 100%;">
-    <button onclick="mandarTaunt('🥶')" class="btn-3d secondary" style="padding: 8px 14px; font-size: 1.2rem; box-shadow: none; flex: 1;">🥶</button>
-    <button onclick="mandarTaunt('🔥')" class="btn-3d secondary" style="padding: 8px 14px; font-size: 1.2rem; box-shadow: none; flex: 1;">🔥</button>
-    <button onclick="mandarTaunt('👑')" class="btn-3d secondary" style="padding: 8px 14px; font-size: 1.2rem; box-shadow: none; flex: 1;">👑</button>
-    <button onclick="mandarTaunt('🤡')" class="btn-3d secondary" style="padding: 8px 14px; font-size: 1.2rem; box-shadow: none; flex: 1;">🤡</button>
 </div>
 <button id="game-action-btn" class="btn-3d secondary" style="width:100%;padding:15px;font-size:1rem;">
 <i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa

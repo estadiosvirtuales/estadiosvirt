@@ -1551,10 +1551,10 @@ body.video-abierto .hero-section {
     padding: 0 !important;
 }
 
-/* 📺 EN CELULAR: El video pasa a ocupar el 54% de la pantalla (más grande que el mapa) y la UI el 46% */
-.modal-content.stadium-guessr-layout{height:88vh!important; padding: 0 !important;}
-.modal-content.stadium-guessr-layout .video-container{height:54%!important;border-radius:18px 18px 0 0!important}
-.modal-content.stadium-guessr-layout #game-ui{height:46%!important;padding:8px 12px!important;display:flex!important;flex-direction:column!important;border-radius:0 0 18px 18px!important;overflow-y:auto!important;scrollbar-width:none;}
+/* 📺 EN CELULAR: El video pasa a ocupar el 50% de la pantalla y la UI el 50% para calce perfecto */
+.modal-content.stadium-guessr-layout{height:92vh!important; padding: 0 !important;}
+.modal-content.stadium-guessr-layout .video-container{height:48%!important;border-radius:18px 18px 0 0!important}
+.modal-content.stadium-guessr-layout #game-ui{height:52%!important;padding:8px 12px 10px!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;border-radius:0 0 18px 18px!important;overflow-y:auto!important;scrollbar-width:none;}
 .modal-content.stadium-guessr-layout #game-ui::-webkit-scrollbar{display:none;}
 .modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:110px!important;margin-bottom:8px!important}
 
