@@ -902,6 +902,16 @@ body.video-abierto .hero-section {
 .fut-card.pan { background: linear-gradient(135deg, #005293 0%, #ffffff 50%, #d21034 100%); color: #000; border-color: #005293; }
 .fut-card.jam { background: linear-gradient(135deg, #009b3a 0%, #fed100 50%, #000000 100%); color: #fff; border-color: #009b3a; }
 .fut-card.nzl { background: linear-gradient(135deg, #ffffff 0%, #000000 100%); color: #000; border-color: #000000; }
+.fut-card.sco { background: linear-gradient(135deg, #005eb8 0%, #ffffff 50%, #005eb8 100%); color: #fff; border-color: #005eb8; }
+.fut-card.nor { background: linear-gradient(135deg, #ba0c2f 0%, #00205b 50%, #ffffff 100%); color: #fff; border-color: #ba0c2f; }
+.fut-card.aut { background: linear-gradient(135deg, #ed2939 0%, #ffffff 50%, #ed2939 100%); color: #000; border-color: #ed2939; }
+.fut-card.gre { background: linear-gradient(135deg, #0d5eaf 0%, #ffffff 50%, #0d5eaf 100%); color: #000; border-color: #0d5eaf; }
+.fut-card.tur { background: linear-gradient(135deg, #e30a17 0%, #ffffff 100%); color: #fff; border-color: #e30a17; }
+.fut-card.ukr { background: linear-gradient(135deg, #0057b7 0%, #ffd700 100%); color: #fff; border-color: #ffd700; }
+.fut-card.cze { background: linear-gradient(135deg, #11457e 0%, #ffffff 50%, #d7141a 100%); color: #000; border-color: #d7141a; }
+.fut-card.rsa { background: linear-gradient(135deg, #007749 0%, #ffb81c 35%, #e03c31 65%, #001489 100%); color: #fff; border-color: #ffb81c; }
+.fut-card.hon { background: linear-gradient(135deg, #0073cf 0%, #ffffff 50%, #0073cf 100%); color: #000; border-color: #0073cf; }
+.fut-card.irl { background: linear-gradient(135deg, #169b62 0%, #ffffff 50%, #ff883e 100%); color: #000; border-color: #169b62; }
 .fut-card-shine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%,rgba(255,255,255,.04) 100%);pointer-events:none}
 .fut-top{display:flex;width:100%;height:50%;margin-top:15px}
 .fut-badge-meta{width:35%;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
@@ -1036,9 +1046,147 @@ body.video-abierto .hero-section {
 .td-bol { background: linear-gradient(135deg, #d52b1e, #fcd116, #007a33); color: #fff; }
 .td-crc { background: linear-gradient(135deg, #002b7f, #fff, #ce1126); color: #000; }
 .td-pan { background: linear-gradient(135deg, #005293, #fff, #d21034); color: #000; }
-.td-jam { background: linear-gradient(135deg, #009b3a, #fed100, #00); color: #fff; }
+.td-jam { background: linear-gradient(135deg, #009b3a, #fed100, #000); color: #fff; }
 .td-nzl { background: linear-gradient(135deg, #fff, #000); color: #000; }
+.td-sco { background: linear-gradient(135deg, #005eb8, #fff); color: #fff; }
+.td-nor { background: linear-gradient(135deg, #ba0c2f, #00205b); color: #fff; }
+.td-aut { background: linear-gradient(180deg, #ed2939 33%, #fff 33%, #fff 66%, #ed2939 66%); color: #000; }
+.td-gre { background: linear-gradient(135deg, #0d5eaf, #ffffff); color: #000; }
+.td-tur { background: linear-gradient(135deg, #e30a17, #ffffff); color: #fff; }
+.td-ukr { background: linear-gradient(180deg, #0057b7 50%, #ffd700 50%); color: #000; }
+.td-cze { background: linear-gradient(135deg, #11457e, #ffffff, #d7141a); color: #000; }
+.td-rsa { background: linear-gradient(135deg, #007749, #ffb81c, #e03c31); color: #000; }
+.td-hon { background: linear-gradient(180deg, #0073cf 33%, #fff 33%, #fff 66%, #0073cf 66%); color: #000; }
+.td-irl { background: linear-gradient(90deg, #169b62 33%, #fff 33%, #fff 66%, #ff883e 66%); color: #000; }
 .theme-dot .td-label{position:relative;z-index:2;line-height:1;text-align:center;padding:0 2px}
+
+/* Controles de la barra con flechas para Diseño de la Carta */
+.theme-stepper-wrapper {
+    cursor: default !important;
+    padding: 0 8px 0 54px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    user-select: none;
+}
+.theme-stepper-title {
+    display: flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    color: var(--accent-color);
+}
+
+/* 💻 ZONA PARA MOVER LAS FLECHAS Y BANDERA EN COMPUTADORA (PC) */
+.theme-stepper-control {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+    position: relative;
+    left: -10px; /* 👈 Cambialo a -18px o -22px si querés meterlo aún más hacia la izquierda */
+}
+
+@media (max-width: 768px) {
+    .theme-stepper-control {
+        left: 0px !important; /* Mantiene la alineación original intacta en celulares */
+    }
+}
+
+/* 💬 GLOBO FLOTANTE (TOOLTIP) DEL PAÍS AL PASAR EL CURSOR */
+.theme-badge-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-tooltip {
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    background: #080c14;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 5px 11px;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    border: 1.5px solid var(--accent-color);
+    z-index: 200;
+}
+
+.theme-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--accent-color) transparent transparent transparent;
+}
+
+.theme-badge-wrapper:hover .theme-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+[data-theme="light"] .theme-tooltip {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15) !important;
+}
+
+[data-theme="light"] .theme-tooltip::after {
+    border-color: #cbd5e1 transparent transparent transparent !important;
+}
+
+.theme-stepper-control .theme-dot {
+    width: 48px;
+    height: 25px;
+    aspect-ratio: auto;
+    cursor: pointer;
+    border-radius: 7px;
+    font-size: 0.72rem;
+    font-weight: 900;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+.theme-stepper-control .theme-dot:hover {
+    transform: none;
+}
+.theme-stepper-control .avatar-stepper-btn {
+    width: 22px;
+    height: 28px;
+    font-size: 1.15rem;
+}
+
+@media (max-width: 768px) {
+    .theme-stepper-wrapper {
+        padding: 0 6px 0 46px !important;
+    }
+    .theme-stepper-title {
+        font-size: 0.58rem !important;
+    }
+    .theme-stepper-control {
+        margin-right: 0px !important; /* En celular queda al borde natural */
+    }
+    .theme-stepper-control .theme-dot {
+        width: 42px !important;
+        height: 23px !important;
+        font-size: 0.65rem !important;
+    }
+}
 .avatar-divider{height:1px;background:var(--border-strong);margin:14px 0}
 /* Contenedores con posición relativa para darles de ancla a los íconos absolutos */
 #btn-toggle-custom, .avatar-save-btn {

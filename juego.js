@@ -290,7 +290,18 @@ const ESCUDOS_MAP = {
   'crc': 'https://flagcdn.com/w80/cr.png',
   'pan': 'https://flagcdn.com/w80/pa.png',
   'jam': 'https://flagcdn.com/w80/jm.png',
-  'nzl': 'https://flagcdn.com/w80/nz.png'
+  'nzl': 'https://flagcdn.com/w80/nz.png',
+  // 🌍 10 Banderas nuevas incorporadas
+  'sco': 'https://flagcdn.com/w80/gb-sct.png',
+  'nor': 'https://flagcdn.com/w80/no.png',
+  'aut': 'https://flagcdn.com/w80/at.png',
+  'gre': 'https://flagcdn.com/w80/gr.png',
+  'tur': 'https://flagcdn.com/w80/tr.png',
+  'ukr': 'https://flagcdn.com/w80/ua.png',
+  'cze': 'https://flagcdn.com/w80/cz.png',
+  'rsa': 'https://flagcdn.com/w80/za.png',
+  'hon': 'https://flagcdn.com/w80/hn.png',
+  'irl': 'https://flagcdn.com/w80/ie.png'
 };
 
 function generarAvatarHTML(avatarImg) {
@@ -2873,13 +2884,91 @@ function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=
 function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
 
+const TEMAS_LISTA = [
+    { k: 'ger', l: 'GER', nombre: 'Alemania' },
+    { k: 'ksa', l: 'KSA', nombre: 'Arabia Saudita' },
+    { k: 'alg', l: 'ALG', nombre: 'Argelia' },
+    { k: 'arg', l: 'ARG', nombre: 'Argentina' },
+    { k: 'aus', l: 'AUS', nombre: 'Australia' },
+    { k: 'aut', l: 'AUT', nombre: 'Austria' },
+    { k: 'bel', l: 'BEL', nombre: 'Bélgica' },
+    { k: 'bol', l: 'BOL', nombre: 'Bolivia' },
+    { k: 'bra', l: 'BRA', nombre: 'Brasil' },
+    { k: 'cmr', l: 'CMR', nombre: 'Camerún' },
+    { k: 'can', l: 'CAN', nombre: 'Canadá' },
+    { k: 'chi', l: 'CHI', nombre: 'Chile' },
+    { k: 'col', l: 'COL', nombre: 'Colombia' },
+    { k: 'kor', l: 'KOR', nombre: 'Corea del Sur' },
+    { k: 'civ', l: 'CIV', nombre: 'Costa de Marfil' },
+    { k: 'crc', l: 'CRC', nombre: 'Costa Rica' },
+    { k: 'cro', l: 'CRO', nombre: 'Croacia' },
+    { k: 'den', l: 'DEN', nombre: 'Dinamarca' },
+    { k: 'ecu', l: 'ECU', nombre: 'Ecuador' },
+    { k: 'egy', l: 'EGY', nombre: 'Egipto' },
+    { k: 'sco', l: 'SCO', nombre: 'Escocia' },
+    { k: 'esp', l: 'ESP', nombre: 'España' },
+    { k: 'usa', l: 'USA', nombre: 'Estados Unidos' },
+    { k: 'fra', l: 'FRA', nombre: 'Francia' },
+    { k: 'wal', l: 'WAL', nombre: 'Gales' },
+    { k: 'gha', l: 'GHA', nombre: 'Ghana' },
+    { k: 'gre', l: 'GRE', nombre: 'Grecia' },
+    { k: 'hon', l: 'HON', nombre: 'Honduras' },
+    { k: 'eng', l: 'ENG', nombre: 'Inglaterra' },
+    { k: 'irn', l: 'IRN', nombre: 'Irán' },
+    { k: 'irl', l: 'IRL', nombre: 'Irlanda' },
+    { k: 'ita', l: 'ITA', nombre: 'Italia' },
+    { k: 'jam', l: 'JAM', nombre: 'Jamaica' },
+    { k: 'jpn', l: 'JPN', nombre: 'Japón' },
+    { k: 'mli', l: 'MLI', nombre: 'Malí' },
+    { k: 'mar', l: 'MAR', nombre: 'Marruecos' },
+    { k: 'mex', l: 'MEX', nombre: 'México' },
+    { k: 'nga', l: 'NGA', nombre: 'Nigeria' },
+    { k: 'nor', l: 'NOR', nombre: 'Noruega' },
+    { k: 'nzl', l: 'NZL', nombre: 'Nueva Zelanda' },
+    { k: 'ned', l: 'NED', nombre: 'Países Bajos' },
+    { k: 'pan', l: 'PAN', nombre: 'Panamá' },
+    { k: 'par', l: 'PAR', nombre: 'Paraguay' },
+    { k: 'per', l: 'PER', nombre: 'Perú' },
+    { k: 'pol', l: 'POL', nombre: 'Polonia' },
+    { k: 'por', l: 'POR', nombre: 'Portugal' },
+    { k: 'qat', l: 'QAT', nombre: 'Qatar' },
+    { k: 'cze', l: 'CZE', nombre: 'República Checa' },
+    { k: 'sen', l: 'SEN', nombre: 'Senegal' },
+    { k: 'srb', l: 'SRB', nombre: 'Serbia' },
+    { k: 'rsa', l: 'RSA', nombre: 'Sudáfrica' },
+    { k: 'swe', l: 'SWE', nombre: 'Suecia' },
+    { k: 'sui', l: 'SUI', nombre: 'Suiza' },
+    { k: 'tun', l: 'TUN', nombre: 'Túnez' },
+    { k: 'tur', l: 'TUR', nombre: 'Turquía' },
+    { k: 'ukr', l: 'UKR', nombre: 'Ucrania' },
+    { k: 'uru', l: 'URU', nombre: 'Uruguay' },
+    { k: 'ven', l: 'VEN', nombre: 'Venezuela' }
+];
+
+window.cambiarTemaPaso = function(direccion) {
+    const input = document.getElementById('card-theme-input');
+    const badge = document.getElementById('theme-current-badge');
+    const label = document.getElementById('theme-current-label');
+    const tooltip = document.getElementById('theme-tooltip-text');
+    if (!input) return;
+    let valActual = input.value || 'arg';
+    let idx = TEMAS_LISTA.findIndex(t => t.k === valActual);
+    if (idx === -1) idx = 0;
+    idx = (idx + direccion + TEMAS_LISTA.length) % TEMAS_LISTA.length;
+    const nuevo = TEMAS_LISTA[idx];
+    input.value = nuevo.k;
+    if (label) label.textContent = nuevo.l;
+    if (tooltip) tooltip.textContent = nuevo.nombre;
+    if (badge) {
+        badge.className = `theme-dot td-${nuevo.k} active`;
+        badge.dataset.tema = nuevo.k;
+    }
+    previsualizarTema(nuevo.k);
+};
+
 window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');
 if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
-};
-window.toggleCardDesigns=function(el){
-const strip=document.getElementById('theme-preview-strip-id');const chev=el.querySelector('.design-chevron');
-if(strip){const isOpen=strip.classList.toggle('open');if(chev)chev.className=isOpen?'ph-bold ph-caret-up design-chevron':'ph-bold ph-caret-down design-chevron';}
 };
 const AVATARES_LISTA = [
     { id: '1.png', label: 'Jugador 1' }, { id: '2.png', label: 'Jugador 2' }, { id: '3.png', label: 'Jugador 3' },
@@ -2920,10 +3009,93 @@ window.cambiarAvatarPaso = function(direccion) {
     actualizarAvatarLive();
 };
 
+const BANDERAS_LISTA = [
+    { id: 'ev', label: 'Estadios Virt.' },
+    { id: 'de', label: 'Alemania' },
+    { id: 'ksa', label: 'Arabia Saudita' },
+    { id: 'alg', label: 'Argelia' },
+    { id: 'ar', label: 'Argentina' },
+    { id: 'aus', label: 'Australia' },
+    { id: 'aut', label: 'Austria' },
+    { id: 'be', label: 'Bélgica' },
+    { id: 'bol', label: 'Bolivia' },
+    { id: 'br', label: 'Brasil' },
+    { id: 'cmr', label: 'Camerún' },
+    { id: 'can', label: 'Canadá' },
+    { id: 'cl', label: 'Chile' },
+    { id: 'co', label: 'Colombia' },
+    { id: 'kor', label: 'Corea del Sur' },
+    { id: 'civ', label: 'Costa de Marfil' },
+    { id: 'crc', label: 'Costa Rica' },
+    { id: 'hr', label: 'Croacia' },
+    { id: 'den', label: 'Dinamarca' },
+    { id: 'ecu', label: 'Ecuador' },
+    { id: 'egy', label: 'Egipto' },
+    { id: 'sco', label: 'Escocia' },
+    { id: 'es', label: 'España' },
+    { id: 'us', label: 'EE.UU.' },
+    { id: 'fr', label: 'Francia' },
+    { id: 'wal', label: 'Gales' },
+    { id: 'gha', label: 'Ghana' },
+    { id: 'gre', label: 'Grecia' },
+    { id: 'hon', label: 'Honduras' },
+    { id: 'gb-eng', label: 'Inglaterra' },
+    { id: 'irn', label: 'Irán' },
+    { id: 'irl', label: 'Irlanda' },
+    { id: 'it', label: 'Italia' },
+    { id: 'jam', label: 'Jamaica' },
+    { id: 'jp', label: 'Japón' },
+    { id: 'mli', label: 'Malí' },
+    { id: 'mar', label: 'Marruecos' },
+    { id: 'mx', label: 'México' },
+    { id: 'nga', label: 'Nigeria' },
+    { id: 'nor', label: 'Noruega' },
+    { id: 'nzl', label: 'Nueva Zelanda' },
+    { id: 'nl', label: 'Países Bajos' },
+    { id: 'pan', label: 'Panamá' },
+    { id: 'par', label: 'Paraguay' },
+    { id: 'per', label: 'Perú' },
+    { id: 'pol', label: 'Polonia' },
+    { id: 'pt', label: 'Portugal' },
+    { id: 'qat', label: 'Qatar' },
+    { id: 'cze', label: 'Rep. Checa' },
+    { id: 'sen', label: 'Senegal' },
+    { id: 'srb', label: 'Serbia' },
+    { id: 'rsa', label: 'Sudáfrica' },
+    { id: 'swe', label: 'Suecia' },
+    { id: 'sui', label: 'Suiza' },
+    { id: 'tun', label: 'Túnez' },
+    { id: 'tur', label: 'Turquía' },
+    { id: 'ukr', label: 'Ucrania' },
+    { id: 'uy', label: 'Uruguay' },
+    { id: 'ven', label: 'Venezuela' }
+];
+
+function obtenerNombreBandera(id) {
+    const item = BANDERAS_LISTA.find(b => b.id === id);
+    return item ? item.label : 'Estadios Virt.';
+}
+
+window.cambiarBanderaPaso = function(direccion) {
+    const input = document.getElementById('avatar-logo-input');
+    const imgPreview = document.getElementById('avatar-logo-preview');
+    if (!input) return;
+    let valActual = input.value || 'ev';
+    let idx = BANDERAS_LISTA.findIndex(b => b.id === valActual);
+    if (idx === -1) idx = 0;
+    idx = (idx + direccion + BANDERAS_LISTA.length) % BANDERAS_LISTA.length;
+    const nuevo = BANDERAS_LISTA[idx];
+    input.value = nuevo.id;
+    if (imgPreview) imgPreview.src = ESCUDOS_MAP[nuevo.id] || ESCUDOS_MAP['ev'];
+    actualizarAvatarLive();
+};
+
 window.actualizarAvatarLive = function() {
-    const h = document.getElementById('avatar-hair-input').value;
-    const container = document.getElementById('fut-avatar-live-container');
-    if(container) { container.innerHTML = generarAvatarHTML(h); }
+    const hInput = document.getElementById('avatar-hair-input');
+    if (hInput) {
+        const container = document.getElementById('fut-avatar-live-container');
+        if(container) { container.innerHTML = generarAvatarHTML(hInput.value); }
+    }
     const posInput = document.getElementById('avatar-pos-input');
     if(posInput) { const futPos = document.getElementById('fut-pos-display');if(futPos) futPos.textContent = posInput.value; }
     const logoInput = document.getElementById('avatar-logo-input');
@@ -2996,7 +3168,7 @@ async function guardarPersonalizacion(){
     // =========================================================
 
     const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
-    const themeActualEl=document.querySelector('.theme-dot.active');if(themeActualEl){setPref('ev_card_theme',themeActualEl.dataset.tema);}
+    const themeInput=document.getElementById('card-theme-input');if(themeInput){setPref('ev_card_theme',themeInput.value);}
     
     setPref('ev_custom_nick', nickNuevo);
     const futName=document.getElementById('fut-name-display');
@@ -3069,12 +3241,11 @@ const xpFaltante = nivelSig.min === Infinity ? 0 : Math.max(0, nivelSig.min - us
 const xpPct = nivelIdx === NIVELES.length - 1 ? 100 : Math.min(100, Math.round((xpEnNivel / xpNivelTotal) * 100));
 
 const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT');let savedTheme=getPref('ev_card_theme','arg');
-const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
+const validThemes = TEMAS_LISTA.map(t => t.k);
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
+const currentTemaObj = TEMAS_LISTA.find(t => t.k === savedTheme) || { k: 'arg', l: 'ARG', nombre: 'Argentina' };
 const savedHair = getPref('ev_avatar_hair', '1.png');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
 const activeCardClass=savedTheme;const googleBadge='';
-const temas=[{k:'arg',l:'ARG'},{k:'bra',l:'BRA'},{k:'esp',l:'ESP'},{k:'ita',l:'ITA'},{k:'fra',l:'FRA'},{k:'ger',l:'GER'},{k:'eng',l:'ENG'},{k:'por',l:'POR'},{k:'uru',l:'URU'},{k:'col',l:'COL'},{k:'mex',l:'MEX'},{k:'chi',l:'CHI'},{k:'ned',l:'NED'},{k:'bel',l:'BEL'},{k:'cro',l:'CRO'},{k:'usa',l:'USA'},{k:'jpn',l:'JPN'},{k:'can',l:'CAN'},{k:'mar',l:'MAR'},{k:'sen',l:'SEN'},{k:'kor',l:'KOR'},{k:'aus',l:'AUS'},{k:'sui',l:'SUI'},{k:'ecu',l:'ECU'},{k:'per',l:'PER'},{k:'den',l:'DEN'},{k:'srb',l:'SRB'},{k:'pol',l:'POL'},{k:'wal',l:'WAL'},{k:'swe',l:'SWE'},{k:'civ',l:'CIV'},{k:'cmr',l:'CMR'},{k:'gha',l:'GHA'},{k:'nga',l:'NGA'},{k:'ksa',l:'KSA'},{k:'irn',l:'IRN'},{k:'egy',l:'EGY'},{k:'alg',l:'ALG'},{k:'tun',l:'TUN'},{k:'mli',l:'MLI'},{k:'qat',l:'QAT'},{k:'par',l:'PAR'},{k:'ven',l:'VEN'},{k:'bol',l:'BOL'},{k:'crc',l:'CRC'},{k:'pan',l:'PAN'},{k:'jam',l:'JAM'},{k:'nzl',l:'NZL'}];
-const themeStrip=temas.map(t=>`<div class="theme-dot td-${t.k}${savedTheme===t.k?' active':''}" data-tema="${t.k}" onclick="previsualizarTema('${t.k}')" title="${t.l}"><span class="td-label">${t.l}</span></div>`).join('');
 
 // 3. Algoritmo para separar Racha Activa vs Días Pasados
 const today = new Date();
@@ -3162,11 +3333,20 @@ document.getElementById('profile-modal-body').innerHTML=`
             </div>
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
-                    <div class="avatar-picker-label" onclick="window.toggleCardDesigns(this)">
-                        <span style="display:flex;align-items:center;gap:8px;"><img src="diseño-de-la-carta.png" class="custom-label-icon" alt="Diseño"> DISEÑO DE LA CARTA</span>
-                        <span class="design-chevron">▼</span>
+                    <div class="avatar-picker-label theme-stepper-wrapper">
+                        <span class="theme-stepper-title"><img src="diseño-de-la-carta.png" class="custom-label-icon" alt="Diseño"> DISEÑO DE LA CARTA</span>
+                        <div class="theme-stepper-control">
+                            <button type="button" class="avatar-stepper-btn" onclick="cambiarTemaPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
+                            <div class="theme-badge-wrapper">
+                                <div class="theme-dot td-${savedTheme} active" id="theme-current-badge" data-tema="${savedTheme}">
+                                    <span class="td-label" id="theme-current-label">${currentTemaObj.l}</span>
+                                </div>
+                                <div class="theme-tooltip" id="theme-tooltip-text">${currentTemaObj.nombre}</div>
+                            </div>
+                            <button type="button" class="avatar-stepper-btn" onclick="cambiarTemaPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
+                            <input type="hidden" id="card-theme-input" value="${savedTheme}">
+                        </div>
                     </div>
-                    <div class="theme-preview-strip" id="theme-preview-strip-id">${themeStrip}</div>
                     <div class="avatar-divider"></div>
                     <label class="avatar-nick-label"><img src="selecciona-tu-jugador.png" class="custom-label-icon" alt="Jugador"> SELECCIONÁ TU JUGADOR/A</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
@@ -3176,9 +3356,14 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <button type="button" class="avatar-stepper-btn" onclick="cambiarAvatarPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
                             <input type="hidden" id="avatar-hair-input" value="${savedHair}">
                         </div>
-                        <select class="avatar-pos-select" id="avatar-logo-input" style="margin-bottom:0;" onchange="actualizarAvatarLive()">
-                            <option value="ev">Estadios Virt.</option><option value="ar">Argentina</option><option value="br">Brasil</option><option value="es">España</option><option value="it">Italia</option><option value="fr">Francia</option><option value="de">Alemania</option><option value="gb-eng">󠁧󠁢Inglaterra</option><option value="pt">Portugal</option><option value="uy">Uruguay</option><option value="co">Colombia</option><option value="mx">México</option><option value="cl">Chile</option><option value="nl">Países Bajos</option><option value="be">Bélgica</option><option value="hr">Croacia</option><option value="us">EE.UU.</option><option value="jp">Japón</option><option value="can">Canadá</option><option value="mar">Marruecos</option><option value="sen">Senegal</option><option value="kor">Corea del Sur</option><option value="aus">Australia</option><option value="sui">Suiza</option><option value="ecu">Ecuador</option><option value="per">Perú</option><option value="den">Dinamarca</option><option value="srb">Serbia</option><option value="pol">Polonia</option><option value="wal">󠁧󠁢󠁷󠁬Gales</option><option value="swe">Suecia</option><option value="civ">Costa de Marfil</option><option value="cmr">Camerún</option><option value="gha">Ghana</option><option value="nga">Nigeria</option><option value="ksa">Arabia Saudita</option><option value="irn">Irán</option><option value="egy">Egipto</option><option value="alg">Argelia</option><option value="tun">Túnez</option><option value="mli">Malí</option><option value="qat">Qatar</option><option value="par">Paraguay</option><option value="ven">Venezuela</option><option value="bol">Bolivia</option><option value="crc">Costa Rica</option><option value="pan">Panamá</option><option value="jam">Jamaica</option><option value="nzl">Nueva Zelanda</option>
-                        </select>
+                        <div class="avatar-stepper-box">
+                            <button type="button" class="avatar-stepper-btn" onclick="cambiarBanderaPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
+                            <span class="avatar-stepper-label" id="avatar-logo-label" style="display:flex;align-items:center;justify-content:center;">
+                                <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" id="avatar-logo-preview" style="width:28px;height:20px;object-fit:contain;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.5);" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                            </span>
+                            <button type="button" class="avatar-stepper-btn" onclick="cambiarBanderaPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
+                            <input type="hidden" id="avatar-logo-input" value="${savedLogo}">
+                        </div>
                     </div>
                     <label class="avatar-nick-label"><img src="posicion.png" class="custom-label-icon" alt="Posición"> POSICIÓN</label>
                     <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
