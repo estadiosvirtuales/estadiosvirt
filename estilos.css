@@ -2945,7 +2945,7 @@ body.video-abierto .hero-section {
         grid-row: 4 !important;
         width: calc(100% - 16px) !important;
         max-width: 100% !important;
-        margin-top: -135px !important;
+        margin-top: -130px !important;
         margin-bottom: 6px !important;
         justify-self: center !important;
     }
