@@ -2208,7 +2208,7 @@ body.video-abierto .hero-section {
         align-items: center !important;
         justify-content: center !important;
         margin-left: auto !important;  
-        margin-right: -25px !important; 
+        margin-right: -30px !important; 
         padding: 0 !important;
     }
 
@@ -4099,4 +4099,222 @@ html[data-theme="light"] .xp-bar-big-fill {
     opacity: 1 !important;
     visibility: visible !important;
     transform: translateX(-50%) translateY(0) !important;
+}
+/* ========================================================
+   🛡️ ESTILOS SELECTOR MODAL DE ESCUDOS Y BANDERAS
+   ======================================================== */
+.escudos-tabs-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.escudos-scroll-arrow {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-subtle);
+    background: var(--surface-color);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.escudos-scroll-arrow:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: var(--accent-dim);
+}
+
+/* 🌙 SCROLLBAR OSCURA ESTILIZADA PARA LA GRILLA DE ESCUDOS */
+.escudos-grid-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+}
+
+.escudos-grid-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.escudos-grid-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.escudos-grid-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
+}
+
+.escudos-grid-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+.escudo-tab-btn {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-strong);
+    background: var(--surface-color);
+    color: var(--text-main);
+    font-size: 0.74rem;
+    font-weight: 900;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.3px;
+    user-select: none;
+}
+
+/* 🎨 PINTADO POR PAÍS CON DEGRADADOS HOMOGÉNEOS A 135° */
+.escudo-tab-btn[data-cat="todos"] {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #f8fafc;
+    border-color: rgba(255, 255, 255, 0.18);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.escudo-tab-btn[data-cat="paises"] {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f5132 100%);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.escudo-tab-btn[data-cat="arg"] {
+    background: linear-gradient(135deg, #74acdf 0%, #ffffff 50%, #74acdf 100%);
+    color: #000000;
+    border-color: #74acdf;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.escudo-tab-btn[data-cat="bra"] {
+    background: linear-gradient(135deg, #009c3b 0%, #ffdf00 50%, #002776 100%);
+    color: #ffffff;
+    border-color: #ffdf00;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.escudo-tab-btn[data-cat="col"] {
+    background: linear-gradient(135deg, #fcd116 0%, #003893 50%, #ce1126 100%);
+    color: #ffffff;
+    border-color: #fcd116;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.escudo-tab-btn[data-cat="esp"] {
+    background: linear-gradient(135deg, #aa151b 0%, #f1bf00 50%, #aa151b 100%);
+    color: #000000;
+    border-color: #f1bf00;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.escudo-tab-btn[data-cat="eng"] {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 45%, #ce1126 100%);
+    color: #000000;
+    border-color: #ce1126;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.escudo-tab-btn[data-cat="ita"] {
+    background: linear-gradient(135deg, #009246 0%, #ffffff 50%, #ce2b37 100%);
+    color: #000000;
+    border-color: #009246;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.escudo-tab-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    filter: brightness(1.1);
+}
+
+/* 🌟 PESTAÑA SELECCIONADA Y EFECTO AL PRESIONAR SIN AUREOLA VERDE */
+.escudo-tab-btn.active {
+    outline: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+    transform: translateY(-2px) scale(1.04);
+    border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.escudo-tab-btn:active {
+    transform: translateY(1px) scale(0.96) !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.escudo-card-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-color);
+    border: 1.5px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 10px 6px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    gap: 6px;
+}
+
+.escudo-card-item:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px var(--accent-glow);
+    background: var(--accent-dim);
+}
+
+.escudo-card-item.selected {
+    border-color: var(--accent-color);
+    background: var(--accent-dim);
+    box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.escudo-card-item img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+.escudo-card-item span {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    width: 100%;
+}
+
+[data-theme="light"] .escudo-tab-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #475569 !important;
+}
+
+[data-theme="light"] .escudo-tab-btn.active {
+    background: #00cc66 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .escudo-card-item {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .escudo-card-item:hover {
+    background: #e8f3ee !important;
+    border-color: #00cc66 !important;
 }

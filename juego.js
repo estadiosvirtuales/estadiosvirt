@@ -243,6 +243,7 @@ const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googl
 
 const ESCUDOS_MAP = {
   'ev': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png',
+  // 🌍 PAÍSES / SELECCIONES
   'ar': 'https://flagcdn.com/w80/ar.png',
   'br': 'https://flagcdn.com/w80/br.png',
   'es': 'https://flagcdn.com/w80/es.png',
@@ -291,7 +292,6 @@ const ESCUDOS_MAP = {
   'pan': 'https://flagcdn.com/w80/pa.png',
   'jam': 'https://flagcdn.com/w80/jm.png',
   'nzl': 'https://flagcdn.com/w80/nz.png',
-  // 🌍 10 Banderas nuevas incorporadas
   'sco': 'https://flagcdn.com/w80/gb-sct.png',
   'nor': 'https://flagcdn.com/w80/no.png',
   'aut': 'https://flagcdn.com/w80/at.png',
@@ -301,7 +301,475 @@ const ESCUDOS_MAP = {
   'cze': 'https://flagcdn.com/w80/cz.png',
   'rsa': 'https://flagcdn.com/w80/za.png',
   'hon': 'https://flagcdn.com/w80/hn.png',
-  'irl': 'https://flagcdn.com/w80/ie.png'
+  'irl': 'https://flagcdn.com/w80/ie.png',
+
+  // 🇦🇷 ARGENTINA
+  'arg_river': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Escudo_del_C_A_River_Plate.svg/200px-Escudo_del_C_A_River_Plate.svg.png',
+  'arg_boca': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Boca_escudo.png/200px-Boca_escudo.png',
+  'arg_racing': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Escudo_de_Racing_Club_%282014%29.svg/200px-Escudo_de_Racing_Club_%282014%29.svg.png',
+  'arg_independiente': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Independiente.svg.png',
+  'arg_sanlorenzo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Escudo_del_Club_Atl%C3%A9tico_San_Lorenzo_de_Almagro.svg/200px-Escudo_del_Club_Atl%C3%A9tico_San_Lorenzo_de_Almagro.svg.png',
+  'arg_huracan': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Club_Atl%C3%A9tico_Hurac%C3%A1n.png/200px-Club_Atl%C3%A9tico_Hurac%C3%A1n.png',
+  'arg_estudiantes': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Escudo_de_Estudiantes_de_La_Plata.svg/200px-Escudo_de_Estudiantes_de_La_Plata.svg.png',
+  'arg_gimnasia': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Escudo_del_Club_de_Gimnasia_y_Esgrima_La_Plata.svg/200px-Escudo_del_Club_de_Gimnasia_y_Esgrima_La_Plata.svg.png',
+  'arg_rosario': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Escudo_de_Rosario_Central.svg/200px-Escudo_de_Rosario_Central.svg.png',
+  'arg_newells': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Escudo_del_Club_Atl%C3%A9tico_Newell%27s_Old_Boys.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Newell%27s_Old_Boys.svg.png',
+  'arg_velez': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Escudo_de_V%C3%A9lez_Sarsfield.svg/200px-Escudo_de_V%C3%A9lez_Sarsfield.svg.png',
+  'arg_lanus': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Escudo_del_Club_Atl%C3%A9tico_Lan%C3%BAs.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Lan%C3%BAs.svg.png',
+  'arg_argentinos': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Escudo_de_Argentinos_Juniors.svg/200px-Escudo_de_Argentinos_Juniors.svg.png',
+  'arg_talleres': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Escudo_del_Club_Atl%C3%A9tico_Talleres_%28C%C3%B3rdoba%29.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Talleres_%28C%C3%B3rdoba%29.svg.png',
+  'arg_belgrano': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Escudo_del_Club_Atl%C3%A9tico_Belgrano.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Belgrano.svg.png',
+  'arg_atleticotucuman': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Escudo_del_Club_Atl%C3%A9tico_Tucum%C3%A1n.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Tucum%C3%A1n.svg.png',
+  'arg_defensa': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Escudo_del_Club_Social_y_Deportivo_Defensa_y_Justicia.svg/200px-Escudo_del_Club_Social_y_Deportivo_Defensa_y_Justicia.svg.png',
+  'arg_banfield': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Escudo_del_Club_Atl%C3%A9tico_Banfield.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Banfield.svg.png',
+  'arg_union': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Escudo_del_Club_Atl%C3%A9tico_Uni%C3%B3n_de_Santa_Fe.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Uni%C3%B3n_de_Santa_Fe.svg.png',
+  'arg_platense': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Escudo_del_Club_Atl%C3%A9tico_Platense.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Platense.svg.png',
+  'arg_instituto': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Escudo_de_Instituto_ACC.svg/200px-Escudo_de_Instituto_ACC.svg.png',
+  'arg_centralcordoba': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Escudo_del_Club_Atl%C3%A9tico_Central_C%C3%B3rdoba_%28Santiago_del_Estero%29.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Central_C%C3%B3rdoba_%28Santiago_del_Estero%29.svg.png',
+  'arg_sarmiento': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Escudo_del_Club_Atl%C3%A9tico_Sarmiento_%28Jun%C3%ADn%29.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Sarmiento_%28Jun%C3%ADn%29.svg.png',
+  'arg_barracas': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Escudo_de_Barracas_Central.svg/200px-Escudo_de_Barracas_Central.svg.png',
+  'arg_tigre': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Escudo_del_Club_Atl%C3%A9tico_Tigre.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Tigre.svg.png',
+  'arg_riestra': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Escudo_del_Deportivo_Riestra.svg/200px-Escudo_del_Deportivo_Riestra.svg.png',
+  'arg_indrivadavia': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Escudo_del_Club_Sportivo_Independiente_Rivadavia.svg/200px-Escudo_del_Club_Sportivo_Independiente_Rivadavia.svg.png',
+  'arg_godoycruz': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Escudo_del_Club_Deportivo_Godoy_Cruz_Antonio_Tomba.svg/200px-Escudo_del_Club_Deportivo_Godoy_Cruz_Antonio_Tomba.svg.png',
+  'arg_aldosivi': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Escudo_del_Club_Atl%C3%A9tico_Aldosivi.svg/200px-Escudo_del_Club_Atl%C3%A9tico_Aldosivi.svg.png',
+  'arg_sanmartinsj': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Escudo_del_Club_Atl%C3%A9tico_San_Mart%C3%ADn_%28San_Juan%29.svg/200px-Escudo_del_Club_Atl%C3%A9tico_San_Mart%C3%ADn_%28San_Juan%29.svg.png',
+
+  // 🇧🇷 BRASIL
+  'bra_flamengo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flamengo_braz_logo.svg/200px-Flamengo_braz_logo.svg.png',
+  'bra_palmeiras': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Palmeiras_logo.svg/200px-Palmeiras_logo.svg.png',
+  'bra_saopaulo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg/200px-Brasao_do_Sao_Paulo_Futebol_Clube.svg.png',
+  'bra_corinthians': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Sport_Club_Corinthians_Paulista_crest.svg/200px-Sport_Club_Corinthians_Paulista_crest.svg.png',
+  'bra_santos': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Santos_Logo.png/200px-Santos_Logo.png',
+  'bra_vasco': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Club_de_Regatas_Vasco_da_Gama_crest.svg/200px-Club_de_Regatas_Vasco_da_Gama_crest.svg.png',
+  'bra_fluminense': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fluminense_FC_escudo.png/200px-Fluminense_FC_escudo.png',
+  'bra_botafogo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Botafogo_de_Futebol_e_Regatas_logo.svg/200px-Botafogo_de_Futebol_e_Regatas_logo.svg.png',
+  'bra_atleticomg': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Clube_Atl%C3%A9tico_Mineiro_logo.svg/200px-Clube_Atl%C3%A9tico_Mineiro_logo.svg.png',
+  'bra_cruzeiro': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Cruzeiro_Esporte_Clube_%28logo%29.svg/200px-Cruzeiro_Esporte_Clube_%28logo%29.svg.png',
+  'bra_gremio': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Gremio-Logo.svg/200px-Gremio-Logo.svg.png',
+  'bra_internacional': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Escudo_do_Sport_Club_Internacional.svg/200px-Escudo_do_Sport_Club_Internacional.svg.png',
+  'bra_athleticopr': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Club_Athletico_Paranaense_2019.svg/200px-Club_Athletico_Paranaense_2019.svg.png',
+  'bra_bahia': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Esporte_Clube_Bahia_logo.svg/200px-Esporte_Clube_Bahia_logo.svg.png',
+  'bra_bragantino': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Red_Bull_Bragantino.svg/200px-Red_Bull_Bragantino.svg.png',
+  'bra_fortaleza': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Fortaleza_Esporte_Clube_logo.svg/200px-Fortaleza_Esporte_Clube_logo.svg.png',
+  'bra_juventude': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Esporte_Clube_Juventude.svg/200px-Esporte_Clube_Juventude.svg.png',
+  'bra_criciuma': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Criciuma_EC.svg/200px-Criciuma_EC.svg.png',
+  'bra_vitoria': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Esporte_Clube_Vit%C3%B3ria_logo.svg/200px-Esporte_Clube_Vit%C3%B3ria_logo.svg.png',
+  'bra_cuiaba': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Cuiab%C3%A1_Esporte_Clube.svg/200px-Cuiab%C3%A1_Esporte_Clube.svg.png',
+
+  // 🇨🇴 COLOMBIA (Repositorio oficial GitHub)
+  'col_aguilas': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/aguilas_doradas.png',
+  'col_alianza': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/alianza.png',
+  'col_america': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/america.png',
+  'col_nacional': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/atlnacional.png',
+  'col_chico': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/boyacachico.png',
+  'col_bucaramanga': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/bucaramanga.png',
+  'col_cucuta': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/cucuta.png',
+  'col_cali': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/depcali.png',
+  'col_medellin': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/dim.png',
+  'col_fortaleza': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/fortaleza.png',
+  'col_interpalmira': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/internacional_bogota.png',
+  'col_jaguares': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/jaguares.png',
+  'col_junior': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/junior.png',
+  'col_llaneros': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/llaneros.png',
+  'col_millonarios': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/millonarios.png',
+  'col_oncecaldas': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/oncecaldas.png',
+  'col_pasto': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/pasto.png',
+  'col_pereira': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/pereira.png',
+  'col_santafe': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/santafe.png',
+  'col_tolima': 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/tolima.png',
+
+  // 🇪🇸 ESPAÑA
+  'esp_realmadrid': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/200px-Real_Madrid_CF.svg.png',
+  'esp_barcelona': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/200px-FC_Barcelona_%28crest%29.svg.png',
+  'esp_atletico': 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Atletico_Madrid_2017_logo.svg/200px-Atletico_Madrid_2017_logo.svg.png',
+  'esp_athletic': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/98/Club_Athletic_Bilbao_logo.svg/200px-Club_Athletic_Bilbao_logo.svg.png',
+  'esp_betis': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Real_betis_logo.svg/200px-Real_betis_logo.svg.png',
+  'esp_realsociedad': 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f1/Real_Sociedad_logo.svg/200px-Real_Sociedad_logo.svg.png',
+  'esp_sevilla': 'https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Sevilla_FC_logo.svg/200px-Sevilla_FC_logo.svg.png',
+  'esp_villarreal': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/70/Villarreal_CF_logo.svg/200px-Villarreal_CF_logo.svg.png',
+  'esp_valencia': 'https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/Valenciacf.svg/200px-Valenciacf.svg.png',
+  'esp_osasuna': 'https://upload.wikimedia.org/wikipedia/en/thumb/d/db/Osasuna_logo.svg/200px-Osasuna_logo.svg.png',
+  'esp_celta': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/12/RC_Celta_de_Vigo_logo.svg/200px-RC_Celta_de_Vigo_logo.svg.png',
+  'esp_alaves': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/Deportivo_Alaves_logo.svg/200px-Deportivo_Alaves_logo.svg.png',
+  'esp_getafe': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/46/Getafe_logo.svg/200px-Getafe_logo.svg.png',
+  'esp_mallorca': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/RCD_Mallorca_logo.svg/200px-RCD_Mallorca_logo.svg.png',
+  'esp_laspalmas': 'https://upload.wikimedia.org/wikipedia/en/thumb/3/30/UD_Las_Palmas_logo.svg/200px-UD_Las_Palmas_logo.svg.png',
+  'esp_rayo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Rayo_Vallecano_logo.svg/200px-Rayo_Vallecano_logo.svg.png',
+  'esp_girona': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Girona_FC_crest.svg/200px-Girona_FC_crest.svg.png',
+  'esp_leganes': 'https://upload.wikimedia.org/wikipedia/en/thumb/0/02/CD_Legan%C3%A9s_logo.svg/200px-CD_Legan%C3%A9s_logo.svg.png',
+  'esp_valladolid': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/6d/Real_Valladolid_Logo.svg/200px-Real_Valladolid_Logo.svg.png',
+  'esp_espanyol': 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Rcd_espanyol_logo.svg/200px-Rcd_espanyol_logo.svg.png',
+
+  // 🏴󠁧󠁢󠁥󠁮󠁧󠁿 INGLATERRA
+  'eng_arsenal': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/200px-Arsenal_FC.svg.png',
+  'eng_astonvilla': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Aston_Villa_logo.svg/200px-Aston_Villa_logo.svg.png',
+  'eng_bournemouth': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/AFC_Bournemouth_%282013%29.svg/200px-AFC_Bournemouth_%282013%29.svg.png',
+  'eng_brentford': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2a/Brentford_FC_crest.svg/200px-Brentford_FC_crest.svg.png',
+  'eng_brighton': 'https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Brighton_%26_Hove_Albion_logo.svg/200px-Brighton_%26_Hove_Albion_logo.svg.png',
+  'eng_chelsea': 'https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/200px-Chelsea_FC.svg.png',
+  'eng_crystalpalace': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Crystal_Palace_FC_logo_%282022%29.svg/200px-Crystal_Palace_FC_logo_%282022%29.svg.png',
+  'eng_everton': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Everton_FC_crest.svg/200px-Everton_FC_crest.svg.png',
+  'eng_fulham': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Fulham_FC_%28shield%29.svg/200px-Fulham_FC_%28shield%29.svg.png',
+  'eng_ipswich': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/43/Ipswich_Town.svg/200px-Ipswich_Town.svg.png',
+  'eng_leicester': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2d/Leicester_City_crest.svg/200px-Leicester_City_crest.svg.png',
+  'eng_liverpool': 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/200px-Liverpool_FC.svg.png',
+  'eng_mancity': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/200px-Manchester_City_FC_badge.svg.png',
+  'eng_manunited': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/200px-Manchester_United_FC_crest.svg.png',
+  'eng_newcastle': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Newcastle_United_Logo.svg/200px-Newcastle_United_Logo.svg.png',
+  'eng_nottingham': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/Nottingham_Forest_F.C._logo.svg/200px-Nottingham_Forest_F.C._logo.svg.png',
+  'eng_southampton': 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c9/FC_Southampton.svg/200px-FC_Southampton.svg.png',
+  'eng_tottenham': 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/200px-Tottenham_Hotspur.svg.png',
+  'eng_westham': 'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/200px-West_Ham_United_FC_logo.svg.png',
+  'eng_wolves': 'https://upload.wikimedia.org/wikipedia/en/thumb/f/fc/Wolverhampton_Wanderers.svg/200px-Wolverhampton_Wanderers.svg.png',
+
+  // 🇮🇹 ITALIA
+  'ita_juventus': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Juventus_FC_2017_logo.svg/200px-Juventus_FC_2017_logo.svg.png',
+  'ita_inter': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/200px-FC_Internazionale_Milano_2021.svg.png',
+  'ita_milan': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Logo_of_AC_Milan.svg/200px-Logo_of_AC_Milan.svg.png',
+  'ita_roma': 'https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/AS_Roma_logo_%282017%29.svg/200px-AS_Roma_logo_%282017%29.svg.png',
+  'ita_lazio': 'https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/S.S._Lazio_badge.svg/200px-S.S._Lazio_badge.svg.png',
+  'ita_napoli': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/SSC_Napoli_2024_%28deep_blue_navy%29.svg/200px-SSC_Napoli_2024_%28deep_blue_navy%29.svg.png',
+  'ita_fiorentina': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/ACF_Fiorentina_2022.svg/200px-ACF_Fiorentina_2022.svg.png',
+  'ita_atalanta': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/66/AtalantaBC.svg/200px-AtalantaBC.svg.png',
+  'ita_bologna': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/5b/Bologna_F.C._1909_logo.svg/200px-Bologna_F.C._1909_logo.svg.png',
+  'ita_torino': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/Torino_FC_Logo.svg/200px-Torino_FC_Logo.svg.png',
+  'ita_udinese': 'https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/Udinese_Calcio_logo.svg/200px-Udinese_Calcio_logo.svg.png',
+  'ita_genoa': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/6c/Genoa_C.F.C._logo.svg/200px-Genoa_C.F.C._logo.svg.png',
+  'ita_verona': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/92/Hellas_Verona_FC_logo_%282020%29.svg/200px-Hellas_Verona_FC_logo_%282020%29.svg.png',
+  'ita_empoli': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Empoli_FC_logo.svg/200px-Empoli_FC_logo.svg.png',
+  'ita_lecce': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a7/US_Lecce_logo.svg/200px-US_Lecce_logo.svg.png',
+  'ita_monza': 'https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/AC_Monza_logo.svg/200px-AC_Monza_logo.svg.png',
+  'ita_cagliari': 'https://upload.wikimedia.org/wikipedia/en/thumb/6/61/Cagliari_Calcio_1920.svg/200px-Cagliari_Calcio_1920.svg.png',
+  'ita_parma': 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Parma_Calcio_1913_logo.svg/200px-Parma_Calcio_1913_logo.svg.png',
+  'ita_como': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Como_1907_logo.svg/200px-Como_1907_logo.svg.png',
+  'ita_venezia': 'https://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Venezia_FC_logo.svg/200px-Venezia_FC_logo.svg.png'
+};
+
+const BANDERAS_LISTA = [
+    { id: 'ev', label: 'Estadios Virt.', cat: 'paises' },
+    // PAÍSES
+    { id: 'ar', label: 'Argentina', cat: 'paises' }, { id: 'br', label: 'Brasil', cat: 'paises' },
+    { id: 'es', label: 'España', cat: 'paises' }, { id: 'it', label: 'Italia', cat: 'paises' },
+    { id: 'fr', label: 'Francia', cat: 'paises' }, { id: 'de', label: 'Alemania', cat: 'paises' },
+    { id: 'gb-eng', label: 'Inglaterra', cat: 'paises' }, { id: 'pt', label: 'Portugal', cat: 'paises' },
+    { id: 'uy', label: 'Uruguay', cat: 'paises' }, { id: 'co', label: 'Colombia', cat: 'paises' },
+    { id: 'mx', label: 'México', cat: 'paises' }, { id: 'cl', label: 'Chile', cat: 'paises' },
+    { id: 'nl', label: 'Países Bajos', cat: 'paises' }, { id: 'be', label: 'Bélgica', cat: 'paises' },
+    { id: 'hr', label: 'Croacia', cat: 'paises' }, { id: 'us', label: 'EE.UU.', cat: 'paises' },
+    { id: 'jp', label: 'Japón', cat: 'paises' }, { id: 'can', label: 'Canadá', cat: 'paises' },
+    { id: 'mar', label: 'Marruecos', cat: 'paises' }, { id: 'sen', label: 'Senegal', cat: 'paises' },
+    { id: 'kor', label: 'Corea del Sur', cat: 'paises' }, { id: 'aus', label: 'Australia', cat: 'paises' },
+    { id: 'sui', label: 'Suiza', cat: 'paises' }, { id: 'ecu', label: 'Ecuador', cat: 'paises' },
+    { id: 'per', label: 'Perú', cat: 'paises' }, { id: 'den', label: 'Dinamarca', cat: 'paises' },
+    { id: 'srb', label: 'Serbia', cat: 'paises' }, { id: 'pol', label: 'Polonia', cat: 'paises' },
+    { id: 'wal', label: 'Gales', cat: 'paises' }, { id: 'swe', label: 'Suecia', cat: 'paises' },
+    { id: 'civ', label: 'Costa de Marfil', cat: 'paises' }, { id: 'cmr', label: 'Camerún', cat: 'paises' },
+    { id: 'gha', label: 'Ghana', cat: 'paises' }, { id: 'nga', label: 'Nigeria', cat: 'paises' },
+    { id: 'ksa', label: 'Arabia Saudita', cat: 'paises' }, { id: 'irn', label: 'Irán', cat: 'paises' },
+    { id: 'egy', label: 'Egipto', cat: 'paises' }, { id: 'alg', label: 'Argelia', cat: 'paises' },
+    { id: 'tun', label: 'Túnez', cat: 'paises' }, { id: 'mli', label: 'Malí', cat: 'paises' },
+    { id: 'qat', label: 'Qatar', cat: 'paises' }, { id: 'par', label: 'Paraguay', cat: 'paises' },
+    { id: 'ven', label: 'Venezuela', cat: 'paises' }, { id: 'bol', label: 'Bolivia', cat: 'paises' },
+    { id: 'crc', label: 'Costa Rica', cat: 'paises' }, { id: 'pan', label: 'Panamá', cat: 'paises' },
+    { id: 'jam', label: 'Jamaica', cat: 'paises' }, { id: 'nzl', label: 'Nueva Zelanda', cat: 'paises' },
+    { id: 'sco', label: 'Escocia', cat: 'paises' }, { id: 'nor', label: 'Noruega', cat: 'paises' },
+    { id: 'aut', label: 'Austria', cat: 'paises' }, { id: 'gre', label: 'Grecia', cat: 'paises' },
+    { id: 'tur', label: 'Turquía', cat: 'paises' }, { id: 'ukr', label: 'Ucrania', cat: 'paises' },
+    { id: 'cze', label: 'Rep. Checa', cat: 'paises' }, { id: 'rsa', label: 'Sudáfrica', cat: 'paises' },
+    { id: 'hon', label: 'Honduras', cat: 'paises' }, { id: 'irl', label: 'Irlanda', cat: 'paises' },
+
+    // ARGENTINA (66 Clubes exactos del catálogo)
+    { id: 'arg_acassuso', label: 'Acassuso', cat: 'arg' },
+    { id: 'arg_agropecuario', label: 'Agropecuario', cat: 'arg' },
+    { id: 'arg_aldosivi', label: 'Aldosivi', cat: 'arg' },
+    { id: 'arg_allboys', label: 'All Boys', cat: 'arg' },
+    { id: 'arg_almagro', label: 'Almagro', cat: 'arg' },
+    { id: 'arg_almirantebrown', label: 'Almirante Brown', cat: 'arg' },
+    { id: 'arg_argentinos', label: 'Argentinos Juniors', cat: 'arg' },
+    { id: 'arg_atlanta', label: 'Atlanta', cat: 'arg' },
+    { id: 'arg_atleticotucuman', label: 'Atlético Tucumán', cat: 'arg' },
+    { id: 'arg_atleticode rafaela', label: 'Atlético de Rafaela', cat: 'arg' },
+    { id: 'arg_banfield', label: 'Banfield', cat: 'arg' },
+    { id: 'arg_barracas', label: 'Barracas Central', cat: 'arg' },
+    { id: 'arg_belgrano', label: 'Belgrano de Córdoba', cat: 'arg' },
+    { id: 'arg_boca', label: 'Boca Juniors', cat: 'arg' },
+    { id: 'arg_centralcordoba', label: 'Central Córdoba (SdE)', cat: 'arg' },
+    { id: 'arg_centralnorte', label: 'Central Norte', cat: 'arg' },
+    { id: 'arg_chacarita', label: 'Chacarita Juniors', cat: 'arg' },
+    { id: 'arg_chacoforever', label: 'Chaco For Ever', cat: 'arg' },
+    { id: 'arg_ciudadbolivar', label: 'Ciudad de Bolívar', cat: 'arg' },
+    { id: 'arg_colegiales', label: 'Colegiales', cat: 'arg' },
+    { id: 'arg_colon', label: 'Colón', cat: 'arg' },
+    { id: 'arg_defensa', label: 'Defensa y Justicia', cat: 'arg' },
+    { id: 'arg_defensores', label: 'Defensores de Belgrano', cat: 'arg' },
+    { id: 'arg_depmadryn', label: 'Deportivo Madryn', cat: 'arg' },
+    { id: 'arg_maipu', label: 'Deportivo Maipú', cat: 'arg' },
+    { id: 'arg_moron', label: 'Deportivo Morón', cat: 'arg' },
+    { id: 'arg_riestra', label: 'Deportivo Riestra', cat: 'arg' },
+    { id: 'arg_estudiantesba', label: 'Estudiantes (BA)', cat: 'arg' },
+    { id: 'arg_estudiantes', label: 'Estudiantes de La Plata', cat: 'arg' },
+    { id: 'arg_estudiantesrc', label: 'Estudiantes de Río Cuarto', cat: 'arg' },
+    { id: 'arg_ferro', label: 'Ferro Carril Oeste', cat: 'arg' },
+    { id: 'arg_gimnasiajujuy', label: 'Gimnasia (J)', cat: 'arg' },
+    { id: 'arg_gimnasiamza', label: 'Gimnasia de Mendoza', cat: 'arg' },
+    { id: 'arg_gimnasia', label: 'Gimnasia y Esgrima LP', cat: 'arg' },
+    { id: 'arg_gimnasiatirosalta', label: 'Gimnasia y Tiro (Salta)', cat: 'arg' },
+    { id: 'arg_godoycruz', label: 'Godoy Cruz', cat: 'arg' },
+    { id: 'arg_guemes', label: 'Güemes (SdE)', cat: 'arg' },
+    { id: 'arg_huracan', label: 'Huracán', cat: 'arg' },
+    { id: 'arg_independiente', label: 'Independiente', cat: 'arg' },
+    { id: 'arg_indrivadavia', label: 'Independiente Rivadavia', cat: 'arg' },
+    { id: 'arg_instituto', label: 'Instituto', cat: 'arg' },
+    { id: 'arg_lanus', label: 'Lanús', cat: 'arg' },
+    { id: 'arg_losandes', label: 'Los Andes', cat: 'arg' },
+    { id: 'arg_midland', label: 'Midland', cat: 'arg' },
+    { id: 'arg_mitre', label: 'Mitre (SdE)', cat: 'arg' },
+    { id: 'arg_newells', label: "Newell's Old Boys", cat: 'arg' },
+    { id: 'arg_nuevachicago', label: 'Nueva Chicago', cat: 'arg' },
+    { id: 'arg_patronato', label: 'Patronato', cat: 'arg' },
+    { id: 'arg_platense', label: 'Platense', cat: 'arg' },
+    { id: 'arg_quilmes', label: 'Quilmes', cat: 'arg' },
+    { id: 'arg_racingcba', label: 'Racing (CBA)', cat: 'arg' },
+    { id: 'arg_racing', label: 'Racing Club', cat: 'arg' },
+    { id: 'arg_river', label: 'River Plate', cat: 'arg' },
+    { id: 'arg_rosario', label: 'Rosario Central', cat: 'arg' },
+    { id: 'arg_sanlorenzo', label: 'San Lorenzo', cat: 'arg' },
+    { id: 'arg_sanmartinsj', label: 'San Martín (SJ)', cat: 'arg' },
+    { id: 'arg_sanmartintuc', label: 'San Martín (T)', cat: 'arg' },
+    { id: 'arg_sanmiguel', label: 'San Miguel', cat: 'arg' },
+    { id: 'arg_santelmo', label: 'San Telmo', cat: 'arg' },
+    { id: 'arg_sarmiento', label: 'Sarmiento de Junín', cat: 'arg' },
+    { id: 'arg_talleres', label: 'Talleres de Córdoba', cat: 'arg' },
+    { id: 'arg_temperley', label: 'Temperley', cat: 'arg' },
+    { id: 'arg_tigre', label: 'Tigre', cat: 'arg' },
+    { id: 'arg_tristansuarez', label: 'Tristán Suárez', cat: 'arg' },
+    { id: 'arg_union', label: 'Unión de Santa Fe', cat: 'arg' },
+    { id: 'arg_velez', label: 'Vélez Sarsfield', cat: 'arg' },
+
+    // BRASIL (Nombres exactos de tu catálogo)
+    { id: 'bra_flamengo', label: 'Flamengo', cat: 'bra' },
+    { id: 'bra_palmeiras', label: 'Palmeiras', cat: 'bra' },
+    { id: 'bra_saopaulo', label: 'São Paulo', cat: 'bra' },
+    { id: 'bra_corinthians', label: 'Corinthians', cat: 'bra' },
+    { id: 'bra_santos', label: 'Santos', cat: 'bra' },
+    { id: 'bra_vasco', label: 'Vasco da Gama', cat: 'bra' },
+    { id: 'bra_fluminense', label: 'Fluminense', cat: 'bra' },
+    { id: 'bra_botafogo', label: 'Botafogo', cat: 'bra' },
+    { id: 'bra_atleticomg', label: 'Atlético Mineiro', cat: 'bra' },
+    { id: 'bra_cruzeiro', label: 'Cruzeiro', cat: 'bra' },
+    { id: 'bra_gremio', label: 'Grêmio', cat: 'bra' },
+    { id: 'bra_internacional', label: 'Internacional', cat: 'bra' },
+    { id: 'bra_athleticopr', label: 'Athletico Paranaense', cat: 'bra' },
+    { id: 'bra_bahia', label: 'Bahía', cat: 'bra' },
+    { id: 'bra_bragantino', label: 'Bragantino', cat: 'bra' },
+    { id: 'bra_coritiba', label: 'Coritiba', cat: 'bra' },
+    { id: 'bra_chapecoense', label: 'Chapecoense', cat: 'bra' },
+    { id: 'bra_mirassol', label: 'Mirassol', cat: 'bra' },
+    { id: 'bra_vitoria', label: 'Vitória', cat: 'bra' },
+    { id: 'bra_remo', label: 'Remo', cat: 'bra' },
+
+    // COLOMBIA (Liga BetPlay)
+    { id: 'col_aguilas', label: 'Águilas Doradas', cat: 'col' },
+    { id: 'col_alianza', label: 'Alianza FC', cat: 'col' },
+    { id: 'col_america', label: 'América de Cali', cat: 'col' },
+    { id: 'col_nacional', label: 'Atlético Nacional', cat: 'col' },
+    { id: 'col_chico', label: 'Boyacá Chicó', cat: 'col' },
+    { id: 'col_bucaramanga', label: 'Atlético Bucaramanga', cat: 'col' },
+    { id: 'col_cucuta', label: 'Cúcuta Deportivo', cat: 'col' },
+    { id: 'col_cali', label: 'Deportivo Cali', cat: 'col' },
+    { id: 'col_medellin', label: 'Independiente Medellín', cat: 'col' },
+    { id: 'col_fortaleza', label: 'Fortaleza CEIF', cat: 'col' },
+    { id: 'col_interpalmira', label: 'Internacional de Bogotá', cat: 'col' },
+    { id: 'col_jaguares', label: 'Jaguares de Córdoba', cat: 'col' },
+    { id: 'col_junior', label: 'Junior de Barranquilla', cat: 'col' },
+    { id: 'col_llaneros', label: 'Llaneros FC', cat: 'col' },
+    { id: 'col_millonarios', label: 'Millonarios', cat: 'col' },
+    { id: 'col_oncecaldas', label: 'Once Caldas', cat: 'col' },
+    { id: 'col_pasto', label: 'Deportivo Pasto', cat: 'col' },
+    { id: 'col_pereira', label: 'Deportivo Pereira', cat: 'col' },
+    { id: 'col_santafe', label: 'Santa Fe', cat: 'col' },
+    { id: 'col_tolima', label: 'Deportes Tolima', cat: 'col' },
+
+    // ESPAÑA (Nombres exactos de tu catálogo)
+    { id: 'esp_realmadrid', label: 'Real Madrid', cat: 'esp' },
+    { id: 'esp_barcelona', label: 'FC Barcelona', cat: 'esp' },
+    { id: 'esp_atletico', label: 'Atlético de Madrid', cat: 'esp' },
+    { id: 'esp_athletic', label: 'Athletic Club', cat: 'esp' },
+    { id: 'esp_betis', label: 'Real Betis', cat: 'esp' },
+    { id: 'esp_realsociedad', label: 'Real Sociedad', cat: 'esp' },
+    { id: 'esp_sevilla', label: 'Sevilla FC', cat: 'esp' },
+    { id: 'esp_villarreal', label: 'Villarreal CF', cat: 'esp' },
+    { id: 'esp_valencia', label: 'Valencia CF', cat: 'esp' },
+    { id: 'esp_osasuna', label: 'CA Osasuna', cat: 'esp' },
+    { id: 'esp_celta', label: 'RC Celta de Vigo', cat: 'esp' },
+    { id: 'esp_alaves', label: 'Deportivo Alavés', cat: 'esp' },
+    { id: 'esp_getafe', label: 'Getafe CF', cat: 'esp' },
+    { id: 'esp_mallorca', label: 'RCD Mallorca', cat: 'esp' },
+    { id: 'esp_laspalmas', label: 'UD Las Palmas', cat: 'esp' },
+    { id: 'esp_rayo', label: 'Rayo Vallecano', cat: 'esp' },
+    { id: 'esp_girona', label: 'Girona FC', cat: 'esp' },
+    { id: 'esp_leganes', label: 'CD Leganés', cat: 'esp' },
+    { id: 'esp_valladolid', label: 'Real Valladolid', cat: 'esp' },
+    { id: 'esp_espanyol', label: 'RCD Espanyol', cat: 'esp' },
+
+    // INGLATERRA (Nombres exactos de tu catálogo)
+    { id: 'eng_arsenal', label: 'Arsenal', cat: 'eng' },
+    { id: 'eng_astonvilla', label: 'Aston Villa', cat: 'eng' },
+    { id: 'eng_bournemouth', label: 'Bournemouth', cat: 'eng' },
+    { id: 'eng_brentford', label: 'Brentford', cat: 'eng' },
+    { id: 'eng_brighton', label: 'Brighton & Hove Albion', cat: 'eng' },
+    { id: 'eng_chelsea', label: 'Chelsea', cat: 'eng' },
+    { id: 'eng_crystalpalace', label: 'Crystal Palace', cat: 'eng' },
+    { id: 'eng_everton', label: 'Everton', cat: 'eng' },
+    { id: 'eng_fulham', label: 'Fulham', cat: 'eng' },
+    { id: 'eng_ipswich', label: 'Ipswich Town', cat: 'eng' },
+    { id: 'eng_leeds', label: 'Leeds United', cat: 'eng' },
+    { id: 'eng_liverpool', label: 'Liverpool', cat: 'eng' },
+    { id: 'eng_mancity', label: 'Manchester City', cat: 'eng' },
+    { id: 'eng_manunited', label: 'Manchester United', cat: 'eng' },
+    { id: 'eng_newcastle', label: 'Newcastle United', cat: 'eng' },
+    { id: 'eng_nottingham', label: 'Nottingham Forest', cat: 'eng' },
+    { id: 'eng_sunderland', label: 'Sunderland', cat: 'eng' },
+    { id: 'eng_tottenham', label: 'Tottenham Hotspur', cat: 'eng' },
+    { id: 'eng_coventry', label: 'Coventry City', cat: 'eng' },
+    { id: 'eng_hull', label: 'Hull City', cat: 'eng' },
+
+    // ITALIA (Nombres exactos de tu catálogo)
+    { id: 'ita_juventus', label: 'Juventus', cat: 'ita' },
+    { id: 'ita_inter', label: 'Inter de Milán', cat: 'ita' },
+    { id: 'ita_milan', label: 'AC Milan', cat: 'ita' },
+    { id: 'ita_roma', label: 'AS Roma', cat: 'ita' },
+    { id: 'ita_lazio', label: 'SS Lazio', cat: 'ita' },
+    { id: 'ita_napoli', label: 'Napoli', cat: 'ita' },
+    { id: 'ita_fiorentina', label: 'Fiorentina', cat: 'ita' },
+    { id: 'ita_atalanta', label: 'Atalanta', cat: 'ita' },
+    { id: 'ita_bologna', label: 'Bologna', cat: 'ita' },
+    { id: 'ita_torino', label: 'Torino', cat: 'ita' },
+    { id: 'ita_udinese', label: 'Udinese', cat: 'ita' },
+    { id: 'ita_genoa', label: 'Genoa', cat: 'ita' },
+    { id: 'ita_verona', label: 'Hellas Verona', cat: 'ita' },
+    { id: 'ita_empoli', label: 'Empoli', cat: 'ita' },
+    { id: 'ita_lecce', label: 'Lecce', cat: 'ita' },
+    { id: 'ita_monza', label: 'Monza', cat: 'ita' },
+    { id: 'ita_cagliari', label: 'Cagliari', cat: 'ita' },
+    { id: 'ita_parma', label: 'Parma', cat: 'ita' },
+    { id: 'ita_como', label: 'Como 1907', cat: 'ita' },
+    { id: 'ita_venezia', label: 'Venezia FC', cat: 'ita' }
+];
+
+function obtenerUrlEscudo(id) {
+    if (!id || id === 'ev') return ESCUDOS_MAP['ev'];
+    
+    // 1. Si es un club, buscar en catalogoGlobal por coincidencia exacta de nombre
+    if (typeof catalogoGlobal !== 'undefined' && catalogoGlobal && catalogoGlobal.length > 0) {
+        const item = BANDERAS_LISTA.find(b => b.id === id);
+        if (item && item.cat !== 'paises') {
+            const nombreBuscado = item.label.trim().toLowerCase();
+            const encontrado = catalogoGlobal.find(f => {
+                const clubDb = (bscarPropiedad(f, 'Club') || '').trim().toLowerCase();
+                return clubDb === nombreBuscado;
+            });
+
+            if (encontrado) {
+                const foto = bscarPropiedad(encontrado, 'Foto');
+                if (foto && foto.trim()) return foto.trim();
+            }
+        }
+    }
+
+    // 2. Diccionario oficial de respaldo
+    return ESCUDOS_MAP[id] || ESCUDOS_MAP['ev'];
+}
+
+let categoriaEscudosActual = 'todos';
+
+window.desplazarTabsEscudos = function(desplazamiento) {
+    const bar = document.getElementById('escudos-tabs-bar');
+    if (bar) {
+        bar.scrollBy({ left: desplazamiento, behavior: 'smooth' });
+    }
+};
+
+window.abrirModalSelectorEscudo = function() {
+    const m = document.getElementById('escudo-selector-modal');
+    if (!m) return;
+    m.style.display = 'flex';
+    const input = document.getElementById('buscador-escudos');
+    if (input) input.value = '';
+    renderizarEscudosGrid(BANDERAS_LISTA);
+};
+
+window.cerrarModalSelectorEscudo = function() {
+    const m = document.getElementById('escudo-selector-modal');
+    if (m) m.style.display = 'none';
+};
+
+window.cambiarCategoriaEscudos = function(cat, btn) {
+    categoriaEscudosActual = cat;
+    document.querySelectorAll('.escudo-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    
+    const input = document.getElementById('buscador-escudos');
+    const term = input ? input.value.toLowerCase().trim() : '';
+    
+    let filtrados = cat === 'todos' ? BANDERAS_LISTA : BANDERAS_LISTA.filter(e => e.cat === cat);
+    if (term) filtrados = filtrados.filter(e => e.label.toLowerCase().includes(term));
+    renderizarEscudosGrid(filtrados);
+};
+
+window.filtrarEscudosEnVivo = function(term) {
+    const q = term.toLowerCase().trim();
+    let lista = categoriaEscudosActual === 'todos' ? BANDERAS_LISTA : BANDERAS_LISTA.filter(e => e.cat === categoriaEscudosActual);
+    if (q) lista = lista.filter(e => e.label.toLowerCase().includes(q));
+    renderizarEscudosGrid(lista);
+};
+
+function renderizarEscudosGrid(lista) {
+    const container = document.getElementById('escudos-grid-container');
+    if (!container) return;
+    const actual = document.getElementById('avatar-logo-input')?.value || 'ev';
+
+    if (!lista.length) {
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px 10px; color:var(--text-muted); font-size:0.85rem;">No se encontraron escudos o banderas.</div>`;
+        return;
+    }
+
+    container.innerHTML = lista.map(item => {
+        const isSel = item.id === actual;
+        const urlImg = obtenerUrlEscudo(item.id);
+        return `
+        <div class="escudo-card-item ${isSel ? 'selected' : ''}" onclick="seleccionarEscudoDirecto('${item.id}')">
+            <img src="${urlImg}" alt="${item.label}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+            <span>${item.label}</span>
+        </div>`;
+    }).join('');
+}
+
+window.seleccionarEscudoDirecto = function(id) {
+    const input = document.getElementById('avatar-logo-input');
+    const preview = document.getElementById('avatar-logo-preview');
+    const futClub = document.getElementById('fut-club-display');
+    const urlFinal = obtenerUrlEscudo(id);
+
+    if (input) input.value = id;
+    if (preview) preview.src = urlFinal;
+    if (futClub) {
+        futClub.src = urlFinal;
+        futClub.setAttribute('referrerpolicy', 'no-referrer');
+    }
+
+    actualizarAvatarLive();
+    cerrarModalSelectorEscudo();
+};
+
+function obtenerNombreBandera(id) {
+    const item = BANDERAS_LISTA.find(b => b.id === id);
+    return item ? item.label : 'Estadios Virt.';
+}
+
+window.cambiarBanderaPaso = function(direccion) {
+    abrirModalSelectorEscudo();
 };
 
 function generarAvatarHTML(avatarImg) {
@@ -3016,86 +3484,7 @@ window.cambiarAvatarPaso = function(direccion) {
     actualizarAvatarLive();
 };
 
-const BANDERAS_LISTA = [
-    { id: 'ev', label: 'Estadios Virt.' },
-    { id: 'de', label: 'Alemania' },
-    { id: 'ksa', label: 'Arabia Saudita' },
-    { id: 'alg', label: 'Argelia' },
-    { id: 'ar', label: 'Argentina' },
-    { id: 'aus', label: 'Australia' },
-    { id: 'aut', label: 'Austria' },
-    { id: 'be', label: 'Bélgica' },
-    { id: 'bol', label: 'Bolivia' },
-    { id: 'br', label: 'Brasil' },
-    { id: 'cmr', label: 'Camerún' },
-    { id: 'can', label: 'Canadá' },
-    { id: 'cl', label: 'Chile' },
-    { id: 'co', label: 'Colombia' },
-    { id: 'kor', label: 'Corea del Sur' },
-    { id: 'civ', label: 'Costa de Marfil' },
-    { id: 'crc', label: 'Costa Rica' },
-    { id: 'hr', label: 'Croacia' },
-    { id: 'den', label: 'Dinamarca' },
-    { id: 'ecu', label: 'Ecuador' },
-    { id: 'egy', label: 'Egipto' },
-    { id: 'sco', label: 'Escocia' },
-    { id: 'es', label: 'España' },
-    { id: 'us', label: 'EE.UU.' },
-    { id: 'fr', label: 'Francia' },
-    { id: 'wal', label: 'Gales' },
-    { id: 'gha', label: 'Ghana' },
-    { id: 'gre', label: 'Grecia' },
-    { id: 'hon', label: 'Honduras' },
-    { id: 'gb-eng', label: 'Inglaterra' },
-    { id: 'irn', label: 'Irán' },
-    { id: 'irl', label: 'Irlanda' },
-    { id: 'it', label: 'Italia' },
-    { id: 'jam', label: 'Jamaica' },
-    { id: 'jp', label: 'Japón' },
-    { id: 'mli', label: 'Malí' },
-    { id: 'mar', label: 'Marruecos' },
-    { id: 'mx', label: 'México' },
-    { id: 'nga', label: 'Nigeria' },
-    { id: 'nor', label: 'Noruega' },
-    { id: 'nzl', label: 'Nueva Zelanda' },
-    { id: 'nl', label: 'Países Bajos' },
-    { id: 'pan', label: 'Panamá' },
-    { id: 'par', label: 'Paraguay' },
-    { id: 'per', label: 'Perú' },
-    { id: 'pol', label: 'Polonia' },
-    { id: 'pt', label: 'Portugal' },
-    { id: 'qat', label: 'Qatar' },
-    { id: 'cze', label: 'Rep. Checa' },
-    { id: 'sen', label: 'Senegal' },
-    { id: 'srb', label: 'Serbia' },
-    { id: 'rsa', label: 'Sudáfrica' },
-    { id: 'swe', label: 'Suecia' },
-    { id: 'sui', label: 'Suiza' },
-    { id: 'tun', label: 'Túnez' },
-    { id: 'tur', label: 'Turquía' },
-    { id: 'ukr', label: 'Ucrania' },
-    { id: 'uy', label: 'Uruguay' },
-    { id: 'ven', label: 'Venezuela' }
-];
 
-function obtenerNombreBandera(id) {
-    const item = BANDERAS_LISTA.find(b => b.id === id);
-    return item ? item.label : 'Estadios Virt.';
-}
-
-window.cambiarBanderaPaso = function(direccion) {
-    const input = document.getElementById('avatar-logo-input');
-    const imgPreview = document.getElementById('avatar-logo-preview');
-    if (!input) return;
-    let valActual = input.value || 'ev';
-    let idx = BANDERAS_LISTA.findIndex(b => b.id === valActual);
-    if (idx === -1) idx = 0;
-    idx = (idx + direccion + BANDERAS_LISTA.length) % BANDERAS_LISTA.length;
-    const nuevo = BANDERAS_LISTA[idx];
-    input.value = nuevo.id;
-    if (imgPreview) imgPreview.src = ESCUDOS_MAP[nuevo.id] || ESCUDOS_MAP['ev'];
-    actualizarAvatarLive();
-};
 
 const POSICIONES_NOMBRES = {
     'POR': 'Arquero', 'DFC': 'Defensor Central', 'LD': 'Lateral Der.', 'LI': 'Lateral Izq.',
@@ -3136,7 +3525,13 @@ window.actualizarAvatarLive = function() {
     const posInput = document.getElementById('avatar-pos-input');
     if(posInput) { const futPos = document.getElementById('fut-pos-display');if(futPos) futPos.textContent = posInput.value; }
     const logoInput = document.getElementById('avatar-logo-input');
-    if(logoInput) { const futClub = document.getElementById('fut-club-display');if(futClub) futClub.src = ESCUDOS_MAP[logoInput.value] || ESCUDOS_MAP['ev']; }
+    if(logoInput) { 
+        const futClub = document.getElementById('fut-club-display');
+        if(futClub) {
+            futClub.src = obtenerUrlEscudo(logoInput.value);
+            futClub.setAttribute('referrerpolicy', 'no-referrer');
+        }
+    }
 };
 
 async function guardarPersonalizacion(){
@@ -3366,7 +3761,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <div class="fut-badge-meta">
                                 <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
                                 <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
-                                <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" class="fut-club-icon" id="fut-club-display" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                                <img src="${obtenerUrlEscudo(savedLogo)}" class="fut-club-icon" id="fut-club-display" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
                             </div>
                             <div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair)}</div>
                         </div>
@@ -3412,12 +3807,11 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <button type="button" class="avatar-stepper-btn" onclick="cambiarAvatarPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
                             <input type="hidden" id="avatar-hair-input" value="${savedHair}">
                         </div>
-                        <div class="avatar-stepper-box">
-                            <button type="button" class="avatar-stepper-btn" onclick="cambiarBanderaPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
-                            <span class="avatar-stepper-label" id="avatar-logo-label" style="display:flex;align-items:center;justify-content:center;">
-                                <img src="${ESCUDOS_MAP[savedLogo] || ESCUDOS_MAP['ev']}" id="avatar-logo-preview" style="width:28px;height:20px;object-fit:contain;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.5);" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                        <div class="avatar-stepper-box" onclick="abrirModalSelectorEscudo()" style="cursor:pointer;" title="Elegir escudo o bandera">
+                            <span class="avatar-stepper-label" id="avatar-logo-label" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                                <img src="${obtenerUrlEscudo(savedLogo)}" id="avatar-logo-preview" referrerpolicy="no-referrer" style="width:28px;height:24px;object-fit:contain;border-radius:3px;box-shadow:0 0 6px rgba(0,0,0,0.5);" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                                <span style="font-size:0.75rem; color:var(--accent-color); font-weight:800;"><i class="ph-bold ph-magnifying-glass"></i> Elegir</span>
                             </span>
-                            <button type="button" class="avatar-stepper-btn" onclick="cambiarBanderaPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
                             <input type="hidden" id="avatar-logo-input" value="${savedLogo}">
                         </div>
                     </div>
