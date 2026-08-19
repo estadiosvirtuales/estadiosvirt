@@ -2208,7 +2208,7 @@ body.video-abierto .hero-section {
         align-items: center !important;
         justify-content: center !important;
         margin-left: auto !important;  
-        margin-right: auto !important; 
+        margin-right: -25px !important; 
         padding: 0 !important;
     }
 
@@ -4038,11 +4038,13 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .profile-login-btn.logout {
-    color: var(--danger-color) !important;
-    border-color: var(--danger-color) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-strong) !important;
 }
 .profile-login-btn.logout:hover {
-    background: rgba(255, 71, 87, 0.15) !important;
+    background: var(--surface-hover) !important;
+    border-color: var(--accent-color) !important;
+    color: #ffffff !important;
 }
 
 .profile-login-tooltip {
