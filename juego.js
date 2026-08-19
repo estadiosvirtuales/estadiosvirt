@@ -3528,9 +3528,9 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
                 <div id="logros-content-wrapper" class="logros-wrapper-mobile">
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;margin-top:10px;">
-                        <span class="logro-rarity-pill" style="font-size:.6rem; padding:3px 10px;">Común</span>
-                        <span class="logro-rarity-pill rare" style="font-size:.6rem; padding:3px 10px;">Raro</span>
-                        <span class="logro-rarity-pill epic" style="font-size:.6rem; padding:3px 10px;">Épico</span>
+                        <span class="logro-rarity-pill" style="font-size:.6rem; padding:3px 10px;"></span>
+                        <span class="logro-rarity-pill rare" style="font-size:.6rem; padding:3px 10px;"></span>
+                        <span class="logro-rarity-pill epic" style="font-size:.6rem; padding:3px 10px;"></span>
                     </div>
                     <div class="logros-tabs-row">
                         <button class="logro-tab-btn active" data-tipo="todos" onclick="filtrarLogros('todos')">Todos</button>
