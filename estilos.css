@@ -1822,7 +1822,7 @@ body.video-abierto .hero-section {
 .logro-card-v2.unlocked .logro-unlock-badge{display:flex}
 .logros-empty{grid-column:1/-1;text-align:center;padding:28px 10px;color:var(--text-muted);font-size:.82rem;display:flex;flex-direction:column;align-items:center;gap:8px}
 .logros-empty i{font-size:2rem;color:var(--border-strong)}
-#login-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9000;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
+#login-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:10020 !important;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
 #login-modal-overlay.active{display:flex}
 .login-modal-box{position: relative; background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:440px;padding:36px;display:flex;flex-direction:column;align-items:center;box-shadow:var(--shadow-strong);animation:bounceFun .4s ease}
 .login-modal-logo{width:56px;height:56px;border-radius:16px;border:2px solid var(--accent-color);object-fit:cover;margin-bottom:18px;box-shadow:0 0 18px var(--accent-glow)}
@@ -1833,7 +1833,7 @@ body.video-abierto .hero-section {
 .google-wall-icon{font-size:2.8rem;color:var(--accent-color);filter:drop-shadow(0 0 12px var(--accent-glow))}
 .google-wall h3{font-size:1.1rem;font-weight:800;color:var(--text-main);margin:0}
 .google-wall p{font-size:.88rem;color:var(--text-muted);line-height:1.55;margin:0}
-#privacy-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9999;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
+#privacy-modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:10010 !important;justify-content:center;align-items:center;backdrop-filter:blur(12px)}
 #privacy-modal-overlay.active{display:flex}
 .privacy-modal-box{position:relative;background:var(--card-bg);border:1px solid var(--border-strong);border-radius:22px;width:90%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;box-shadow:var(--shadow-strong);overflow:hidden;animation:bounceFun .4s ease}
 .privacy-modal-header{padding:26px 55px 18px 30px;border-bottom:2px dashed var(--border-subtle);flex-shrink:0}
@@ -2887,15 +2887,72 @@ body.video-abierto .hero-section {
         height: auto !important;
     }
 
+    /* ========================================================
+       📱 CONTROLES PARA CELULAR (BLINDADOS)
+       ======================================================== */
+    .profile-card-actions-row {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
+        width: calc(100% - 16px) !important;
+        max-width: 100% !important;
+        gap: 18px !important;              /* 👈 [CELU] Separación entre ambos botones */
+        margin-top: -75px !important;        /* 👈 [CELU] Separación de la carta FUT */
+        justify-self: center !important;
+        display: flex !important;
+        position: relative !important;
+    }
+
+    /* 📍 BOTÓN "PERSONALIZÁ TU CARTA" EN CELULAR */
+    .profile-card-actions-row #btn-toggle-custom,
+    #btn-toggle-custom {
+        flex: 1 !important;
+        width: auto !important;
+        height: 20px !important;          /* 👈 [CELU] ALTO DEL BOTÓN */
+        min-height: 28px !important;
+        font-size: 0.44rem !important;    /* 👈 [CELU] TAMAÑO DE LETRA */
+        padding: 0 6px 0 28px !important; /* 👈 [CELU] El 28px mueve las letras a la DERECHA para no taparse con el ícono */
+        left: 14px !important;             /* 👈 [CELU] Mover todo el botón a la IZQUIERDA (-px) o DERECHA (+px) */
+        border-radius: 8px !important;    /* 👈 [CELU] Curvatura de bordes */
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 📍 BOTÓN DE COMPARTIR EN CELULAR */
+    .profile-card-actions-row #btn-share-card,
+    #btn-share-card {
+        width: 28px !important;           /* 👈 [CELU] ANCHO */
+        height: 28px !important;          /* 👈 [CELU] ALTO */
+        min-width: 28px !important;
+        font-size: 0.85rem !important;    /* 👈 [CELU] TAMAÑO DEL ÍCONO */
+        border-radius: 12px !important;    /* 👈 [CELU] Curvatura */
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
     #customization-panel-wrapper {
         grid-column: 1 / span 2 !important;
         grid-row: 3 !important;
         width: 100% !important;
     }
 
+    .profile-login-wrapper {
+        grid-column: 1 !important;
+        grid-row: 4 !important;
+        width: calc(100% - 16px) !important;
+        max-width: 100% !important;
+        margin-top: -135px !important;
+        margin-bottom: 6px !important;
+        justify-self: center !important;
+    }
+
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
-        grid-row: 4 !important;
+        grid-row: 5 !important;
         padding: 10px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
@@ -2905,7 +2962,45 @@ body.video-abierto .hero-section {
 
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
+        grid-row: 6 !important;
+        padding: 10px 12px !important;
+        margin-bottom: 0 !important;
+        border-radius: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .profile-login-btn {
+        width: 75% !important;          /* 👈 [CELU] ANCHO DEL BOTÓN */
+        height: 12px !important;         /* 👈 [CELU] ALTO DEL BOTÓN */
+        min-height: 26px !important;
+        padding: 4px 10px !important;    /* 👈 [CELU] ESPACIO INTERNO */
+        font-size: 0.60rem !important;   /* 👈 [CELU] TAMAÑO DE TEXTO E ÍCONO */
+        border-radius: 12px !important;   /* 👈 [CELU] CURVATURA DE BORDES */
+        background: var(--surface-color) !important;
+        color: var(--text-main) !important;
+        border: 1.5px solid var(--border-strong) !important;
+        box-shadow: 0 2px 0 var(--border-subtle) !important;
+    }
+
+    #customization-panel-wrapper {
+        grid-column: 1 / span 2 !important;
+        grid-row: 4 !important;
+        width: 100% !important;
+    }
+
+    .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
+        grid-column: 1 / span 2 !important;
         grid-row: 5 !important;
+        padding: 10px !important;
+        margin-bottom: 0 !important;
+        border-radius: 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .logros-box-mobile {
+        grid-column: 1 / span 2 !important;
+        grid-row: 6 !important;
         padding: 10px 12px !important;
         margin-bottom: 0 !important;
         border-radius: 14px !important;
@@ -3799,8 +3894,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 #btn-share-card {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     font-size: 1.3rem;
     display: flex;
@@ -3856,4 +3951,158 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 [data-theme="light"] .share-tooltip::after {
     border-color: #cbd5e1 transparent transparent transparent;
+}
+
+/* ========================================================
+   🎴 BOTONES DE ACCIÓN DE CARTA (PERSONALIZAR + COMPARTIR)
+   ======================================================== */
+.profile-card-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;              /* 👈 Distancia entre el botón de personalizar y el de compartir */
+    width: 100%;
+    max-width: 280px;
+    margin-top: 14px;
+    position: relative;
+}
+
+#btn-toggle-custom {
+    flex: 1 !important;
+    width: auto !important;
+    max-width: 100% !important;
+    height: 32px !important;
+    margin: 0 !important;
+    padding: 0 10px 0 65px !important;
+    font-size: 0.66rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
+    display: inline-flex !important;
+    align-items: right !important;
+    justify-content: center !important;
+    position: relative;
+    left: -8px;            /* 👈 MODIFICÁ ACÁ: más negativo (-5px) lo corre más a la IZQUIERDA */
+}
+
+.share-btn-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+#btn-share-card {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 42px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.15rem !important;
+    border-radius: 15px !important;
+}
+
+/* ========================================================
+   🔐 BOTÓN DE INICIO DE SESIÓN / ZONA AZUL DEL PERFIL (PC)
+   ======================================================== */
+.profile-login-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 280px;      /* 👈 [PC] ANCHO MÁXIMO DEL CONTENEDOR */
+    margin-top: 15px;      /* 👈 [PC] SEPARACIÓN DE ARRIBA (Subir/Bajar) */
+    margin-bottom: 0px;    /* 👈 [PC] SEPARACIÓN DE ABAJO */
+    z-index: 20;
+}
+
+.profile-login-btn {
+    width: 65%;
+    height: 28px;          /* 👈 [PC] ALTO DEL BOTÓN */
+    padding: 10px 16px;    /* 👈 [PC] RELLENO INTERNO */
+    font-size: 0.82rem;    /* 👈 [PC] TAMAÑO DEL TEXTO */
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    gap: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 20px;   /* 👈 [PC] CURVATURA DE BORDES */
+    background: var(--surface-color) !important;
+    color: var(--text-main) !important;
+    border: 2px solid var(--border-strong) !important;
+    box-shadow: 0 4px 0 var(--border-subtle) !important;
+    transition: all 0.2s ease !important;
+}
+
+.profile-login-btn:hover {
+    background: var(--surface-hover) !important;
+    border-color: var(--accent-color) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.profile-login-btn.logout {
+    color: var(--danger-color) !important;
+    border-color: var(--danger-color) !important;
+}
+.profile-login-btn.logout:hover {
+    background: rgba(255, 71, 87, 0.15) !important;
+}
+
+.profile-login-tooltip {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    width: 240px;
+    background: #080c14;
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.4;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--accent-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.22s ease;
+    z-index: 1000;
+}
+
+.profile-login-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--accent-color) transparent transparent transparent;
+}
+
+.profile-login-wrapper:hover .profile-login-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+[data-theme="light"] .profile-login-tooltip {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15) !important;
+}
+
+[data-theme="light"] .profile-login-tooltip::after {
+    border-color: #cbd5e1 transparent transparent transparent !important;
 }

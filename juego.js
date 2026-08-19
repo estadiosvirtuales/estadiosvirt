@@ -684,13 +684,17 @@ const sub=document.querySelector('.login-modal-sub');if(sub)sub.innerHTML=`<b st
 const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
 function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=obtenerUsuarioLogueado();if(u)return u.name.split(' ')[0];return 'Jugador';}
 function renderizarBotonLogin(){
-const container=document.getElementById('hero-google-profile');const u=obtenerUsuarioLogueado();
-if(u){
-let avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -18px;">${generarAvatarHTML(getPref('ev_avatar_hair','1.png'))}</div></div>`;
-const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
-container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()"><div style="text-align:right;"><div class="hero-profile-name">${obtenerNombreDisplay()}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${getPref('ev_user_pos','DT')}</div></div>${avatarHTML}</div>`;
-ancestralHeaderNivel();
-}else{container.innerHTML=`<button class="btn-login" onclick="manejarClickLogin()"><i class="ph-bold ph-user-circle" style="font-size:1.1rem;"></i> Entrar</button>`;}
+    const container=document.getElementById('hero-google-profile');
+    if(!container) return;
+    const u=obtenerUsuarioLogueado();
+    const avatarImg = getPref('ev_avatar_hair', '1.png');
+    const avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -18px;">${generarAvatarHTML(avatarImg)}</div></div>`;
+    const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+    const nombre = obtenerNombreDisplay();
+    const pos = getPref('ev_user_pos', 'DT');
+    
+    container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()" title="Ver tu perfil y carta"><div style="text-align:right;"><div class="hero-profile-name">${nombre}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${pos}</div></div>${avatarHTML}</div>`;
+    ancestralHeaderNivel();
 }
 function guardarVotoLocal(estadio,p){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');v[estadio]=p;localStorage.setItem('ev_votos_locales',JSON.stringify(v));}
 function obtenerVotoLocal(estadio){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');return v[estadio]||0;}
@@ -3246,7 +3250,9 @@ async function guardarPersonalizacion(){
 }
 
 function abrirModalPerfil(){
-const u=obtenerUsuarioLogueado();if(!u)return;
+const u=obtenerUsuarioLogueado();
+const esGoogle = u && u.loginMethod === 'google';
+const nombreDefault = u ? u.name.split(' ')[0] : 'Invitado';
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
 
 // 📊 Cálculo dinámico de estatus según el nivel del jugador
@@ -3278,7 +3284,22 @@ const validThemes = TEMAS_LISTA.map(t => t.k);
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
 const currentTemaObj = TEMAS_LISTA.find(t => t.k === savedTheme) || { k: 'arg', l: 'ARG', nombre: 'Argentina' };
 const savedHair = getPref('ev_avatar_hair', '1.png');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
-const activeCardClass=savedTheme;const googleBadge='';
+const activeCardClass=savedTheme;
+
+const authBtnHTML = esGoogle 
+    ? `<div class="profile-login-wrapper">
+        <button onclick="cerrarSesion()" class="btn-3d secondary profile-login-btn logout">
+            <i class="ph-bold ph-sign-out"></i> Cerrar sesión
+        </button>
+       </div>`
+    : `<div class="profile-login-wrapper">
+        <button onclick="manejarClickLogin()" class="btn-3d secondary profile-login-btn">
+            <i class="ph-bold ph-google-logo"></i> Iniciá sesión
+        </button>
+        <div class="profile-login-tooltip">
+            Si querés que tu progreso se sincronice en todos tus dispositivos, ¡iniciá sesión con Google!
+        </div>
+       </div>`;
 
 // 3. Algoritmo para separar Racha Activa vs Días Pasados
 const today = new Date();
@@ -3349,7 +3370,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                             </div>
                             <div class="fut-avatar-container" id="fut-avatar-live-container">${generarAvatarHTML(savedHair)}</div>
                         </div>
-                        <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick||u.name.split(' ')[0]}</div>
+                        <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick || nombreDefault}</div>
                         <div class="fut-stats-row">
                             <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
                             <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
@@ -3359,10 +3380,12 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                     </div>
 
-            <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()" style="width:100%;max-width:280px;margin-top:16px;flex-shrink:0;"><img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼</button>
-            <div class="share-btn-wrapper" style="margin-top:8px;">
-                <button class="btn-3d secondary" id="btn-share-card" onclick="compartirCartaFUT()"><i class="ph-bold ph-share-network"></i></button>
-                <div class="share-tooltip">Compartí tu carta</div>
+            <div class="profile-card-actions-row">
+                <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()"><img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼</button>
+                <div class="share-btn-wrapper">
+                    <button class="btn-3d secondary" id="btn-share-card" onclick="compartirCartaFUT()"><i class="ph-bold ph-share-network"></i></button>
+                    <div class="share-tooltip">Compartí tu carta</div>
+                </div>
             </div>
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
@@ -3443,11 +3466,12 @@ document.getElementById('profile-modal-body').innerHTML=`
                     </div>
                     <label class="avatar-nick-label"><img src="apodo.png" class="custom-label-icon" alt="Apodo"> APODO</label>
                     <div class="avatar-nickname-row">
-                        <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
+                        <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${nombreDefault.replace(/'/g,"\\'")}';">
                     </div>
                     <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><img src="guardar-cambios.png" class="btn-custom-icon" alt="Guardar"> GUARDAR CAMBIOS</button>
                 </div>
             </div>
+            ${authBtnHTML}
         </div>
 
         <div class="right-dashboard-column">
@@ -3518,12 +3542,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
-            <div class="profile-modal-footer">
-                ${googleBadge}
-                <button onclick="cerrarSesion()" class="btn-3d secondary" style="color:var(--danger-color); border-color:var(--danger-color); padding:10px 18px; font-size:.85rem; font-weight:800;"><i class="ph-bold ph-sign-out"></i> Cerrar sesión</button>
             </div>
-
-        </div>
     </div>`;
     document.getElementById('profile-modal').style.display='flex';
 setTimeout(()=>{
@@ -3992,12 +4011,6 @@ function dispararJuicinessRonda(distancia) {
 // SPRINT VIRAL - PASO 5: SISTEMA DE MINI LIGAS PRIVADAS
 // ========================================================
 async function crearOCargarLigaAmigos(esCreacion) {
-    // 🔐 ESCUDO DE REGISTRO OBLIGATORIO: Si no es usuario Google, bloqueamos y abrimos el login
-    if (!esUsuarioGoogle()) {
-        showToast("¡Iniciá sesión con Google para crear o unirte a una liga! 🔐", "ph-lock", "danger");
-        manejarClickLogin();
-        return;
-    }
 
     const input = document.getElementById('input-codigo-liga');
     let nombreLiga = input ? input.value.trim().toUpperCase() : "";
@@ -4364,19 +4377,7 @@ async function abrirModalLigaAmigosPrivada() {
     const u = obtenerUsuarioLogueado();
     const body = document.getElementById('liga-amigos-modal-body');
 
-    // 🔐 ESCUDO DE PRIVACIDAD: Si no hay usuario logueado, bloqueamos la vista por completo
-    if (!u || u.id === 'guest') {
-        if (body) {
-            body.innerHTML = `
-            <div style="text-align:center; padding:40px 20px;">
-                <div style="font-size:3.5rem; color:var(--danger-color); margin-bottom:12px;"><i class="ph-duotone ph-lock-key"></i></div>
-                <h3 style="font-size:1.4rem; font-weight:900; text-transform:uppercase; color:var(--text-main); margin-bottom:8px;">Acceso Restringido</h3>
-                <p style="font-size:.9rem; color:var(--text-muted); margin-bottom:24px; line-height:1.5;">Para ver tu Liga Privada o unirte a una, necesitás iniciar sesión con Google.</p>
-                <button onclick="cerrarModalLigaAmigosPrivada(); manejarClickLogin()" class="btn-3d primary" style="padding:14px 24px; font-size:1rem; width:100%;"><i class="ph-bold ph-sign-in"></i> Iniciar Sesión</button>
-            </div>`;
-        }
-        return;
-    }
+    // Acceso total: los invitados usan su ID y apodo local
 
     const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
 
