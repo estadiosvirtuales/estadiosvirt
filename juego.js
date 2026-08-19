@@ -5012,6 +5012,40 @@ function abrirModalPrivacyDirecto() {
         if (btn) btn.disabled = false;
     }
 }
+async function urlABase64Seguro(url) {
+    if (!url || url.startsWith('data:')) return url;
+    
+    // 1. Intento directo normal
+    try {
+        const res = await fetch(url, { mode: 'cors' });
+        if (res.ok) {
+            const blob = await res.blob();
+            return await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        }
+    } catch(e) {}
+
+    // 2. Intento de respaldo vía puente seguro con CORS habilitado
+    try {
+        const urlLimpia = url.replace(/^https?:\/\//, '');
+        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(urlLimpia)}&output=png`;
+        const resProxy = await fetch(proxyUrl, { mode: 'cors' });
+        if (resProxy.ok) {
+            const blob = await resProxy.blob();
+            return await new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        }
+    } catch(e) {}
+
+    return url;
+}
+
 async function compartirCartaFUT() {
     const cardElement = document.getElementById('fut-card-main');
     if (!cardElement) {
@@ -5021,45 +5055,36 @@ async function compartirCartaFUT() {
 
     showToast("Generando imagen de tu carta...", "ph-hourglass", "info");
 
-    try {
-        // 1. Solución CORS: Convertir imágenes externas (flagcdn, github.io) a Base64 temporalmente
-        const images = cardElement.querySelectorAll('img');
-        const originalSrcs = [];
+    const images = Array.from(cardElement.querySelectorAll('img'));
+    const originalSrcs = images.map(img => ({ img, src: img.src }));
 
-        for (const img of images) {
-            if (img.src && !img.src.startsWith('data:')) {
-                originalSrcs.push({ img, src: img.src });
-                try {
-                    const response = await fetch(img.src, { mode: 'cors' });
-                    const blob = await response.blob();
-                    const base64 = await new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => resolve(reader.result);
-                        reader.readAsDataURL(blob);
-                    });
-                    img.src = base64;
-                } catch (e) {
-                    img.crossOrigin = "anonymous";
+    try {
+        // 1. Convertimos las imágenes a Base64 de forma segura sin alterar crossOrigin en el DOM
+        for (const item of originalSrcs) {
+            if (item.src && !item.src.startsWith('data:')) {
+                const b64 = await urlABase64Seguro(item.src);
+                if (b64 && b64.startsWith('data:')) {
+                    item.img.src = b64;
                 }
             }
         }
 
-        // 2. Fondo adaptativo del tema activo para las esquinas exteriores
+        // 2. Fondo adaptativo del tema activo
         const bodyBg = window.getComputedStyle(document.body).backgroundColor || '#0e141b';
 
-        // 3. Captura en Alta Resolución (3x = 750x1155px ultranítida)
+        // 3. Captura en Alta Resolución sin cacheBust invasivo
         const dataUrl = await htmlToImage.toJpeg(cardElement, {
             quality: 0.95,
             pixelRatio: 3,
             backgroundColor: bodyBg,
-            cacheBust: true,
+            cacheBust: false,
             style: {
                 transform: 'none',
                 margin: '0'
             }
         });
 
-        // 4. Restaurar URLs originales de las imágenes
+        // 4. Restaurar de inmediato los src originales en el DOM
         originalSrcs.forEach(({ img, src }) => {
             img.src = src;
         });
@@ -5074,6 +5099,9 @@ async function compartirCartaFUT() {
 
     } catch (error) {
         console.error("Error al exportar la carta FUT:", error);
+        originalSrcs.forEach(({ img, src }) => {
+            img.src = src;
+        });
         showToast("Error al generar la imagen de la carta", "ph-warning-circle", "danger");
     }
 }
