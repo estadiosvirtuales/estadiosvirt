@@ -660,25 +660,46 @@ const BANDERAS_LISTA = [
 
 function obtenerUrlEscudo(id) {
     if (!id || id === 'ev') return ESCUDOS_MAP['ev'];
+    if (ESCUDOS_MAP[id]) return ESCUDOS_MAP[id];
     
-    // 1. Si es un club, buscar en catalogoGlobal por coincidencia exacta de nombre
+    // 1. Memoria persistente: si ya se resolvió antes, no espera a Supabase en el F5
+    const cached = localStorage.getItem('ev_escudo_url_' + id);
+    if (cached) {
+        ESCUDOS_MAP[id] = cached;
+        return cached;
+    }
+
+    // 2. Si es un club, buscar en catalogoGlobal limpiando tildes y caracteres especiales
     if (typeof catalogoGlobal !== 'undefined' && catalogoGlobal && catalogoGlobal.length > 0) {
         const item = BANDERAS_LISTA.find(b => b.id === id);
         if (item && item.cat !== 'paises') {
-            const nombreBuscado = item.label.trim().toLowerCase();
+            const limpiar = (txt) => (txt || '')
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9]/g, "")
+                .trim();
+
+            const nombreBuscado = limpiar(item.label);
+
             const encontrado = catalogoGlobal.find(f => {
-                const clubDb = (bscarPropiedad(f, 'Club') || '').trim().toLowerCase();
+                const clubDb = limpiar(bscarPropiedad(f, 'Club'));
                 return clubDb === nombreBuscado;
             });
 
             if (encontrado) {
                 const foto = bscarPropiedad(encontrado, 'Foto');
-                if (foto && foto.trim()) return foto.trim();
+                if (foto && foto.trim()) {
+                    const urlLimpia = foto.trim();
+                    ESCUDOS_MAP[id] = urlLimpia;
+                    localStorage.setItem('ev_escudo_url_' + id, urlLimpia);
+                    return urlLimpia;
+                }
             }
         }
     }
 
-    // 2. Diccionario oficial de respaldo
+    // 3. Diccionario oficial de respaldo
     return ESCUDOS_MAP[id] || ESCUDOS_MAP['ev'];
 }
 
@@ -757,6 +778,13 @@ window.seleccionarEscudoDirecto = function(id) {
     if (futClub) {
         futClub.src = urlFinal;
         futClub.setAttribute('referrerpolicy', 'no-referrer');
+    }
+
+    // Guardado persistente inmediato para blindar contra F5
+    setPref('ev_avatar_logo', id);
+    if (urlFinal && urlFinal !== ESCUDOS_MAP['ev']) {
+        localStorage.setItem('ev_escudo_url_' + id, urlFinal);
+        ESCUDOS_MAP[id] = urlFinal;
     }
 
     actualizarAvatarLive();
@@ -1673,14 +1701,12 @@ async function indexarCatalogoMasivo() {
     }
 
     try {
-        // Traemos todos los estadios de una sola vez
         const { data, error } = await supabaseClient
             .from('estadios_catalogo')
             .select('*');
 
         if (error) throw error;
 
-        // Mapeamos los datos para que tu código viejo siga funcionando sin tocar nada más
         catalogoGlobal = data.map(fila => ({
             'Estadio': fila.estadio,
             'Club': fila.club,
@@ -1690,7 +1716,6 @@ async function indexarCatalogoMasivo() {
             'Latitud': fila.latitud,
             'Longitud': fila.longitud,
             'Dato Curioso': fila.dato_curioso,
-            // 👇 ESTO FALTABA: Agregamos Capacidad, Año y las demás para que los minijuegos funcionen
             'Capacidad': fila.capacidad,
             'Año': fila.anio,
             'Promedio': fila.promedio,
@@ -1698,9 +1723,18 @@ async function indexarCatalogoMasivo() {
         }));
 
         console.log(`¡Catálogo global migrado y cargado en memoria! (${catalogoGlobal.length} estadios)`);
-        
-        // Si tenías estadios cargados para una liga específica, los mapeamos por defecto
         estadiosCargados = [...catalogoGlobal];
+
+        // Sincroniza en memoria el escudo guardado del usuario apenas baja el catálogo
+        const savedLogo = getPref('ev_avatar_logo', 'ev');
+        if (savedLogo && savedLogo !== 'ev') {
+            const urlReal = obtenerUrlEscudo(savedLogo);
+            const futClub = document.getElementById('fut-club-display');
+            if (futClub && urlReal) {
+                futClub.src = urlReal;
+                futClub.setAttribute('referrerpolicy', 'no-referrer');
+            }
+        }
         
     } catch (err) {
         console.error("Error al descargar el catálogo masivo:", err);
@@ -3639,8 +3673,10 @@ async function guardarPersonalizacion(){
 
     const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
     const cardEl=document.getElementById('fut-card-main');if(cardEl){
-        let th=getPref('ev_card_theme','arg');const validThemes = ['arg','bra','esp','ita','fra','ger','eng','por','uru','col','mex','chi','ned','bel','cro','usa','jpn','can','mar','sen','kor','aus','sui','ecu','per','den','srb','pol','wal','swe','civ','cmr','gha','nga','ksa','irn','egy','alg','tun','mli','qat','par','ven','bol','crc','pan','jam','nzl'];
-        if (!validThemes.includes(th)) th = 'arg';cardEl.className='fut-card '+th;
+        let th=getPref('ev_card_theme','arg');
+        const validThemes = TEMAS_LISTA.map(t => t.k);
+        if (!validThemes.includes(th)) th = 'arg';
+        cardEl.className='fut-card '+th;
     }if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
 }
 
