@@ -3093,6 +3093,36 @@ window.cambiarBanderaPaso = function(direccion) {
     actualizarAvatarLive();
 };
 
+const POSICIONES_NOMBRES = {
+    'POR': 'Arquero', 'DFC': 'Defensor Central', 'LD': 'Lateral Der.', 'LI': 'Lateral Izq.',
+    'MCD': 'Medio Defensivo', 'MC': 'Mediocentro', 'MCO': 'Medio Ofensivo', 'MI': 'Medio Izq.',
+    'MD': 'Medio Der.', 'EI': 'Extremo Izq.', 'ED': 'Extremo Der.', 'SD': 'Segundo Del.',
+    'DC': 'Delantero', 'DT': 'Director Técnico'
+};
+
+window.togglePitchPicker = function(el) {
+    const pitchContainer = document.getElementById('pitch-picker-dropdown');
+    const chev = el ? el.querySelector('.pitch-chevron') : document.querySelector('.pitch-chevron');
+    if (pitchContainer) {
+        const isOpen = pitchContainer.classList.toggle('open');
+        if (chev) chev.className = isOpen ? 'ph-bold ph-caret-up pitch-chevron' : 'ph-bold ph-caret-down pitch-chevron';
+    }
+};
+
+window.seleccionarPosicionCancha = function(pos) {
+    const input = document.getElementById('avatar-pos-input');
+    const label = document.getElementById('pitch-pos-selected-name');
+    const headerPreview = document.getElementById('pitch-header-preview');
+    const textoCompleto = `${pos} — ${POSICIONES_NOMBRES[pos] || pos}`;
+    if (input) input.value = pos;
+    if (label) label.textContent = textoCompleto;
+    if (headerPreview) headerPreview.textContent = pos;
+    document.querySelectorAll('.pitch-pos-node').forEach(node => {
+        node.classList.toggle('active', node.dataset.pos === pos);
+    });
+    actualizarAvatarLive();
+};
+
 window.actualizarAvatarLive = function() {
     const hInput = document.getElementById('avatar-hair-input');
     if (hInput) {
@@ -3368,10 +3398,49 @@ document.getElementById('profile-modal-body').innerHTML=`
                             <input type="hidden" id="avatar-logo-input" value="${savedLogo}">
                         </div>
                     </div>
-                    <label class="avatar-nick-label"><img src="posicion.png" class="custom-label-icon" alt="Posición"> POSICIÓN</label>
-                    <select class="avatar-pos-select" id="avatar-pos-input" onchange="actualizarAvatarLive()">
-                        <option value="POR">POR — Arquero</option><option value="DFC">DFC — Def. Central</option><option value="LD">LD — Lateral Der.</option><option value="LI">LI — Lateral Izq.</option><option value="MCD">MCD — Medio Def.</option><option value="MC">MC — Mediocentro</option><option value="MCO">MCO — Medio Ofensivo</option><option value="MI">MI — Medio Izq.</option><option value="MD">MD — Medio Der.</option><option value="EI">EI — Extremo Izq.</option><option value="ED">ED — Extremo Der.</option><option value="SD">SD — Segundo Del.</option><option value="DC">DC — Delantero</option><option value="DT">DT — Técnico</option>
-                    </select>
+                    <div class="avatar-picker-label pitch-stepper-wrapper" onclick="window.togglePitchPicker(this)">
+                        <img src="posicion.png" class="custom-label-icon" alt="Posición">
+                        <span class="theme-stepper-title pitch-title-text">POSICIÓN</span>
+                        <div class="pitch-header-control">
+                            <span class="pitch-current-preview" id="pitch-header-preview">${savedPos}</span>
+                            <i class="ph-bold ph-caret-down pitch-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="pitch-picker-container" id="pitch-picker-dropdown">
+                        <div class="pitch-tactical-field">
+                            <div class="pitch-line-center"></div>
+                            <div class="pitch-circle-center"></div>
+                            <div class="pitch-box-top"></div>
+                            <div class="pitch-box-bottom"></div>
+
+                            <!-- Ataque bien distribuido -->
+                            <button type="button" class="pitch-pos-node" data-pos="DC" style="top: 8%; left: 50%;" onclick="seleccionarPosicionCancha('DC')">DC</button>
+                            <button type="button" class="pitch-pos-node" data-pos="EI" style="top: 14%; left: 16%;" onclick="seleccionarPosicionCancha('EI')">EI</button>
+                            <button type="button" class="pitch-pos-node" data-pos="ED" style="top: 14%; left: 84%;" onclick="seleccionarPosicionCancha('ED')">ED</button>
+                            <button type="button" class="pitch-pos-node" data-pos="SD" style="top: 23%; left: 50%;" onclick="seleccionarPosicionCancha('SD')">SD</button>
+
+                            <!-- Mediocampo con amplio espacio -->
+                            <button type="button" class="pitch-pos-node" data-pos="MCO" style="top: 36%; left: 50%;" onclick="seleccionarPosicionCancha('MCO')">MCO</button>
+                            <button type="button" class="pitch-pos-node" data-pos="MI" style="top: 48%; left: 16%;" onclick="seleccionarPosicionCancha('MI')">MI</button>
+                            <button type="button" class="pitch-pos-node" data-pos="MC" style="top: 50%; left: 50%;" onclick="seleccionarPosicionCancha('MC')">MC</button>
+                            <button type="button" class="pitch-pos-node" data-pos="MD" style="top: 48%; left: 84%;" onclick="seleccionarPosicionCancha('MD')">MD</button>
+                            <button type="button" class="pitch-pos-node" data-pos="MCD" style="top: 64%; left: 50%;" onclick="seleccionarPosicionCancha('MCD')">MCD</button>
+
+                            <!-- Defensa y Arco -->
+                            <button type="button" class="pitch-pos-node" data-pos="LI" style="top: 77%; left: 16%;" onclick="seleccionarPosicionCancha('LI')">LI</button>
+                            <button type="button" class="pitch-pos-node" data-pos="DFC" style="top: 79%; left: 50%;" onclick="seleccionarPosicionCancha('DFC')">DFC</button>
+                            <button type="button" class="pitch-pos-node" data-pos="LD" style="top: 77%; left: 84%;" onclick="seleccionarPosicionCancha('LD')">LD</button>
+                            <button type="button" class="pitch-pos-node" data-pos="POR" style="top: 92%; left: 50%;" onclick="seleccionarPosicionCancha('POR')">POR</button>
+                        </div>
+
+                        <div class="pitch-footer-bar">
+                            <span class="pitch-selected-badge" id="pitch-pos-selected-name">${savedPos} — ${POSICIONES_NOMBRES[savedPos] || savedPos}</span>
+                            <button type="button" class="pitch-pos-node dt-node" data-pos="DT" onclick="seleccionarPosicionCancha('DT')">
+                                <i class="ph-bold ph-clipboard-text"></i> DT
+                            </button>
+                        </div>
+                        <input type="hidden" id="avatar-pos-input" value="${savedPos}">
+                    </div>
                     <label class="avatar-nick-label"><img src="apodo.png" class="custom-label-icon" alt="Apodo"> APODO</label>
                     <div class="avatar-nickname-row">
                         <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${u.name.split(' ')[0].replace(/'/g,"\\'")}';">
@@ -3458,7 +3527,7 @@ document.getElementById('profile-modal-body').innerHTML=`
     </div>`;
     document.getElementById('profile-modal').style.display='flex';
 setTimeout(()=>{
-const selPos=document.getElementById('avatar-pos-input');if(selPos)selPos.value=savedPos;
+if(typeof seleccionarPosicionCancha === 'function') seleccionarPosicionCancha(savedPos);
 const selHair = document.getElementById('avatar-hair-input'); if(selHair) selHair.value = savedHair;
 const selShirt = document.getElementById('avatar-shirt-input'); if(selShirt) selShirt.value = savedShirt;
 const selNum = document.getElementById('avatar-num-input'); if(selNum) selNum.value = savedNum;

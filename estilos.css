@@ -1351,32 +1351,245 @@ body.video-abierto .hero-section {
     color: var(--text-muted);
     font-weight: 500;
 }
-.avatar-pos-select {
-    width: 100%;
-    background: rgba(8, 12, 20, 0.85) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2000e676' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 14px center;
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    padding: 12px 36px 12px 14px;
-    color: #ffffff;
-    font-size: .85rem;
-    font-weight: 800;
-    letter-spacing: .3px;
-    outline: none;
+/* ========================================================
+   🏟️ CANCHA TÁCTICA INTERACTIVA DE POSICIONES
+   ======================================================== */
+.pitch-stepper-wrapper {
+    cursor: pointer !important;
+    padding: 0 14px 0 54px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    user-select: none;
     transition: all .25s ease;
+}
+.pitch-stepper-wrapper:hover {
+    border-color: var(--accent-color) !important;
+    background: rgba(12, 20, 32, 0.95) !important;
+    box-shadow: 0 0 15px var(--accent-glow) !important;
+}
+/* 📍 CONTROL 1: Mover la palabra "POSICIÓN" */
+.pitch-title-text {
+    display: flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    color: var(--accent-color);
+    position: relative;
+    left: 15px; /* 👈 MODIFICÁ ACÁ: números positivos (+5px) van a la DERECHA, negativos (-5px) a la IZQUIERDA */
+}
+
+/* 📍 CONTROL 2: Mover la abreviación de la posición y su flecha */
+.pitch-header-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    left: -5px; /* 👈 MODIFICÁ ACÁ: números negativos (-10px) van a la IZQUIERDA, positivos (+5px) a la DERECHA */
+}
+
+.pitch-current-preview {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-color);
+    padding: 2px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 8px var(--accent-glow);
+    white-space: nowrap;
+}
+.pitch-chevron {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    transition: transform 0.25s ease;
+}
+
+.pitch-picker-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-bottom: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-bottom 0.3s ease;
+}
+.pitch-picker-container.open {
+    max-height: 480px;
+    opacity: 1;
+    margin-bottom: 14px;
+}
+
+.pitch-tactical-field {
+    position: relative;
+    width: 100%;
+    height: 310px; /* 👈 Cancha alargada con amplio espacio entre posiciones */
+    background: linear-gradient(180deg, #0f281b 0%, #08170f 100%);
+    border: 2px solid rgba(0, 230, 118, 0.4);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6), 0 6px 18px rgba(0, 0, 0, 0.35);
+    user-select: none;
+}
+
+/* Líneas reglamentarias de la cancha */
+.pitch-line-center {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-50%);
+}
+
+.pitch-circle-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pitch-box-top {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 90px;
+    height: 38px;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    border-top: none;
+    transform: translateX(-50%);
+}
+
+.pitch-box-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 90px;
+    height: 38px;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    border-bottom: none;
+    transform: translateX(-50%);
+}
+
+/* Nodos/Círculos interactivos de cada posición */
+.pitch-pos-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: rgba(10, 18, 28, 0.88);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    color: #e2e8f0;
+    font-size: 0.62rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    margin-bottom: 12px;
-    appearance: none;
-    -webkit-appearance: none;
+    transition: all 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    z-index: 5;
+    padding: 0;
 }
-.avatar-pos-select:hover, .avatar-pos-select:focus {
+
+.pitch-pos-node:hover {
     border-color: var(--accent-color);
-    background-color: rgba(12, 20, 32, 0.95);
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-.avatar-pos-select option {
-    background: #0e141b;
     color: #ffffff;
-    font-weight: 700;
+    background: rgba(0, 230, 118, 0.2);
+    transform: translate(-50%, -50%) scale(1.18);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.pitch-pos-node.active {
+    background: var(--accent-color) !important;
+    border-color: #ffffff !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
+    transform: translate(-50%, -50%) scale(1.22) !important;
+    box-shadow: 0 0 14px var(--accent-glow), 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+    z-index: 10;
+}
+
+/* Barra inferior del panel táctico */
+.pitch-footer-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.pitch-selected-badge {
+    flex: 1;
+    background: rgba(8, 12, 20, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pitch-pos-node.dt-node {
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+    padding: 7px 14px;
+    border-radius: 10px;
+    display: inline-flex;
+    gap: 5px;
+    font-size: 0.75rem;
+}
+.pitch-pos-node.dt-node:hover {
+    transform: translateY(-2px);
+}
+.pitch-pos-node.dt-node.active {
+    transform: none !important;
+}
+
+/* ☀️ Adaptación en Modo Claro */
+[data-theme="light"] .pitch-tactical-field {
+    background: linear-gradient(180deg, #dcfce7 0%, #bbf7d0 100%) !important;
+    border-color: #86efac !important;
+}
+[data-theme="light"] .pitch-line-center,
+[data-theme="light"] .pitch-circle-center,
+[data-theme="light"] .pitch-box-top,
+[data-theme="light"] .pitch-box-bottom {
+    border-color: rgba(22, 101, 52, 0.25) !important;
+}
+[data-theme="light"] .pitch-line-center {
+    background: rgba(22, 101, 52, 0.25) !important;
+}
+[data-theme="light"] .pitch-pos-node {
+    background: #ffffff !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+[data-theme="light"] .pitch-pos-node.active {
+    background: #00cc66 !important;
+    border-color: #047857 !important;
+    color: #ffffff !important;
+}
+[data-theme="light"] .pitch-selected-badge {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
 }
 .avatar-save-btn {
     background: linear-gradient(145deg, rgba(18, 28, 42, 0.95) 0%, rgba(10, 14, 24, 0.98) 100%);
@@ -1429,7 +1642,7 @@ body.video-abierto .hero-section {
 #profile-modal *::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
-##btn-toggle-custom { transition: all .3s ease; }
+#btn-toggle-custom { transition: all .3s ease; }
 
 /* Mantiene el tono neutro/oscuro al pasar el mouse, hacer clic o tener el panel abierto */
 #btn-toggle-custom:hover,
