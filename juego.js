@@ -963,8 +963,12 @@ function renderizarEscudosGrid(lista) {
     container.innerHTML = lista.map(item => {
         const isSel = item.id === actual;
         const urlImg = obtenerUrlEscudo(item.id);
+        const fond = item.id === 'ev' 
+            ? 'linear-gradient(135deg, #0f1419, #1a2233)' 
+            : obtenerFondoClub(item.label, item.label);
+
         return `
-        <div class="escudo-card-item ${isSel ? 'selected' : ''}" onclick="seleccionarEscudoDirecto('${item.id}')">
+        <div class="escudo-card-item ${isSel ? 'selected' : ''}" style="background: ${fond};" onclick="seleccionarEscudoDirecto('${item.id}')">
             <img src="${urlImg}" alt="${item.label}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
             <span>${item.label}</span>
         </div>`;
