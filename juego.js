@@ -102,7 +102,6 @@ async function cargarProgresoDesdeSupabase() {
             // Sincronizamos la experiencia principal
             if (perfilNube.experiencia > userStats.xpTotal || userStats.primeraVez) {
                 userStats.xpTotal = perfilNube.experiencia;
-                userStats.maxScore = Math.max(userStats.maxScore || 0, perfilNube.experiencia);
                 userStats.nivelActual = calcularNivelIdx(userStats.xpTotal);
                 userStats.primeraVez = false;
             }
@@ -1132,8 +1131,9 @@ if(stored){userStats=JSON.parse(stored);}
 else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,partidasGanadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
 ['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);if(!(userStats[k] instanceof Set))userStats[k]=new Set();});
 if(!userStats.activeDates) userStats.activeDates = [];
-if(userStats.xpTotal===undefined)userStats.xpTotal=userStats.maxScore||0;
-if(userStats.partidasGanadas===undefined) userStats.partidasGanadas = 0; // 🛡️ Evita que de undefined en cuentas viejas
+if(userStats.xpTotal===undefined)userStats.xpTotal=0;
+if(userStats.maxScore>25000) userStats.maxScore = 25000; // 🛡️ Corrige récords inflados por el acumulador de XP previo
+if(userStats.partidasGanadas===undefined) userStats.partidasGanadas = 0;
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 procesarRachaDiaria();
@@ -1155,7 +1155,6 @@ function calcularNivelIdx(xp){for(let i=NIVELES.length-1;i>=0;i--){if(xp>=NIVELE
 function agregarXP(cantidad){
 const nivelAntes=calcularNivelIdx(userStats.xpTotal);
 userStats.xpTotal+=cantidad;
-if(userStats.xpTotal>userStats.maxScore)userStats.maxScore=userStats.xpTotal;
 const nivelDespues=calcularNivelIdx(userStats.xpTotal);
 userStats.nivelActual=nivelDespues;
 guardarStats();
