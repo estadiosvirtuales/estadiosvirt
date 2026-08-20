@@ -1269,6 +1269,13 @@ async function manejarRespuestaGoogle(response){
     
     cerrarLoginModal();
     renderizarBotonLogin();
+    
+    // 🔄 Refrescamos en vivo la interfaz del perfil si estaba abierta en pantalla
+    const profileModal = document.getElementById('profile-modal');
+    if (profileModal && profileModal.style.display === 'flex') {
+        abrirModalPerfil();
+    }
+
     showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
     if (pendingScore !== null) setTimeout(() => guardarScorePendiente(), 500);
 }
