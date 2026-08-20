@@ -3774,8 +3774,6 @@ const TEMAS_LISTA = [
 window.cambiarTemaPaso = function(direccion) {
     const input = document.getElementById('card-theme-input');
     const badge = document.getElementById('theme-current-badge');
-    const label = document.getElementById('theme-current-label');
-    const tooltip = document.getElementById('theme-tooltip-text');
     if (!input) return;
     let valActual = input.value || 'arg';
     let idx = TEMAS_LISTA.findIndex(t => t.k === valActual);
@@ -3783,8 +3781,6 @@ window.cambiarTemaPaso = function(direccion) {
     idx = (idx + direccion + TEMAS_LISTA.length) % TEMAS_LISTA.length;
     const nuevo = TEMAS_LISTA[idx];
     input.value = nuevo.k;
-    if (label) label.textContent = nuevo.l;
-    if (tooltip) tooltip.textContent = nuevo.nombre;
     if (badge) {
         badge.className = `theme-dot td-${nuevo.k} active`;
         badge.dataset.tema = nuevo.k;
@@ -4144,12 +4140,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                         <span class="theme-stepper-title"><img src="diseño-de-la-carta.png" class="custom-label-icon" alt="Diseño"> DISEÑO DE LA CARTA</span>
                         <div class="theme-stepper-control">
                             <button type="button" class="avatar-stepper-btn" onclick="cambiarTemaPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
-                            <div class="theme-badge-wrapper">
-                                <div class="theme-dot td-${savedTheme} active" id="theme-current-badge" data-tema="${savedTheme}">
-                                    <span class="td-label" id="theme-current-label">${currentTemaObj.l}</span>
-                                </div>
-                                <div class="theme-tooltip" id="theme-tooltip-text">${currentTemaObj.nombre}</div>
-                            </div>
+                            <div class="theme-dot td-${savedTheme} active" id="theme-current-badge" data-tema="${savedTheme}"></div>
                             <button type="button" class="avatar-stepper-btn" onclick="cambiarTemaPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
                             <input type="hidden" id="card-theme-input" value="${savedTheme}">
                         </div>
