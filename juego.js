@@ -969,7 +969,7 @@ function renderizarEscudosGrid(lista) {
 
         return `
         <div class="escudo-card-item ${isSel ? 'selected' : ''}" style="background: ${fond};" onclick="seleccionarEscudoDirecto('${item.id}')">
-            <img src="${urlImg}" alt="${item.label}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+            <img src="${urlImg}" alt="${item.label}" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
             <span>${item.label}</span>
         </div>`;
     }).join('');
@@ -4497,27 +4497,38 @@ async function inicializarSupabaseSeguro() {
 }
 
 function precargarImagenesUI() {
-    // Lista limpia sin duplicar extensiones (.jpg / .png)
-    const imagenes = [
+    const imagenesUI = [
+        'https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.png',
+        'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png',
+        'mundo.jpg', 'podio.jpg', 'avion.jpg', 'catalogo.jpg',
         'liga-trofeo-header.png', 'medalla-oro.png', 'medalla-plata.png', 'medalla-bronce.png',
         'ranking-icon-solo.png', 'ranking-icon-1v1.png', 'ranking-icon-semanal.png',
         'liga-icon-puntaje.png', 'liga-icon-historial.png',
-        'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-liga.png', 'icono-ranking.png',
-        'mundo.jpg', 'podio.jpg', 'avion.jpg', 'catalogo.jpg'
+        'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-liga.png', 'icono-ranking.png'
     ];
     
-    // Difiere la descarga para no bloquear el renderizado inicial de la página
-    const ejecutarPrecarga = () => {
-        imagenes.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
+    // 1. Precarga inmediata de alta prioridad de la interfaz
+    imagenesUI.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
+    // 2. Precarga silenciosa en memoria de todos los escudos durante tiempo libre de red
+    const precargarEscudos = () => {
+        if (typeof ESCUDOS_MAP !== 'undefined') {
+            Object.values(ESCUDOS_MAP).forEach(url => {
+                if (url && typeof url === 'string') {
+                    const img = new Image();
+                    img.src = url;
+                }
+            });
+        }
     };
 
     if ('requestIdleCallback' in window) {
-        requestIdleCallback(ejecutarPrecarga);
+        requestIdleCallback(precargarEscudos);
     } else {
-        setTimeout(ejecutarPrecarga, 1500);
+        setTimeout(precargarEscudos, 400);
     }
 }
 
