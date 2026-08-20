@@ -4203,6 +4203,13 @@ html[data-theme="light"] .xp-bar-big-fill {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
+.escudo-tab-btn[data-cat="chi"] {
+    background: linear-gradient(135deg, #d52b1e 0%, #ffffff 50%, #0039a6 100%);
+    color: #000000;
+    border-color: #d52b1e;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
 .escudo-tab-btn[data-cat="col"] {
     background: linear-gradient(135deg, #fcd116 0%, #003893 50%, #ce1126 100%);
     color: #ffffff;
@@ -4217,6 +4224,20 @@ html[data-theme="light"] .xp-bar-big-fill {
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
+.escudo-tab-btn[data-cat="fra"] {
+    background: linear-gradient(135deg, #002395 0%, #ffffff 50%, #ed2939 100%);
+    color: #000000;
+    border-color: #002395;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.escudo-tab-btn[data-cat="ger"] {
+    background: linear-gradient(135deg, #000000 0%, #dd0000 50%, #ffce00 100%);
+    color: #ffffff;
+    border-color: #dd0000;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
 .escudo-tab-btn[data-cat="eng"] {
     background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 45%, #ce1126 100%);
     color: #000000;
@@ -4229,6 +4250,20 @@ html[data-theme="light"] .xp-bar-big-fill {
     color: #000000;
     border-color: #009246;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+.escudo-tab-btn[data-cat="ned"] {
+    background: linear-gradient(135deg, #f36c21 0%, #ffffff 50%, #21468b 100%);
+    color: #000000;
+    border-color: #f36c21;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.escudo-tab-btn[data-cat="por"] {
+    background: linear-gradient(135deg, #046a38 0%, #ff0000 100%);
+    color: #ffffff;
+    border-color: #f1c400;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .escudo-tab-btn:hover {
