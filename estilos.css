@@ -4525,7 +4525,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .icon-poster-rango {
     width: 90px !important;          /* 👈 Tamaño */
     height: 90px !important;
-    left: -16px;                     /* 👈 Posición Horizontal: (-) izquierda | (+) derecha */
+    left: -18px;                     /* 👈 Posición Horizontal: (-) izquierda | (+) derecha */
     top: 50%;                        /* 👈 Centrado vertical */
     transform: translateY(-50%);     /* 👈 Podés sumar ej: translateY(-60%) para subirlo */
 }
@@ -4534,7 +4534,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .icon-poster-racha {
     width: 120px !important;          /* 👈 Tamaño */
     height: 120px !important;
-    left: -20px;                     /* 👈 Posición Horizontal */
+    left: -25px;                     /* 👈 Posición Horizontal */
     top: 50%;
     transform: translateY(-50%);
 }
@@ -4543,7 +4543,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .icon-poster-victorias {
     width: 110px !important;          /* 👈 Tamaño */
     height: 110px !important;
-    left: -20px;                     /* 👈 Posición Horizontal */
+    left: -22px;                     /* 👈 Posición Horizontal */
     top: 50%;
     transform: translateY(-50%);
 }
