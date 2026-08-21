@@ -4543,7 +4543,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .icon-poster-victorias {
     width: 120px !important;          /* 👈 Tamaño */
     height: 120px !important;
-    left: -26px;                     /* 👈 Posición Horizontal */
+    left: -35px;                     /* 👈 Posición Horizontal */
     top: 50%;
     transform: translateY(-50%);
 }
