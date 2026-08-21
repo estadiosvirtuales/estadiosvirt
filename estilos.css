@@ -4532,8 +4532,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 2️⃣ Ícono de Racha (Llama de fuego) */
 .icon-poster-racha {
-    width: 120px !important;          /* 👈 Tamaño */
-    height: 120px !important;
+    width: 115px !important;          /* 👈 Tamaño */
+    height: 115px !important;
     left: -38px;                     /* 👈 Posición Horizontal */
     top: 50%;
     transform: translateY(-50%);
