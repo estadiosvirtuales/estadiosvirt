@@ -2300,9 +2300,10 @@ function abrirLobbyPrivado(link, codigo) {
 
 window.compartirLinkPrivado = async function(link) {
     const msg = `⚽ ¡Te reté a un duelo en StadiumGuessr! 🌍\nEntrá a este link para jugar contra mí en vivo:\n\n${link}`;
-    
-    // 📱 Si está en celular, abre directamente la hoja de compartir nativa (WhatsApp directo)
-    if (navigator.share) {
+    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    // 📱 En celulares abre la hoja de compartir nativa (WhatsApp directo)
+    if (esMobile && navigator.share) {
         try {
             await navigator.share({
                 title: 'Duelo en StadiumGuessr ⚽',
@@ -2315,9 +2316,9 @@ window.compartirLinkPrivado = async function(link) {
         }
     }
 
-    // 💻 En PC o navegadores sin Web Share copia directo al portapapeles
+    // 💻 En computadoras / PC copia directamente al portapapeles para pegar con Ctrl + V
     navigator.clipboard.writeText(msg).then(() => {
-        showToast('¡Copiado! Ahora pegalo en tu chat de WhatsApp.', 'ph-check-circle', 'success');
+        showToast('¡Link copiado! Pegalo con Ctrl + V en WhatsApp.', 'ph-check-circle', 'success');
         const btn = document.getElementById('btn-copiar-privado');
         if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Copiado!`;
     }).catch(() => {
