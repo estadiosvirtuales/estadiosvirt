@@ -4510,17 +4510,17 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 1️⃣ Ícono de Nivel / Rango (Goleador) */
 .icon-poster-rango {
-    width: 80px !important;          /* 👈 Tamaño */
-    height: 80px !important;
-    left: -12px;                     /* 👈 Posición Horizontal: (-) izquierda | (+) derecha */
+    width: 85px !important;          /* 👈 Tamaño */
+    height: 85px !important;
+    left: -13px;                     /* 👈 Posición Horizontal: (-) izquierda | (+) derecha */
     top: 50%;                        /* 👈 Centrado vertical */
     transform: translateY(-50%);     /* 👈 Podés sumar ej: translateY(-60%) para subirlo */
 }
 
 /* 2️⃣ Ícono de Racha (Llama de fuego) */
 .icon-poster-racha {
-    width: 80px !important;          /* 👈 Tamaño */
-    height: 80px !important;
+    width: 95px !important;          /* 👈 Tamaño */
+    height: 95px !important;
     left: -12px;                     /* 👈 Posición Horizontal */
     top: 50%;
     transform: translateY(-50%);
@@ -4528,8 +4528,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 3️⃣ Ícono de Partidos Ganados (Copa) */
 .icon-poster-victorias {
-    width: 80px !important;          /* 👈 Tamaño */
-    height: 80px !important;
+    width: 95px !important;          /* 👈 Tamaño */
+    height: 95px !important;
     left: -12px;                     /* 👈 Posición Horizontal */
     top: 50%;
     transform: translateY(-50%);
