@@ -4472,18 +4472,19 @@ html[data-theme="light"] .xp-bar-big-fill {
     background: linear-gradient(145deg, rgba(22, 34, 52, 0.95) 0%, rgba(10, 18, 28, 0.98) 100%);
     border: 1.5px solid rgba(255, 255, 255, 0.22);
     border-radius: 16px;
-    padding: 6px 6px;
+    padding: 0 8px 0 44px; /* 👈 Espacio reservado para que el texto nunca toque al ícono */
     min-height: 62px;
+    height: 62px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-size: 0.90rem;
+    font-size: 0.88rem;
     font-weight: 900;
     color: #ffffff;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     box-sizing: border-box;
-    min-width: 0;
+    position: relative;
+    overflow: visible !important;
 }
 
 .poster-badge span {
@@ -4491,17 +4492,47 @@ html[data-theme="light"] .xp-bar-big-fill {
     overflow: hidden;
     text-overflow: ellipsis;
     letter-spacing: -0.2px;
+    position: relative;
+    z-index: 2;
 }
 
-/* 🎯 ÍCONOS GRANDES EQUIVALENTES AL CÍRCULO AZUL */
 .poster-badge-icon {
-    width: 52px !important;
-    height: 52px !important;
-    min-width: 52px !important;
-    max-height: 52px !important;
+    position: absolute !important;
     object-fit: contain;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(0, 230, 118, 0.3));
-    flex-shrink: 0;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.85));
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ========================================================
+   🎛️ CONTROLES INDEPENDIENTES DE CADA ÍCONO
+   ======================================================== */
+
+/* 1️⃣ Ícono de Nivel / Rango (Goleador) */
+.icon-poster-rango {
+    width: 55px !important;          /* 👈 Tamaño */
+    height: 55px !important;
+    left: -12px;                     /* 👈 Posición Horizontal: (-) izquierda | (+) derecha */
+    top: 50%;                        /* 👈 Centrado vertical */
+    transform: translateY(-50%);     /* 👈 Podés sumar ej: translateY(-60%) para subirlo */
+}
+
+/* 2️⃣ Ícono de Racha (Llama de fuego) */
+.icon-poster-racha {
+    width: 52px !important;          /* 👈 Tamaño */
+    height: 52px !important;
+    left: -10px;                     /* 👈 Posición Horizontal */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 3️⃣ Ícono de Partidos Ganados (Copa) */
+.icon-poster-victorias {
+    width: 65px !important;          /* 👈 Tamaño */
+    height: 65px !important;
+    left: -14px;                     /* 👈 Posición Horizontal */
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .poster-footer-cta {
