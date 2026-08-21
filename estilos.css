@@ -3904,6 +3904,9 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: center;
     box-sizing: border-box;
     border-radius: 14px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
 }
 
 .share-tooltip {
@@ -3938,10 +3941,20 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-color: var(--border-strong) transparent transparent transparent;
 }
 
-.share-btn-wrapper:hover .share-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
+/* 🖱️ Activa el tooltip ÚNICAMENTE en computadoras con mouse real para no comerse el tap en móviles */
+@media (hover: hover) and (pointer: fine) {
+    .share-btn-wrapper:hover .share-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* 📱 Desactiva el tooltip en pantallas táctiles y celulares */
+@media (max-width: 768px), (pointer: coarse) {
+    .share-tooltip {
+        display: none !important;
+    }
 }
 
 [data-theme="light"] .share-tooltip {
