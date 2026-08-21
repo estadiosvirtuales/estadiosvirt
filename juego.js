@@ -5482,7 +5482,7 @@ async function compartirCartaFUT() {
             </div>
             <div class="poster-badge">
                 <img class="poster-badge-icon icon-poster-victorias" src="trofeo.png" alt="Victorias">
-                <span>${victorias} W</span>
+                <span>${victorias} PG</span>
             </div>
         </div>
 
