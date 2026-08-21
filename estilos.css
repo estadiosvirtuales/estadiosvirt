@@ -2801,50 +2801,49 @@ body.video-abierto .hero-section {
         display: contents !important;
     }
 
+    /* 🎴 CARTA FUT (COLUMNA 1 - FILA 1) */
     .fut-card {
         grid-column: 1 !important;
         grid-row: 1 !important;
         transform: scale(0.55) !important;
         transform-origin: top center !important;
-        margin-top: 0 !important;
-        margin-bottom: -170px !important;
+        margin: 0 0 -168px 0 !important;
         justify-self: center !important;
     }
 
-    /* 1. Botón cuadrado de compartir ubicado a la derecha */
-    .share-btn-wrapper {
+    /* 🎮 BOTONES DE ACCIÓN (COLUMNA 1 - FILA 2: JUSTO DEBAJO DE LA PUNTA DE LA CARTA) */
+    .profile-card-actions-row {
         grid-column: 1 !important;
         grid-row: 2 !important;
-        width: auto !important;
-        display: flex !important;
-        justify-content: flex-end !important;
-        justify-self: end !important;
-        align-self: start !important;
-        margin-top: -55px !important;
-        margin-right: 2px !important;
-    }
-
-    /* 2. Botón "Personalizá tu carta" alineado correctamente sin sobresalir */
-    #btn-toggle-custom {
-        grid-column: 1 !important;
-        grid-row: 2 !important;
-        padding: 0 6px 0 20px !important;
-        font-size: 0.36rem !important;
-        letter-spacing: 0.2px !important;
-        width: calc(100% - 48px) !important;
-        max-width: 100% !important;
-        min-height: 25px !important;
-        height: 25px !important;
-        margin-top: -55px !important;
-        margin-left: 16px !important;
-        box-sizing: border-box !important;
-        white-space: nowrap !important;
-        align-self: start !important;
-        justify-self: start !important;
+        width: 100% !important;
+        max-width: 165px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        overflow: visible !important;
+        gap: 6px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        position: relative !important;
+        justify-self: center !important;
+    }
+
+    .profile-card-actions-row #btn-toggle-custom,
+    #btn-toggle-custom {
+        flex: 1 !important;
+        width: auto !important;
+        height: 28px !important;
+        min-height: 28px !important;
+        font-size: 0.44rem !important;
+        padding: 0 6px 0 28px !important;
+        margin: 0 !important;
+        left: 0 !important;
+        border-radius: 10px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        white-space: nowrap !important;
     }
 
     #btn-toggle-custom .btn-custom-icon {
@@ -2853,31 +2852,75 @@ body.video-abierto .hero-section {
         left: -32px !important;
     }
 
-    /* 📱 CONTROL LIBRE EN CELULAR DEL BOTÓN CUADRADO DE COMPARTIR CARTA */
-    #btn-share-card {
-        width: 25px !important;
-        height: 25px !important;
-        font-size: 0.7rem !important;
-        border-radius: 8px !important;
-        margin-top: 0px !important;
-        margin-left: 0px !important;
-        margin-right: 0px !important;
-        margin-bottom: 0px !important;
-        min-width: 0 !important;
-        max-width: none !important;
-        min-height: 0 !important;
-        max-height: none !important;
+    .profile-card-actions-row .share-btn-wrapper,
+    .share-btn-wrapper {
+        width: auto !important;
+        margin: 0 !important;
         padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         flex-shrink: 0 !important;
     }
 
+    .profile-card-actions-row #btn-share-card,
+    #btn-share-card {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+        font-size: 0.85rem !important;
+        border-radius: 10px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        top: 0 !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: DEBAJO DE LAS ACCIONES) */
+    .profile-login-wrapper {
+        grid-column: 1 !important;
+        grid-row: 3 !important;
+        width: 100% !important;
+        max-width: 165px !important;
+        margin: 6px auto 0 !important;
+        justify-self: center !important;
+        display: flex !important;
+        justify-content: center !important;
+        position: relative !important;
+    }
+
+    .profile-login-btn {
+        width: 100% !important;
+        height: 26px !important;
+        min-height: 26px !important;
+        padding: 4px 8px !important;
+        font-size: 0.60rem !important;
+        border-radius: 10px !important;
+        background: var(--surface-color) !important;
+        color: var(--text-main) !important;
+        border: 1.5px solid var(--border-strong) !important;
+        box-shadow: 0 2px 0 var(--border-subtle) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
+    }
+
+    /* 📊 NIVEL Y XP (COLUMNA 2 - ABARCA LAS 3 FILAS DE LA DERECHA) */
     .xp-profile-section {
         grid-column: 2 !important;
-        grid-row: 1 / span 2 !important;
+        grid-row: 1 / span 3 !important;
         min-width: 0 !important;
         width: 100% !important;
         padding: 10px 8px !important;
-        margin-bottom: 0 !important;
+        margin: 0 !important;
         border-radius: 14px !important;
         display: flex !important;
         flex-direction: column !important;
@@ -2885,125 +2928,42 @@ body.video-abierto .hero-section {
         justify-content: center !important;
         box-sizing: border-box !important;
         align-self: stretch !important;
-        height: auto !important;
+        height: 100% !important;
     }
 
-    /* ========================================================
-       📱 CONTROLES PARA CELULAR (BLINDADOS)
-       ======================================================== */
-    .profile-card-actions-row {
-        grid-column: 1 !important;
-        grid-row: 2 !important;
-        width: calc(100% - 16px) !important;
-        max-width: 100% !important;
-        gap: 18px !important;
-        margin-top: -75px !important;
-        justify-self: center !important;
-        display: flex !important;
-        position: relative !important;
-    }
-
-    /* 📍 BOTÓN "PERSONALIZÁ TU CARTA" EN CELULAR */
-    .profile-card-actions-row #btn-toggle-custom,
-    #btn-toggle-custom {
-        flex: 1 !important;
-        width: auto !important;
-        height: 20px !important;
-        min-height: 28px !important;
-        font-size: 0.44rem !important;
-        padding: 0 6px 0 28px !important;
-        left: 14px !important;
-        border-radius: 10px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
-    }
-
-    /* 📍 BOTÓN DE COMPARTIR EN CELULAR */
-    .profile-card-actions-row #btn-share-card,
-    #btn-share-card {
-        width: 28px !important;
-        height: 28px !important;
-        min-width: 28px !important;
-        font-size: 0.85rem !important;
-        border-radius: 12px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        position: relative !important;
-        top: -2px !important; /* 👈 MODIFICÁ ACÁ: valores negativos (ej: -6px) lo SUBEN, valores positivos (ej: 6px) lo BAJAN */
-    }
-
+    /* 🎨 PANEL DE PERSONALIZACIÓN DESPLEGABLE */
     #customization-panel-wrapper {
         grid-column: 1 / span 2 !important;
-        grid-row: 3 !important;
-        width: 100% !important;
-    }
-
-    /* Posición inicial cerrada (debajo de la carta en la columna izquierda) */
-    .profile-login-wrapper {
-        grid-column: 1 !important;
         grid-row: 4 !important;
-        width: calc(100% - 16px) !important;
-        max-width: 100% !important;
-        margin-top: -130px !important;
-        margin-bottom: 6px !important;
-        justify-self: center !important;
+        width: 100% !important;
+        margin: 0 !important;
     }
 
-    /* Al desplegar personalizar carta: pasa al fondo total (fila 7) centrado */
     #customization-panel-wrapper.open ~ .profile-login-wrapper {
         grid-column: 1 / span 2 !important;
-        grid-row: 7 !important;
-        margin-top: 16px !important;
-        margin-bottom: 30px !important;
+        grid-row: 5 !important;
+        margin: 14px auto 16px !important;
         width: 100% !important;
-        max-width: 100% !important;
+        max-width: 240px !important;
     }
 
-    .profile-login-btn {
-        width: 75% !important;
-        height: 12px !important;
-        min-height: 26px !important;
-        padding: 4px 10px !important;
-        font-size: 0.60rem !important;
-        border-radius: 12px !important;
-        background: var(--surface-color) !important;
-        color: var(--text-main) !important;
-        border: 1.5px solid var(--border-strong) !important;
-        box-shadow: 0 2px 0 var(--border-subtle) !important;
-    }
-
-    .profile-login-tooltip {
-        width: 155px !important;
-        font-size: 0.55rem !important;
-        line-height: 1.25 !important;
-        padding: 5px 8px !important;
-        bottom: 125% !important;
-        left: 50% !important;
-        border-radius: 8px !important;
-    }
-
-    /* 🏆 1. VITRINA DE LOGROS (ARRIBA) */
+    /* 🏆 VITRINA DE LOGROS */
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
-        grid-row: 5 !important;
+        grid-row: 6 !important;
         padding: 10px 12px !important;
-        margin-bottom: 0 !important;
+        margin: 6px 0 0 0 !important;
         border-radius: 14px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
 
-    /* 📅 2. CALENDARIO DE RETO DIARIO (ABAJO) */
+    /* 📅 CALENDARIO DE RETO DIARIO */
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
-        grid-row: 6 !important;
+        grid-row: 7 !important;
         padding: 10px !important;
-        margin-bottom: 0 !important;
+        margin: 6px 0 0 0 !important;
         border-radius: 14px !important;
         width: 100% !important;
         box-sizing: border-box !important;
