@@ -2298,12 +2298,26 @@ function abrirLobbyPrivado(link, codigo) {
     document.body.appendChild(lobby);
 }
 
-window.compartirLinkPrivado = function(link) {
+window.compartirLinkPrivado = async function(link) {
     const msg = `⚽ ¡Te reté a un duelo en StadiumGuessr! 🌍\nEntrá a este link para jugar contra mí en vivo:\n\n${link}`;
-    // Forzamos el copiado directo al portapapeles
+    
+    // 📱 Si está en celular, abre directamente la hoja de compartir nativa (WhatsApp directo)
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Duelo en StadiumGuessr ⚽',
+                text: msg
+            });
+            showToast('¡Invitación enviada! Esperando que entre tu rival... ⏳', 'ph-hourglass', 'info');
+            return;
+        } catch (e) {
+            console.log("Compartir nativo cancelado o no disponible, usando portapapeles.");
+        }
+    }
+
+    // 💻 En PC o navegadores sin Web Share copia directo al portapapeles
     navigator.clipboard.writeText(msg).then(() => {
         showToast('¡Copiado! Ahora pegalo en tu chat de WhatsApp.', 'ph-check-circle', 'success');
-        // Le cambiamos el texto al botón para darle feedback visual
         const btn = document.getElementById('btn-copiar-privado');
         if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Copiado!`;
     }).catch(() => {
@@ -2344,19 +2358,17 @@ function unirseSalaPrivada(salaId) {
 
     showToast("Buscando al creador de la sala... 📡", "ph-circle-notch", "info");
     
-    // 👇 MAGIA 1: Le abrimos el cartelito de "Buscando rival" para que sepa que está cargando
     abrirLobbyEspera(); 
     conectarRealtimeVersus();
 
-    // 👇 MAGIA 2: ESCUDO DE CADUCIDAD 👇
-    // Si en 15 segundos el anfitrión no responde, cortamos la conexión y le avisamos.
+    // 🛡️ Margen de 60 segundos para permitir que el creador envíe el link y vuelva al navegador
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
     versusTimeoutBusqueda = setTimeout(() => {
         if (!versusPartidaEnCurso) {
-            cancelarBusquedaVersus(); // Apaga la red y limpia la pantalla
-            showToast("El creador de la sala ya no está conectado. ❌", "ph-warning-circle", "danger");
+            cancelarBusquedaVersus();
+            showToast("El creador de la sala no respondió a tiempo. ❌", "ph-warning-circle", "danger");
         }
-    }, 15000); 
+    }, 60000); 
 }
 
 // Función principal para buscar rival o crear una sala de espera
@@ -4668,40 +4680,72 @@ window.addEventListener('beforeunload', () => {
 });
 
 // ========================================================
-// ESCUDO ANTI-ABANDONO MÓVIL (VISIBILITY API)
+// ESCUDO ANTI-ABANDONO Y AUTO-RECONEXIÓN MÓVIL (VISIBILITY API)
 // ========================================================
 let timerAbandono = null;
 
 document.addEventListener("visibilitychange", () => {
-    // Si estamos en medio de un partido multijugador humano
-    if (esModoVersus && !esModoBot && versusPartidaEnCurso && versusChannel) {
-        if (document.hidden) {
-            console.warn("[1v1] ⚠️ Jugador minimizó la app. Iniciando cuenta regresiva de abandono...");
-            // Le damos 60 segundos de gracia para que pueda contestar un WhatsApp rápido o vos puedas testear en PC
-            timerAbandono = setTimeout(() => {
-                if (document.hidden) {
-                    console.log("[1v1] 🚨 Tiempo agotado. Disparando abandono técnico.");
-                    try {
-                        // Le avisamos al RIVAL que nosotros nos fuimos (ÉL GANA)
-                        versusChannel.send({ type: 'broadcast', event: 'rival_abandono', payload: {} });
-                        supabaseClient.removeChannel(versusChannel);
-                    } catch(e) {}
-                    
-                    // NOSOTROS PERDEMOS POR DESCONEXIÓN (Cortamos la partida sin darnos la victoria)
-                    esModoVersus = false;
-                    versusPartidaEnCurso = false;
-                    cerrarModalVideo(); // Cierra la cancha
-                    showToast("Desconectado por inactividad prolongada ❌", "ph-x-circle", "danger");
+    // 🔄 CASO 1: VUELTA AL NAVEGADOR (Pestaña visible de nuevo)
+    if (!document.hidden) {
+        if (timerAbandono) {
+            console.log("[1v1] ✅ Jugador volvió a la pestaña a tiempo.");
+            clearTimeout(timerAbandono);
+            timerAbandono = null;
+        }
+
+        // Si estábamos en el lobby esperando rival y el WebSocket se durmió al salir a WhatsApp
+        if (esModoVersus && !versusPartidaEnCurso && versusPartidaId) {
+            console.log("[1v1] 🔄 Despertando conexión WebSocket tras volver de WhatsApp...");
+            
+            let idUsuario = getUserId();
+            if (!idUsuario || idUsuario === 'guest') {
+                idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
+            }
+            const miNombreLocal = obtenerNombreDisplay();
+
+            // Si el canal de Supabase se desconectó o quedó en error, lo recreamos
+            if (!versusChannel || versusChannel.state !== 'joined') {
+                if (versusChannel) {
+                    try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
                 }
-            }, 60000); // <-- Aumentado a 60.000 milisegundos (60 segs)
-        } else {
-            // Si vuelve a la pestaña antes de los 60 segundos, le perdonamos la vida
-            if (timerAbandono) {
-                console.log("[1v1] ✅ Jugador volvió a la pestaña a tiempo.");
-                clearTimeout(timerAbandono);
-                timerAbandono = null;
+                conectarRealtimeVersus();
+            } else {
+                // Si el socket sigue vivo, emitimos inmediatamente el pulso de sincronización
+                versusChannel.send({ 
+                    type: 'broadcast', 
+                    event: 'rival_entro', 
+                    payload: { id: idUsuario, nombre: miNombreLocal } 
+                });
+
+                if (versusRol === 'jugador_1') {
+                    versusChannel.send({
+                        type: 'broadcast',
+                        event: 'host_confirmado',
+                        payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios }
+                    });
+                }
             }
         }
+        return;
+    }
+
+    // ⏸️ CASO 2: PESTAÑA MINIMIZADA / EN SEGUNDO PLANO
+    if (document.hidden && esModoVersus && !esModoBot && versusPartidaEnCurso && versusChannel) {
+        console.warn("[1v1] ⚠️ Jugador minimizó la app durante un partido en curso. Iniciando cuenta regresiva de abandono...");
+        timerAbandono = setTimeout(() => {
+            if (document.hidden) {
+                console.log("[1v1] 🚨 Tiempo agotado. Disparando abandono técnico.");
+                try {
+                    versusChannel.send({ type: 'broadcast', event: 'rival_abandono', payload: {} });
+                    supabaseClient.removeChannel(versusChannel);
+                } catch(e) {}
+                
+                esModoVersus = false;
+                versusPartidaEnCurso = false;
+                cerrarModalVideo();
+                showToast("Desconectado por inactividad prolongada ❌", "ph-x-circle", "danger");
+            }
+        }, 60000);
     }
 });
 // ========================================================
