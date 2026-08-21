@@ -2789,7 +2789,7 @@ body.video-abierto .hero-section {
     .split-profile-layout {
         display: grid !important;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 8px !important;
+        gap: 4px 8px !important; /* Reduce la separación vertical entre filas */
         width: 100% !important;
         padding: 12px 8px 20px 8px !important;
         box-sizing: border-box !important;
@@ -2807,11 +2807,11 @@ body.video-abierto .hero-section {
         grid-row: 1 !important;
         transform: scale(0.55) !important;
         transform-origin: top center !important;
-        margin: 0 0 -168px 0 !important;
+        margin: 0 0 -176px 0 !important; /* Sube los botones más cerca de la punta de la carta */
         justify-self: center !important;
     }
 
-    /* 🎮 BOTONES DE ACCIÓN (COLUMNA 1 - FILA 2: JUSTO DEBAJO DE LA PUNTA DE LA CARTA) */
+    /* 🎮 BOTONES DE ACCIÓN (COLUMNA 1 - FILA 2) */
     .profile-card-actions-row {
         grid-column: 1 !important;
         grid-row: 2 !important;
@@ -2820,7 +2820,7 @@ body.video-abierto .hero-section {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 5px !important;
         margin: 0 auto !important;
         padding: 0 !important;
         position: relative !important;
@@ -2831,10 +2831,10 @@ body.video-abierto .hero-section {
     #btn-toggle-custom {
         flex: 1 !important;
         width: auto !important;
-        height: 28px !important;
-        min-height: 28px !important;
+        height: 27px !important;
+        min-height: 27px !important;
         font-size: 0.44rem !important;
-        padding: 0 6px 0 28px !important;
+        padding: 0 6px 0 22px !important;
         margin: 0 !important;
         left: 0 !important;
         border-radius: 10px !important;
@@ -2846,10 +2846,11 @@ body.video-abierto .hero-section {
         white-space: nowrap !important;
     }
 
+    /* 🛡️ ÍCONO CALIBRADO: No sobresale de la columna y no empuja el texto */
     #btn-toggle-custom .btn-custom-icon {
-        width: 75px !important;
-        height: 75px !important;
-        left: -32px !important;
+        width: 54px !important;
+        height: 54px !important;
+        left: -16px !important;
     }
 
     .profile-card-actions-row .share-btn-wrapper,
@@ -2865,12 +2866,12 @@ body.video-abierto .hero-section {
 
     .profile-card-actions-row #btn-share-card,
     #btn-share-card {
-        width: 28px !important;
-        height: 28px !important;
-        min-width: 28px !important;
-        max-width: 28px !important;
-        min-height: 28px !important;
-        max-height: 28px !important;
+        width: 27px !important;
+        height: 27px !important;
+        min-width: 27px !important;
+        max-width: 27px !important;
+        min-height: 27px !important;
+        max-height: 27px !important;
         font-size: 0.85rem !important;
         border-radius: 10px !important;
         padding: 0 !important;
@@ -2883,13 +2884,13 @@ body.video-abierto .hero-section {
         flex-shrink: 0 !important;
     }
 
-    /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: DEBAJO DE LAS ACCIONES) */
+    /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: BIEN PEGADO ARRIBA) */
     .profile-login-wrapper {
         grid-column: 1 !important;
         grid-row: 3 !important;
         width: 100% !important;
         max-width: 165px !important;
-        margin: 6px auto 0 !important;
+        margin: 2px auto 0 !important; /* Espaciado compacto y ceñido */
         justify-self: center !important;
         display: flex !important;
         justify-content: center !important;
@@ -2898,9 +2899,9 @@ body.video-abierto .hero-section {
 
     .profile-login-btn {
         width: 100% !important;
-        height: 26px !important;
-        min-height: 26px !important;
-        padding: 4px 8px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        padding: 3px 8px !important;
         font-size: 0.60rem !important;
         border-radius: 10px !important;
         background: var(--surface-color) !important;
