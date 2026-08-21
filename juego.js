@@ -5499,13 +5499,14 @@ async function compartirCartaFUT() {
 
     const cardEnPoster = poster.querySelector('.fut-card');
     if (cardEnPoster) {
-        cardEnPoster.style.transform = 'scale(0.98)';
+        cardEnPoster.style.transform = 'scale(1.16)';
+        cardEnPoster.style.transformOrigin = 'center center';
         cardEnPoster.style.margin = '0';
         cardEnPoster.style.zIndex = '5';
     }
 
     try {
-        // 2. Espera a que todas las imágenes estén decodificadas en memoria
+        // 2. Conversión a Base64 y espera de renderizado en memoria
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             if (img.src && !img.src.startsWith('data:')) {
@@ -5549,7 +5550,7 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 4. En celulares intenta compartir; si el navegador bloquea la acción o estás en PC, descarga el JPG directo
+        // 4. En móviles abre compartir nativo; en PC descarga el JPG directo
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
@@ -5572,7 +5573,6 @@ async function compartirCartaFUT() {
             }
         }
 
-        // Descarga directa por defecto (en PC o ante cancelaciones móviles)
         triggerDownload();
 
     } catch (error) {
