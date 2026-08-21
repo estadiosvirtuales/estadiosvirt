@@ -5443,25 +5443,18 @@ async function compartirCartaFUT() {
         return;
     }
 
-    showToast("Generando póster 9:16 para compartir... 🎨", "ph-hourglass", "info");
+    showToast("Generando póster 9:16... 🎨", "ph-hourglass", "info");
 
-    // 1. Datos para insignias de palmarés y link de desafío
     const nivelIdx = calcularNivelIdx(userStats.xpTotal);
     const nivel = NIVELES[nivelIdx];
     const racha = userStats.rachaActual || 1;
     const victorias = userStats.partidasGanadas || 0;
-    const customNick = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
+    const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name : 'Jugador');
 
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 2. Clon de la carta para montaje en el póster
-    const cardClone = cardElement.cloneNode(true);
-    cardClone.style.transform = 'scale(0.98)';
-    cardClone.style.margin = '0';
-    cardClone.style.zIndex = '5';
-
-    // 3. Ensamblaje del contenedor del póster 9:16
+    // 1. Montaje del contenedor del póster 9:16
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
     poster.innerHTML = `
@@ -5475,6 +5468,7 @@ async function compartirCartaFUT() {
 
         <div class="poster-card-wrapper">
             <div class="poster-card-glow"></div>
+            ${cardElement.outerHTML}
         </div>
 
         <div class="poster-stats-badges">
@@ -5499,11 +5493,17 @@ async function compartirCartaFUT() {
         </div>
     `;
 
-    poster.querySelector('.poster-card-wrapper').appendChild(cardClone);
     document.body.appendChild(poster);
 
+    const cardEnPoster = poster.querySelector('.fut-card');
+    if (cardEnPoster) {
+        cardEnPoster.style.transform = 'scale(0.98)';
+        cardEnPoster.style.margin = '0';
+        cardEnPoster.style.zIndex = '5';
+    }
+
     try {
-        // 4. Conversión a Base64 de todas las imágenes del póster (CORS Bypass)
+        // 2. Espera a que todas las imágenes estén decodificadas en memoria
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             if (img.src && !img.src.startsWith('data:')) {
@@ -5514,44 +5514,68 @@ async function compartirCartaFUT() {
             }
         }
 
-        // 5. Renderizado en Alta Resolución (2.5x)
+        await Promise.all(allImages.map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise(res => {
+                img.onload = res;
+                img.onerror = res;
+            });
+        }));
+
+        // 3. Captura JPG en alta resolución
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
-            pixelRatio: 2.5,
+            pixelRatio: 2.2,
             backgroundColor: '#090e15',
             cacheBust: false,
             style: {
                 position: 'static',
-                left: '0'
+                left: '0',
+                top: '0'
             }
         });
 
-        // 6. Conversión a Blob y File para la Web Share API
-        const res = await fetch(dataUrl);
-        const blob = await res.blob();
-        const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
-
         poster.remove();
 
-        // 7. En móviles abre WhatsApp / Instagram / Compartir nativo; en PC descarga el JPG
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({
-                files: [file],
-                title: 'Mi Carta en Estadios Virtuales ⚽',
-                text: `🏆 ¡Mirá mi carta de Estadios Virtuales! ¿Podés ganarme en un 1v1? 🌍⚽`
-            });
-            showToast("¡Listo para compartir!", "ph-share-network", "success");
-        } else {
+        const triggerDownload = () => {
             const link = document.createElement('a');
-            link.download = 'mi-carta-estadiosvirtuales.jpg';
+            link.download = `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`;
             link.href = dataUrl;
+            document.body.appendChild(link);
             link.click();
-            showToast("¡Póster descargado con éxito!", "ph-check-circle", "success");
+            link.remove();
+            showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
+        };
+
+        // 4. En celulares intenta compartir; si el navegador bloquea la acción o estás en PC, descarga el JPG directo
+        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (esMobile && navigator.canShare) {
+            try {
+                const res = await fetch(dataUrl);
+                const blob = await res.blob();
+                const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
+
+                if (navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Mi Carta en Estadios Virtuales ⚽',
+                        text: `🏆 ¡Mirá mi carta de Estadios Virtuales! ¿Podés ganarme en un 1v1? 🌍⚽`
+                    });
+                    showToast("¡Listo para compartir!", "ph-share-network", "success");
+                    return;
+                }
+            } catch (shareErr) {
+                console.warn("Fallo o cancelación en compartir nativo, ejecutando descarga directa:", shareErr);
+            }
         }
 
+        // Descarga directa por defecto (en PC o ante cancelaciones móviles)
+        triggerDownload();
+
     } catch (error) {
-        console.error("Error al generar el póster de la carta FUT:", error);
-        if (poster) poster.remove();
-        showToast("Error al generar el póster para compartir", "ph-warning-circle", "danger");
+        console.error("Error al exportar el póster de la carta FUT:", error);
+        if (poster && poster.parentNode) poster.remove();
+        showToast("Error al generar la imagen. Intentá de nuevo.", "ph-warning-circle", "danger");
     }
 }
