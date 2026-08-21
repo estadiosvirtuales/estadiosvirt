@@ -5478,7 +5478,7 @@ async function compartirCartaFUT() {
             </div>
             <div class="poster-badge">
                 <img class="poster-badge-icon icon-poster-racha" src="fuego.png" alt="Racha">
-                <span>${racha} días</span>
+                <span>${racha} días de racha</span>
             </div>
             <div class="poster-badge">
                 <img class="poster-badge-icon icon-poster-victorias" src="trofeo.png" alt="Victorias">
