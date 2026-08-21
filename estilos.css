@@ -2940,18 +2940,10 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
-    #customization-panel-wrapper.open ~ .profile-login-wrapper {
-        grid-column: 1 / span 2 !important;
-        grid-row: 5 !important;
-        margin: 14px auto 16px !important;
-        width: 100% !important;
-        max-width: 240px !important;
-    }
-
     /* 🏆 VITRINA DE LOGROS */
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
-        grid-row: 6 !important;
+        grid-row: 5 !important;
         padding: 10px 12px !important;
         margin: 6px 0 0 0 !important;
         border-radius: 14px !important;
@@ -2962,12 +2954,21 @@ body.video-abierto .hero-section {
     /* 📅 CALENDARIO DE RETO DIARIO */
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
-        grid-row: 7 !important;
+        grid-row: 6 !important;
         padding: 10px !important;
         margin: 6px 0 0 0 !important;
         border-radius: 14px !important;
         width: 100% !important;
         box-sizing: border-box !important;
+    }
+
+    /* 🔐 AL ABRIR PERSONALIZACIÓN: PASA AL FONDO TOTAL (FILA 7, DEBAJO DEL CALENDARIO) */
+    #customization-panel-wrapper.open ~ .profile-login-wrapper {
+        grid-column: 1 / span 2 !important;
+        grid-row: 7 !important;
+        margin: 16px auto 28px !important;
+        width: 100% !important;
+        max-width: 220px !important;
     }
 
     .logros-header-clickable {
