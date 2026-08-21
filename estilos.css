@@ -4495,10 +4495,10 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 🎯 ÍCONOS GRANDES EQUIVALENTES AL CÍRCULO AZUL */
 .poster-badge-icon {
-    width: 52px !important;
-    height: 52px !important;
-    min-width: 52px !important;
-    max-height: 52px !important;
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    max-height: 58px !important;
     object-fit: contain;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(0, 230, 118, 0.3));
     flex-shrink: 0;
