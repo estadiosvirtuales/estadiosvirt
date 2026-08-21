@@ -5473,14 +5473,16 @@ async function compartirCartaFUT() {
 
         <div class="poster-stats-badges">
             <div class="poster-badge">
-                <img class="poster-badge-icon" src="${nivel.iconUrl}" alt="Nivel">
+                <img class="poster-badge-icon" src="${nivel.iconUrl}" alt="Rango">
                 <span>${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
             </div>
             <div class="poster-badge">
-                <span>🔥 ${racha} días</span>
+                <img class="poster-badge-icon" src="fuego.png" alt="Racha">
+                <span>${racha} días</span>
             </div>
             <div class="poster-badge">
-                <span>🏆 ${victorias} W</span>
+                <img class="poster-badge-icon" src="trofeo.png" alt="Victorias">
+                <span>${victorias} W</span>
             </div>
         </div>
 
