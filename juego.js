@@ -5450,9 +5450,32 @@ function abrirModalPrivacyDirecto() {
 async function urlABase64Seguro(url) {
     if (!url || url.startsWith('data:')) return url;
     
-    // 1. Intento directo normal
+    // 1. Carga directa vía Image + Canvas (el método 100% compatible con Safari WebKit de iOS)
     try {
-        const res = await fetch(url, { mode: 'cors' });
+        const dataUri = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.naturalWidth || img.width || 100;
+                    canvas.height = img.naturalHeight || img.height || 100;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            img.onerror = reject;
+            img.src = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+        });
+        if (dataUri && dataUri.startsWith('data:image')) return dataUri;
+    } catch(e) {}
+
+    // 2. Fetch directo estándar (sin forzar CORS invasivo)
+    try {
+        const res = await fetch(url);
         if (res.ok) {
             const blob = await res.blob();
             return await new Promise(resolve => {
@@ -5463,11 +5486,11 @@ async function urlABase64Seguro(url) {
         }
     } catch(e) {}
 
-    // 2. Intento de respaldo vía puente seguro con CORS habilitado
+    // 3. Proxy de respaldo para recursos externos
     try {
         const urlLimpia = url.replace(/^https?:\/\//, '');
         const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(urlLimpia)}&output=png`;
-        const resProxy = await fetch(proxyUrl, { mode: 'cors' });
+        const resProxy = await fetch(proxyUrl);
         if (resProxy.ok) {
             const blob = await resProxy.blob();
             return await new Promise(resolve => {
@@ -5551,17 +5574,16 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Conversión a Base64 y espera de renderizado en memoria
+        // 2. Conversión a Base64 garantizada de todas las imágenes del póster (resuelve la ausencia de íconos en iOS)
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
-            if (img.src && !img.src.startsWith('data:')) {
-                const b64 = await urlABase64Seguro(img.src);
-                if (b64 && b64.startsWith('data:')) {
-                    img.src = b64;
-                }
+            const b64 = await urlABase64Seguro(img.src);
+            if (b64 && b64.startsWith('data:')) {
+                img.src = b64;
             }
         }
 
+        // Espera a que Safari decodifique las imágenes en memoria
         await Promise.all(allImages.map(img => {
             if (img.complete) return Promise.resolve();
             return new Promise(res => {
@@ -5579,7 +5601,8 @@ async function compartirCartaFUT() {
             style: {
                 position: 'static',
                 left: '0',
-                top: '0'
+                top: '0',
+                opacity: '1'
             }
         });
 
@@ -5595,7 +5618,7 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 4. En móviles abre compartir nativo; en PC descarga el JPG directo
+        // 4. En celulares abre compartir nativo (WhatsApp, Stories); en PC descarga el archivo
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
