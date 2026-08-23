@@ -5451,9 +5451,9 @@ async function urlABase64Seguro(url) {
     if (!url || url.startsWith('data:')) return url;
     const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
 
-    // 1. Fetch directo a Blob -> DataURL (Evita el Canvas Taint en Safari iOS para rutas relativas y locales)
+    // 1. Fetch directo (ideal para rutas relativas y servidores locales con CORS)
     try {
-        const res = await fetch(absUrl);
+        const res = await fetch(absUrl, { mode: 'cors' });
         if (res.ok) {
             const blob = await res.blob();
             const dataUri = await new Promise((resolve) => {
@@ -5468,18 +5468,34 @@ async function urlABase64Seguro(url) {
         }
     } catch(e) {}
 
-    // 2. Image + Canvas de respaldo
+    // 2. Proxy de respaldo CORS universal (asegura headers de acceso para GitHub, FlagCDN, QR Server)
+    try {
+        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
+        const resProxy = await fetch(proxyUrl);
+        if (resProxy.ok) {
+            const blob = await resProxy.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
+        }
+    } catch(e) {}
+
+    // 3. Fallback Canvas Image
     try {
         const dataUri = await new Promise((resolve, reject) => {
             const img = new Image();
-            if (/^https?:\/\//i.test(absUrl) && !absUrl.startsWith(window.location.origin)) {
-                img.crossOrigin = 'anonymous';
-            }
+            img.crossOrigin = 'anonymous';
             img.onload = () => {
                 try {
                     const canvas = document.createElement('canvas');
-                    canvas.width = img.naturalWidth || img.width || 100;
-                    canvas.height = img.naturalHeight || img.height || 100;
+                    canvas.width = img.naturalWidth || 100;
+                    canvas.height = img.naturalHeight || 100;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0);
                     resolve(canvas.toDataURL('image/png'));
@@ -5491,22 +5507,6 @@ async function urlABase64Seguro(url) {
             img.src = absUrl;
         });
         if (dataUri && dataUri.startsWith('data:image')) return dataUri;
-    } catch(e) {}
-
-    // 3. Proxy de respaldo para recursos externos bloqueados por CORS
-    try {
-        const urlLimpia = absUrl.replace(/^https?:\/\//, '');
-        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(urlLimpia)}&output=png`;
-        const resProxy = await fetch(proxyUrl);
-        if (resProxy.ok) {
-            const blob = await resProxy.blob();
-            return await new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = () => resolve(url);
-                reader.readAsDataURL(blob);
-            });
-        }
     } catch(e) {}
 
     return url;
@@ -5582,7 +5582,7 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Conversión a Base64 de todas las imágenes del póster
+        // 2. Conversión a Base64 garantizada de todas las imágenes
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             const b64 = await urlABase64Seguro(img.src);
@@ -5591,7 +5591,7 @@ async function compartirCartaFUT() {
             }
         }
 
-        // 3. Forzar decodificación explícita en el pipeline de Safari iOS
+        // 3. Decodificación explícita en el pipeline de Safari iOS
         await Promise.all(allImages.map(async img => {
             if (img.decode) {
                 try { await img.decode(); } catch(e) {}
@@ -5603,11 +5603,7 @@ async function compartirCartaFUT() {
             }
         }));
 
-        // Pequeño micro-retraso para asegurar que el motor de WebKit pinte el Base64 en memoria
-        await new Promise(res => setTimeout(res, 80));
-
-        // 4. Captura JPG en alta resolución
-        const dataUrl = await htmlToImage.toJpeg(poster, {
+        const exportOptions = {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
@@ -5623,7 +5619,18 @@ async function compartirCartaFUT() {
                 opacity: '1',
                 visibility: 'visible'
             }
-        });
+        };
+
+        // 4. Warm-up pass: obliga a Safari WebKit a asentar los Base64 en el canvas de memoria
+        try {
+            await htmlToImage.toPng(poster, exportOptions);
+        } catch(e) {}
+
+        // Pausa de sincronización para el buffer de texturas de iOS
+        await new Promise(res => setTimeout(res, 120));
+
+        // 5. Captura JPG final de alta resolución con todos los PNG impresos
+        const dataUrl = await htmlToImage.toJpeg(poster, exportOptions);
 
         poster.remove();
 
@@ -5637,7 +5644,7 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 5. En celulares abre compartir nativo (WhatsApp, Stories); en PC descarga el archivo
+        // 6. Compartir nativo en móviles o descarga directa en PC
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
@@ -5656,7 +5663,7 @@ async function compartirCartaFUT() {
                     return;
                 }
             } catch (shareErr) {
-                console.warn("Fallo o cancelación en compartir nativo, ejecutando descarga directa:", shareErr);
+                console.warn("Cancelación o fallo en compartir nativo, ejecutando descarga directa:", shareErr);
             }
         }
 
