@@ -4343,10 +4343,12 @@ html[data-theme="light"] .xp-bar-big-fill {
    ======================================================== */
 #poster-export-container {
     position: fixed;
-    left: -9999px;
+    left: 0;
     top: 0;
+    opacity: 0;
+    pointer-events: none;
     width: 450px;
-    height: 800px;
+    height: 800px; /* Proporción 9:16 exacta */
     background: #090e15;
     background-image: 
         radial-gradient(circle at 50% 30%, rgba(0, 230, 118, 0.22) 0%, transparent 60%),
@@ -4424,9 +4426,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.75)) !important;
 }
 
-/* 🍏 BLINDAJE SAFARI IOS: Elimina las máscaras CSS que volvían invisibles la cara y el cuerpo */
-#poster-export-container .ac-avatar-full,
-#poster-export-container .ac-avatar-img-full {
+/* 🍏 BLINDAJE SAFARI IOS: Elimina la máscara de degradado que volvía invisible la cara del jugador */
+#poster-export-container .ac-avatar-full {
     -webkit-mask-image: none !important;
     mask-image: none !important;
 }
