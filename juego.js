@@ -5450,11 +5450,30 @@ function abrirModalPrivacyDirecto() {
 async function urlABase64Seguro(url) {
     if (!url || url.startsWith('data:')) return url;
     
-    // 1. Carga directa vía Image + Canvas (el método 100% compatible con Safari WebKit de iOS)
+    const absoluteUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+
+    // 1. Fetch directo blob (ideal para rutas locales y GitHub Pages)
     try {
-        const dataUri = await new Promise((resolve, reject) => {
+        const res = await fetch(absoluteUrl);
+        if (res.ok) {
+            const blob = await res.blob();
+            const b64 = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (b64 && b64.startsWith('data:image')) return b64;
+        }
+    } catch (e) {}
+
+    // 2. Canvas draw con detección inteligente de CORS para iOS WebKit
+    try {
+        const b64 = await new Promise((resolve) => {
             const img = new Image();
-            img.crossOrigin = 'anonymous';
+            if (!absoluteUrl.startsWith(window.location.origin)) {
+                img.crossOrigin = 'anonymous';
+            }
             img.onload = () => {
                 try {
                     const canvas = document.createElement('canvas');
@@ -5464,42 +5483,31 @@ async function urlABase64Seguro(url) {
                     ctx.drawImage(img, 0, 0);
                     resolve(canvas.toDataURL('image/png'));
                 } catch (err) {
-                    reject(err);
+                    resolve(null);
                 }
             };
-            img.onerror = reject;
-            img.src = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+            img.onerror = () => resolve(null);
+            img.src = absoluteUrl;
         });
-        if (dataUri && dataUri.startsWith('data:image')) return dataUri;
-    } catch(e) {}
+        if (b64 && b64.startsWith('data:image')) return b64;
+    } catch (e) {}
 
-    // 2. Fetch directo estándar (sin forzar CORS invasivo)
+    // 3. Proxy de respaldo para escudos externos
     try {
-        const res = await fetch(url);
-        if (res.ok) {
-            const blob = await res.blob();
-            return await new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(blob);
-            });
-        }
-    } catch(e) {}
-
-    // 3. Proxy de respaldo para recursos externos
-    try {
-        const urlLimpia = url.replace(/^https?:\/\//, '');
+        const urlLimpia = absoluteUrl.replace(/^https?:\/\//, '');
         const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(urlLimpia)}&output=png`;
         const resProxy = await fetch(proxyUrl);
         if (resProxy.ok) {
             const blob = await resProxy.blob();
-            return await new Promise(resolve => {
+            const b64 = await new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
                 reader.readAsDataURL(blob);
             });
+            if (b64 && b64.startsWith('data:image')) return b64;
         }
-    } catch(e) {}
+    } catch (e) {}
 
     return url;
 }
@@ -5574,36 +5582,36 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Conversión a Base64 garantizada de todas las imágenes del póster (resuelve la ausencia de íconos en iOS)
+        // 2. Inyección Base64 y decodificación forzada en memoria para iOS WebKit
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
-            const b64 = await urlABase64Seguro(img.src);
+            const rawSrc = img.getAttribute('src') || img.src;
+            const b64 = await urlABase64Seguro(rawSrc);
             if (b64 && b64.startsWith('data:')) {
                 img.src = b64;
+                img.removeAttribute('crossorigin');
+            }
+            if (img.decode) {
+                try { await img.decode(); } catch (e) {}
             }
         }
 
-        // Espera a que Safari decodifique las imágenes en memoria
-        await Promise.all(allImages.map(img => {
-            if (img.complete) return Promise.resolve();
-            return new Promise(res => {
-                img.onload = res;
-                img.onerror = res;
-            });
-        }));
+        // Pausa de 80ms para que el pipeline gráfico de Safari ensamble los bitmaps
+        await new Promise(r => setTimeout(r, 80));
 
-        // 3. Captura JPG en alta resolución
+        // 3. Renderizado en 2 pasadas (resuelve el bug de canvas vacío en Safari)
+        await htmlToImage.toJpeg(poster, {
+            quality: 0.95,
+            pixelRatio: 2.2,
+            backgroundColor: '#090e15',
+            cacheBust: false
+        });
+
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
-            cacheBust: false,
-            style: {
-                position: 'static',
-                left: '0',
-                top: '0',
-                opacity: '1'
-            }
+            cacheBust: false
         });
 
         poster.remove();
@@ -5618,7 +5626,6 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 4. En celulares abre compartir nativo (WhatsApp, Stories); en PC descarga el archivo
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
@@ -5637,7 +5644,7 @@ async function compartirCartaFUT() {
                     return;
                 }
             } catch (shareErr) {
-                console.warn("Fallo o cancelación en compartir nativo, ejecutando descarga directa:", shareErr);
+                console.warn("Compartir cancelado o no disponible, descargando archivo:", shareErr);
             }
         }
 
