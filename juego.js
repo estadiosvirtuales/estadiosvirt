@@ -5451,7 +5451,7 @@ async function urlABase64Seguro(url) {
     if (!url || url.startsWith('data:')) return url;
     const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
 
-    // 1. Fetch directo (ideal para rutas relativas y servidores locales con CORS)
+    // 1. Fetch directo
     try {
         const res = await fetch(absUrl, { mode: 'cors' });
         if (res.ok) {
@@ -5468,7 +5468,7 @@ async function urlABase64Seguro(url) {
         }
     } catch(e) {}
 
-    // 2. Proxy de respaldo CORS universal (asegura headers de acceso para GitHub, FlagCDN, QR Server)
+    // 2. Proxy de respaldo CORS
     try {
         const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
         const resProxy = await fetch(proxyUrl);
@@ -5484,29 +5484,6 @@ async function urlABase64Seguro(url) {
                 return dataUri;
             }
         }
-    } catch(e) {}
-
-    // 3. Fallback Canvas Image
-    try {
-        const dataUri = await new Promise((resolve, reject) => {
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = () => {
-                try {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.naturalWidth || 100;
-                    canvas.height = img.naturalHeight || 100;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    resolve(canvas.toDataURL('image/png'));
-                } catch (err) {
-                    reject(err);
-                }
-            };
-            img.onerror = reject;
-            img.src = absUrl;
-        });
-        if (dataUri && dataUri.startsWith('data:image')) return dataUri;
     } catch(e) {}
 
     return url;
@@ -5582,28 +5559,42 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Conversión a Base64 garantizada de todas las imágenes
+        // 2. Transmutación de <img> a <div> con background-image Base64 (Blindaje total WebKit/Safari iOS)
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             const b64 = await urlABase64Seguro(img.src);
-            if (b64 && b64.startsWith('data:')) {
-                img.src = b64;
+            const div = document.createElement('div');
+            div.className = img.className;
+            div.id = img.id;
+            
+            // Replicamos estilos exactos
+            div.style.cssText = img.style.cssText;
+            div.style.backgroundImage = `url("${b64}")`;
+            div.style.backgroundRepeat = 'no-repeat';
+            
+            if (img.classList.contains('ac-avatar-img-full')) {
+                div.style.backgroundSize = 'cover';
+                div.style.backgroundPosition = 'center 15%';
+            } else {
+                div.style.backgroundSize = 'contain';
+                div.style.backgroundPosition = 'center';
             }
+
+            // Preservamos dimensiones computadas
+            const compW = img.offsetWidth || img.naturalWidth;
+            const compH = img.offsetHeight || img.naturalHeight;
+            if (compW && !div.style.width) div.style.width = compW + 'px';
+            if (compH && !div.style.height) div.style.height = compH + 'px';
+
+            div.style.display = 'block';
+            img.parentNode.replaceChild(div, img);
         }
 
-        // 3. Decodificación explícita en el pipeline de Safari iOS
-        await Promise.all(allImages.map(async img => {
-            if (img.decode) {
-                try { await img.decode(); } catch(e) {}
-            } else if (!img.complete) {
-                await new Promise(res => {
-                    img.onload = res;
-                    img.onerror = res;
-                });
-            }
-        }));
+        // Breve pausa para asegurar el cálculo de estilos en el DOM de iOS
+        await new Promise(res => setTimeout(res, 100));
 
-        const exportOptions = {
+        // 3. Captura JPG final de alta resolución
+        const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
@@ -5619,18 +5610,7 @@ async function compartirCartaFUT() {
                 opacity: '1',
                 visibility: 'visible'
             }
-        };
-
-        // 4. Warm-up pass: obliga a Safari WebKit a asentar los Base64 en el canvas de memoria
-        try {
-            await htmlToImage.toPng(poster, exportOptions);
-        } catch(e) {}
-
-        // Pausa de sincronización para el buffer de texturas de iOS
-        await new Promise(res => setTimeout(res, 120));
-
-        // 5. Captura JPG final de alta resolución con todos los PNG impresos
-        const dataUrl = await htmlToImage.toJpeg(poster, exportOptions);
+        });
 
         poster.remove();
 
@@ -5644,7 +5624,7 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 6. Compartir nativo en móviles o descarga directa en PC
+        // 4. Compartir nativo en móviles o descarga directa en PC
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
