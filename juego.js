@@ -5559,58 +5559,66 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Transmutación de <img> a <div> con background-image Base64 (Blindaje total WebKit/Safari iOS)
+        // 2. Conversión a Base64 de todas las imágenes
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             const b64 = await urlABase64Seguro(img.src);
-            const div = document.createElement('div');
-            div.className = img.className;
-            div.id = img.id;
-            
-            // Replicamos estilos exactos
-            div.style.cssText = img.style.cssText;
-            div.style.backgroundImage = `url("${b64}")`;
-            div.style.backgroundRepeat = 'no-repeat';
-            
-            if (img.classList.contains('ac-avatar-img-full')) {
-                div.style.backgroundSize = 'cover';
-                div.style.backgroundPosition = 'center 15%';
-            } else {
-                div.style.backgroundSize = 'contain';
-                div.style.backgroundPosition = 'center';
+            if (b64 && b64.startsWith('data:')) {
+                img.src = b64;
             }
-
-            // Preservamos dimensiones computadas
-            const compW = img.offsetWidth || img.naturalWidth;
-            const compH = img.offsetHeight || img.naturalHeight;
-            if (compW && !div.style.width) div.style.width = compW + 'px';
-            if (compH && !div.style.height) div.style.height = compH + 'px';
-
-            div.style.display = 'block';
-            img.parentNode.replaceChild(div, img);
         }
 
-        // Breve pausa para asegurar el cálculo de estilos en el DOM de iOS
-        await new Promise(res => setTimeout(res, 100));
+        // 3. Esperamos la decodificación en memoria
+        await Promise.all(allImages.map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise(res => { img.onload = res; img.onerror = res; });
+        }));
 
-        // 3. Captura JPG final de alta resolución
-        const dataUrl = await htmlToImage.toJpeg(poster, {
-            quality: 0.95,
-            pixelRatio: 2.2,
-            backgroundColor: '#090e15',
-            cacheBust: false,
-            width: 450,
-            height: 800,
-            style: {
-                position: 'static',
-                left: '0',
-                top: '0',
-                margin: '0',
-                transform: 'none',
-                opacity: '1',
-                visibility: 'visible'
+        let dataUrl = '';
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (isIOS) {
+            // 🍏 MOTOR EXCLUSIVO PARA IPHONE / IPAD (html2canvas pinta directo los PNG al lienzo)
+            if (!window.html2canvas) {
+                await new Promise((resolve, reject) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                    s.onload = resolve;
+                    s.onerror = reject;
+                    document.head.appendChild(s);
+                });
             }
-        });
+
+            const canvas = await html2canvas(poster, {
+                scale: 2.2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#090e15',
+                logging: false,
+                width: 450,
+                height: 800
+            });
+            dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        } else {
+            // 💻 MOTOR ORIGINAL PARA PC Y ANDROID (Sigue idéntico a siempre)
+            dataUrl = await htmlToImage.toJpeg(poster, {
+                quality: 0.95,
+                pixelRatio: 2.2,
+                backgroundColor: '#090e15',
+                cacheBust: false,
+                width: 450,
+                height: 800,
+                style: {
+                    position: 'static',
+                    left: '0',
+                    top: '0',
+                    margin: '0',
+                    transform: 'none',
+                    opacity: '1',
+                    visibility: 'visible'
+                }
+            });
+        }
 
         poster.remove();
 
@@ -5625,7 +5633,7 @@ async function compartirCartaFUT() {
         };
 
         // 4. Compartir nativo en móviles o descarga directa en PC
-        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || isIOS;
 
         if (esMobile && navigator.canShare) {
             try {
