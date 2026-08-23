@@ -5611,7 +5611,18 @@ async function compartirCartaFUT() {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
-            cacheBust: false
+            cacheBust: false,
+            width: 450,
+            height: 800,
+            style: {
+                position: 'static',
+                left: '0',
+                top: '0',
+                margin: '0',
+                transform: 'none',
+                opacity: '1',
+                visibility: 'visible'
+            }
         });
 
         poster.remove();
