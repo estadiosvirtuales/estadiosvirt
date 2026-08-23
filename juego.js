@@ -5449,12 +5449,32 @@ function abrirModalPrivacyDirecto() {
 }
 async function urlABase64Seguro(url) {
     if (!url || url.startsWith('data:')) return url;
-    
-    // 1. Carga directa vía Image + Canvas (el método 100% compatible con Safari WebKit de iOS)
+    const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+
+    // 1. Fetch directo a Blob -> DataURL (Evita el Canvas Taint en Safari iOS para rutas relativas y locales)
+    try {
+        const res = await fetch(absUrl);
+        if (res.ok) {
+            const blob = await res.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
+        }
+    } catch(e) {}
+
+    // 2. Image + Canvas de respaldo
     try {
         const dataUri = await new Promise((resolve, reject) => {
             const img = new Image();
-            img.crossOrigin = 'anonymous';
+            if (/^https?:\/\//i.test(absUrl) && !absUrl.startsWith(window.location.origin)) {
+                img.crossOrigin = 'anonymous';
+            }
             img.onload = () => {
                 try {
                     const canvas = document.createElement('canvas');
@@ -5468,27 +5488,14 @@ async function urlABase64Seguro(url) {
                 }
             };
             img.onerror = reject;
-            img.src = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+            img.src = absUrl;
         });
         if (dataUri && dataUri.startsWith('data:image')) return dataUri;
     } catch(e) {}
 
-    // 2. Fetch directo estándar (sin forzar CORS invasivo)
+    // 3. Proxy de respaldo para recursos externos bloqueados por CORS
     try {
-        const res = await fetch(url);
-        if (res.ok) {
-            const blob = await res.blob();
-            return await new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.readAsDataURL(blob);
-            });
-        }
-    } catch(e) {}
-
-    // 3. Proxy de respaldo para recursos externos
-    try {
-        const urlLimpia = url.replace(/^https?:\/\//, '');
+        const urlLimpia = absUrl.replace(/^https?:\/\//, '');
         const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(urlLimpia)}&output=png`;
         const resProxy = await fetch(proxyUrl);
         if (resProxy.ok) {
@@ -5496,6 +5503,7 @@ async function urlABase64Seguro(url) {
             return await new Promise(resolve => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(url);
                 reader.readAsDataURL(blob);
             });
         }
@@ -5574,7 +5582,7 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Conversión a Base64 garantizada de todas las imágenes del póster (resuelve la ausencia de íconos en iOS)
+        // 2. Conversión a Base64 de todas las imágenes del póster
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             const b64 = await urlABase64Seguro(img.src);
@@ -5583,27 +5591,27 @@ async function compartirCartaFUT() {
             }
         }
 
-        // Espera a que Safari decodifique las imágenes en memoria
-        await Promise.all(allImages.map(img => {
-            if (img.complete) return Promise.resolve();
-            return new Promise(res => {
-                img.onload = res;
-                img.onerror = res;
-            });
+        // 3. Forzar decodificación explícita en el pipeline de Safari iOS
+        await Promise.all(allImages.map(async img => {
+            if (img.decode) {
+                try { await img.decode(); } catch(e) {}
+            } else if (!img.complete) {
+                await new Promise(res => {
+                    img.onload = res;
+                    img.onerror = res;
+                });
+            }
         }));
 
-        // 3. Captura JPG en alta resolución
+        // Pequeño micro-retraso para asegurar que el motor de WebKit pinte el Base64 en memoria
+        await new Promise(res => setTimeout(res, 80));
+
+        // 4. Captura JPG en alta resolución
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
-            cacheBust: false,
-            style: {
-                position: 'static',
-                left: '0',
-                top: '0',
-                opacity: '1'
-            }
+            cacheBust: false
         });
 
         poster.remove();
@@ -5618,7 +5626,7 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 4. En celulares abre compartir nativo (WhatsApp, Stories); en PC descarga el archivo
+        // 5. En celulares abre compartir nativo (WhatsApp, Stories); en PC descarga el archivo
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {

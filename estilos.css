@@ -4343,9 +4343,10 @@ html[data-theme="light"] .xp-bar-big-fill {
    ======================================================== */
 #poster-export-container {
     position: fixed;
-    left: 0;
+    left: -9999px;
     top: 0;
-    opacity: 0;
+    opacity: 1;
+    visibility: visible;
     pointer-events: none;
     width: 450px;
     height: 800px; /* Proporción 9:16 exacta */
@@ -4361,7 +4362,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: space-between;
     padding: 24px 20px 20px;
     box-sizing: border-box;
-    z-index: -9999;
+    z-index: -100;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     color: #ffffff;
     overflow: hidden;
