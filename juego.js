@@ -5448,10 +5448,11 @@ function abrirModalPrivacyDirecto() {
     }
 }
 async function urlABase64Seguro(url) {
-    if (!url || url.startsWith('data:')) return url;
+    if (!url || typeof url !== 'string') return url;
+    if (url.startsWith('data:')) return url;
     const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
 
-    // 1. Fetch directo
+    // 1. Fetch directo a Data URL
     try {
         const res = await fetch(absUrl, { mode: 'cors' });
         if (res.ok) {
@@ -5468,7 +5469,7 @@ async function urlABase64Seguro(url) {
         }
     } catch(e) {}
 
-    // 2. Proxy de respaldo CORS
+    // 2. Proxy CORS de respaldo para URLs externas
     try {
         const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
         const resProxy = await fetch(proxyUrl);
@@ -5486,7 +5487,30 @@ async function urlABase64Seguro(url) {
         }
     } catch(e) {}
 
-    return url;
+    // 3. Fallback Canvas
+    try {
+        const dataUri = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.naturalWidth || 100;
+                    canvas.height = img.naturalHeight || 100;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            img.onerror = reject;
+            img.src = absUrl;
+        });
+        if (dataUri && dataUri.startsWith('data:image')) return dataUri;
+    } catch(e) {}
+
+    return absUrl;
 }
 
 async function compartirCartaFUT() {
@@ -5502,7 +5526,7 @@ async function compartirCartaFUT() {
     const nivel = NIVELES[nivelIdx];
     const racha = userStats.rachaActual || 1;
     const victorias = userStats.partidasGanadas || 0;
-    const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name : 'Jugador');
+    const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name.split(' ')[0] : 'Jugador');
 
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
@@ -5559,66 +5583,56 @@ async function compartirCartaFUT() {
     }
 
     try {
-        // 2. Conversión a Base64 de todas las imágenes
+        // 2. Conversión a Base64 y limpieza de atributos conflictivos para Safari iOS
         const allImages = Array.from(poster.querySelectorAll('img'));
         for (const img of allImages) {
             const b64 = await urlABase64Seguro(img.src);
             if (b64 && b64.startsWith('data:')) {
                 img.src = b64;
             }
+            img.removeAttribute('crossorigin');
+            img.removeAttribute('loading');
         }
 
-        // 3. Esperamos la decodificación en memoria
-        await Promise.all(allImages.map(img => {
-            if (img.complete) return Promise.resolve();
-            return new Promise(res => { img.onload = res; img.onerror = res; });
-        }));
-
-        let dataUrl = '';
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-        if (isIOS) {
-            // 🍏 MOTOR EXCLUSIVO PARA IPHONE / IPAD (html2canvas pinta directo los PNG al lienzo)
-            if (!window.html2canvas) {
-                await new Promise((resolve, reject) => {
-                    const s = document.createElement('script');
-                    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                    s.onload = resolve;
-                    s.onerror = reject;
-                    document.head.appendChild(s);
+        // 3. Espera a que el navegador decodifique las imágenes Base64 en memoria
+        await Promise.all(allImages.map(async img => {
+            if (img.decode) {
+                try { await img.decode(); } catch(e) {}
+            } else if (!img.complete) {
+                await new Promise(res => {
+                    img.onload = res;
+                    img.onerror = res;
                 });
             }
+        }));
 
-            const canvas = await html2canvas(poster, {
-                scale: 2.2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: '#090e15',
-                logging: false,
-                width: 450,
-                height: 800
-            });
-            dataUrl = canvas.toDataURL('image/jpeg', 0.95);
-        } else {
-            // 💻 MOTOR ORIGINAL PARA PC Y ANDROID (Sigue idéntico a siempre)
-            dataUrl = await htmlToImage.toJpeg(poster, {
-                quality: 0.95,
-                pixelRatio: 2.2,
-                backgroundColor: '#090e15',
-                cacheBust: false,
-                width: 450,
-                height: 800,
-                style: {
-                    position: 'static',
-                    left: '0',
-                    top: '0',
-                    margin: '0',
-                    transform: 'none',
-                    opacity: '1',
-                    visibility: 'visible'
-                }
-            });
-        }
+        const exportOptions = {
+            quality: 0.95,
+            pixelRatio: 2.2,
+            backgroundColor: '#090e15',
+            cacheBust: false,
+            width: 450,
+            height: 800,
+            style: {
+                position: 'static',
+                left: '0',
+                top: '0',
+                margin: '0',
+                transform: 'none',
+                opacity: '1',
+                visibility: 'visible'
+            }
+        };
+
+        // 4. Pasada previa (warm-up) obligatoria para asentar los PNG en el buffer de Safari
+        try {
+            await htmlToImage.toPng(poster, exportOptions);
+        } catch(e) {}
+
+        await new Promise(res => setTimeout(res, 150));
+
+        // 5. Captura final JPG en alta resolución
+        const dataUrl = await htmlToImage.toJpeg(poster, exportOptions);
 
         poster.remove();
 
@@ -5632,8 +5646,8 @@ async function compartirCartaFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        // 4. Compartir nativo en móviles o descarga directa en PC
-        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || isIOS;
+        // 6. Compartir nativo en móviles o descarga directa en PC
+        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
             try {
@@ -5651,7 +5665,7 @@ async function compartirCartaFUT() {
                     return;
                 }
             } catch (shareErr) {
-                console.warn("Cancelación o fallo en compartir nativo, ejecutando descarga directa:", shareErr);
+                console.warn("Cancelación o desvío de compartir nativo, procediendo a descarga directa:", shareErr);
             }
         }
 
