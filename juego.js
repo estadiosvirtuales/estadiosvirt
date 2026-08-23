@@ -5447,319 +5447,192 @@ function abrirModalPrivacyDirecto() {
         if (btn) btn.disabled = false;
     }
 }
-async function cargarImagenCanvas(src) {
-    if (!src) return null;
-    const absUrl = src.startsWith('http') ? src : new URL(src, window.location.href).href;
+async function urlABase64Seguro(url) {
+    if (!url || url.startsWith('data:')) return url;
+    const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
 
-    // Convertimos la imagen a Data URL mediante Blob para no bloquear el lienzo en iOS
-    let dataUri = null;
+    // 1. Fetch directo
     try {
         const res = await fetch(absUrl, { mode: 'cors' });
         if (res.ok) {
             const blob = await res.blob();
-            dataUri = await new Promise((resolve) => {
+            const dataUri = await new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
                 reader.onerror = () => resolve(null);
                 reader.readAsDataURL(blob);
             });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
         }
     } catch(e) {}
 
-    // Proxy CORS de respaldo para recursos externos
-    if (!dataUri || !dataUri.startsWith('data:image')) {
-        try {
-            const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
-            const resProxy = await fetch(proxyUrl);
-            if (resProxy.ok) {
-                const blob = await resProxy.blob();
-                dataUri = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.onerror = () => resolve(null);
-                    reader.readAsDataURL(blob);
-                });
+    // 2. Proxy de respaldo CORS
+    try {
+        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
+        const resProxy = await fetch(proxyUrl);
+        if (resProxy.ok) {
+            const blob = await resProxy.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
             }
-        } catch(e) {}
-    }
+        }
+    } catch(e) {}
 
-    const finalSrc = (dataUri && dataUri.startsWith('data:image')) ? dataUri : absUrl;
-
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = finalSrc;
-    });
-}
-
-function redondearRect(ctx, x, y, width, height, radius) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-}
-
-function trazarSiluetaFUT(ctx, x, y, w, h) {
-    ctx.beginPath();
-    ctx.moveTo(x + 50, y);
-    ctx.quadraticCurveTo(x + w / 2, y - 8, x + w - 50, y);
-    ctx.quadraticCurveTo(x + w, y + 10, x + w, y + 55);
-    ctx.lineTo(x + w, y + h - 140);
-    ctx.quadraticCurveTo(x + w, y + h - 40, x + w / 2, y + h);
-    ctx.quadraticCurveTo(x, y + h - 40, x, y + h - 140);
-    ctx.lineTo(x, y + 55);
-    ctx.quadraticCurveTo(x, y + 10, x + 50, y);
-    ctx.closePath();
+    return url;
 }
 
 async function compartirCartaFUT() {
+    const cardElement = document.getElementById('fut-card-main');
+    if (!cardElement) {
+        showToast("No se encontró la carta para exportar", "ph-warning-circle", "danger");
+        return;
+    }
+
     showToast("Generando póster 9:16... 🎨", "ph-hourglass", "info");
 
     const nivelIdx = calcularNivelIdx(userStats.xpTotal);
     const nivel = NIVELES[nivelIdx];
     const racha = userStats.rachaActual || 1;
     const victorias = userStats.partidasGanadas || 0;
-    const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name.split(' ')[0] : 'Jugador');
-    const userPos = getPref('ev_user_pos', 'DT');
-    let userTheme = getPref('ev_card_theme', 'arg');
-    const validThemes = TEMAS_LISTA.map(t => t.k);
-    if (!validThemes.includes(userTheme)) userTheme = 'arg';
-
-    const avatarImgName = getPref('ev_avatar_hair', '1.png');
-    const avatarLogoId = getPref('ev_avatar_logo', 'ev');
-    const clubLogoUrl = obtenerUrlEscudo(avatarLogoId);
+    const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name : 'Jugador');
 
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 1. Precarga paralela de todas las imágenes
-    const [imgLogo, imgClub, imgAvatar, imgRango, imgRacha, imgTrofeo, imgQR] = await Promise.all([
-        cargarImagenCanvas('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png'),
-        cargarImagenCanvas(clubLogoUrl),
-        cargarImagenCanvas(avatarImgName.includes('.') ? avatarImgName : avatarImgName + '.png'),
-        cargarImagenCanvas(nivel.iconUrl),
-        cargarImagenCanvas('fuego.png'),
-        cargarImagenCanvas('trofeo.png'),
-        cargarImagenCanvas(qrUrl)
-    ]);
+    // 1. Montaje del contenedor del póster 9:16
+    const poster = document.createElement('div');
+    poster.id = 'poster-export-container';
+    poster.innerHTML = `
+        <div class="poster-header">
+            <img class="poster-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo">
+            <div class="poster-header-text">
+                <div class="poster-title">Estadios Virtuales</div>
+                <div class="poster-subtitle">El mundo desde el aire</div>
+            </div>
+        </div>
 
-    // 2. Creación del Canvas nativo en proporción 9:16 (900x1600)
-    const canvas = document.createElement('canvas');
-    canvas.width = 900;
-    canvas.height = 1600;
-    const ctx = canvas.getContext('2d');
+        <div class="poster-card-wrapper">
+            <div class="poster-card-glow"></div>
+            ${cardElement.outerHTML}
+        </div>
 
-    // Fondo base oscuro
-    ctx.fillStyle = '#090e15';
-    ctx.fillRect(0, 0, 900, 1600);
+        <div class="poster-stats-badges">
+            <div class="poster-badge">
+                <img class="poster-badge-icon icon-poster-rango" src="${nivel.iconUrl}" alt="Rango">
+                <span>${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
+            </div>
+            <div class="poster-badge">
+                <img class="poster-badge-icon icon-poster-racha" src="fuego.png" alt="Racha">
+                <span>${racha} Días de racha</span>
+            </div>
+            <div class="poster-badge">
+                <img class="poster-badge-icon icon-poster-victorias" src="trofeo.png" alt="Victorias">
+                <span>${victorias} PG</span>
+            </div>
+        </div>
 
-    // Resplandores radiales de fondo
-    const glowVerde = ctx.createRadialGradient(450, 480, 20, 450, 480, 450);
-    glowVerde.addColorStop(0, 'rgba(0, 230, 118, 0.28)');
-    glowVerde.addColorStop(1, 'transparent');
-    ctx.fillStyle = glowVerde;
-    ctx.fillRect(0, 0, 900, 1600);
+        <div class="poster-footer-cta">
+            <img class="poster-qr" src="${qrApiUrl}" alt="QR Desafío">
+            <div class="poster-cta-text">
+                <strong>¿Te animás a ganarme?</strong>
+                <span>Escaneá el QR y desafiame a un duelo 1v1 en vivo.</span>
+            </div>
+        </div>
+    `;
 
-    const glowAzul = ctx.createRadialGradient(450, 1350, 20, 450, 1350, 450);
-    glowAzul.addColorStop(0, 'rgba(41, 121, 255, 0.20)');
-    glowAzul.addColorStop(1, 'transparent');
-    ctx.fillStyle = glowAzul;
-    ctx.fillRect(0, 0, 900, 1600);
+    document.body.appendChild(poster);
 
-    // --- CABECERA ---
-    if (imgLogo) {
-        ctx.save();
-        redondearRect(ctx, 270, 48, 54, 54, 12);
-        ctx.clip();
-        ctx.drawImage(imgLogo, 270, 48, 54, 54);
-        ctx.restore();
-    }
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '900 26px "Segoe UI", system-ui, sans-serif';
-    ctx.fillText('ESTADIOS VIRTUALES', 340, 74);
-    ctx.fillStyle = '#00e676';
-    ctx.font = '800 14px "Segoe UI", system-ui, sans-serif';
-    ctx.fillText('EL MUNDO DESDE EL AIRE', 340, 96);
-
-    // --- CARTA FUT (CENTRO) ---
-    const cx = 195, cy = 135, cw = 510, ch = 780;
-    ctx.save();
-    trazarSiluetaFUT(ctx, cx, cy, cw, ch);
-
-    // Degradados dinámicos según país / tema
-    const cardGrad = ctx.createLinearGradient(cx, cy, cx + cw, cy + ch);
-    let cardTextColor = '#000000';
-    switch (userTheme) {
-        case 'arg': cardGrad.addColorStop(0, '#74acdf'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#74acdf'); cardTextColor = '#000'; break;
-        case 'bra': cardGrad.addColorStop(0, '#009c3b'); cardGrad.addColorStop(0.5, '#ffdf00'); cardGrad.addColorStop(1, '#002776'); cardTextColor = '#fff'; break;
-        case 'esp': cardGrad.addColorStop(0, '#aa151b'); cardGrad.addColorStop(0.5, '#f1bf00'); cardGrad.addColorStop(1, '#aa151b'); cardTextColor = '#000'; break;
-        case 'ita': cardGrad.addColorStop(0, '#009246'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#ce2b37'); cardTextColor = '#000'; break;
-        case 'fra': cardGrad.addColorStop(0, '#002395'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#ed2939'); cardTextColor = '#000'; break;
-        case 'ger': cardGrad.addColorStop(0, '#000000'); cardGrad.addColorStop(0.5, '#dd0000'); cardGrad.addColorStop(1, '#ffce00'); cardTextColor = '#fff'; break;
-        case 'eng': cardGrad.addColorStop(0, '#ffffff'); cardGrad.addColorStop(1, '#ce1126'); cardTextColor = '#000'; break;
-        case 'por': cardGrad.addColorStop(0, '#046a38'); cardGrad.addColorStop(1, '#ff0000'); cardTextColor = '#fff'; break;
-        case 'uru': cardGrad.addColorStop(0, '#7badd3'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#fcd116'); cardTextColor = '#000'; break;
-        case 'col': cardGrad.addColorStop(0, '#fcd116'); cardGrad.addColorStop(0.5, '#003893'); cardGrad.addColorStop(1, '#ce1126'); cardTextColor = '#fff'; break;
-        case 'chi': cardGrad.addColorStop(0, '#d52b1e'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#0039a6'); cardTextColor = '#000'; break;
-        case 'ned': cardGrad.addColorStop(0, '#f36c21'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#21468b'); cardTextColor = '#000'; break;
-        case 'bel': cardGrad.addColorStop(0, '#e30613'); cardGrad.addColorStop(0.5, '#fbd600'); cardGrad.addColorStop(1, '#000000'); cardTextColor = '#fff'; break;
-        case 'cro': cardGrad.addColorStop(0, '#ed1c24'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#005caa'); cardTextColor = '#000'; break;
-        case 'usa': cardGrad.addColorStop(0, '#002868'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#bf0a30'); cardTextColor = '#000'; break;
-        case 'jpn': cardGrad.addColorStop(0, '#000555'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#ed1944'); cardTextColor = '#000'; break;
-        case 'can': cardGrad.addColorStop(0, '#d52b1e'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#d52b1e'); cardTextColor = '#000'; break;
-        case 'mar': cardGrad.addColorStop(0, '#c1272d'); cardGrad.addColorStop(1, '#006233'); cardTextColor = '#fff'; break;
-        case 'sen': cardGrad.addColorStop(0, '#00853f'); cardGrad.addColorStop(0.5, '#fdef42'); cardGrad.addColorStop(1, '#e31b23'); cardTextColor = '#000'; break;
-        case 'kor': cardGrad.addColorStop(0, '#ffffff'); cardGrad.addColorStop(0.5, '#cd2e3a'); cardGrad.addColorStop(1, '#0f64cd'); cardTextColor = '#000'; break;
-        case 'aus': cardGrad.addColorStop(0, '#ffcd00'); cardGrad.addColorStop(1, '#008751'); cardTextColor = '#000'; break;
-        default: cardGrad.addColorStop(0, '#1c2838'); cardGrad.addColorStop(1, '#0f1724'); cardTextColor = '#fff'; break;
-    }
-    ctx.fillStyle = cardGrad;
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.stroke();
-    ctx.clip();
-
-    // Brillo superior
-    const shine = ctx.createLinearGradient(cx, cy, cx + cw, cy + ch);
-    shine.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
-    shine.addColorStop(0.5, 'transparent');
-    shine.addColorStop(1, 'rgba(255, 255, 255, 0.1)');
-    ctx.fillStyle = shine;
-    ctx.fill();
-
-    // OVR y Posición
-    ctx.fillStyle = cardTextColor;
-    ctx.textAlign = 'center';
-    ctx.font = '900 68px "Arial Black", Gadget, sans-serif';
-    ctx.fillText(String(nivel.ovr), cx + 90, cy + 130);
-
-    ctx.font = '900 28px "Arial Black", Gadget, sans-serif';
-    ctx.fillText(userPos, cx + 90, cy + 175);
-
-    // Escudo de club o bandera
-    if (imgClub) {
-        ctx.drawImage(imgClub, cx + 55, cy + 195, 70, 70);
+    const cardEnPoster = poster.querySelector('.fut-card');
+    if (cardEnPoster) {
+        cardEnPoster.style.transform = 'scale(1.16)';
+        cardEnPoster.style.transformOrigin = 'center center';
+        cardEnPoster.style.margin = '0';
+        cardEnPoster.style.zIndex = '5';
     }
 
-    // Avatar
-    if (imgAvatar) {
-        ctx.drawImage(imgAvatar, cx + 160, cy + 40, 340, 340);
-    }
+    try {
+        // 2. Transmutación de <img> a <div> con background-image Base64 (Blindaje total WebKit/Safari iOS)
+        const allImages = Array.from(poster.querySelectorAll('img'));
+        for (const img of allImages) {
+            const b64 = await urlABase64Seguro(img.src);
+            const div = document.createElement('div');
+            div.className = img.className;
+            div.id = img.id;
+            
+            // Replicamos estilos exactos
+            div.style.cssText = img.style.cssText;
+            div.style.backgroundImage = `url("${b64}")`;
+            div.style.backgroundRepeat = 'no-repeat';
+            
+            if (img.classList.contains('ac-avatar-img-full')) {
+                div.style.backgroundSize = 'cover';
+                div.style.backgroundPosition = 'center 15%';
+            } else {
+                div.style.backgroundSize = 'contain';
+                div.style.backgroundPosition = 'center';
+            }
 
-    // Nombre / Apodo
-    ctx.fillStyle = cardTextColor;
-    ctx.font = '900 36px "Arial Black", Gadget, sans-serif';
-    ctx.fillText(customNick.toUpperCase(), cx + cw / 2, cy + 430);
+            // Preservamos dimensiones computadas
+            const compW = img.offsetWidth || img.naturalWidth;
+            const compH = img.offsetHeight || img.naturalHeight;
+            if (compW && !div.style.width) div.style.width = compW + 'px';
+            if (compH && !div.style.height) div.style.height = compH + 'px';
 
-    // Línea divisoria
-    ctx.strokeStyle = cardTextColor === '#fff' ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.3)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(cx + 40, cy + 450);
-    ctx.lineTo(cx + cw - 40, cy + 450);
-    ctx.stroke();
-
-    // Métricas de la carta
-    const xpTexto = userStats.xpTotal > 999 ? (userStats.xpTotal / 1000).toFixed(1) + 'K' : userStats.xpTotal;
-    const statsFUT = [
-        { label: 'VOT', val: userStats.votosRealizados || 0 },
-        { label: 'TRV', val: userStats.triviasVistas || 0 },
-        { label: 'PJ', val: userStats.partidasJugadas || 0 },
-        { label: 'PG', val: userStats.partidasGanadas || 0 }
-    ];
-
-    ctx.font = '900 28px "Arial Black", Gadget, sans-serif';
-    ctx.fillText(`${statsFUT[0].val} ${statsFUT[0].label}`, cx + 140, cy + 505);
-    ctx.fillText(`${statsFUT[1].val} ${statsFUT[1].label}`, cx + 370, cy + 505);
-    ctx.fillText(`${statsFUT[2].val} ${statsFUT[2].label}`, cx + 140, cy + 560);
-    ctx.fillText(`${statsFUT[3].val} ${statsFUT[3].label}`, cx + 370, cy + 560);
-    ctx.fillText(`${xpTexto} XP`, cx + cw / 2, cy + 625);
-
-    ctx.restore();
-
-    // --- 3 INSIGNIAS INFERIORES ---
-    const by = 960, bw = 240, bh = 110;
-    const insignias = [
-        { img: imgRango, txt: nivel.nombre.replace(/\s+Lvl\s+\d+/i, '') },
-        { img: imgRacha, txt: `${racha} Días racha` },
-        { img: imgTrofeo, txt: `${victorias} PG` }
-    ];
-
-    insignias.forEach((ins, i) => {
-        const bx = 70 + i * 260;
-        ctx.save();
-        redondearRect(ctx, bx, by, bw, bh, 18);
-        ctx.fillStyle = 'rgba(18, 28, 44, 0.95)';
-        ctx.fill();
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-        ctx.stroke();
-
-        if (ins.img) {
-            ctx.drawImage(ins.img, bx - 15, by + 10, 90, 90);
+            div.style.display = 'block';
+            img.parentNode.replaceChild(div, img);
         }
 
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '900 18px "Segoe UI", system-ui, sans-serif';
-        ctx.fillText(ins.txt, bx + 145, by + 62);
-        ctx.restore();
-    });
+        // Breve pausa para asegurar el cálculo de estilos en el DOM de iOS
+        await new Promise(res => setTimeout(res, 100));
 
-    // --- FOOTER CTA Y QR ---
-    const fy = 1410, fw = 760, fh = 130, fx = 70;
-    ctx.save();
-    redondearRect(ctx, fx, fy, fw, fh, 20);
-    ctx.fillStyle = 'rgba(14, 24, 38, 0.95)';
-    ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#00e676';
-    ctx.stroke();
+        // 3. Captura JPG final de alta resolución
+        const dataUrl = await htmlToImage.toJpeg(poster, {
+            quality: 0.95,
+            pixelRatio: 2.2,
+            backgroundColor: '#090e15',
+            cacheBust: false,
+            width: 450,
+            height: 800,
+            style: {
+                position: 'static',
+                left: '0',
+                top: '0',
+                margin: '0',
+                transform: 'none',
+                opacity: '1',
+                visibility: 'visible'
+            }
+        });
 
-    if (imgQR) {
-        ctx.save();
-        redondearRect(ctx, fx + 16, fy + 15, 100, 100, 10);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-        ctx.clip();
-        ctx.drawImage(imgQR, fx + 16, fy + 15, 100, 100);
-        ctx.restore();
-    }
+        poster.remove();
 
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#00e676';
-    ctx.font = '900 26px "Segoe UI", system-ui, sans-serif';
-    ctx.fillText('¿Te animás a ganarme?', fx + 140, fy + 58);
+        const triggerDownload = () => {
+            const link = document.createElement('a');
+            link.download = `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
+        };
 
-    ctx.fillStyle = '#cbd5e1';
-    ctx.font = '600 17px "Segoe UI", system-ui, sans-serif';
-    ctx.fillText('Escaneá el QR y desafiame a un duelo 1v1 en vivo.', fx + 140, fy + 92);
-    ctx.restore();
-
-    // 3. Exportación final de imagen (compatible con WebKit iOS y Android/PC)
-    canvas.toBlob(async (blob) => {
-        if (!blob) {
-            showToast("Error al exportar la imagen.", "ph-warning-circle", "danger");
-            return;
-        }
-
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        // 4. Compartir nativo en móviles o descarga directa en PC
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
         if (esMobile && navigator.canShare) {
             try {
+                const res = await fetch(dataUrl);
+                const blob = await res.blob();
                 const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
+
                 if (navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         files: [file],
@@ -5770,17 +5643,15 @@ async function compartirCartaFUT() {
                     return;
                 }
             } catch (shareErr) {
-                console.warn("Fallo en compartir nativo, procediendo a descarga directa:", shareErr);
+                console.warn("Cancelación o fallo en compartir nativo, ejecutando descarga directa:", shareErr);
             }
         }
 
-        // Descarga directa
-        const link = document.createElement('a');
-        link.download = `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
-    }, 'image/jpeg', 0.95);
-}1
+        triggerDownload();
+
+    } catch (error) {
+        console.error("Error al exportar el póster de la carta FUT:", error);
+        if (poster && poster.parentNode) poster.remove();
+        showToast("Error al generar la imagen. Intentá de nuevo.", "ph-warning-circle", "danger");
+    }
+}
