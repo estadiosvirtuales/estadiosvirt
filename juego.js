@@ -5545,7 +5545,7 @@ async function compartirCartaFUT() {
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 1. Montaje del contenedor del póster dentro del viewport (con opacidad mínima para que iOS rasterice los PNGs)
+    // 1. Montaje del contenedor del póster 9:16 (en pantalla con opacidad mínima para que iOS no lo censure)
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
     poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 0.01; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
@@ -5610,7 +5610,7 @@ async function compartirCartaFUT() {
             img.removeAttribute('loading');
         }
 
-        // Aguardamos la decodificación en memoria
+        // Aguardamos decodificación en memoria
         await Promise.all(allImages.map(async img => {
             if (img.decode) {
                 try { await img.decode(); } catch(e) {}
