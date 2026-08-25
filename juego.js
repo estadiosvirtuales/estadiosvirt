@@ -5487,6 +5487,46 @@ async function urlABase64Seguro(url) {
     return absUrl;
 }
 
+async function urlABase64Seguro(url) {
+    if (!url || typeof url !== 'string' || url.startsWith('data:')) return url;
+    const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+
+    try {
+        const res = await fetch(absUrl);
+        if (res.ok) {
+            const blob = await res.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
+        }
+    } catch(e) {}
+
+    try {
+        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
+        const resProxy = await fetch(proxyUrl);
+        if (resProxy.ok) {
+            const blob = await resProxy.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
+        }
+    } catch(e) {}
+
+    return absUrl;
+}
+
 async function compartirCartaFUT() {
     const cardElement = document.getElementById('fut-card-main');
     if (!cardElement) {
@@ -5505,10 +5545,10 @@ async function compartirCartaFUT() {
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 1. Montaje del contenedor del póster 9:16
+    // 1. Montaje del contenedor del póster dentro del viewport (con opacidad mínima para que iOS rasterice los PNGs)
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
-    poster.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 450px; height: 800px; z-index: -1000; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
+    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 0.01; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
     poster.innerHTML = `
         <div class="poster-header" style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
@@ -5570,7 +5610,7 @@ async function compartirCartaFUT() {
             img.removeAttribute('loading');
         }
 
-        // Aguardamos decodificación en memoria
+        // Aguardamos la decodificación en memoria
         await Promise.all(allImages.map(async img => {
             if (img.decode) {
                 try { await img.decode(); } catch(e) {}
@@ -5579,7 +5619,7 @@ async function compartirCartaFUT() {
             }
         }));
 
-        await new Promise(r => setTimeout(r, 200));
+        await new Promise(r => setTimeout(r, 250));
 
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
