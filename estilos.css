@@ -4538,7 +4538,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .icon-poster-racha {
     width: 105px !important;           /* 👈 Tamaño ancho */
     height: 105px !important;          /* 👈 Tamaño alto */
-    left: -20px !important;           /* 👈 Posición horizontal */
+    left: -25px !important;           /* 👈 Posición horizontal */
     top: 50% !important;              /* 👈 Posición vertical */
     transform: translateY(-50%) !important;
 }
@@ -4547,7 +4547,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .icon-poster-victorias {
     width: 105px !important;           /* 👈 Tamaño ancho */
     height: 105px !important;          /* 👈 Tamaño alto */
-    left: -23px !important;           /* 👈 Posición horizontal */
+    left: -27px !important;           /* 👈 Posición horizontal */
     top: 50% !important;              /* 👈 Posición vertical */
     transform: translateY(-50%) !important;
 }
