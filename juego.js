@@ -5553,10 +5553,8 @@ async function compartirCartaFUT() {
                 <strong>¿Te animás a ganarme?</strong>
                 <span>Escaneá el QR y desafiame en vivo.</span>
             </div>
-            <div class="poster-cta-badge">
-                <span class="cta-badge-icon">⚔️</span>
-                <span class="cta-badge-title">1v1</span>
-                <span class="cta-badge-sub">EN VIVO</span>
+            <div class="poster-cta-duel">
+                <img src="liga-icon-historial.png" alt="Duelo 1v1" class="poster-duel-img">
             </div>
         </div>
     `;

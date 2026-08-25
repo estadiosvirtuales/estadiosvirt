@@ -4579,7 +4579,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
     background: linear-gradient(135deg, rgba(14, 24, 38, 0.95) 0%, rgba(8, 14, 24, 0.98) 100%);
     border: 1.5px solid var(--accent-color);
@@ -4602,63 +4602,56 @@ html[data-theme="light"] .xp-bar-big-fill {
 .poster-cta-text {
     display: flex;
     flex-direction: column;
-    text-align: left;
-    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 3px;
     flex: 1;
     min-width: 0;
+    padding: 0 4px;
 }
 
 .poster-cta-text strong {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 900;
     color: var(--accent-color);
-    letter-spacing: -0.3px;
+    letter-spacing: -0.2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
 }
 
 .poster-cta-text span {
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     color: #cbd5e1;
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
 }
 
-.poster-cta-badge {
+.poster-cta-duel {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(22, 34, 52, 0.95) 0%, rgba(10, 18, 28, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 230, 118, 0.08);
-    border: 1px solid rgba(0, 230, 118, 0.35);
-    border-radius: 10px;
-    padding: 4px 10px;
     flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(0, 230, 118, 0.15);
-    line-height: 1.1;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 }
 
-.cta-badge-icon {
-    font-size: 0.9rem;
-    line-height: 1;
-    margin-bottom: 2px;
-}
-
-.cta-badge-title {
-    font-size: 0.72rem;
-    font-weight: 900;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-}
-
-.cta-badge-sub {
-    font-size: 0.50rem;
-    font-weight: 800;
-    color: var(--accent-color);
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+.poster-duel-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 119, 0.5));
 }
