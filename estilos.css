@@ -4503,18 +4503,18 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 2️⃣ Ícono de Racha (Fuego) */
 .icon-poster-racha {
-    width: 68px !important;           /* 👈 Tamaño ancho */
-    height: 68px !important;          /* 👈 Tamaño alto */
-    left: -20px !important;           /* 👈 Posición horizontal */
+    width: 85px !important;           /* 👈 Tamaño ancho */
+    height: 85px !important;          /* 👈 Tamaño alto */
+    left: -15px !important;           /* 👈 Posición horizontal */
     top: 50% !important;              /* 👈 Posición vertical */
     transform: translateY(-50%) !important;
 }
 
 /* 3️⃣ Ícono de Partidos Ganados (Trofeo) */
 .icon-poster-victorias {
-    width: 70px !important;           /* 👈 Tamaño ancho */
-    height: 70px !important;          /* 👈 Tamaño alto */
-    left: -20px !important;           /* 👈 Posición horizontal */
+    width: 85px !important;           /* 👈 Tamaño ancho */
+    height: 85px !important;          /* 👈 Tamaño alto */
+    left: -18px !important;           /* 👈 Posición horizontal */
     top: 50% !important;              /* 👈 Posición vertical */
     transform: translateY(-50%) !important;
 }
