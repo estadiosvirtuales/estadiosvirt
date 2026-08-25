@@ -5547,11 +5547,16 @@ async function compartirCartaFUT() {
             </div>
         </div>
 
-        <div class="poster-footer-cta" style="display:flex; align-items:center; gap:12px; width:100%; background:#0e1826; border-radius:16px; padding:10px 14px;">
-            <img src="${qrApiUrl}" style="width:60px; height:60px; background:#fff; padding:2px; border-radius:6px;">
-            <div style="display:flex; flex-direction:column; text-align:left;">
-                <strong style="font-size:0.88rem; color:#00e676;">¿Te animás a ganarme?</strong>
-                <span style="font-size:0.68rem; color:#cbd5e1;">Escaneá el QR y desafiame en vivo.</span>
+        <div class="poster-footer-cta">
+            <img class="poster-qr" src="${qrApiUrl}" alt="QR">
+            <div class="poster-cta-text">
+                <strong>¿Te animás a ganarme?</strong>
+                <span>Escaneá el QR y desafiame en vivo.</span>
+            </div>
+            <div class="poster-cta-badge">
+                <span class="cta-badge-icon">⚔️</span>
+                <span class="cta-badge-title">1v1</span>
+                <span class="cta-badge-sub">EN VIVO</span>
             </div>
         </div>
     `;
