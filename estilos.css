@@ -4453,31 +4453,20 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 .poster-badge {
     flex: 1;
-    background: linear-gradient(145deg, rgba(22, 34, 52, 0.95) 0%, rgba(10, 18, 28, 0.98) 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.22);
+    background: linear-gradient(175deg, #172337 0%, #0c1422 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.35);
     border-radius: 16px;
-    padding: 0 8px 0 44px;
-    min-height: 62px;
-    height: 62px;
+    padding: 0 6px 0 46px;
+    min-height: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.88rem;
-    font-weight: 900;
-    color: #ffffff;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16);
     box-sizing: border-box;
     position: relative;
     overflow: visible !important;
-}
-
-.poster-badge span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    letter-spacing: -0.2px;
-    position: relative;
-    z-index: 2;
 }
 
 .poster-badge-text-group {
@@ -4485,7 +4474,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    line-height: 1.15;
+    gap: 3px;
     position: relative;
     z-index: 2;
     overflow: hidden;
@@ -4493,24 +4482,53 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .poster-badge-title {
-    font-size: 0.80rem;
+    font-size: 0.78rem;
     font-weight: 900;
     color: #ffffff;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     letter-spacing: -0.2px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    line-height: 1.1;
 }
 
 .poster-badge-sub {
-    font-size: 0.60rem;
-    font-weight: 800;
-    color: var(--accent-color);
-    letter-spacing: 0.6px;
+    font-size: 0.54rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 1.5px 6px;
+    border-radius: 5px;
+    line-height: 1.2;
+}
+
+/* 🟢 Tag Nivel (Verde Neón) */
+.poster-badge-sub.sub-lvl {
+    color: #00e676;
+    background: rgba(0, 230, 118, 0.14);
+    border: 1px solid rgba(0, 230, 118, 0.35);
+    box-shadow: 0 0 6px rgba(0, 230, 118, 0.2);
+}
+
+/* 🔥 Tag Racha (Naranja Fuego) */
+.poster-badge-sub.sub-streak {
+    color: #ff9f05;
+    background: rgba(255, 159, 5, 0.14);
+    border: 1px solid rgba(255, 159, 5, 0.35);
+    box-shadow: 0 0 6px rgba(255, 159, 5, 0.2);
+}
+
+/* 🏆 Tag Victorias (Dorado Copa) */
+.poster-badge-sub.sub-wins {
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.14);
+    border: 1px solid rgba(251, 191, 36, 0.35);
+    box-shadow: 0 0 6px rgba(251, 191, 36, 0.2);
 }
 
 .poster-badge-icon {
