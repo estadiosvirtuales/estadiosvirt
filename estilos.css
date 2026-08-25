@@ -4489,34 +4489,34 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 /* ========================================================
-   🎛️ CONTROLES INDEPENDIENTES DE CADA ÍCONO
+   🎛️ CONTROLES INDEPENDIENTES DE CADA ÍCONO DEL PÓSTER
    ======================================================== */
 
-/* 1️⃣ Ícono de Nivel / Rango (Goleador) */
+/* 1️⃣ Ícono de Nivel / Rango */
 .icon-poster-rango {
-    width: 95px !important;
-    height: 95px !important;
-    left: -24px;
-    top: 50%;
-    transform: translateY(-50%);
+    width: 85px !important;           /* 👈 Tamaño ancho */
+    height: 85px !important;          /* 👈 Tamaño alto */
+    left: -18px !important;           /* 👈 Posición horizontal (más negativo = más a la izquierda) */
+    top: 50% !important;              /* 👈 Posición vertical */
+    transform: translateY(-50%) !important;
 }
 
-/* 2️⃣ Ícono de Racha (Llama de fuego) */
+/* 2️⃣ Ícono de Racha (Fuego) */
 .icon-poster-racha {
-    width: 115px !important;
-    height: 115px !important;
-    left: -38px;
-    top: 50%;
-    transform: translateY(-50%);
+    width: 68px !important;           /* 👈 Tamaño ancho */
+    height: 68px !important;          /* 👈 Tamaño alto */
+    left: -20px !important;           /* 👈 Posición horizontal */
+    top: 50% !important;              /* 👈 Posición vertical */
+    transform: translateY(-50%) !important;
 }
 
-/* 3️⃣ Ícono de Partidos Ganados (Copa) */
+/* 3️⃣ Ícono de Partidos Ganados (Trofeo) */
 .icon-poster-victorias {
-    width: 120px !important;
-    height: 120px !important;
-    left: -35px;
-    top: 50%;
-    transform: translateY(-50%);
+    width: 70px !important;           /* 👈 Tamaño ancho */
+    height: 70px !important;          /* 👈 Tamaño alto */
+    left: -20px !important;           /* 👈 Posición horizontal */
+    top: 50% !important;              /* 👈 Posición vertical */
+    transform: translateY(-50%) !important;
 }
 
 .poster-footer-cta {

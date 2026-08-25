@@ -5523,17 +5523,17 @@ async function compartirCartaFUT() {
             <div id="poster-card-clone-container" style="z-index:5;"></div>
         </div>
 
-        <div class="poster-stats-badges" style="display:flex; gap:8px; width:100%; justify-content:space-between; margin:4px 0 6px;">
-            <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
-                <img src="${nivel.iconUrl}" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
+        <div class="poster-stats-badges">
+            <div class="poster-badge">
+                <img src="${nivel.iconUrl}" class="poster-badge-icon icon-poster-rango" alt="Nivel">
                 <span>${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
             </div>
-            <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
-                <img src="fuego.png" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
+            <div class="poster-badge">
+                <img src="fuego.png" class="poster-badge-icon icon-poster-racha" alt="Racha">
                 <span>${racha} Días</span>
             </div>
-            <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
-                <img src="trofeo.png" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
+            <div class="poster-badge">
+                <img src="trofeo.png" class="poster-badge-icon icon-poster-victorias" alt="Victorias">
                 <span>${victorias} PG</span>
             </div>
         </div>
