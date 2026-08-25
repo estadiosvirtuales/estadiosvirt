@@ -4495,16 +4495,21 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .poster-badge-sub {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     font-size: 0.54rem;
     font-weight: 900;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 1.5px 6px;
+    height: 16px;
+    padding: 0 7px;
     border-radius: 5px;
-    line-height: 1.2;
+    box-sizing: border-box;
 }
 
 /* 🟢 Tag Nivel (Verde Neón) */
