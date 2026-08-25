@@ -5447,6 +5447,46 @@ function abrirModalPrivacyDirecto() {
         if (btn) btn.disabled = false;
     }
 }
+async function urlABase64Seguro(url) {
+    if (!url || typeof url !== 'string' || url.startsWith('data:')) return url;
+    const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+
+    try {
+        const res = await fetch(absUrl);
+        if (res.ok) {
+            const blob = await res.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
+        }
+    } catch(e) {}
+
+    try {
+        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
+        const resProxy = await fetch(proxyUrl);
+        if (resProxy.ok) {
+            const blob = await resProxy.blob();
+            const dataUri = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(blob);
+            });
+            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                return dataUri;
+            }
+        }
+    } catch(e) {}
+
+    return absUrl;
+}
+
 async function compartirCartaFUT() {
     const cardElement = document.getElementById('fut-card-main');
     if (!cardElement) {
@@ -5461,265 +5501,87 @@ async function compartirCartaFUT() {
     const racha = userStats.rachaActual || 1;
     const victorias = userStats.partidasGanadas || 0;
     const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name.split(' ')[0] : 'Jugador');
-    const userPos = getPref('ev_user_pos', 'DT');
-    let userTheme = getPref('ev_card_theme', 'arg');
-    const validThemes = TEMAS_LISTA.map(t => t.k);
-    if (!validThemes.includes(userTheme)) userTheme = 'arg';
-
-    const avatarImgName = getPref('ev_avatar_hair', '1.png');
-    const avatarLogoId = getPref('ev_avatar_logo', 'ev');
-    const clubLogoUrl = obtenerUrlEscudo(avatarLogoId);
 
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // Función auxiliar interna de carga limpia para evitar bloqueos CORS en canvas
-    const loadImage = (src) => new Promise((resolve) => {
-        if (!src) return resolve(null);
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = () => {
-            const proxy = `https://wsrv.nl/?url=${encodeURIComponent(src)}&output=png`;
-            const pImg = new Image();
-            pImg.crossOrigin = 'anonymous';
-            pImg.onload = () => resolve(pImg);
-            pImg.onerror = () => resolve(null);
-            pImg.src = proxy;
-        };
-        img.src = src.startsWith('http') ? src : new URL(src, window.location.href).href;
-    });
+    // 1. Montaje del contenedor del póster 9:16
+    const poster = document.createElement('div');
+    poster.id = 'poster-export-container';
+    poster.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 450px; height: 800px; z-index: -1000; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
-    // 1. Precarga paralela de todas las imágenes gráficas
-    const [imgLogo, imgClub, imgAvatar, imgRango, imgRacha, imgTrofeo, imgQR] = await Promise.all([
-        loadImage('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png'),
-        loadImage(clubLogoUrl),
-        loadImage(avatarImgName.includes('.') ? avatarImgName : avatarImgName + '.png'),
-        loadImage(nivel.iconUrl),
-        loadImage('fuego.png'),
-        loadImage('trofeo.png'),
-        loadImage(qrUrl)
-    ]);
+    poster.innerHTML = `
+        <div class="poster-header" style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
+            <img class="poster-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" style="width:38px; height:38px; border-radius:10px; border:1.5px solid var(--accent-color); object-fit:cover;">
+            <div class="poster-header-text" style="display:flex; flex-direction:column; text-align:left;">
+                <div class="poster-title" style="font-size:1.15rem; font-weight:900; letter-spacing:1.5px; color:#ffffff; text-transform:uppercase;">Estadios Virtuales</div>
+                <div class="poster-subtitle" style="font-size:0.65rem; font-weight:800; letter-spacing:2px; color:var(--accent-color); text-transform:uppercase;">El mundo desde el aire</div>
+            </div>
+        </div>
 
-    // 2. Detección estricta de dispositivo
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || isIOS;
+        <div class="poster-card-wrapper" style="position:relative; display:flex; justify-content:center; align-items:center; margin:6px 0; width:100%; height:455px;">
+            <div id="poster-card-clone-container" style="z-index:5;"></div>
+        </div>
 
-    let dataUrl = '';
+        <div class="poster-stats-badges" style="display:flex; gap:8px; width:100%; justify-content:space-between; margin:4px 0 6px;">
+            <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
+                <img src="${nivel.iconUrl}" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
+                <span>${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
+            </div>
+            <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
+                <img src="fuego.png" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
+                <span>${racha} Días</span>
+            </div>
+            <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
+                <img src="trofeo.png" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
+                <span>${victorias} PG</span>
+            </div>
+        </div>
 
-    if (isIOS) {
-        // ==========================================================
-        // 🍏 MOTOR NATIVO CANVAS 2D EXCLUSIVO PARA iOS (CERO FALLOS DE PNG)
-        // ==========================================================
-        const canvas = document.createElement('canvas');
-        canvas.width = 900;
-        canvas.height = 1600;
-        const ctx = canvas.getContext('2d');
+        <div class="poster-footer-cta" style="display:flex; align-items:center; gap:12px; width:100%; background:#0e1826; border-radius:16px; padding:10px 14px;">
+            <img src="${qrApiUrl}" style="width:60px; height:60px; background:#fff; padding:2px; border-radius:6px;">
+            <div style="display:flex; flex-direction:column; text-align:left;">
+                <strong style="font-size:0.88rem; color:#00e676;">¿Te animás a ganarme?</strong>
+                <span style="font-size:0.68rem; color:#cbd5e1;">Escaneá el QR y desafiame en vivo.</span>
+            </div>
+        </div>
+    `;
 
-        // Fondo y resplandores
-        ctx.fillStyle = '#090e15';
-        ctx.fillRect(0, 0, 900, 1600);
+    document.body.appendChild(poster);
 
-        const glowV = ctx.createRadialGradient(450, 480, 20, 450, 480, 450);
-        glowV.addColorStop(0, 'rgba(0, 230, 118, 0.28)');
-        glowV.addColorStop(1, 'transparent');
-        ctx.fillStyle = glowV;
-        ctx.fillRect(0, 0, 900, 1600);
+    // Clonamos la carta idéntica al DOM visual
+    const cardClone = cardElement.cloneNode(true);
+    cardClone.id = "fut-card-clone";
+    cardClone.style.transform = 'scale(1.16)';
+    cardClone.style.transformOrigin = 'center center';
+    cardClone.style.margin = '0';
+    poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
 
-        const glowA = ctx.createRadialGradient(450, 1350, 20, 450, 1350, 450);
-        glowA.addColorStop(0, 'rgba(41, 121, 255, 0.20)');
-        glowA.addColorStop(1, 'transparent');
-        ctx.fillStyle = glowA;
-        ctx.fillRect(0, 0, 900, 1600);
-
-        // Cabecera
-        if (imgLogo) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.roundRect(270, 48, 54, 54, 12);
-            ctx.clip();
-            ctx.drawImage(imgLogo, 270, 48, 54, 54);
-            ctx.restore();
-        }
-        ctx.textAlign = 'left';
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '900 26px sans-serif';
-        ctx.fillText('ESTADIOS VIRTUALES', 340, 74);
-        ctx.fillStyle = '#00e676';
-        ctx.font = '800 14px sans-serif';
-        ctx.fillText('EL MUNDO DESDE EL AIRE', 340, 96);
-
-        // Carta FUT central
-        const cx = 195, cy = 135, cw = 510, ch = 780;
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(cx + 50, cy);
-        ctx.quadraticCurveTo(cx + cw / 2, cy - 8, cx + cw - 50, cy);
-        ctx.quadraticCurveTo(cx + cw, cy + 10, cx + cw, cy + 55);
-        ctx.lineTo(cx + cw, cy + ch - 140);
-        ctx.quadraticCurveTo(cx + cw, cy + ch - 40, cx + cw / 2, cy + ch);
-        ctx.quadraticCurveTo(cx, cy + ch - 40, cx, cy + ch - 140);
-        ctx.lineTo(cx, cy + 55);
-        ctx.quadraticCurveTo(cx, cy + 10, cx + 50, cy);
-        ctx.closePath();
-
-        const cardGrad = ctx.createLinearGradient(cx, cy, cx + cw, cy + ch);
-        let cardTextColor = '#000000';
-        switch (userTheme) {
-            case 'arg': cardGrad.addColorStop(0, '#74acdf'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#74acdf'); cardTextColor = '#000'; break;
-            case 'bra': cardGrad.addColorStop(0, '#009c3b'); cardGrad.addColorStop(0.5, '#ffdf00'); cardGrad.addColorStop(1, '#002776'); cardTextColor = '#fff'; break;
-            case 'esp': cardGrad.addColorStop(0, '#aa151b'); cardGrad.addColorStop(0.5, '#f1bf00'); cardGrad.addColorStop(1, '#aa151b'); cardTextColor = '#000'; break;
-            case 'ita': cardGrad.addColorStop(0, '#009246'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#ce2b37'); cardTextColor = '#000'; break;
-            case 'fra': cardGrad.addColorStop(0, '#002395'); cardGrad.addColorStop(0.5, '#ffffff'); cardGrad.addColorStop(1, '#ed2939'); cardTextColor = '#000'; break;
-            case 'ger': cardGrad.addColorStop(0, '#000000'); cardGrad.addColorStop(0.5, '#dd0000'); cardGrad.addColorStop(1, '#ffce00'); cardTextColor = '#fff'; break;
-            default: cardGrad.addColorStop(0, '#1c2838'); cardGrad.addColorStop(1, '#0f1724'); cardTextColor = '#fff'; break;
-        }
-        ctx.fillStyle = cardGrad;
-        ctx.fill();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.stroke();
-        ctx.clip();
-
-        ctx.fillStyle = cardTextColor;
-        ctx.textAlign = 'center';
-        ctx.font = '900 68px Arial, sans-serif';
-        ctx.fillText(String(nivel.ovr), cx + 90, cy + 130);
-
-        ctx.font = '900 28px Arial, sans-serif';
-        ctx.fillText(userPos, cx + 90, cy + 175);
-
-        if (imgClub) ctx.drawImage(imgClub, cx + 55, cy + 195, 70, 70);
-        if (imgAvatar) ctx.drawImage(imgAvatar, cx + 160, cy + 40, 340, 340);
-
-        ctx.fillStyle = cardTextColor;
-        ctx.font = '900 36px Arial, sans-serif';
-        ctx.fillText(customNick.toUpperCase(), cx + cw / 2, cy + 430);
-
-        ctx.strokeStyle = cardTextColor === '#fff' ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.3)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(cx + 40, cy + 450);
-        ctx.lineTo(cx + cw - 40, cy + 450);
-        ctx.stroke();
-
-        const xpTexto = userStats.xpTotal > 999 ? (userStats.xpTotal / 1000).toFixed(1) + 'K' : userStats.xpTotal;
-        ctx.font = '900 28px Arial, sans-serif';
-        ctx.fillText(`${userStats.votosRealizados || 0} VOT`, cx + 140, cy + 505);
-        ctx.fillText(`${userStats.triviasVistas || 0} TRV`, cx + 370, cy + 505);
-        ctx.fillText(`${userStats.partidasJugadas || 0} PJ`, cx + 140, cy + 560);
-        ctx.fillText(`${userStats.partidasGanadas || 0} PG`, cx + 370, cy + 560);
-        ctx.fillText(`${xpTexto} XP`, cx + cw / 2, cy + 625);
-        ctx.restore();
-
-        // Insignias inferiores
-        const by = 960, bw = 240, bh = 110;
-        const insignias = [
-            { img: imgRango, txt: nivel.nombre.replace(/\s+Lvl\s+\d+/i, '') },
-            { img: imgRacha, txt: `${racha} Días racha` },
-            { img: imgTrofeo, txt: `${victorias} PG` }
-        ];
-
-        insignias.forEach((ins, i) => {
-            const bx = 70 + i * 260;
-            ctx.save();
-            ctx.beginPath();
-            ctx.roundRect(bx, by, bw, bh, 18);
-            ctx.fillStyle = 'rgba(18, 28, 44, 0.95)';
-            ctx.fill();
-            ctx.lineWidth = 1.5;
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-            ctx.stroke();
-            if (ins.img) ctx.drawImage(ins.img, bx - 15, by + 10, 90, 90);
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '900 18px sans-serif';
-            ctx.fillText(ins.txt, bx + 145, by + 62);
-            ctx.restore();
-        });
-
-        // Footer QR y CTA
-        const fy = 1410, fw = 760, fh = 130, fx = 70;
-        ctx.save();
-        ctx.beginPath();
-        ctx.roundRect(fx, fy, fw, fh, 20);
-        ctx.fillStyle = 'rgba(14, 24, 38, 0.95)';
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#00e676';
-        ctx.stroke();
-
-        if (imgQR) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.roundRect(fx + 16, fy + 15, 100, 100, 10);
-            ctx.fillStyle = '#ffffff';
-            ctx.fill();
-            ctx.clip();
-            ctx.drawImage(imgQR, fx + 16, fy + 15, 100, 100);
-            ctx.restore();
+    try {
+        // Conversión a Base64 de todas las imágenes dentro del póster
+        const allImages = Array.from(poster.querySelectorAll('img'));
+        for (const img of allImages) {
+            const b64 = await urlABase64Seguro(img.src);
+            if (b64 && b64.startsWith('data:')) {
+                img.src = b64;
+                img.removeAttribute('srcset');
+            }
+            img.removeAttribute('crossorigin');
+            img.removeAttribute('loading');
         }
 
-        ctx.textAlign = 'left';
-        ctx.fillStyle = '#00e676';
-        ctx.font = '900 26px sans-serif';
-        ctx.fillText('¿Te animás a ganarme?', fx + 140, fy + 58);
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = '600 17px sans-serif';
-        ctx.fillText('Escaneá el QR y desafiame a un duelo 1v1 en vivo.', fx + 140, fy + 92);
-        ctx.restore();
+        // Aguardamos decodificación en memoria
+        await Promise.all(allImages.map(async img => {
+            if (img.decode) {
+                try { await img.decode(); } catch(e) {}
+            } else if (!img.complete) {
+                await new Promise(res => { img.onload = res; img.onerror = res; });
+            }
+        }));
 
-        dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+        await new Promise(r => setTimeout(r, 200));
 
-    } else {
-        // ==========================================================
-        // 💻 MOTOR ORIGINAL HTML-TO-IMAGE PARA PC Y ANDROID
-        // ==========================================================
-        const poster = document.createElement('div');
-        poster.id = 'poster-export-container';
-        poster.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 450px; height: 800px; z-index: -1000; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
-        
-        poster.innerHTML = `
-            <div class="poster-header" style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
-                <img class="poster-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" style="width:38px; height:38px; border-radius:10px; border:1.5px solid var(--accent-color); object-fit:cover;">
-                <div class="poster-header-text" style="display:flex; flex-direction:column; text-align:left;">
-                    <div class="poster-title" style="font-size:1.15rem; font-weight:900; letter-spacing:1.5px; color:#ffffff; text-transform:uppercase;">Estadios Virtuales</div>
-                    <div class="poster-subtitle" style="font-size:0.65rem; font-weight:800; letter-spacing:2px; color:var(--accent-color); text-transform:uppercase;">El mundo desde el aire</div>
-                </div>
-            </div>
-            <div class="poster-card-wrapper" style="position:relative; display:flex; justify-content:center; align-items:center; margin:6px 0; width:100%; height:455px;">
-                <div id="poster-card-clone-container" style="z-index:5;"></div>
-            </div>
-            <div class="poster-stats-badges" style="display:flex; gap:8px; width:100%; justify-content:space-between; margin:4px 0 6px;">
-                <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
-                    <img src="${nivel.iconUrl}" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
-                    <span>${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
-                </div>
-                <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
-                    <img src="fuego.png" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
-                    <span>${racha} Días</span>
-                </div>
-                <div class="poster-badge" style="flex:1; background:#162234; border-radius:16px; padding:0 8px 0 44px; height:62px; display:flex; align-items:center; font-size:0.8rem; font-weight:900; color:#fff; position:relative;">
-                    <img src="trofeo.png" style="position:absolute; width:55px; left:-12px; top:50%; transform:translateY(-50%);">
-                    <span>${victorias} PG</span>
-                </div>
-            </div>
-            <div class="poster-footer-cta" style="display:flex; align-items:center; gap:12px; width:100%; background:#0e1826; border-radius:16px; padding:10px 14px;">
-                <img src="${qrApiUrl}" style="width:60px; height:60px; background:#fff; padding:2px; border-radius:6px;">
-                <div style="display:flex; flex-direction:column; text-align:left;">
-                    <strong style="font-size:0.88rem; color:#00e676;">¿Te animás a ganarme?</strong>
-                    <span style="font-size:0.68rem; color:#cbd5e1;">Escaneá el QR y desafiame en vivo.</span>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(poster);
-        const cardClone = cardElement.cloneNode(true);
-        cardClone.style.transform = 'scale(1.16)';
-        cardClone.style.transformOrigin = 'center center';
-        poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
-
-        dataUrl = await htmlToImage.toJpeg(poster, {
+        const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
@@ -5728,31 +5590,44 @@ async function compartirCartaFUT() {
         });
 
         poster.remove();
-    }
 
-    // 6. Disparador de Compartir Nativo o Descarga
-    if (esMobile && navigator.canShare) {
-        try {
-            const res = await fetch(dataUrl);
-            const blob = await res.blob();
-            const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
-            if (navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    files: [file],
-                    title: 'Mi Carta en Estadios Virtuales ⚽',
-                    text: `🏆 ¡Mirá mi carta de Estadios Virtuales! ¿Podés ganarme en un 1v1? 🌍⚽`
-                });
-                showToast("¡Listo para compartir!", "ph-share-network", "success");
-                return;
+        const triggerDownload = () => {
+            const link = document.createElement('a');
+            link.download = `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
+        };
+
+        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (esMobile && navigator.canShare) {
+            try {
+                const res = await fetch(dataUrl);
+                const blob = await res.blob();
+                const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
+
+                if (navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Mi Carta en Estadios Virtuales ⚽',
+                        text: `🏆 ¡Mirá mi carta de Estadios Virtuales! ¿Podés ganarme en un 1v1? 🌍⚽`
+                    });
+                    showToast("¡Listo para compartir!", "ph-share-network", "success");
+                    return;
+                }
+            } catch (shareErr) {
+                console.warn("Cancelación o desvío de compartir nativo, procediendo a descarga directa:", shareErr);
             }
-        } catch (e) {}
-    }
+        }
 
-    const link = document.createElement('a');
-    link.download = `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
+        triggerDownload();
+
+    } catch (error) {
+        console.error("Error al exportar el póster de la carta FUT:", error);
+        if (poster && poster.parentNode) poster.remove();
+        showToast("Error al generar la imagen. Intentá de nuevo.", "ph-warning-circle", "danger");
+    }
 }
