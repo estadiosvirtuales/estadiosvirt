@@ -5526,7 +5526,10 @@ async function compartirCartaFUT() {
         <div class="poster-stats-badges">
             <div class="poster-badge">
                 <img src="${nivel.iconUrl}" class="poster-badge-icon icon-poster-rango" alt="Nivel">
-                <span>${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
+                <div class="poster-badge-text-group">
+                    <span class="poster-badge-title">${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
+                    <span class="poster-badge-sub">Nivel ${nivelIdx}</span>
+                </div>
             </div>
             <div class="poster-badge">
                 <img src="fuego.png" class="poster-badge-icon icon-poster-racha" alt="Racha">

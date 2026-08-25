@@ -4480,6 +4480,39 @@ html[data-theme="light"] .xp-bar-big-fill {
     z-index: 2;
 }
 
+.poster-badge-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    line-height: 1.15;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.poster-badge-title {
+    font-size: 0.80rem;
+    font-weight: 900;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.2px;
+}
+
+.poster-badge-sub {
+    font-size: 0.60rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .poster-badge-icon {
     position: absolute !important;
     object-fit: contain;
