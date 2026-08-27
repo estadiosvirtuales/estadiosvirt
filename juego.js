@@ -3825,8 +3825,8 @@ const AVATARES_LISTA = [
     { id: '51.png', label: 'Jugador 51' }, { id: '52.png', label: 'Jugador 52' }, { id: '53.png', label: 'Jugador 53' },
     { id: '54.png', label: 'Jugador 54' }, { id: '55.png', label: 'Jugador 55' }, { id: '56.png', label: 'Jugador 56' }, 
     { id: '57.png', label: 'Jugador 57' }, { id: '58.png', label: 'Jugador 58' }, { id: '59.png', label: 'Jugador 59' },
-    { id: '59.png', label: 'Jugador 59' }, { id: '60.png', label: 'Jugador 60' }, { id: '61.png', label: 'Jugador 61' },
-    { id: '62.png', label: 'Jugador 62' }, { id: '63.png', label: 'Jugador 63' }
+    { id: '60.png', label: 'Jugador 60' }, { id: '61.png', label: 'Jugador 61' }, { id: '62.png', label: 'Jugador 62' },
+    { id: '63.png', label: 'Jugador 63' }
 ];
 
 function obtenerNombreAvatar(id) {
