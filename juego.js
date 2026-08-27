@@ -3857,12 +3857,107 @@ const POSICIONES_NOMBRES = {
     'DC': 'Delantero', 'DT': 'Director Técnico'
 };
 
+const FORMACIONES_TACTICAS = {
+    '4-3-3': {
+        nombre: '4-3-3',
+        posiciones: [
+            { pos: 'DC', top: '14%', left: '50%' },
+            { pos: 'EI', top: '22%', left: '18%' },
+            { pos: 'ED', top: '22%', left: '82%' },
+            { pos: 'MC', top: '48%', left: '30%' },
+            { pos: 'MCD', top: '58%', left: '50%' },
+            { pos: 'MC', top: '48%', left: '70%' },
+            { pos: 'LI', top: '76%', left: '18%' },
+            { pos: 'DFC', top: '78%', left: '38%' },
+            { pos: 'DFC', top: '78%', left: '62%' },
+            { pos: 'LD', top: '76%', left: '82%' },
+            { pos: 'POR', top: '92%', left: '50%' }
+        ]
+    },
+    '4-4-2': {
+        nombre: '4-4-2',
+        posiciones: [
+            { pos: 'DC', top: '16%', left: '36%' },
+            { pos: 'DC', top: '16%', left: '64%' },
+            { pos: 'MI', top: '46%', left: '18%' },
+            { pos: 'MC', top: '50%', left: '38%' },
+            { pos: 'MC', top: '50%', left: '62%' },
+            { pos: 'MD', top: '46%', left: '82%' },
+            { pos: 'LI', top: '76%', left: '18%' },
+            { pos: 'DFC', top: '78%', left: '38%' },
+            { pos: 'DFC', top: '78%', left: '62%' },
+            { pos: 'LD', top: '76%', left: '82%' },
+            { pos: 'POR', top: '92%', left: '50%' }
+        ]
+    },
+    '4-2-3-1': {
+        nombre: '4-2-3-1',
+        posiciones: [
+            { pos: 'DC', top: '14%', left: '50%' },
+            { pos: 'MI', top: '34%', left: '18%' },
+            { pos: 'MCO', top: '32%', left: '50%' },
+            { pos: 'MD', top: '34%', left: '82%' },
+            { pos: 'MCD', top: '54%', left: '36%' },
+            { pos: 'MCD', top: '54%', left: '64%' },
+            { pos: 'LI', top: '76%', left: '18%' },
+            { pos: 'DFC', top: '78%', left: '38%' },
+            { pos: 'DFC', top: '78%', left: '62%' },
+            { pos: 'LD', top: '76%', left: '82%' },
+            { pos: 'POR', top: '92%', left: '50%' }
+        ]
+    },
+    '3-5-2': {
+        nombre: '3-5-2',
+        posiciones: [
+            { pos: 'DC', top: '15%', left: '38%' },
+            { pos: 'SD', top: '20%', left: '62%' },
+            { pos: 'MI', top: '45%', left: '16%' },
+            { pos: 'MC', top: '48%', left: '36%' },
+            { pos: 'MCD', top: '58%', left: '50%' },
+            { pos: 'MC', top: '48%', left: '64%' },
+            { pos: 'MD', top: '45%', left: '84%' },
+            { pos: 'DFC', top: '78%', left: '26%' },
+            { pos: 'DFC', top: '80%', left: '50%' },
+            { pos: 'DFC', top: '78%', left: '74%' },
+            { pos: 'POR', top: '92%', left: '50%' }
+        ]
+    }
+};
+
+let formacionTacticaActual = '4-3-3';
+
+window.cambiarFormacionTactica = function(fKey) {
+    if (!FORMACIONES_TACTICAS[fKey]) return;
+    formacionTacticaActual = fKey;
+    renderizarCanchaTactica();
+};
+
+window.renderizarCanchaTactica = function() {
+    const container = document.getElementById('pitch-tactical-nodes');
+    const tabs = document.querySelectorAll('.pitch-form-tab');
+    if (!container) return;
+
+    const f = FORMACIONES_TACTICAS[formacionTacticaActual] || FORMACIONES_TACTICAS['4-3-3'];
+    const posActual = document.getElementById('avatar-pos-input')?.value || 'DC';
+
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.form === formacionTacticaActual));
+
+    container.innerHTML = f.posiciones.map(item => {
+        const isSel = item.pos === posActual;
+        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}')">${item.pos}</button>`;
+    }).join('');
+
+    const dtBtn = document.querySelector('.dt-node');
+    if (dtBtn) dtBtn.classList.toggle('active', posActual === 'DT');
+};
+
 window.togglePitchPicker = function(el) {
     const pitchContainer = document.getElementById('pitch-picker-dropdown');
     const chev = el ? el.querySelector('.pitch-chevron') : document.querySelector('.pitch-chevron');
     if (pitchContainer) {
         const isOpen = pitchContainer.classList.toggle('open');
         if (chev) chev.className = isOpen ? 'ph-bold ph-caret-up pitch-chevron' : 'ph-bold ph-caret-down pitch-chevron';
+        if (isOpen) renderizarCanchaTactica();
     }
 };
 
@@ -3874,9 +3969,21 @@ window.seleccionarPosicionCancha = function(pos) {
     if (input) input.value = pos;
     if (label) label.textContent = textoCompleto;
     if (headerPreview) headerPreview.textContent = pos;
-    document.querySelectorAll('.pitch-pos-node').forEach(node => {
-        node.classList.toggle('active', node.dataset.pos === pos);
-    });
+
+    if (pos !== 'DT') {
+        const actual = FORMACIONES_TACTICAS[formacionTacticaActual];
+        const estaEnActual = actual && actual.posiciones.some(p => p.pos === pos);
+        if (!estaEnActual) {
+            for (let k in FORMACIONES_TACTICAS) {
+                if (FORMACIONES_TACTICAS[k].posiciones.some(p => p.pos === pos)) {
+                    formacionTacticaActual = k;
+                    break;
+                }
+            }
+        }
+    }
+
+    renderizarCanchaTactica();
     actualizarAvatarLive();
 };
 
@@ -4185,30 +4292,19 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                     </div>
                     <div class="pitch-picker-container" id="pitch-picker-dropdown">
+                        <div class="pitch-formations-bar">
+                            <button type="button" class="pitch-form-tab active" data-form="4-3-3" onclick="cambiarFormacionTactica('4-3-3')">4-3-3</button>
+                            <button type="button" class="pitch-form-tab" data-form="4-4-2" onclick="cambiarFormacionTactica('4-4-2')">4-4-2</button>
+                            <button type="button" class="pitch-form-tab" data-form="4-2-3-1" onclick="cambiarFormacionTactica('4-2-3-1')">4-2-3-1</button>
+                            <button type="button" class="pitch-form-tab" data-form="3-5-2" onclick="cambiarFormacionTactica('3-5-2')">3-5-2</button>
+                        </div>
+
                         <div class="pitch-tactical-field">
                             <div class="pitch-line-center"></div>
                             <div class="pitch-circle-center"></div>
                             <div class="pitch-box-top"></div>
                             <div class="pitch-box-bottom"></div>
-
-                            <!-- Ataque bien distribuido -->
-                            <button type="button" class="pitch-pos-node" data-pos="DC" style="top: 8%; left: 50%;" onclick="seleccionarPosicionCancha('DC')">DC</button>
-                            <button type="button" class="pitch-pos-node" data-pos="EI" style="top: 14%; left: 16%;" onclick="seleccionarPosicionCancha('EI')">EI</button>
-                            <button type="button" class="pitch-pos-node" data-pos="ED" style="top: 14%; left: 84%;" onclick="seleccionarPosicionCancha('ED')">ED</button>
-                            <button type="button" class="pitch-pos-node" data-pos="SD" style="top: 23%; left: 50%;" onclick="seleccionarPosicionCancha('SD')">SD</button>
-
-                            <!-- Mediocampo con amplio espacio -->
-                            <button type="button" class="pitch-pos-node" data-pos="MCO" style="top: 36%; left: 50%;" onclick="seleccionarPosicionCancha('MCO')">MCO</button>
-                            <button type="button" class="pitch-pos-node" data-pos="MI" style="top: 48%; left: 16%;" onclick="seleccionarPosicionCancha('MI')">MI</button>
-                            <button type="button" class="pitch-pos-node" data-pos="MC" style="top: 50%; left: 50%;" onclick="seleccionarPosicionCancha('MC')">MC</button>
-                            <button type="button" class="pitch-pos-node" data-pos="MD" style="top: 48%; left: 84%;" onclick="seleccionarPosicionCancha('MD')">MD</button>
-                            <button type="button" class="pitch-pos-node" data-pos="MCD" style="top: 64%; left: 50%;" onclick="seleccionarPosicionCancha('MCD')">MCD</button>
-
-                            <!-- Defensa y Arco -->
-                            <button type="button" class="pitch-pos-node" data-pos="LI" style="top: 77%; left: 16%;" onclick="seleccionarPosicionCancha('LI')">LI</button>
-                            <button type="button" class="pitch-pos-node" data-pos="DFC" style="top: 79%; left: 50%;" onclick="seleccionarPosicionCancha('DFC')">DFC</button>
-                            <button type="button" class="pitch-pos-node" data-pos="LD" style="top: 77%; left: 84%;" onclick="seleccionarPosicionCancha('LD')">LD</button>
-                            <button type="button" class="pitch-pos-node" data-pos="POR" style="top: 92%; left: 50%;" onclick="seleccionarPosicionCancha('POR')">POR</button>
+                            <div id="pitch-tactical-nodes"></div>
                         </div>
 
                         <div class="pitch-footer-bar">

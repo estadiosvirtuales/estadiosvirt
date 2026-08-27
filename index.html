@@ -376,15 +376,30 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 
 
-<!-- 🧰 BOTÓN RETO DIARIO EN ZONA INFERIOR IZQUIERDA (RECUADRO AZUL DE CAPTURA 8) -->
-<button class="btn-reto-banner" onclick="iniciarRetoDiario()" style="margin-bottom: 40px;">
-    <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.png" alt="Reto Diario" class="reto-baul-img" onerror="this.src='https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.jpg';">
-    <div class="reto-banner-text">
-        <strong>Reto Diario</strong>
-        <span>Completá el desafío del día</span>
-        <span>¡Adiviná 5 estadios!</span>
-    </div>
-</button>
+<!-- ⚡ ATAJOS HERO: RETO DIARIO Y LIGA DE AMIGOS -->
+<div class="hero-shortcuts-row">
+    <button class="btn-reto-banner" onclick="iniciarRetoDiario()">
+        <div class="shortcut-ambient-glow glow-reto"></div>
+        <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.png" alt="Reto Diario" class="reto-baul-img" onerror="this.src='https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.jpg';">
+        <div class="reto-banner-text">
+            <span class="shortcut-kicker kicker-reto"><span class="live-dot-pulse dot-reto"></span> DIARIO</span>
+            <strong>Reto Diario</strong>
+            <span class="reto-sub-desc">Completá el desafío del día</span>
+            <span class="reto-sub-pill pill-reto">5 Estadios <img src="fuego.png" class="sub-pill-img" alt="Fuego"></span>
+        </div>
+    </button>
+
+    <button class="btn-liga-banner" onclick="abrirModalLigaAmigosPrivada()">
+        <div class="shortcut-ambient-glow glow-liga"></div>
+        <img src="icono-liga.png" alt="Liga Privada de Amigos" class="liga-banner-img">
+        <div class="reto-banner-text">
+            <span class="shortcut-kicker kicker-liga"><span class="live-dot-pulse dot-liga"></span> EN VIVO</span>
+            <strong>Ingresa a tu liga</strong>
+            <span class="reto-sub-desc">Creá o unite a un torneo</span>
+            <span class="reto-sub-pill pill-liga">Duelos 1v1 <img src="liga-icon-historial.png" class="sub-pill-img" alt="Duelo"></span>
+        </div>
+    </button>
+</div>
 </section>
 <div class="catalogo-layout" id="catalogo-layout">
 <section class="section-ligas">
