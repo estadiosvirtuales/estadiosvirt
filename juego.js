@@ -3491,7 +3491,6 @@ function compartirRetoDiarioWordle() {
     }
 }
 
-// SISTEMA DE RANKINGS INTEGRADO CON PESTAÑAS (SOLO, VERSUS TOTAL Y VERSUS SEMANAL)
 async function abrirModalRanking(modoEspecifico = 'solo') {
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
@@ -3501,7 +3500,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
     let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : '';
 
-   let subMenuHTML = `
+    const u = obtenerUsuarioLogueado();
+    const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos');
+
+    let subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row" style="margin: 0 auto 16px; max-width: 475px;">
         <button class="liga-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">
             <img src="ranking-icon-solo.png" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
@@ -3516,13 +3518,14 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
 
     try {
         let htmlContenido = "";
+        let headerConfig = {};
         const medallas3D = [
             '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
             '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
             '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
         ];
 
-       if (modoEspecifico === 'solo') {
+        if (modoEspecifico === 'solo') {
             const { data: ranking, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
@@ -3531,16 +3534,34 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 .limit(10);
             if (error) throw error;
 
+            headerConfig = {
+                img: 'liga-trofeo-header.png',
+                glowClass: 'glow-green',
+                badgeText: 'TOP 10 INDIVIDUAL',
+                badgeColor: '#00ff77',
+                pill1Label: 'TU RÉCORD',
+                pill1Val: `${(userStats.maxScore || 0).toLocaleString('es-AR')} pts`,
+                pill1Icon: 'ph-trophy',
+                pill2Label: 'TU RANGO',
+                pill2Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
+                pill2Icon: 'ph-shield-star',
+                pill3Label: 'PARTIDAS',
+                pill3Val: `${userStats.partidasJugadas || 0} Jugadas`,
+                pill3Icon: 'ph-game-controller'
+            };
+
             htmlContenido += `<div class="liga-table-card">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay registros solitarios.</p>`;
             } else {
                 ranking.forEach((f, i) => {
                     const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const nombreJugador = (f.nombre || 'Anónimo').trim();
+                    const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
-                    <div class="liga-row-item">
+                    <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                            ${med} ${sanitizarHTML(f.nombre || 'Anónimo')}
+                            ${med} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                             ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
@@ -3550,10 +3571,25 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             }
             htmlContenido += '</div>';
 
-        } else if (modoEspecifico === 'v_historico' || modoEspecifico === 'v_semanal') {
-            const tipoRpc = modoEspecifico === 'v_semanal' ? 'semanal' : 'historico';
-            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: tipoRpc });
+        } else if (modoEspecifico === 'v_historico') {
+            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'historico' });
             if (error) throw error;
+
+            headerConfig = {
+                img: 'ranking-icon-1v1.png',
+                glowClass: 'glow-blue',
+                badgeText: 'DUELOS 1 VS 1 · HISTÓRICO',
+                badgeColor: '#2979ff',
+                pill1Label: 'VICTORIAS',
+                pill1Val: `${userStats.partidasGanadas || 0} PG`,
+                pill1Icon: 'ph-sword',
+                pill2Label: 'RATIO 1V1',
+                pill2Val: userStats.partidasJugadas ? `${Math.round(((userStats.partidasGanadas || 0) / userStats.partidasJugadas) * 100)}% W/L` : '0% W/L',
+                pill2Icon: 'ph-chart-line-up',
+                pill3Label: 'DUELOS',
+                pill3Val: `${userStats.partidasJugadas || 0} Jugados`,
+                pill3Icon: 'ph-users-three'
+            };
 
             htmlContenido += `<div class="liga-table-card">`;
             if (!ranking || !ranking.length) {
@@ -3561,10 +3597,61 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             } else {
                 ranking.forEach((f, i) => {
                     const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const nombreJugador = (f.nombre_jugador || 'Anónimo').trim();
+                    const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
-                    <div class="liga-row-item">
+                    <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                            ${med} ${sanitizarHTML(f.nombre_jugador || 'Anónimo')}
+                            ${med} ${sanitizarHTML(nombreJugador)}
+                        </span>
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                            ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                        </span>
+                    </div>`;
+                });
+            }
+            htmlContenido += '</div>';
+
+        } else if (modoEspecifico === 'v_semanal') {
+            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
+            if (error) throw error;
+
+            // 🎯 Posición real computada de la tabla semanal
+            const miIdx = (ranking || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
+            const miPuestoSemanal = miIdx !== -1 ? `#${miIdx + 1}` : 'Sin clasif.';
+
+            const diaSemana = new Date().getDay();
+            const diasParaCierre = diaSemana === 0 ? 0 : 7 - diaSemana;
+            const textoCierre = diasParaCierre === 0 ? 'Hoy 23:59' : `Domingo (${diasParaCierre}d)`;
+
+            headerConfig = {
+                img: 'ranking-icon-semanal.png',
+                glowClass: 'glow-gold',
+                badgeText: 'TEMPORADA · TOP SEMANAL',
+                badgeColor: '#eab308',
+                pill1Label: 'RACHA ACTIVA',
+                pill1Val: `🔥 ${userStats.rachaActual || 1} Días`,
+                pill1Icon: 'ph-flame',
+                pill2Label: 'TU PUESTO',
+                pill2Val: miPuestoSemanal,
+                pill2Icon: 'ph-hash',
+                pill3Label: 'CIERRE',
+                pill3Val: textoCierre,
+                pill3Icon: 'ph-clock-countdown'
+            };
+
+            htmlContenido += `<div class="liga-table-card">`;
+            if (!ranking || !ranking.length) {
+                htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
+            } else {
+                ranking.forEach((f, i) => {
+                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const nombreJugador = (f.nombre_jugador || 'Anónimo').trim();
+                    const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
+                    htmlContenido += `
+                    <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
+                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                            ${med} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                             ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
@@ -3576,11 +3663,45 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         }
 
         body.innerHTML = `
-        <div class="liga-modal-header" style="margin-bottom: 16px;">
-            <div style="width: 145px; height: 145px; margin: -10px auto 2px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 22px rgba(0, 255, 119, 0.75));">
-                <img src="liga-trofeo-header.png" alt="Trofeo" style="width: 100%; height: 100%; object-fit: contain;">
+        <div class="liga-modal-header split-header">
+            <div class="modal-header-left">
+                <div class="trophy-stage-wrapper">
+                    <div class="trophy-glow-backdrop ${headerConfig.glowClass}"></div>
+                    <div class="trophy-main-img-box">
+                        <img src="${headerConfig.img}" alt="Ícono Modo" class="trophy-main-img">
+                    </div>
+                </div>
+                <div class="modal-header-title-box">
+                    <h2 class="liga-modal-title">Salón de la Fama</h2>
+                    <div class="modal-subtitle-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
+                        <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${headerConfig.badgeText}
+                    </div>
+                </div>
             </div>
-            <h2 class="liga-modal-title">Salón de la Fama</h2>
+
+            <div class="modal-header-right-pills">
+                <div class="header-stat-pill">
+                    <i class="ph-bold ${headerConfig.pill1Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                    <div class="stat-pill-info">
+                        <span>${headerConfig.pill1Label}</span>
+                        <strong>${headerConfig.pill1Val}</strong>
+                    </div>
+                </div>
+                <div class="header-stat-pill">
+                    <i class="ph-bold ${headerConfig.pill2Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                    <div class="stat-pill-info">
+                        <span>${headerConfig.pill2Label}</span>
+                        <strong>${headerConfig.pill2Val}</strong>
+                    </div>
+                </div>
+                <div class="header-stat-pill">
+                    <i class="ph-bold ${headerConfig.pill3Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                    <div class="stat-pill-info">
+                        <span>${headerConfig.pill3Label}</span>
+                        <strong>${headerConfig.pill3Val}</strong>
+                    </div>
+                </div>
+            </div>
         </div>
         ${subMenuHTML}
         ${htmlContenido}`;
@@ -3590,13 +3711,48 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
-async function abrirModalRankingOrden(modo) {
+async function abrirModalRankingOrden(modo = 'capacidad') {
     const body = document.getElementById('ranking-modal-body');
-    body.innerHTML = '<div style="text-align:center;padding:50px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i></div>';
+    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
-    
+
+    const activeCap = modo === 'capacidad' ? 'active' : '';
+    const activeAnt = modo === 'antiguedad' ? 'active' : '';
+
+    const u = obtenerUsuarioLogueado();
+    const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '');
+
+    // ⚡ Ícono dinámico, aura y badge según el modo activo
+    let headerConfig = {
+        img: 'capacidad.jpg',
+        fallback: 'capacidad.png',
+        glowClass: 'glow-gold',
+        badgeText: 'TOP 10 · MAYOR CAPACIDAD',
+        badgeColor: '#eab308'
+    };
+
+    if (modo === 'antiguedad') {
+        headerConfig = {
+            img: 'antiguedad.jpg',
+            fallback: 'antiguedad.png',
+            glowClass: 'glow-blue',
+            badgeText: 'TOP 10 · MÁS ANTIGUOS',
+            badgeColor: '#a78bfa'
+        };
+    }
+
+    const subMenuHTML = `
+    <div class="liga-tabs-row ranking-tabs-row" style="margin: 0 auto 16px; max-width: 440px;">
+        <button class="liga-tab-btn ${activeCap}" onclick="abrirModalRankingOrden('capacidad')">
+            <img src="capacidad.jpg" alt="Capacidad" class="ranking-tab-img" onerror="this.src='capacidad.png';"> <span>Capacidad</span>
+        </button>
+        <button class="liga-tab-btn ${activeAnt}" onclick="abrirModalRankingOrden('antiguedad')">
+            <img src="antiguedad.jpg" alt="Antigüedad" class="ranking-tab-img" onerror="this.src='antiguedad.png';"> <span>Antigüedad</span>
+        </button>
+    </div>`;
+
     try {
-        const { data: r, error } = await supabaseClient
+        const { data: ranking, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
             .eq('juego', modo)
@@ -3605,26 +3761,54 @@ async function abrirModalRankingOrden(modo) {
 
         if (error) throw error;
 
-        let html = `<div style="text-align:center;margin-bottom:22px;"><h2 style="font-size:1.5rem;font-weight:900;">Top ${modo === 'capacidad' ? 'Capacidad' : 'Antigüedad'}</h2></div><div style="background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;overflow:hidden;">`;
-        
-        if (!r || !r.length) {
-            html += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin marcas aún.</p>`;
+        const medallas3D = [
+            '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+        ];
+
+        let htmlContenido = `<div class="liga-table-card">`;
+        if (!ranking || !ranking.length) {
+            htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:36px 20px;font-size:0.85rem;">Aún no hay récords registrados en este modo.</p>`;
         } else {
-            const medallas3D = [
-                '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-                '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-                '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
-            ];
-            r.forEach((f, i) => {
+            ranking.forEach((f, i) => {
                 const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
-                html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:${i === r.length - 1 ? 'none' : '1px solid var(--border-subtle)'}"><span style="font-weight:700;display:flex;align-items:center;gap:10px;">${med} ${sanitizarHTML(f.nombre || 'Anónimo')}</span><span style="color:var(--accent-color);font-weight:900;">${f.puntaje || 0} pts</span></div>`;
+                const nombreJugador = (f.nombre || 'Anónimo').trim();
+                const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
+
+                htmlContenido += `
+                <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
+                    <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                        ${med} ${sanitizarHTML(nombreJugador)}
+                    </span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                    </span>
+                </div>`;
             });
         }
-        html += '</div>';
-        body.innerHTML = html;
+        htmlContenido += '</div>';
+
+        body.innerHTML = `
+        <div class="liga-modal-header">
+            <div class="trophy-stage-wrapper orden-stage-wrapper">
+                <div class="trophy-glow-backdrop ${headerConfig.glowClass}"></div>
+                <div class="trophy-main-img-box orden-trophy-box">
+                    <img src="${headerConfig.img}" alt="Ícono Orden" class="trophy-main-img" onerror="this.src='${headerConfig.fallback}';">
+                </div>
+            </div>
+
+            <h2 class="liga-modal-title">Récords de Orden</h2>
+            <div class="modal-subtitle-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
+                <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${headerConfig.badgeText}
+            </div>
+        </div>
+        ${subMenuHTML}
+        ${htmlContenido}`;
+
     } catch (e) {
-        console.error("Error al leer ranking orden de Supabase:", e);
-        body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><b>Error de conexión con la base de datos</b></div>`;
+        console.error("Error al leer ranking de orden:", e);
+        body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
 function abrirModalOrden() {
@@ -5048,15 +5232,57 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
     const esPuntaje = tipoVista === 'puntaje';
 
+    // 📊 Cálculo en vivo de las métricas de la liga
+    const miFila = (lista || []).find(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
+    const miPuntajeLiga = miFila ? (miFila.puntaje || 0) : 0;
+    const miWLLiga = miFila ? `${miFila.triunfos || 0}W - ${miFila.derrotas || 0}L` : '0W - 0L';
+    const totalMiembros = (lista || []).length;
+    const conectadosAhora = (usuariosOnlineLiga || []).length;
+
     let htmlContenido = `
-    <div class="liga-modal-header">
-        <div style="width: 134px; height: 134px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 16px rgba(0, 255, 119, 0.65));">
-            <img src="liga-trofeo-header.png" alt="Trofeo Liga" style="width: 100%; height: 100%; object-fit: contain;">
+    <div class="liga-modal-header split-header">
+        <div class="modal-header-left">
+            <div class="trophy-stage-wrapper">
+                <div class="trophy-glow-backdrop glow-green"></div>
+                <div class="trophy-main-img-box">
+                    <img src="liga-trofeo-header.png" alt="Trofeo Liga" class="trophy-main-img">
+                </div>
+            </div>
+            <div class="modal-header-title-box">
+                <h2 class="liga-modal-title">Liga de Amigos</h2>
+                <div class="modal-subtitle-badge" style="border-color: #00ff7755; color: #00ff77; background: #00ff7718; box-shadow: 0 0 14px #00ff7730;">
+                    <span class="badge-dot-live" style="background: #00ff77; box-shadow: 0 0 8px #00ff77;"></span> ${nombreVisualLiga.replace(/_/g, ' ')}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-header-right-pills">
+            <div class="header-stat-pill">
+                <i class="ph-bold ${esPuntaje ? 'ph-trophy' : 'ph-sword'}" style="color: var(--accent-color);"></i>
+                <div class="stat-pill-info">
+                    <span>${esPuntaje ? 'TU PUNTAJE' : 'TUS DUELOS'}</span>
+                    <strong>${esPuntaje ? miPuntajeLiga.toLocaleString('es-AR') + ' pts' : miWLLiga}</strong>
+                </div>
+            </div>
+            <div class="header-stat-pill">
+                <i class="ph-bold ph-users-three" style="color: var(--accent-color);"></i>
+                <div class="stat-pill-info">
+                    <span>INTEGRANTES</span>
+                    <strong>${totalMiembros} Jugadores</strong>
+                </div>
+            </div>
+            <div class="header-stat-pill">
+                <i class="ph-bold ph-broadcast" style="color: var(--accent-color);"></i>
+                <div class="stat-pill-info">
+                    <span>EN VIVO</span>
+                    <strong>${conectadosAhora} Online</strong>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <div class="liga-info-banner">
-        <span>Liga Privada: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga.replace(/_/g, ' ')}</strong></span>
+
+    <div class="liga-info-banner" style="margin-top: 4px;">
+        <span>Liga: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga.replace(/_/g, ' ')}</strong></span>
         <button onclick="salirLigaAmigos()" class="btn-salir-liga">
             <i class="ph-bold ph-sign-out" style="font-size: 1rem;"></i> SALIR
         </button>
@@ -5079,8 +5305,8 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         htmlContenido += `
         <div style="text-align:center; padding:36px 20px; color:var(--text-muted); font-size:.85rem; line-height:1.5;">
             ${tipoVista === 'triunfos'
-                ? 'Todavía nadie ganó un duelo ⚔️ desde esta tabla. ¡Desafiá a alguien que esté online!'
-                : 'Todavía nadie jugó StadiumGuessr en esta liga.'}
+                ? 'Todavía nadie disputó duelos ⚔️ en esta liga. ¡Desafiá a alguien que esté online!'
+                : 'Todavía nadie registró partidas en esta liga.'}
         </div>`;
     } else {
         lista.forEach((f, i) => {
@@ -5093,7 +5319,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             const nombreRival = (f.nombre || 'Anónimo').trim();
 
             const estaOnline = usuariosOnlineLiga.includes(nombreRival);
-            const esPropio = nombreRival === miNombreRanking;
+            const esPropio = nombreRival.toLowerCase() === (miNombreRanking || '').toLowerCase();
 
             let indicadorOnline = "";
             let botonReto = "";

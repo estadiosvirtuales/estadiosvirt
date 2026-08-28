@@ -498,7 +498,18 @@ body > * {
 .star-icon{font-size:1.5rem;color:var(--border-strong);cursor:pointer;transition:transform .15s cubic-bezier(.175,.885,.32,1.275),color .15s;user-select:none}
 .star-icon:hover{transform:scale(1.35);color:var(--accent-hover)}
 .star-icon.active{color:var(--accent-color)}
-.modal-overlay{display:none;position:fixed;inset:0;background:var(--modal-overlay);z-index:9999 !important;justify-content:center;align-items:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 35%, rgba(14, 28, 48, 0.82) 0%, rgba(4, 7, 14, 0.94) 100%) !important;
+    z-index: 9999 !important;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* ⚡ LIBERACIÓN TOTAL DE GPU: Elimina el blur en vivo mientras el video reproduce */
 #video-modal.modal-overlay {
@@ -525,7 +536,52 @@ body.video-abierto .hero-section {
     visibility: hidden !important;
 }
 
-.modal-content{position:relative;width:90%;max-width:1100px;height:92vh;background:var(--bg-color);border-radius:22px;box-shadow:var(--shadow-strong),0 0 0 1px var(--border-strong);display:flex;flex-direction:column;border:1px solid var(--border-strong);overflow:hidden;animation:bounceFun .4s ease}
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1100px;
+    height: 92vh;
+    background: 
+        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(0, 255, 119, 0.22) 0%, transparent 70%),
+        radial-gradient(circle at 10% 85%, rgba(41, 121, 255, 0.14) 0%, transparent 50%),
+        radial-gradient(circle at 90% 85%, rgba(234, 179, 8, 0.12) 0%, transparent 50%),
+        linear-gradient(175deg, #101a2d 0%, #080d17 50%, #04070d 100%) !important;
+    border-radius: 24px;
+    border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 2.5px solid rgba(0, 255, 119, 0.85) !important;
+    box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.95), 
+                0 0 45px rgba(0, 255, 119, 0.22), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: bounceFun .4s ease;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 32px),
+                      repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 32px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.modal-content > * {
+    position: relative;
+    z-index: 1;
+}
+
+.login-modal-box,
+.privacy-modal-box {
+    background: 
+        radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.12) 0%, transparent 55%),
+        linear-gradient(165deg, rgba(20, 32, 52, 0.95) 0%, rgba(10, 16, 28, 0.98) 50%, rgba(6, 9, 16, 0.99) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 2px solid rgba(0, 230, 118, 0.55) !important;
+    box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 230, 118, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
 .modal-content.stadium-guessr-layout{width:92%!important;max-width:1200px!important}
 
 /* 🛡️ PANTALLA DE RESULTADOS REPARADA (AJUSTE COMPACTO DE ALTURA EN PC Y MÓVIL) */
@@ -1922,11 +1978,54 @@ body.video-abierto .hero-section {
 .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted)}
 .empty-state-icon{font-size:3.5rem;margin-bottom:16px;color:var(--border-strong);display:block}
 .empty-state h3{font-size:1.1rem;margin-bottom:6px;color:var(--text-main);font-weight:700}
-.order-slot{display:flex;align-items:center;gap:12px;width:100%;border-radius:14px;padding:11px 14px;cursor:pointer;transition:all .2s;margin-bottom:10px}
-.order-slot:hover:not(.revealed){transform:translateY(-2px)}
-.order-slot.selected{transform:translateY(-3px)}
-.order-slot.correct-reveal{animation:correctPulse .6s ease}
-.order-slot.wrong-reveal{animation:wrongShake .4s ease}
+.order-slot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(24, 38, 62, 0.85) 0%, rgba(12, 18, 32, 0.95) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.order-slot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.order-slot:hover:not(.revealed) {
+    transform: translateY(-3px) scale(1.01);
+    border-color: rgba(0, 230, 118, 0.5) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 230, 118, 0.2) !important;
+}
+
+.order-slot.selected {
+    transform: translateY(-4px) scale(1.02) !important;
+    border-color: var(--accent-color) !important;
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.2) 0%, rgba(14, 25, 40, 0.95) 100%) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow) !important;
+}
+
+.order-slot.correct-reveal {
+    animation: correctPulse .6s ease;
+}
+
+.order-slot.wrong-reveal {
+    animation: wrongShake .4s ease;
+}
 .result-score-ring{position:relative;width:120px;height:120px;margin:0 auto 20px}
 .result-score-ring svg{transform:rotate(-90deg)}
 .result-score-ring .score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
@@ -3487,9 +3586,10 @@ body.video-abierto .hero-section {
 .guessr-option-btn {
     width: 100%;
     padding: 14px 18px;
-    border-radius: 16px;
+    border-radius: 18px;
     border: 1.5px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(135deg, rgba(20, 28, 52, 0.75) 0%, rgba(10, 14, 28, 0.88) 100%);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+    background: linear-gradient(145deg, rgba(24, 35, 58, 0.85) 0%, rgba(11, 16, 28, 0.95) 100%);
     color: var(--text-main);
     display: flex;
     align-items: center;
@@ -3499,8 +3599,9 @@ body.video-abierto .hero-section {
     position: relative;
     overflow: hidden;
     text-align: left;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .guessr-option-btn::before {
@@ -3622,117 +3723,361 @@ body.video-abierto .hero-section {
     color: #04160a !important;
 }
 /* ========================================================
-   🏆 ESTILIZACIÓN PREMIUM TABLA LIGA PRIVADA DE AMIGOS
+   🏆 SALÓN DE LA FAMA & RANKINGS COMPETITIVOS PRO
    ======================================================== */
 .liga-modal-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.liga-modal-title {
-    font-size: 1.4rem;
-    font-weight: 900;
+/* ⚡ Disposición en 2 Columnas de Cabecera */
+.liga-modal-header.split-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto 16px;
+    gap: 14px;
+}
+
+.modal-header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-header-title-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.modal-header-right-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 175px;
+    flex-shrink: 0;
+}
+
+/* 🏷️ Pastillas de Estadísticas de la Derecha */
+.header-stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 11px;
+    border-radius: 13px;
+    background: linear-gradient(145deg, rgba(20, 32, 54, 0.85) 0%, rgba(10, 16, 28, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.header-stat-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.header-stat-pill i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+.stat-pill-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.15;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.stat-pill-info span {
+    font-size: 0.50rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.6px;
     text-transform: uppercase;
-    letter-spacing: -0.5px;
-    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
+.stat-pill-info strong {
+    font-size: 0.74rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* 🏟️ Escenario y Foco Neón Dinámico del Ícono Central */
+.trophy-stage-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 2px auto 6px;
+    overflow: visible;
+}
+
+.trophy-glow-backdrop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 170px;
+    height: 115px;
+    filter: blur(24px);
+    pointer-events: none;
+    z-index: 0;
+    transition: background 0.35s ease, width 0.3s ease, height 0.3s ease;
+}
+
+.trophy-glow-backdrop.glow-green {
+    background: radial-gradient(ellipse, rgba(0, 255, 119, 0.45) 0%, transparent 70%);
+}
+
+.trophy-glow-backdrop.glow-blue {
+    background: radial-gradient(ellipse, rgba(41, 121, 255, 0.45) 0%, transparent 70%);
+}
+
+.trophy-glow-backdrop.glow-gold {
+    background: radial-gradient(ellipse, rgba(234, 179, 8, 0.45) 0%, transparent 70%);
+}
+
+/* Tamaño para StadiumGuessr */
+.trophy-main-img-box {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+/* ⚡ Tamaño al Doble (2X) exclusivo para Récords de Capacidad y Antigüedad */
+.trophy-main-img-box.orden-trophy-box {
+    width: 220px;
+    height: 220px;
+}
+
+.orden-stage-wrapper .trophy-glow-backdrop {
+    width: 300px;
+    height: 220px;
+    filter: blur(32px);
+}
+
+.trophy-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9));
+    animation: rayoGlow 3s infinite alternate ease-in-out;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 768px) {
+    .trophy-main-img-box.orden-trophy-box {
+        width: 160px;
+        height: 160px;
+    }
+    .orden-stage-wrapper .trophy-glow-backdrop {
+        width: 220px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    .liga-modal-header.split-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .modal-header-right-pills {
+        flex-direction: row;
+        width: 100%;
+        gap: 6px;
+    }
+    .header-stat-pill {
+        flex: 1;
+        padding: 6px 6px;
+        gap: 5px;
+        justify-content: center;
+    }
+    .header-stat-pill i {
+        font-size: 0.95rem;
+    }
+    .stat-pill-info {
+        align-items: center;
+        text-align: center;
+    }
+    .stat-pill-info span {
+        font-size: 0.45rem;
+    }
+    .stat-pill-info strong {
+        font-size: 0.65rem;
+    }
+}
+
+/* 🛸 Banner HUD de Liga */
 .liga-info-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, rgba(0, 230, 118, 0.12) 0%, rgba(10, 20, 35, 0.6) 100%);
-    border: 1.5px solid rgba(0, 230, 118, 0.4);
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.16) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(10, 16, 28, 0.95) 100%);
+    border: 1.5px solid rgba(0, 230, 118, 0.45);
+    border-top: 2px solid rgba(110, 255, 180, 0.75);
     padding: 12px 18px;
-    border-radius: 14px;
+    border-radius: 16px;
     font-size: 0.88rem;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 18px rgba(0, 230, 118, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .btn-salir-liga {
-    background: rgba(255, 71, 87, 0.12);
-    border: 1px solid rgba(255, 71, 87, 0.35);
-    color: #ff4757;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-weight: 800;
-    font-size: 0.78rem;
-    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.18) 0%, rgba(200, 30, 50, 0.28) 100%);
+    border: 1.5px solid rgba(255, 71, 87, 0.5);
+    color: #ff6b81;
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-weight: 900;
+    font-size: 0.76rem;
+    letter-spacing: 0.8px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.25);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-salir-liga:hover {
-    background: rgba(255, 71, 87, 0.25);
+    background: rgba(255, 71, 87, 0.35);
     border-color: #ff4757;
-    box-shadow: 0 0 12px rgba(255, 71, 87, 0.4);
-    transform: translateY(-1px);
+    color: #ffffff;
+    box-shadow: 0 0 18px rgba(255, 71, 87, 0.6);
+    transform: translateY(-2px) scale(1.03);
 }
 
+.btn-salir-liga:active {
+    transform: translateY(1px) scale(0.97);
+}
+
+/* 🎛️ Pestañas de Navegación Cápsula 3D */
 .liga-tabs-row {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 16px;
     width: 100%;
 }
 
 .liga-tab-btn {
-    flex: 1; /* Distribuye el espacio 50/50 de forma perfecta */
+    flex: 1;
     min-width: 0;
-    padding: 4px 6px;
-    font-size: 0.75rem;
-    font-weight: 800;
+    padding: 6px 12px;
+    font-size: 0.76rem;
+    font-weight: 900;
     text-transform: uppercase;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    letter-spacing: 0.4px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+    background: linear-gradient(165deg, rgba(24, 36, 58, 0.85) 0%, rgba(12, 18, 30, 0.95) 100%);
     color: var(--text-muted);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    height: 46px;
+    gap: 8px;
+    height: 48px;
     box-sizing: border-box;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .liga-tab-btn:hover:not(.active) {
-    border-color: var(--border-strong);
-    color: var(--text-main);
-    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    background: linear-gradient(165deg, rgba(32, 48, 76, 0.9) 0%, rgba(16, 24, 40, 0.98) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
 }
 
 .liga-tab-btn.active {
-    background: var(--accent-color) !important;
-    color: #000 !important;
-    border-color: var(--accent-color) !important;
-    box-shadow: 0 4px 15px var(--accent-glow) !important;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #00ff77 0%, #00b355 100%) !important;
+    color: #000000 !important;
+    border-color: #00ff77 !important;
+    box-shadow: 0 8px 24px var(--accent-glow), 0 0 14px rgba(0, 255, 119, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-2px);
 }
 
+.ranking-tabs-row .liga-tab-btn {
+    flex: 1;
+    justify-content: flex-start;
+    padding-left: 0;
+    border-radius: 20px;
+    min-width: 0;
+}
+
+.ranking-tab-img {
+    width: 68px;
+    height: 68px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-left: -12px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+    transition: transform 0.25s ease;
+}
+
+.liga-tab-btn:hover .ranking-tab-img {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+/* 🏟️ Tarjeta de Tabla de Posiciones Cyber-Stadium */
 .liga-table-card {
-    background: var(--surface-color);
-    border: 2px solid var(--border-strong);
-    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(16, 26, 44, 0.92) 0%, rgba(9, 14, 25, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    border-top: 2px solid rgba(0, 230, 118, 0.5);
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), 0 0 25px rgba(0, 230, 118, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
+/* Filas individuales con transiciones dinámicas */
 .liga-row-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 13px 18px;
-    border-bottom: 1px solid var(--border-subtle);
-    font-size: 0.95rem;
-    transition: background 0.2s ease;
+    padding: 13px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.94rem;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
 }
 
 .liga-row-item:last-child {
@@ -3740,19 +4085,88 @@ body.video-abierto .hero-section {
 }
 
 .liga-row-item:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 230, 118, 0.08) !important;
+    transform: translateX(4px) scale(1.008);
+    box-shadow: inset 0 0 20px rgba(0, 230, 118, 0.06);
 }
 
+/* 🥇 1º LUGAR: Corona de Oro */
+.liga-table-card .liga-row-item:nth-child(1) {
+    background: linear-gradient(90deg, rgba(234, 179, 8, 0.18) 0%, rgba(234, 179, 8, 0.03) 100%) !important;
+    border-left: 3.5px solid #eab308;
+}
+.liga-table-card .liga-row-item:nth-child(1):hover {
+    background: linear-gradient(90deg, rgba(234, 179, 8, 0.26) 0%, rgba(234, 179, 8, 0.08) 100%) !important;
+    box-shadow: inset 0 0 25px rgba(234, 179, 8, 0.15);
+}
+
+/* 🥈 2º LUGAR: Sheen de Plata */
+.liga-table-card .liga-row-item:nth-child(2) {
+    background: linear-gradient(90deg, rgba(156, 163, 175, 0.15) 0%, rgba(156, 163, 175, 0.02) 100%) !important;
+    border-left: 3.5px solid #cbd5e1;
+}
+.liga-table-card .liga-row-item:nth-child(2):hover {
+    background: linear-gradient(90deg, rgba(156, 163, 175, 0.22) 0%, rgba(156, 163, 175, 0.06) 100%) !important;
+    box-shadow: inset 0 0 25px rgba(156, 163, 175, 0.12);
+}
+
+/* 🥉 3º LUGAR: Brillo de Bronce */
+.liga-table-card .liga-row-item:nth-child(3) {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.15) 0%, rgba(205, 127, 50, 0.02) 100%) !important;
+    border-left: 3.5px solid #cd7f32;
+}
+.liga-table-card .liga-row-item:nth-child(3):hover {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.22) 0%, rgba(205, 127, 50, 0.06) 100%) !important;
+    box-shadow: inset 0 0 25px rgba(205, 127, 50, 0.12);
+}
+
+/* 🟢 TU PROPIA FILA: Foco Neón */
 .liga-row-item.es-propio {
-    background: rgba(0, 230, 118, 0.06);
+    background: linear-gradient(90deg, rgba(0, 230, 118, 0.22) 0%, rgba(0, 230, 118, 0.04) 100%) !important;
+    border-left: 4px solid var(--accent-color) !important;
+    box-shadow: inset 0 0 20px rgba(0, 230, 118, 0.12);
 }
 
-/* ☀️ Modo Claro */
+/* 📱 Responsive Móvil para Tablas y Pestañas */
+@media (max-width: 768px) {
+    .ranking-tabs-row {
+        gap: 6px !important;
+    }
+    .ranking-tabs-row .liga-tab-btn {
+        justify-content: center !important;
+        padding: 4px 6px !important;
+        height: 42px !important;
+        font-size: 0.65rem !important;
+        border-radius: 14px !important;
+        gap: 4px !important;
+    }
+    .ranking-tab-img {
+        width: 34px !important;
+        height: 34px !important;
+        margin-left: -4px !important;
+    }
+    .ranking-tabs-row .liga-tab-btn span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .liga-row-item {
+        padding: 11px 14px !important;
+        font-size: 0.86rem !important;
+    }
+}
+
+/* ☀️ Adaptación Modo Claro */
+[data-theme="light"] .liga-modal-title {
+    color: #04160a !important;
+    text-shadow: none !important;
+}
+
 [data-theme="light"] .liga-info-banner {
     background: #f0f7f3 !important;
     border-color: #a4bdae !important;
     color: #04160a !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 6px 20px rgba(4, 22, 10, 0.08) !important;
 }
 
 [data-theme="light"] .liga-tab-btn {
@@ -3765,25 +4179,31 @@ body.video-abierto .hero-section {
     background: #00cc66 !important;
     color: #ffffff !important;
     border-color: #00cc66 !important;
+    box-shadow: 0 6px 18px rgba(0, 204, 102, 0.3) !important;
 }
 
 [data-theme="light"] .liga-table-card {
-    background: #f0f7f3 !important;
+    background: #ffffff !important;
     border-color: #cbd5e1 !important;
+    box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .liga-row-item {
+    border-bottom-color: #e2e8f0 !important;
+    color: #04160a !important;
 }
 
 [data-theme="light"] .liga-row-item:hover {
-    background: #e2ede7 !important;
+    background: #f1f8f5 !important;
 }
-/* ========================================================
-   🎨 BARRA DE SCROLLEO OSCURA Y ESTILIZADA PARA MODALES
-   ======================================================== */
+
+/* 🎨 Scrollbars Cyber-Neón para Modales */
 #ranking-modal .modal-content,
 #ranking-modal *,
 #liga-amigos-modal .modal-content,
 #liga-amigos-modal * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    scrollbar-color: rgba(0, 230, 118, 0.3) transparent;
 }
 
 #ranking-modal .modal-content::-webkit-scrollbar,
@@ -3805,7 +4225,7 @@ body.video-abierto .hero-section {
 #ranking-modal *::-webkit-scrollbar-thumb,
 #liga-amigos-modal .modal-content::-webkit-scrollbar-thumb,
 #liga-amigos-modal *::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(0, 230, 118, 0.28);
     border-radius: 10px;
 }
 
@@ -3814,48 +4234,6 @@ body.video-abierto .hero-section {
 #liga-amigos-modal .modal-content::-webkit-scrollbar-thumb:hover,
 #liga-amigos-modal *::-webkit-scrollbar-thumb:hover {
     background: var(--accent-color);
-}
-/* ========================================================
-   🏆 PESTAÑAS DE RANKING RESPONSIVE (PC & MÓVIL)
-   ======================================================== */
-.ranking-tabs-row .liga-tab-btn {
-    flex: 1;
-    justify-content: flex-start;
-    padding-left: 0;
-    border-radius: 25px;
-    min-width: 0;
-}
-
-.ranking-tab-img {
-    width: 72px;
-    height: 72px;
-    object-fit: contain;
-    flex-shrink: 0;
-    margin-left: -12px;
-}
-
-@media (max-width: 768px) {
-    .ranking-tabs-row {
-        gap: 4px !important;
-    }
-    .ranking-tabs-row .liga-tab-btn {
-        justify-content: center !important;
-        padding: 2px 4px !important;
-        height: 42px !important;
-        font-size: 0.65rem !important;
-        border-radius: 16px !important;
-        gap: 3px !important;
-    }
-    .ranking-tab-img {
-        width: 32px !important;
-        height: 32px !important;
-        margin-left: -2px !important;
-    }
-    .ranking-tabs-row .liga-tab-btn span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
 }
 /* ========================================================
    📱 BOTÓN PRINCIPAL DE ACCIÓN DE JUEGO (RESPONSIVE FIX)
