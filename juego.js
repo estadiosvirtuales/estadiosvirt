@@ -3534,13 +3534,29 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 .limit(10);
             if (error) throw error;
 
+            // 🎯 Busca tu puntaje más alto registrado en la base de datos de StadiumGuessr
+            let recordMaximoPartida = Math.min(25000, userStats.maxScore || 0);
+            if (u && u.email) {
+                const { data: miMejorFila } = await supabaseClient
+                    .from('ranking')
+                    .select('puntaje')
+                    .eq('juego', 'guessr')
+                    .eq('email', u.email)
+                    .order('puntaje', { ascending: false })
+                    .limit(1);
+
+                if (miMejorFila && miMejorFila.length > 0 && miMejorFila[0].puntaje > recordMaximoPartida) {
+                    recordMaximoPartida = Math.min(25000, miMejorFila[0].puntaje);
+                }
+            }
+
             headerConfig = {
                 img: 'liga-trofeo-header.png',
                 glowClass: 'glow-green',
                 badgeText: 'TOP 10 INDIVIDUAL',
                 badgeColor: '#00ff77',
-                pill1Label: 'TU RÉCORD',
-                pill1Val: `${(userStats.maxScore || 0).toLocaleString('es-AR')} pts`,
+                pill1Label: 'MEJOR PARTIDA',
+                pill1Val: `${recordMaximoPartida.toLocaleString('es-AR')} pts`,
                 pill1Icon: 'ph-trophy',
                 pill2Label: 'TU RANGO',
                 pill2Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
