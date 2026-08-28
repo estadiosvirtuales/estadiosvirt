@@ -2890,7 +2890,7 @@ function iniciarRelojEsperaRivalVersus() {
         }
     }, 1000);
 }
-// Abre las cartas: Dibuja ambos pines, calcula el puntaje y unifica el mapa
+// Abre las cartas: Dibuja ambos pines, calcula el puntaje, muestra el mapa y avanza automáticamente
 function mostrarResultadosMutuosVersus() {
     if (resultadosRondaMostrados) return; 
     resultadosRondaMostrados = true;
@@ -2910,7 +2910,7 @@ function mostrarResultadosMutuosVersus() {
     guessrHistorialRondas.push({
         ronda: guessrRondaActual,
         estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
-        club: bscarPropiedad(guessrEstadioCorrecto, 'Club'), // <- ACÁ AGREGAMOS EL CLUB
+        club: bscarPropiedad(guessrEstadioCorrecto, 'Club'),
         distancia: miDist,
         puntos: misPts
     });
@@ -2934,35 +2934,33 @@ function mostrarResultadosMutuosVersus() {
     guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
 
     const fraseFolkloreVersus = obtenerFraseFolklore(miDist);
-document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
+    document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
 
-    miListoSiguiente = false;
-    rivalListoSiguiente = false;
-    
     const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
     const emoji = miDist < 50 ? '🎯' : miDist < 200 ? '✈️' : miDist < 800 ? '🗺️' : '🌍';
-    const textoBoton = guessrRondaActual < 5 ? 'SIGUIENTE' : 'FINALIZAR';
-    const iconoBoton = guessrRondaActual < 5 ? '<i class="ph-bold ph-arrow-right"></i>' : '🏁';
 
     btn.innerHTML = `
     <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
         <span class="btn-action-stats">
             ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b> <span style="font-size: 0.75rem; opacity: 0.75;">(Rival: +${rivalDataRonda.puntos})</span>
         </span>
-        <span class="btn-action-text">
-            ${textoBoton} ${iconoBoton}
+        <span class="btn-action-text" style="font-size:0.78rem; opacity:0.9;">
+            <i class="ph-bold ph-circle-notch animate-spin"></i> Avanzando...
         </span>
     </div>`;
     
     btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
-btn.style.color = "#000";
-btn.style.boxShadow = "0 5px 0 #0d5332";
-// 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN VERSUS 👇
-dispararJuicinessRonda(miDist);
-    
+    btn.style.color = "#000";
+    btn.style.boxShadow = "0 5px 0 #0d5332";
     btn.setAttribute('data-estado', 'resultado');
-    btn.disabled = false;
-    btn.onclick = () => solicitarSiguienteRondaVersus();
+    btn.disabled = true;
+
+    dispararJuicinessRonda(miDist);
+
+    // ⚡ AVANCE AUTOMÁTICO FLUIDO: Deja ver los 2 pines durante 3.2s y pasa de ronda sin tocar nada
+    setTimeout(() => {
+        ejecutarPasoDeRondaVersus();
+    }, 3200);
 }
 
 // Avisa por canal rápido que estás listo para cambiar de ronda
