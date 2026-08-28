@@ -218,7 +218,7 @@ body > * {
     mask-composite: intersect;
 }
 
-.hero-content{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.hero-content{max-width:1350px;margin:0 auto;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
 
 /* Adaptación para pantallas medianas y móviles */
 @media (max-width: 1100px) {
@@ -3055,55 +3055,68 @@ body.video-abierto .hero-section {
    🏆 BOTONES HERO (RETO DIARIO Y LIGA PRIVADA)
    ======================================================== */
 .hero-shortcuts-row {
-    position: static;
+    position: relative;
     width: 100%;
+    max-width: 1300px;
+    margin: 75px auto 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 10;
 }
 
 .btn-reto-banner,
 .btn-liga-banner {
-    position: absolute;
-    bottom: -150px;
-    z-index: 10;
-    width: 350px;
-    padding: 14px 18px 14px 95px;
-    background: linear-gradient(135deg, rgba(14, 20, 43, 0.92) 0%, rgba(7, 10, 23, 0.96) 100%);
-    border: 2px solid rgba(0, 255, 119, 0.4);
+    position: relative;
+    pointer-events: auto;
+    width: 320px;
+    min-height: 82px;
+    height: 82px;
+    padding: 12px 16px 12px 75px;
     border-radius: 18px;
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 119, 0.2);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     overflow: visible !important;
+    box-sizing: border-box;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-/* 📍 Ubicación en PC */
+/* 🟢 RETO DIARIO (PC) */
 .btn-reto-banner {
-    left: -14%;
+    left: 0px;  /* 👈 [PC] HORIZONTAL RETO: Positivos lo mueven a la DERECHA, negativos a la IZQUIERDA */
+    top: 0px;   /* 👈 [PC] VERTICAL RETO: Positivos lo BAJAN, negativos lo SUBEN */
+    background: linear-gradient(145deg, rgba(0, 255, 119, 0.14) 0%, rgba(10, 16, 28, 0.94) 50%, rgba(8, 14, 24, 0.98) 100%);
+    border: 1.5px solid rgba(0, 255, 119, 0.4);
+    border-top: 2px solid rgba(110, 255, 180, 0.8);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 119, 0.2);
 }
 
-.btn-liga-banner {
-    right: -14%;
-}
-
-/* 🎯 ZONA INTERACTIVA EXPANDIDA (HOVER Y CLICK EN TODO EL ÍCONO) */
-.btn-reto-banner::before,
-.btn-liga-banner::before {
-    content: '';
-    position: absolute;
-    inset: -45px 0 -45px -75px;
-    border-radius: 25px;
-    pointer-events: auto;
-    z-index: 0;
-}
-
-.btn-reto-banner:hover,
-.btn-liga-banner:hover {
-    transform: translateY(-4px) scale(1.02);
+.btn-reto-banner:hover {
+    transform: translateY(-5px) scale(1.02);
     border-color: #00ff77;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 255, 119, 0.4);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 255, 119, 0.45);
+}
+
+/* 🏆 LIGA DE AMIGOS (PC) */
+.btn-liga-banner {
+    right: 0px; /* 👈 [PC] HORIZONTAL LIGA: Positivos lo mueven a la IZQUIERDA, negativos a la DERECHA */
+    top: 0px;   /* 👈 [PC] VERTICAL LIGA: Positivos lo BAJAN, negativos lo SUBEN */
+    background: linear-gradient(145deg, rgba(251, 191, 36, 0.14) 0%, rgba(14, 18, 28, 0.94) 50%, rgba(10, 14, 24, 0.98) 100%);
+    border: 1.5px solid rgba(251, 191, 36, 0.4);
+    border-top: 2px solid rgba(254, 240, 138, 0.8);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+.btn-liga-banner:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: #fbbf24;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 35px rgba(251, 191, 36, 0.45);
 }
 
 .btn-reto-banner:active,
@@ -3111,74 +3124,110 @@ body.video-abierto .hero-section {
     transform: translateY(1px) scale(0.99);
 }
 
-/* 🧰 BAÚL GIGANTE OVERFLOW (RETO DIARIO) */
+/* 🧰 BAÚL 3D (PC) */
 .reto-baul-img {
     position: absolute;
-    left: -90px;
+    left: -60px;
     top: 50%;
     transform: translateY(-50%) translateZ(0);
-    width: 240px;
-    height: 240px;
+    width: 165px;
+    height: 165px;
     object-fit: contain;
-    filter: drop-shadow(0 0 22px rgba(0, 255, 119, 0.85));
+    filter: drop-shadow(0 0 16px rgba(0, 255, 119, 0.85));
     will-change: transform;
     backface-visibility: hidden;
     transition: transform 0.35s ease, filter 0.35s ease;
     pointer-events: none;
-    z-index: 2;
+    z-index: 3;
 }
 
 .btn-reto-banner:hover .reto-baul-img {
     transform: translateY(-50%) scale(1.1) rotate(-4deg);
-    filter: drop-shadow(0 0 32px rgba(0, 255, 119, 1));
+    filter: drop-shadow(0 0 28px rgba(0, 255, 119, 1));
 }
 
-/* 🏆 ÍCONO 3D OVERFLOW (LIGA PRIVADA) */
+/* 🏆 ÍCONO LIGA 3D (PC) */
 .liga-banner-img {
     position: absolute;
-    left: -65px;
+    left: -30px;
     top: 50%;
     transform: translateY(-50%) translateZ(0);
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
-    filter: drop-shadow(0 0 22px rgba(0, 255, 119, 0.85));
+    filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.85));
     will-change: transform;
     backface-visibility: hidden;
     transition: transform 0.35s ease, filter 0.35s ease;
     pointer-events: none;
-    z-index: 2;
+    z-index: 3;
 }
 
 .btn-liga-banner:hover .liga-banner-img {
     transform: translateY(-50%) scale(1.1) rotate(4deg);
-    filter: drop-shadow(0 0 32px rgba(0, 255, 119, 1));
+    filter: drop-shadow(0 0 28px rgba(251, 191, 36, 1));
 }
 
 .reto-banner-text {
     display: flex;
     flex-direction: column;
     text-align: left;
-    z-index: 1;
+    gap: 2px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Micro-Kickers con Dot Pulsante */
+.shortcut-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+.kicker-reto { color: #00ff77; text-shadow: 0 0 8px rgba(0, 255, 119, 0.6); }
+.kicker-liga { color: #fbbf24; text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); }
+
+.live-dot-pulse {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot-reto {
+    background: #00ff77;
+    box-shadow: 0 0 6px #00ff77;
+    animation: pulseGlow 1.6s infinite;
+}
+.dot-liga {
+    background: #fbbf24;
+    box-shadow: 0 0 6px #fbbf24;
+    animation: pulseGlow 1.6s infinite;
 }
 
 .reto-banner-text strong {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 900;
-    color: #00ff77;
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: -0.3px;
-    line-height: 1.2;
-    margin-bottom: 2px;
-    text-shadow: 0 0 10px rgba(0, 255, 119, 0.3);
+    line-height: 1.15;
+    margin: 1px 0;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-.reto-banner-text span {
-    font-size: 0.78rem;
-    color: #ffffff;
+.reto-sub-desc {
+    display: block;
+    font-size: 0.74rem;
+    color: #cbd5e1;
     font-weight: 600;
     line-height: 1.3;
-    opacity: 0.9;
+}
+
+.reto-sub-pill {
+    display: none;
 }
 
 /* 📱 ATAJOS HIGH-VOLTAGE GAMER PARA CELULARES */
@@ -3242,7 +3291,6 @@ body.video-abierto .hero-section {
         display: none !important;
     }
 
-    /* 🌟 Luz ambiental interna que se expande hacia el ícono */
     .shortcut-ambient-glow {
         position: absolute;
         inset: 0;
@@ -3286,7 +3334,6 @@ body.video-abierto .hero-section {
         z-index: 2 !important;
     }
 
-    /* 📡 Micro-Kicker con Dot Pulsante */
     .shortcut-kicker {
         display: inline-flex !important;
         align-items: center !important;
@@ -3335,7 +3382,6 @@ body.video-abierto .hero-section {
         display: none !important;
     }
 
-    /* 🏷️ Badge inferior de estatus con bisel neón e íconos PNG */
     .reto-sub-pill {
         display: inline-flex !important;
         align-items: center !important;
