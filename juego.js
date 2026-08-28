@@ -4007,114 +4007,84 @@ window.actualizarAvatarLive = function() {
 
 async function guardarPersonalizacion(){
     const u = obtenerUsuarioLogueado();
-    
-    // 🔥 PASO 1: Capturamos tu nombre VIEJO antes de que se cambie
     const nickViejo = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Anónimo');
     
     const nickInput = document.getElementById('avatar-nick-input');
-    let nickNuevo = nickViejo; 
-    
-    if (nickInput !== null) {
-        const newNick = nickInput.value.trim();
-        
-        // 🛑 ESCUDO ANTI-CLONES BLINDADO CONTRA FALLOS DE RED
-        if (newNick !== '' && newNick.toLowerCase() !== nickViejo.toLowerCase()) {
-            
-            // Si por algún motivo no hay conexión a Supabase, frenamos antes de crashear
-            if (typeof supabaseClient === 'undefined' || !supabaseClient) {
-                showToast("Sin conexión al servidor para verificar apodos.", "ph-wifi-slash", "danger");
-                return;
-            }
-
-            const btnSave = document.querySelector('.avatar-save-btn');
-            if (btnSave) { 
-                btnSave.disabled = true; 
-                btnSave.innerHTML = '<i class="ph-bold ph-circle-notch animate-spin"></i> Verificando...'; 
-            }
-
-            try {
-                const { data: nombreOcupado, error } = await supabaseClient
-                    .from('ranking')
-                    .select('nombre')
-                    .ilike('nombre', newNick)
-                    .limit(1);
-
-                if (error) throw error; 
-
-                if (btnSave) { 
-                    btnSave.disabled = false; 
-                    btnSave.innerHTML = '<i class="ph-bold ph-check"></i> Guardar cambios'; 
-                }
-
-                if (nombreOcupado && nombreOcupado.length > 0) {
-                    showToast("Ese apodo ya está en uso. ¡Elegí otro!", "ph-warning-circle", "danger");
-                    return; // ⛔ Corta la ejecución acá. Protege la base de datos.
-                }
-            } catch (err) {
-                if (btnSave) { 
-                    btnSave.disabled = false; 
-                    btnSave.innerHTML = '<i class="ph-bold ph-check"></i> Guardar cambios'; 
-                }
-                console.error("Error al consultar apodos:", err);
-                showToast("Error de red al verificar el nombre.", "ph-warning-circle", "danger");
-                return;
-            }
-            
-            nickNuevo = newNick; 
-        } else if (newNick !== '') {
-            nickNuevo = newNick; // Cubre el caso donde solo cambió una minúscula por mayúscula propia
-        }
+    let nickNuevo = nickViejo;
+    if (nickInput && nickInput.value.trim() !== '') {
+        nickNuevo = nickInput.value.trim().substring(0, 16);
     }
 
-    // =========================================================
-    // SI PASÓ EL ESCUDO DE ARRIBA, GUARDAMOS TODO CON NORMALIDAD
-    // =========================================================
+    // 1. Guardado inmediato e incondicional de todos los atributos
+    const posSelect = document.getElementById('avatar-pos-input');
+    if (posSelect) {
+        setPref('ev_user_pos', posSelect.value);
+        const futPos = document.getElementById('fut-pos-display');
+        if (futPos) futPos.textContent = posSelect.value;
+    }
 
-    const posSelect=document.getElementById('avatar-pos-input');if(posSelect){setPref('ev_user_pos',posSelect.value);const futPos=document.getElementById('fut-pos-display');if(futPos)futPos.textContent=posSelect.value;}
-    const themeInput=document.getElementById('card-theme-input');if(themeInput){setPref('ev_card_theme',themeInput.value);}
+    const themeInput = document.getElementById('card-theme-input');
+    if (themeInput) {
+        setPref('ev_card_theme', themeInput.value);
+    }
     
     setPref('ev_custom_nick', nickNuevo);
-    const futName=document.getElementById('fut-name-display');
-    if(futName){futName.textContent=nickNuevo||(u?u.name.split(' ')[0]:'Jugador');}
+    const futName = document.getElementById('fut-name-display');
+    if (futName) {
+        futName.textContent = nickNuevo || (u ? u.name.split(' ')[0] : 'Jugador');
+    }
     
-   const hairInput=document.getElementById('avatar-hair-input'); if(hairInput) setPref('ev_avatar_hair', hairInput.value);
-    const logoInput=document.getElementById('avatar-logo-input'); if(logoInput) setPref('ev_avatar_logo', logoInput.value);
+    const hairInput = document.getElementById('avatar-hair-input');
+    if (hairInput) setPref('ev_avatar_hair', hairInput.value);
 
-    showToast('¡Personalización guardada! 🎉');
+    const logoInput = document.getElementById('avatar-logo-input');
+    if (logoInput) setPref('ev_avatar_logo', logoInput.value);
+
+    // 2. Refresco en vivo de la carta e interfaz
+    actualizarAvatarLive();
     renderizarBotonLogin();
     ancestralHeaderNivel();
     guardarStats(); 
 
-    // 🔥 PASO 2: IMPACTAR EL CAMBIO EN LA BASE DE DATOS Y EN LAS PANTALLAS DE LOS AMIGOS (Vía RPC Seguro)
+    const futOvr = document.querySelector('.fut-ovr');
+    if (futOvr) {
+        const n = NIVELES[calcularNivelIdx(userStats.xpTotal)];
+        futOvr.textContent = n.ovr;
+    }
+
+    const cardEl = document.getElementById('fut-card-main');
+    if (cardEl) {
+        let th = getPref('ev_card_theme', 'arg');
+        const validThemes = TEMAS_LISTA.map(t => t.k);
+        if (!validThemes.includes(th)) th = 'arg';
+        cardEl.className = 'fut-card ' + th;
+    }
+
+    if (document.getElementById('customization-panel-wrapper')?.classList.contains('open')) {
+        toggleCustomization();
+    }
+
+    showToast('¡Personalización guardada! 🎉', 'ph-check-circle', 'success');
+
+    // 3. Sincronización asíncrona de apodo en ligas (sin trabar el guardado local)
     if (nickViejo !== nickNuevo && typeof supabaseClient !== 'undefined' && supabaseClient) {
         const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
         if (nombreLiga) {
-            await supabaseClient.rpc('actualizar_apodo_liga', {
-                p_liga: nombreLiga,
-                p_nombre_viejo: nickViejo,
-                p_nombre_nuevo: nickNuevo
-            });
-            
-            if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
-                ligaAmigosChannel.untrack(); 
-                ligaAmigosChannel.unsubscribe(); 
-                ligaAmigosChannel = null;
+            try {
+                await supabaseClient.rpc('actualizar_apodo_liga', {
+                    p_liga: nombreLiga,
+                    p_nombre_viejo: nickViejo,
+                    p_nombre_nuevo: nickNuevo
+                });
+                
+                if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
+                    ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
+                }
+            } catch (err) {
+                console.warn("Sincronización de apodo en liga postergada:", err);
             }
-
-            setTimeout(() => {
-                if (typeof conectarPresenciaLiga === 'function') conectarPresenciaLiga(nombreLiga, nickNuevo);
-                if (ligaAmigosChannel) ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
-            }, 600);
         }
     }
-
-    const futOvr=document.querySelector('.fut-ovr');if(futOvr){const n=NIVELES[calcularNivelIdx(userStats.xpTotal)];futOvr.textContent=n.ovr;}
-    const cardEl=document.getElementById('fut-card-main');if(cardEl){
-        let th=getPref('ev_card_theme','arg');
-        const validThemes = TEMAS_LISTA.map(t => t.k);
-        if (!validThemes.includes(th)) th = 'arg';
-        cardEl.className='fut-card '+th;
-    }if(document.getElementById('customization-panel-wrapper').classList.contains('open')){toggleCustomization();}
 }
 
 function abrirModalPerfil(){
@@ -5555,13 +5525,12 @@ async function urlABase64Seguro(url) {
     try {
         absUrl = new URL(url, window.location.href).href;
     } catch (err) {
-        console.warn(`[Póster] URL inválida: ${url}`, err);
         return FALLBACK_PIXEL_BASE64;
     }
 
-    // 1. Intento Directo (con CORS)
+    // 1. Fetch directo (mismo origen o con cabeceras CORS válidas)
     try {
-        const res = await fetch(absUrl, { mode: 'cors', cache: 'force-cache' });
+        const res = await fetch(absUrl, { mode: 'cors' });
         if (res.ok) {
             const blob = await res.blob();
             const dataUri = await new Promise((resolve, reject) => {
@@ -5574,11 +5543,9 @@ async function urlABase64Seguro(url) {
                 return dataUri;
             }
         }
-    } catch (errDirect) {
-        console.warn(`[Póster] Fetch directo sin CORS para ${absUrl}. Intentando fallback proxy...`, errDirect.message);
-    }
+    } catch (e) {}
 
-    // 2. Intento vía Proxy CORS seguro
+    // 2. Fallback por Proxy CORS si la imagen viene de un dominio externo
     if (absUrl.startsWith('http')) {
         try {
             const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
@@ -5595,12 +5562,9 @@ async function urlABase64Seguro(url) {
                     return dataUri;
                 }
             }
-        } catch (errProxy) {
-            console.warn(`[Póster] Proxy falló para: ${absUrl}`, errProxy.message);
-        }
+        } catch (e) {}
     }
 
-    console.warn(`[Póster] Fallo definitivo al convertir a Base64: ${absUrl}. Usando pixel transparente.`);
     return FALLBACK_PIXEL_BASE64;
 }
 
@@ -5622,12 +5586,11 @@ async function compartirCartaFUT() {
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 1. Montaje fuera de pantalla confiable para WebKit (left: -9999px con z-index visible)
+    // 1. Contenedor anclado a (0,0) detrás de la interfaz para captura exacta sin desfasajes
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
-    poster.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 450px; height: 800px; z-index: 100000; opacity: 1; visibility: visible; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
+    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
-    // Normalización de rutas absolutas para todos los iconos locales
     const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png', window.location.href).href;
     const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.png', window.location.href).href;
     const fuegoIconUrl = new URL('fuego.png', window.location.href).href;
@@ -5685,7 +5648,7 @@ async function compartirCartaFUT() {
 
     document.body.appendChild(poster);
 
-    // Clonación de la carta FUT
+    // Clon de la carta FUT
     const cardClone = cardElement.cloneNode(true);
     cardClone.id = "fut-card-clone";
     cardClone.style.transform = 'scale(1.16)';
@@ -5694,7 +5657,7 @@ async function compartirCartaFUT() {
     poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
 
     try {
-        // 2. Conversión segura a Base64 y limpieza estricta de atributos
+        // Conversión a Base64 de todas las imágenes
         const allImages = Array.from(poster.querySelectorAll('img'));
         await Promise.all(allImages.map(async (img) => {
             const rawSrc = img.getAttribute('src') || img.src;
@@ -5713,16 +5676,14 @@ async function compartirCartaFUT() {
             }
         }));
 
-        // Pequeño delay de asentamiento para WebKit
-        await new Promise(r => setTimeout(r, 280));
+        await new Promise(r => setTimeout(r, 200));
 
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
             width: 450,
-            height: 800,
-            cacheBust: true
+            height: 800
         });
 
         poster.remove();
@@ -5755,7 +5716,7 @@ async function compartirCartaFUT() {
                     return;
                 }
             } catch (shareErr) {
-                console.warn("Compartir nativo no completado, procediendo a descarga:", shareErr);
+                console.warn("Cancelación de compartir nativo, procediendo a descarga directa:", shareErr);
             }
         }
 
