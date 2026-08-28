@@ -5545,44 +5545,63 @@ function abrirModalPrivacyDirecto() {
         if (btn) btn.disabled = false;
     }
 }
-async function urlABase64Seguro(url) {
-    if (!url || typeof url !== 'string' || url.startsWith('data:')) return url;
-    const absUrl = url.startsWith('http') ? url : new URL(url, window.location.href).href;
+const FALLBACK_PIXEL_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
+async function urlABase64Seguro(url) {
+    if (!url || typeof url !== 'string') return FALLBACK_PIXEL_BASE64;
+    if (url.startsWith('data:image')) return url;
+
+    let absUrl;
     try {
-        const res = await fetch(absUrl);
+        absUrl = new URL(url, window.location.href).href;
+    } catch (err) {
+        console.warn(`[Póster] URL inválida: ${url}`, err);
+        return FALLBACK_PIXEL_BASE64;
+    }
+
+    // 1. Intento Directo (con CORS)
+    try {
+        const res = await fetch(absUrl, { mode: 'cors', cache: 'force-cache' });
         if (res.ok) {
             const blob = await res.blob();
-            const dataUri = await new Promise((resolve) => {
+            const dataUri = await new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onloadend = () => resolve(reader.result);
-                reader.onerror = () => resolve(null);
+                reader.onerror = reject;
                 reader.readAsDataURL(blob);
             });
             if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
                 return dataUri;
             }
         }
-    } catch(e) {}
+    } catch (errDirect) {
+        console.warn(`[Póster] Fetch directo sin CORS para ${absUrl}. Intentando fallback proxy...`, errDirect.message);
+    }
 
-    try {
-        const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
-        const resProxy = await fetch(proxyUrl);
-        if (resProxy.ok) {
-            const blob = await resProxy.blob();
-            const dataUri = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = () => resolve(null);
-                reader.readAsDataURL(blob);
-            });
-            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
-                return dataUri;
+    // 2. Intento vía Proxy CORS seguro
+    if (absUrl.startsWith('http')) {
+        try {
+            const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
+            const resProxy = await fetch(proxyUrl, { mode: 'cors' });
+            if (resProxy.ok) {
+                const blob = await resProxy.blob();
+                const dataUri = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+                if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
+                    return dataUri;
+                }
             }
+        } catch (errProxy) {
+            console.warn(`[Póster] Proxy falló para: ${absUrl}`, errProxy.message);
         }
-    } catch(e) {}
+    }
 
-    return absUrl;
+    console.warn(`[Póster] Fallo definitivo al convertir a Base64: ${absUrl}. Usando pixel transparente.`);
+    return FALLBACK_PIXEL_BASE64;
 }
 
 async function compartirCartaFUT() {
@@ -5603,14 +5622,21 @@ async function compartirCartaFUT() {
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 1. Montaje del contenedor del póster 9:16 (opacidad al 100% y detrás de la UI con z-index)
+    // 1. Montaje fuera de pantalla confiable para WebKit (left: -9999px con z-index visible)
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
-    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
+    poster.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 450px; height: 800px; z-index: 100000; opacity: 1; visibility: visible; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
+
+    // Normalización de rutas absolutas para todos los iconos locales
+    const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png', window.location.href).href;
+    const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.png', window.location.href).href;
+    const fuegoIconUrl = new URL('fuego.png', window.location.href).href;
+    const trofeoIconUrl = new URL('trofeo.png', window.location.href).href;
+    const dueloIconUrl = new URL('liga-icon-historial.png', window.location.href).href;
 
     poster.innerHTML = `
         <div class="poster-header" style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
-            <img class="poster-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" style="width:38px; height:38px; border-radius:10px; border:1.5px solid var(--accent-color); object-fit:cover;">
+            <img class="poster-logo" src="${logoHeaderUrl}" alt="Logo" style="width:38px; height:38px; border-radius:10px; border:1.5px solid var(--accent-color); object-fit:cover;">
             <div class="poster-header-text" style="display:flex; flex-direction:column; text-align:left;">
                 <div class="poster-title" style="font-size:1.15rem; font-weight:900; letter-spacing:1.5px; color:#ffffff; text-transform:uppercase;">Estadios Virtuales</div>
                 <div class="poster-subtitle" style="font-size:0.65rem; font-weight:800; letter-spacing:2px; color:var(--accent-color); text-transform:uppercase;">El mundo desde el aire</div>
@@ -5623,21 +5649,21 @@ async function compartirCartaFUT() {
 
         <div class="poster-stats-badges">
             <div class="poster-badge">
-                <img src="${nivel.iconUrl}" class="poster-badge-icon icon-poster-rango" alt="Nivel">
+                <img src="${nivelIconUrl}" class="poster-badge-icon icon-poster-rango" alt="Nivel">
                 <div class="poster-badge-text-group">
                     <span class="poster-badge-title">${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
                     <span class="poster-badge-sub sub-lvl">Nivel ${nivelIdx}</span>
                 </div>
             </div>
             <div class="poster-badge">
-                <img src="fuego.png" class="poster-badge-icon icon-poster-racha" alt="Racha">
+                <img src="${fuegoIconUrl}" class="poster-badge-icon icon-poster-racha" alt="Racha">
                 <div class="poster-badge-text-group">
                     <span class="poster-badge-title">${racha} Días</span>
                     <span class="poster-badge-sub sub-streak">Racha</span>
                 </div>
             </div>
             <div class="poster-badge">
-                <img src="trofeo.png" class="poster-badge-icon icon-poster-victorias" alt="Victorias">
+                <img src="${trofeoIconUrl}" class="poster-badge-icon icon-poster-victorias" alt="Victorias">
                 <div class="poster-badge-text-group">
                     <span class="poster-badge-title">${victorias} PG</span>
                     <span class="poster-badge-sub sub-wins">Victorias</span>
@@ -5652,14 +5678,14 @@ async function compartirCartaFUT() {
                 <span>Escaneá el QR y desafiame en vivo.</span>
             </div>
             <div class="poster-cta-duel">
-                <img src="liga-icon-historial.png" alt="Duelo 1v1" class="poster-duel-img">
+                <img src="${dueloIconUrl}" alt="Duelo 1v1" class="poster-duel-img">
             </div>
         </div>
     `;
 
     document.body.appendChild(poster);
 
-    // Clonamos la carta idéntica al DOM visual
+    // Clonación de la carta FUT
     const cardClone = cardElement.cloneNode(true);
     cardClone.id = "fut-card-clone";
     cardClone.style.transform = 'scale(1.16)';
@@ -5668,35 +5694,35 @@ async function compartirCartaFUT() {
     poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
 
     try {
-        // Conversión a Base64 de todas las imágenes dentro del póster
+        // 2. Conversión segura a Base64 y limpieza estricta de atributos
         const allImages = Array.from(poster.querySelectorAll('img'));
-        for (const img of allImages) {
-            const b64 = await urlABase64Seguro(img.src);
-            if (b64 && b64.startsWith('data:')) {
-                img.src = b64;
-                img.removeAttribute('srcset');
-            }
+        await Promise.all(allImages.map(async (img) => {
+            const rawSrc = img.getAttribute('src') || img.src;
+            const b64 = await urlABase64Seguro(rawSrc);
+            
+            img.src = b64;
+            img.removeAttribute('srcset');
             img.removeAttribute('crossorigin');
             img.removeAttribute('loading');
-        }
+            img.removeAttribute('referrerpolicy');
 
-        // Aguardamos decodificación en memoria
-        await Promise.all(allImages.map(async img => {
             if (img.decode) {
-                try { await img.decode(); } catch(e) {}
+                try { await img.decode(); } catch (e) {}
             } else if (!img.complete) {
                 await new Promise(res => { img.onload = res; img.onerror = res; });
             }
         }));
 
-        await new Promise(r => setTimeout(r, 250));
+        // Pequeño delay de asentamiento para WebKit
+        await new Promise(r => setTimeout(r, 280));
 
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
             width: 450,
-            height: 800
+            height: 800,
+            cacheBust: true
         });
 
         poster.remove();
@@ -5729,7 +5755,7 @@ async function compartirCartaFUT() {
                     return;
                 }
             } catch (shareErr) {
-                console.warn("Cancelación o desvío de compartir nativo, procediendo a descarga directa:", shareErr);
+                console.warn("Compartir nativo no completado, procediendo a descarga:", shareErr);
             }
         }
 
