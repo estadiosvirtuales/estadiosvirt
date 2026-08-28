@@ -3534,21 +3534,47 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 .limit(10);
             if (error) throw error;
 
-            // 🎯 Busca tu puntaje más alto registrado en la base de datos de StadiumGuessr
-            let recordMaximoPartida = Math.min(25000, userStats.maxScore || 0);
-            if (u && u.email) {
-                const { data: miMejorFila } = await supabaseClient
+            // 🎯 Trae tu puntaje récord real directo de la base de datos de Supabase
+            let recordReal = 0;
+            const miEmail = u && u.email ? u.email : '';
+            const miApodo = (miNombre || '').trim().toLowerCase();
+
+            // 1. Primero busca en Supabase por email (si estás logueado con Google)
+            if (miEmail) {
+                const { data: filaPorEmail } = await supabaseClient
                     .from('ranking')
                     .select('puntaje')
                     .eq('juego', 'guessr')
-                    .eq('email', u.email)
+                    .eq('email', miEmail)
                     .order('puntaje', { ascending: false })
                     .limit(1);
 
-                if (miMejorFila && miMejorFila.length > 0 && miMejorFila[0].puntaje > recordMaximoPartida) {
-                    recordMaximoPartida = Math.min(25000, miMejorFila[0].puntaje);
+                if (filaPorEmail && filaPorEmail.length > 0) {
+                    recordReal = filaPorEmail[0].puntaje || 0;
                 }
             }
+
+            // 2. Si no encontró por email o sos invitado, busca tu mejor marca histórica por apodo
+            if (!recordReal && miApodo) {
+                const { data: filaPorNombre } = await supabaseClient
+                    .from('ranking')
+                    .select('puntaje')
+                    .eq('juego', 'guessr')
+                    .ilike('nombre', miApodo)
+                    .order('puntaje', { ascending: false })
+                    .limit(1);
+
+                if (filaPorNombre && filaPorNombre.length > 0) {
+                    recordReal = filaPorNombre[0].puntaje || 0;
+                }
+            }
+
+            // 3. Fallback: si aún no se guardó en la nube pero tenés score local válido
+            if (!recordReal && userStats.maxScore && userStats.maxScore <= 25000) {
+                recordReal = userStats.maxScore;
+            }
+
+            const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
 
             headerConfig = {
                 img: 'liga-trofeo-header.png',
@@ -3556,7 +3582,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 badgeText: 'TOP 10 INDIVIDUAL',
                 badgeColor: '#00ff77',
                 pill1Label: 'MEJOR PARTIDA',
-                pill1Val: `${recordMaximoPartida.toLocaleString('es-AR')} pts`,
+                pill1Val: textoRecord,
                 pill1Icon: 'ph-trophy',
                 pill2Label: 'TU RANGO',
                 pill2Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
