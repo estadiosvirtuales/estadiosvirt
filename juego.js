@@ -2312,7 +2312,750 @@ function obtener5EstadiosVersus() {
 // ========================================================
 // IDENTIFICADOR ÚNICO DE RED (ANTI-COLISIÓN DE INVITADOS)
 // ========================================================
+function obtenerIdRedVersus() {// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
+// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
+async function cancelarBusquedaVersus() {
+    cerrarLobbyEspera(); // Borra el cartel flotante de la pantalla
+    
+    // Matamos los timers de búsqueda de la app
+    if (versusTimeoutBusqueda) {
+        clearTimeout(versusTimeoutBusqueda);
+        versusTimeoutBusqueda = null;
+    }
+    if (handshakeInterval) {
+        clearInterval(handshakeInterval);
+        handshakeInterval = null;
+    }
+    
+    // Desconectamos el canal activo de Supabase de raíz
+    if (versusChannel) {
+        versusChannel.unsubscribe();
+        versusChannel = null;
+    }
+
+    // 👇 ESCUDO ANTI-ZOMBIES: Si cancelamos la búsqueda, marcamos la sala como cancelada en la BD
+    if (versusPartidaId && !versusPartidaId.startsWith('PRIV_') && !versusPartidaEnCurso) {
+        try {
+            await supabaseClient.from('partidas').update({ estado: 'cancelada' }).eq('id', versusPartidaId);
+        } catch(e) { console.warn("No se pudo limpiar la sala en la nube."); }
+    }
+    // 👆 FIN DEL ESCUDO 👆
+    
+    // Reseteamos las banderas globales competitivas
+    esModoVersus = false;
+    versusPartidaEnCurso = false;
+    versusLigaOrigen = null;
+    
+    showToast("Búsqueda cancelada con éxito 🛑", "ph-x-circle", "info");
+}
+
+// ⏳ DESTRUYE EL CONTADOR VISUAL FLOTANTE
+function cerrarLobbyEspera() {
+    if (matchmakingInterval) {
+        clearInterval(matchmakingInterval);
+        matchmakingInterval = null;
+    }
+    const lobby = document.getElementById('matchmaking-lobby');
+    if (lobby) lobby.remove();
+}
+
+function obtener5EstadiosVersus() {
+    const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
+    const disponibles = pool.filter(f => {
+        const l = bscarPropiedad(f, 'Link del Video').toString().trim();
+        return (l.includes('youtube.com') || l.includes('youtu.be')) &&
+               bscarPropiedad(f, 'Latitud').toString().trim() !== '' &&
+               bscarPropiedad(f, 'Longitud').toString().trim() !== '';
+    });
+
+    // Sorteo Fisher-Yates: Extrae elementos al azar uno a uno sin repetir pesos
+    let resultado = [];
+    let copia = [...disponibles];
+    const cantidadAExtraer = Math.min(5, copia.length);
+
+    for (let i = 0; i < cantidadAExtraer; i++) {
+        const idxAleatorio = Math.floor(Math.random() * copia.length);
+        // Despatarramos el elemento de la copia y lo metemos en la canasta oficial
+        resultado.push(copia.splice(idxAleatorio, 1)[0]);
+    }
+
+    return resultado;
+}
+// ========================================================
+// IDENTIFICADOR ÚNICO DE RED (ANTI-COLISIÓN DE INVITADOS)
+// ========================================================
 function obtenerIdRedVersus() {
+    const u = obtenerUsuarioLogueado();
+    if (u && u.id && u.id !== 'guest') return u.id;
+    let guestId = sessionStorage.getItem('ev_guest_versus_id');
+    if (!guestId) {
+        guestId = 'guest_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+        sessionStorage.setItem('ev_guest_versus_id', guestId);
+    }
+    return guestId;
+}
+
+// ==========================================
+// MOTOR DE SALAS PRIVADAS (DESAFÍO POR WHATSAPP)
+// ==========================================
+function crearSalaPrivada() {
+    cerrarModalGuessr();
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
+        showToast("Esperá un segundo que termine de cargar el catálogo...", "ph-circle-notch", "warning");
+        return;
+    }
+
+    obtenerIdRedVersus();
+
+    const idSala = Math.random().toString(36).substring(2, 8).toUpperCase();
+    versusPartidaId = 'PRIV_' + idSala;
+    versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+    versusLigaOrigen = null;
+    
+    versusRol = 'jugador_1';
+    esModoVersus = true;
+    esModoBot = false;
+    versusPartidaEnCurso = false;
+
+    const urlLimpia = window.location.origin + window.location.pathname;
+    const linkACompartir = `${urlLimpia}?sala=${versusPartidaId}`;
+
+    abrirLobbyPrivado(linkACompartir, idSala);
+    conectarRealtimeVersus();
+}
+
+function abrirLobbyPrivado(link, codigo) {
+    cerrarLobbyEspera(); 
+    const lobby = document.createElement('div');
+    lobby.id = 'matchmaking-lobby';
+    lobby.style.cssText = `
+        position: fixed; top: 24px; left: 0; right: 0; margin: 0 auto; width: max-content; 
+        max-width: 90%; background: var(--glass-bg); border: 2px solid var(--border-strong); 
+        padding: 20px 28px; border-radius: 16px; z-index: 99999; display: flex; 
+        flex-direction: column; align-items: center; justify-content: center; gap: 14px; 
+        font-weight: 800; color: var(--text-main); box-shadow: var(--shadow-strong); 
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: fadeSlideUp 0.3s both;
+    `;
+    
+    lobby.innerHTML = `
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+            <span style="color:var(--accent-color); font-size:1.1rem;"><i class="ph-fill ph-users-three"></i> Duelo Privado</span>
+            <i class="ph-bold ph-x" style="cursor:pointer; color:var(--text-muted);" onclick="cancelarBusquedaVersus()"></i>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Pasale este link a tu rival y esperalo acá:</p>
+        <button id="btn-copiar-privado" onclick="compartirLinkPrivado('${link}')" class="btn-3d primary" style="width:100%; padding:14px; font-size:1rem; margin-top:5px;">
+            <i class="ph-bold ph-copy"></i> Invitar a sala privada
+        </button>
+    `;
+    document.body.appendChild(lobby);
+}
+
+window.compartirLinkPrivado = async function(link) {
+    const msg = `⚽ ¡Te reté a un duelo en StadiumGuessr! 🌍\nEntrá a este link para jugar contra mí en vivo:\n\n${link}`;
+    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (esMobile && navigator.share) {
+        try {
+            await navigator.share({
+                title: 'Duelo en StadiumGuessr ⚽',
+                text: msg
+            });
+            showToast('¡Invitación enviada! Esperando que entre tu rival... ⏳', 'ph-hourglass', 'info');
+            return;
+        } catch (e) {
+            console.log("Compartir nativo cancelado o no disponible, usando portapapeles.");
+        }
+    }
+
+    navigator.clipboard.writeText(msg).then(() => {
+        showToast('¡Link copiado! Pegalo con Ctrl + V en WhatsApp.', 'ph-check-circle', 'success');
+        const btn = document.getElementById('btn-copiar-privado');
+        if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Copiado!`;
+    }).catch(() => {
+        showToast('Error al copiar. Seleccionalo de la barra de arriba.', 'ph-warning-circle', 'danger');
+    });
+}
+
+function unirseSalaPrivada(salaId) {
+    const idRed = obtenerIdRedVersus();
+
+    let nickExistente = getPref('ev_custom_nick', '');
+    if (!nickExistente && (!obtenerUsuarioLogueado() || obtenerUsuarioLogueado().id === 'guest')) {
+        let nuevoNick = prompt("🏆 ¡Te desafiaron a un duelo! Ingresá tu apodo para entrar a la cancha:");
+        if (nuevoNick === null) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return; 
+        }
+        nuevoNick = nuevoNick.trim() || ("Jugador_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+        setPref('ev_custom_nick', nuevoNick.substring(0, 16));
+    }
+
+    versusPartidaId = salaId;
+    versusRol = 'jugador_2';
+    esModoVersus = true;
+    esModoBot = false;
+    versusPartidaEnCurso = false;
+    versusEstadios = [];
+
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    showToast("Buscando al creador de la sala... 📡", "ph-circle-notch", "info");
+    
+    abrirLobbyEspera(); 
+    conectarRealtimeVersus();
+
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    versusTimeoutBusqueda = setTimeout(() => {
+        if (!versusPartidaEnCurso) {
+            cancelarBusquedaVersus();
+            showToast("El creador de la sala no respondió a tiempo. ❌", "ph-warning-circle", "danger");
+        }
+    }, 60000); 
+}
+
+// Función principal para buscar rival o crear una sala de espera
+async function buscarPartidaVersus() {
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
+    if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
+        showToast("Esperá un segundo que termine de cargar el catálogo de estadios... ⚽", "ph-circle-notch", "warning");
+        return;
+    }
+
+    const idRed = obtenerIdRedVersus();
+
+    let nickExistente = getPref('ev_custom_nick', '');
+    if (!nickExistente && (!obtenerUsuarioLogueado() || obtenerUsuarioLogueado().id === 'guest')) {
+        let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
+        if (nuevoNick === null) return; 
+        nuevoNick = nuevoNick.trim();
+        if (!nuevoNick) {
+            nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+        }
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+        setPref('ev_custom_nick', nuevoNick);
+    }
+
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
+    
+    if (versusChannel) {
+        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+        versusChannel = null;
+    }
+    
+    versusPartidaEnCurso = false;
+    esModoBot = false; 
+    esModoVersus = true;
+    versusLigaOrigen = null;
+    versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+
+    showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
+    abrirLobbyEspera(); 
+
+    // 🤖 RESCATE GARANTIZADO DEL BOT (Se activa entre 10 y 14 segundos si no entra nadie)
+    const tiempoEsperaBot = 10000 + Math.random() * 4000;
+    versusTimeoutBusqueda = setTimeout(() => {
+        if (!versusPartidaEnCurso) {
+            console.log("[1v1] 🤖 No se encontró rival humano a tiempo. Activando Bot de Rescate.");
+            activarBotDeRescate();
+        }
+    }, tiempoEsperaBot);
+
+    if (!supabaseClient) return;
+    
+    const nombresEstadios = versusEstadios;
+
+    try {
+        const { data, error } = await supabaseClient.rpc('buscar_o_crear_partida', {
+            p_jugador_id: idRed,
+            p_estadios_enviados: nombresEstadios,
+            p_dificultad: guessrDificultad
+        });
+
+        if (error) {
+            console.warn("⚠️ Aviso en RPC buscar_o_crear_partida:", error.message);
+            return;
+        }
+
+        if (!data) return;
+
+        const partida = Array.isArray(data) ? data[0] : data;
+        if (!partida) return;
+
+        versusPartidaId = partida.id;
+        if (partida.estadios_ids && partida.estadios_ids.length >= 5) {
+            versusEstadios = partida.estadios_ids;
+        }
+        if (partida.dificultad) guessrDificultad = partida.dificultad;
+
+        const estadoPartida = String(partida.estado || '').toLowerCase();
+
+        if (estadoPartida === 'esperando') {
+            versusRol = 'jugador_1';
+            console.log("[1v1] Sala creada en espera. ID:", versusPartidaId);
+            conectarRealtimeVersus();
+        } else if (estadoPartida === 'jugando') {
+            versusRol = 'jugador_2';
+            console.log("[1v1] ¡Conectando a rival en vivo! Partida ID:", versusPartidaId);
+            conectarRealtimeVersus();
+        }
+        
+    } catch (e) {
+        console.warn("Matchmaking en segundo plano, el bot tomará el control si no hay oponentes:", e.message);
+    }
+}
+
+// ========================================================
+// MOTOR REALTIME ROBUSTO: HANDSHAKE ASIMÉTRICO Y DETERMINISTA
+// ========================================================
+function conectarRealtimeVersus() {
+    if (!supabaseClient || !versusPartidaId) return;
+    
+    const idRed = obtenerIdRedVersus();
+    const miNombreLocal = obtenerNombreDisplay();
+
+    if (handshakeInterval) {
+        clearInterval(handshakeInterval);
+        handshakeInterval = null;
+    }
+
+    if (versusChannel) {
+        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+        versusChannel = null;
+    }
+
+    console.log(`[1v1] 📡 Conectando canal: sala_${versusPartidaId} | Rol: ${versusRol} | ID: ${idRed}`);
+
+    versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
+        config: { 
+            broadcast: { self: false },
+            presence: { key: idRed }
+        }
+    });
+
+    versusChannel
+        .on('presence', { event: 'leave' }, ({ leftPresences }) => {
+            console.log("[1v1] 🚨 Desconexión de socket detectada:", leftPresences);
+            if (versusPartidaEnCurso && !esModoBot) {
+                manejarAbandonoRival();
+            }
+        })
+        .on('broadcast', { event: 'invitado_unido' }, (response) => {
+            const data = response.payload || response;
+            if (data && data.id !== idRed && versusRol === 'jugador_1') {
+                console.log(`[1v1] 📥 Invitado detectado en la sala. Transmitiendo configuración oficial.`);
+                if (data.nombre) versusRivalNombre = data.nombre;
+
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'host_datos_partida',
+                    payload: { 
+                        id: idRed, 
+                        nombre: miNombreLocal, 
+                        estadios: versusEstadios, 
+                        dificultad: guessrDificultad 
+                    } 
+                });
+            }
+        })
+        .on('broadcast', { event: 'host_datos_partida' }, (response) => {
+            const data = response.payload || response;
+            if (data && data.id !== idRed && versusRol === 'jugador_2') {
+                console.log(`[1v1] 📥 Datos del Host recibidos con éxito.`);
+                if (data.nombre) versusRivalNombre = data.nombre;
+                if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
+                if (data.dificultad) guessrDificultad = data.dificultad;
+
+                versusChannel.send({
+                    type: 'broadcast',
+                    event: 'partida_confirmada',
+                    payload: { id: idRed, nombre: miNombreLocal } 
+                });
+
+                if (!versusPartidaEnCurso) {
+                    versusPartidaEnCurso = true;
+                    if (handshakeInterval) { clearInterval(handshakeInterval); handshakeInterval = null; }
+                    showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
+                    arrancarPartidoVersus();
+                }
+            }
+        })
+        .on('broadcast', { event: 'partida_confirmada' }, (response) => {
+            const data = response.payload || response;
+            if (data && data.id !== idRed && versusRol === 'jugador_1') {
+                if (data.nombre) versusRivalNombre = data.nombre;
+                console.log(`[1v1] 📥 Confirmación final recibida. ¡Arrancando partido!`);
+
+                if (!versusPartidaEnCurso) {
+                    versusPartidaEnCurso = true;
+                    if (handshakeInterval) { clearInterval(handshakeInterval); handshakeInterval = null; }
+                    showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
+                    arrancarPartidoVersus();
+                }
+            }
+        })
+        .on('broadcast', { event: 'rival_voto' }, (response) => {
+            const data = response.payload || response;
+            if (data && data.id === idRed) return;
+            console.log("[1v1] Voto recibido del oponente:", data);
+            
+            rivalGuessConfirmado = true;
+            rivalDataRonda = data;
+
+            if (!miGuessConfirmado) {
+                showToast("⚠️ ¡Tu rival ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
+                iniciarCuentaRegresivaVersus();
+            } else {
+                mostrarResultadosMutuosVersus();
+            }
+        })
+        .on('broadcast', { event: 'rival_taunt' }, (response) => {
+            const data = response.payload || response;
+            if (data && data.emoji) {
+                mostrarTauntEnPantalla(data.emoji, false);
+            }
+        })
+        .on('broadcast', { event: 'rival_listo_siguiente' }, () => {
+            rivalListoSiguiente = true;
+            if (miListoSiguiente) {
+                ejecutarPasoDeRondaVersus();
+            }
+        })
+        .on('broadcast', { event: 'forzar_siguiente_ronda' }, () => {
+            console.log("[1v1] Avance forzado sincronizado por inactividad.");
+            ejecutarPasoDeRondaVersus();
+        })
+        .on('broadcast', { event: 'rival_abandono' }, () => {
+            console.log("[1v1] El oponente abandonó la sesión.");
+            manejarAbandonoRival();
+        })
+        .subscribe((status) => {
+            console.log(`[1v1] 🚦 Estado WebSocket (${versusRol}): ${status}`);
+            if (status === 'SUBSCRIBED') {
+                versusChannel.track({ id: idRed });
+
+                if (handshakeInterval) clearInterval(handshakeInterval);
+
+                if (versusRol === 'jugador_2') {
+                    versusChannel.send({ 
+                        type: 'broadcast', 
+                        event: 'invitado_unido', 
+                        payload: { id: idRed, nombre: miNombreLocal } 
+                    });
+
+                    handshakeInterval = setInterval(() => {
+                        if (versusChannel && !versusPartidaEnCurso) {
+                            versusChannel.send({ 
+                                type: 'broadcast', 
+                                event: 'invitado_unido', 
+                                payload: { id: idRed, nombre: miNombreLocal } 
+                            });
+                        }
+                    }, 400);
+                } else if (versusRol === 'jugador_1') {
+                    handshakeInterval = setInterval(() => {
+                        if (versusChannel && !versusPartidaEnCurso) {
+                            versusChannel.send({
+                                type: 'broadcast',
+                                event: 'host_datos_partida',
+                                payload: { 
+                                    id: idRed, 
+                                    nombre: miNombreLocal, 
+                                    estadios: versusEstadios, 
+                                    dificultad: guessrDificultad 
+                                } 
+                            });
+                        }
+                    }, 400);
+                }
+            }
+        });
+}
+// Reloj de arena visual de 15 segundos si el rival arriesga primero
+function iniciarCuentaRegresivaVersus() {
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    versusTiempoRestante = 15;
+    
+    versusTimerInterval = setInterval(() => {
+        versusTiempoRestante--;
+        const titleEl = document.getElementById('game-title');
+        if (titleEl) {
+            titleEl.innerHTML = `<i class="ph-bold ph-timer animate-pulse" style="color:var(--danger-color);"></i> ¡RIVAL ELIGIÓ! TE QUEDAN <span style="color:var(--danger-color); font-weight:900;">${versusTiempoRestante}s</span>`;
+        }
+
+        if (versusTiempoRestante <= 0) {
+            clearInterval(versusTimerInterval);
+            showToast("⏱️ ¡Tiempo agotado! Se confirma tu posición actual.", "ph-clock", "danger");
+            if (!guessrSelectedLatLng) {
+                guessrSelectedLatLng = { lat: 0, lng: 0 }; 
+            }
+            confirmarArriesgoLocalVersus();
+        }
+    }, 1000);
+}
+
+// Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
+// Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
+function confirmarArriesgoLocalVersus() {
+    try {
+        if (versusTimerInterval) clearInterval(versusTimerInterval);
+        if (botAntesTimer) clearTimeout(botAntesTimer); // 🛡️ Frenamos el tiro anticipado si vos jugaste primero
+
+        const btn = document.getElementById('game-action-btn');
+        btn.setAttribute('data-estado', 'procesando');
+        btn.disabled = true;
+
+        if (!guessrSelectedLatLng) {
+            guessrSelectedLatLng = { lat: 0, lng: 0 };
+        }
+
+        const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+        const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+        
+        const dist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
+        const pts = isNaN(dist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -dist / 1200)));
+
+        miGuessConfirmado = true;
+
+        // Transmitimos datos solo si jugamos contra un humano real
+        if (!esModoBot && versusChannel) {
+            versusChannel.send({
+                type: 'broadcast',
+                event: 'rival_voto',
+                payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
+            });
+        }
+
+        if (rivalGuessConfirmado) {
+            mostrarResultadosMutuosVersus();
+        } else {
+            btn.innerHTML = `<i class="ph-bold ph-hourglass-medium animate-spin"></i> Esperando al rival...`;
+            const titleEl = document.getElementById('game-title');
+            if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
+            
+            // Arrancamos el reloj visual para mantener la ilusión de la partida
+            iniciarRelojEsperaRivalVersus();
+
+            if (esModoBot) {
+                // Como vos elegiste primero, el bot reacciona entre 1.5s y 3.5s después de forma fluida
+                setTimeout(() => {
+                    ejecutarVotoBotDinamico();
+                }, 1500 + Math.random() * 2000);
+            }
+        }
+    } catch (error) {
+        console.error("🚨 Error crítico al intentar enviar el voto local:", error);
+    }
+}
+
+// Reloj de resguardo que evita que el primer jugador se quede colgado si el rival se congela
+// Reloj de resguardo que evita que el primer jugador se quede colgado si el rival se congela
+function iniciarRelojEsperaRivalVersus() {
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    versusTiempoRestante = 15;
+    
+    versusTimerInterval = setInterval(() => {
+        versusTiempoRestante--;
+        const titleEl = document.getElementById('game-title');
+        if (titleEl) {
+            titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; Esperando oponente... <span style="color:var(--danger-color); font-weight:900;">${versusTiempoRestante}s</span>`;
+        }
+
+        if (versusTiempoRestante <= 0) {
+            clearInterval(versusTimerInterval);
+            showToast("⏱️ El oponente no respondió a tiempo. Procesando ronda.", "ph-clock", "warning");
+            
+            // 🔥 Forzamos el bypass de tiempo para avanzar sin esperarlo en la transición
+            rivalForcedTimeout = true; 
+            rivalGuessConfirmado = true;
+            rivalDataRonda = { lat: 0, lng: 0, puntos: 0, distancia: 9999 };
+            mostrarResultadosMutuosVersus();
+        }
+    }, 1000);
+}
+// Abre las cartas: Dibuja ambos pines, calcula el puntaje, muestra el mapa y avanza automáticamente
+function mostrarResultadosMutuosVersus() {
+    if (resultadosRondaMostrados) return; 
+    resultadosRondaMostrados = true;
+    if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(true);
+
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+    const btn = document.getElementById('game-action-btn');
+    
+    const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+    const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+
+    const miDist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
+    const misPts = isNaN(miDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -miDist / 1200)));
+    
+    guessrPuntosTotales += misPts;
+    rivalPuntosTotales += rivalDataRonda.puntos; 
+
+    guessrHistorialRondas.push({
+        ronda: guessrRondaActual,
+        estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
+        club: bscarPropiedad(guessrEstadioCorrecto, 'Club'),
+        distancia: miDist,
+        puntos: misPts
+    });
+
+    if (!isNaN(miDist) && miDist < 5) userStats.medallaLocalista = true;
+    if (!isNaN(miDist) && miDist < 1) userStats.guessrUnKm = true;
+    actualizarDotsProgreso();
+
+    guessrTargetMarker = L.circleMarker([tLat, tLng], {radius: 9, color: '#00e676', fillColor: '#111820', fillOpacity: 1, weight: 3})
+        .addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
+    
+    guessrPolyline = L.polyline([[guessrSelectedLatLng.lat, guessrSelectedLatLng.lng], [tLat, tLng]], {color: '#ff4757', weight: 2, dashArray: '6,8'}).addTo(guessrMapInstance);
+
+    const rivalMarker = L.circleMarker([rivalDataRonda.lat, rivalDataRonda.lng], {radius: 8, color: '#2979ff', fillColor: '#111820', fillOpacity: 1, weight: 3})
+        .addTo(guessrMapInstance).bindPopup(`<b>Rival (+${rivalDataRonda.puntos} pts)</b>`);
+
+    L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
+
+    let marcasParaEncuadrar = [guessrTargetMarker, rivalMarker];
+    if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
+    guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
+
+    const fraseFolkloreVersus = obtenerFraseFolklore(miDist);
+    document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
+
+    const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
+    const emoji = miDist < 50 ? '🎯' : miDist < 200 ? '✈️' : miDist < 800 ? '🗺️' : '🌍';
+
+    btn.innerHTML = `
+    <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
+        <span class="btn-action-stats">
+            ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b> <span style="font-size: 0.75rem; opacity: 0.75;">(Rival: +${rivalDataRonda.puntos})</span>
+        </span>
+        <span class="btn-action-text" style="font-size:0.78rem; opacity:0.9;">
+            <i class="ph-bold ph-circle-notch animate-spin"></i> Avanzando...
+        </span>
+    </div>`;
+    
+    btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
+    btn.style.color = "#000";
+    btn.style.boxShadow = "0 5px 0 #0d5332";
+    btn.setAttribute('data-estado', 'resultado');
+    btn.disabled = true;
+
+    dispararJuicinessRonda(miDist);
+
+    // ⚡ AVANCE AUTOMÁTICO FLUIDO: Deja ver los 2 pines durante 3.2s y pasa de ronda sin tocar nada
+    setTimeout(() => {
+        ejecutarPasoDeRondaVersus();
+    }, 3200);
+}
+
+// Avisa por canal rápido que estás listo para cambiar de ronda
+// Avisa por canal rápido que estás listo para cambiar de ronda
+// Avisa por canal rápido que estás listo para cambiar de ronda
+// Avisa por canal rápido que estás listo para cambiar de ronda (Bypass para Bot)
+// Avisa por canal rápido que estás listo para cambiar de ronda (Bypass para Bot)
+function solicitarSiguienteRondaVersus() {
+    const btn = document.getElementById('game-action-btn');
+    miListoSiguiente = true;
+    btn.disabled = true;
+    btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Esperando oponente...`;
+
+    // 🤖 SI ES UN BOT: No hay WebSocket activo, evitamos la espera de red y pasamos de estadio ya mismo
+    if (esModoBot) {
+        ejecutarPasoDeRondaVersus();
+        return;
+    }
+
+    if (rivalForcedTimeout) {
+        // Le avisamos al oponente colgado que saltamos de fase obligatoriamente
+        versusChannel.send({
+            type: 'broadcast',
+            event: 'forzar_siguiente_ronda',
+            payload: {}
+        });
+        ejecutarPasoDeRondaVersus();
+    } else {
+        versusChannel.send({
+            type: 'broadcast',
+            event: 'rival_listo_siguiente',
+            payload: { listo: true }
+        });
+
+        if (rivalListoSiguiente) {
+            ejecutarPasoDeRondaVersus();
+        }
+    }
+}
+
+// Vacía el mapa e inicia formalmente la ronda que sigue
+// Vacía el mapa e inicia formalmente la ronda que sigue
+// Vacía el mapa e inicia formalmente la ronda que sigue
+function ejecutarPasoDeRondaVersus() {
+    // 🛡️ LIMPIEZA DE SEGURIDAD: Matamos el temporizador de iniciativa del bot por si quedó corriendo
+    if (botAntesTimer) clearTimeout(botAntesTimer);
+
+    [guessrUserMarker, guessrTargetMarker, guessrPolyline].forEach(m => {
+        try { if (m) m.remove(); } catch (e) {}
+    });
+    guessrUserMarker = guessrTargetMarker = guessrPolyline = null;
+
+    miGuessConfirmado = false;
+    rivalGuessConfirmado = false;
+    rivalDataRonda = null;
+    miListoSiguiente = false;
+    rivalListoSiguiente = false;
+    rivalForcedTimeout = false; // Reseteamos el bypass para evaluar el siguiente estadio
+    resultadosRondaMostrados = false;
+    guessrRondaActual++;
+    
+    if (guessrRondaActual <= 5) {
+        lanzarRondaGuessr();
+    } else {
+        finalizarJuegoGuessr();
+    }
+}
+// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
+// Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
+async function arrancarPartidoVersus() {
+    // 🛡️ LIMPIEZA DE SEGURIDAD ABSOLUTA: Cancelamos timers de bots y búsqueda
+    if (botAntesTimer) clearTimeout(botAntesTimer);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    if (timeoutRetoDirecto) { clearTimeout(timeoutRetoDirecto); timeoutRetoDirecto = null; }
+    
+    // 📡 CENTRALIZADO: Apagamos el bucle del Handshake
+    if (handshakeInterval) {
+        clearInterval(handshakeInterval);
+        handshakeInterval = null;
+    }
+    
+    cerrarLobbyEspera();
+
+    // 🛡️ GUARDA DE CATÁLOGO: Espera a que los estadios estén en memoria antes de abrir la primera ronda
+    let intentos = 0;
+    while ((!catalogoGlobal || catalogoGlobal.length === 0) && intentos < 25) {
+        await new Promise(r => setTimeout(r, 150));
+        intentos++;
+    }
+
+    guessrRondaActual = 1;
+    guessrPuntosTotales = 0;
+    rivalPuntosTotales = 0;
+    guessrEstadiosJugados = [];
+    guessrHistorialRondas = [];
+    guessrHistorialCoordenadas = [];
+    pendingScore = null;
+    pendingScoreType = null;
+    
+    miGuessConfirmado = false;
+    rivalGuessConfirmado = false;
+    rivalDataRonda = null;
+    miListoSiguiente = false;
+    rivalListoSiguiente = false;
+    resultadosRondaMostrados = false;
+    if (versusTimerInterval) clearInterval(versusTimerInterval);
+
+    lanzarRondaGuessr();
+}
     const u = obtenerUsuarioLogueado();
     if (u && u.id && u.id !== 'guest') return u.id;
     let guestId = sessionStorage.getItem('ev_guest_versus_id');
