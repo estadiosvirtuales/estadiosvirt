@@ -660,7 +660,7 @@ body.video-abierto .hero-section {
 .close-btn:hover{background:var(--danger-color);border-color:var(--danger-color);transform:scale(1.1) rotate(90deg)}
 #game-ui{display:none;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2010}
 .guessr-top-hud{position:absolute!important;top:68px!important;left:18px!important;pointer-events:auto;width:auto!important;max-width:320px;display:flex;flex-direction:column;align-items:flex-start;z-index:25}
-#game-title{font-size:.78rem!important;color:var(--text-main);margin-bottom:0;font-weight:800!important;text-transform:uppercase;letter-spacing:.5px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;background:rgba(10,16,28,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:6px 12px;border-radius:10px;border:1.5px solid var(--border-strong);box-shadow:0 6px 18px rgba(0,0,0,.6)}
+#game-title{font-size:.78rem!important;color:var(--text-main);margin-bottom:0;font-weight:800!important;text-transform:uppercase;letter-spacing:.5px;display:inline-flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:6px;white-space:nowrap;background:rgba(10,16,28,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:6px 12px;border-radius:10px;border:1.5px solid var(--border-strong);box-shadow:0 6px 18px rgba(0,0,0,.6)}
 .rounds-progress{display:flex;gap:4px;justify-content:flex-start;margin-bottom:5px;width:100%}
 .round-dot{width:20px;height:4px;border-radius:2px;background:var(--border-strong);transition:all .4s ease}
 .round-dot.done{background:var(--accent-color);box-shadow:0 0 8px var(--accent-glow)}
@@ -5443,29 +5443,67 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 8px 24px rgba(255, 71, 87, 0.25) !important;
 }
 
-/* 💡 HUD DE PISTAS CON ÍCONOS PNG */
+/* 💡 HUD DE PISTAS CON GLOBITO INTERACTIVO */
 .guessr-hud-hints {
+    position: relative;
+    margin-top: 6px;
+    z-index: 30;
+}
+
+.guessr-hint-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(10, 16, 28, 0.9);
+    border: 1.5px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 5px 12px;
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 10px var(--accent-glow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guessr-hint-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.7), 0 0 16px var(--accent-glow);
+}
+
+.guessr-hint-balloon {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 290px;
+    background: rgba(10, 16, 28, 0.95);
+    border: 1.5px solid var(--border-strong);
+    border-top: 2px solid var(--accent-color);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.85), 0 0 20px rgba(0,230,118,0.2);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    animation: fadeSlideUp 0.22s ease forwards;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 35;
+}
+
+.guessr-hint-balloon.active {
+    display: flex;
+}
+
+.guessr-hint-row {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 5px;
-    background: rgba(10, 16, 28, 0.88);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1.5px solid rgba(0, 230, 118, 0.35);
-    border-radius: 10px;
-    padding: 4px 10px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-    animation: fadeSlideUp 0.3s ease;
-}
-
-.hint-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.72rem;
-    font-weight: 800;
+    font-size: 0.76rem;
     color: var(--text-main);
+    font-weight: 700;
 }
 
 .hint-icon {
@@ -5475,8 +5513,13 @@ html[data-theme="light"] .xp-bar-big-fill {
     filter: drop-shadow(0 0 4px rgba(0, 255, 119, 0.5));
 }
 
-.hint-divider {
+.guessr-hint-trivia {
+    font-size: 0.74rem;
     color: var(--text-muted);
-    font-size: 0.7rem;
-    opacity: 0.6;
+    line-height: 1.45;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 10px;
+    border-left: 3px solid var(--accent-color);
+    margin-top: 2px;
 }

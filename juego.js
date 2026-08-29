@@ -3151,17 +3151,35 @@ if (esModoVersus) {
 guessrSelectedLatLng=null;actualizarDotsProgreso();
 const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
 
-// 💡 PISTAS EN MODO FÁCIL CON ÍCONOS PNG PROPIOS
+// 💡 PISTAS EN MODO FÁCIL CON GLOBITO INTERACTIVO (PAÍS, CAPACIDAD Y TRIVIA)
 const hintsBox = document.getElementById('guessr-hud-hints');
 if (hintsBox) {
     if (guessrDificultad === 'facil' && !esModoDiario) {
         const paisEstadio = bscarPropiedad(guessrEstadioCorrecto, 'País') || 'Internacional';
         const capEstadio = String(bscarPropiedad(guessrEstadioCorrecto, 'Capacidad')).replace(/[^0-9]/g, '');
-        const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} esp.` : '';
-        hintsBox.style.display = 'flex';
+        const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} espectadores` : 'No especificada';
+        const triviaEstadio = (bscarPropiedad(guessrEstadioCorrecto, 'Dato Curioso') || '¡Este estadio esconde grandes historias del fútbol mundial!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
+
+        hintsBox.style.display = 'block';
         hintsBox.innerHTML = `
-            <span class="hint-item"><img src="mundo.jpg" class="hint-icon" alt="País" onerror="this.src='mundo.png';"> <b>${paisEstadio}</b></span>
-            ${capTexto ? `<span class="hint-divider">·</span><span class="hint-item"><img src="capacidad.jpg" class="hint-icon" alt="Capacidad" onerror="this.src='capacidad.png';"> <b>${capTexto}</b></span>` : ''}
+            <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir pistas">
+                <i class="ph-fill ph-lightbulb" style="color:var(--accent-color); font-size: 1rem;"></i>
+                <span>Pistas</span>
+            </button>
+            <div class="guessr-hint-balloon" id="guessr-hint-balloon" onclick="event.stopPropagation()">
+                <div class="guessr-hint-row">
+                    <img src="mundo.jpg" class="hint-icon" alt="País" onerror="this.src='mundo.png';">
+                    <span>País: <b style="color:var(--accent-color);">${paisEstadio}</b></span>
+                </div>
+                <div class="guessr-hint-row">
+                    <img src="capacidad.jpg" class="hint-icon" alt="Capacidad" onerror="this.src='capacidad.png';">
+                    <span>Capacidad: <b style="color:var(--accent-color);">${capTexto}</b></span>
+                </div>
+                <div class="guessr-hint-trivia">
+                    <b style="color:var(--text-main); display:block; margin-bottom:3px;"><i class="ph-bold ph-sparkle" style="color:var(--accent-color);"></i> Trivia:</b>
+                    ${triviaEstadio}
+                </div>
+            </div>
         `;
     } else {
         hintsBox.style.display = 'none';
@@ -3173,12 +3191,12 @@ if (hintsBox) {
 if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
 if (guessrDificultad === 'dificil' && !esModoDiario) {
     guessrTiempoRestanteIndividual = 30;
-    document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+    document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
     
     guessrTimerIndividualInterval = setInterval(() => {
         guessrTiempoRestanteIndividual--;
         const gt = document.getElementById('game-title');
-        if (gt) gt.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+        if (gt) gt.innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
         
         if (guessrTiempoRestanteIndividual <= 0) {
             clearInterval(guessrTimerIndividualInterval);
@@ -3189,7 +3207,7 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
         }
     }, 1000);
 } else {
-    document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+    document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
 }
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
@@ -5986,3 +6004,8 @@ async function compartirCartaFUT() {
         showToast("Error al generar la imagen. Intentá de nuevo.", "ph-warning-circle", "danger");
     }
 }
+window.toggleGuessrHintBalloon = function(event) {
+    if (event) event.stopPropagation();
+    const balloon = document.getElementById('guessr-hint-balloon');
+    if (balloon) balloon.classList.toggle('active');
+};
