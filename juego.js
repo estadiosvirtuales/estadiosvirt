@@ -1017,6 +1017,9 @@ function generarAvatarHTML(avatarImg) {
 let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119","1916896887"];
 let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
+let guessrDificultad = 'medio';
+let guessrTimerIndividualInterval = null;
+let guessrTiempoRestanteIndividual = 30;
 let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrPolyline=null,guessrSelectedLatLng=null;
 let usuarioLogueadoCache = undefined;
 let previewMapInstance=null;
@@ -1920,6 +1923,7 @@ function cerrarModalVideo(){
     }
 
     // Código clásico de limpieza visual (Sigue haciendo lo mismo de siempre abajo)
+    if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
     document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');document.getElementById('modal-card').classList.remove('resultado-final');
     try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
     try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
@@ -1936,13 +1940,76 @@ function cerrarModalPerfil(){document.getElementById('profile-modal').style.disp
 function cerrarModalOrden(){document.getElementById('order-modal').style.display='none';}
 function cerrarModalRanking(){document.getElementById('ranking-modal').style.display='none';}
 
+let destinoDificultadActual = { modo: '', extra: null };
+
 function abrirModalGuessr() {
+    volverAModosGuessr();
     document.getElementById('guessr-modal').style.display = 'flex';
 }
 
 function cerrarModalGuessr() {
     document.getElementById('guessr-modal').style.display = 'none';
 }
+
+window.mostrarPasoDificultad = function(modo, extra = null) {
+    destinoDificultadActual = { modo: modo, extra: extra };
+    
+    const vModos = document.getElementById('guessr-view-modos');
+    const vDiff = document.getElementById('guessr-view-dificultad');
+    const title = document.getElementById('guessr-modal-title');
+    const sub = document.getElementById('guessr-modal-sub');
+
+    if (vModos) vModos.style.display = 'none';
+    if (vDiff) vDiff.style.display = 'flex';
+
+    if (title) title.textContent = 'Elegí la Dificultad';
+    if (sub) {
+        if (modo === 'solo') sub.textContent = 'Modo Individual';
+        else if (modo === 'versus_global') sub.textContent = '1 vs 1 Global (Emparejamiento por dificultad)';
+        else if (modo === 'sala_privada') sub.textContent = 'Sala Privada por Link';
+        else if (modo === 'reto_amigo') sub.textContent = `Desafío contra ${extra || 'tu amigo'}`;
+    }
+
+    document.getElementById('guessr-modal').style.display = 'flex';
+};
+
+window.volverAModosGuessr = function() {
+    const vModos = document.getElementById('guessr-view-modos');
+    const vDiff = document.getElementById('guessr-view-dificultad');
+    const title = document.getElementById('guessr-modal-title');
+    const sub = document.getElementById('guessr-modal-sub');
+
+    if (destinoDificultadActual.modo === 'reto_amigo') {
+        cerrarModalGuessr();
+        abrirModalLigaAmigosPrivada();
+        destinoDificultadActual = { modo: '', extra: null };
+        return;
+    }
+
+    if (vModos) vModos.style.display = 'flex';
+    if (vDiff) vDiff.style.display = 'none';
+    if (title) title.textContent = 'StadiumGuessr';
+    if (sub) sub.textContent = 'Elegí un modo de reconocimiento.';
+    destinoDificultadActual = { modo: '', extra: null };
+};
+
+window.confirmarDificultadYEliminarModal = function(diff) {
+    guessrDificultad = diff;
+    const modo = destinoDificultadActual.modo;
+    const extra = destinoDificultadActual.extra;
+    
+    cerrarModalGuessr();
+    
+    if (modo === 'solo') {
+        iniciarTrivia(diff);
+    } else if (modo === 'versus_global') {
+        buscarPartidaVersus();
+    } else if (modo === 'sala_privada') {
+        crearSalaPrivada();
+    } else if (modo === 'reto_amigo') {
+        ejecutarDesafioAmigoDirecto(extra, diff);
+    }
+};
 
 function switchTab(event,btn,type,estadio,pais,lat,lng){
 event.stopPropagation();const b=btn.closest('.trivia-balloon');b.querySelectorAll('.b-tab').forEach(t=>t.classList.remove('active'));b.querySelectorAll('.b-content').forEach(c=>c.classList.remove('active'));btn.classList.add('active');const ct=b.querySelector('.b-'+type);if(ct)ct.classList.add('active');
@@ -2146,10 +2213,12 @@ function abrirLobbyEspera() {
         animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     `;
     
+    const nomDiff = guessrDificultad === 'facil' ? 'Pibe' : guessrDificultad === 'dificil' ? 'Leyenda' : 'Crack';
+
     // Inyectamos el spinner, el cronómetro y la X de cancelación con hover interactivo
     lobby.innerHTML = `
         <i class="ph-bold ph-circle-notch animate-spin" style="color:var(--accent-color); font-size:1.2rem;"></i>
-        <span>Buscando rival... <b style="color:var(--accent-color); margin-left: 4px;">0:00</b></span>
+        <span>Buscando rival (${nomDiff})... <b style="color:var(--accent-color); margin-left: 4px;">0:00</b></span>
         <i class="ph-bold ph-x" style="cursor:pointer; margin-left: 12px; color:var(--text-muted); font-size:1.1rem; transition:color 0.2s;" 
            onmouseover="this.style.color='var(--danger-color)'" 
            onmouseout="this.style.color='var(--text-muted)'" 
@@ -2165,7 +2234,7 @@ function abrirLobbyEspera() {
         
         const textoLobby = lobby.querySelector('span');
         if (textoLobby) {
-            textoLobby.innerHTML = `Buscando rival... <b style="color:var(--accent-color); margin-left: 4px;">${tiempoFormateado}</b>`;
+            textoLobby.innerHTML = `Buscando rival (${nomDiff})... <b style="color:var(--accent-color); margin-left: 4px;">${tiempoFormateado}</b>`;
         }
     }, 1000);
 }
@@ -2429,7 +2498,8 @@ async function buscarPartidaVersus() {
     try {
         const { data, error } = await supabaseClient.rpc('buscar_o_crear_partida', {
             p_jugador_id: idUsuario,
-            p_estadios_enviados: nombresEstadios
+            p_estadios_enviados: nombresEstadios,
+            p_dificultad: guessrDificultad
         });
 
         // 🛡️ ESCUDO 1: Falla de red o error interno de la base de datos SQL
@@ -2465,6 +2535,7 @@ async function buscarPartidaVersus() {
         // Búsqueda inteligente (Fallbacks): Si no se llama 'id', busca 'partida_id', etc.
         versusPartidaId = partida.id || partida.partida_id || partida.id_partida;
         versusEstadios = partida.estadios_ids || partida.estadios || partida.lista_estadios;
+        if (partida.dificultad) guessrDificultad = partida.dificultad;
         
         // 🛡️ ESCUDO 4: El objeto existe, pero le faltan los datos vitales para jugar
         if (!versusPartidaId) {
@@ -2693,7 +2764,7 @@ function conectarRealtimeVersus() {
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'host_confirmado',
-                    payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios } 
+                    payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios, dificultad: guessrDificultad } 
                 });
             }
         })
@@ -2704,9 +2775,10 @@ function conectarRealtimeVersus() {
                 
                 if (data.nombre) versusRivalNombre = data.nombre;
                 
-                // Solo el invitado adopta los mapas del creador para mantener sincronía perfecta
-                if (data.estadios && data.estadios.length > 0 && versusRol === 'jugador_2') {
-                    versusEstadios = data.estadios;
+                // El invitado adopta los mapas y la dificultad elegida por el creador de la sala
+                if (versusRol === 'jugador_2') {
+                    if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
+                    if (data.dificultad) guessrDificultad = data.dificultad;
                 }
 
                 versusChannel.send({
@@ -2894,6 +2966,7 @@ function iniciarRelojEsperaRivalVersus() {
 function mostrarResultadosMutuosVersus() {
     if (resultadosRondaMostrados) return; 
     resultadosRondaMostrados = true;
+    if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(true);
 
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     const btn = document.getElementById('game-action-btn');
@@ -3146,22 +3219,50 @@ function iniciarRetoDiario() {
 
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
-function iniciarTrivia(){ 
-    cerrarLobbyEspera(); // 🔥 LÍNEA NUEVA: Limpieza preventiva por si venías de cancelar un Versus
+function iniciarTrivia(dificultad = 'medio'){ 
+    cerrarLobbyEspera();
     
     esModoVersus = false; 
-    esModoBot = false; // 🤖 Desactivamos el bot de raíz para que no interfiera en solitario
+    esModoBot = false;
     esModoDiario = false;
+    guessrDificultad = dificultad;
     
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
-    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); // Limpieza de seguridad de búsqueda
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
     
     if(!catalogoGlobal.length){showToast('Esperá que cargue el catálogo...','ph-info','danger');return;}
     guessrHistorialCoordenadas = [];
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
+window.toggleExpandirMapaGuessr = function(forzarEstado = null) {
+    const box = document.getElementById('guessr-floating-map-box');
+    const icon = document.getElementById('guessr-map-expand-icon');
+    if (!box) return;
 
+    if (forzarEstado !== null) {
+        if (forzarEstado) box.classList.add('pinned', 'expanded');
+        else box.classList.remove('pinned', 'expanded');
+    } else {
+        box.classList.toggle('pinned');
+        box.classList.toggle('expanded');
+    }
+
+    const estaExpandido = box.classList.contains('pinned') || box.classList.contains('expanded');
+    if (icon) {
+        icon.className = estaExpandido ? 'ph-bold ph-arrows-in-simple' : 'ph-bold ph-arrows-out-simple';
+    }
+
+    setTimeout(() => {
+        if (guessrMapInstance) guessrMapInstance.invalidateSize();
+    }, 280);
+};
+window.seleccionarDificultadGuessr = function(diff, btn) {
+    guessrDificultad = diff;
+    document.querySelectorAll('.diff-pill-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+};
 // MOTOR DEL GUESSR ADAPTADO (Y CON EL TYPO TOTALMENTE REPARADO)
 function lanzarRondaGuessr(){
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
@@ -3194,10 +3295,53 @@ if (esModoVersus) {
 
 guessrSelectedLatLng=null;actualizarDotsProgreso();
 const hintOverlay=document.getElementById('map-hint-overlay');if(hintOverlay)hintOverlay.style.opacity='1';
-document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+
+// 💡 PISTAS EN MODO FÁCIL CON ÍCONOS PNG PROPIOS
+const hintsBox = document.getElementById('guessr-hud-hints');
+if (hintsBox) {
+    if (guessrDificultad === 'facil' && !esModoDiario) {
+        const paisEstadio = bscarPropiedad(guessrEstadioCorrecto, 'País') || 'Internacional';
+        const capEstadio = String(bscarPropiedad(guessrEstadioCorrecto, 'Capacidad')).replace(/[^0-9]/g, '');
+        const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} esp.` : '';
+        hintsBox.style.display = 'flex';
+        hintsBox.innerHTML = `
+            <span class="hint-item"><img src="mundo.jpg" class="hint-icon" alt="País" onerror="this.src='mundo.png';"> <b>${paisEstadio}</b></span>
+            ${capTexto ? `<span class="hint-divider">·</span><span class="hint-item"><img src="capacidad.jpg" class="hint-icon" alt="Capacidad" onerror="this.src='capacidad.png';"> <b>${capTexto}</b></span>` : ''}
+        `;
+    } else {
+        hintsBox.style.display = 'none';
+        hintsBox.innerHTML = '';
+    }
+}
+
+// ⏱️ CONTRARRELOJ EN MODO DIFÍCIL (30s)
+if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
+if (guessrDificultad === 'dificil' && !esModoDiario) {
+    guessrTiempoRestanteIndividual = 30;
+    document.getElementById('game-title').innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+    
+    guessrTimerIndividualInterval = setInterval(() => {
+        guessrTiempoRestanteIndividual--;
+        const gt = document.getElementById('game-title');
+        if (gt) gt.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+        
+        if (guessrTiempoRestanteIndividual <= 0) {
+            clearInterval(guessrTimerIndividualInterval);
+            showToast("⏱️ ¡Tiempo agotado en modo Leyenda!", "ph-clock", "danger");
+            if (!guessrSelectedLatLng) guessrSelectedLatLng = { lat: 0, lng: 0 };
+            if (esModoVersus) confirmarArriesgoLocalVersus();
+            else procesarArriesgoGuessr();
+        }
+    }, 1000);
+} else {
+    document.getElementById('game-title').innerHTML=`<i class="ph-duotone ph-flag-banner" style="color:var(--accent-color);"></i> RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color);">${guessrPuntosTotales}</span> PTS`;
+}
 const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
 // PEGAR ESTO REEMPLAZANDO EL SETTIMEOUT(..., 600) DE lanzarRondaGuessr:
+    // Contraemos el mapa al inicio de cada ronda
+    if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(false);
+
     setTimeout(() => {
         if (guessrMapInstance) guessrMapInstance.remove();
         const mapContainer = document.getElementById('map-guess-container');
@@ -3218,16 +3362,14 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
             btn.disabled = false;
         });
 
-        // 🛡️ ResizeObserver: Garantiza que el mapa se dibuje bien apenas el contenedor es visible (Mejor que un setTimeout)
         const resizeObserver = new ResizeObserver(() => {
             if (guessrMapInstance) guessrMapInstance.invalidateSize();
         });
         resizeObserver.observe(mapContainer);
 
-        // Limpiamos el observer cuando el mapa se remueva para no gastar memoria
         guessrMapInstance.on('unload', () => resizeObserver.disconnect());
 
-    }, 300); // Podemos bajarlo a 300ms porque el ResizeObserver lo ataja seguro
+    }, 300);
 // 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes entre 12 y 24s)
     if (esModoBot) {
         if (botAntesTimer) clearTimeout(botAntesTimer);
@@ -3244,11 +3386,23 @@ if (esModoVersus) {
     confirmarArriesgoLocalVersus();
     return;
 }
+if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(true);
 
 const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;btn.setAttribute('data-estado','procesando');btn.disabled=true;
+if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
+
 const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
-const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);const pts=isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
-guessrPuntosTotales+=pts;
+const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);
+let basePts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
+
+// Multiplicador por dificultad
+let mult = 1.0;
+if (!esModoVersus && !esModoDiario) {
+    if (guessrDificultad === 'facil') mult = 0.8;
+    else if (guessrDificultad === 'dificil') mult = 1.5;
+}
+const pts = Math.round(basePts * mult);
+guessrPuntosTotales += pts;
 guessrHistorialRondas.push({
     ronda: guessrRondaActual,
     estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
@@ -5321,14 +5475,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         </div>
     </div>
 
-    <div class="liga-info-banner" style="margin-top: 4px;">
-        <span>Liga: <strong style="color:var(--accent-color); letter-spacing:0.5px;">${nombreVisualLiga.replace(/_/g, ' ')}</strong></span>
-        <button onclick="salirLigaAmigos()" class="btn-salir-liga">
-            <i class="ph-bold ph-sign-out" style="font-size: 1rem;"></i> SALIR
-        </button>
-    </div>
-
-    <div class="liga-tabs-row">
+    <div class="liga-tabs-row" style="margin-top: 10px;">
         <button onclick="cambiarVistaLiga('puntaje')" class="liga-tab-btn ${esPuntaje ? 'active' : ''}">
             <img src="liga-icon-puntaje.png" alt="Puntaje" style="width: 88px; height: 88px; object-fit: contain; margin-left: -28px;"> 
             <span>Puntaje máximo</span>
@@ -5397,7 +5544,13 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         });
     }
 
-    htmlContenido += '</div>';
+    htmlContenido += `</div>
+    <div style="display:flex; justify-content:center; margin-top:14px;">
+        <button onclick="salirLigaAmigos()" class="btn-salir-liga" style="padding: 7px 18px; font-size: 0.74rem;">
+            <i class="ph-bold ph-sign-out"></i> SALIR DE LA LIGA
+        </button>
+    </div>`;
+
     body.innerHTML = htmlContenido;
 }
 
@@ -5474,38 +5627,42 @@ window.desafiarAmigoDirecto = function(nombreRival) {
         return;
     }
 
+    cerrarModalLigaAmigosPrivada();
+    mostrarPasoDificultad('reto_amigo', nombreRival);
+};
+
+window.ejecutarDesafioAmigoDirecto = function(nombreRival, diff) {
+    guessrDificultad = diff;
+    const misEstadiosAleatorios = obtener5EstadiosVersus();
     const u = obtenerUsuarioLogueado();
     const miNombreRanking = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
 
     const idSala = Math.random().toString(36).substring(2, 8).toUpperCase();
     versusPartidaId = 'PRIV_' + idSala;
     versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
-    versusLigaOrigen = nombreLigaActivaCache; // 🏆 Este duelo nació en la liga -> cuenta para el ranking de triunfos
-    
+    versusLigaOrigen = nombreLigaActivaCache;
+
     versusRol = 'jugador_1';
     esModoVersus = true;
     esModoBot = false;
     versusPartidaEnCurso = false;
 
     if (!ligaAmigosChannel) {
-        showToast("Se perdió la conexión con la liga, reabrila e intentá de nuevo. 📡", "ph-warning-circle", "danger");
-        esModoVersus = false;
-        versusPartidaId = null;
-        return;
+        conectarPresenciaLiga(nombreLigaActivaCache, miNombreRanking);
     }
 
-    ligaAmigosChannel.send({
-        type: 'broadcast',
-        event: 'reto_directo',
-        payload: { de: miNombreRanking, para: nombreRival, salaId: versusPartidaId }
-    });
+    if (ligaAmigosChannel) {
+        ligaAmigosChannel.send({
+            type: 'broadcast',
+            event: 'reto_directo',
+            payload: { de: miNombreRanking, para: nombreRival, salaId: versusPartidaId, dificultad: diff }
+        });
+    }
 
-    cerrarModalLigaAmigosPrivada();
     abrirLobbyEspera();
-    showToast('Esperando que ' + nombreRival + ' acepte el duelo... ⏳', 'ph-hourglass', 'info');
+    showToast(`Desafío enviado a ${nombreRival} (${diff === 'facil' ? 'Pibe' : diff === 'dificil' ? 'Leyenda' : 'Crack'})... ⏳`, 'ph-hourglass', 'info');
     conectarRealtimeVersus();
 
-    // 🕒 Si en 30s el rival no entró a la sala (no llegó el handshake 'rival_entro'), avisamos y cortamos
     if (timeoutRetoDirecto) clearTimeout(timeoutRetoDirecto);
     timeoutRetoDirecto = setTimeout(() => {
         if (!versusPartidaEnCurso) {
@@ -5642,6 +5799,7 @@ function conectarPresenciaLiga(nombreLiga, miNombre) {
 
             if (esModoVersus) return; // Ya estoy jugando otra partida, no puedo aceptar ahora
 
+            if (data.dificultad) guessrDificultad = data.dificultad;
             mostrarNotificacionDesafio(data.de, data.salaId);
         })
         // 🔥 INYECTAR ESTO ACÁ:

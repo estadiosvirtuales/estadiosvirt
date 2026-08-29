@@ -658,19 +658,28 @@ body.video-abierto .hero-section {
 }
 .close-btn{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.15);padding:0;cursor:pointer;z-index:2020;border-radius:10px;width:38px;height:38px;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
 .close-btn:hover{background:var(--danger-color);border-color:var(--danger-color);transform:scale(1.1) rotate(90deg)}
-#game-ui{display:none;width:100%;background:var(--bg-color)!important;padding:20px!important;text-align:center;z-index:2010;border-radius:0 0 22px 22px}
-#game-title{font-size:.95rem!important;color:var(--text-main);margin-bottom:10px;font-weight:800!important;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--surface-color);padding:13px;border-radius:12px;border:2px solid var(--border-strong)}
-.rounds-progress{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
-.round-dot{width:28px;height:6px;border-radius:3px;background:var(--border-strong);transition:all .4s ease}
+#game-ui{display:none;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2010}
+.guessr-top-hud{position:absolute!important;top:68px!important;left:18px!important;pointer-events:auto;width:auto!important;max-width:320px;display:flex;flex-direction:column;align-items:flex-start;z-index:25}
+#game-title{font-size:.78rem!important;color:var(--text-main);margin-bottom:0;font-weight:800!important;text-transform:uppercase;letter-spacing:.5px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;background:rgba(10,16,28,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:6px 12px;border-radius:10px;border:1.5px solid var(--border-strong);box-shadow:0 6px 18px rgba(0,0,0,.6)}
+.rounds-progress{display:flex;gap:4px;justify-content:flex-start;margin-bottom:5px;width:100%}
+.round-dot{width:20px;height:4px;border-radius:2px;background:var(--border-strong);transition:all .4s ease}
 .round-dot.done{background:var(--accent-color);box-shadow:0 0 8px var(--accent-glow)}
 .round-dot.current{background:var(--accent-color);opacity:.5;animation:timerPulse 1s infinite}
-.score-popup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--accent-color);color:#000;font-size:1.8rem;font-weight:900;padding:10px 24px;border-radius:14px;pointer-events:none;z-index:100;white-space:nowrap;box-shadow:0 0 40px var(--accent-glow)}
-.score-popup.show{animation:scorePopIn .6s ease forwards}
-.score-popup.bad{background:var(--danger-color);color:#fff;box-shadow:0 0 40px rgba(255,71,87,.6)}
-#map-guess-container{width:100%;height:260px;background:var(--surface-color);border-radius:14px!important;border:3px solid var(--border-strong);margin-bottom:16px;transition:border-color .3s;overflow:hidden;position:relative}
-#map-guess-container:hover{border-color:var(--accent-color)}
+
+/* 🗺️ WIDGET FLOTANTE DESPLEGABLE CON TRANSPARENCIA */
+.guessr-floating-map-box{position:absolute!important;bottom:16px!important;right:16px!important;width:280px!important;height:190px!important;background:rgba(10,16,28,0.60)!important;border:1.5px solid rgba(255,255,255,0.18)!important;border-radius:14px!important;padding:6px!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;gap:5px!important;box-shadow:0 10px 30px rgba(0,0,0,.6)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;pointer-events:auto!important;z-index:30!important;transition:width .28s cubic-bezier(.175,.885,.32,1.275),height .28s cubic-bezier(.175,.885,.32,1.275),opacity .22s ease,background-color .22s ease,border-color .25s ease!important;opacity:.65}
+.guessr-floating-map-box:hover,
+.guessr-floating-map-box.expanded,
+.guessr-floating-map-box.pinned{width:min(580px,92vw)!important;height:min(420px,62vh)!important;opacity:1!important;background:var(--glass-bg)!important;border-color:var(--accent-color)!important;box-shadow:0 20px 50px rgba(0,0,0,.9),0 0 30px var(--accent-glow)!important}
+
+#game-action-btn{width:100%!important;padding:6px 10px!important;font-size:0.78rem!important;min-height:30px!important;height:30px!important;border-radius:8px!important;box-sizing:border-box!important;letter-spacing:0.3px}
+
+.guessr-map-expand-btn{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.75);border:1.5px solid var(--border-strong);color:var(--text-main);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;z-index:1000;transition:all .2s ease;backdrop-filter:blur(6px)}
+.guessr-map-expand-btn:hover{background:var(--accent-color);color:#000;border-color:var(--accent-color);transform:scale(1.1)}
+
+#map-guess-container{width:100%!important;flex:1!important;height:100%!important;min-height:0!important;background:var(--surface-color);border-radius:12px!important;border:1.5px solid var(--border-strong);margin-bottom:0!important;overflow:hidden;position:relative}
 .map-hint-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:5;transition:opacity .3s}
-.map-hint-text{background:var(--glass-bg);border:1px solid var(--border-strong);border-radius:12px;padding:10px 16px;font-size:.85rem;font-weight:700;color:var(--text-muted);backdrop-filter:blur(8px);display:flex;align-items:center;gap:8px}
+.map-hint-text{background:var(--glass-bg);border:1px solid var(--border-strong);border-radius:10px;padding:6px 12px;font-size:.78rem;font-weight:700;color:var(--text-muted);backdrop-filter:blur(8px);display:flex;align-items:center;gap:6px}
 /* ========================================================
    DASHBOARD DE PERFIL PANORÁMICO (Responsive: PC & Mobile)
    ======================================================== */
@@ -2031,10 +2040,8 @@ body.video-abierto .hero-section {
 .result-score-ring .score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
 .result-dist-tag{display:inline-flex;align-items:center;gap:6px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:20px;padding:6px 14px;font-size:.85rem;font-weight:800;color:var(--text-muted);margin-bottom:16px}
 @media(min-width:769px){
-.modal-content.stadium-guessr-layout{flex-direction:row!important}
-.modal-content.stadium-guessr-layout .video-container{width:58%!important;height:100%!important;border-radius:22px 0 0 22px!important}
-.modal-content.stadium-guessr-layout #game-ui{width:42%!important;height:100%!important;border-top:none!important;border-left:2px solid var(--border-strong);display:flex!important;flex-direction:column!important;justify-content:space-between!important;border-radius:0 22px 22px 0!important;padding:24px!important}
-.modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;height:100%!important;min-height:350px!important}
+.modal-content.stadium-guessr-layout{position:relative!important;width:95%!important;max-width:1350px!important;height:92vh!important;padding:0!important;overflow:hidden!important}
+.modal-content.stadium-guessr-layout .video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:22px!important}
 }
 @media(max-width:768px){
 .app-header{padding:12px 16px}
@@ -2063,12 +2070,13 @@ body.video-abierto .hero-section {
     padding: 0 !important;
 }
 
-/* 📺 EN CELULAR: El video pasa a ocupar el 50% de la pantalla y la UI el 50% para calce perfecto */
-.modal-content.stadium-guessr-layout{height:92vh!important; padding: 0 !important;}
-.modal-content.stadium-guessr-layout .video-container{height:48%!important;border-radius:18px 18px 0 0!important}
-.modal-content.stadium-guessr-layout #game-ui{height:52%!important;padding:8px 12px 10px!important;display:flex!important;flex-direction:column!important;justify-content:space-between!important;border-radius:0 0 18px 18px!important;overflow-y:auto!important;scrollbar-width:none;}
-.modal-content.stadium-guessr-layout #game-ui::-webkit-scrollbar{display:none;}
-.modal-content.stadium-guessr-layout #map-guess-container{flex-grow:1!important;min-height:110px!important;margin-bottom:8px!important}
+/* 📱 EN CELULAR: Video a pantalla completa y mapa flotante en panel inferior */
+.modal-content.stadium-guessr-layout{width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;border:none!important;padding:0!important}
+.modal-content.stadium-guessr-layout .video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important}
+.guessr-top-hud{top:64px!important;left:10px!important}
+.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:160px!important;opacity:.75!important}
+.guessr-floating-map-box.expanded,
+.guessr-floating-map-box.pinned{height:55vh!important;width:calc(100% - 20px)!important;opacity:1!important}
 
 .login-modal-box,
 .privacy-modal-box {
@@ -5351,4 +5359,124 @@ html[data-theme="light"] .xp-bar-big-fill {
     height: 48px;
     object-fit: contain;
     filter: drop-shadow(0 0 8px rgba(0, 255, 119, 0.5));
+}
+/* ========================================================
+   🎮 SELECTOR DE DIFICULTAD Y HUD DE PISTAS (STADIUMGUESSR)
+   ======================================================== */
+.guessr-diff-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.guessr-big-diff-btn {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+    background: linear-gradient(145deg, rgba(20, 32, 52, 0.9) 0%, rgba(10, 16, 28, 0.98) 100%);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+}
+
+.guessr-big-diff-btn:hover {
+    transform: translateY(-3px) scale(1.01);
+}
+
+.guessr-big-diff-btn .diff-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.guessr-big-diff-btn strong {
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+}
+
+.guessr-big-diff-btn p {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.diff-pill-tag {
+    font-size: 0.52rem !important;
+    font-weight: 900 !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+}
+
+/* 🟢 FÁCIL (Pibe) */
+.diff-btn-facil .diff-pill-tag { background: rgba(0, 230, 118, 0.16) !important; color: #00e676 !important; border: 1px solid rgba(0, 230, 118, 0.4) !important; }
+.diff-btn-facil:hover {
+    border-color: #00e676 !important;
+    box-shadow: 0 8px 24px rgba(0, 230, 118, 0.25) !important;
+}
+
+/* 🟡 CLÁSICO (Crack) */
+.diff-btn-medio .diff-pill-tag { background: rgba(234, 179, 8, 0.16) !important; color: #eab308 !important; border: 1px solid rgba(234, 179, 8, 0.4) !important; }
+.diff-btn-medio:hover {
+    border-color: #eab308 !important;
+    box-shadow: 0 8px 24px rgba(234, 179, 8, 0.25) !important;
+}
+
+/* 🔴 DIFÍCIL (Leyenda) */
+.diff-btn-dificil .diff-pill-tag { background: rgba(255, 71, 87, 0.16) !important; color: #ff4757 !important; border: 1px solid rgba(255, 71, 87, 0.4) !important; }
+.diff-btn-dificil:hover {
+    border-color: #ff4757 !important;
+    box-shadow: 0 8px 24px rgba(255, 71, 87, 0.25) !important;
+}
+
+/* 💡 HUD DE PISTAS CON ÍCONOS PNG */
+.guessr-hud-hints {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    background: rgba(10, 16, 28, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(0, 230, 118, 0.35);
+    border-radius: 10px;
+    padding: 4px 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+    animation: fadeSlideUp 0.3s ease;
+}
+
+.hint-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.hint-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(0, 255, 119, 0.5));
+}
+
+.hint-divider {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    opacity: 0.6;
 }

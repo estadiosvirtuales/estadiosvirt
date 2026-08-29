@@ -600,22 +600,30 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <button class="close-btn" onclick="cerrarModalVideo()"><i class="ph-bold ph-x"></i></button>
 <div id="modal-video-container" class="video-container"></div>
 <div id="game-ui">
-<div id="taunts-container" style="display: none; gap: 8px; justify-content: center; margin-bottom: 8px; width: 100%;">
-    <button onclick="mandarTaunt('🥶')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🥶</button>
-    <button onclick="mandarTaunt('🔥')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🔥</button>
-    <button onclick="mandarTaunt('👑')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">👑</button>
-    <button onclick="mandarTaunt('🤡')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🤡</button>
+<div class="guessr-top-hud">
+    <div id="taunts-container" style="display: none; gap: 8px; justify-content: center; margin-bottom: 8px; width: 100%;">
+        <button onclick="mandarTaunt('🥶')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🥶</button>
+        <button onclick="mandarTaunt('🔥')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🔥</button>
+        <button onclick="mandarTaunt('👑')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">👑</button>
+        <button onclick="mandarTaunt('🤡')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🤡</button>
+    </div>
+    <div class="rounds-progress" id="rounds-progress"></div>
+    <h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
+    <div id="guessr-hud-hints" class="guessr-hud-hints" style="display:none;"></div>
 </div>
-<div class="rounds-progress" id="rounds-progress"></div>
-<h3 id="game-title">RONDA 1 DE 5 • SCORE: 0 PTS</h3>
-<div id="map-guess-container">
-<div class="map-hint-overlay" id="map-hint-overlay">
-<div class="map-hint-text"><i class="ph-bold ph-map-pin" style="color:var(--accent-color);"></i> Tocá el mapa para clavar un pin</div>
+<div class="guessr-floating-map-box" id="guessr-floating-map-box">
+    <button type="button" class="guessr-map-expand-btn" id="guessr-map-expand-btn" onclick="toggleExpandirMapaGuessr()" title="Expandir/Contraer mapa">
+        <i class="ph-bold ph-arrows-out-simple" id="guessr-map-expand-icon"></i>
+    </button>
+    <div id="map-guess-container">
+        <div class="map-hint-overlay" id="map-hint-overlay">
+            <div class="map-hint-text"><i class="ph-bold ph-map-pin" style="color:var(--accent-color);"></i> Tocá el mapa</div>
+        </div>
+    </div>
+    <button id="game-action-btn" class="btn-3d secondary">
+        <i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa
+    </button>
 </div>
-</div>
-<button id="game-action-btn" class="btn-3d secondary" style="width:100%;padding:15px;font-size:1rem;">
-<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa
-</button>
 </div>
 </div>
 </div>
@@ -638,16 +646,16 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         
         <div style="text-align:center; margin-bottom: 12px;">
             <img src="mundo.jpg" alt="StadiumGuessr" style="width: 65px; height: 60px; object-fit: contain; margin-bottom: 4px; filter: drop-shadow(0 0 16px rgba(0, 255, 119, 0.65));" onerror="this.src='mundo.png';">
-            <h2 style="font-size:1.4rem; font-weight:900; color:var(--text-main); text-transform:uppercase; letter-spacing:-0.5px;">StadiumGuessr</h2>
-            <p style="color:var(--text-muted); font-size:0.82rem; margin-top:1px;">Elegí un modo de reconocimiento.</p>
+            <h2 id="guessr-modal-title" style="font-size:1.4rem; font-weight:900; color:var(--text-main); text-transform:uppercase; letter-spacing:-0.5px;">StadiumGuessr</h2>
+            <p id="guessr-modal-sub" style="color:var(--text-muted); font-size:0.82rem; margin-top:1px;">Elegí un modo de reconocimiento.</p>
         </div>
 
-       <div class="guessr-menu-container">
-            
+        <!-- VISTA 1: MENÚ PRINCIPAL DE MODOS -->
+        <div class="guessr-menu-container" id="guessr-view-modos">
             <!-- BLOQUE 1: UN JUGADOR -->
             <div>
                 <div class="guessr-menu-section-title">Un Jugador</div>
-                <button onclick="cerrarModalGuessr(); iniciarTrivia()" class="guessr-option-btn btn-opt-solo">
+                <button onclick="mostrarPasoDificultad('solo')" class="guessr-option-btn btn-opt-solo">
                     <div class="guessr-option-icon"><img src="icono-individual.png" alt="Individual" style="width: 100%; height: 100%; object-fit: contain;"></div>
                     <div class="guessr-option-text">
                         <strong>Modo Individual</strong>
@@ -660,14 +668,14 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
             <div>
                 <div class="guessr-menu-section-title">Multijugador (En Vivo)</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                    <button onclick="cerrarModalGuessr(); buscarPartidaVersus()" class="guessr-option-btn btn-opt-versus" style="padding: 12px 10px; flex-direction: column; text-align: center; justify-content: center; gap: 6px;">
+                    <button onclick="mostrarPasoDificultad('versus_global')" class="guessr-option-btn btn-opt-versus" style="padding: 12px 10px; flex-direction: column; text-align: center; justify-content: center; gap: 6px;">
                         <div class="guessr-option-icon"><img src="icono-1v1.png" alt="1v1" style="width: 100%; height: 100%; object-fit: contain;"></div>
                         <div class="guessr-option-text" style="align-items: center;">
                             <strong>1 vs 1 Global</strong>
                             <span>Partida rápida</span>
                         </div>
                     </button>
-                    <button onclick="cerrarModalGuessr(); crearSalaPrivada()" class="guessr-option-btn btn-opt-privada" style="padding: 12px 10px; flex-direction: column; text-align: center; justify-content: center; gap: 6px;">
+                    <button onclick="mostrarPasoDificultad('sala_privada')" class="guessr-option-btn btn-opt-privada" style="padding: 12px 10px; flex-direction: column; text-align: center; justify-content: center; gap: 6px;">
                         <div class="guessr-option-icon"><img src="icono-privada.png" alt="Sala Privada" style="width: 100%; height: 100%; object-fit: contain;"></div>
                         <div class="guessr-option-text" style="align-items: center;">
                             <strong>Sala Privada</strong>
@@ -694,7 +702,39 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                     </div>
                 </button>
             </div>
+        </div>
 
+        <!-- VISTA 2: SELECCIÓN DE DIFICULTAD (PASO 2) -->
+        <div id="guessr-view-dificultad" style="display:none; flex-direction:column; gap:10px;">
+            <div class="guessr-diff-cards-container">
+                <button type="button" class="guessr-big-diff-btn diff-btn-facil" onclick="confirmarDificultadYEliminarModal('facil')">
+                    <div class="diff-header-row">
+                        <span class="diff-pill-tag">0.8x XP</span>
+                        <strong style="color:#00e676;">Promesa</strong>
+                    </div>
+                    <p>Sobrevuelo aéreo con pistas de país y capacidad.</p>
+                </button>
+
+                <button type="button" class="guessr-big-diff-btn diff-btn-medio" onclick="confirmarDificultadYEliminarModal('medio')">
+                    <div class="diff-header-row">
+                        <span class="diff-pill-tag">1.0x XP</span>
+                        <strong style="color:#eab308;">Crack</strong>
+                    </div>
+                    <p>Sobrevuelo aéreo puro sin ayudas ni límite de tiempo.</p>
+                </button>
+
+                <button type="button" class="guessr-big-diff-btn diff-btn-dificil" onclick="confirmarDificultadYEliminarModal('dificil')">
+                    <div class="diff-header-row">
+                        <span class="diff-pill-tag">1.5x XP</span>
+                        <strong style="color:#ff4757;">Leyenda</strong>
+                    </div>
+                    <p>Contrarreloj estricto de 30 segundos sin pistas.</p>
+                </button>
+            </div>
+
+            <button type="button" class="btn-3d secondary" onclick="volverAModosGuessr()" style="width:100%; padding:10px; font-size:0.85rem; margin-top:4px;">
+                <i class="ph-bold ph-arrow-left"></i> Volver a los modos
+            </button>
         </div>
     </div>
 </div>
