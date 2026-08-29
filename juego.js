@@ -2241,11 +2241,9 @@ function abrirLobbyEspera() {
 }
 
 // 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
-// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
 async function cancelarBusquedaVersus() {
-    cerrarLobbyEspera(); // Borra el cartel flotante de la pantalla
+    cerrarLobbyEspera();
     
-    // Matamos los timers de búsqueda de la app
     if (versusTimeoutBusqueda) {
         clearTimeout(versusTimeoutBusqueda);
         versusTimeoutBusqueda = null;
@@ -2255,21 +2253,17 @@ async function cancelarBusquedaVersus() {
         handshakeInterval = null;
     }
     
-    // Desconectamos el canal activo de Supabase de raíz
     if (versusChannel) {
-        versusChannel.unsubscribe();
+        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
         versusChannel = null;
     }
 
-    // 👇 ESCUDO ANTI-ZOMBIES: Si cancelamos la búsqueda, marcamos la sala como cancelada en la BD
-    if (versusPartidaId && !versusPartidaId.startsWith('PRIV_') && !versusPartidaEnCurso) {
+    if (versusPartidaId && !versusPartidaId.startsWith('PRIV_') && !versusPartidaEnCurso && supabaseClient) {
         try {
             await supabaseClient.from('partidas').update({ estado: 'cancelada' }).eq('id', versusPartidaId);
         } catch(e) { console.warn("No se pudo limpiar la sala en la nube."); }
     }
-    // 👆 FIN DEL ESCUDO 👆
     
-    // Reseteamos las banderas globales competitivas
     esModoVersus = false;
     versusPartidaEnCurso = false;
     versusLigaOrigen = null;
@@ -2296,91 +2290,18 @@ function obtener5EstadiosVersus() {
                bscarPropiedad(f, 'Longitud').toString().trim() !== '';
     });
 
-    // Sorteo Fisher-Yates: Extrae elementos al azar uno a uno sin repetir pesos
     let resultado = [];
     let copia = [...disponibles];
     const cantidadAExtraer = Math.min(5, copia.length);
 
     for (let i = 0; i < cantidadAExtraer; i++) {
         const idxAleatorio = Math.floor(Math.random() * copia.length);
-        // Despatarramos el elemento de la copia y lo metemos en la canasta oficial
         resultado.push(copia.splice(idxAleatorio, 1)[0]);
     }
 
     return resultado;
 }
-// ========================================================
-// IDENTIFICADOR ÚNICO DE RED (ANTI-COLISIÓN DE INVITADOS)
-// ========================================================
-function obtenerIdRedVersus() {// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
-// 🛑 CANCELA EL MATCHMAKING Y DESCONECTA LOS CANALES DE SUPABASE
-async function cancelarBusquedaVersus() {
-    cerrarLobbyEspera(); // Borra el cartel flotante de la pantalla
-    
-    // Matamos los timers de búsqueda de la app
-    if (versusTimeoutBusqueda) {
-        clearTimeout(versusTimeoutBusqueda);
-        versusTimeoutBusqueda = null;
-    }
-    if (handshakeInterval) {
-        clearInterval(handshakeInterval);
-        handshakeInterval = null;
-    }
-    
-    // Desconectamos el canal activo de Supabase de raíz
-    if (versusChannel) {
-        versusChannel.unsubscribe();
-        versusChannel = null;
-    }
 
-    // 👇 ESCUDO ANTI-ZOMBIES: Si cancelamos la búsqueda, marcamos la sala como cancelada en la BD
-    if (versusPartidaId && !versusPartidaId.startsWith('PRIV_') && !versusPartidaEnCurso) {
-        try {
-            await supabaseClient.from('partidas').update({ estado: 'cancelada' }).eq('id', versusPartidaId);
-        } catch(e) { console.warn("No se pudo limpiar la sala en la nube."); }
-    }
-    // 👆 FIN DEL ESCUDO 👆
-    
-    // Reseteamos las banderas globales competitivas
-    esModoVersus = false;
-    versusPartidaEnCurso = false;
-    versusLigaOrigen = null;
-    
-    showToast("Búsqueda cancelada con éxito 🛑", "ph-x-circle", "info");
-}
-
-// ⏳ DESTRUYE EL CONTADOR VISUAL FLOTANTE
-function cerrarLobbyEspera() {
-    if (matchmakingInterval) {
-        clearInterval(matchmakingInterval);
-        matchmakingInterval = null;
-    }
-    const lobby = document.getElementById('matchmaking-lobby');
-    if (lobby) lobby.remove();
-}
-
-function obtener5EstadiosVersus() {
-    const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
-    const disponibles = pool.filter(f => {
-        const l = bscarPropiedad(f, 'Link del Video').toString().trim();
-        return (l.includes('youtube.com') || l.includes('youtu.be')) &&
-               bscarPropiedad(f, 'Latitud').toString().trim() !== '' &&
-               bscarPropiedad(f, 'Longitud').toString().trim() !== '';
-    });
-
-    // Sorteo Fisher-Yates: Extrae elementos al azar uno a uno sin repetir pesos
-    let resultado = [];
-    let copia = [...disponibles];
-    const cantidadAExtraer = Math.min(5, copia.length);
-
-    for (let i = 0; i < cantidadAExtraer; i++) {
-        const idxAleatorio = Math.floor(Math.random() * copia.length);
-        // Despatarramos el elemento de la copia y lo metemos en la canasta oficial
-        resultado.push(copia.splice(idxAleatorio, 1)[0]);
-    }
-
-    return resultado;
-}
 // ========================================================
 // IDENTIFICADOR ÚNICO DE RED (ANTI-COLISIÓN DE INVITADOS)
 // ========================================================
@@ -2554,8 +2475,8 @@ async function buscarPartidaVersus() {
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     abrirLobbyEspera(); 
 
-    // 🤖 RESCATE GARANTIZADO DEL BOT (Se activa entre 10 y 14 segundos si no entra nadie)
-    const tiempoEsperaBot = 10000 + Math.random() * 4000;
+    // 🤖 RESCATE GARANTIZADO DEL BOT (Se activa entre 30 y 40 segundos si no entra nadie)
+    const tiempoEsperaBot = 30000 + Math.random() * 10000;
     versusTimeoutBusqueda = setTimeout(() => {
         if (!versusPartidaEnCurso) {
             console.log("[1v1] 🤖 No se encontró rival humano a tiempo. Activando Bot de Rescate.");
@@ -2605,6 +2526,99 @@ async function buscarPartidaVersus() {
     } catch (e) {
         console.warn("Matchmaking en segundo plano, el bot tomará el control si no hay oponentes:", e.message);
     }
+}
+
+// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT
+async function ejecutarVotoBotDinamico() {
+    if (!esModoBot || rivalGuessConfirmado) return;
+
+    const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+    const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+
+    let botLat = tLat;
+    let botLng = tLng;
+    let botDist = 0;
+    let botPts = 0;
+
+    for (let intento = 0; intento < 4; intento++) {
+        const kmErrorAleatorio = 80 + Math.random() * 770;
+        const anguloGrad = Math.random() * Math.PI * 2;
+        
+        const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
+        const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
+        
+        botLat = tLat + desfaseLat;
+        botLng = tLng + desfaseLng;
+        
+        botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
+        botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
+
+        try {
+            const respuesta = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${botLat}&longitude=${botLng}&localityLanguage=es`);
+            const datosGeograficos = await respuesta.json();
+            
+            if (datosGeograficos && datosGeograficos.countryCode) {
+                break;
+            }
+        } catch (e) {
+            break;
+        }
+    }
+    
+    rivalGuessConfirmado = true;
+    rivalDataRonda = { lat: botLat, lng: botLng, puntos: botPts, distancia: botDist };
+
+    if (!miGuessConfirmado) {
+        showToast("⚠️ ¡Tu oponente ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
+        iniciarCuentaRegresivaVersus();
+    } else {
+        mostrarResultadosMutuosVersus();
+    }
+}
+
+function activarBotDeRescate() {
+    cerrarLobbyEspera(); 
+    
+    if (handshakeInterval) clearInterval(handshakeInterval);
+    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
+    
+    if (versusChannel) {
+        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+        versusChannel = null;
+    }
+
+    esModoVersus = true;
+    versusPartidaEnCurso = true;
+    esModoBot = true; 
+    versusRol = 'jugador_1'; 
+    
+    const nombresFakes = [
+        "Nico_88", "Juani8794", "Gonza_23", "Matias14", "Rulo_94", "Tomi_99", "Agus2001", "Fede_89",
+        "Lucas_93", "Tincho98", "Facu_2003", "Emi_95", "Jony_90", "Seba_87", "Ale_00", "Gaston_91",
+        "Leo_1994", "Maxi_22", "Tucu_99", "Chino_12", "Lucho_88", "Manu_2005", "Bauti_04", "Fran_97",
+        "ElDiego_DT", "Pulga10", "Panhito", "Toto_Cancha", "Gordo12", "Gambeta_10", "PaloYAfuera",
+        "Rustico_2", "TikiTaka", "El_DT_Online", "Capitan_10", "ElPibeDeBarrio", "Var_Oficial",
+        "EnfermoDelGol", "Corta_Pasto", "Juega_Bonito", "PelotaAlPiso", "Centro_Y_Adentro", "Magico_10",
+        "Faca_Gamer", "PibeFUT", "Láser", "Nari", "Pro_Gamer_FUT", "Fifa_King", "Leyenda_FUT",
+        "Gamer_Albiceleste", "Tryhard_Fut", "Crack_Virtual", "Joystick_10", "PibePlay", "Duka_88", "Cholo", "Peluca", "Zurdo",
+        "Ñeri", "Huguito", "Alejandrogado", "Boxer", "Cobra", "tete", "Delfi", "mari75", 
+        "Dibu_Fan", "ElBicho_CR", "Messi_Goat", "Enzo_F", "Julian_21", "Araña_9", "Motorcito_7",
+        "Paredes_Leyenda", "Licha_15", "Pipa_Gol", "Fideo_11", "Toro_22", "Cuti_Fan",
+        "Santi_Casla", "Juani_Albiceleste", "Bostero_22", "Millo91", "ReyDeCopas_7", "Rojo_Diablo",
+        "Boedo_Cuervo", "Fortinero", "Canalla_89", "Leproso_G", "Pincharrata_11", "Lobo_Platense",
+        "Gaston_Carp", "Seba_Xeneize", "ChinoCBA", "Cordobes2", "Mendu_14", "Quemero_10", "Funebrero_C"
+    ];
+
+    versusRivalNombre = nombresFakes[Math.floor(Math.random() * nombresFakes.length)];
+    
+    showToast(`¡Rival encontrado: ${versusRivalNombre}! Sincronizando... ⚽`, "ph-user-switch", "success");
+    
+    if (!versusEstadios || versusEstadios.length === 0) {
+        const misEstadiosAleatorios = obtener5EstadiosVersus();
+        versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
+    }
+
+    setTimeout(arrancarPartidoVersus, 1200);
 }
 
 // ========================================================
@@ -2686,7 +2700,7 @@ function conectarRealtimeVersus() {
             const data = response.payload || response;
             if (data && data.id !== idRed && versusRol === 'jugador_1') {
                 if (data.nombre) versusRivalNombre = data.nombre;
-                console.log(`[1v1] 📥 Confirmación final recibida. ¡Arrancando partido!`);
+                console.log(`[1v1] 📥 Confirmación final recibida en Host. ¡Arrancando partido!`);
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
@@ -2773,6 +2787,7 @@ function conectarRealtimeVersus() {
             }
         });
 }
+
 // Reloj de arena visual de 15 segundos si el rival arriesga primero
 function iniciarCuentaRegresivaVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
@@ -2794,6 +2809,57 @@ function iniciarCuentaRegresivaVersus() {
             confirmarArriesgoLocalVersus();
         }
     }, 1000);
+}
+
+// Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
+function confirmarArriesgoLocalVersus() {
+    try {
+        if (versusTimerInterval) clearInterval(versusTimerInterval);
+        if (botAntesTimer) clearTimeout(botAntesTimer);
+
+        const btn = document.getElementById('game-action-btn');
+        btn.setAttribute('data-estado', 'procesando');
+        btn.disabled = true;
+
+        if (!guessrSelectedLatLng) {
+            guessrSelectedLatLng = { lat: 0, lng: 0 };
+        }
+
+        const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+        const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+        
+        const dist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
+        const pts = isNaN(dist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -dist / 1200)));
+
+        miGuessConfirmado = true;
+
+        if (!esModoBot && versusChannel) {
+            versusChannel.send({
+                type: 'broadcast',
+                event: 'rival_voto',
+                payload: { lat: guessrSelectedLatLng.lat, lng: guessrSelectedLatLng.lng, puntos: pts, distancia: dist }
+            });
+        }
+
+        if (rivalGuessConfirmado) {
+            mostrarResultadosMutuosVersus();
+        } else {
+            btn.innerHTML = `<i class="ph-bold ph-hourglass-medium animate-spin"></i> Esperando al rival...`;
+            const titleEl = document.getElementById('game-title');
+            if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
+            
+            iniciarRelojEsperaRivalVersus();
+
+            if (esModoBot) {
+                // El bot responde entre 7 y 15 segundos después de la confirmación del usuario
+                setTimeout(() => {
+                    ejecutarVotoBotDinamico();
+                }, 7000 + Math.random() * 8000);
+            }
+        }
+    } catch (error) {
+        console.error("🚨 Error crítico al intentar enviar el voto local:", error);
+    }
 }
 
 // Procesa el click de confirmación local en el modo Versus (Bloquea pantalla y transmite)
