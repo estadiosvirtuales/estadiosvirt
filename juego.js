@@ -2145,6 +2145,7 @@ let vistaLigaActual = 'puntaje'; // 'puntaje' | 'triunfos' — qué pestaña est
 let versusLigaOrigen = null;    // Si el 1v1 en curso nació de un desafío ⚔️ dentro de una liga, acá va el nombre de esa liga
 
 let esModoVersus = false;         // El escudo: false = solitario, true = multijugador
+let esModoDiario = false;         // Bandera para saber si la partida activa es el Reto Diario (tipo Wordle)
 let estadiosDiariosList = [];
 let versusPartidaId = null;       // ID de la partida actual en Supabase
 let versusRol = null;             // Puede ser 'jugador_1' (Host) o 'jugador_2' (Rival)
