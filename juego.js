@@ -1924,6 +1924,9 @@ function cerrarModalVideo(){
 
     // Código clásico de limpieza visual (Sigue haciendo lo mismo de siempre abajo)
     if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
+    if (versusCountdownInterval) { clearInterval(versusCountdownInterval); versusCountdownInterval = null; }
+    const banner = document.getElementById('versus-next-round-banner');
+    if (banner) banner.remove();
     document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');document.getElementById('modal-card').classList.remove('resultado-final');
     try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
     try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
@@ -2160,9 +2163,9 @@ let rivalDataRonda = null;
 let miListoSiguiente = false;
 let rivalListoSiguiente = false;
 let versusTimerInterval = null;
+let versusCountdownInterval = null; // ⏱️ Intervalo del contador regresivo (3 a 0)
 let versusTiempoRestante = 15;
 let handshakeInterval = null;     // Intervalo para el latido de sincronización
-let rivalPuntosTotales = 0;       // Acumulador oficial del oponente
 let rivalForcedTimeout = false;
 let resultadosRondaMostrados = false;
 let esModoBot = false;             // Bandera para saber si el oponente actual es una IA
@@ -2823,13 +2826,15 @@ function iniciarRelojEsperaRivalVersus() {
     }, 1000);
 }
 
-// Abre las cartas: Dibuja ambos pines, calcula el puntaje, muestra el mapa y avanza automáticamente
+// Abre las cartas: Dibuja ambos pines, calcula el puntaje, muestra el mapa y avanza automáticamente con cuenta regresiva
 function mostrarResultadosMutuosVersus() {
     if (resultadosRondaMostrados) return; 
     resultadosRondaMostrados = true;
     if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(true);
 
     if (versusTimerInterval) clearInterval(versusTimerInterval);
+    if (versusCountdownInterval) clearInterval(versusCountdownInterval);
+
     const btn = document.getElementById('game-action-btn');
     
     const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
@@ -2868,18 +2873,34 @@ function mostrarResultadosMutuosVersus() {
     guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
 
     const fraseFolkloreVersus = obtenerFraseFolklore(miDist);
-    document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;">RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span></div>`;
+    document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;"><span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5</div>`;
 
     const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
     const emoji = miDist < 50 ? '🎯' : miDist < 200 ? '✈️' : miDist < 800 ? '🗺️' : '🌍';
+
+    let segundosRestantes = 3;
+    const textoAccion = guessrRondaActual < 5 ? 'Próxima ronda en' : 'Resultados en';
+
+    // 🏷️ Creación del Cartel Flotante Superior
+    const bannerViejo = document.getElementById('versus-next-round-banner');
+    if (bannerViejo) bannerViejo.remove();
+
+    const parentModal = document.getElementById('modal-card') || document.getElementById('game-ui');
+    if (parentModal) {
+        const cartel = document.createElement('div');
+        cartel.id = 'versus-next-round-banner';
+        cartel.style.cssText = 'position:absolute; top:70px; left:50%; transform:translateX(-50%); background:rgba(10,16,28,0.92); border:2px solid var(--accent-color); border-radius:30px; padding:8px 20px; color:#ffffff; font-size:0.92rem; font-weight:900; z-index:2200; box-shadow:0 8px 25px rgba(0,0,0,0.7), 0 0 18px var(--accent-glow); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); display:flex; align-items:center; gap:8px; pointer-events:none; white-space:nowrap; animation:fadeSlideUp 0.3s ease;';
+        cartel.innerHTML = `<i class="ph-bold ph-timer animate-pulse" style="color:var(--accent-color); font-size:1.15rem;"></i> <span>${textoAccion} <b style="color:var(--accent-color); font-size:1.15rem;" id="banner-countdown-num">${segundosRestantes}</b></span>`;
+        parentModal.appendChild(cartel);
+    }
 
     btn.innerHTML = `
     <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
         <span class="btn-action-stats">
             ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b> <span style="font-size: 0.75rem; opacity: 0.75;">(Rival: +${rivalDataRonda.puntos})</span>
         </span>
-        <span class="btn-action-text" style="font-size:0.78rem; opacity:0.9;">
-            <i class="ph-bold ph-circle-notch animate-spin"></i> Avanzando...
+        <span class="btn-action-text" id="versus-round-countdown" style="font-size:0.78rem; font-weight:900; opacity:0.95; white-space:nowrap;">
+            ⏱️ ${textoAccion} <b style="color:#000;">${segundosRestantes}s</b>
         </span>
     </div>`;
     
@@ -2891,9 +2912,26 @@ function mostrarResultadosMutuosVersus() {
 
     dispararJuicinessRonda(miDist);
 
-    setTimeout(() => {
-        ejecutarPasoDeRondaVersus();
-    }, 3200);
+    // ⏱️ Motor de cuenta regresiva sincronizado de 3 a 0
+    versusCountdownInterval = setInterval(() => {
+        segundosRestantes--;
+        
+        const numBanner = document.getElementById('banner-countdown-num');
+        if (numBanner) numBanner.textContent = Math.max(0, segundosRestantes);
+
+        const btnCountdown = document.getElementById('versus-round-countdown');
+        if (btnCountdown) {
+            btnCountdown.innerHTML = `⏱️ ${textoAccion} <b style="color:#000;">${Math.max(0, segundosRestantes)}s</b>`;
+        }
+
+        if (segundosRestantes <= 0) {
+            clearInterval(versusCountdownInterval);
+            versusCountdownInterval = null;
+            const b = document.getElementById('versus-next-round-banner');
+            if (b) b.remove();
+            ejecutarPasoDeRondaVersus();
+        }
+    }, 1000);
 }
 
 // Avisa por canal rápido que estás listo para cambiar de ronda
@@ -2931,6 +2969,9 @@ function solicitarSiguienteRondaVersus() {
 // Vacía el mapa e inicia formalmente la ronda que sigue
 function ejecutarPasoDeRondaVersus() {
     if (botAntesTimer) clearTimeout(botAntesTimer);
+    if (versusCountdownInterval) { clearInterval(versusCountdownInterval); versusCountdownInterval = null; }
+    const banner = document.getElementById('versus-next-round-banner');
+    if (banner) banner.remove();
 
     [guessrUserMarker, guessrTargetMarker, guessrPolyline].forEach(m => {
         try { if (m) m.remove(); } catch (e) {}

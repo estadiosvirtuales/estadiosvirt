@@ -5523,3 +5523,107 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-left: 3px solid var(--accent-color);
     margin-top: 2px;
 }
+/* ========================================================
+   ☀️ ADAPTACIÓN MODO CLARO: ELEMENTOS NUEVOS Y HUD
+   ======================================================== */
+
+/* 1. HUD Superior y Globito de Pistas de StadiumGuessr */
+[data-theme="light"] #game-title {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-color: #cbd5e1 !important;
+    color: #04160a !important;
+    box-shadow: 0 4px 14px rgba(4, 22, 10, 0.08) !important;
+}
+
+[data-theme="light"] .guessr-hint-btn {
+    background: #ffffff !important;
+    border-color: #00cc66 !important;
+    color: #04160a !important;
+    box-shadow: 0 4px 14px rgba(0, 204, 102, 0.15) !important;
+}
+
+[data-theme="light"] .guessr-hint-balloon {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    border-top: 2.5px solid #00cc66 !important;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12) !important;
+}
+
+[data-theme="light"] .guessr-hint-row {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .guessr-hint-trivia {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+    border-left-color: #00cc66 !important;
+}
+
+[data-theme="light"] .guessr-hint-trivia b {
+    color: #0f172a !important;
+}
+
+/* 2. Selector de Dificultad (Promesa, Crack, Leyenda) */
+[data-theme="light"] .guessr-big-diff-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .guessr-big-diff-btn p {
+    color: #475569 !important;
+}
+
+[data-theme="light"] .diff-btn-facil:hover {
+    border-color: #00cc66 !important;
+    box-shadow: 0 8px 24px rgba(0, 204, 102, 0.18) !important;
+}
+
+[data-theme="light"] .diff-btn-medio:hover {
+    border-color: #d97706 !important;
+    box-shadow: 0 8px 24px rgba(217, 119, 6, 0.18) !important;
+}
+
+[data-theme="light"] .diff-btn-dificil:hover {
+    border-color: #e11d48 !important;
+    box-shadow: 0 8px 24px rgba(225, 29, 72, 0.18) !important;
+}
+
+/* 3. Pastillas de Estadísticas de Cabecera (Rankings y Ligas) */
+[data-theme="light"] .header-stat-pill {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .stat-pill-info span {
+    color: #64748b !important;
+}
+
+[data-theme="light"] .stat-pill-info strong {
+    color: #0f172a !important;
+    text-shadow: none !important;
+}
+
+/* 4. Burbujas de Taunts / Reacciones en Vivo */
+[data-theme="light"] .taunt-bubble {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #0f172a !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15) !important;
+}
+
+/* 5. Atajos Hero en Celulares */
+@media (max-width: 1024px) {
+    [data-theme="light"] .btn-reto-banner,
+    [data-theme="light"] .btn-liga-banner {
+        background: #ffffff !important;
+        border: 2px solid #cbd5e1 !important;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    [data-theme="light"] .reto-banner-text strong {
+        color: #0f172a !important;
+        text-shadow: none !important;
+    }
+}
