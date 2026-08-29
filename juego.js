@@ -2505,7 +2505,7 @@ async function buscarPartidaVersus() {
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     abrirLobbyEspera(); 
 
-    const tiempoEsperaBot = 10000 + Math.random() * 4000;
+    const tiempoEsperaBot = 30000 + Math.random() * 10000;
     versusTimeoutBusqueda = setTimeout(() => {
         if (!versusPartidaEnCurso) {
             console.log("[1v1] 🤖 No se encontró rival humano a tiempo. Activando Bot de Rescate.");
@@ -2789,7 +2789,7 @@ function confirmarArriesgoLocalVersus() {
             if (esModoBot) {
                 setTimeout(() => {
                     ejecutarVotoBotDinamico();
-                }, 1500 + Math.random() * 2000);
+                }, 5000 + Math.random() * 10000);
             }
         }
     } catch (error) {
