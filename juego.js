@@ -3378,6 +3378,7 @@ function conectarRealtimeVersus() {
                 if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
                 if (data.dificultad) guessrDificultad = data.dificultad;
 
+                // Respondemos SIEMPRE la confirmación para que el Host la reciba si estaba volviendo de WhatsApp
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'partida_confirmada',
@@ -3396,7 +3397,7 @@ function conectarRealtimeVersus() {
             const data = response.payload || response;
             if (data && data.id !== idRed && versusRol === 'jugador_1') {
                 if (data.nombre) versusRivalNombre = data.nombre;
-                console.log(`[1v1] 📥 Confirmación final recibida. ¡Arrancando partido!`);
+                console.log(`[1v1] 📥 Confirmación final recibida en Host. ¡Arrancando partido!`);
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
@@ -5772,36 +5773,12 @@ document.addEventListener("visibilitychange", () => {
 
         // Si estábamos en el lobby esperando rival y el WebSocket se durmió al salir a WhatsApp
         if (esModoVersus && !versusPartidaEnCurso && versusPartidaId) {
-            console.log("[1v1] 🔄 Despertando conexión WebSocket tras volver de WhatsApp...");
-            
-            let idUsuario = getUserId();
-            if (!idUsuario || idUsuario === 'guest') {
-                idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
+            console.log("[1v1] 🔄 Despertando y restableciendo conexión WebSocket...");
+            if (versusChannel) {
+                try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+                versusChannel = null;
             }
-            const miNombreLocal = obtenerNombreDisplay();
-
-            // Si el canal de Supabase se desconectó o quedó en error, lo recreamos
-            if (!versusChannel || versusChannel.state !== 'joined') {
-                if (versusChannel) {
-                    try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
-                }
-                conectarRealtimeVersus();
-            } else {
-                // Si el socket sigue vivo, emitimos inmediatamente el pulso de sincronización
-                versusChannel.send({ 
-                    type: 'broadcast', 
-                    event: 'rival_entro', 
-                    payload: { id: idUsuario, nombre: miNombreLocal } 
-                });
-
-                if (versusRol === 'jugador_1') {
-                    versusChannel.send({
-                        type: 'broadcast',
-                        event: 'host_confirmado',
-                        payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios }
-                    });
-                }
-            }
+            conectarRealtimeVersus();
         }
         return;
     }
