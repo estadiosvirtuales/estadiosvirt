@@ -2538,7 +2538,9 @@ async function buscarPartidaVersus() {
         if (partida.estadios_ids && partida.estadios_ids.length >= 5) {
             versusEstadios = partida.estadios_ids;
         }
-        if (partida.dificultad) guessrDificultad = partida.dificultad;
+        if (partida.dificultad && versusRol === 'jugador_2') {
+            guessrDificultad = partida.dificultad;
+        }
 
         const estadoPartida = String(partida.estado || '').toLowerCase();
 
@@ -4773,7 +4775,10 @@ async function manejarAbandonoRival() {
         : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
     container.innerHTML = `
     <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
-        <h2 style="font-size:2rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;filter:drop-shadow(0 0 10px var(--accent-glow));display:flex;align-items:center;justify-content:center;gap:10px;">¡VICTORIA POR ABANDONO! <img src="liga-trofeo-header.png" alt="Trofeo" class="vs-result-trophy"></h2>
+        <div style="width: 125px; height: 125px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center;">
+            <img src="liga-trofeo-header.png" alt="Trofeo" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 18px rgba(0, 230, 118, 0.9)) drop-shadow(0 0 35px rgba(0, 230, 118, 0.45)); animation: rayoGlow 2.5s infinite alternate ease-in-out;">
+        </div>
+        <h2 style="font-size:1.85rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;text-shadow:0 0 18px rgba(0,230,118,0.55);letter-spacing:-0.5px;">¡VICTORIA POR ABANDONO!</h2>
         <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;max-width:340px;line-height:1.5;">Tu oponente abandonó la sesión o se quedó sin datos.</p>
         ${botonFinal}
     </div>`;
