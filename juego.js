@@ -2738,7 +2738,13 @@ function conectarRealtimeVersus() {
 
     let miNombreLocal = obtenerNombreDisplay();
 
-    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Identificador de red: ${idUsuario}`);
+    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Rol: ${versusRol} | Identificador: ${idUsuario}`);
+    
+    if (versusChannel) {
+        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+        versusChannel = null;
+    }
+
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { 
             broadcast: { self: false },
@@ -2748,61 +2754,57 @@ function conectarRealtimeVersus() {
 
     versusChannel
         .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-            console.log("[1v1] 🚨 Desconexión de socket detectada mediante Presence de Supabase:", leftPresences);
+            console.log("[1v1] 🚨 Desconexión de socket detectada:", leftPresences);
             if (versusPartidaEnCurso && !esModoBot) {
                 manejarAbandonoRival();
             }
         })
-        .on('broadcast', { event: 'rival_entro' }, (response) => {
+        .on('broadcast', { event: 'invitado_unido' }, (response) => {
             const data = response.payload || response;
-            // Red de respuesta fluida: si el ID no es mío, respondo con la confirmación oficial
-            if (data && data.id !== idUsuario) {
-                console.log(`[1v1] 📥 Rival detectado en la sala. Enviando confirmación con estadios.`);
-                
+            if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
+                console.log(`[1v1] 📥 Invitado detectado en la sala. Transmitiendo configuración oficial.`);
                 if (data.nombre) versusRivalNombre = data.nombre;
 
                 versusChannel.send({
                     type: 'broadcast',
-                    event: 'host_confirmado',
-                    payload: { id: idUsuario, nombre: miNombreLocal, estadios: versusEstadios, dificultad: guessrDificultad } 
+                    event: 'host_datos_partida',
+                    payload: { 
+                        id: idUsuario, 
+                        nombre: miNombreLocal, 
+                        estadios: versusEstadios, 
+                        dificultad: guessrDificultad 
+                    } 
                 });
             }
         })
-        .on('broadcast', { event: 'host_confirmado' }, (response) => {
+        .on('broadcast', { event: 'host_datos_partida' }, (response) => {
             const data = response.payload || response;
-            if (data && data.id !== idUsuario) {
-                console.log(`[1v1] 📥 Recibida confirmación de configuración de estadios.`);
-                
+            if (data && data.id !== idUsuario && versusRol === 'jugador_2') {
+                console.log(`[1v1] 📥 Datos del Host recibidos con éxito.`);
                 if (data.nombre) versusRivalNombre = data.nombre;
-                
-                // El invitado adopta los mapas y la dificultad elegida por el creador de la sala
-                if (versusRol === 'jugador_2') {
-                    if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
-                    if (data.dificultad) guessrDificultad = data.dificultad;
-                }
+                if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
+                if (data.dificultad) guessrDificultad = data.dificultad;
 
                 versusChannel.send({
                     type: 'broadcast',
-                    event: 'invitado_listo',
+                    event: 'partida_confirmada',
                     payload: { id: idUsuario, nombre: miNombreLocal } 
                 });
 
-                // Si soy el invitado, doy el paso al frente para iniciar la partida
-                if (!versusPartidaEnCurso && versusRol === 'jugador_2') {
+                if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
                     showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
                     arrancarPartidoVersus();
                 }
             }
         })
-        .on('broadcast', { event: 'invitado_listo' }, (response) => {
+        .on('broadcast', { event: 'partida_confirmada' }, (response) => {
             const data = response.payload || response;
-            if (data && data.id !== idUsuario) {
+            if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
                 if (data.nombre) versusRivalNombre = data.nombre;
+                console.log(`[1v1] 📥 Confirmación final recibida. ¡Arrancando partido!`);
 
-                // Si soy el host, confirmo el silbato del invitado y arranco la cancha
-                if (!versusPartidaEnCurso && versusRol === 'jugador_1') {
-                    console.log(`[1v1] 📥 Host confirma que el oponente está listo. ¡Arrancando partido!`);
+                if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
                     showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
                     arrancarPartidoVersus();
@@ -2844,19 +2846,46 @@ function conectarRealtimeVersus() {
             manejarAbandonoRival();
         })
         .subscribe((status) => {
-            console.log(`[1v1] 🚦 Estado de la conexión WebSocket en esta ventana: ${status}`);
+            console.log(`[1v1] 🚦 Estado WebSocket (${versusRol}): ${status}`);
             if (status === 'SUBSCRIBED') {
                 versusChannel.track({ id: idUsuario });
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
-                
-                versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
-                
-                handshakeInterval = setInterval(() => {
-                    if (versusChannel && !versusPartidaEnCurso) {
-                        versusChannel.send({ type: 'broadcast', event: 'rival_entro', payload: { id: idUsuario, nombre: miNombreLocal } });
-                    }
-                }, 400);
+
+                if (versusRol === 'jugador_2') {
+                    // El invitado emite su llegada para despertar al Host
+                    versusChannel.send({ 
+                        type: 'broadcast', 
+                        event: 'invitado_unido', 
+                        payload: { id: idUsuario, nombre: miNombreLocal } 
+                    });
+
+                    handshakeInterval = setInterval(() => {
+                        if (versusChannel && !versusPartidaEnCurso) {
+                            versusChannel.send({ 
+                                type: 'broadcast', 
+                                event: 'invitado_unido', 
+                                payload: { id: idUsuario, nombre: miNombreLocal } 
+                            });
+                        }
+                    }, 400);
+                } else if (versusRol === 'jugador_1') {
+                    // El Host emite sus datos continuamente por si el invitado ya estaba conectado
+                    handshakeInterval = setInterval(() => {
+                        if (versusChannel && !versusPartidaEnCurso) {
+                            versusChannel.send({
+                                type: 'broadcast',
+                                event: 'host_datos_partida',
+                                payload: { 
+                                    id: idUsuario, 
+                                    nombre: miNombreLocal, 
+                                    estadios: versusEstadios, 
+                                    dificultad: guessrDificultad 
+                                } 
+                            });
+                        }
+                    }, 400);
+                }
             }
         });
 }
@@ -3103,19 +3132,26 @@ function ejecutarPasoDeRondaVersus() {
 }
 // Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
 // Resetea a cero los contadores generales del 1v1 (Limpieza de Reloj de Búsqueda)
-function arrancarPartidoVersus() {
+async function arrancarPartidoVersus() {
     // 🛡️ LIMPIEZA DE SEGURIDAD ABSOLUTA: Cancelamos timers de bots y búsqueda
     if (botAntesTimer) clearTimeout(botAntesTimer);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
     if (timeoutRetoDirecto) { clearTimeout(timeoutRetoDirecto); timeoutRetoDirecto = null; }
     
-    // 📡 CENTRALIZADO: Apagamos el bucle del Handshake por completo para que no mande ráfagas de red en medio del juego
+    // 📡 CENTRALIZADO: Apagamos el bucle del Handshake
     if (handshakeInterval) {
         clearInterval(handshakeInterval);
         handshakeInterval = null;
     }
     
-    cerrarLobbyEspera(); // Apaga el cronómetro visual del lobby porque ya arranca el partido
+    cerrarLobbyEspera();
+
+    // 🛡️ GUARDA DE CATÁLOGO: Espera a que los estadios estén en memoria antes de abrir la primera ronda
+    let intentos = 0;
+    while ((!catalogoGlobal || catalogoGlobal.length === 0) && intentos < 25) {
+        await new Promise(r => setTimeout(r, 150));
+        intentos++;
+    }
 
     guessrRondaActual = 1;
     guessrPuntosTotales = 0;
