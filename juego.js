@@ -2213,7 +2213,7 @@ function abrirLobbyEspera() {
         animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
     `;
     
-    const nomDiff = guessrDificultad === 'facil' ? 'Pibe' : guessrDificultad === 'dificil' ? 'Leyenda' : 'Crack';
+    const nomDiff = guessrDificultad === 'facil' ? 'Promesa' : guessrDificultad === 'dificil' ? 'Leyenda' : 'Crack';
 
     // Inyectamos el spinner, el cronómetro y la X de cancelación con hover interactivo
     lobby.innerHTML = `
@@ -5660,7 +5660,7 @@ window.ejecutarDesafioAmigoDirecto = function(nombreRival, diff) {
     }
 
     abrirLobbyEspera();
-    showToast(`Desafío enviado a ${nombreRival} (${diff === 'facil' ? 'Pibe' : diff === 'dificil' ? 'Leyenda' : 'Crack'})... ⏳`, 'ph-hourglass', 'info');
+    showToast(`Desafío enviado a ${nombreRival} (${diff === 'facil' ? 'Promesa' : diff === 'dificil' ? 'Leyenda' : 'Crack'})... ⏳`, 'ph-hourglass', 'info');
     conectarRealtimeVersus();
 
     if (timeoutRetoDirecto) clearTimeout(timeoutRetoDirecto);
