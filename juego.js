@@ -2308,35 +2308,46 @@ function obtener5EstadiosVersus() {
 
     return resultado;
 }
+// ========================================================
+// IDENTIFICADOR ÚNICO DE RED (ANTI-COLISIÓN DE INVITADOS)
+// ========================================================
+function obtenerIdRedVersus() {
+    const u = obtenerUsuarioLogueado();
+    if (u && u.id && u.id !== 'guest') return u.id;
+    let guestId = sessionStorage.getItem('ev_guest_versus_id');
+    if (!guestId) {
+        guestId = 'guest_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+        sessionStorage.setItem('ev_guest_versus_id', guestId);
+    }
+    return guestId;
+}
+
 // ==========================================
 // MOTOR DE SALAS PRIVADAS (DESAFÍO POR WHATSAPP)
 // ==========================================
 function crearSalaPrivada() {
-    cerrarModalGuessr(); // 👇 AGREGAMOS ESTO PARA DESPEJAR LA PANTALLA
-    // 1. Validamos que haya estadios cargados
+    cerrarModalGuessr();
     const misEstadiosAleatorios = obtener5EstadiosVersus();
     if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
         showToast("Esperá un segundo que termine de cargar el catálogo...", "ph-circle-notch", "warning");
         return;
     }
 
-    // 2. Generamos un código único para la sala (Ej: PRIV_A8F3X)
+    obtenerIdRedVersus();
+
     const idSala = Math.random().toString(36).substring(2, 8).toUpperCase();
     versusPartidaId = 'PRIV_' + idSala;
     versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
-    versusLigaOrigen = null; // 🏳️ Sala por link de WhatsApp: no cuenta para ningún ranking de triunfos por liga
+    versusLigaOrigen = null;
     
-    // 3. Seteamos las banderas globales
-    versusRol = 'jugador_1'; // El que crea la sala es el Host
+    versusRol = 'jugador_1';
     esModoVersus = true;
     esModoBot = false;
     versusPartidaEnCurso = false;
 
-    // 4. Armamos el link mágico para WhatsApp
     const urlLimpia = window.location.origin + window.location.pathname;
     const linkACompartir = `${urlLimpia}?sala=${versusPartidaId}`;
 
-    // 5. Abrimos el lobby y conectamos la red
     abrirLobbyPrivado(linkACompartir, idSala);
     conectarRealtimeVersus();
 }
@@ -2371,7 +2382,6 @@ window.compartirLinkPrivado = async function(link) {
     const msg = `⚽ ¡Te reté a un duelo en StadiumGuessr! 🌍\nEntrá a este link para jugar contra mí en vivo:\n\n${link}`;
     const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    // 📱 En celulares abre la hoja de compartir nativa (WhatsApp directo)
     if (esMobile && navigator.share) {
         try {
             await navigator.share({
@@ -2385,7 +2395,6 @@ window.compartirLinkPrivado = async function(link) {
         }
     }
 
-    // 💻 En computadoras / PC copia directamente al portapapeles para pegar con Ctrl + V
     navigator.clipboard.writeText(msg).then(() => {
         showToast('¡Link copiado! Pegalo con Ctrl + V en WhatsApp.', 'ph-check-circle', 'success');
         const btn = document.getElementById('btn-copiar-privado');
@@ -2396,34 +2405,26 @@ window.compartirLinkPrivado = async function(link) {
 }
 
 function unirseSalaPrivada(salaId) {
-    let idUsuario = getUserId();
-    if (!idUsuario || idUsuario === 'guest') {
-        let guestId = sessionStorage.getItem('ev_guest_versus_id');
-        if (!guestId) {
-            guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
-            sessionStorage.setItem('ev_guest_versus_id', guestId);
-        }
-        idUsuario = guestId;
+    const idRed = obtenerIdRedVersus();
 
-        let nickExistente = getPref('ev_custom_nick', '');
-        if (!nickExistente) {
-            let nuevoNick = prompt("🏆 ¡Te desafiaron a un duelo! Ingresá tu apodo para entrar a la cancha:");
-            if (nuevoNick === null) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-                return; 
-            }
-            nuevoNick = nuevoNick.trim() || ("Jugador_" + Math.random().toString(36).substring(2, 6).toUpperCase());
-            setPref('ev_custom_nick', nuevoNick.substring(0, 16));
+    let nickExistente = getPref('ev_custom_nick', '');
+    if (!nickExistente && (!obtenerUsuarioLogueado() || obtenerUsuarioLogueado().id === 'guest')) {
+        let nuevoNick = prompt("🏆 ¡Te desafiaron a un duelo! Ingresá tu apodo para entrar a la cancha:");
+        if (nuevoNick === null) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return; 
         }
+        nuevoNick = nuevoNick.trim() || ("Jugador_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+        setPref('ev_custom_nick', nuevoNick.substring(0, 16));
     }
 
     versusPartidaId = salaId;
-    versusRol = 'jugador_2'; // El que entra por el link es el Invitado
+    versusRol = 'jugador_2';
     esModoVersus = true;
     esModoBot = false;
     versusPartidaEnCurso = false;
+    versusEstadios = [];
 
-    // Borramos el código de la barra de direcciones para que quede limpio
     window.history.replaceState({}, document.title, window.location.pathname);
 
     showToast("Buscando al creador de la sala... 📡", "ph-circle-notch", "info");
@@ -2431,7 +2432,6 @@ function unirseSalaPrivada(salaId) {
     abrirLobbyEspera(); 
     conectarRealtimeVersus();
 
-    // 🛡️ Margen de 60 segundos para permitir que el creador envíe el link y vuelva al navegador
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
     versusTimeoutBusqueda = setTimeout(() => {
         if (!versusPartidaEnCurso) {
@@ -2443,52 +2443,38 @@ function unirseSalaPrivada(salaId) {
 
 // Función principal para buscar rival o crear una sala de espera
 async function buscarPartidaVersus() {
-    // 🛡️ ESCUDO DE SEGURIDAD CRUCIAL
     const misEstadiosAleatorios = obtener5EstadiosVersus();
     if (!misEstadiosAleatorios || misEstadiosAleatorios.length < 5) {
         showToast("Esperá un segundo que termine de cargar el catálogo de estadios... ⚽", "ph-circle-notch", "warning");
         return;
     }
 
-    // 1. Obtenemos el ID local
-    let idUsuario = getUserId();
+    const idRed = obtenerIdRedVersus();
 
-    // 2. Si no está logueado, le asignamos un ID temporal único para esta sesión de juego
-    if (!idUsuario || idUsuario === 'guest') {
-        let guestId = sessionStorage.getItem('ev_guest_versus_id');
-        if (!guestId) {
-            guestId = 'guest_' + Math.random().toString(36).substring(2, 9);
-            sessionStorage.setItem('ev_guest_versus_id', guestId);
+    let nickExistente = getPref('ev_custom_nick', '');
+    if (!nickExistente && (!obtenerUsuarioLogueado() || obtenerUsuarioLogueado().id === 'guest')) {
+        let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
+        if (nuevoNick === null) return; 
+        nuevoNick = nuevoNick.trim();
+        if (!nuevoNick) {
+            nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
         }
-        idUsuario = guestId;
-
-        // 🎫 CONTROL DE APODO
-        let nickExistente = getPref('ev_custom_nick', '');
-        if (!nickExistente) {
-            let nuevoNick = prompt("🏆 ¡Antes de entrar a la cancha! Ingresá tu apodo para el Salón de la Fama:");
-            if (nuevoNick === null) return; 
-            nuevoNick = nuevoNick.trim();
-            if (!nuevoNick) {
-                nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
-            }
-            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
-            setPref('ev_custom_nick', nuevoNick);
-        }
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+        setPref('ev_custom_nick', nuevoNick);
     }
 
-    // 3. Limpieza preventiva de intervalos
     if (handshakeInterval) clearInterval(handshakeInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
     
     if (versusChannel) {
-        supabaseClient.removeChannel(versusChannel);
+        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
         versusChannel = null;
     }
     
     versusPartidaEnCurso = false;
     esModoBot = false; 
-    versusLigaOrigen = null; // 🏳️ Matchmaking random: no cuenta para ningún ranking de triunfos por liga
+    versusLigaOrigen = null;
 
     showToast("Buscando rival en el vestuario... ⏳", "ph-circle-notch", "info");
     abrirLobbyEspera(); 
@@ -2497,21 +2483,19 @@ async function buscarPartidaVersus() {
 
     try {
         const { data, error } = await supabaseClient.rpc('buscar_o_crear_partida', {
-            p_jugador_id: idUsuario,
+            p_jugador_id: idRed,
             p_estadios_enviados: nombresEstadios,
             p_dificultad: guessrDificultad
         });
 
-        // 🛡️ ESCUDO 1: Falla de red o error interno de la base de datos SQL
         if (error) {
             console.error("🚨 Error de Supabase al buscar/crear sala:", error.message);
-            cerrarLobbyEspera(); // Cortamos el cartel de búsqueda
+            cerrarLobbyEspera();
             showToast("Problemas de red. Intentá de nuevo.", "ph-warning-circle", "danger");
             esModoVersus = false;
-            return; // Abortamos la ejecución de la función
+            return;
         }
 
-        // 🛡️ ESCUDO 2: La base de datos respondió, pero vino completamente vacía
         if (!data || (Array.isArray(data) && data.length === 0)) {
             console.error("🚨 La base de datos devolvió una respuesta vacía.");
             cerrarLobbyEspera();
@@ -2520,10 +2504,8 @@ async function buscarPartidaVersus() {
             return;
         }
 
-        // A veces Supabase devuelve un array [{}], a veces el objeto directo {}. Esto lo unifica:
         const partida = Array.isArray(data) ? data[0] : data;
         
-        // 🛡️ ESCUDO 3: El objeto se extrajo, pero es null o undefined
         if (!partida) {
             console.error("🚨 El objeto de la partida es inválido.");
             cerrarLobbyEspera();
@@ -2532,12 +2514,10 @@ async function buscarPartidaVersus() {
             return;
         }
 
-        // Búsqueda inteligente (Fallbacks): Si no se llama 'id', busca 'partida_id', etc.
         versusPartidaId = partida.id || partida.partida_id || partida.id_partida;
         versusEstadios = partida.estadios_ids || partida.estadios || partida.lista_estadios;
         if (partida.dificultad) guessrDificultad = partida.dificultad;
         
-        // 🛡️ ESCUDO 4: El objeto existe, pero le faltan los datos vitales para jugar
         if (!versusPartidaId) {
             console.error("🚨 Falla crítica: La base de datos no devolvió un ID reconocible.", partida);
             cerrarLobbyEspera();
@@ -2554,19 +2534,13 @@ async function buscarPartidaVersus() {
             return;
         }
 
-        // 🛡️ PARCHE DE SEGURIDAD EXTRA (Tu código original para desarmar strings JSON)
         if (typeof versusEstadios === 'string') {
             try { versusEstadios = JSON.parse(versusEstadios); } 
             catch(e) { versusEstadios = versusEstadios.split(','); }
         }
 
-        // ====================================================================
-        // SI LLEGAMOS HASTA ACÁ, ES PORQUE LOS DATOS SON 100% PUROS Y SEGUROS
-        // ====================================================================
-        
         esModoVersus = true; 
 
-        // Búsqueda inteligente del estado
         const estadoRaw = partida.estado || partida.estado_partida || partida.status || '';
         const estadoPartida = String(estadoRaw).toLowerCase();
 
@@ -2582,7 +2556,6 @@ async function buscarPartidaVersus() {
             conectarRealtimeVersus();
         }
 
-        // 🎲 TIEMPO ALEATORIO: Calculamos un rango entre 15s y 20s para el bot
         const tiempoEsperaAleatorio = 29000 + Math.random() * 5000;
 
         if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
@@ -2593,7 +2566,6 @@ async function buscarPartidaVersus() {
         }, tiempoEsperaAleatorio); 
         
     } catch (e) {
-        // ESCUDO FINAL: Si Javascript se rompe por alguna otra razón
         console.error("🚨 Error crítico inesperado en el matchmaking:", e.message);
         cerrarLobbyEspera(); 
         showToast("Error crítico en el emparejamiento.", "ph-x-circle", "danger");
@@ -2601,154 +2573,31 @@ async function buscarPartidaVersus() {
     }
 }
 
-
-// Activa un jugador virtual creíble para que el usuario no quede colgado
-// Activa un jugador virtual creíble para que el usuario no quede colgado
-// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT
-// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT (CON SENSOR DE TIERRA FIRME ANTI-MAR)
-// 🔥 MOTOR DE INTELIGENCIA Y TIMING DINÁMICO DEL BOT (SILENCIOSO)
-async function ejecutarVotoBotDinamico() {
-    if (!esModoBot || rivalGuessConfirmado) return;
-
-    const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
-    const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
-
-    let botLat = tLat;
-    let botLng = tLng;
-    let botDist = 0;
-    let botPts = 0;
-
-    // 🔄 BUCLE DE CONTROL: Intentamos hasta 4 veces encontrar un punto que caiga en tierra firme
-    for (let intento = 0; intento < 4; intento++) {
-        // Generamos el error en KM creíble (Entre 80km y 850km)
-        const kmErrorAleatorio = 80 + Math.random() * 770;
-        const anguloGrad = Math.random() * Math.PI * 2;
-        
-        const desfaseLat = (kmErrorAleatorio * Math.cos(anguloGrad)) / 111;
-        const desfaseLng = (kmErrorAleatorio * Math.sin(anguloGrad)) / (111 * Math.cos(tLat * Math.PI / 180));
-        
-        botLat = tLat + desfaseLat;
-        botLng = tLng + desfaseLng;
-        
-        botDist = calcularDistanciaHaversine(botLat, botLng, tLat, tLng);
-        botPts = isNaN(botDist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -botDist / 1200)));
-
-        // 🛰️ SENSOR DE AGUA: Validamos la coordenada con un servicio de geolocalización
-        try {
-            const respuesta = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${botLat}&longitude=${botLng}&localityLanguage=es`);
-            const datosGeograficos = await respuesta.json();
-            
-            // Si la API nos devuelve un 'countryCode' válido, el punto cayó en tierra firme
-            if (datosGeograficos && datosGeograficos.countryCode) {
-                // 👇 Magia: Borramos el console.log que delataba al bot
-                break; // Rompemos el bucle porque el tiro es perfecto
-            }
-        } catch (e) {
-            // 👇 Magia: Borramos el console.warn para que no salten errores rojos
-            break; // Si la API falla por time-out, salimos para no trabar el juego del usuario
-        }
-    }
-    
-    rivalGuessConfirmado = true;
-    rivalDataRonda = { lat: botLat, lng: botLng, puntos: botPts, distancia: botDist };
-
-    // 🎯 SI VOS TODAVÍA NO ELEGISTE: Te mete la presión de los 15 segundos clásicos
-    if (!miGuessConfirmado) {
-        showToast("⚠️ ¡Tu oponente ya arriesgó! Tenés 15 segundos para confirmar tu pin.", "ph-timer", "danger");
-        iniciarCuentaRegresivaVersus();
-    } else {
-        // Si vos ya elegiste, abre el mapa de resultados directo
-        mostrarResultadosMutuosVersus();
-    }
-}
-function activarBotDeRescate() {
-    cerrarLobbyEspera(); 
-    
-    if (handshakeInterval) clearInterval(handshakeInterval);
-    if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda);
-    
-    if (versusChannel) {
-        versusChannel.unsubscribe();
-        versusChannel = null;
-    }
-
-    esModoVersus = true;
-    versusPartidaEnCurso = true;
-    esModoBot = true; 
-    versusRol = 'jugador_1'; 
-    
-    const nombresFakes = [
-        // Los clásicos con números/años
-        "Nico_88", "Juani8794", "Gonza_23", "Matias14", "Rulo_94", "Tomi_99", "Agus2001", "Fede_89",
-        "Lucas_93", "Tincho98", "Facu_2003", "Emi_95", "Jony_90", "Seba_87", "Ale_00", "Gaston_91",
-        "Leo_1994", "Maxi_22", "Tucu_99", "Chino_12", "Lucho_88", "Manu_2005", "Bauti_04", "Fran_97",
-        
-        // Apodos y "Termos" futboleros
-        "ElDiego_DT", "Pulga10", "Panhito", "Toto_Cancha", "Gordo12", "Gambeta_10", "PaloYAfuera",
-        "Rustico_2", "TikiTaka", "El_DT_Online", "Capitan_10", "ElPibeDeBarrio", "Var_Oficial",
-        "EnfermoDelGol", "Corta_Pasto", "Juega_Bonito", "PelotaAlPiso", "Centro_Y_Adentro", "Magico_10",
-        
-        // Mezcla con Gamer/FUT
-        "Faca_Gamer", "PibeFUT", "Láser", "Nari", "Pro_Gamer_FUT", "Fifa_King", "Leyenda_FUT",
-        "Gamer_Albiceleste", "Tryhard_Fut", "Crack_Virtual", "Joystick_10", "PibePlay", "Duka_88", "Cholo", "Peluca", "Zurdo",
-        "Ñeri", "Huguito", "Alejandrogado", "Boxer", "Cobra", "tete", "Delfi", "mari75", 
-        
-        // Referencias a jugadores/ídolos
-        "Dibu_Fan", "ElBicho_CR", "Messi_Goat", "Enzo_F", "Julian_21", "Araña_9", "Motorcito_7",
-        "Paredes_Leyenda", "Licha_15", "Pipa_Gol", "Fideo_11", "Toro_22", "Cuti_Fan",
-        
-        // Folklore y Clubes (Versión disimulada)
-        "Santi_Casla", "Juani_Albiceleste", "Bostero_22", "Millo91", "ReyDeCopas_7", "Rojo_Diablo",
-        "Boedo_Cuervo", "Fortinero", "Canalla_89", "Leproso_G", "Pincharrata_11", "Lobo_Platense",
-        "Gaston_Carp", "Seba_Xeneize", "ChinoCBA", "Cordobes2", "Mendu_14", "Quemero_10", "Funebrero_C"
-    ];
-    // Asignamos el nombre a la variable global
-    versusRivalNombre = nombresFakes[Math.floor(Math.random() * nombresFakes.length)];
-    
-    showToast(`¡Rival encontrado: ${versusRivalNombre}! Sincronizando... ⚽`, "ph-user-switch", "success");
-    
-    if (!versusEstadios || versusEstadios.length === 0) {
-        const misEstadiosAleatorios = obtener5EstadiosVersus();
-        versusEstadios = misEstadiosAleatorios.map(e => bscarPropiedad(e, 'Estadio'));
-    }
-
-    setTimeout(arrancarPartidoVersus, 1200);
-}
-
-
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Blindado con Telemetría)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Presencia Activa)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico Blindado)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Restaurado + Nombres)
-// Función para abrir el WebSocket y comunicarse DIRECTO entre pantallas (Handshake Simétrico + Nombres + Estadios)
+// ========================================================
+// MOTOR REALTIME ROBUSTO: HANDSHAKE ASIMÉTRICO Y DETERMINISTA
+// ========================================================
 function conectarRealtimeVersus() {
     if (!supabaseClient || !versusPartidaId) return;
     
-    let idUsuario = getUserId();
-    if (!idUsuario || idUsuario === 'guest') {
-        idUsuario = sessionStorage.getItem('ev_guest_versus_id') || 'guest';
+    const idRed = obtenerIdRedVersus();
+    const miNombreLocal = obtenerNombreDisplay();
+
+    if (handshakeInterval) {
+        clearInterval(handshakeInterval);
+        handshakeInterval = null;
     }
 
-    let miNombreLocal = obtenerNombreDisplay();
-
-    console.log(`[1v1] 📡 Inicializando canal de Supabase: sala_${versusPartidaId} | Rol: ${versusRol} | Identificador: ${idUsuario}`);
-    
     if (versusChannel) {
         try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
         versusChannel = null;
     }
 
+    console.log(`[1v1] 📡 Conectando canal: sala_${versusPartidaId} | Rol: ${versusRol} | ID: ${idRed}`);
+
     versusChannel = supabaseClient.channel(`sala_${versusPartidaId}`, {
         config: { 
             broadcast: { self: false },
-            presence: { key: idUsuario }
+            presence: { key: idRed }
         }
     });
 
@@ -2761,7 +2610,7 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'invitado_unido' }, (response) => {
             const data = response.payload || response;
-            if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
+            if (data && data.id !== idRed && versusRol === 'jugador_1') {
                 console.log(`[1v1] 📥 Invitado detectado en la sala. Transmitiendo configuración oficial.`);
                 if (data.nombre) versusRivalNombre = data.nombre;
 
@@ -2769,7 +2618,7 @@ function conectarRealtimeVersus() {
                     type: 'broadcast',
                     event: 'host_datos_partida',
                     payload: { 
-                        id: idUsuario, 
+                        id: idRed, 
                         nombre: miNombreLocal, 
                         estadios: versusEstadios, 
                         dificultad: guessrDificultad 
@@ -2779,7 +2628,7 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'host_datos_partida' }, (response) => {
             const data = response.payload || response;
-            if (data && data.id !== idUsuario && versusRol === 'jugador_2') {
+            if (data && data.id !== idRed && versusRol === 'jugador_2') {
                 console.log(`[1v1] 📥 Datos del Host recibidos con éxito.`);
                 if (data.nombre) versusRivalNombre = data.nombre;
                 if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
@@ -2788,11 +2637,12 @@ function conectarRealtimeVersus() {
                 versusChannel.send({
                     type: 'broadcast',
                     event: 'partida_confirmada',
-                    payload: { id: idUsuario, nombre: miNombreLocal } 
+                    payload: { id: idRed, nombre: miNombreLocal } 
                 });
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
+                    if (handshakeInterval) { clearInterval(handshakeInterval); handshakeInterval = null; }
                     showToast(`¡Conectado con ${versusRivalNombre}! Que empiece el partido... 🚀`, "ph-lightning", "success");
                     arrancarPartidoVersus();
                 }
@@ -2800,12 +2650,13 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'partida_confirmada' }, (response) => {
             const data = response.payload || response;
-            if (data && data.id !== idUsuario && versusRol === 'jugador_1') {
+            if (data && data.id !== idRed && versusRol === 'jugador_1') {
                 if (data.nombre) versusRivalNombre = data.nombre;
                 console.log(`[1v1] 📥 Confirmación final recibida. ¡Arrancando partido!`);
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
+                    if (handshakeInterval) { clearInterval(handshakeInterval); handshakeInterval = null; }
                     showToast(`¡Rival conectado: ${versusRivalNombre}! Sincronizando cancha... 🚀`, "ph-lightning", "success");
                     arrancarPartidoVersus();
                 }
@@ -2813,6 +2664,7 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'rival_voto' }, (response) => {
             const data = response.payload || response;
+            if (data && data.id === idRed) return;
             console.log("[1v1] Voto recibido del oponente:", data);
             
             rivalGuessConfirmado = true;
@@ -2831,33 +2683,32 @@ function conectarRealtimeVersus() {
                 mostrarTauntEnPantalla(data.emoji, false);
             }
         })
-        .on('broadcast', { event: 'rival_listo_siguiente' }, (response) => {
+        .on('broadcast', { event: 'rival_listo_siguiente' }, () => {
             rivalListoSiguiente = true;
             if (miListoSiguiente) {
                 ejecutarPasoDeRondaVersus();
             }
         })
-        .on('broadcast', { event: 'forzar_siguiente_ronda' }, (response) => {
+        .on('broadcast', { event: 'forzar_siguiente_ronda' }, () => {
             console.log("[1v1] Avance forzado sincronizado por inactividad.");
             ejecutarPasoDeRondaVersus();
         })
-        .on('broadcast', { event: 'rival_abandono' }, (response) => {
+        .on('broadcast', { event: 'rival_abandono' }, () => {
             console.log("[1v1] El oponente abandonó la sesión.");
             manejarAbandonoRival();
         })
         .subscribe((status) => {
             console.log(`[1v1] 🚦 Estado WebSocket (${versusRol}): ${status}`);
             if (status === 'SUBSCRIBED') {
-                versusChannel.track({ id: idUsuario });
+                versusChannel.track({ id: idRed });
 
                 if (handshakeInterval) clearInterval(handshakeInterval);
 
                 if (versusRol === 'jugador_2') {
-                    // El invitado emite su llegada para despertar al Host
                     versusChannel.send({ 
                         type: 'broadcast', 
                         event: 'invitado_unido', 
-                        payload: { id: idUsuario, nombre: miNombreLocal } 
+                        payload: { id: idRed, nombre: miNombreLocal } 
                     });
 
                     handshakeInterval = setInterval(() => {
@@ -2865,19 +2716,18 @@ function conectarRealtimeVersus() {
                             versusChannel.send({ 
                                 type: 'broadcast', 
                                 event: 'invitado_unido', 
-                                payload: { id: idUsuario, nombre: miNombreLocal } 
+                                payload: { id: idRed, nombre: miNombreLocal } 
                             });
                         }
                     }, 400);
                 } else if (versusRol === 'jugador_1') {
-                    // El Host emite sus datos continuamente por si el invitado ya estaba conectado
                     handshakeInterval = setInterval(() => {
                         if (versusChannel && !versusPartidaEnCurso) {
                             versusChannel.send({
                                 type: 'broadcast',
                                 event: 'host_datos_partida',
                                 payload: { 
-                                    id: idUsuario, 
+                                    id: idRed, 
                                     nombre: miNombreLocal, 
                                     estadios: versusEstadios, 
                                     dificultad: guessrDificultad 
