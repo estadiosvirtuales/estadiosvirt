@@ -668,13 +668,26 @@ body.video-abierto .hero-section {
 
 /* 🗺️ WIDGET FLOTANTE DESPLEGABLE CON TRANSPARENCIA */
 .guessr-floating-map-box{position:absolute!important;bottom:16px!important;right:16px!important;width:280px!important;height:190px!important;background:rgba(10,16,28,0.60)!important;border:1.5px solid rgba(255,255,255,0.18)!important;border-radius:14px!important;padding:6px!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;gap:5px!important;box-shadow:0 10px 30px rgba(0,0,0,.6)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;pointer-events:auto!important;z-index:30!important;transition:width .28s cubic-bezier(.175,.885,.32,1.275),height .28s cubic-bezier(.175,.885,.32,1.275),opacity .22s ease,background-color .22s ease,border-color .25s ease!important;opacity:.65}
-.guessr-floating-map-box:hover,
+
+/* 🖱️ En PC (con mouse): El hover expande automáticamente salvo que se haya colapsado con el botón */
+@media (hover: hover) and (pointer: fine) {
+    .guessr-floating-map-box:hover:not(.collapsed) {
+        width: min(580px,92vw) !important;
+        height: min(420px,62vh) !important;
+        opacity: 1 !important;
+        background: var(--glass-bg) !important;
+        border-color: var(--accent-color) !important;
+        box-shadow: 0 20px 50px rgba(0,0,0,.9), 0 0 30px var(--accent-glow) !important;
+    }
+}
+
+/* 📌 Estado fijado / expandido por botón (Válido en PC y Móvil) */
 .guessr-floating-map-box.expanded,
 .guessr-floating-map-box.pinned{width:min(580px,92vw)!important;height:min(420px,62vh)!important;opacity:1!important;background:var(--glass-bg)!important;border-color:var(--accent-color)!important;box-shadow:0 20px 50px rgba(0,0,0,.9),0 0 30px var(--accent-glow)!important}
 
 #game-action-btn{width:100%!important;padding:6px 10px!important;font-size:0.78rem!important;min-height:30px!important;height:30px!important;border-radius:8px!important;box-sizing:border-box!important;letter-spacing:0.3px}
 
-.guessr-map-expand-btn{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.75);border:1.5px solid var(--border-strong);color:var(--text-main);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;z-index:1000;transition:all .2s ease;backdrop-filter:blur(6px)}
+.guessr-map-expand-btn{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.75);border:1.5px solid var(--border-strong);color:var(--text-main);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;z-index:1000;pointer-events:auto!important;touch-action:manipulation;transition:all .2s ease;backdrop-filter:blur(6px)}
 .guessr-map-expand-btn:hover{background:var(--accent-color);color:#000;border-color:var(--accent-color);transform:scale(1.1)}
 
 #map-guess-container{width:100%!important;flex:1!important;height:100%!important;min-height:0!important;background:var(--surface-color);border-radius:12px!important;border:1.5px solid var(--border-strong);margin-bottom:0!important;overflow:hidden;position:relative}

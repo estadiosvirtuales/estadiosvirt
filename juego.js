@@ -3132,17 +3132,42 @@ function iniciarTrivia(dificultad = 'medio'){
     guessrHistorialCoordenadas = [];
     guessrRondaActual=1;guessrPuntosTotales=0;guessrEstadiosJugados=[];guessrHistorialRondas=[];pendingScore=null;pendingScoreType=null;userStats.guessrSeguidas=(userStats.guessrSeguidas||0)+1;guardarStats();lanzarRondaGuessr();
 }
-window.toggleExpandirMapaGuessr = function(forzarEstado = null) {
+window.toggleExpandirMapaGuessr = function(forzarEstado = null, event = null) {
+    if (forzarEstado && typeof forzarEstado === 'object' && (forzarEstado instanceof Event || forzarEstado.target)) {
+        event = forzarEstado;
+        forzarEstado = null;
+    }
+    if (event) {
+        if (typeof event.stopPropagation === 'function') event.stopPropagation();
+        if (typeof event.preventDefault === 'function') event.preventDefault();
+    }
+
     const box = document.getElementById('guessr-floating-map-box');
     const icon = document.getElementById('guessr-map-expand-icon');
     if (!box) return;
 
     if (forzarEstado !== null) {
-        if (forzarEstado) box.classList.add('pinned', 'expanded');
-        else box.classList.remove('pinned', 'expanded');
+        if (forzarEstado) {
+            box.classList.remove('collapsed');
+            box.classList.add('pinned', 'expanded');
+        } else {
+            box.classList.remove('pinned', 'expanded');
+            box.classList.add('collapsed');
+        }
     } else {
-        box.classList.toggle('pinned');
-        box.classList.toggle('expanded');
+        // Detecta si está expandido por clase (.expanded/.pinned) O por hover de mouse en PC (ancho > 300px sin estar colapsado)
+        const esVisualmenteGrande = box.offsetWidth > 300 || box.offsetHeight > 200;
+        const estaActualmenteExpandido = box.classList.contains('expanded') || 
+                                         box.classList.contains('pinned') || 
+                                         (!box.classList.contains('collapsed') && esVisualmenteGrande);
+        
+        if (estaActualmenteExpandido) {
+            box.classList.remove('pinned', 'expanded');
+            box.classList.add('collapsed');
+        } else {
+            box.classList.remove('collapsed');
+            box.classList.add('pinned', 'expanded');
+        }
     }
 
     const estaExpandido = box.classList.contains('pinned') || box.classList.contains('expanded');
@@ -3152,7 +3177,10 @@ window.toggleExpandirMapaGuessr = function(forzarEstado = null) {
 
     setTimeout(() => {
         if (guessrMapInstance) guessrMapInstance.invalidateSize();
-    }, 280);
+    }, 100);
+    setTimeout(() => {
+        if (guessrMapInstance) guessrMapInstance.invalidateSize();
+    }, 300);
 };
 window.seleccionarDificultadGuessr = function(diff, btn) {
     guessrDificultad = diff;
@@ -3282,6 +3310,24 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
         resizeObserver.observe(mapContainer);
 
         guessrMapInstance.on('unload', () => resizeObserver.disconnect());
+
+        const mapBox = document.getElementById('guessr-floating-map-box');
+        if (mapBox && !mapBox.dataset.leaveBound) {
+            mapBox.dataset.leaveBound = "true";
+            mapBox.addEventListener('mouseenter', () => {
+                if (!mapBox.classList.contains('collapsed')) {
+                    const icon = document.getElementById('guessr-map-expand-icon');
+                    if (icon) icon.className = 'ph-bold ph-arrows-in-simple';
+                }
+            });
+            mapBox.addEventListener('mouseleave', () => {
+                mapBox.classList.remove('collapsed');
+                if (!mapBox.classList.contains('pinned') && !mapBox.classList.contains('expanded')) {
+                    const icon = document.getElementById('guessr-map-expand-icon');
+                    if (icon) icon.className = 'ph-bold ph-arrows-out-simple';
+                }
+            });
+        }
 
     }, 300);
 // 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes entre 12 y 24s)
