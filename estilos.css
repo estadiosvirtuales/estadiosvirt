@@ -4573,19 +4573,19 @@ body.video-abierto .hero-section {
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
 #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+    position: relative !important;
     width: 220px !important;       /* 👈 ANCHO DEL BOTÓN */
     max-width: 100% !important;
     height: 42px !important;       /* 👈 ALTO/GROSOR DEL BOTÓN */
     min-height: 42px !important;
     max-height: 42px !important;
-    padding: 0 14px !important;
+    padding: 0 14px 0 52px !important; /* Espacio reservado para el icono a la izquierda */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     border-radius: 14px !important;
     font-size: 0.80rem !important;
     font-weight: 900 !important;
-    gap: 8px !important;
     text-align: center !important;
     box-sizing: border-box !important;
     overflow: visible !important;
@@ -4596,19 +4596,27 @@ body.video-abierto .hero-section {
    ======================================================== */
 #ranking-modal .ranking-left-panel .ranking-tab-img,
 #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
+    position: absolute !important;
+    left: 2px !important;          /* 👈 Anclaje fijo exacto para todos los iconos */
+    top: 50% !important;
+    transform: translateY(-50%) !important;
     width: 60px !important;        /* 👈 [BOTONES] ANCHO DEL ÍCONO */
     height: 60px !important;       /* 👈 [BOTONES] ALTO DEL ÍCONO */
-    margin-top: -10px !important;
-    margin-bottom: -10px !important;
-    margin-left: -10px !important;
-    margin-right: 0 !important;
+    margin: 0 !important;
     flex-shrink: 0 !important;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) !important;
     pointer-events: none !important;
+    transition: transform 0.25s ease !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
+    transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span,
 #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
+    width: 100% !important;
     margin: 0 !important;
     text-align: center !important;
     white-space: nowrap !important;
@@ -4724,6 +4732,8 @@ body.video-abierto .hero-section {
 
     #ranking-modal .ranking-left-panel .ranking-tab-img,
     #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
+        position: static !important;
+        transform: none !important;
         width: 34px !important;
         height: 34px !important;
         margin-left: -4px !important;
