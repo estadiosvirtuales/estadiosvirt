@@ -253,10 +253,72 @@ body > * {
         display: none !important;
     }
 }
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-dim);border:1px solid var(--border-strong);border-left:3px solid var(--accent-color);color:var(--accent-color);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;padding:6px 14px;border-radius:6px;margin-bottom:18px;animation:fadeSlideUp .4s ease}
-.welcome-heading{font-size:3.2rem;font-weight:900;margin-bottom:10px;color:var(--text-main);letter-spacing:-1.5px;line-height:1.05;animation:fadeSlideUp .45s .05s ease both}
-.welcome-heading .accent-word{color:var(--accent-color)}
-.welcome-sub{font-size:1.05rem;color:var(--text-muted);margin-bottom:36px;font-weight:400;max-width:520px;line-height:1.65;animation:fadeSlideUp .45s .1s ease both}
+/* ========================================================
+   🎮 HERO HEADER ESPORTS 3D (CHROME + NEON EMERALD GLOW)
+   ======================================================== */
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(14, 26, 42, 0.9) 0%, rgba(8, 14, 24, 0.98) 100%);
+    border: 1.5px solid rgba(0, 255, 119, 0.45);
+    border-top: 2px solid rgba(110, 255, 180, 0.85);
+    color: #00ff77;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 7px 18px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 255, 119, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    animation: fadeSlideUp 0.4s ease;
+}
+
+.hero-eyebrow i {
+    font-size: 0.95rem;
+    filter: drop-shadow(0 0 8px #00ff77);
+    color: #00ff77;
+}
+
+.welcome-heading {
+    font-size: 3.1rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    text-transform: uppercase;
+    display: inline-block;
+    animation: fadeSlideUp 0.45s 0.05s ease both;
+    user-select: none;
+    
+    /* 💿 ESTADIOS: Relieve 3D Cromado Metálico */
+    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 38%, #94a3b8 50%, #ffffff 53%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 0 #050911) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.85));
+}
+
+.welcome-heading .accent-word {
+    /* ⚡ VIRTUALES: Verde Esmeralda Deportivo Equilibrado */
+    background: linear-gradient(180deg, #d1fae5 0%, #00d66c 38%, #009e4f 50%, #34d399 53%, #00753a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 3px 0 #022c13) drop-shadow(0 0 12px rgba(0, 214, 108, 0.4)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.8));
+}
+
+.welcome-sub {
+    font-size: 1rem;
+    color: #cbd5e1;
+    margin-bottom: 38px;
+    font-weight: 600;
+    max-width: 560px;
+    line-height: 1.6;
+    animation: fadeSlideUp 0.45s 0.1s ease both;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
 .search-container{width:100%;max-width:580px;margin:0 auto 40px;position:relative;animation:fadeSlideUp .45s .15s ease both}
 .search-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:1.25rem;z-index:2}
 .search-bar{width:100%;padding:18px 20px 18px 54px;border-radius:16px;border:2px solid var(--border-strong);background:var(--card-bg);color:var(--text-main);font-size:1rem;outline:none;transition:all .3s ease;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.3),inset 0 1px 0 var(--border-subtle)}
@@ -659,36 +721,218 @@ body.video-abierto .hero-section {
 .close-btn{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.15);padding:0;cursor:pointer;z-index:2020;border-radius:10px;width:38px;height:38px;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px)}
 .close-btn:hover{background:var(--danger-color);border-color:var(--danger-color);transform:scale(1.1) rotate(90deg)}
 #game-ui{display:none;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2010}
-.guessr-top-hud{position:absolute!important;top:68px!important;left:18px!important;pointer-events:auto;width:auto!important;max-width:320px;display:flex;flex-direction:column;align-items:flex-start;z-index:25}
-#game-title{font-size:.78rem!important;color:var(--text-main);margin-bottom:0;font-weight:800!important;text-transform:uppercase;letter-spacing:.5px;display:inline-flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:6px;white-space:nowrap;background:rgba(10,16,28,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:6px 12px;border-radius:10px;border:1.5px solid var(--border-strong);box-shadow:0 6px 18px rgba(0,0,0,.6)}
-.rounds-progress{display:flex;gap:4px;justify-content:flex-start;margin-bottom:5px;width:100%}
-.round-dot{width:20px;height:4px;border-radius:2px;background:var(--border-strong);transition:all .4s ease}
-.round-dot.done{background:var(--accent-color);box-shadow:0 0 8px var(--accent-glow)}
-.round-dot.current{background:var(--accent-color);opacity:.5;animation:timerPulse 1s infinite}
 
-/* 🗺️ WIDGET FLOTANTE DESPLEGABLE CON TRANSPARENCIA */
-.guessr-floating-map-box{position:absolute!important;bottom:16px!important;right:16px!important;width:280px!important;height:190px!important;background:rgba(10,16,28,0.60)!important;border:1.5px solid rgba(255,255,255,0.18)!important;border-radius:14px!important;padding:6px!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;gap:5px!important;box-shadow:0 10px 30px rgba(0,0,0,.6)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;pointer-events:auto!important;z-index:30!important;transition:width .28s cubic-bezier(.175,.885,.32,1.275),height .28s cubic-bezier(.175,.885,.32,1.275),opacity .22s ease,background-color .22s ease,border-color .25s ease!important;opacity:.65}
+/* ⚡ HUD SUPERIOR ESPACIAL PREMIUM */
+.guessr-top-hud {
+    position: absolute !important;
+    top: 68px !important;
+    left: 18px !important;
+    pointer-events: auto;
+    width: auto !important;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    z-index: 25;
+    font-family: 'Outfit', sans-serif !important;
+}
 
-/* 🖱️ En PC (con mouse): El hover expande automáticamente salvo que se haya colapsado con el botón */
+/* 🟢 Segmentos de Progreso de Rondas */
+.rounds-progress {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0 2px;
+}
+
+.round-dot {
+    flex: 1;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.round-dot.done {
+    background: linear-gradient(90deg, #00ff77 0%, #00e676 100%);
+    box-shadow: 0 0 8px rgba(0, 255, 119, 0.7);
+}
+
+.round-dot.current {
+    background: #00ff77;
+    box-shadow: 0 0 10px rgba(0, 255, 119, 0.9);
+    animation: timerPulse 1.2s infinite ease-in-out;
+}
+
+/* 🏆 Placa Principal de Puntaje y Ronda (Limpia y estilizada) */
+#game-title {
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.80rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.4px;
+    color: #f8fafc;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    background: linear-gradient(135deg, rgba(14, 23, 40, 0.90) 0%, rgba(8, 13, 24, 0.96) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-top: 1.5px solid rgba(0, 255, 119, 0.55);
+    border-radius: 12px;
+    padding: 5px 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 15px rgba(0, 255, 119, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    line-height: 1.2;
+}
+
+#game-title span[style*="var(--accent-color)"] {
+    background: rgba(0, 255, 119, 0.12);
+    border: 1px solid rgba(0, 255, 119, 0.35);
+    padding: 2px 8px;
+    border-radius: 7px;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px;
+    color: #00ff77 !important;
+    text-shadow: 0 0 10px rgba(0, 255, 119, 0.4);
+}
+
+/* 🗺️ WIDGET FLOTANTE DEL MAPA COMPACTO Y TRANSLÚCIDO */
+.guessr-floating-map-box {
+    position: absolute !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 245px !important;
+    height: 165px !important;
+    opacity: 0.68 !important;
+    background: linear-gradient(145deg, rgba(14, 22, 38, 0.70) 0%, rgba(8, 12, 22, 0.85) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
+    border-top: 2px solid rgba(0, 255, 119, 0.5) !important;
+    border-radius: 14px !important;
+    padding: 5px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 15px rgba(0, 255, 119, 0.12) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    pointer-events: auto !important;
+    z-index: 30 !important;
+    transition: width .28s cubic-bezier(.175,.885,.32,1.275), height .28s cubic-bezier(.175,.885,.32,1.275), opacity .22s ease, border-color .25s ease, background-color .25s ease !important;
+}
+
+/* 🖱️ En PC (con mouse): El hover expande automáticamente con 100% de opacidad salvo que se haya colapsado */
 @media (hover: hover) and (pointer: fine) {
     .guessr-floating-map-box:hover:not(.collapsed) {
-        width: min(580px,92vw) !important;
-        height: min(420px,62vh) !important;
+        width: min(580px, 92vw) !important;
+        height: min(430px, 62vh) !important;
         opacity: 1 !important;
         background: var(--glass-bg) !important;
-        border-color: var(--accent-color) !important;
-        box-shadow: 0 20px 50px rgba(0,0,0,.9), 0 0 30px var(--accent-glow) !important;
+        border-color: #00ff77 !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px var(--accent-glow) !important;
     }
 }
 
-/* 📌 Estado fijado / expandido por botón (Válido en PC y Móvil) */
+/* 📌 Estado fijado / expandido por botón (100% opaco tanto en PC como en Móvil) */
 .guessr-floating-map-box.expanded,
-.guessr-floating-map-box.pinned{width:min(580px,92vw)!important;height:min(420px,62vh)!important;opacity:1!important;background:var(--glass-bg)!important;border-color:var(--accent-color)!important;box-shadow:0 20px 50px rgba(0,0,0,.9),0 0 30px var(--accent-glow)!important}
+.guessr-floating-map-box.pinned {
+    width: min(580px, 92vw) !important;
+    height: min(430px, 62vh) !important;
+    opacity: 1 !important;
+    background: var(--glass-bg) !important;
+    border-color: #00ff77 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px var(--accent-glow) !important;
+}
 
-#game-action-btn{width:100%!important;padding:6px 10px!important;font-size:0.78rem!important;min-height:30px!important;height:30px!important;border-radius:8px!important;box-sizing:border-box!important;letter-spacing:0.3px}
+/* 🚀 BOTÓN DE ACCIÓN / CLAVAR PIN REFINADO */
+#game-action-btn {
+    font-family: 'Outfit', sans-serif !important;
+    width: 100% !important;
+    min-height: 31px !important;
+    height: 31px !important;
+    padding: 0 12px !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2px;
+    border-radius: 9px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    text-transform: none !important; /* Salimos del uppercase forzado */
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-.guessr-map-expand-btn{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.75);border:1.5px solid var(--border-strong);color:var(--text-main);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;z-index:1000;pointer-events:auto!important;touch-action:manipulation;transition:all .2s ease;backdrop-filter:blur(6px)}
-.guessr-map-expand-btn:hover{background:var(--accent-color);color:#000;border-color:var(--accent-color);transform:scale(1.1)}
+/* Estado inicial pasivo (Guía al usuario sin saturar) */
+#game-action-btn.secondary[disabled],
+#game-action-btn:disabled:not([data-estado="resultado"]) {
+    background: rgba(14, 22, 38, 0.82) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.22) !important;
+    color: #94a3b8 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+    cursor: default;
+}
+
+#game-action-btn.secondary[disabled] i {
+    color: #00ff77 !important;
+    font-size: 0.92rem;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.4));
+}
+
+/* Estado activo brillante cuando hay un pin puesto */
+#game-action-btn.primary:not([disabled]) {
+    background: linear-gradient(135deg, #00ff77 0%, #00cc66 100%) !important;
+    color: #04160a !important;
+    border: none !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 0 #007a38, 0 0 18px rgba(0, 255, 119, 0.6) !important;
+    animation: bounceFun 0.35s ease;
+}
+
+#game-action-btn.primary:not([disabled]):hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 4px 0 #007a38, 0 0 24px rgba(0, 255, 119, 0.8) !important;
+}
+
+/* Botón de expandir esquina */
+.guessr-map-expand-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(10, 16, 28, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.92rem;
+    cursor: pointer;
+    z-index: 1000;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.guessr-map-expand-btn:hover {
+    background: #00ff77;
+    color: #000;
+    border-color: #00ff77;
+    box-shadow: 0 0 12px var(--accent-glow);
+    transform: scale(1.08);
+}
 
 #map-guess-container{width:100%!important;flex:1!important;height:100%!important;min-height:0!important;background:var(--surface-color);border-radius:12px!important;border:1.5px solid var(--border-strong);margin-bottom:0!important;overflow:hidden;position:relative}
 .map-hint-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:5;transition:opacity .3s}
@@ -2121,20 +2365,8 @@ body.video-abierto .hero-section {
 }
 
 [data-theme="dark"] .welcome-heading {
-    font-size: 3.2rem;
+    font-size: 3.1rem;
     font-weight: 900 !important;
-    text-transform: uppercase !important; 
-    letter-spacing: -1px !important;       
-    text-shadow: 3px 3px 0px #000000 !important;
-}
-
-[data-theme="dark"] .welcome-heading .accent-word {
-    color: #00ff77 !important; 
-    text-shadow: 0 0 20px rgba(0, 255, 119, 0.4), 3px 3px 0px #000000 !important;
-}
-
-[data-theme="dark"] .welcome-sub {
-    color: var(--text-muted) !important;
 }
 
 [data-theme="dark"] .search-bar {
@@ -2194,22 +2426,36 @@ body.video-abierto .hero-section {
     opacity: 0.28 !important;
 }
 
+[data-theme="light"] .hero-eyebrow {
+    background: #ffffff !important;
+    border: 2px solid #a4bdae !important;
+    color: #008744 !important;
+    box-shadow: 0 4px 15px rgba(4, 22, 10, 0.08) !important;
+}
+
+[data-theme="light"] .hero-eyebrow i {
+    color: #008744 !important;
+    filter: none !important;
+}
+
 [data-theme="light"] .welcome-heading {
-    font-size: 3.2rem;
-    font-weight: 900 !important;
-    text-transform: uppercase !important; 
-    letter-spacing: -1px !important;       
-    text-shadow: 2px 2px 0px rgba(0, 204, 102, 0.12) !important;
-    color: #04160a !important;
+    font-size: 3.1rem;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 45%, #334155 50%, #0f172a 55%, #1e293b 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    filter: drop-shadow(0 3px 0 #cbd5e1) drop-shadow(0 6px 14px rgba(15, 23, 42, 0.15)) !important;
 }
 
 [data-theme="light"] .welcome-heading .accent-word {
-    color: #00cc66 !important; 
-    text-shadow: 2px 2px 0px rgba(4, 22, 10, 0.08) !important;
+    background: linear-gradient(180deg, #00e676 0%, #00a854 45%, #007a38 50%, #00cc66 55%, #006028 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    filter: drop-shadow(0 3px 0 #86efac) drop-shadow(0 0 16px rgba(0, 204, 102, 0.35)) !important;
 }
 
 [data-theme="light"] .welcome-sub {
     color: #2c4930 !important;
+    text-shadow: none !important;
 }
 
 [data-theme="light"] .search-bar {
@@ -2401,12 +2647,13 @@ body.video-abierto .hero-section {
 
     /* 2. Acotamos el título SOLO a la portada hero (sin infectar modales) */
     .hero-content h1, .welcome-heading, [data-theme="dark"] .welcome-heading, [data-theme="light"] .welcome-heading {
-        font-size: 1.7rem !important; 
+        font-size: 2.1rem !important; 
         line-height: 1.1 !important;
         margin-top: 5px !important;
         margin-bottom: 8px !important;
         max-width: 100% !important;
         word-break: break-word !important;
+        letter-spacing: -0.5px !important;
     }
 
     /* 3. Acotamos el subtítulo SOLO a la portada hero (sin infectar párrafos de modales) */
@@ -4260,7 +4507,6 @@ body.video-abierto .hero-section {
    📱 BOTÓN PRINCIPAL DE ACCIÓN DE JUEGO (RESPONSIVE FIX)
    ======================================================== */
 #game-action-btn {
-    padding: 12px 12px !important;
     box-sizing: border-box !important;
 }
 
@@ -5456,34 +5702,49 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 8px 24px rgba(255, 71, 87, 0.25) !important;
 }
 
-/* 💡 HUD DE PISTAS CON GLOBITO INTERACTIVO */
+/* 💡 HUD DE PISTAS (Sutil, elegante y limpio) */
 .guessr-hud-hints {
     position: relative;
-    margin-top: 6px;
+    margin-top: 2px;
     z-index: 30;
+    font-family: 'Outfit', sans-serif !important;
 }
 
 .guessr-hint-btn {
+    font-family: 'Outfit', sans-serif !important;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(10, 16, 28, 0.9);
-    border: 1.5px solid var(--accent-color);
-    border-radius: 12px;
-    padding: 5px 12px;
-    color: #ffffff;
+    height: 26px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, rgba(14, 20, 34, 0.92) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-top: 1.5px solid rgba(253, 224, 71, 0.7);
+    border-radius: 9px;
+    padding: 0 11px;
+    color: #fde68a;
     font-size: 0.74rem;
-    font-weight: 800;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    text-transform: none; /* Title Case natural */
     cursor: pointer;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 10px var(--accent-glow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 10px rgba(245, 158, 11, 0.15);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .guessr-hint-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.7), 0 0 16px var(--accent-glow);
+    transform: translateY(-1px) scale(1.02);
+    border-color: #facc15;
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 16px rgba(250, 204, 21, 0.4);
+}
+
+.guessr-hint-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    border-color: #facc15;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 22px rgba(250, 204, 21, 0.55);
 }
 
 .guessr-hint-balloon {
@@ -5491,18 +5752,18 @@ html[data-theme="light"] .xp-bar-big-fill {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    width: 290px;
-    background: rgba(10, 16, 28, 0.95);
-    border: 1.5px solid var(--border-strong);
-    border-top: 2px solid var(--accent-color);
-    border-radius: 14px;
-    padding: 12px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.85), 0 0 20px rgba(0,230,118,0.2);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    width: 300px;
+    background: linear-gradient(165deg, rgba(16, 26, 44, 0.96) 0%, rgba(8, 14, 25, 0.99) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    border-top: 2.5px solid #facc15;
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 25px rgba(250, 204, 21, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     animation: fadeSlideUp 0.22s ease forwards;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     z-index: 35;
 }
 
