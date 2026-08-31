@@ -3616,7 +3616,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos');
 
     let subMenuHTML = `
-    <div class="liga-tabs-row ranking-tabs-row" style="margin: 0 auto 16px; max-width: 475px;">
+    <div class="liga-tabs-row ranking-tabs-row">
         <button class="liga-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">
             <img src="ranking-icon-solo.png" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
         </button>
@@ -3646,12 +3646,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 .limit(10);
             if (error) throw error;
 
-            // 🎯 Trae tu puntaje récord real directo de la base de datos de Supabase
             let recordReal = 0;
             const miEmail = u && u.email ? u.email : '';
             const miApodo = (miNombre || '').trim().toLowerCase();
 
-            // 1. Primero busca en Supabase por email (si estás logueado con Google)
             if (miEmail) {
                 const { data: filaPorEmail } = await supabaseClient
                     .from('ranking')
@@ -3666,7 +3664,6 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 }
             }
 
-            // 2. Si no encontró por email o sos invitado, busca tu mejor marca histórica por apodo
             if (!recordReal && miApodo) {
                 const { data: filaPorNombre } = await supabaseClient
                     .from('ranking')
@@ -3681,7 +3678,6 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 }
             }
 
-            // 3. Fallback: si aún no se guardó en la nube pero tenés score local válido
             if (!recordReal && userStats.maxScore && userStats.maxScore <= 25000) {
                 recordReal = userStats.maxScore;
             }
@@ -3770,7 +3766,6 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
             if (error) throw error;
 
-            // 🎯 Posición real computada de la tabla semanal
             const miIdx = (ranking || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
             const miPuestoSemanal = miIdx !== -1 ? `#${miIdx + 1}` : 'Sin clasif.';
 
@@ -3817,48 +3812,56 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         }
 
         body.innerHTML = `
-        <div class="liga-modal-header split-header">
-            <div class="modal-header-left">
-                <div class="trophy-stage-wrapper">
-                    <div class="trophy-glow-backdrop ${headerConfig.glowClass}"></div>
-                    <div class="trophy-main-img-box">
-                        <img src="${headerConfig.img}" alt="Ícono Modo" class="trophy-main-img">
+        <div class="ranking-split-grid">
+            <div class="ranking-left-panel">
+                <div class="ranking-brand-box">
+                    <div class="trophy-stage-wrapper">
+                        <div class="trophy-glow-backdrop ${headerConfig.glowClass}"></div>
+                        <div class="trophy-main-img-box">
+                            <img src="${headerConfig.img}" alt="Ícono Modo" class="trophy-main-img">
+                        </div>
+                    </div>
+                    <h2 class="liga-modal-title">Salón de la Fama</h2>
+                </div>
+
+                <div class="modal-header-right-pills ranking-pills-column">
+                    <div class="header-stat-pill">
+                        <i class="ph-bold ${headerConfig.pill1Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                        <div class="stat-pill-info">
+                            <span>${headerConfig.pill1Label}</span>
+                            <strong>${headerConfig.pill1Val}</strong>
+                        </div>
+                    </div>
+                    <div class="header-stat-pill">
+                        <i class="ph-bold ${headerConfig.pill2Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                        <div class="stat-pill-info">
+                            <span>${headerConfig.pill2Label}</span>
+                            <strong>${headerConfig.pill2Val}</strong>
+                        </div>
+                    </div>
+                    <div class="header-stat-pill">
+                        <i class="ph-bold ${headerConfig.pill3Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                        <div class="stat-pill-info">
+                            <span>${headerConfig.pill3Label}</span>
+                            <strong>${headerConfig.pill3Val}</strong>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-header-title-box">
-                    <h2 class="liga-modal-title">Salón de la Fama</h2>
-                    <div class="modal-subtitle-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
-                        <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${headerConfig.badgeText}
-                    </div>
+
+                <div class="ranking-sidebar-menu">
+                    ${subMenuHTML}
                 </div>
             </div>
 
-            <div class="modal-header-right-pills">
-                <div class="header-stat-pill">
-                    <i class="ph-bold ${headerConfig.pill1Icon}" style="color: ${headerConfig.badgeColor};"></i>
-                    <div class="stat-pill-info">
-                        <span>${headerConfig.pill1Label}</span>
-                        <strong>${headerConfig.pill1Val}</strong>
+            <div class="ranking-right-panel">
+                <div class="ranking-table-top-bar">
+                    <div class="modal-subtitle-badge ranking-active-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
+                        <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${headerConfig.badgeText}
                     </div>
                 </div>
-                <div class="header-stat-pill">
-                    <i class="ph-bold ${headerConfig.pill2Icon}" style="color: ${headerConfig.badgeColor};"></i>
-                    <div class="stat-pill-info">
-                        <span>${headerConfig.pill2Label}</span>
-                        <strong>${headerConfig.pill2Val}</strong>
-                    </div>
-                </div>
-                <div class="header-stat-pill">
-                    <i class="ph-bold ${headerConfig.pill3Icon}" style="color: ${headerConfig.badgeColor};"></i>
-                    <div class="stat-pill-info">
-                        <span>${headerConfig.pill3Label}</span>
-                        <strong>${headerConfig.pill3Val}</strong>
-                    </div>
-                </div>
+                ${htmlContenido}
             </div>
-        </div>
-        ${subMenuHTML}
-        ${htmlContenido}`;
+        </div>`;
 
     } catch (e) {
         console.error("Error al leer ranking global:", e);
@@ -5365,6 +5368,21 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
     const esPuntaje = tipoVista === 'puntaje';
 
+    // 🎨 Configuración dinámica de ícono, resplandor y colores según la pestaña activa
+    const headerConfig = esPuntaje ? {
+        img: 'liga-icon-puntaje.png',
+        alt: 'Puntaje Máximo',
+        glowClass: 'glow-green',
+        badgeColor: '#00ff77',
+        badgeSub: 'PUNTAJE MÁXIMO'
+    } : {
+        img: 'liga-icon-historial.png',
+        alt: 'Historial W/L',
+        glowClass: 'glow-blue',
+        badgeColor: '#2979ff',
+        badgeSub: 'HISTORIAL W/L'
+    };
+
     // 📊 Cálculo en vivo de las métricas de la liga
     const miFila = (lista || []).find(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
     const miPuntajeLiga = miFila ? (miFila.puntaje || 0) : 0;
@@ -5372,60 +5390,22 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     const totalMiembros = (lista || []).length;
     const conectadosAhora = (usuariosOnlineLiga || []).length;
 
-    let htmlContenido = `
-    <div class="liga-modal-header split-header">
-        <div class="modal-header-left">
-            <div class="trophy-stage-wrapper">
-                <div class="trophy-glow-backdrop glow-green"></div>
-                <div class="trophy-main-img-box">
-                    <img src="liga-trofeo-header.png" alt="Trofeo Liga" class="trophy-main-img">
-                </div>
-            </div>
-            <div class="modal-header-title-box">
-                <h2 class="liga-modal-title">Liga de Amigos</h2>
-                <div class="modal-subtitle-badge" style="border-color: #00ff7755; color: #00ff77; background: #00ff7718; box-shadow: 0 0 14px #00ff7730;">
-                    <span class="badge-dot-live" style="background: #00ff77; box-shadow: 0 0 8px #00ff77;"></span> ${nombreVisualLiga.replace(/_/g, ' ')}
-                </div>
-            </div>
-        </div>
-
-        <div class="modal-header-right-pills">
-            <div class="header-stat-pill">
-                <i class="ph-bold ${esPuntaje ? 'ph-trophy' : 'ph-sword'}" style="color: var(--accent-color);"></i>
-                <div class="stat-pill-info">
-                    <span>${esPuntaje ? 'TU PUNTAJE' : 'TUS DUELOS'}</span>
-                    <strong>${esPuntaje ? miPuntajeLiga.toLocaleString('es-AR') + ' pts' : miWLLiga}</strong>
-                </div>
-            </div>
-            <div class="header-stat-pill">
-                <i class="ph-bold ph-users-three" style="color: var(--accent-color);"></i>
-                <div class="stat-pill-info">
-                    <span>INTEGRANTES</span>
-                    <strong>${totalMiembros} Jugadores</strong>
-                </div>
-            </div>
-            <div class="header-stat-pill">
-                <i class="ph-bold ph-broadcast" style="color: var(--accent-color);"></i>
-                <div class="stat-pill-info">
-                    <span>EN VIVO</span>
-                    <strong>${conectadosAhora} Online</strong>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="liga-tabs-row" style="margin-top: 10px;">
-        <button onclick="cambiarVistaLiga('puntaje')" class="liga-tab-btn ${esPuntaje ? 'active' : ''}">
-            <img src="liga-icon-puntaje.png" alt="Puntaje" style="width: 88px; height: 88px; object-fit: contain; margin-left: -28px;"> 
-            <span>Puntaje máximo</span>
+    const subMenuHTML = `
+    <div class="liga-tabs-row ranking-tabs-row">
+        <button class="liga-tab-btn ${esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('puntaje')">
+            <img src="liga-icon-puntaje.png" alt="Puntaje" class="ranking-tab-img"> <span>Puntaje máx.</span>
         </button>
-        <button onclick="cambiarVistaLiga('triunfos')" class="liga-tab-btn ${!esPuntaje ? 'active' : ''}">
-            <img src="liga-icon-historial.png" alt="Historial" style="width: 88px; height: 88px; object-fit: contain; margin-left: -28px;"> 
-            <span>Historial (W/L)</span>
+        <button class="liga-tab-btn ${!esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('triunfos')">
+            <img src="liga-icon-historial.png" alt="Historial" class="ranking-tab-img"> <span>Historial W/L</span>
         </button>
     </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 14px;">
+        <button onclick="salirLigaAmigos()" class="btn-salir-liga">
+            <i class="ph-bold ph-sign-out"></i> SALIR DE LA LIGA
+        </button>
+    </div>`;
 
-    <div class="liga-table-card">`;
+    let htmlContenido = `<div class="liga-table-card">`;
 
     if (!lista || lista.length === 0) {
         htmlContenido += `
@@ -5467,7 +5447,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                                     <strong style="color:#ff4757; font-weight:900;">${l} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">L</span></strong>
                                 </div>`;
             } else {
-                bloquePuntos = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
+                bloquePuntos = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${(f.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
             }
 
             htmlContenido += `
@@ -5483,14 +5463,59 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         });
     }
 
-    htmlContenido += `</div>
-    <div style="display:flex; justify-content:center; margin-top:14px;">
-        <button onclick="salirLigaAmigos()" class="btn-salir-liga" style="padding: 7px 18px; font-size: 0.74rem;">
-            <i class="ph-bold ph-sign-out"></i> SALIR DE LA LIGA
-        </button>
-    </div>`;
+    htmlContenido += `</div>`;
 
-    body.innerHTML = htmlContenido;
+    body.innerHTML = `
+    <div class="ranking-split-grid">
+        <div class="ranking-left-panel">
+            <div class="ranking-brand-box">
+                <div class="trophy-stage-wrapper">
+                    <div class="trophy-glow-backdrop ${headerConfig.glowClass}"></div>
+                    <div class="trophy-main-img-box">
+                        <img src="${headerConfig.img}" alt="${headerConfig.alt}" class="trophy-main-img">
+                    </div>
+                </div>
+                <h2 class="liga-modal-title">Liga de Amigos</h2>
+            </div>
+
+            <div class="modal-header-right-pills ranking-pills-column">
+                <div class="header-stat-pill">
+                    <i class="ph-bold ${esPuntaje ? 'ph-trophy' : 'ph-sword'}" style="color: ${headerConfig.badgeColor};"></i>
+                    <div class="stat-pill-info">
+                        <span>${esPuntaje ? 'TU PUNTAJE' : 'TUS DUELOS'}</span>
+                        <strong>${esPuntaje ? (miPuntajeLiga > 0 ? miPuntajeLiga.toLocaleString('es-AR') + ' pts' : '0 pts') : miWLLiga}</strong>
+                    </div>
+                </div>
+                <div class="header-stat-pill">
+                    <i class="ph-bold ph-users-three" style="color: ${headerConfig.badgeColor};"></i>
+                    <div class="stat-pill-info">
+                        <span>INTEGRANTES</span>
+                        <strong>${totalMiembros} Jugadores</strong>
+                    </div>
+                </div>
+                <div class="header-stat-pill">
+                    <i class="ph-bold ph-broadcast" style="color: ${headerConfig.badgeColor};"></i>
+                    <div class="stat-pill-info">
+                        <span>EN VIVO</span>
+                        <strong>${conectadosAhora} Online</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ranking-sidebar-menu">
+                ${subMenuHTML}
+            </div>
+        </div>
+
+        <div class="ranking-right-panel">
+            <div class="ranking-table-top-bar">
+                <div class="modal-subtitle-badge ranking-active-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
+                    <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${nombreVisualLiga.replace(/_/g, ' ')} · ${headerConfig.badgeSub}
+                </div>
+            </div>
+            ${htmlContenido}
+        </div>
+    </div>`;
 }
 
 // 🔄 Cambia entre la pestaña "Puntaje máximo" y "Triunfos" dentro del modal de la liga.
@@ -5644,16 +5669,22 @@ async function abrirModalLigaAmigosPrivada() {
     if (!nombreLiga) {
         if (body) {
             body.innerHTML = `
-            <div style="text-align:center; margin-bottom:16px;">
-                <div style="font-size:2.4rem; color:var(--accent-color); margin-bottom:4px;"><i class="ph-duotone ph-users-three"></i></div>
-                <h3 style="font-size:1.3rem; font-weight:900; text-transform:uppercase; letter-spacing:-0.3px;">Liga Privada de Amigos</h3>
-                <p style="font-size:.85rem; color:var(--text-muted); margin-top:6px;">Creá una liga o unite con el código exacto que te pasó un amigo.</p>
-            </div>
-            <input id="input-codigo-liga" maxlength="20" placeholder="NOMBRE_DE_LA_LIGA"
-                   style="width:100%; padding:14px; border-radius:12px; border:2px solid var(--border-strong); background:var(--bg-color); color:var(--text-main); font-weight:800; text-align:center; text-transform:uppercase; margin-bottom:12px;">
-            <div style="display:flex; gap:10px;">
-                <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="flex:1; padding:14px;"><i class="ph-bold ph-plus-circle"></i> Crear liga</button>
-                <button onclick="crearOCargarLigaAmigos(false)" class="btn-3d secondary" style="flex:1; padding:14px;"><i class="ph-bold ph-sign-in"></i> Unirme</button>
+            <div style="max-width:440px; margin:20px auto; text-align:center;">
+                <div class="trophy-stage-wrapper" style="margin-bottom:10px;">
+                    <div class="trophy-glow-backdrop glow-green"></div>
+                    <div class="trophy-main-img-box">
+                        <img src="liga-trofeo-header.png" alt="Liga de Amigos" class="trophy-main-img">
+                    </div>
+                </div>
+                <h2 class="liga-modal-title" style="margin-bottom:6px;">Liga Privada de Amigos</h2>
+                <p style="font-size:.85rem; color:var(--text-muted); margin-bottom:20px; line-height:1.4;">Creá un torneo con tus amigos o ingresá con el nombre exacto de la liga.</p>
+                
+                <input id="input-codigo-liga" maxlength="20" placeholder="NOMBRE_DE_LA_LIGA"
+                       style="width:100%; padding:14px; border-radius:14px; border:2px solid var(--border-strong); background:var(--bg-color); color:var(--text-main); font-size:1rem; font-weight:800; text-align:center; text-transform:uppercase; margin-bottom:14px; outline:none; box-sizing:border-box;">
+                <div style="display:flex; gap:10px;">
+                    <button onclick="crearOCargarLigaAmigos(true)" class="btn-3d primary" style="flex:1; padding:14px; font-size:0.92rem;"><i class="ph-bold ph-plus-circle"></i> Crear liga</button>
+                    <button onclick="crearOCargarLigaAmigos(false)" class="btn-3d secondary" style="flex:1; padding:14px; font-size:0.92rem;"><i class="ph-bold ph-sign-in"></i> Unirme</button>
+                </div>
             </div>`;
         }
         // Por las dudas, si veníamos de una liga anterior, apagamos cualquier canal viejo

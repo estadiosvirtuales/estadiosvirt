@@ -4137,8 +4137,8 @@ body.video-abierto .hero-section {
 /* Tamaño para StadiumGuessr */
 .trophy-main-img-box {
     position: relative;
-    width: 110px;
-    height: 110px;
+    width: 140px !important;
+    height: 140px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4463,6 +4463,276 @@ body.video-abierto .hero-section {
 
 [data-theme="light"] .liga-row-item:hover {
     background: #f1f8f5 !important;
+}
+
+/* ========================================================
+   🏆 SALÓN DE LA FAMA & LIGA DE AMIGOS: DASHBOARD 2 COLUMNAS (PC PANORÁMICO)
+   ======================================================== */
+#ranking-modal .modal-content,
+#liga-amigos-modal .modal-content {
+    width: 92% !important;
+    max-width: 1040px !important;
+    height: 86vh !important;
+    max-height: 86vh !important;
+    padding: 24px 30px !important;
+    overflow-y: auto !important;
+    display: block !important;
+}
+
+.ranking-split-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 28px;
+    width: 100%;
+    align-items: start;
+}
+
+/* 👈 PANEL IZQUIERDO: Trofeo, Título, Stats y Botones de modo */
+.ranking-left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.ranking-brand-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.ranking-brand-box .trophy-stage-wrapper {
+    margin: 0 auto 2px;
+}
+
+/* ========================================================
+   🏆 1. TAMAÑO EXCLUSIVO DE LA COPA / ÍCONO SUPERIOR
+   ======================================================== */
+#ranking-modal .ranking-brand-box .trophy-main-img-box,
+#liga-amigos-modal .ranking-brand-box .trophy-main-img-box {
+    width: 190px !important;       /* 👈 [COPA] ANCHO DE LA CAJA */
+    height: 190px !important;      /* 👈 [COPA] ALTO DE LA CAJA */
+}
+
+#ranking-modal .ranking-brand-box .trophy-main-img,
+#liga-amigos-modal .ranking-brand-box .trophy-main-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+#ranking-modal .ranking-brand-box .trophy-glow-backdrop,
+#liga-amigos-modal .ranking-brand-box .trophy-glow-backdrop {
+    width: 200px !important;       /* 👈 [COPA] RESPLANDOR GLOW */
+    height: 130px !important;
+}
+
+.ranking-brand-box .liga-modal-title {
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin: 2px 0 0;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+.ranking-pills-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+.ranking-pills-column .header-stat-pill {
+    padding: 6px 12px;
+}
+
+/* ========================================================
+   🎮 2. SEPARACIÓN Y TAMAÑO DE LOS BOTONES DE MODO
+   ======================================================== */
+.ranking-sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 18px;             /* 👈 SEPARACIÓN CON LAS ESTADÍSTICAS */
+    padding-top: 12px;
+    border-top: 1.5px dashed var(--border-subtle);
+}
+
+.ranking-left-panel .ranking-tabs-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;          /* 👈 ESPACIO ENTRE BOTONES */
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+    width: 220px !important;       /* 👈 ANCHO DEL BOTÓN */
+    max-width: 100% !important;
+    height: 42px !important;       /* 👈 ALTO/GROSOR DEL BOTÓN */
+    min-height: 42px !important;
+    max-height: 42px !important;
+    padding: 0 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+    font-size: 0.80rem !important;
+    font-weight: 900 !important;
+    gap: 8px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* ========================================================
+   🕹️ 3. TAMAÑO EXCLUSIVO DE LOS ÍCONOS DE LOS BOTONES
+   ======================================================== */
+#ranking-modal .ranking-left-panel .ranking-tab-img,
+#liga-amigos-modal .ranking-left-panel .ranking-tab-img {
+    width: 60px !important;        /* 👈 [BOTONES] ANCHO DEL ÍCONO */
+    height: 60px !important;       /* 👈 [BOTONES] ALTO DEL ÍCONO */
+    margin-top: -10px !important;
+    margin-bottom: -10px !important;
+    margin-left: -10px !important;
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) !important;
+    pointer-events: none !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span,
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
+    margin: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+/* 👉 PANEL DERECHO: Título Activo Centrado y Tabla de Posiciones */
+.ranking-right-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.ranking-table-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.ranking-active-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 0.78rem !important;
+    font-weight: 900 !important;
+    padding: 7px 22px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    border-radius: 30px !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1.5px solid !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.ranking-right-panel .liga-table-card {
+    width: 100%;
+    border-radius: 18px;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.ranking-right-panel .liga-row-item {
+    padding: 11px 20px;
+    font-size: 0.94rem;
+}
+
+.ranking-right-panel .liga-row-item span:last-child {
+    font-variant-numeric: tabular-nums;
+}
+
+/* 📱 ADAPTACIÓN RESPONSIVE EN CELULARES */
+@media (max-width: 768px) {
+    #ranking-modal .modal-content,
+    #liga-amigos-modal .modal-content {
+        width: 92% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: 85vh !important;
+        padding: 20px 14px !important;
+    }
+
+    .ranking-split-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .ranking-brand-box .trophy-main-img-box {
+        width: 80px;
+        height: 80px;
+    }
+
+    .ranking-brand-box .trophy-glow-backdrop {
+        width: 140px;
+        height: 90px;
+    }
+
+    .ranking-brand-box .liga-modal-title {
+        font-size: 1.2rem;
+    }
+
+    .ranking-pills-column {
+        flex-direction: row;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .ranking-sidebar-menu {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+        width: 100%;
+    }
+
+    .ranking-left-panel .ranking-tabs-row {
+        flex-direction: row !important;
+        gap: 6px !important;
+        width: 100% !important;
+    }
+
+    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
+    #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+        width: 100% !important;
+        height: 42px !important;
+        font-size: 0.65rem !important;
+        padding: 4px 6px !important;
+        justify-content: center !important;
+        border-radius: 14px !important;
+    }
+
+    #ranking-modal .ranking-left-panel .ranking-tab-img,
+    #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
+        width: 34px !important;
+        height: 34px !important;
+        margin-left: -4px !important;
+    }
+
+    .ranking-right-panel .liga-row-item {
+        padding: 11px 14px;
+        font-size: 0.86rem;
+    }
 }
 
 /* 🎨 Scrollbars Cyber-Neón para Modales */
