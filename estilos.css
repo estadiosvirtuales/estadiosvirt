@@ -2689,8 +2689,8 @@ body.video-abierto .hero-section {
 
     /* Botones sociales estáticos y centrados en móvil */
     .social-floating-container {
-        transform: scale(0.85);
-        margin: 30px auto 20px auto !important;
+        transform: none !important;
+        margin: 2px auto 4px auto !important;
         transform-origin: center center;
     }
 }
