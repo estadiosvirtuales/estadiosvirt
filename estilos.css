@@ -5264,7 +5264,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;              /* 👈 Distancia entre el botón de personalizar y el de compartir */
     width: 100%;
     max-width: 280px;
     margin-top: 14px;
@@ -5277,16 +5277,16 @@ html[data-theme="light"] .xp-bar-big-fill {
     max-width: 100% !important;
     height: 32px !important;
     margin: 0 !important;
-    padding: 0 8px 0 45px !important; /* Espacio calibrado para que no corte el texto */
-    font-size: 0.62rem !important;    /* 👈 MODIFICÁ ACÁ EL TAMAÑO DE LETRA */
-    font-weight: 900 !important;
-    letter-spacing: 0px !important;
-    white-space: nowrap !important;   /* 👈 OBLIGA A QUE ESTÉ EN 1 SOLA LÍNEA */
+    padding: 0 10px 0 65px !important;
+    font-size: 0.44rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
     display: inline-flex !important;
-    align-items: center !important;
+    align-items: right !important;
     justify-content: center !important;
     position: relative;
-    left: -4px;
+    left: -4px;            /* 👈 MODIFICÁ ACÁ: más negativo (-5px) lo corre más a la IZQUIERDA */
 }
 
 .share-btn-wrapper {
