@@ -3393,7 +3393,7 @@ body.video-abierto .hero-section {
     /* 🔴 BOTÓN DE CERRAR SESIÓN SIEMPRE ABAJO DE TODO EN CELULARES */
     .profile-login-wrapper.wrapper-logout {
         grid-column: 1 / span 2 !important;
-        grid-row: 99 !important;
+        grid-row: 75 !important;
         width: 100% !important;
         max-width: 220px !important;
         margin: 20px auto 10px !important;
