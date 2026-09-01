@@ -5320,8 +5320,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 #btn-share-card {
-    width: 32px !important;
-    height: 32px !important;
+    width: 30px !important;
+    height: 30px !important;
     min-width: 42px !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -5329,7 +5329,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     align-items: center !important;
     justify-content: center !important;
     font-size: 1.15rem !important;
-    border-radius: 15px !important;
+    border-radius: 16px !important;
 }
 
 /* ========================================================
