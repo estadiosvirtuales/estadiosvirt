@@ -161,7 +161,7 @@ body > * {
 .btn-3d.secondary{background:var(--surface-color);color:var(--text-main);border:2px solid var(--border-strong);box-shadow:0 4px 0 rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2)}
 .btn-3d.secondary:hover{border-color:var(--accent-color);color:var(--accent-color);background:var(--accent-dim);transform:translateY(-2px)}
 .btn-3d.secondary:active{box-shadow:1px 0 rgba(0,0,0,.3);transform:translateY(3px)}
-.hero-section{position:relative;padding:60px 20px 70px;text-align:center;overflow:visible}
+.hero-section{position:relative;padding:18px 20px 24px;text-align:center;overflow:visible}
 .hero-bg-glow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 65%);pointer-events:none;opacity:.5}
 .hero-ball{position:absolute;right:8%;top:20%;font-size:5rem;opacity:.06;animation:floatBall 6s ease-in-out infinite;pointer-events:none;user-select:none}
 .hero-ball-2{position:absolute;left:6%;top:55%;font-size:3rem;opacity:.05;animation:floatBall 8s ease-in-out infinite reverse;pointer-events:none;user-select:none}
@@ -310,16 +310,16 @@ body > * {
 }
 
 .welcome-sub {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #cbd5e1;
-    margin-bottom: 38px;
+    margin-bottom: 20px;
     font-weight: 600;
     max-width: 560px;
-    line-height: 1.6;
+    line-height: 1.5;
     animation: fadeSlideUp 0.45s 0.1s ease both;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
-.search-container{width:100%;max-width:580px;margin:0 auto 40px;position:relative;animation:fadeSlideUp .45s .15s ease both}
+.search-container{width:100%;max-width:580px;margin:0 auto 24px;position:relative;animation:fadeSlideUp .45s .15s ease both}
 .search-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:1.25rem;z-index:2}
 .search-bar{width:100%;padding:18px 20px 18px 54px;border-radius:16px;border:2px solid var(--border-strong);background:var(--card-bg);color:var(--text-main);font-size:1rem;outline:none;transition:all .3s ease;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.3),inset 0 1px 0 var(--border-subtle)}
 .search-bar::placeholder{color:var(--text-muted);font-weight:400}
@@ -3453,7 +3453,7 @@ body.video-abierto .hero-section {
     position: relative;
     width: 100%;
     max-width: 1300px;
-    margin: 75px auto 0 auto;
+    margin: 26px auto 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
