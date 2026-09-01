@@ -4476,7 +4476,7 @@ const savedHair = getPref('ev_avatar_hair', '1.png');const savedShirt = getPref(
 const activeCardClass=savedTheme;
 
 const authBtnHTML = esGoogle 
-    ? `<div class="profile-login-wrapper">
+    ? `<div class="profile-login-wrapper wrapper-logout">
         <button onclick="cerrarSesion()" class="btn-3d secondary profile-login-btn logout">
             <i class="ph-bold ph-sign-out"></i> Cerrar sesión
         </button>
