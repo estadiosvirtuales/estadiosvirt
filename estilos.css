@@ -4809,6 +4809,45 @@ body.video-abierto .hero-section {
         padding: 11px 14px;
         font-size: 0.86rem;
     }
+
+    /* 🏷️ Título Badge en Celulares (Cápsula Flotante Centrada como Captura 25) */
+    .ranking-table-top-bar {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 10px !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .ranking-active-badge {
+        width: max-content !important;
+        max-width: 94% !important;
+        padding: 5px 12px !important;
+        gap: 6px !important;
+        margin: 0 auto !important;
+    }
+
+    .badge-title-png-icon {
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 !important;
+    }
+
+    .badge-title-text {
+        font-size: 0.68rem !important;
+        letter-spacing: 0.2px !important;
+    }
+
+    .badge-sub-pill {
+        font-size: 0.55rem !important;
+        padding: 2px 6px !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    .badge-sep {
+        font-size: 0.65rem !important;
+    }
 }
 
 /* 🎨 Scrollbars Cyber-Neón para Modales */
