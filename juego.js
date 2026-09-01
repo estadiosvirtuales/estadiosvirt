@@ -3687,7 +3687,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             headerConfig = {
                 img: 'liga-trofeo-header.png',
                 glowClass: 'glow-green',
-                badgeText: 'TOP 10 INDIVIDUAL',
+                badgeImg: 'ranking-icon-solo.png',
+                badgeTitle: 'Top 10 Global',
+                badgeSub: 'Individual',
                 badgeColor: '#00ff77',
                 pill1Label: 'MEJOR PARTIDA',
                 pill1Val: textoRecord,
@@ -3728,7 +3730,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             headerConfig = {
                 img: 'ranking-icon-1v1.png',
                 glowClass: 'glow-blue',
-                badgeText: 'DUELOS 1 VS 1 · HISTÓRICO',
+                badgeImg: 'ranking-icon-1v1.png',
+                badgeTitle: 'Duelos 1 vs 1',
+                badgeSub: 'Histórico',
                 badgeColor: '#2979ff',
                 pill1Label: 'VICTORIAS',
                 pill1Val: `${userStats.partidasGanadas || 0} PG`,
@@ -3776,7 +3780,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             headerConfig = {
                 img: 'ranking-icon-semanal.png',
                 glowClass: 'glow-gold',
-                badgeText: 'TEMPORADA · TOP SEMANAL',
+                badgeImg: 'ranking-icon-semanal.png',
+                badgeTitle: 'Temporada Activa',
+                badgeSub: 'Top Semanal',
                 badgeColor: '#eab308',
                 pill1Label: 'RACHA ACTIVA',
                 pill1Val: `🔥 ${userStats.rachaActual || 1} Días`,
@@ -3855,8 +3861,12 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
 
             <div class="ranking-right-panel">
                 <div class="ranking-table-top-bar">
-                    <div class="modal-subtitle-badge ranking-active-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
-                        <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${headerConfig.badgeText}
+                    <div class="ranking-active-badge" style="--badge-color:${headerConfig.badgeColor};">
+                        <span class="badge-dot-live" style="background:${headerConfig.badgeColor}; box-shadow:0 0 10px ${headerConfig.badgeColor};"></span>
+                        <img src="${headerConfig.badgeImg}" alt="Ícono" class="badge-title-png-icon">
+                        <span class="badge-title-text">${headerConfig.badgeTitle}</span>
+                        <span class="badge-sep">·</span>
+                        <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
                     </div>
                 </div>
                 ${htmlContenido}
@@ -5373,14 +5383,18 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         img: 'liga-icon-puntaje.png',
         alt: 'Puntaje Máximo',
         glowClass: 'glow-green',
-        badgeColor: '#00ff77',
-        badgeSub: 'PUNTAJE MÁXIMO'
+        badgeImg: 'liga-icon-puntaje.png',
+        badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
+        badgeSub: 'Puntaje Máximo',
+        badgeColor: '#00ff77'
     } : {
         img: 'liga-icon-historial.png',
         alt: 'Historial W/L',
         glowClass: 'glow-blue',
-        badgeColor: '#2979ff',
-        badgeSub: 'HISTORIAL W/L'
+        badgeImg: 'liga-icon-historial.png',
+        badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
+        badgeSub: 'Historial W/L',
+        badgeColor: '#2979ff'
     };
 
     // 📊 Cálculo en vivo de las métricas de la liga
@@ -5509,8 +5523,12 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
         <div class="ranking-right-panel">
             <div class="ranking-table-top-bar">
-                <div class="modal-subtitle-badge ranking-active-badge" style="border-color: ${headerConfig.badgeColor}55; color: ${headerConfig.badgeColor}; background: ${headerConfig.badgeColor}18; box-shadow: 0 0 14px ${headerConfig.badgeColor}30;">
-                    <span class="badge-dot-live" style="background: ${headerConfig.badgeColor}; box-shadow: 0 0 8px ${headerConfig.badgeColor};"></span> ${nombreVisualLiga.replace(/_/g, ' ')} · ${headerConfig.badgeSub}
+                <div class="ranking-active-badge" style="--badge-color:${headerConfig.badgeColor};">
+                    <span class="badge-dot-live" style="background:${headerConfig.badgeColor}; box-shadow:0 0 10px ${headerConfig.badgeColor};"></span>
+                    <img src="${headerConfig.badgeImg}" alt="Ícono" class="badge-title-png-icon">
+                    <span class="badge-title-text">${headerConfig.badgeTitle}</span>
+                    <span class="badge-sep">·</span>
+                    <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
                 </div>
             </div>
             ${htmlContenido}

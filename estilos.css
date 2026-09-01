@@ -4634,7 +4634,7 @@ body.video-abierto .hero-section {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     width: 100%;
 }
 
@@ -4642,17 +4642,83 @@ body.video-abierto .hero-section {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
-    font-size: 0.78rem !important;
-    font-weight: 900 !important;
-    padding: 7px 22px !important;
-    letter-spacing: 1.5px !important;
-    text-transform: uppercase !important;
+    gap: 10px !important;
+    padding: 8px 24px !important;
     border-radius: 30px !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1.5px solid !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    background: linear-gradient(135deg, rgba(16, 26, 44, 0.94) 0%, rgba(8, 14, 25, 0.98) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: 2px solid var(--badge-color, #00ff77) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.65), 
+                0 0 20px color-mix(in srgb, var(--badge-color, #00ff77) 25%, transparent),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.badge-title-png-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7));
+    flex-shrink: 0;
+    margin: -4px 0;
+    pointer-events: none;
+}
+
+.badge-title-text {
+    font-size: 0.88rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+}
+
+.badge-sep {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.badge-sub-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    text-shadow: 0 0 10px color-mix(in srgb, currentColor 50%, transparent);
+}
+
+/* ☀️ Adaptación en Modo Claro */
+[data-theme="light"] .ranking-active-badge {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    border-top: 2px solid var(--badge-color, #00a854) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+[data-theme="light"] .badge-title-text {
+    color: #04160a !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .badge-sep {
+    color: #94a3b8 !important;
+}
+
+[data-theme="light"] .badge-sub-pill {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
 }
 
 .ranking-right-panel .liga-table-card {
