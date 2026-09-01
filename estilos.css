@@ -3240,7 +3240,7 @@ body.video-abierto .hero-section {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 4px !important;
+        gap: 5px !important;
         margin: 0 auto !important;
         padding: 0 !important;
         position: relative !important;
@@ -3257,26 +3257,35 @@ body.video-abierto .hero-section {
         height: 26px !important;
         min-height: 26px !important;
         max-height: 26px !important;
-        padding: 0 4px 0 20px !important;
+        padding: 0 4px 0 18px !important;
         font-size: 0.42rem !important;
         font-weight: 900 !important;
         letter-spacing: 0px !important;
         left: 0 !important;
         border-radius: 8px !important;
+        border: 1.5px solid var(--border-strong) !important;
+        box-shadow: none !important;
         box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
-    /* 🛡️ ÍCONO CALIBRADO: No sobresale de la columna y no empuja el texto */
+    .split-profile-layout #btn-toggle-custom::after,
+    #profile-modal-body #btn-toggle-custom::after {
+        display: none !important;
+    }
+
+    /* 🛡️ ÍCONO CALIBRADO */
     .split-profile-layout #btn-toggle-custom .btn-custom-icon,
     #profile-modal-body #btn-toggle-custom .btn-custom-icon {
-        width: 38px !important;
-        height: 38px !important;
-        left: -11px !important;
+        width: 36px !important;
+        height: 36px !important;
+        left: -10px !important;
     }
 
     .split-profile-layout .share-btn-wrapper,
     #profile-modal-body .share-btn-wrapper {
-        width: auto !important;
+        width: 26px !important;
+        height: 26px !important;
         margin: 0 !important;
         padding: 0 !important;
         display: flex !important;
@@ -3310,35 +3319,51 @@ body.video-abierto .hero-section {
         overflow: hidden !important;
     }
 
-    /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: BIEN PEGADO ARRIBA) */
+    .split-profile-layout #btn-share-card::after,
+    #profile-modal-body #btn-share-card::after {
+        display: none !important;
+    }
+
+    /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: ANCHO Y BORDE LIMPIO A 140PX) */
     .profile-login-wrapper {
         grid-column: 1 !important;
         grid-row: 3 !important;
         width: 100% !important;
-        max-width: 165px !important;
-        margin: 2px auto 0 !important; /* Espaciado compacto y ceñido */
+        max-width: 140px !important;
+        margin: 4px auto 0 !important;
         justify-self: center !important;
         align-self: start !important;
         display: flex !important;
         justify-content: center !important;
         position: relative !important;
+        box-sizing: border-box !important;
     }
 
-    .profile-login-btn {
+    .split-profile-layout .profile-login-btn,
+    #profile-modal-body .profile-login-btn {
         width: 100% !important;
-        height: 25px !important;
-        min-height: 25px !important;
-        padding: 3px 8px !important;
+        height: 26px !important;
+        min-height: 26px !important;
+        max-height: 26px !important;
+        padding: 0 8px !important;
         font-size: 0.60rem !important;
-        border-radius: 10px !important;
+        font-weight: 800 !important;
+        border-radius: 8px !important;
         background: var(--surface-color) !important;
         color: var(--text-main) !important;
         border: 1.5px solid var(--border-strong) !important;
-        box-shadow: 0 2px 0 var(--border-subtle) !important;
+        box-shadow: none !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 5px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .split-profile-layout .profile-login-btn::after,
+    #profile-modal-body .profile-login-btn::after {
+        display: none !important;
     }
 
     /* 📊 NIVEL Y XP (COLUMNA 2 - ABARCA LAS 3 FILAS DE LA DERECHA) */
@@ -5288,30 +5313,52 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;              /* 👈 Distancia entre el botón de personalizar y el de compartir */
+    gap: 8px;
     width: 100%;
-    max-width: 280px;
+    max-width: 250px;
     margin-top: 14px;
     position: relative;
+    box-sizing: border-box;
 }
 
 #btn-toggle-custom {
-    flex: 1 !important;
-    width: auto !important;
-    max-width: 100% !important;
-    height: 32px !important;
-    margin: 0 !important;
-    padding: 0 10px 0 65px !important;
-    font-size: 0.44rem !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.3px !important;
-    white-space: nowrap !important;
-    display: inline-flex !important;
-    align-items: right !important;
-    justify-content: center !important;
+    flex: 1;
+    width: auto;
+    max-width: 100%;
+    height: 34px;
+    min-height: 34px;
+    margin: 0;
+    padding: 0 10px 0 46px;
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    left: -4px;            /* 👈 MODIFICÁ ACÁ: más negativo (-5px) lo corre más a la IZQUIERDA */
-    border-radius: 14px !important;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-strong);
+    box-shadow: none;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#btn-toggle-custom::after {
+    display: none;
+}
+
+#btn-toggle-custom .btn-custom-icon {
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px var(--accent-glow));
+    pointer-events: none;
+    z-index: 5;
 }
 
 .share-btn-wrapper {
@@ -5319,21 +5366,32 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 !important;
+    margin: 0;
     flex-shrink: 0;
 }
 
 #btn-share-card {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 42px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 1.15rem !important;
-    border-radius: 14px !important;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-strong);
+    box-shadow: none;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#btn-share-card::after {
+    display: none;
 }
 
 /* ========================================================
