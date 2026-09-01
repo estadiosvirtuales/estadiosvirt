@@ -5308,6 +5308,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: center !important;
     position: relative;
     left: -4px;            /* 👈 MODIFICÁ ACÁ: más negativo (-5px) lo corre más a la IZQUIERDA */
+    border-radius: 14px !important;
 }
 
 .share-btn-wrapper {
@@ -5320,8 +5321,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 #btn-share-card {
-    width: 30px !important;
-    height: 30px !important;
+    width: 32px !important;
+    height: 32px !important;
     min-width: 42px !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -5329,7 +5330,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     align-items: center !important;
     justify-content: center !important;
     font-size: 1.15rem !important;
-    border-radius: 16px !important;
+    border-radius: 14px !important;
 }
 
 /* ========================================================
