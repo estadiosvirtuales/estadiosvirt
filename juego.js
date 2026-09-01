@@ -5412,11 +5412,6 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         <button class="liga-tab-btn ${!esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('triunfos')">
             <img src="liga-icon-historial.png" alt="Historial" class="ranking-tab-img"> <span>Historial W/L</span>
         </button>
-    </div>
-    <div style="width: 100%; display: flex; justify-content: center; margin-top: 14px;">
-        <button onclick="salirLigaAmigos()" class="btn-salir-liga">
-            <i class="ph-bold ph-sign-out"></i> SALIR DE LA LIGA
-        </button>
     </div>`;
 
     let htmlContenido = `<div class="liga-table-card">`;
@@ -5532,6 +5527,11 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 </div>
             </div>
             ${htmlContenido}
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 16px; margin-bottom: 6px;">
+                <button onclick="salirLigaAmigos()" class="btn-salir-liga">
+                    <i class="ph-bold ph-sign-out"></i> SALIR DE LA LIGA
+                </button>
+            </div>
         </div>
     </div>`;
 }
