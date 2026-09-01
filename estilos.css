@@ -152,8 +152,8 @@ body > * {
 .header-level-badge{display:flex;align-items:center;gap:6px;background:var(--surface-color);border:1.5px solid var(--border-strong);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:800;cursor:default;transition:all .25s}
 .header-level-badge:hover{border-color:var(--accent-color);background:var(--accent-dim)}
 .level-dot{width:10px;height:10px;border-radius:50%}
-.btn-3d{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font-weight:700;font-size:1rem;border-radius:14px;border:none;cursor:pointer;transition:all .12s ease;position:relative}
-.btn-3d::after{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,transparent 60%);pointer-events:none}
+.btn-3d{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font-weight:700;font-size:1rem;border-radius:14px;border:none;cursor:pointer;transition:all .12s ease;position:relative;overflow:hidden}
+.btn-3d::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,transparent 60%);pointer-events:none}
 .btn-3d:active{transform:translateY(3px) scale(.98)}
 .btn-3d.primary{background:var(--accent-color);color:#000;box-shadow:0 5px 0 #0a7a3a,0 8px 20px var(--accent-glow)}
 .btn-3d.primary:hover{background:var(--accent-hover);box-shadow:0 7px 0 #0a7a3a,0 12px 25px var(--accent-glow);transform:translateY(-2px)}
@@ -3295,6 +3295,8 @@ body.video-abierto .hero-section {
         max-height: 26px !important;
         font-size: 0.85rem !important;
         border-radius: 8px !important;
+        border: 1.5px solid var(--border-strong) !important;
+        box-shadow: none !important;
         padding: 0 !important;
         margin: 0 !important;
         display: flex !important;
@@ -3305,6 +3307,7 @@ body.video-abierto .hero-section {
         left: 0 !important;
         flex-shrink: 0 !important;
         box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
     /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: BIEN PEGADO ARRIBA) */
