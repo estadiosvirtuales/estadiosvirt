@@ -5285,7 +5285,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     align-items: right !important;
     justify-content: center !important;
     position: relative;
-    left: -8px;            /* 👈 MODIFICÁ ACÁ: más negativo (-5px) lo corre más a la IZQUIERDA */
+    left: -6px;            /* 👈 MODIFICÁ ACÁ: más negativo (-5px) lo corre más a la IZQUIERDA */
 }
 
 .share-btn-wrapper {
