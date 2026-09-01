@@ -3228,6 +3228,7 @@ body.video-abierto .hero-section {
         transform-origin: top center !important;
         margin: 0 0 -176px 0 !important; /* Sube los botones más cerca de la punta de la carta */
         justify-self: center !important;
+        align-self: start !important;
     }
 
     /* 🎮 BOTONES DE ACCIÓN (COLUMNA 1 - FILA 2) */
@@ -3244,25 +3245,7 @@ body.video-abierto .hero-section {
         padding: 0 !important;
         position: relative !important;
         justify-self: center !important;
-    }
-
-    .profile-card-actions-row #btn-toggle-custom,
-    #btn-toggle-custom {
-        flex: 1 !important;
-        width: auto !important;
-        height: 27px !important;
-        min-height: 27px !important;
-        font-size: 0.44rem !important;
-        padding: 0 6px 0 22px !important;
-        margin: 0 !important;
-        left: 0 !important;
-        border-radius: 10px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-sizing: border-box !important;
-        position: relative !important;
-        white-space: nowrap !important;
+        align-self: start !important;
     }
 
     /* 🛡️ ÍCONO CALIBRADO: No sobresale de la columna y no empuja el texto */
@@ -3311,6 +3294,7 @@ body.video-abierto .hero-section {
         max-width: 165px !important;
         margin: 2px auto 0 !important; /* Espaciado compacto y ceñido */
         justify-self: center !important;
+        align-self: start !important;
         display: flex !important;
         justify-content: center !important;
         position: relative !important;
@@ -3359,6 +3343,10 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
+    #customization-panel-wrapper.open {
+        margin: 8px 0 !important;
+    }
+
     /* 🏆 VITRINA DE LOGROS */
     .logros-box-mobile {
         grid-column: 1 / span 2 !important;
@@ -3379,15 +3367,6 @@ body.video-abierto .hero-section {
         border-radius: 14px !important;
         width: 100% !important;
         box-sizing: border-box !important;
-    }
-
-    /* 🔐 AL ABRIR PERSONALIZACIÓN: PASA AL FONDO TOTAL (FILA 7, DEBAJO DEL CALENDARIO) */
-    #customization-panel-wrapper.open ~ .profile-login-wrapper {
-        grid-column: 1 / span 2 !important;
-        grid-row: 7 !important;
-        margin: 16px auto 28px !important;
-        width: 100% !important;
-        max-width: 220px !important;
     }
 
     .logros-header-clickable {
