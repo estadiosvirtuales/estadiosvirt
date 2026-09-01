@@ -3236,27 +3236,46 @@ body.video-abierto .hero-section {
         grid-column: 1 !important;
         grid-row: 2 !important;
         width: 100% !important;
-        max-width: 165px !important;
+        max-width: 140px !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        gap: 5px !important;
+        justify-content: space-between !important;
+        gap: 4px !important;
         margin: 0 auto !important;
         padding: 0 !important;
         position: relative !important;
         justify-self: center !important;
         align-self: start !important;
+        box-sizing: border-box !important;
+    }
+
+    .split-profile-layout #btn-toggle-custom,
+    #profile-modal-body #btn-toggle-custom {
+        flex: 1 !important;
+        min-width: 0 !important;
+        width: auto !important;
+        height: 26px !important;
+        min-height: 26px !important;
+        max-height: 26px !important;
+        padding: 0 4px 0 20px !important;
+        font-size: 0.42rem !important;
+        font-weight: 900 !important;
+        letter-spacing: 0px !important;
+        left: 0 !important;
+        border-radius: 8px !important;
+        box-sizing: border-box !important;
     }
 
     /* 🛡️ ÍCONO CALIBRADO: No sobresale de la columna y no empuja el texto */
-    #btn-toggle-custom .btn-custom-icon {
-        width: 54px !important;
-        height: 54px !important;
-        left: -16px !important;
+    .split-profile-layout #btn-toggle-custom .btn-custom-icon,
+    #profile-modal-body #btn-toggle-custom .btn-custom-icon {
+        width: 38px !important;
+        height: 38px !important;
+        left: -11px !important;
     }
 
-    .profile-card-actions-row .share-btn-wrapper,
-    .share-btn-wrapper {
+    .split-profile-layout .share-btn-wrapper,
+    #profile-modal-body .share-btn-wrapper {
         width: auto !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -3266,16 +3285,16 @@ body.video-abierto .hero-section {
         flex-shrink: 0 !important;
     }
 
-    .profile-card-actions-row #btn-share-card,
-    #btn-share-card {
-        width: 27px !important;
-        height: 27px !important;
-        min-width: 27px !important;
-        max-width: 27px !important;
-        min-height: 27px !important;
-        max-height: 27px !important;
-        font-size: 0.88rem !important;
-        border-radius: 10px !important;
+    .split-profile-layout #btn-share-card,
+    #profile-modal-body #btn-share-card {
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        max-width: 26px !important;
+        min-height: 26px !important;
+        max-height: 26px !important;
+        font-size: 0.85rem !important;
+        border-radius: 8px !important;
         padding: 0 !important;
         margin: 0 !important;
         display: flex !important;
@@ -3283,7 +3302,9 @@ body.video-abierto .hero-section {
         justify-content: center !important;
         position: relative !important;
         top: 0 !important;
+        left: 0 !important;
         flex-shrink: 0 !important;
+        box-sizing: border-box !important;
     }
 
     /* 🔐 BOTÓN DE SESIÓN (COLUMNA 1 - FILA 3: BIEN PEGADO ARRIBA) */
