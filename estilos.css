@@ -5353,8 +5353,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     left: -22px;
     top: 50%;
     transform: translateY(-50%);
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
     filter: drop-shadow(0 0 10px var(--accent-glow));
     pointer-events: none;
