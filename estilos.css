@@ -1062,10 +1062,10 @@ body.video-abierto .hero-section {
         margin-bottom: 0 !important; 
     }
     
-    /* Forzar a la vitrina a ocupar buen espacio y mostrar los logros sin aplastarse */
+    /* Permite que la vitrina se colapse y expanda de forma fluida en PC */
     .right-dashboard-column .geoguessr-dash-box:last-child {
-        flex: 1 0 auto !important; /* MAGIA 1: Fuerza a la caja a crecer hacia abajo y anula el estilo en línea */
-        min-height: 450px; 
+        flex: 0 0 auto !important;
+        min-height: auto !important; 
         display: flex;
         flex-direction: column;
     }
@@ -2129,8 +2129,30 @@ body.video-abierto .hero-section {
     opacity: 0.35;
 }
 /* ========================================================
-   PESTAÑAS DE LOGROS MÓVILES (ESPACIADO Y SLIDE)
+   PESTAÑAS DE LOGROS (BASE GLOBAL PC Y MÓVIL)
    ======================================================== */
+.logros-header-clickable {
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+.logros-wrapper-mobile {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+.logros-wrapper-mobile.open {
+    max-height: 1500px;
+    opacity: 1;
+    margin-top: 14px;
+    overflow: visible;
+}
+
 .logros-tabs-row {
     display: flex;
     gap: 6px;
