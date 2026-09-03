@@ -5572,8 +5572,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* Tamaño exclusivo para PC / Computadoras (Ícono con mayor presencia e impacto visual) */
 @media (min-width: 992px) {
     .profile-level-icon-wrapper {
-        width: 235px;
-        height: 235px;
+        width: 270px;
+        height: 270px;
         margin-top: -12px;
         margin-bottom: -6px;
     }
