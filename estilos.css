@@ -4931,21 +4931,23 @@ body.video-abierto .hero-section {
     box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
 }
 
-/* 🎯 ALINEACIÓN VERTICAL PERFECCIONADA: Baja los íconos al centro del botón */
+/* 🎯 TAMAÑO Y CENTRADO PROPORCIONADO PARA BOTONES DE ORDEN */
 #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"] {
-    left: -4px !important;
-    top: calc(50% + 5px) !important;
-    width: 68px !important;
-    height: 68px !important;
-    filter: drop-shadow(0 4px 10px rgba(251, 191, 36, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8)) !important;
+    left: 6px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 46px !important;
+    height: 46px !important;
+    filter: drop-shadow(0 2px 6px rgba(251, 191, 36, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) !important;
 }
 
 #ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
-    left: -4px !important;
-    top: calc(50% + 5px) !important;
-    width: 68px !important;
-    height: 68px !important;
-    filter: drop-shadow(0 4px 10px rgba(168, 85, 247, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8)) !important;
+    left: 6px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 46px !important;
+    height: 46px !important;
+    filter: drop-shadow(0 2px 6px rgba(168, 85, 247, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) !important;
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
