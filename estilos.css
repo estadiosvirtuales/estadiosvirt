@@ -5165,27 +5165,61 @@ body.video-abierto .hero-section {
         width: 100% !important;
     }
 
-    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
-    #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+    /* 📱 SALÓN DE LA FAMA EN CELULAR (3 BOTONES: INDIVIDUAL, 1 VS 1, SEMANAL) */
+    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
-        height: 42px !important;
-        font-size: 0.68rem !important;
-        padding: 0 6px 0 28px !important;
+        height: 38px !important;
+        font-size: 0.57rem !important;
+        letter-spacing: -0.2px !important;
+        padding: 0 4px 0 26px !important;
         justify-content: center !important;
-        border-radius: 14px !important;
+        border-radius: 12px !important;
         position: relative !important;
+        white-space: nowrap !important;
         overflow: visible !important;
     }
 
-    #ranking-modal .ranking-left-panel .ranking-tab-img,
+    #ranking-modal .ranking-left-panel .ranking-tab-img {
+        position: absolute !important;
+        left: 2px !important;
+        top: calc(50% - 1px) !important;
+        transform: translateY(-50%) !important;
+        width: 25px !important;
+        height: 25px !important;
+        margin: 0 !important;
+    }
+
+    /* 📱 LIGA DE AMIGOS EN CELULAR (2 BOTONES: PUNTAJE MÁX., HISTORIAL W/L) */
+    #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+        width: 100% !important;
+        height: 40px !important;
+        font-size: 0.66rem !important;
+        letter-spacing: 0.1px !important;
+        padding: 0 8px 0 32px !important;
+        justify-content: center !important;
+        border-radius: 12px !important;
+        position: relative !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+    }
+
     #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
         position: absolute !important;
-        left: -4px !important;
-        top: calc(50% + 4px) !important;
+        left: 4px !important;
+        top: calc(50% - 1px) !important;
         transform: translateY(-50%) !important;
-        width: 48px !important;
-        height: 48px !important;
+        width: 30px !important;
+        height: 30px !important;
         margin: 0 !important;
+    }
+
+    /* 🏆 DESAFÍO DE ORDEN EN CELULAR (2 BOTONES: CAPACIDAD Y ANTIGÜEDAD) */
+    #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"],
+    #ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
+        width: 36px !important;
+        height: 36px !important;
+        left: 2px !important;
+        top: calc(50% - 1px) !important;
     }
 
     .ranking-right-panel .liga-row-item {
