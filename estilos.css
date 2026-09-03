@@ -1056,10 +1056,25 @@ body.video-abierto .hero-section {
         margin-bottom: 8px !important;
     }
     
-    .right-dashboard-column .geoguessr-dash-box,
+    .right-dashboard-column .geoguessr-dash-box {
+        padding: 20px 22px;
+        margin-bottom: 0 !important;
+    }
+
+    /* ⚡ Ajuste compacto: elimina el espacio superior de la medalla y el vacío inferior del calendario */
     .right-dashboard-top-row .xp-profile-section { 
-        padding: 24px; 
+        padding: 16px 20px 18px !important; 
+        justify-content: flex-start !important;
         margin-bottom: 0 !important; 
+    }
+
+    .right-dashboard-top-row .geoguessr-dash-box:has(.calendar-matrix) {
+        padding: 18px 20px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .right-dashboard-top-row .calendar-matrix {
+        margin-top: 10px !important;
     }
     
     /* Permite que la vitrina se colapse y expanda de forma fluida en PC */
@@ -5480,11 +5495,12 @@ html[data-theme="light"] .xp-bar-big-fill {
     height: 180px;
 }
 
-/* Tamaño exclusivo para PC / Computadoras (Pantallas de 992px en adelante) */
+/* Tamaño exclusivo para PC / Computadoras (Equilibrado para eliminar el vacío superior) */
 @media (min-width: 992px) {
     .profile-level-icon-wrapper {
-        width: 280px; /* <-- Modificá este número al tamaño que quieras para PC */
-        height: 280px; /* <-- Mismo número acá */
+        width: 195px;
+        height: 195px;
+        margin-top: -6px;
     }
 }
 /* ☀️ ADAPTACIÓN COMPLETA DEL PANEL DE PERSONALIZACIÓN EN MODO CLARO */
