@@ -2136,24 +2136,38 @@ body.video-abierto .hero-section {
     position: relative;
 }
 
-/* 🔥 1. Racha Activa (Días de la racha encendida actual) */
+/* 🔥 1. Racha Activa (Diseño Cristal Esmeralda Pro sin colisión entre días) */
 .calendar-cell.streak-active { 
-    color: #000 !important; 
-    background: var(--accent-color) !important; 
-    border-color: var(--accent-color) !important; 
-    box-shadow: 0 0 12px var(--accent-glow), 0 0 4px var(--accent-color) !important; 
-    transform: scale(1.12); 
-    font-weight: 900 !important; 
-    z-index: 2;
+    color: #ffffff !important; 
+    background: linear-gradient(145deg, rgba(0, 230, 118, 0.32) 0%, rgba(0, 160, 80, 0.22) 100%) !important; 
+    border: 1.5px solid #00e676 !important; 
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important; 
+    transform: none !important; 
+    font-weight: 800 !important; 
+    z-index: 1;
 }
 
-/* ✓ 2. Racha Vieja / Días pasados completados (Verde Muted) */
+/* ✓ 2. Racha Vieja / Días pasados completados (Verde Sutil) */
 .calendar-cell.past-done { 
-    color: var(--accent-color) !important; 
-    background: var(--accent-dim) !important; 
-    border-color: rgba(0, 230, 118, 0.3) !important; 
+    color: #00e676 !important; 
+    background: rgba(0, 230, 118, 0.10) !important; 
+    border: 1px solid rgba(0, 230, 118, 0.28) !important; 
     font-weight: 700 !important; 
-    opacity: 0.75;
+    transform: none !important;
+    opacity: 0.9;
+}
+
+/* ☀️ Adaptación Modo Claro para días de racha */
+[data-theme="light"] .calendar-cell.streak-active {
+    background: linear-gradient(145deg, rgba(0, 180, 90, 0.24) 0%, rgba(0, 150, 75, 0.15) 100%) !important;
+    border: 1.5px solid #00a854 !important;
+    color: #04160a !important;
+    box-shadow: 0 2px 8px rgba(0, 168, 84, 0.22) !important;
+}
+[data-theme="light"] .calendar-cell.past-done {
+    background: rgba(0, 168, 84, 0.08) !important;
+    border-color: rgba(0, 168, 84, 0.25) !important;
+    color: #008744 !important;
 }
 
 /* ❌ 3. Días pasados sin actividad (Perdidos) */
@@ -3136,16 +3150,58 @@ body.video-abierto .hero-section {
    MODO CLARO Y RESPONSIVE MÓVIL (BLOQUE CONSOLIDADO Y LIMPIO)
    ======================================================== */
 
-/* 1. Modo Claro: Tarjetas y Legibilidad del Perfil */
-[data-theme="light"] .geoguessr-dash-box,
-[data-theme="light"] .xp-profile-section {
-    background: #ffffff !important;
-    border: 2px solid #cbd5e1 !important;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
-}
-
+/* 1. Modo Claro: Tarjetas, Difuminados Ambientales y Cuadrícula Táctica */
 [data-theme="light"] .right-dashboard-column {
     background: transparent !important;
+}
+
+/* 🌟 Tarjeta de Nivel y XP con aura dorada/esmeralda sobre fondo claro */
+[data-theme="light"] .xp-profile-section {
+    border: 1.5px solid #cbd5e1 !important;
+    border-top: 2.5px solid #d97706 !important;
+    background: 
+        radial-gradient(circle at 50% 28%, rgba(245, 158, 11, 0.18) 0%, rgba(0, 204, 102, 0.08) 45%, transparent 72%),
+        radial-gradient(circle at 12% 88%, rgba(0, 204, 102, 0.12) 0%, transparent 52%),
+        radial-gradient(circle at 88% 90%, rgba(124, 58, 237, 0.08) 0%, transparent 52%),
+        linear-gradient(165deg, #ffffff 0%, #f4fbf7 100%) !important;
+    box-shadow: 0 10px 30px rgba(4, 22, 10, 0.07), 0 0 20px rgba(217, 119, 6, 0.12), inset 0 1px 0 #ffffff !important;
+}
+
+/* 🏟️ Caja de Reto Diario con cuadrícula táctica esmeralda clara */
+[data-theme="light"] .geoguessr-dash-box:has(.calendar-matrix) {
+    border: 1.5px solid #cbd5e1 !important;
+    border-top: 2.5px solid #00a854 !important;
+    background: 
+        radial-gradient(circle at 85% 12%, rgba(249, 115, 22, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(0, 204, 102, 0.12) 0%, transparent 55%),
+        repeating-linear-gradient(90deg, rgba(0, 168, 84, 0.05) 0, rgba(0, 168, 84, 0.05) 1px, transparent 1px, transparent 28px),
+        repeating-linear-gradient(0deg, rgba(0, 168, 84, 0.05) 0, rgba(0, 168, 84, 0.05) 1px, transparent 1px, transparent 28px),
+        linear-gradient(165deg, #ffffff 0%, #f4fbf7 100%) !important;
+    box-shadow: 0 10px 30px rgba(4, 22, 10, 0.07), 0 0 20px rgba(0, 204, 102, 0.08), inset 0 1px 0 #ffffff !important;
+}
+
+/* 📅 Matriz de días estilo Tablero Táctico en Modo Claro */
+[data-theme="light"] .calendar-matrix {
+    background-color: #ffffff !important;
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(0, 204, 102, 0.10) 0%, transparent 65%),
+        repeating-linear-gradient(90deg, rgba(0, 168, 84, 0.065) 0, rgba(0, 168, 84, 0.065) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(0deg, rgba(0, 168, 84, 0.065) 0, rgba(0, 168, 84, 0.065) 1px, transparent 1px, transparent 20px) !important;
+    border: 1.5px solid rgba(0, 168, 84, 0.3) !important;
+    border-top: 1.5px solid #00a854 !important;
+    box-shadow: inset 0 2px 10px rgba(4, 22, 10, 0.05), 0 4px 14px rgba(4, 22, 10, 0.04) !important;
+}
+
+/* 🏆 Caja de Vitrina de Logros con halo esmeralda y púrpura suave */
+[data-theme="light"] .geoguessr-dash-box.logros-box-mobile {
+    border: 1.5px solid #cbd5e1 !important;
+    border-top: 2.5px solid #00a854 !important;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 204, 102, 0.12) 0%, transparent 48%),
+        radial-gradient(circle at 90% 22%, rgba(124, 58, 237, 0.10) 0%, transparent 52%),
+        radial-gradient(circle at 50% 95%, rgba(245, 158, 11, 0.08) 0%, transparent 60%),
+        linear-gradient(165deg, #ffffff 0%, #f4fbf7 100%) !important;
+    box-shadow: 0 10px 30px rgba(4, 22, 10, 0.07), 0 0 20px rgba(0, 204, 102, 0.08), inset 0 1px 0 #ffffff !important;
 }
 
 [data-theme="light"] .dash-title-premium,
