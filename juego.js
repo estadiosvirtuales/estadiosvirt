@@ -1996,7 +1996,12 @@ setTimeout(()=>{if(previewMapInstance)previewMapInstance.remove();previewMapInst
 }
 function cerrarModalMapa(){document.getElementById('map-modal').style.display='none';if(previewMapInstance){previewMapInstance.remove();previewMapInstance=null;}}
 function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
-function cerrarModalOrden(){document.getElementById('order-modal').style.display='none';}
+function cerrarModalOrden(){
+    const m = document.getElementById('order-modal');
+    if (m) m.style.display = 'none';
+    orderSelectedIdx = null;
+    orderList = [];
+}
 function cerrarModalRanking(){document.getElementById('ranking-modal').style.display='none';}
 
 let destinoDificultadActual = { modo: '', extra: null };
@@ -4176,22 +4181,14 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
-let ordenImgCache = {
-    podio: 'podio.jpg',
-    capacidad: 'capacidad.png',
-    antiguedad: 'antiguedad.png'
-};
-
 function abrirModalOrden() {
     const modal = document.getElementById('order-modal');
     const body = document.getElementById('order-modal-body');
     if (!modal || !body) return;
 
     modal.style.display = 'flex';
-
-    // Evita reconstruir el DOM innecesariamente si el menú ya está visible
-    if (body.dataset.vista === 'menu') return;
-    body.dataset.vista = 'menu';
+    orderSelectedIdx = null;
+    orderList = [];
 
     body.innerHTML = `
     <div style="text-align:center; color:var(--text-main); padding: 10px 5px; display:flex; flex-direction:column; align-items:center; width: 100%;">
@@ -4199,7 +4196,7 @@ function abrirModalOrden() {
         <!-- CABECERA DE PODIO -->
         <div style="margin-bottom: 18px;">
             <div style="width: 140px; height: 120px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75));">
-                <img src="${ordenImgCache.podio}" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='podio.png'; ordenImgCache.podio='podio.png';">
+                <img src="podio.png" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Orden</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 380px; line-height: 1.45; margin: 0 auto;">
@@ -4209,10 +4206,9 @@ function abrirModalOrden() {
 
         <!-- OPCIONES DE JUEGO PREMIUM -->
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 380px; margin-bottom: 18px;">
-            
             <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-ranking" style="padding: 14px 18px;">
                 <div class="guessr-option-icon" style="background: rgba(234, 179, 8, 0.15); box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);">
-                    <img src="${ordenImgCache.capacidad}" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='capacidad.jpg'; ordenImgCache.capacidad='capacidad.jpg';">
+                    <img src="capacidad.png" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
                     <strong style="font-size: 1rem;">Por Capacidad</strong>
@@ -4222,14 +4218,13 @@ function abrirModalOrden() {
 
             <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-privada" style="padding: 14px 18px;">
                 <div class="guessr-option-icon" style="background: rgba(167, 139, 250, 0.15); box-shadow: 0 0 12px rgba(167, 139, 250, 0.25);">
-                    <img src="${ordenImgCache.antiguedad}" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='antiguedad.jpg'; ordenImgCache.antiguedad='antiguedad.jpg';">
+                    <img src="antiguedad.png" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
                     <strong style="font-size: 1rem;">Por Antigüedad</strong>
                     <span>Del más viejo al más moderno</span>
                 </div>
             </button>
-
         </div>
 
         <!-- TABLA DE POSICIONES -->
@@ -4238,43 +4233,242 @@ function abrirModalOrden() {
                 <img src="medalla-oro.png" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Desafíos
             </button>
         </div>
-
     </div>`;
 }
+
 function iniciarJuegoOrden(modo){
-const pool=catalogoGlobal.length>0?catalogoGlobal:estadiosCargados;if(!pool.length){showToast('Esperá un momento...','ph-info','danger');return;}
-orderModo=modo;orderSelectedIdx=null;orderPuntosGanados=0;
-const validos=pool.filter(f=>{const n=bscarPropiedad(f,'Estadio'),c=bscarPropiedad(f,'Club');if(!n||!c)return false;const raw=String(bscarPropiedad(f,modo==='capacidad'?'Capacidad':'Año')).replace(/[^0-9]/g,'');return raw!==''&&parseInt(raw)>0;});
-if(validos.length<5){showToast('No hay suficientes datos.','ph-warning-circle','danger');return;}
-let sel=[],copia=[...validos];
-while(sel.length<5){const idx=Math.floor(Math.random()*copia.length);const e=copia.splice(idx,1)[0];const val=parseInt(String(bscarPropiedad(e,modo==='capacidad'?'Capacidad':'Año')).replace(/[^0-9]/g,''))||0;sel.push({estadio:bscarPropiedad(e,'Estadio'),club:bscarPropiedad(e,'Club'),pais:bscarPropiedad(e,'País')||'Argentina',valor:val,correctIdx:-1});}
-const ord=[...sel].sort((a,b)=>modo==='capacidad'?b.valor-a.valor:a.valor-b.valor);sel.forEach(e=>{e.correctIdx=ord.findIndex(o=>o.estadio===e.estadio&&o.club===e.club);});
-orderList=[...sel].sort(()=>Math.random()-.5);orderStartTime=performance.now();renderJuegoOrden();
+    const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
+    if (!pool.length) {
+        showToast('Esperá un momento...', 'ph-info', 'danger');
+        return;
+    }
+    orderModo = modo;
+    orderSelectedIdx = null;
+    orderPuntosGanados = 0;
+
+    const validos = pool.filter(f => {
+        const n = bscarPropiedad(f, 'Estadio'), c = bscarPropiedad(f, 'Club');
+        if (!n || !c) return false;
+        const raw = String(bscarPropiedad(f, modo === 'capacidad' ? 'Capacidad' : 'Año')).replace(/[^0-9]/g, '');
+        return raw !== '' && parseInt(raw) > 0;
+    });
+
+    if (validos.length < 5) {
+        showToast('No hay suficientes datos.', 'ph-warning-circle', 'danger');
+        return;
+    }
+
+    let sel = [], copia = [...validos];
+    while (sel.length < 5) {
+        const idx = Math.floor(Math.random() * copia.length);
+        const e = copia.splice(idx, 1)[0];
+        const val = parseInt(String(bscarPropiedad(e, modo === 'capacidad' ? 'Capacidad' : 'Año')).replace(/[^0-9]/g, '')) || 0;
+        sel.push({
+            estadio: bscarPropiedad(e, 'Estadio'),
+            club: bscarPropiedad(e, 'Club'),
+            pais: bscarPropiedad(e, 'País') || 'Argentina',
+            valor: val,
+            correctIdx: -1
+        });
+    }
+
+    const ord = [...sel].sort((a, b) => modo === 'capacidad' ? b.valor - a.valor : a.valor - b.valor);
+    sel.forEach(e => {
+        e.correctIdx = ord.findIndex(o => o.estadio === e.estadio && o.club === e.club);
+    });
+
+    orderList = [...sel].sort(() => Math.random() - .5);
+    orderStartTime = performance.now();
+    renderJuegoOrden(false);
 }
-function renderJuegoOrden(revelar=false){
-const body=document.getElementById('order-modal-body'),titulo=orderModo==='capacidad'?'Mayor a Menor Capacidad':'Del Más Antiguo al Más Moderno',imgIcono=orderModo==='capacidad'?'<img src="capacidad.jpg" alt="Capacidad" style="width:80px;height:80px;object-fit:contain;" onerror="this.src=\'capacidad.png\';">':'<img src="antiguedad.jpg" alt="Antigüedad" style="width:80px;height:80px;object-fit:contain;" onerror="this.src=\'antiguedad.png\';">',desc=orderModo==='capacidad'?'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> espectadores':'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>',labelTop=orderModo==='capacidad'?'⬆ MÁS GRANDE':'⬆ MÁS ANTIGUO',labelBot=orderModo==='capacidad'?'⬇ MÁS CHICO':'⬇ MÁS MODERNO';
-let slotsHTML='';
-orderList.forEach((est,i)=>{
-let bgC='var(--surface-color)',brC='var(--border-strong)',badge='',extraStyle='';
-let iconL=`<div style="background:var(--bg-color);color:var(--text-muted);border:2px solid var(--border-subtle);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;flex-shrink:0;">${i+1}</div>`;
-if(revelar){const ok=i===est.correctIdx;bgC=ok?'rgba(0,230,118,.1)':'rgba(255,71,87,.1)';brC=ok?'var(--accent-color)':'var(--danger-color)';iconL=ok?`<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">✓</div>`:`<div style="background:var(--danger-color);color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;">✗</div>`;const v=orderModo==='capacidad'?`${est.valor.toLocaleString('es-AR')} esp.`:`${est.valor}`;badge=`<span style="background:${ok?'var(--accent-color)':'var(--danger-color)'};color:${ok?'#000':'#fff'};font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-left:auto;flex-shrink:0;">${v}</span>`;}
-else if(orderSelectedIdx===i){brC='var(--accent-color)';bgC='var(--accent-dim)';extraStyle='transform:translateY(-4px) scale(1.01);box-shadow:0 8px 24px var(--accent-glow);';iconL=`<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;">↕</div>`;}
-slotsHTML+=`<div onclick="${revelar?'':(`seleccionarFilaOrden(${i})`)}" class="order-slot" style="background:${bgC};border:2px solid ${brC};cursor:${revelar?'default':'pointer'};margin-bottom:6px;${extraStyle}">${iconL}<div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;"><strong style="font-size:.9rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong><span style="color:var(--text-muted);font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span></div>${badge}</div>`;
-});
-let timerBarHTML=!revelar?`<div style="background:var(--border-subtle);border-radius:20px;height:4px;margin-bottom:12px;overflow:hidden;"><div id="order-timer-bar" style="height:100%;border-radius:20px;background:var(--accent-color);width:100%;transition:width .5s linear;"></div></div>`:'';
-let botonera='';
-if(!revelar){botonera=`<div style="display:flex;gap:10px;margin-top:16px;margin-bottom:12px;flex-shrink:0;"><button onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:13px;"><i class="ph-bold ph-arrow-left"></i></button><button onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:13px;font-size:1rem;">Confirmar orden <i class="ph-bold ph-check-circle"></i></button></div>`;}
-else{
-const esGoogle=esUsuarioGoogle(),btnGuardar=esGoogle?`<button onclick="guardarScoreOrden()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar puntaje</button>`:`<button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
-const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
-botonera=`<div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:14px;border-radius:18px;margin-top:10px;flex-shrink:0;box-shadow:0 -5px 20px rgba(0,0,0,.3);"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div><div style="font-size:.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:1px;">Puntaje obtenido</div><strong style="font-size:1.8rem;color:var(--accent-color);font-weight:900;">${orderPuntosGanados} <span style="font-size:.9rem;color:var(--text-muted);">Pts</span></strong></div><div style="text-align:right;"><span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span></div></div><div style="display:flex;gap:8px;">${btnGuardar}<button onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-fill ph-medal"></i></button><button onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px;font-size:.9rem;"><i class="ph-bold ph-arrow-counter-clockwise"></i></button></div></div>`;
+
+function renderJuegoOrden(revelar = false){
+    const body = document.getElementById('order-modal-body');
+    if (!body) return;
+
+    const imgIcono = orderModo === 'capacidad' 
+        ? '<img src="capacidad.png" alt="Capacidad" style="width:38px;height:38px;object-fit:contain;">' 
+        : '<img src="antiguedad.png" alt="Antigüedad" style="width:38px;height:38px;object-fit:contain;">';
+
+    const titulo = orderModo === 'capacidad' ? 'Mayor a Menor Capacidad' : 'Del Más Antiguo al Más Moderno';
+    const labelTop = orderModo === 'capacidad' ? '⬆ MÁS GRANDE' : '⬆ MÁS ANTIGUO';
+    const labelBot = orderModo === 'capacidad' ? '⬇ MÁS CHICO' : '⬇ MÁS MODERNO';
+
+    let cabeceraHTML = '';
+    if (!revelar) {
+        cabeceraHTML = `
+        <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;">
+            <h2 style="font-size:1.15rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;">${imgIcono} ${titulo}</h2>
+            <p style="color:var(--text-muted);font-size:.82rem;margin-top:4px;line-height:1.4;">
+                ${orderModo === 'capacidad' ? 'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> capacidad' : 'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>'}
+            </p>
+        </div>`;
+    } else {
+        const aciertos = orderList.filter((e, i) => i === e.correctIdx).length;
+        const mensajeAciertos = aciertos === 5 
+            ? '👑 ¡Impecable! Orden perfecto de los 5 estadios' 
+            : aciertos >= 3 
+            ? `⚽ ¡Muy bien! Acertaste ${aciertos} de 5 en su lugar exacto` 
+            : `📊 Acertaste ${aciertos} de 5 posiciones correctas`;
+
+        cabeceraHTML = `
+        <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:12px;margin-bottom:10px;text-align:center;flex-shrink:0;">
+            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,0.12);border:1px solid rgba(0,230,118,0.4);border-radius:20px;padding:3px 12px;margin-bottom:6px;font-size:0.72rem;font-weight:900;color:var(--accent-color);letter-spacing:1px;text-transform:uppercase;">
+                <i class="ph-fill ph-check-circle"></i> Desafío Finalizado
+            </div>
+            <h2 style="font-size:1.35rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;letter-spacing:-0.3px;">${titulo}</h2>
+            <p style="color:var(--text-muted);font-size:.84rem;margin-top:3px;font-weight:600;">${mensajeAciertos}</p>
+        </div>`;
+    }
+
+    let slotsHTML = '';
+    orderList.forEach((est, i) => {
+        let bgC = 'var(--surface-color)', brC = 'var(--border-strong)', badge = '', extraStyle = '';
+        let iconL = `<div style="background:var(--bg-color);color:var(--text-muted);border:2px solid var(--border-subtle);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;flex-shrink:0;">${i+1}</div>`;
+
+        if (revelar) {
+            const ok = i === est.correctIdx;
+            bgC = ok ? 'rgba(0,230,118,.12)' : 'rgba(255,71,87,.12)';
+            brC = ok ? 'var(--accent-color)' : 'var(--danger-color)';
+            iconL = ok 
+                ? `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.05rem;font-weight:900;">✓</div>` 
+                : `<div style="background:var(--danger-color);color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.05rem;font-weight:900;">✕</div>`;
+            const v = orderModo === 'capacidad' ? `${est.valor.toLocaleString('es-AR')} esp.` : `${est.valor}`;
+            badge = `<span style="background:${ok ? 'var(--accent-color)' : 'var(--danger-color)'};color:${ok ? '#000' : '#fff'};font-size:.72rem;font-weight:900;padding:3px 10px;border-radius:20px;margin-left:auto;flex-shrink:0;">${v}</span>`;
+        } else if (orderSelectedIdx === i) {
+            brC = 'var(--accent-color)';
+            bgC = 'var(--accent-dim)';
+            extraStyle = 'transform:translateY(-4px) scale(1.01);box-shadow:0 8px 24px var(--accent-glow);';
+            iconL = `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;font-weight:900;">↕</div>`;
+        }
+
+        slotsHTML += `
+        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="order-slot" style="background:${bgC};border:2px solid ${brC};cursor:${revelar ? 'default' : 'pointer'};margin-bottom:6px;${extraStyle}">
+            ${iconL}
+            <div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;">
+                <strong style="font-size:.9rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong>
+                <span style="color:var(--text-muted);font-size:.76rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span>
+            </div>
+            ${badge}
+        </div>`;
+    });
+
+    let timerBarHTML = !revelar 
+        ? `<div style="background:var(--border-subtle);border-radius:20px;height:4px;margin-bottom:12px;overflow:hidden;"><div id="order-timer-bar" style="height:100%;border-radius:20px;background:var(--accent-color);width:100%;transition:width .5s linear;"></div></div>` 
+        : '';
+
+    let botonera = '';
+    if (!revelar) {
+        botonera = `
+        <div style="display:flex;gap:10px;margin-top:14px;margin-bottom:8px;flex-shrink:0;">
+            <button type="button" onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:12px;display:flex;align-items:center;justify-content:center;" title="Volver al menú de orden">
+                <i class="ph-bold ph-arrow-left" style="font-size:1.2rem;"></i>
+            </button>
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:12px;font-size:0.95rem;display:flex;align-items:center;justify-content:center;gap:6px;">
+                Confirmar orden <i class="ph-bold ph-check-circle" style="font-size:1.1rem;"></i>
+            </button>
+        </div>`;
+    } else {
+        const esGoogle = esUsuarioGoogle();
+        const btnGuardar = esGoogle 
+            ? `<button id="btn-guardar-score-orden" type="button" onclick="guardarScoreOrden(this)" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar récord</button>` 
+            : `<button type="button" onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
+        
+        const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
+
+        botonera = `
+        <div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:14px;border-radius:18px;margin-top:10px;flex-shrink:0;box-shadow:0 -5px 20px rgba(0,0,0,.3);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <div>
+                    <div style="font-size:.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:1px;">Puntaje obtenido</div>
+                    <strong style="font-size:1.75rem;color:var(--accent-color);font-weight:900;">${orderPuntosGanados.toLocaleString('es-AR')} <span style="font-size:.85rem;color:var(--text-muted);font-weight:700;">pts</span></strong>
+                </div>
+                <div style="text-align:right;">
+                    <span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:8px;">
+                ${btnGuardar}
+                <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px 14px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:5px;" title="Rejugar">
+                    <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
+                </button>
+                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px 14px;font-size:.9rem;display:flex;align-items:center;justify-content:center;" title="Ver Ranking">
+                    <i class="ph-fill ph-medal"></i>
+                </button>
+            </div>
+            <button type="button" onclick="abrirModalOrden()" class="btn-3d secondary" style="width:100%;padding:9px;font-size:.80rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
+                <i class="ph-bold ph-arrow-left"></i> Volver al menú de desafíos
+            </button>
+        </div>`;
+    }
+
+    const subtituloGrilla = !revelar 
+        ? `<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;opacity:.85;">${labelTop}</div>` 
+        : `<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">POSICIÓN FINAL REVELADA</div>`;
+
+    const pieGrilla = !revelar 
+        ? `<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:4px;opacity:.85;">${labelBot}</div>` 
+        : '';
+
+    body.innerHTML = `
+        ${cabeceraHTML}
+        ${timerBarHTML}
+        <div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 4px 6px;scrollbar-width:thin;">
+            ${subtituloGrilla}
+            ${slotsHTML}
+            ${pieGrilla}
+        </div>
+        ${botonera}
+    `;
+
+    if (!revelar) setTimeout(() => {
+        const bar = document.getElementById('order-timer-bar');
+        if (bar) bar.style.width = '0%';
+    }, 100);
 }
-body.innerHTML=`<div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;"><h2 style="font-size:1.1rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;">${imgIcono} ${titulo}</h2><p style="color:var(--text-muted);font-size:.84rem;margin-top:4px;line-height:1.5;">${desc}</p></div>${timerBarHTML}<div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 5px 10px;scrollbar-width:thin;"><div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;opacity:.8;">${labelTop}</div>${slotsHTML}<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:2px;opacity:.8;">${labelBot}</div></div>${botonera}`;
-if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar');if(bar)bar.style.width='0%';},100);
+
+function seleccionarFilaOrden(idx){
+    if(orderSelectedIdx === null){
+        orderSelectedIdx = idx;
+        renderJuegoOrden(false);
+    } else if(orderSelectedIdx === idx){
+        orderSelectedIdx = null;
+        renderJuegoOrden(false);
+    } else {
+        const t = orderList[orderSelectedIdx];
+        orderList[orderSelectedIdx] = orderList[idx];
+        orderList[idx] = t;
+        orderSelectedIdx = null;
+        renderJuegoOrden(false);
+    }
 }
-function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=idx;renderJuegoOrden();}else if(orderSelectedIdx===idx){orderSelectedIdx=null;renderJuegoOrden();}else{const t=orderList[orderSelectedIdx];orderList[orderSelectedIdx]=orderList[idx];orderList[idx]=t;orderSelectedIdx=null;renderJuegoOrden();}}
-function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;userStats['partidas_' + orderModo]=(userStats['partidas_' + orderModo]||0)+1;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
-function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
+
+function procesarResultadoOrden(){
+    const t = (performance.now() - orderStartTime) / 1000;
+    const bonus = Math.max(0, Math.round((60 - t) * 20));
+    let dev = 0;
+    orderList.forEach((e, i) => dev += Math.abs(i - e.correctIdx));
+    const base = Math.max(0, 5000 - (dev * 600));
+    if (dev === 0) userStats.ordenSinFallar = true;
+    orderPuntosGanados = Math.round(base + (bonus * (base / 5000)));
+    pendingScore = orderPuntosGanados;
+    pendingScoreType = orderModo;
+    userStats['partidas_' + orderModo] = (userStats['partidas_' + orderModo] || 0) + 1;
+    agregarXP(orderPuntosGanados);
+    guardarStats();
+    renderJuegoOrden(true);
+}
+
+function guardarScoreOrden(btn){
+    pendingScore = orderPuntosGanados;
+    pendingScoreType = orderModo;
+    guardarScorePendiente();
+    if (btn) {
+        btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Guardado!`;
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+    }
+}
 
 const TEMAS_LISTA = [
     { k: 'ger', l: 'GER', nombre: 'Alemania' },
