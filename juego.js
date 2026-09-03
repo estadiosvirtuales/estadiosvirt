@@ -3887,6 +3887,195 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
     const activeAnt = modo === 'antiguedad' ? 'active' : '';
 
     const u = obtenerUsuarioLogueado();
+    const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos');
+
+    const subMenuHTML = `
+    <div class="liga-tabs-row ranking-tabs-row">
+        <button class="liga-tab-btn ${activeCap}" onclick="abrirModalRankingOrden('capacidad')">
+            <img src="capacidad.jpg" alt="Capacidad" class="ranking-tab-img" onerror="this.src='capacidad.png';"> <span>Capacidad</span>
+        </button>
+        <button class="liga-tab-btn ${activeAnt}" onclick="abrirModalRankingOrden('antiguedad')">
+            <img src="antiguedad.jpg" alt="Antigüedad" class="ranking-tab-img" onerror="this.src='antiguedad.png';"> <span>Antigüedad</span>
+        </button>
+    </div>`;
+
+    try {
+        const { data: ranking, error } = await supabaseClient
+            .from('ranking')
+            .select('nombre, puntaje')
+            .eq('juego', modo)
+            .order('puntaje', { ascending: false })
+            .limit(10);
+
+        if (error) throw error;
+
+        let recordReal = 0;
+        const miEmail = u && u.email ? u.email : '';
+        const miApodo = (miNombre || '').trim().toLowerCase();
+
+        if (miEmail) {
+            const { data: filaPorEmail } = await supabaseClient
+                .from('ranking')
+                .select('puntaje')
+                .eq('juego', modo)
+                .eq('email', miEmail)
+                .order('puntaje', { ascending: false })
+                .limit(1);
+
+            if (filaPorEmail && filaPorEmail.length > 0) {
+                recordReal = filaPorEmail[0].puntaje || 0;
+            }
+        }
+
+        if (!recordReal && miApodo) {
+            const { data: filaPorNombre } = await supabaseClient
+                .from('ranking')
+                .select('puntaje')
+                .eq('juego', modo)
+                .ilike('nombre', miApodo)
+                .order('puntaje', { ascending: false })
+                .limit(1);
+
+            if (filaPorNombre && filaPorNombre.length > 0) {
+                recordReal = filaPorNombre[0].puntaje || 0;
+            }
+        }
+
+        const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
+
+        const headerConfig = modo === 'capacidad' ? {
+            img: 'capacidad.jpg',
+            fallback: 'capacidad.png',
+            glowClass: 'glow-gold',
+            badgeImg: 'capacidad.jpg',
+            badgeTitle: 'Top 10 Global',
+            badgeSub: 'Capacidad',
+            badgeColor: '#fbbf24',
+            pill1Label: 'TU RÉCORD',
+            pill1Val: textoRecord,
+            pill1Icon: 'ph-trophy',
+            pill2Label: 'CRITERIO',
+            pill2Val: 'Mayor a Menor',
+            pill2Icon: 'ph-users-three',
+            pill3Label: 'TU RANGO',
+            pill3Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
+            pill3Icon: 'ph-shield-star'
+        } : {
+            img: 'antiguedad.jpg',
+            fallback: 'antiguedad.png',
+            glowClass: 'glow-blue',
+            badgeImg: 'antiguedad.jpg',
+            badgeTitle: 'Top 10 Global',
+            badgeSub: 'Antigüedad',
+            badgeColor: '#a78bfa',
+            pill1Label: 'TU RÉCORD',
+            pill1Val: textoRecord,
+            pill1Icon: 'ph-trophy',
+            pill2Label: 'CRITERIO',
+            pill2Val: 'Más Antiguo',
+            pill2Icon: 'ph-hourglass-high',
+            pill3Label: 'TU RANGO',
+            pill3Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
+            pill3Icon: 'ph-shield-star'
+        };
+
+        const medallas3D = [
+            '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+        ];
+
+        let htmlContenido = `<div class="liga-table-card">`;
+        if (!ranking || !ranking.length) {
+            htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:36px 20px;font-size:0.85rem;">Aún no hay récords registrados en este modo.</p>`;
+        } else {
+            ranking.forEach((f, i) => {
+                const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                const nombreJugador = (f.nombre || 'Anónimo').trim();
+                const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
+
+                htmlContenido += `
+                <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
+                    <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                        ${med} ${sanitizarHTML(nombreJugador)}
+                    </span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        ${(f.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                    </span>
+                </div>`;
+            });
+        }
+        htmlContenido += '</div>';
+
+        body.innerHTML = `
+        <div class="ranking-split-grid">
+            <div class="ranking-left-panel">
+                <div class="ranking-brand-box">
+                    <div class="trophy-stage-wrapper">
+                        <div class="trophy-glow-backdrop ${headerConfig.glowClass}"></div>
+                        <div class="trophy-main-img-box">
+                            <img src="${headerConfig.img}" alt="Ícono Modo" class="trophy-main-img" onerror="this.src='${headerConfig.fallback}';">
+                        </div>
+                    </div>
+                    <h2 class="liga-modal-title">Desafío de Orden</h2>
+                </div>
+
+                <div class="modal-header-right-pills ranking-pills-column">
+                    <div class="header-stat-pill">
+                        <i class="ph-bold ${headerConfig.pill1Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                        <div class="stat-pill-info">
+                            <span>${headerConfig.pill1Label}</span>
+                            <strong>${headerConfig.pill1Val}</strong>
+                        </div>
+                    </div>
+                    <div class="header-stat-pill">
+                        <i class="ph-bold ${headerConfig.pill2Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                        <div class="stat-pill-info">
+                            <span>${headerConfig.pill2Label}</span>
+                            <strong>${headerConfig.pill2Val}</strong>
+                        </div>
+                    </div>
+                    <div class="header-stat-pill">
+                        <i class="ph-bold ${headerConfig.pill3Icon}" style="color: ${headerConfig.badgeColor};"></i>
+                        <div class="stat-pill-info">
+                            <span>${headerConfig.pill3Label}</span>
+                            <strong>${headerConfig.pill3Val}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ranking-sidebar-menu">
+                    ${subMenuHTML}
+                </div>
+            </div>
+
+            <div class="ranking-right-panel">
+                <div class="ranking-table-top-bar">
+                    <div class="ranking-active-badge" style="--badge-color:${headerConfig.badgeColor};">
+                        <span class="badge-dot-live" style="background:${headerConfig.badgeColor}; box-shadow:0 0 10px ${headerConfig.badgeColor};"></span>
+                        <img src="${headerConfig.badgeImg}" alt="Ícono" class="badge-title-png-icon" onerror="this.src='${headerConfig.fallback}';">
+                        <span class="badge-title-text">${headerConfig.badgeTitle}</span>
+                        <span class="badge-sep">·</span>
+                        <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
+                    </div>
+                </div>
+                ${htmlContenido}
+            </div>
+        </div>`;
+
+    } catch (e) {
+        console.error("Error al leer ranking de orden:", e);
+        body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
+    }
+}
+    const body = document.getElementById('ranking-modal-body');
+    body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
+    document.getElementById('ranking-modal').style.display = 'flex';
+
+    const activeCap = modo === 'capacidad' ? 'active' : '';
+    const activeAnt = modo === 'antiguedad' ? 'active' : '';
+
+    const u = obtenerUsuarioLogueado();
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '');
 
     // ⚡ Ícono dinámico, aura y badge según el modo activo
