@@ -213,8 +213,45 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
                     { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
                 ]);
             }
+        } else if (modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
+            // 🏆 DESAFÍO DE ORDEN (CAPACIDAD / ANTIGÜEDAD): No duplica y solo actualiza si supera su récord
+            let consulta = supabaseClient
+                .from('ranking')
+                .select('puntaje')
+                .eq('juego', modoJuego);
+
+            if (emailJugador) {
+                consulta = consulta.eq('email', emailJugador);
+            } else {
+                consulta = consulta.eq('nombre', nombreJugador);
+            }
+
+            const { data: filaExistente } = await consulta.order('puntaje', { ascending: false }).limit(1);
+
+            if (filaExistente && filaExistente.length > 0) {
+                const mejorPrevio = filaExistente[0].puntaje || 0;
+
+                if (puntosLogrados > mejorPrevio) {
+                    let updateQuery = supabaseClient
+                        .from('ranking')
+                        .update({ puntaje: puntosLogrados, nombre: nombreJugador })
+                        .eq('juego', modoJuego);
+
+                    if (emailJugador) {
+                        updateQuery = updateQuery.eq('email', emailJugador);
+                    } else {
+                        updateQuery = updateQuery.eq('nombre', nombreJugador);
+                    }
+                    await updateQuery;
+                    console.log(`🏆 ¡Nuevo récord en ${modoJuego} (${puntosLogrados} pts) ha reemplazado al viejo!`);
+                }
+            } else {
+                await supabaseClient.from('ranking').insert([
+                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                ]);
+            }
         } else {
-            // OTROS MINIJUEGOS (Orden Capacidad/Antigüedad)
+            // OTROS MINIJUEGOS
             await supabaseClient.from('ranking').insert([
                 { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
             ]);
@@ -3900,14 +3937,29 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
     </div>`;
 
     try {
-        const { data: ranking, error } = await supabaseClient
+        const { data: rankingRaw, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
             .eq('juego', modo)
             .order('puntaje', { ascending: false })
-            .limit(10);
+            .limit(200);
 
         if (error) throw error;
+
+        // 🧹 Agrupamos por jugador para que cada usuario figure una sola vez con su mejor récord
+        const mejorPorJugador = {};
+        (rankingRaw || []).forEach(row => {
+            const n = (row.nombre || 'Anónimo').trim();
+            const p = row.puntaje || 0;
+            const clave = n.toLowerCase();
+            if (!mejorPorJugador[clave] || p > mejorPorJugador[clave].puntaje) {
+                mejorPorJugador[clave] = { nombre: n, puntaje: p };
+            }
+        });
+
+        const ranking = Object.values(mejorPorJugador)
+            .sort((a, b) => b.puntaje - a.puntaje)
+            .slice(0, 10);
 
         let recordReal = 0;
         const miEmail = u && u.email ? u.email : '';
