@@ -3558,6 +3558,46 @@ body.video-abierto .hero-section {
         box-sizing: border-box !important;
     }
 
+    /* 🌟 TARJETA DE NIVEL Y XP EN MÓVIL (MÁS ANCHA, MÁS PETISA Y SIN HUECOS) */
+    .xp-profile-section {
+        margin-left: -8px !important;
+        width: calc(100% + 8px) !important;
+        padding: 8px 8px 12px 8px !important;
+        align-self: start !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Recorte de aire vacío superior e inferior del wrapper sin tocar el tamaño del icono (sigue en 180px) */
+    .xp-profile-section .profile-level-icon-wrapper {
+        margin-top: -14px !important;
+        margin-bottom: -10px !important;
+    }
+
+    /* Compactación de textos, pastillas y barra de progreso */
+    .xp-profile-section h3,
+    .xp-profile-section .profile-level-title {
+        margin: 2px 0 !important;
+        line-height: 1.1 !important;
+    }
+
+    .xp-profile-section .profile-level-pill,
+    .xp-profile-section .profile-community-pill {
+        margin: 2px auto !important;
+    }
+
+    .xp-profile-section .profile-xp-bar-container {
+        margin: 5px 0 3px !important;
+    }
+
+    .xp-profile-section .profile-xp-needed-text {
+        margin: 0 !important;
+        line-height: 1.1 !important;
+    }
+
     /* 📅 CALENDARIO DE RETO DIARIO (UNA SOLA LÍNEA SIN SALTOS EN MÓVIL) */
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
