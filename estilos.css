@@ -5569,13 +5569,15 @@ html[data-theme="light"] .xp-bar-big-fill {
     height: 180px;
 }
 
-/* Tamaño exclusivo para PC / Computadoras (Ícono con mayor presencia e impacto visual) */
+/* Tamaño exclusivo para PC: Caja base compacta (NO estira los modales) + Zoom óptico del ícono */
 @media (min-width: 992px) {
     .profile-level-icon-wrapper {
-        width: 195px;
-        height: 195px;
-        margin-top: -12px;
-        margin-bottom: -6px;
+        width: 175px;
+        height: 170px;
+        margin: 2px auto 4px auto;
+        transform: scale(1.28);
+        transform-origin: center center;
+        overflow: visible;
     }
 }
 /* ☀️ ADAPTACIÓN COMPLETA DEL PANEL DE PERSONALIZACIÓN EN MODO CLARO */
