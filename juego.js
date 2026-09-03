@@ -168,22 +168,41 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
     }
     try {
         if (modoJuego === 'guessr') {
-            // MODO GUESSR GLOBAL
-            console.log("📡 Solicitando verificación de partida e inserción segura en el servidor...");
-            const { data: puntajeVerificado, error } = await supabaseClient.rpc('guardar_partida_segura', {
-                p_nombre_jugador: nombreJugador,
-                p_email_jugador: emailJugador || '',
-                p_modo_juego: modoJuego,
-                p_rondas_json: guessrHistorialCoordenadas
-            });
+            // 🏆 MODO GUESSR INDIVIDUAL: No duplica jugadores y solo actualiza si supera su récord anterior
+            let consulta = supabaseClient
+                .from('ranking')
+                .select('puntaje')
+                .eq('juego', modoJuego);
 
-            // Paracaídas: si el servidor estricto falla, forzamos el guardado clásico
-            if (error) {
+            if (emailJugador) {
+                consulta = consulta.eq('email', emailJugador);
+            } else {
+                consulta = consulta.eq('nombre', nombreJugador);
+            }
+
+            const { data: filaExistente } = await consulta.order('puntaje', { ascending: false }).limit(1);
+
+            if (filaExistente && filaExistente.length > 0) {
+                const mejorPrevio = filaExistente[0].puntaje || 0;
+
+                if (puntosLogrados > mejorPrevio) {
+                    let updateQuery = supabaseClient
+                        .from('ranking')
+                        .update({ puntaje: puntosLogrados, nombre: nombreJugador })
+                        .eq('juego', modoJuego);
+
+                    if (emailJugador) {
+                        updateQuery = updateQuery.eq('email', emailJugador);
+                    } else {
+                        updateQuery = updateQuery.eq('nombre', nombreJugador);
+                    }
+                    await updateQuery;
+                    console.log(`🏆 ¡Nuevo récord individual en StadiumGuessr (${puntosLogrados} pts) ha reemplazado al viejo!`);
+                }
+            } else {
                 await supabaseClient.from('ranking').insert([
                     { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
                 ]);
-            } else {
-                console.log(`¡Puntaje verificado por el servidor (+${puntajeVerificado} Pts) guardado con éxito!`);
             }
         } else if (modoJuego.startsWith('guessr_')) {
             // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA (NO DUPLICA JUGADORES)
@@ -3675,13 +3694,28 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         ];
 
         if (modoEspecifico === 'solo') {
-            const { data: ranking, error } = await supabaseClient
+            const { data: rankingRaw, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
                 .eq('juego', 'guessr')
                 .order('puntaje', { ascending: false })
-                .limit(10);
+                .limit(200);
             if (error) throw error;
+
+            // 🧹 Agrupamos por jugador para que cada usuario figure una sola vez con su mejor récord
+            const mejorPorJugador = {};
+            (rankingRaw || []).forEach(row => {
+                const n = (row.nombre || 'Anónimo').trim();
+                const p = row.puntaje || 0;
+                const clave = n.toLowerCase();
+                if (!mejorPorJugador[clave] || p > mejorPorJugador[clave].puntaje) {
+                    mejorPorJugador[clave] = { nombre: n, puntaje: p };
+                }
+            });
+
+            const ranking = Object.values(mejorPorJugador)
+                .sort((a, b) => b.puntaje - a.puntaje)
+                .slice(0, 10);
 
             let recordReal = 0;
             const miEmail = u && u.email ? u.email : '';
