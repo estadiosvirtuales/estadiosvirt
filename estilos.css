@@ -2494,27 +2494,77 @@ body.video-abierto .hero-section {
     box-shadow: 0 0 25px rgba(0, 255, 119, 0.35), 0 8px 25px rgba(0, 0, 0, 0.5) !important;
 }
 
-[data-theme="dark"] .game-modes button,
-[data-theme="dark"] .game-card.btn-guessr {
-    background: linear-gradient(135deg, rgba(20, 28, 52, 0.7) 0%, rgba(10, 14, 28, 0.85) 100%) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+/* 🎮 BOTONES PRINCIPALES EN MODO OSCURO (CRISTAL + HALO SUTIL TEMÁTICO) */
+[data-theme="dark"] .game-modes button {
+    position: relative !important;
+    overflow: visible !important;
     border-radius: 18px !important;
-    position: relative;
-    overflow: hidden; 
+    border: 1.5px solid rgba(255, 255, 255, 0.10) !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
 }
 
-[data-theme="dark"] .game-modes button strong,
-[data-theme="dark"] .game-modes button span {
+[data-theme="dark"] .game-modes button strong {
     color: #ffffff !important;
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.2px;
 }
 
-[data-theme="dark"] .btn-guessr .game-card-icon { background: rgba(0, 255, 119, 0.15) !important; color: #00ff77 !important; }
-[data-theme="dark"] .btn-order .game-card-icon { background: rgba(234, 179, 8, 0.15) !important; color: #eab308 !important; }
-[data-theme="dark"] .btn-random .game-card-icon { background: rgba(41, 121, 255, 0.15) !important; color: #2979ff !important; }
-[data-theme="dark"] .btn-catalog .game-card-icon { background: rgba(167, 139, 250, 0.15) !important; color: #a78bfa !important; }
+[data-theme="dark"] .game-modes button span {
+    color: #94a3b8 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+}
+
+/* 🟢 STADIUMGUESSR (Verde Esmeralda Cyber) */
+[data-theme="dark"] .game-modes button.btn-guessr {
+    border-top: 2px solid rgba(0, 255, 119, 0.55) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(0, 255, 119, 0.12) 0%, transparent 58%),
+        linear-gradient(165deg, rgba(16, 26, 42, 0.90) 0%, rgba(8, 14, 24, 0.96) 100%) !important;
+}
+[data-theme="dark"] .game-modes button.btn-guessr:hover {
+    border-color: rgba(0, 255, 119, 0.6) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(0, 255, 119, 0.22) !important;
+}
+
+/* 🟡 DESAFÍO DE ORDEN (Ámbar / Oro Táctico) */
+[data-theme="dark"] .game-modes button.btn-order {
+    border-top: 2px solid rgba(234, 179, 8, 0.55) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(234, 179, 8, 0.12) 0%, transparent 58%),
+        linear-gradient(165deg, rgba(26, 24, 38, 0.90) 0%, rgba(12, 12, 22, 0.96) 100%) !important;
+}
+[data-theme="dark"] .game-modes button.btn-order:hover {
+    border-color: rgba(234, 179, 8, 0.6) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(234, 179, 8, 0.22) !important;
+}
+
+/* 🔵 VUELO ALEATORIO (Azul Eléctrico / Aerodinámico) */
+[data-theme="dark"] .game-modes button.btn-random {
+    border-top: 2px solid rgba(41, 121, 255, 0.55) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(41, 121, 255, 0.12) 0%, transparent 58%),
+        linear-gradient(165deg, rgba(16, 25, 46, 0.90) 0%, rgba(8, 14, 28, 0.96) 100%) !important;
+}
+[data-theme="dark"] .game-modes button.btn-random:hover {
+    border-color: rgba(41, 121, 255, 0.6) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(41, 121, 255, 0.22) !important;
+}
+
+/* 🟣 EXPLORÁ EL CATÁLOGO (Púrpura / Amatista) */
+[data-theme="dark"] .game-modes button.btn-catalog {
+    border-top: 2px solid rgba(167, 139, 250, 0.55) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(167, 139, 250, 0.12) 0%, transparent 58%),
+        linear-gradient(165deg, rgba(24, 20, 42, 0.90) 0%, rgba(12, 10, 24, 0.96) 100%) !important;
+}
+[data-theme="dark"] .game-modes button.btn-catalog:hover {
+    border-color: rgba(167, 139, 250, 0.6) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(167, 139, 250, 0.22) !important;
+}
 
 
 /* ========================================================
@@ -2584,34 +2634,74 @@ body.video-abierto .hero-section {
     box-shadow: 0 0 0 4px rgba(0, 204, 102, 0.12) !important;
 }
 
-[data-theme="light"] .game-modes button,
-[data-theme="light"] .game-card.btn-guessr {
-    background: #f0f7f3 !important;
-    border: 2px solid #cbd5e1 !important;
-    color: #04160a !important;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06) !important;
+/* ☀️ BOTONES PRINCIPALES EN MODO CLARO (CRISTAL BLANCO + DETALLE TEMÁTICO) */
+[data-theme="light"] .game-modes button {
+    position: relative !important;
+    overflow: visible !important;
+    border-radius: 18px !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06), inset 0 1px 0 #ffffff !important;
 }
 
-[data-theme="light"] .game-modes button strong,
+[data-theme="light"] .game-modes button strong {
+    color: #0f172a !important;
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.2px;
+}
+
 [data-theme="light"] .game-modes button span {
-    color: #04160a !important;
+    color: #475569 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
 }
 
-[data-theme="light"] .btn-guessr .game-card-icon {
-    background: rgba(0, 204, 102, 0.15) !important;
-    color: #009944 !important;
+/* 🟢 STADIUMGUESSR (Modo Claro) */
+[data-theme="light"] .game-modes button.btn-guessr {
+    border-top: 2.5px solid #00a854 !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(0, 204, 102, 0.09) 0%, transparent 55%),
+        linear-gradient(165deg, #ffffff 0%, #f4fbf7 100%) !important;
 }
-[data-theme="light"] .btn-order .game-card-icon {
-    background: rgba(234, 179, 8, 0.18) !important;
-    color: #d97706 !important;
+[data-theme="light"] .game-modes button.btn-guessr:hover {
+    border-color: #00a854 !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(0, 204, 102, 0.15) !important;
 }
-[data-theme="light"] .btn-random .game-card-icon {
-    background: rgba(41, 121, 255, 0.15) !important;
-    color: #2563eb !important;
+
+/* 🟡 DESAFÍO DE ORDEN (Modo Claro) */
+[data-theme="light"] .game-modes button.btn-order {
+    border-top: 2.5px solid #d97706 !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(245, 158, 11, 0.09) 0%, transparent 55%),
+        linear-gradient(165deg, #ffffff 0%, #fefcf5 100%) !important;
 }
-[data-theme="light"] .btn-catalog .game-card-icon {
-    background: rgba(167, 139, 250, 0.18) !important;
-    color: #7c3aed !important;
+[data-theme="light"] .game-modes button.btn-order:hover {
+    border-color: #d97706 !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(217, 119, 6, 0.15) !important;
+}
+
+/* 🔵 VUELO ALEATORIO (Modo Claro) */
+[data-theme="light"] .game-modes button.btn-random {
+    border-top: 2.5px solid #2563eb !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(37, 99, 235, 0.08) 0%, transparent 55%),
+        linear-gradient(165deg, #ffffff 0%, #f5f8ff 100%) !important;
+}
+[data-theme="light"] .game-modes button.btn-random:hover {
+    border-color: #2563eb !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* 🟣 EXPLORÁ EL CATÁLOGO (Modo Claro) */
+[data-theme="light"] .game-modes button.btn-catalog {
+    border-top: 2.5px solid #7c3aed !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 55%),
+        linear-gradient(165deg, #ffffff 0%, #faf6ff 100%) !important;
+}
+[data-theme="light"] .game-modes button.btn-catalog:hover {
+    border-color: #7c3aed !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(124, 58, 237, 0.15) !important;
 }
 
 /* Limpieza total de sombras/manchas en los estadios */
