@@ -4794,7 +4794,93 @@ body.video-abierto .hero-section {
     transition: transform 0.25s ease !important;
 }
 
-/* 🏆 BOTÓN CAPACIDAD (ORO / ÁMBAR) */
+/* ========================================================
+   🎨 IDENTIDAD DINÁMICA DE BOTONES (RANKINGS Y LIGAS)
+   ======================================================== */
+
+/* 🟢 VERDE NEÓN: MODO INDIVIDUAL Y PUNTAJE MÁXIMO */
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="solo"],
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="puntaje"] {
+    background: linear-gradient(165deg, rgba(14, 32, 22, 0.88) 0%, rgba(8, 18, 12, 0.96) 100%) !important;
+    border: 1.5px solid rgba(0, 255, 119, 0.35) !important;
+    border-top: 1.5px solid rgba(110, 255, 180, 0.6) !important;
+    color: #a7f3d0 !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="solo"]:hover,
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="puntaje"]:hover {
+    border-color: #00ff77 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 255, 119, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="solo"].active,
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="puntaje"].active {
+    background: linear-gradient(135deg, #00ff77 0%, #00d66c 50%, #009e4f 100%) !important;
+    border-color: #86efac !important;
+    border-top: 2px solid #ffffff !important;
+    color: #04160a !important;
+    font-weight: 900 !important;
+    box-shadow: 0 8px 25px rgba(0, 255, 119, 0.5), 0 0 20px rgba(0, 255, 119, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 🔵 AZUL ELÉCTRICO: 1 VS 1 HISTÓRICO Y HISTORIAL W/L */
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_historico"],
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="triunfos"] {
+    background: linear-gradient(165deg, rgba(16, 28, 50, 0.88) 0%, rgba(8, 14, 26, 0.96) 100%) !important;
+    border: 1.5px solid rgba(41, 121, 255, 0.35) !important;
+    border-top: 1.5px solid rgba(147, 197, 253, 0.6) !important;
+    color: #bfdbfe !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_historico"]:hover,
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="triunfos"]:hover {
+    border-color: #2979ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(41, 121, 255, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_historico"].active,
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="triunfos"].active {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%) !important;
+    border-color: #bfdbfe !important;
+    border-top: 2px solid #ffffff !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 25px rgba(41, 121, 255, 0.5), 0 0 20px rgba(41, 121, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 🟡 DORADO ORO: RANKING SEMANAL */
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"] {
+    background: linear-gradient(165deg, rgba(38, 30, 10, 0.88) 0%, rgba(18, 14, 6, 0.96) 100%) !important;
+    border: 1.5px solid rgba(234, 179, 8, 0.35) !important;
+    border-top: 1.5px solid rgba(254, 240, 138, 0.6) !important;
+    color: #fef08a !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"]:hover {
+    border-color: #eab308 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(234, 179, 8, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"].active {
+    background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%) !important;
+    border-color: #fef9c3 !important;
+    border-top: 2px solid #ffffff !important;
+    color: #0b0f19 !important;
+    font-weight: 900 !important;
+    box-shadow: 0 8px 25px rgba(234, 179, 8, 0.5), 0 0 20px rgba(234, 179, 8, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 🏆 ORO / ÁMBAR: CAPACIDAD */
 #ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="capacidad"] {
     background: linear-gradient(165deg, rgba(38, 28, 12, 0.88) 0%, rgba(18, 14, 8, 0.96) 100%) !important;
     border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
@@ -4819,7 +4905,7 @@ body.video-abierto .hero-section {
     box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
 }
 
-/* 🟣 BOTÓN ANTIGÜEDAD (NEÓN VIOLETA) */
+/* 🟣 VIOLETA NEÓN: ANTIGÜEDAD */
 #ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"] {
     background: linear-gradient(165deg, rgba(32, 20, 48, 0.88) 0%, rgba(14, 10, 24, 0.96) 100%) !important;
     border: 1.5px solid rgba(167, 139, 250, 0.35) !important;
