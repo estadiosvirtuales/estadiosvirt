@@ -3409,15 +3409,7 @@ if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
 
 const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
 const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);
-let basePts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
-
-// Multiplicador por dificultad
-let mult = 1.0;
-if (!esModoVersus && !esModoDiario) {
-    if (guessrDificultad === 'facil') mult = 0.8;
-    else if (guessrDificultad === 'dificil') mult = 1.5;
-}
-const pts = Math.round(basePts * mult);
+const pts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
 guessrPuntosTotales += pts;
 guessrHistorialRondas.push({
     ronda: guessrRondaActual,
@@ -3584,7 +3576,16 @@ async function finalizarJuegoGuessr(){
     if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
     if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;
     guardarStats();
-    agregarXP(guessrPuntosTotales);
+
+    // ⚡ Multiplicador exclusivo de XP según la dificultad elegida (el puntaje del juego y ranking queda estándar sobre 25.000 pts)
+    let multXP = 1.0;
+    if (!esModoVersus && !esModoDiario) {
+        if (guessrDificultad === 'facil') multXP = 0.8;
+        else if (guessrDificultad === 'dificil') multXP = 1.5;
+    }
+    const xpGanada = Math.round(guessrPuntosTotales * multXP);
+    agregarXP(xpGanada);
+
     pendingScore=guessrPuntosTotales;
     pendingScoreType='guessr';
 
