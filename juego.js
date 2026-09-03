@@ -3943,6 +3943,27 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
 
         const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
 
+        const miIdx = (ranking || []).findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
+        const textoPosicion = miIdx !== -1 ? `#${miIdx + 1}` : (recordReal > 0 ? '+10' : 'Sin clasif.');
+
+        let cantPartidas = userStats['partidas_' + modo] || 0;
+        if (supabaseClient) {
+            try {
+                let qPartidas = supabaseClient.from('ranking').select('*', { count: 'exact', head: true }).eq('juego', modo);
+                if (miEmail) {
+                    qPartidas = qPartidas.eq('email', miEmail);
+                } else if (miApodo) {
+                    qPartidas = qPartidas.ilike('nombre', miApodo);
+                }
+                const { count: partidasDb } = await qPartidas;
+                if (partidasDb !== null && partidasDb > cantPartidas) {
+                    cantPartidas = partidasDb;
+                    userStats['partidas_' + modo] = cantPartidas;
+                }
+            } catch(e) {}
+        }
+        const textoPartidas = `${cantPartidas} ${cantPartidas === 1 ? 'Jugada' : 'Jugadas'}`;
+
         const headerConfig = modo === 'capacidad' ? {
             img: 'capacidad.jpg',
             fallback: 'capacidad.png',
@@ -3954,12 +3975,12 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             pill1Label: 'TU RÉCORD',
             pill1Val: textoRecord,
             pill1Icon: 'ph-trophy',
-            pill2Label: 'CRITERIO',
-            pill2Val: 'Mayor a Menor',
-            pill2Icon: 'ph-users-three',
-            pill3Label: 'TU RANGO',
-            pill3Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
-            pill3Icon: 'ph-shield-star'
+            pill2Label: 'POSICIÓN',
+            pill2Val: textoPosicion,
+            pill2Icon: 'ph-hash',
+            pill3Label: 'PARTIDAS',
+            pill3Val: textoPartidas,
+            pill3Icon: 'ph-game-controller'
         } : {
             img: 'antiguedad.jpg',
             fallback: 'antiguedad.png',
@@ -3971,12 +3992,12 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             pill1Label: 'TU RÉCORD',
             pill1Val: textoRecord,
             pill1Icon: 'ph-trophy',
-            pill2Label: 'CRITERIO',
-            pill2Val: 'Más Antiguo',
-            pill2Icon: 'ph-hourglass-high',
-            pill3Label: 'TU RANGO',
-            pill3Val: NIVELES[calcularNivelIdx(userStats.xpTotal)].nombre.replace(/\s+Lvl\s+\d+/i, ''),
-            pill3Icon: 'ph-shield-star'
+            pill2Label: 'POSICIÓN',
+            pill2Val: textoPosicion,
+            pill2Icon: 'ph-hash',
+            pill3Label: 'PARTIDAS',
+            pill3Val: textoPartidas,
+            pill3Icon: 'ph-game-controller'
         };
 
         const medallas3D = [
@@ -4152,7 +4173,7 @@ body.innerHTML=`<div style="border-bottom:2px dashed var(--border-subtle);paddin
 if(!revelar)setTimeout(()=>{const bar=document.getElementById('order-timer-bar');if(bar)bar.style.width='0%';},100);
 }
 function seleccionarFilaOrden(idx){if(orderSelectedIdx===null){orderSelectedIdx=idx;renderJuegoOrden();}else if(orderSelectedIdx===idx){orderSelectedIdx=null;renderJuegoOrden();}else{const t=orderList[orderSelectedIdx];orderList[orderSelectedIdx]=orderList[idx];orderList[idx]=t;orderSelectedIdx=null;renderJuegoOrden();}}
-function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
+function procesarResultadoOrden(){const t=(performance.now()-orderStartTime)/1000,bonus=Math.max(0,Math.round((60-t)*20));let dev=0;orderList.forEach((e,i)=>dev+=Math.abs(i-e.correctIdx));const base=Math.max(0,5000-(dev*600));if(dev===0)userStats.ordenSinFallar=true;orderPuntosGanados=Math.round(base+(bonus*(base/5000)));pendingScore=orderPuntosGanados;pendingScoreType=orderModo;userStats['partidas_' + orderModo]=(userStats['partidas_' + orderModo]||0)+1;agregarXP(orderPuntosGanados);guardarStats();renderJuegoOrden(true);}
 function guardarScoreOrden(){pendingScore=orderPuntosGanados;pendingScoreType=orderModo;guardarScorePendiente();}
 
 const TEMAS_LISTA = [
