@@ -3293,11 +3293,11 @@ if (hintsBox) {
             </button>
             <div class="guessr-hint-balloon" id="guessr-hint-balloon" onclick="event.stopPropagation()">
                 <div class="guessr-hint-row">
-                    <img src="mundo.jpg" class="hint-icon" alt="País" onerror="this.src='mundo.png';">
+                    <img src="mundo.png" class="hint-icon" alt="País">
                     <span>País: <b style="color:var(--accent-color);">${paisEstadio}</b></span>
                 </div>
                 <div class="guessr-hint-row">
-                    <img src="capacidad.jpg" class="hint-icon" alt="Capacidad" onerror="this.src='capacidad.png';">
+                    <img src="capacidad.png" class="hint-icon" alt="Capacidad">
                     <span>Capacidad: <b style="color:var(--accent-color);">${capTexto}</b></span>
                 </div>
                 <div class="guessr-hint-trivia">
@@ -4176,17 +4176,30 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
+let ordenImgCache = {
+    podio: 'podio.jpg',
+    capacidad: 'capacidad.png',
+    antiguedad: 'antiguedad.png'
+};
+
 function abrirModalOrden() {
-    document.getElementById('order-modal').style.display = 'flex';
+    const modal = document.getElementById('order-modal');
     const body = document.getElementById('order-modal-body');
-    
+    if (!modal || !body) return;
+
+    modal.style.display = 'flex';
+
+    // Evita reconstruir el DOM innecesariamente si el menú ya está visible
+    if (body.dataset.vista === 'menu') return;
+    body.dataset.vista = 'menu';
+
     body.innerHTML = `
     <div style="text-align:center; color:var(--text-main); padding: 10px 5px; display:flex; flex-direction:column; align-items:center; width: 100%;">
         
         <!-- CABECERA DE PODIO -->
         <div style="margin-bottom: 18px;">
             <div style="width: 140px; height: 120px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75));">
-                <img src="podio.jpg" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='podio.png';">
+                <img src="${ordenImgCache.podio}" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.src='podio.png'; ordenImgCache.podio='podio.png';">
             </div>
             <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Orden</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 380px; line-height: 1.45; margin: 0 auto;">
@@ -4194,12 +4207,12 @@ function abrirModalOrden() {
             </p>
         </div>
 
-        <!-- OPCIONES DE JUEGO PREMIUM (TARJETAS CON CRISTAL Y RESPLANDOR) -->
+        <!-- OPCIONES DE JUEGO PREMIUM -->
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 380px; margin-bottom: 18px;">
             
             <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-ranking" style="padding: 14px 18px;">
                 <div class="guessr-option-icon" style="background: rgba(234, 179, 8, 0.15); box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);">
-                    <img src="capacidad.jpg" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='capacidad.png';">
+                    <img src="${ordenImgCache.capacidad}" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='capacidad.jpg'; ordenImgCache.capacidad='capacidad.jpg';">
                 </div>
                 <div class="guessr-option-text">
                     <strong style="font-size: 1rem;">Por Capacidad</strong>
@@ -4209,7 +4222,7 @@ function abrirModalOrden() {
 
             <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-privada" style="padding: 14px 18px;">
                 <div class="guessr-option-icon" style="background: rgba(167, 139, 250, 0.15); box-shadow: 0 0 12px rgba(167, 139, 250, 0.25);">
-                    <img src="antiguedad.jpg" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='antiguedad.png';">
+                    <img src="${ordenImgCache.antiguedad}" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);" onerror="this.src='antiguedad.jpg'; ordenImgCache.antiguedad='antiguedad.jpg';">
                 </div>
                 <div class="guessr-option-text">
                     <strong style="font-size: 1rem;">Por Antigüedad</strong>
@@ -5121,8 +5134,8 @@ function precargarImagenesUI() {
         URL_ESCUDOS_BASE + 'BOMBONERA.png',
         URL_ESCUDOS_BASE + 'MARACANA.png',
         URL_ESCUDOS_BASE + 'GENERICO.png',
-        'mundo.jpg', 'podio.jpg', 'avion.jpg', 'catalogo.jpg',
-        'capacidad.jpg', 'antiguedad.jpg',
+        'mundo.png', 'podio.png', 'avion.png', 'catalogo.png',
+        'capacidad.png', 'antiguedad.png',
         'liga-trofeo-header.png', 'medalla-oro.png', 'medalla-plata.png', 'medalla-bronce.png',
         'ranking-icon-solo.png', 'ranking-icon-1v1.png', 'ranking-icon-semanal.png',
         'liga-icon-puntaje.png', 'liga-icon-historial.png',

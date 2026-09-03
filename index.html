@@ -27,10 +27,13 @@
 <!-- 🚀 PRECARGA DE ALTA PRIORIDAD (CERO ESPERA / CERO PARPADEO) -->
 <link rel="preload" as="image" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.png">
 <link rel="preload" as="image" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png">
-<link rel="preload" as="image" href="mundo.jpg">
-<link rel="preload" as="image" href="podio.jpg">
-<link rel="preload" as="image" href="avion.jpg">
-<link rel="preload" as="image" href="catalogo.jpg">
+<link rel="preload" as="image" href="mundo.png">
+<link rel="preload" as="image" href="podio.png">
+<link rel="preload" as="image" href="avion.png">
+<link rel="preload" as="image" href="catalogo.png">
+<link rel="preload" as="image" href="capacidad.png">
+<link rel="preload" as="image" href="antiguedad.png">
+<link rel="preload" as="image" href="medalla-oro.png">
 <style>
 /* ☕ ESTILOS DEL BOTÓN CAFECITO Y SU GLOBO FLOTANTE */
 .cafecito-wrapper {
@@ -368,7 +371,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 <div class="game-modes">
 <button class="game-card btn-guessr" onclick="abrirModalGuessr()">
-    <img src="mundo.jpg" alt="StadiumGuessr" class="game-3d-icon" onerror="this.src='mundo.png';">
+    <img src="mundo.png" alt="StadiumGuessr" class="game-3d-icon">
     <div class="game-card-text">
         <strong>StadiumGuessr</strong>
         <span>Adiviná la ubicación</span>
@@ -376,7 +379,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </button>
 
 <button class="game-card btn-order" onclick="abrirModalOrden()">
-    <img src="podio.jpg" alt="Ordenar Estadios" class="game-3d-icon" onerror="this.src='podio.png';">
+    <img src="podio.png" alt="Ordenar Estadios" class="game-3d-icon">
     <div class="game-card-text">
         <strong>Ordenar Estadios</strong>
         <span>Capacidad y Edad</span>
@@ -384,7 +387,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </button>
 
 <button class="game-card btn-random" onclick="dispararVueloAleatorio(event)">
-    <img src="avion.jpg" alt="Vuelo Aleatorio" class="game-3d-icon" onerror="this.src='avion.png';">
+    <img src="avion.png" alt="Vuelo Aleatorio" class="game-3d-icon">
     <div class="game-card-text">
         <strong>Vuelo Aleatorio</strong>
         <span>Descubrí al azar</span>
@@ -392,7 +395,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </button>
 
 <button class="game-card btn-catalog" onclick="abrirCatalogo()">
-    <img src="catalogo.jpg" alt="Explorá el Catálogo" class="game-3d-icon" onerror="this.src='catalogo.png';">
+    <img src="catalogo.png" alt="Explorá el Catálogo" class="game-3d-icon">
     <div class="game-card-text">
         <strong>Explorá el Catálogo</strong>
         <span>Países, ligas y clubes</span>
@@ -671,7 +674,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <div class="close-btn" onclick="cerrarModalGuessr()"><i class="ph-bold ph-x"></i></div>
         
         <div style="text-align:center; margin-bottom: 12px;">
-            <img src="mundo.jpg" alt="StadiumGuessr" style="width: 65px; height: 60px; object-fit: contain; margin-bottom: 4px; filter: drop-shadow(0 0 16px rgba(0, 255, 119, 0.65));" onerror="this.src='mundo.png';">
+            <img src="mundo.png" alt="StadiumGuessr" style="width: 65px; height: 60px; object-fit: contain; margin-bottom: 4px; filter: drop-shadow(0 0 16px rgba(0, 255, 119, 0.65));">
             <h2 id="guessr-modal-title" style="font-size:1.4rem; font-weight:900; color:var(--text-main); text-transform:uppercase; letter-spacing:-0.5px;">StadiumGuessr</h2>
             <p id="guessr-modal-sub" style="color:var(--text-muted); font-size:0.82rem; margin-top:1px;">Elegí un modo de reconocimiento.</p>
         </div>
