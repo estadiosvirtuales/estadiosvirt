@@ -4206,22 +4206,22 @@ function abrirModalOrden() {
 
         <!-- OPCIONES DE JUEGO PREMIUM -->
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 380px; margin-bottom: 18px;">
-            <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-ranking" style="padding: 14px 18px;">
-                <div class="guessr-option-icon" style="background: rgba(234, 179, 8, 0.15); box-shadow: 0 0 12px rgba(234, 179, 8, 0.25);">
+            <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-capacidad" style="padding: 14px 18px;">
+                <div class="guessr-option-icon">
                     <img src="capacidad.png" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
-                    <strong style="font-size: 1rem;">Por Capacidad</strong>
+                    <strong style="font-size: 1rem; color: #fbbf24;">Por Capacidad</strong>
                     <span>Del más grande al más chico</span>
                 </div>
             </button>
 
-            <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-privada" style="padding: 14px 18px;">
-                <div class="guessr-option-icon" style="background: rgba(167, 139, 250, 0.15); box-shadow: 0 0 12px rgba(167, 139, 250, 0.25);">
+            <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-antiguedad" style="padding: 14px 18px;">
+                <div class="guessr-option-icon">
                     <img src="antiguedad.png" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
-                    <strong style="font-size: 1rem;">Por Antigüedad</strong>
+                    <strong style="font-size: 1rem; color: #c084fc;">Por Antigüedad</strong>
                     <span>Del más viejo al más moderno</span>
                 </div>
             </button>
@@ -4229,7 +4229,7 @@ function abrirModalOrden() {
 
         <!-- TABLA DE POSICIONES -->
         <div style="width: 100%; max-width: 380px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
-            <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="width: 100%; padding: 12px; font-size: 0.88rem; font-weight: 800; gap: 8px;">
+            <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d btn-order-ranking-gold" style="width: 100%; padding: 12px; font-size: 0.88rem; font-weight: 800; gap: 8px;">
                 <img src="medalla-oro.png" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Desafíos
             </button>
         </div>
@@ -4392,8 +4392,8 @@ function renderJuegoOrden(revelar = false){
                 <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px 14px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:5px;" title="Rejugar">
                     <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
                 </button>
-                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px 14px;font-size:.9rem;display:flex;align-items:center;justify-content:center;" title="Ver Ranking">
-                    <i class="ph-fill ph-medal"></i>
+                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-order-medal-rank" style="padding:10px 14px;display:flex;align-items:center;justify-content:center;" title="Ver Ranking">
+                    <img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;">
                 </button>
             </div>
             <button type="button" onclick="abrirModalOrden()" class="btn-3d secondary" style="width:100%;padding:9px;font-size:.80rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">

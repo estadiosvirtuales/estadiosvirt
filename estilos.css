@@ -4334,6 +4334,70 @@ body.video-abierto .hero-section {
     box-shadow: 0 0 14px rgba(234, 179, 8, 0.28);
 }
 
+/* 🟡 BOTÓN POR CAPACIDAD (Dorado / Ámbar) */
+.btn-opt-capacidad {
+    border-top: 2px solid rgba(251, 191, 36, 0.6) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(251, 191, 36, 0.15) 0%, transparent 60%),
+        linear-gradient(165deg, rgba(28, 24, 38, 0.92) 0%, rgba(14, 12, 22, 0.98) 100%) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(251, 191, 36, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+.btn-opt-capacidad:hover {
+    border-color: rgba(251, 191, 36, 0.7) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(251, 191, 36, 0.35) !important;
+}
+.btn-opt-capacidad .guessr-option-icon {
+    background: rgba(251, 191, 36, 0.15);
+    box-shadow: 0 0 14px rgba(251, 191, 36, 0.28);
+}
+
+/* 🟣 BOTÓN POR ANTIGÜEDAD (Púrpura / Violeta Neón) */
+.btn-opt-antiguedad {
+    border-top: 2px solid rgba(167, 139, 250, 0.6) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(167, 139, 250, 0.15) 0%, transparent 60%),
+        linear-gradient(165deg, rgba(26, 20, 46, 0.92) 0%, rgba(12, 10, 26, 0.98) 100%) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(167, 139, 250, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+.btn-opt-antiguedad:hover {
+    border-color: rgba(167, 139, 250, 0.7) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(167, 139, 250, 0.35) !important;
+}
+.btn-opt-antiguedad .guessr-option-icon {
+    background: rgba(167, 139, 250, 0.15);
+    box-shadow: 0 0 14px rgba(167, 139, 250, 0.28);
+}
+
+/* 🏆 BOTÓN RANKING DESAFÍOS (Menú Desafío de Orden) */
+.btn-order-ranking-gold {
+    background: linear-gradient(145deg, rgba(251, 191, 36, 0.14) 0%, rgba(20, 24, 38, 0.94) 100%) !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.4) !important;
+    border-top: 2px solid rgba(254, 240, 138, 0.8) !important;
+    color: #fde68a !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), 0 0 14px rgba(251, 191, 36, 0.15) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.btn-order-ranking-gold:hover {
+    border-color: #fbbf24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.4), 0 0 20px rgba(251, 191, 36, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+/* 🥇 BOTÓN MEDALLITA DE RANKING (Pantalla Final Desafío de Orden) */
+.btn-order-medal-rank {
+    background: linear-gradient(145deg, rgba(251, 191, 36, 0.16) 0%, rgba(18, 22, 34, 0.95) 100%) !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.45) !important;
+    border-top: 2px solid rgba(254, 240, 138, 0.85) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 12px rgba(251, 191, 36, 0.2) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.btn-order-medal-rank:hover {
+    border-color: #fbbf24 !important;
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5), 0 0 18px rgba(251, 191, 36, 0.4) !important;
+    transform: translateY(-2px);
+}
+
 /* ☀️ ADAPTACIÓN EN MODO CLARO (CRISTAL DIURNO CON IDENTIDAD) */
 [data-theme="light"] .guessr-option-btn {
     border: 1.5px solid #cbd5e1 !important;
@@ -4380,6 +4444,46 @@ body.video-abierto .hero-section {
 [data-theme="light"] .btn-opt-ranking:hover {
     border-color: #d97706 !important;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(217, 119, 6, 0.15) !important;
+}
+
+[data-theme="light"] .btn-opt-capacidad {
+    border-top: 2.5px solid #d97706 !important;
+    background: radial-gradient(circle at 10% 50%, rgba(245, 158, 11, 0.09) 0%, transparent 55%), linear-gradient(165deg, #ffffff 0%, #fefcf5 100%) !important;
+    border-color: #cbd5e1 !important;
+}
+[data-theme="light"] .btn-opt-capacidad:hover {
+    border-color: #d97706 !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(217, 119, 6, 0.15) !important;
+}
+[data-theme="light"] .btn-opt-capacidad strong {
+    color: #b45309 !important;
+}
+
+[data-theme="light"] .btn-opt-antiguedad {
+    border-top: 2.5px solid #7c3aed !important;
+    background: radial-gradient(circle at 10% 50%, rgba(124, 58, 237, 0.09) 0%, transparent 55%), linear-gradient(165deg, #ffffff 0%, #faf6ff 100%) !important;
+    border-color: #cbd5e1 !important;
+}
+[data-theme="light"] .btn-opt-antiguedad:hover {
+    border-color: #7c3aed !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(124, 58, 237, 0.15) !important;
+}
+[data-theme="light"] .btn-opt-antiguedad strong {
+    color: #6d28d9 !important;
+}
+
+[data-theme="light"] .btn-order-ranking-gold,
+[data-theme="light"] .btn-order-medal-rank {
+    background: #ffffff !important;
+    border: 1.5px solid #d97706 !important;
+    color: #78350f !important;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15) !important;
+}
+[data-theme="light"] .btn-order-ranking-gold:hover,
+[data-theme="light"] .btn-order-medal-rank:hover {
+    background: #fffbeb !important;
+    border-color: #b45309 !important;
+    box-shadow: 0 6px 18px rgba(217, 119, 6, 0.25) !important;
 }
 /* ========================================================
    🏆 SALÓN DE LA FAMA & RANKINGS COMPETITIVOS PRO
