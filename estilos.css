@@ -4551,6 +4551,7 @@ body.video-abierto .hero-section {
 #liga-amigos-modal .ranking-brand-box .trophy-main-img-box {
     width: 190px !important;       /* 👈 [COPA] ANCHO DE LA CAJA */
     height: 190px !important;      /* 👈 [COPA] ALTO DE LA CAJA */
+    overflow: visible !important;
 }
 
 #ranking-modal .ranking-brand-box .trophy-main-img,
@@ -4558,6 +4559,12 @@ body.video-abierto .hero-section {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
+}
+
+/* ⚡ Ajuste óptico: la estatua y el reloj igualan el tamaño visual de la diana de la captura 3 */
+#ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"],
+#ranking-modal .ranking-brand-box .trophy-main-img[src*="antiguedad"] {
+    transform: scale(1.75) !important;
 }
 
 #ranking-modal .ranking-brand-box .trophy-glow-backdrop,
@@ -4645,9 +4652,21 @@ body.video-abierto .hero-section {
     transition: transform 0.25s ease !important;
 }
 
+/* ⚡ Ajuste óptico en botones: la estatua y reloj igualan los 40px útiles de los íconos de la captura 3 */
+#ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"],
+#ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
+    left: 4px !important;
+    transform: translateY(-50%) scale(1.75) !important;
+}
+
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
 #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
     transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="capacidad"],
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="antiguedad"] {
+    transform: translateY(-50%) scale(1.9) rotate(-3deg) !important;
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span,
@@ -4701,6 +4720,13 @@ body.video-abierto .hero-section {
     flex-shrink: 0;
     margin: -4px 0;
     pointer-events: none;
+}
+
+/* ⚡ Ajuste óptico en la cápsula superior: iguala el tamaño del ícono de la captura 3 */
+.badge-title-png-icon[src*="capacidad"],
+.badge-title-png-icon[src*="antiguedad"] {
+    transform: scale(1.8) !important;
+    margin: -4px 4px -4px 2px !important;
 }
 
 .badge-title-text {
