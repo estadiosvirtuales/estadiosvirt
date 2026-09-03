@@ -3909,12 +3909,14 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
     }
 
     const subMenuHTML = `
-    <div class="liga-tabs-row ranking-tabs-row" style="margin: 0 auto 16px; max-width: 440px;">
-        <button class="liga-tab-btn ${activeCap}" onclick="abrirModalRankingOrden('capacidad')">
-            <img src="capacidad.jpg" alt="Capacidad" class="ranking-tab-img" onerror="this.src='capacidad.png';"> <span>Capacidad</span>
+    <div class="orden-tabs-row">
+        <button class="orden-tab-btn btn-orden-capacidad ${activeCap}" onclick="abrirModalRankingOrden('capacidad')">
+            <img src="capacidad.jpg" alt="Capacidad" class="orden-tab-img" onerror="this.src='capacidad.png';">
+            <span>Capacidad</span>
         </button>
-        <button class="liga-tab-btn ${activeAnt}" onclick="abrirModalRankingOrden('antiguedad')">
-            <img src="antiguedad.jpg" alt="Antigüedad" class="ranking-tab-img" onerror="this.src='antiguedad.png';"> <span>Antigüedad</span>
+        <button class="orden-tab-btn btn-orden-antiguedad ${activeAnt}" onclick="abrirModalRankingOrden('antiguedad')">
+            <img src="antiguedad.jpg" alt="Antigüedad" class="orden-tab-img" onerror="this.src='antiguedad.png';">
+            <span>Antigüedad</span>
         </button>
     </div>`;
 
@@ -4021,19 +4023,11 @@ function abrirModalOrden() {
 
         </div>
 
-        <!-- TABLAS DE POSICIONES -->
+        <!-- TABLA DE POSICIONES -->
         <div style="width: 100%; max-width: 380px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
-            <div style="font-size: 0.68rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px; text-align: center;">
-                Tablas de Posiciones
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="flex: 1; padding: 10px; font-size: 0.82rem; gap: 6px;">
-                    <img src="medalla-oro.png" alt="Top Cap." style="width: 26px; height: 26px; object-fit: contain;"> Top Cap.
-                </button>
-                <button onclick="abrirModalRankingOrden('antiguedad')" class="btn-3d secondary" style="flex: 1; padding: 10px; font-size: 0.82rem; gap: 6px;">
-                    <img src="medalla-plata.png" alt="Top Edad" style="width: 26px; height: 26px; object-fit: contain;"> Top Edad
-                </button>
-            </div>
+            <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d secondary" style="width: 100%; padding: 12px; font-size: 0.88rem; font-weight: 800; gap: 8px;">
+                <img src="medalla-oro.png" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Desafíos
+            </button>
         </div>
 
     </div>`;
