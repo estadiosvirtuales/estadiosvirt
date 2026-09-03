@@ -3487,15 +3487,43 @@ body.video-abierto .hero-section {
         box-sizing: border-box !important;
     }
 
-    /* 📅 CALENDARIO DE RETO DIARIO */
+    /* 📅 CALENDARIO DE RETO DIARIO (UNA SOLA LÍNEA SIN SALTOS EN MÓVIL) */
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) {
         grid-column: 1 / span 2 !important;
         grid-row: 6 !important;
-        padding: 10px !important;
+        padding: 12px 10px !important;
         margin: 6px 0 0 0 !important;
         border-radius: 14px !important;
         width: 100% !important;
         box-sizing: border-box !important;
+    }
+
+    .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) .dash-header-inline {
+        flex-wrap: nowrap !important;
+        gap: 6px !important;
+        align-items: center !important;
+    }
+
+    .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) .dash-title-premium {
+        font-size: 0.74rem !important;
+        letter-spacing: 0.2px !important;
+        white-space: nowrap !important;
+        gap: 5px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) .dash-title-premium i {
+        font-size: 1.05rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) .streak-fire-badge {
+        font-size: 0.68rem !important;
+        padding: 4px 8px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        gap: 4px !important;
     }
 
     .logros-header-clickable {
