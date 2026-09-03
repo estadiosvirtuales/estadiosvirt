@@ -2058,33 +2058,40 @@ body.video-abierto .hero-section {
     box-shadow: 0 0 10px rgba(255, 143, 0, 0.15);
 }
 
-/* 🏟️ Textura de cuadrícula táctica para la caja del Reto Diario */
+/* 🏟️ Caja del Reto Diario con estética de Centro Táctico Cyber */
 .geoguessr-dash-box:has(.calendar-matrix) {
     position: relative;
     overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: 2px solid rgba(0, 230, 118, 0.6) !important;
     background: 
-        radial-gradient(circle at 85% 15%, rgba(0, 230, 118, 0.10) 0%, transparent 60%),
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 28px),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 28px),
-        var(--surface-color) !important;
+        radial-gradient(circle at 85% 12%, rgba(255, 159, 5, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(0, 230, 118, 0.14) 0%, transparent 55%),
+        repeating-linear-gradient(90deg, rgba(0, 230, 118, 0.045) 0, rgba(0, 230, 118, 0.045) 1px, transparent 1px, transparent 28px),
+        repeating-linear-gradient(0deg, rgba(0, 230, 118, 0.045) 0, rgba(0, 230, 118, 0.045) 1px, transparent 1px, transparent 28px),
+        linear-gradient(165deg, rgba(20, 32, 48, 0.95) 0%, rgba(10, 16, 26, 0.98) 100%) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 230, 118, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
-/* 📅 Matriz de días con cuadrícula interior estilizada */
+/* 📅 Matriz de días estilo Radar / Cancha Digital */
 .calendar-matrix { 
     display: grid; 
     grid-template-columns: repeat(7, 1fr); 
     gap: 6px; 
     text-align: center; 
-    background-color: rgba(6, 10, 18, 0.55);
+    background-color: rgba(5, 9, 16, 0.80);
     background-image: 
-        radial-gradient(circle at 50% 20%, rgba(0, 230, 118, 0.08) 0%, transparent 70%),
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 20px),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0.025) 1px, transparent 1px, transparent 20px);
+        radial-gradient(circle at 50% 50%, rgba(0, 230, 118, 0.12) 0%, transparent 65%),
+        repeating-linear-gradient(90deg, rgba(0, 230, 118, 0.06) 0, rgba(0, 230, 118, 0.06) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(0deg, rgba(0, 230, 118, 0.06) 0, rgba(0, 230, 118, 0.06) 1px, transparent 1px, transparent 20px);
     border-radius: 14px; 
-    padding: 12px; 
-    border: 1px solid var(--border-strong); 
-    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
-    margin-top: 10px; 
+    padding: 14px 12px; 
+    border: 1.5px solid rgba(0, 230, 118, 0.25);
+    border-top: 1.5px solid rgba(0, 230, 118, 0.55);
+    box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.7), 0 0 18px rgba(0, 230, 118, 0.08);
+    margin-top: 12px; 
     position: relative;
 }
 
@@ -4653,16 +4660,16 @@ body.video-abierto .hero-section {
 }
 
 /* ========================================================
-   🕹️ 3. TAMAÑO EXCLUSIVO DE LOS ÍCONOS DE LOS BOTONES
+   🕹️ 3. BOTONES CON ONDA E ÍCONOS CENTRADOS (DESAFÍO DE ORDEN Y RANKINGS)
    ======================================================== */
 #ranking-modal .ranking-left-panel .ranking-tab-img,
 #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
     position: absolute !important;
-    left: 2px !important;          /* 👈 Anclaje fijo exacto para todos los iconos */
+    left: 2px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    width: 57px !important;        /* 👈 [BOTONES] ANCHO DEL ÍCONO */
-    height: 57px !important;       /* 👈 [BOTONES] ALTO DEL ÍCONO */
+    width: 60px !important;
+    height: 60px !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) !important;
@@ -4670,6 +4677,78 @@ body.video-abierto .hero-section {
     transition: transform 0.25s ease !important;
 }
 
+/* 🏆 BOTÓN CAPACIDAD (ORO / ÁMBAR) */
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="capacidad"] {
+    background: linear-gradient(165deg, rgba(38, 28, 12, 0.88) 0%, rgba(18, 14, 8, 0.96) 100%) !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.35) !important;
+    border-top: 1.5px solid rgba(254, 240, 138, 0.6) !important;
+    color: #fde68a !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="capacidad"]:hover {
+    border-color: #fbbf24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="capacidad"].active {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
+    border-color: #fef08a !important;
+    border-top: 2px solid #ffffff !important;
+    color: #0b0f19 !important;
+    font-weight: 900 !important;
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 🟣 BOTÓN ANTIGÜEDAD (NEÓN VIOLETA) */
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"] {
+    background: linear-gradient(165deg, rgba(32, 20, 48, 0.88) 0%, rgba(14, 10, 24, 0.96) 100%) !important;
+    border: 1.5px solid rgba(167, 139, 250, 0.35) !important;
+    border-top: 1.5px solid rgba(233, 213, 255, 0.6) !important;
+    color: #e9d5ff !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"]:hover {
+    border-color: #c084fc !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.35) !important;
+    transform: translateY(-2px);
+}
+
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"].active {
+    background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #7c3aed 100%) !important;
+    border-color: #f3e8ff !important;
+    border-top: 2px solid #ffffff !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 🎯 ALINEACIÓN VERTICAL PERFECCIONADA: Baja los íconos al centro del botón */
+#ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"] {
+    left: -4px !important;
+    top: calc(50% + 5px) !important;
+    width: 68px !important;
+    height: 68px !important;
+    filter: drop-shadow(0 4px 10px rgba(251, 191, 36, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8)) !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
+    left: -4px !important;
+    top: calc(50% + 5px) !important;
+    width: 68px !important;
+    height: 68px !important;
+    filter: drop-shadow(0 4px 10px rgba(168, 85, 247, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8)) !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
+    transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
+}
 /* ⚡ Ajuste óptico en botones: la estatua y reloj igualan los 40px útiles de los íconos de la captura 3 */
 #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"],
 #ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
@@ -4870,19 +4949,23 @@ body.video-abierto .hero-section {
     #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
         height: 42px !important;
-        font-size: 0.65rem !important;
-        padding: 4px 6px !important;
+        font-size: 0.68rem !important;
+        padding: 0 6px 0 28px !important;
         justify-content: center !important;
         border-radius: 14px !important;
+        position: relative !important;
+        overflow: visible !important;
     }
 
     #ranking-modal .ranking-left-panel .ranking-tab-img,
     #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
-        position: static !important;
-        transform: none !important;
-        width: 34px !important;
-        height: 34px !important;
-        margin-left: -4px !important;
+        position: absolute !important;
+        left: -4px !important;
+        top: calc(50% + 4px) !important;
+        transform: translateY(-50%) !important;
+        width: 48px !important;
+        height: 48px !important;
+        margin: 0 !important;
     }
 
     .ranking-right-panel .liga-row-item {
