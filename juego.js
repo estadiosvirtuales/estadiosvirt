@@ -2679,7 +2679,8 @@ function conectarRealtimeVersus() {
     versusChannel
         .on('presence', { event: 'leave' }, ({ leftPresences }) => {
             console.log("[1v1] 🚨 Desconexión de socket detectada:", leftPresences);
-            if (versusPartidaEnCurso && !esModoBot) {
+            const partidaYaFinalizada = guessrRondaActual > 5 || (guessrRondaActual === 5 && resultadosRondaMostrados);
+            if (versusPartidaEnCurso && !esModoBot && !partidaYaFinalizada) {
                 manejarAbandonoRival();
             }
         })
@@ -2770,7 +2771,10 @@ function conectarRealtimeVersus() {
         })
         .on('broadcast', { event: 'rival_abandono' }, () => {
             console.log("[1v1] El oponente abandonó la sesión.");
-            manejarAbandonoRival();
+            const partidaYaFinalizada = guessrRondaActual > 5 || (guessrRondaActual === 5 && resultadosRondaMostrados);
+            if (!partidaYaFinalizada) {
+                manejarAbandonoRival();
+            }
         })
         .subscribe((status) => {
             console.log(`[1v1] 🚦 Estado WebSocket (${versusRol}): ${status}`);
@@ -5286,8 +5290,9 @@ logros.push({id:'ordenPerfecto',icon:'<img src="estratega.png" class="logro-img-
 }
 // Función para rescatar al jugador si el oponente se desconecta o abandona (Adjudica Victoria)
 async function manejarAbandonoRival() {
-    // 🛡️ ESCUDO ANTI-DUPLICADOS: Evita que el servidor y el socket choquen y te sumen doble XP
-    if (!versusPartidaEnCurso) return;
+    // 🛡️ ESCUDO ANTI-DUPLICADOS: Si la partida terminó sus 5 rondas, jamás se procesa como abandono
+    const partidaYaFinalizada = guessrRondaActual > 5 || (guessrRondaActual === 5 && resultadosRondaMostrados);
+    if (!versusPartidaEnCurso || partidaYaFinalizada) return;
     versusPartidaEnCurso = false; // Cerramos la puerta al instante
 
     if (versusTimerInterval) clearInterval(versusTimerInterval);
