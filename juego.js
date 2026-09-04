@@ -2379,7 +2379,32 @@ function obtener5EstadiosVersus() {
 // 🤖 BOT DE RESPALDO SI NO HAY RIVALES HUMANOS
 function activarBotDeRescate() {
     esModoBot = true;
-    versusRivalNombre = "BOT " + ["Dibu", "Messi", "Haaland", "Mbappé", "Neymar"][Math.floor(Math.random() * 5)];
+    const apodosRivales = [
+        // Los clásicos con números/años
+        "Nico_88", "Juani8794", "Gonza_23", "Matias14", "Rulo_94", "Tomi_99", "Agus2001", "Fede_89",
+        "Lucas_93", "Tincho98", "Facu_2003", "Emi_95", "Jony_90", "Seba_87", "Ale_00", "Gaston_91",
+        "Leo_1994", "Maxi_22", "Tucu_99", "Chino_12", "Lucho_88", "Manu_2005", "Bauti_04", "Fran_97",
+        
+        // Apodos y "Termos" futboleros
+        "ElDiego_DT", "Pulga10", "Panhito", "Toto_Cancha", "Gordo12", "Gambeta_10", "PaloYAfuera",
+        "Rustico_2", "TikiTaka", "El_DT_Online", "Capitan_10", "ElPibeDeBarrio", "Var_Oficial",
+        "EnfermoDelGol", "Corta_Pasto", "Juega_Bonito", "PelotaAlPiso", "Centro_Y_Adentro", "Magico_10",
+        
+        // Mezcla con Gamer/FUT
+        "Faca_Gamer", "PibeFUT", "Láser", "Nari", "Pro_Gamer_FUT", "Fifa_King", "Leyenda_FUT",
+        "Gamer_Albiceleste", "Tryhard_Fut", "Crack_Virtual", "Joystick_10", "PibePlay", "Duka_88", "Cholo", "Peluca", "Zurdo",
+        "Ñeri", "Huguito", "Alejandrogado", "Boxer", "Cobra", "tete", "Delfi", "mari75", 
+        
+        // Referencias a jugadores/ídolos
+        "Dibu_Fan", "ElBicho_CR", "Messi_Goat", "Enzo_F", "Julian_21", "Araña_9", "Motorcito_7",
+        "Paredes_Leyenda", "Licha_15", "Pipa_Gol", "Fideo_11", "Toro_22", "Cuti_Fan",
+        
+        // Folklore y Clubes (Versión disimulada)
+        "Santi_Casla", "Juani_Albiceleste", "Bostero_22", "Millo91", "ReyDeCopas_7", "Rojo_Diablo",
+        "Boedo_Cuervo", "Fortinero", "Canalla_89", "Leproso_G", "Pincharrata_11", "Lobo_Platense",
+        "Gaston_Carp", "Seba_Xeneize", "ChinoCBA", "Cordobes2", "Mendu_14", "Quemero_10", "Funebrero_C"
+    ];
+    versusRivalNombre = apodosRivales[Math.floor(Math.random() * apodosRivales.length)];
     cerrarLobbyEspera();
     showToast(`¡Rival encontrado: ${versusRivalNombre}! 🚀`, "ph-lightning", "success");
     arrancarPartidoVersus();
@@ -2970,11 +2995,11 @@ function mostrarResultadosMutuosVersus() {
         </span>
     </div>`;
     
-    btn.style.background = "linear-gradient(135deg, #00e676 0%, #00b355 45%, #2979ff 100%)";
-    btn.style.color = "#000000";
-    btn.style.border = "1.5px solid rgba(255, 255, 255, 0.5)";
-    btn.style.borderTop = "2px solid #ffffff";
-    btn.style.boxShadow = "0 4px 16px rgba(41, 121, 255, 0.45), 0 0 18px rgba(0, 230, 118, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)";
+    btn.style.background = "linear-gradient(135deg, rgba(10, 36, 26, 0.95) 0%, rgba(12, 24, 46, 0.98) 100%)";
+    btn.style.color = "#ffffff";
+    btn.style.border = "1.5px solid rgba(41, 121, 255, 0.5)";
+    btn.style.borderTop = "2px solid #69ff9c";
+    btn.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 230, 118, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)";
     btn.setAttribute('data-estado', 'resultado');
     btn.disabled = true;
 
@@ -3398,14 +3423,12 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
         }
 
     }, 300);
-// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (50% de chances de que elija antes entre 12 y 24s)
+// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (Arriesga de forma autónoma entre 8 y 15 segundos)
     if (esModoBot) {
         if (botAntesTimer) clearTimeout(botAntesTimer);
-        if (Math.random() < 0.5) {
-            botAntesTimer = setTimeout(() => {
-                ejecutarVotoBotDinamico();
-            }, 12000 + Math.random() * 12000); // Elige exactamente entre 12000ms y 24000ms
-        }
+        botAntesTimer = setTimeout(() => {
+            ejecutarVotoBotDinamico();
+        }, 8000 + Math.random() * 7000);
     }
 }
 
@@ -3456,23 +3479,23 @@ btn.innerHTML=`
     </span>
 </div>`;
 if(esExc){
-    btn.style.background="linear-gradient(135deg, #00ff77 0%, #00d66c 50%, #009e4f 100%)";
-    btn.style.color="#04160a";
-    btn.style.border="1.5px solid #86efac";
-    btn.style.borderTop="2px solid #ffffff";
-    btn.style.boxShadow="0 4px 16px rgba(0, 255, 119, 0.5), 0 0 18px rgba(0, 255, 119, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)";
-}else if(esBien){
-    btn.style.background="linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)";
-    btn.style.color="#0b0f19";
-    btn.style.border="1.5px solid #fef08a";
-    btn.style.borderTop="2px solid #ffffff";
-    btn.style.boxShadow="0 4px 16px rgba(245, 158, 11, 0.5), 0 0 18px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)";
-}else{
-    btn.style.background="linear-gradient(135deg, #ff4757 0%, #e11d48 50%, #be123c 100%)";
+    btn.style.background="linear-gradient(135deg, rgba(12, 38, 26, 0.95) 0%, rgba(8, 22, 16, 0.98) 100%)";
     btn.style.color="#ffffff";
-    btn.style.border="1.5px solid #fecdd3";
-    btn.style.borderTop="2px solid #ffffff";
-    btn.style.boxShadow="0 4px 16px rgba(225, 29, 72, 0.5), 0 0 18px rgba(225, 29, 72, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5)";
+    btn.style.border="1.5px solid #00e676";
+    btn.style.borderTop="2px solid #a7f3d0";
+    btn.style.boxShadow="0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(0, 230, 118, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)";
+}else if(esBien){
+    btn.style.background="linear-gradient(135deg, rgba(38, 28, 12, 0.95) 0%, rgba(20, 14, 8, 0.98) 100%)";
+    btn.style.color="#ffffff";
+    btn.style.border="1.5px solid #fbbf24";
+    btn.style.borderTop="2px solid #fef08a";
+    btn.style.boxShadow="0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(251, 191, 36, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)";
+}else{
+    btn.style.background="linear-gradient(135deg, rgba(38, 14, 18, 0.95) 0%, rgba(22, 8, 10, 0.98) 100%)";
+    btn.style.color="#ffffff";
+    btn.style.border="1.5px solid #ff4757";
+    btn.style.borderTop="2px solid #fecdd3";
+    btn.style.boxShadow="0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 71, 87, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15)";
 }
 // 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN SOLITARIO 👇
 dispararJuicinessRonda(dist);
