@@ -801,26 +801,49 @@ body.video-abierto .hero-section {
     text-shadow: 0 0 10px rgba(0, 255, 119, 0.4);
 }
 
-/* 🗺️ WIDGET FLOTANTE DEL MAPA COMPACTO Y TRANSLÚCIDO */
+/* 🗺️ WIDGET FLOTANTE DEL MAPA COMPACTO Y OPALINO */
 .guessr-floating-map-box {
     position: absolute !important;
-    bottom: 16px !important;
-    right: 16px !important;
-    width: 245px !important;
+    bottom: 12px !important;
+    right: 12px !important;
+    width: 330px !important;
     height: 165px !important;
-    opacity: 0.68 !important;
-    background: linear-gradient(145deg, rgba(14, 22, 38, 0.70) 0%, rgba(8, 12, 22, 0.85) 100%) !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
-    border-top: 2px solid rgba(0, 255, 119, 0.5) !important;
+    opacity: 1 !important;
+    background: #080e18 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 2px solid rgba(0, 255, 119, 0.65) !important;
     border-radius: 14px !important;
-    padding: 5px !important;
+    padding: 6px !important;
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 4px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 15px rgba(0, 255, 119, 0.12) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
+    gap: 5px !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 255, 119, 0.15) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    pointer-events: auto !important;
+    z-index: 30 !important;
+    transition: width .28s cubic-bezier(.175,.885,.32,1.275), height .28s cubic-bezier(.175,.885,.32,1.275), opacity .22s ease, border-color .25s ease, background-color .25s ease !important;
+}/* 🗺️ WIDGET FLOTANTE DEL MAPA COMPACTO Y OPALINO */
+.guessr-floating-map-box {
+    position: absolute !important;
+    bottom: 12px !important;
+    right: 12px !important;
+    width: 330px !important;
+    height: 165px !important;
+    opacity: 1 !important;
+    background: #080e18 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+    border-top: 2px solid rgba(0, 255, 119, 0.65) !important;
+    border-radius: 14px !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 255, 119, 0.15) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
     pointer-events: auto !important;
     z-index: 30 !important;
     transition: width .28s cubic-bezier(.175,.885,.32,1.275), height .28s cubic-bezier(.175,.885,.32,1.275), opacity .22s ease, border-color .25s ease, background-color .25s ease !important;
@@ -2450,8 +2473,7 @@ body.video-abierto .hero-section {
 /* 📱 EN CELULAR: Video a pantalla completa y mapa flotante en panel inferior */
 .modal-content.stadium-guessr-layout{width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;border:none!important;padding:0!important}
 .modal-content.stadium-guessr-layout .video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important}
-.guessr-top-hud{top:64px!important;left:10px!important}
-.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:160px!important;opacity:.75!important}
+.guessr-top-hud{top:64px!important;left:10px!important}.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:175px!important;opacity:1!important;background:#080e18!important}
 .guessr-floating-map-box.expanded,
 .guessr-floating-map-box.pinned{height:55vh!important;width:calc(100% - 20px)!important;opacity:1!important}
 
@@ -7371,7 +7393,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* 💡 HUD DE PISTAS (Sutil, elegante y limpio) */
 .guessr-hud-hints {
     position: relative;
-    margin-top: 2px;
+    margin-top: 5px;
     z-index: 30;
     font-family: 'Outfit', sans-serif !important;
 }
@@ -7380,37 +7402,35 @@ html[data-theme="light"] .xp-bar-big-fill {
     font-family: 'Outfit', sans-serif !important;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    height: 26px;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, rgba(14, 20, 34, 0.92) 100%);
-    border: 1px solid rgba(245, 158, 11, 0.4);
-    border-top: 1.5px solid rgba(253, 224, 71, 0.7);
-    border-radius: 9px;
-    padding: 0 11px;
+    gap: 8px;
+    height: 38px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(14, 20, 34, 0.94) 100%);
+    border: 1.5px solid rgba(245, 158, 11, 0.5);
+    border-top: 2px solid rgba(253, 224, 71, 0.85);
+    border-radius: 12px;
+    padding: 0 16px;
     color: #fde68a;
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-    text-transform: none; /* Title Case natural */
+    font-size: 0.90rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-transform: none;
     cursor: pointer;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 10px rgba(245, 158, 11, 0.15);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), 0 0 16px rgba(245, 158, 11, 0.25);
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.guessr-hint-btn:hover {
-    transform: translateY(-1px) scale(1.02);
-    border-color: #facc15;
-    color: #ffffff;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 16px rgba(250, 204, 21, 0.4);
+.guessr-hint-btn i {
+    font-size: 1.25rem !important;
+    filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.65));
 }
 
 .guessr-hint-btn:hover {
     transform: translateY(-2px) scale(1.03);
     border-color: #facc15;
     color: #ffffff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 22px rgba(250, 204, 21, 0.55);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.75), 0 0 24px rgba(250, 204, 21, 0.55);
 }
 
 .guessr-hint-balloon {
