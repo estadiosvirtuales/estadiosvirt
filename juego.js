@@ -2992,10 +2992,10 @@ function mostrarResultadosMutuosVersus() {
     btn.innerHTML = `
     <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
         <span class="btn-action-stats">
-            ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b> <span style="font-size: 0.75rem; opacity: 0.75;">(Rival: +${rivalDataRonda.puntos})</span>
+            ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b>
         </span>
         <span class="btn-action-text" id="versus-round-countdown" style="font-size:0.78rem; font-weight:900; opacity:0.95; white-space:nowrap;">
-            ⏱️ ${textoAccion} <b style="color:#000;">${segundosRestantes}s</b>
+            ⏱️ ${textoAccion} <b style="color:#ffffff;">${segundosRestantes}s</b>
         </span>
     </div>`;
     
