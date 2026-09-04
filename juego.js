@@ -2469,23 +2469,24 @@ function abrirLobbyPrivado(link, codigo) {
     cerrarLobbyEspera(); 
     const lobby = document.createElement('div');
     lobby.id = 'matchmaking-lobby';
-    lobby.style.cssText = `
-        position: fixed; top: 24px; left: 0; right: 0; margin: 0 auto; width: max-content; 
-        max-width: 90%; background: var(--glass-bg); border: 2px solid var(--border-strong); 
-        padding: 20px 28px; border-radius: 16px; z-index: 99999; display: flex; 
-        flex-direction: column; align-items: center; justify-content: center; gap: 14px; 
-        font-weight: 800; color: var(--text-main); box-shadow: var(--shadow-strong); 
-        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); animation: fadeSlideUp 0.3s both;
-    `;
+    lobby.className = 'private-lobby-card';
     
     lobby.innerHTML = `
-        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-            <span style="color:var(--accent-color); font-size:1.1rem;"><i class="ph-fill ph-users-three"></i> Duelo Privado</span>
-            <i class="ph-bold ph-x" style="cursor:pointer; color:var(--text-muted);" onclick="cancelarBusquedaVersus()"></i>
+        <div class="private-lobby-header">
+            <div class="private-lobby-title-wrap">
+                <img src="icono-privada.png" alt="Sala Privada" class="private-lobby-icon">
+                <div class="private-lobby-title-text">
+                    <strong>Duelo Privado</strong>
+                    <span class="private-lobby-badge">SALA #${codigo}</span>
+                </div>
+            </div>
+            <button type="button" class="private-lobby-close" onclick="cancelarBusquedaVersus()" title="Cerrar sala">
+                <i class="ph-bold ph-x"></i>
+            </button>
         </div>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Pasale este link a tu rival y esperalo acá:</p>
-        <button id="btn-copiar-privado" onclick="compartirLinkPrivado('${link}')" class="btn-3d primary" style="width:100%; padding:14px; font-size:1rem; margin-top:5px;">
-            <i class="ph-bold ph-copy"></i> Invitar a sala privada
+        <p class="private-lobby-desc">Compartile este link a tu rival para jugar mano a mano en vivo:</p>
+        <button id="btn-copiar-privado" type="button" onclick="compartirLinkPrivado('${link}')" class="btn-3d btn-private-invite">
+            <i class="ph-bold ph-share-network"></i> Invitar a sala privada
         </button>
     `;
     document.body.appendChild(lobby);
