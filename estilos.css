@@ -849,57 +849,72 @@ body.video-abierto .hero-section {
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px var(--accent-glow) !important;
 }
 
-/* 🚀 BOTÓN DE ACCIÓN / CLAVAR PIN REFINADO */
+/* 🚀 BOTÓN DE ACCIÓN / CLAVAR PIN REFINADO (HIGH-VOLTAGE GAMER) */
 #game-action-btn {
     font-family: 'Outfit', sans-serif !important;
     width: 100% !important;
-    min-height: 31px !important;
-    height: 31px !important;
+    min-height: 32px !important;
+    height: 32px !important;
     padding: 0 12px !important;
     font-size: 0.76rem !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     letter-spacing: 0.2px;
-    border-radius: 9px !important;
+    border-radius: 10px !important;
     box-sizing: border-box !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    text-transform: none !important; /* Salimos del uppercase forzado */
-    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
-/* Estado inicial pasivo (Guía al usuario sin saturar) */
+/* 1️⃣ Estado inicial pasivo: esperando pin */
 #game-action-btn.secondary[disabled],
-#game-action-btn:disabled:not([data-estado="resultado"]) {
-    background: rgba(14, 22, 38, 0.82) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.22) !important;
+#game-action-btn:disabled:not([data-estado="resultado"]):not([data-estado="procesando"]) {
+    background: linear-gradient(165deg, rgba(16, 26, 44, 0.90) 0%, rgba(8, 14, 25, 0.96) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1.5px solid rgba(0, 255, 119, 0.45) !important;
     color: #94a3b8 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     cursor: default;
 }
 
-#game-action-btn.secondary[disabled] i {
+#game-action-btn.secondary[disabled] i,
+#game-action-btn:disabled:not([data-estado="resultado"]) i {
     color: #00ff77 !important;
     font-size: 0.92rem;
-    filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.4));
+    filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.6));
 }
 
-/* Estado activo brillante cuando hay un pin puesto */
+/* 2️⃣ Estado activo brillante: ¡Confirmar ubicación! */
 #game-action-btn.primary:not([disabled]) {
-    background: linear-gradient(135deg, #00ff77 0%, #00cc66 100%) !important;
+    background: linear-gradient(135deg, #00ff77 0%, #00d66c 50%, #009e4f 100%) !important;
     color: #04160a !important;
-    border: none !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.3px;
-    box-shadow: 0 3px 0 #007a38, 0 0 18px rgba(0, 255, 119, 0.6) !important;
+    border: 1.5px solid #86efac !important;
+    border-top: 2px solid #ffffff !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.4px;
+    box-shadow: 0 4px 16px rgba(0, 255, 119, 0.5), 0 0 18px rgba(0, 255, 119, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
     animation: bounceFun 0.35s ease;
+    cursor: pointer !important;
 }
 
 #game-action-btn.primary:not([disabled]):hover {
-    transform: translateY(-1px) scale(1.01);
-    box-shadow: 0 4px 0 #007a38, 0 0 24px rgba(0, 255, 119, 0.8) !important;
+    transform: translateY(-2px) scale(1.01) !important;
+    box-shadow: 0 6px 22px rgba(0, 255, 119, 0.65), 0 0 24px rgba(0, 255, 119, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 3️⃣ Hover interactivo al mostrar el resultado y botón de siguiente ronda */
+#game-action-btn[data-estado="resultado"]:not([disabled]) {
+    cursor: pointer !important;
+}
+
+#game-action-btn[data-estado="resultado"]:not([disabled]):hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    filter: brightness(1.08) !important;
 }
 
 /* Botón de expandir esquina */

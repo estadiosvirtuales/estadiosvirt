@@ -2847,6 +2847,11 @@ function confirmarArriesgoLocalVersus() {
             mostrarResultadosMutuosVersus();
         } else {
             btn.innerHTML = `<i class="ph-bold ph-hourglass-medium animate-spin"></i> Esperando al rival...`;
+            btn.style.background = "linear-gradient(145deg, rgba(16, 28, 50, 0.92) 0%, rgba(8, 14, 26, 0.98) 100%)";
+            btn.style.color = "#bfdbfe";
+            btn.style.border = "1.5px solid rgba(41, 121, 255, 0.45)";
+            btn.style.borderTop = "1.5px solid rgba(147, 197, 253, 0.7)";
+            btn.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.4), 0 0 12px rgba(41, 121, 255, 0.3)";
             const titleEl = document.getElementById('game-title');
             if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
             
@@ -2965,9 +2970,11 @@ function mostrarResultadosMutuosVersus() {
         </span>
     </div>`;
     
-    btn.style.background = "linear-gradient(90deg, #00e676, #2979ff)";
-    btn.style.color = "#000";
-    btn.style.boxShadow = "0 5px 0 #0d5332";
+    btn.style.background = "linear-gradient(135deg, #00e676 0%, #00b355 45%, #2979ff 100%)";
+    btn.style.color = "#000000";
+    btn.style.border = "1.5px solid rgba(255, 255, 255, 0.5)";
+    btn.style.borderTop = "2px solid #ffffff";
+    btn.style.boxShadow = "0 4px 16px rgba(41, 121, 255, 0.45), 0 0 18px rgba(0, 230, 118, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)";
     btn.setAttribute('data-estado', 'resultado');
     btn.disabled = true;
 
@@ -3339,7 +3346,7 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
 } else {
     document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
 }
-const btn=document.getElementById('game-action-btn');btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
+const btn=document.getElementById('game-action-btn');btn.style.background='';btn.style.color='';btn.style.boxShadow='';btn.style.border='';btn.style.borderTop='';btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
 // PEGAR ESTO REEMPLAZANDO EL SETTIMEOUT(..., 600) DE lanzarRondaGuessr:
     // Contraemos el mapa al inicio de cada ronda
@@ -3448,7 +3455,25 @@ btn.innerHTML=`
         ${textoBotonSolitario} ${iconoBotonSolitario}
     </span>
 </div>`;
-if(esExc){btn.style.background="var(--accent-color)";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #0a7a3a";}else if(esBien){btn.style.background="#ff8f00";btn.style.color="#000";btn.style.boxShadow="0 5px 0 #bf360c";}else{btn.style.background="var(--danger-color)";btn.style.color="#fff";btn.style.boxShadow="0 5px 0 #8b0000";}
+if(esExc){
+    btn.style.background="linear-gradient(135deg, #00ff77 0%, #00d66c 50%, #009e4f 100%)";
+    btn.style.color="#04160a";
+    btn.style.border="1.5px solid #86efac";
+    btn.style.borderTop="2px solid #ffffff";
+    btn.style.boxShadow="0 4px 16px rgba(0, 255, 119, 0.5), 0 0 18px rgba(0, 255, 119, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)";
+}else if(esBien){
+    btn.style.background="linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)";
+    btn.style.color="#0b0f19";
+    btn.style.border="1.5px solid #fef08a";
+    btn.style.borderTop="2px solid #ffffff";
+    btn.style.boxShadow="0 4px 16px rgba(245, 158, 11, 0.5), 0 0 18px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6)";
+}else{
+    btn.style.background="linear-gradient(135deg, #ff4757 0%, #e11d48 50%, #be123c 100%)";
+    btn.style.color="#ffffff";
+    btn.style.border="1.5px solid #fecdd3";
+    btn.style.borderTop="2px solid #ffffff";
+    btn.style.boxShadow="0 4px 16px rgba(225, 29, 72, 0.5), 0 0 18px rgba(225, 29, 72, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5)";
+}
 // 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN SOLITARIO 👇
 dispararJuicinessRonda(dist);
 btn.setAttribute('data-estado','resultado');btn.disabled=false;
