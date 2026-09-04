@@ -4407,13 +4407,14 @@ function renderJuegoOrden(revelar = false){
 
     let botonera = '';
     if (!revelar) {
+        const claseColorModo = orderModo === 'antiguedad' ? 'antiguedad' : 'capacidad';
         botonera = `
         <div style="display:flex;gap:10px;margin-top:14px;margin-bottom:8px;flex-shrink:0;">
-            <button type="button" onclick="abrirModalOrden()" class="btn-3d secondary" style="width:25%;padding:12px;display:flex;align-items:center;justify-content:center;" title="Volver al menú de orden">
+            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-order-back" style="width:25%;padding:12px;display:flex;align-items:center;justify-content:center;" title="Volver al menú de orden">
                 <i class="ph-bold ph-arrow-left" style="font-size:1.2rem;"></i>
             </button>
-            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d primary" style="width:75%;padding:12px;font-size:0.95rem;display:flex;align-items:center;justify-content:center;gap:6px;">
-                Confirmar orden <i class="ph-bold ph-check-circle" style="font-size:1.1rem;"></i>
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d btn-order-confirm ${claseColorModo}" style="width:75%;padding:12px;font-size:0.95rem;display:flex;align-items:center;justify-content:center;gap:8px;">
+                <span>Confirmar orden</span> <i class="ph-bold ph-check-circle" style="font-size:1.15rem;"></i>
             </button>
         </div>`;
     } else {

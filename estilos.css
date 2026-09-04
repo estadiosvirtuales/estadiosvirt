@@ -4421,6 +4421,74 @@ body.video-abierto .hero-section {
     transform: translateY(-2px);
 }
 
+/* 🔙 BOTÓN VOLVER (Desafío de Orden) */
+.btn-order-back {
+    background: linear-gradient(165deg, rgba(16, 26, 44, 0.92) 0%, rgba(8, 14, 25, 0.98) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+    color: #cbd5e1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+.btn-order-back:hover {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 🎯 BOTÓN CONFIRMAR ORDEN (Cristal Gamer Temático) */
+.btn-order-confirm {
+    border-radius: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.3px !important;
+    color: #ffffff !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+/* 🟡 Confirmar en Capacidad (Ámbar / Oro) */
+.btn-order-confirm.capacidad {
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.28) 0%, transparent 65%),
+        linear-gradient(135deg, rgba(38, 28, 12, 0.95) 0%, rgba(18, 14, 8, 0.98) 100%) !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.55) !important;
+    border-top: 2px solid #fef08a !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(251, 191, 36, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+}
+.btn-order-confirm.capacidad i {
+    color: #fbbf24 !important;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.7));
+}
+.btn-order-confirm.capacidad:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    border-color: #fbbf24 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(251, 191, 36, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    filter: brightness(1.08);
+}
+
+/* 🟣 Confirmar en Antigüedad (Púrpura / Violeta Neón) */
+.btn-order-confirm.antiguedad {
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(167, 139, 250, 0.28) 0%, transparent 65%),
+        linear-gradient(135deg, rgba(32, 20, 48, 0.95) 0%, rgba(14, 10, 24, 0.98) 100%) !important;
+    border: 1.5px solid rgba(167, 139, 250, 0.55) !important;
+    border-top: 2px solid #e9d5ff !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(167, 139, 250, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+}
+.btn-order-confirm.antiguedad i {
+    color: #c084fc !important;
+    filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.7));
+}
+.btn-order-confirm.antiguedad:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    border-color: #c084fc !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    filter: brightness(1.08);
+}
+
 /* ☀️ ADAPTACIÓN EN MODO CLARO (CRISTAL DIURNO CON IDENTIDAD) */
 [data-theme="light"] .guessr-option-btn {
     border: 1.5px solid #cbd5e1 !important;
@@ -4507,6 +4575,42 @@ body.video-abierto .hero-section {
     background: #fffbeb !important;
     border-color: #b45309 !important;
     box-shadow: 0 6px 18px rgba(217, 119, 6, 0.25) !important;
+}
+
+[data-theme="light"] .btn-order-back {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #334155 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+}
+[data-theme="light"] .btn-order-back:hover {
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .btn-order-confirm.capacidad {
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%) !important;
+    border: 1.5px solid #d97706 !important;
+    border-top: 2px solid #f59e0b !important;
+    color: #78350f !important;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.18) !important;
+}
+[data-theme="light"] .btn-order-confirm.capacidad i {
+    color: #d97706 !important;
+    filter: none;
+}
+
+[data-theme="light"] .btn-order-confirm.antiguedad {
+    background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%) !important;
+    border: 1.5px solid #7c3aed !important;
+    border-top: 2px solid #a855f7 !important;
+    color: #581c87 !important;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.18) !important;
+}
+[data-theme="light"] .btn-order-confirm.antiguedad i {
+    color: #7c3aed !important;
+    filter: none;
 }
 /* ========================================================
    🏆 SALÓN DE LA FAMA & RANKINGS COMPETITIVOS PRO
