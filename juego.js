@@ -2890,7 +2890,7 @@ function confirmarArriesgoLocalVersus() {
             if (esModoBot) {
                 setTimeout(() => {
                     ejecutarVotoBotDinamico();
-                }, 5000 + Math.random() * 10000);
+                }, 8000 + Math.random() * 7000);
             }
         }
     } catch (error) {
@@ -3428,12 +3428,12 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
         }
 
     }, 300);
-// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (Arriesga de forma autónoma entre 8 y 15 segundos)
+// 🤖 CONFIGURACIÓN DE INICIATIVA DEL BOT (Arriesga de forma autónoma entre 20 y 30 segundos)
     if (esModoBot) {
         if (botAntesTimer) clearTimeout(botAntesTimer);
         botAntesTimer = setTimeout(() => {
             ejecutarVotoBotDinamico();
-        }, 8000 + Math.random() * 7000);
+        }, 20000 + Math.random() * 10000);
     }
 }
 
