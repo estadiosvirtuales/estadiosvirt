@@ -284,35 +284,29 @@ body > * {
 }
 
 .welcome-heading {
-    font-size: 3.2rem;
+    font-size: 3.1rem;
     font-weight: 900;
-    margin-bottom: 14px;
-    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
     line-height: 1.05;
     text-transform: uppercase;
     display: inline-block;
-    transform: skewX(-4deg); /* 🏎️ Inclinación deportiva aerodinámica */
     animation: fadeSlideUp 0.45s 0.05s ease both;
     user-select: none;
     
-    /* 💿 ESTADIOS: Relieve 3D Titanio Cromado Pulido */
-    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 35%, #94a3b8 48%, #ffffff 52%, #cbd5e1 78%, #64748b 100%);
+    /* 💿 ESTADIOS: Relieve 3D Cromado Metálico */
+    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 38%, #94a3b8 50%, #ffffff 53%, #cbd5e1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 0 #0a101d) 
-            drop-shadow(0 4px 0 #05080f) 
-            drop-shadow(0 10px 22px rgba(0, 0, 0, 0.9));
+    filter: drop-shadow(0 4px 0 #050911) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.85));
 }
 
 .welcome-heading .accent-word {
-    /* ⚡ VIRTUALES: Verde Esmeralda Cyber de Alta Tensión */
-    background: linear-gradient(180deg, #e6fffa 0%, #00ff77 32%, #00b355 48%, #69ff9c 52%, #008744 80%, #004d25 100%);
+    /* ⚡ VIRTUALES: Verde Esmeralda Deportivo Equilibrado */
+    background: linear-gradient(180deg, #d1fae5 0%, #00d66c 38%, #009e4f 50%, #34d399 53%, #00753a 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 0 #022c13) 
-            drop-shadow(0 4px 0 #01190a) 
-            drop-shadow(0 0 20px rgba(0, 255, 119, 0.65)) 
-            drop-shadow(0 0 35px rgba(0, 255, 119, 0.35));
+    filter: drop-shadow(0 3px 0 #022c13) drop-shadow(0 0 12px rgba(0, 214, 108, 0.4)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.8));
 }
 
 .welcome-sub {
@@ -2627,21 +2621,18 @@ body.video-abierto .hero-section {
 }
 
 [data-theme="light"] .welcome-heading {
-    font-size: 3.2rem;
-    background: linear-gradient(180deg, #334155 0%, #0f172a 45%, #475569 50%, #0f172a 55%, #1e293b 100%) !important;
+    font-size: 3.1rem;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 45%, #334155 50%, #0f172a 55%, #1e293b 100%) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
-    filter: drop-shadow(0 2px 0 #cbd5e1) 
-            drop-shadow(0 4px 0 #94a3b8) 
-            drop-shadow(0 8px 18px rgba(15, 23, 42, 0.18)) !important;
+    filter: drop-shadow(0 3px 0 #cbd5e1) drop-shadow(0 6px 14px rgba(15, 23, 42, 0.15)) !important;
 }
 
 [data-theme="light"] .welcome-heading .accent-word {
-    background: linear-gradient(180deg, #00ff77 0%, #00a854 45%, #007a38 50%, #00cc66 55%, #006028 100%) !important;
+    background: linear-gradient(180deg, #00e676 0%, #00a854 45%, #007a38 50%, #00cc66 55%, #006028 100%) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
-    filter: drop-shadow(0 2px 0 #86efac) 
-            drop-shadow(0 0 18px rgba(0, 204, 102, 0.45)) !important;
+    filter: drop-shadow(0 3px 0 #86efac) drop-shadow(0 0 16px rgba(0, 204, 102, 0.35)) !important;
 }
 
 [data-theme="light"] .welcome-sub {
