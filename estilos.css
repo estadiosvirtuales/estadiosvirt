@@ -2054,20 +2054,8 @@ body.video-abierto .hero-section {
 #profile-modal *::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
-#btn-toggle-custom { transition: all .3s ease; }
-
-/* Mantiene el tono neutro/oscuro al pasar el mouse, hacer clic o tener el panel abierto */
-#btn-toggle-custom:hover,
-#btn-toggle-custom:active,
-#btn-toggle-custom:focus,
-#btn-toggle-custom.active-panel,
-#btn-share-card:hover,
-#btn-share-card:active,
-#btn-share-card:focus {
-    background: var(--surface-color) !important;
-    border-color: var(--border-strong) !important;
-    color: var(--text-main) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+#btn-toggle-custom, #btn-share-card { 
+    transition: all .22s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
 /* 🌟 Tarjeta de Nivel y XP con difuminado ambiental multicapa */
 .xp-profile-section {
@@ -3613,9 +3601,6 @@ body.video-abierto .hero-section {
         font-size: 0.60rem !important;
         font-weight: 800 !important;
         border-radius: 8px !important;
-        background: var(--surface-color) !important;
-        color: var(--text-main) !important;
-        border: 1.5px solid var(--border-strong) !important;
         box-shadow: none !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -6520,6 +6505,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-sizing: border-box;
 }
 
+/* 1. PERSONALIZAR (Verde Esmeralda idéntico a pestaña Individual / Puntaje) */
 #btn-toggle-custom {
     flex: 1;
     width: auto;
@@ -6537,10 +6523,23 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: center;
     position: relative;
     border-radius: 12px;
-    border: 1.5px solid var(--border-strong);
-    box-shadow: none;
+    background: linear-gradient(165deg, rgba(14, 32, 22, 0.90) 0%, rgba(8, 18, 12, 0.98) 100%) !important;
+    border: 1.5px solid rgba(0, 255, 119, 0.35) !important;
+    border-top: 1.5px solid rgba(110, 255, 180, 0.65) !important;
+    color: #a7f3d0 !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     box-sizing: border-box;
     overflow: hidden;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+#btn-toggle-custom:hover,
+#btn-toggle-custom.active-panel {
+    border-color: #00ff77 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 255, 119, 0.35) !important;
+    transform: translateY(-2px);
 }
 
 #btn-toggle-custom::after {
@@ -6569,6 +6568,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     flex-shrink: 0;
 }
 
+/* 2. COMPARTIR (Azul Eléctrico idéntico a pestaña 1 vs 1 Historial) */
 #btn-share-card {
     width: 34px;
     height: 34px;
@@ -6583,10 +6583,22 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: center;
     font-size: 1.1rem;
     border-radius: 12px;
-    border: 1.5px solid var(--border-strong);
-    box-shadow: none;
+    background: linear-gradient(165deg, rgba(16, 28, 50, 0.90) 0%, rgba(8, 14, 26, 0.98) 100%) !important;
+    border: 1.5px solid rgba(41, 121, 255, 0.35) !important;
+    border-top: 1.5px solid rgba(147, 197, 253, 0.65) !important;
+    color: #bfdbfe !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     box-sizing: border-box;
     overflow: hidden;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+#btn-share-card:hover {
+    border-color: #2979ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(41, 121, 255, 0.35) !important;
+    transform: translateY(-2px);
 }
 
 #btn-share-card::after {
@@ -6608,6 +6620,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     pointer-events: auto !important;
 }
 
+/* 3. INICIAR SESIÓN (Ámbar / Oro idéntico a pestaña Capacidad / Semanal) */
 .profile-login-btn {
     width: 65%;
     height: 28px;          /* 👈 [PC] ALTO DEL BOTÓN */
@@ -6621,29 +6634,35 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: center;
     box-sizing: border-box;
     border-radius: 20px;   /* 👈 [PC] CURVATURA DE BORDES */
-    background: var(--surface-color) !important;
-    color: var(--text-main) !important;
-    border: 2px solid var(--border-strong) !important;
-    box-shadow: 0 4px 0 var(--border-subtle) !important;
-    transition: all 0.2s ease !important;
+    background: linear-gradient(165deg, rgba(38, 28, 12, 0.90) 0%, rgba(18, 14, 8, 0.98) 100%) !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.40) !important;
+    border-top: 1.5px solid rgba(254, 240, 138, 0.70) !important;
+    color: #fde68a !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    cursor: pointer;
 }
 
 .profile-login-btn:hover {
-    background: var(--surface-hover) !important;
-    border-color: var(--accent-color) !important;
+    border-color: #fbbf24 !important;
     color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.35) !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* 4. CERRAR SESIÓN (Carmesí oscuro sutil) */
 .profile-login-btn.logout {
-    color: var(--text-main) !important;
-    border-color: var(--border-strong) !important;
+    background: linear-gradient(165deg, rgba(38, 14, 18, 0.90) 0%, rgba(22, 8, 10, 0.98) 100%) !important;
+    border: 1.5px solid rgba(255, 71, 87, 0.40) !important;
+    border-top: 1.5px solid rgba(255, 160, 175, 0.70) !important;
+    color: #fecdd3 !important;
 }
+
 .profile-login-btn.logout:hover {
-    background: var(--surface-hover) !important;
-    border-color: var(--accent-color) !important;
+    border-color: #ff4757 !important;
     color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(255, 71, 87, 0.35) !important;
+    transform: translateY(-2px);
 }
 
 .profile-login-tooltip {
