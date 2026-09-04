@@ -4489,6 +4489,155 @@ body.video-abierto .hero-section {
     filter: brightness(1.08);
 }
 
+/* ========================================================
+   🏁 BOTONERAS DE FIN DE PARTIDA (STADIUMGUESSR & DESAFÍO DE ORDEN)
+   ======================================================== */
+
+/* 🟢 GUARDAR EN RANKING / GUARDAR RÉCORD */
+.btn-endgame-save {
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(0, 255, 119, 0.25) 0%, transparent 65%),
+        linear-gradient(135deg, rgba(10, 36, 24, 0.95) 0%, rgba(6, 22, 15, 0.98) 100%) !important;
+    border: 1.5px solid #00e676 !important;
+    border-top: 2px solid #a7f3d0 !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 255, 119, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+.btn-endgame-save i {
+    color: #00ff77 !important;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 119, 0.7));
+}
+.btn-endgame-save:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.01) !important;
+    border-color: #69ff9c !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 255, 119, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+/* 🔵 REJUGAR */
+.btn-endgame-replay {
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(41, 121, 255, 0.25) 0%, transparent 65%),
+        linear-gradient(135deg, rgba(16, 28, 50, 0.95) 0%, rgba(8, 16, 30, 0.98) 100%) !important;
+    border: 1.5px solid rgba(41, 121, 255, 0.55) !important;
+    border-top: 2px solid rgba(147, 197, 253, 0.85) !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(41, 121, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+.btn-endgame-replay i {
+    color: #60a5fa !important;
+    filter: drop-shadow(0 0 8px rgba(41, 121, 255, 0.7));
+    transition: transform 0.35s ease;
+}
+.btn-endgame-replay:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(41, 121, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+.btn-endgame-replay:hover i {
+    transform: rotate(-180deg);
+}
+
+/* 🟡 VER RANKING (Con Medalla 3D) */
+.btn-endgame-rank {
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(251, 191, 36, 0.25) 0%, transparent 65%),
+        linear-gradient(135deg, rgba(38, 28, 12, 0.95) 0%, rgba(18, 14, 8, 0.98) 100%) !important;
+    border: 1.5px solid rgba(251, 191, 36, 0.55) !important;
+    border-top: 2px solid rgba(254, 240, 138, 0.85) !important;
+    color: #fde68a !important;
+    border-radius: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(251, 191, 36, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+.btn-endgame-rank img {
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+    transition: transform 0.25s ease;
+}
+.btn-endgame-rank:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    border-color: #fbbf24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(251, 191, 36, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+.btn-endgame-rank:hover img {
+    transform: scale(1.12) rotate(-6deg);
+}
+
+/* 🔙 VOLVER (Menú de desafíos o Ligas) */
+.btn-endgame-back {
+    background: linear-gradient(165deg, rgba(16, 26, 44, 0.92) 0%, rgba(8, 14, 25, 0.98) 100%) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+    color: #cbd5e1 !important;
+    border-radius: 12px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+}
+.btn-endgame-back:hover {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 📅 COMPARTIR RETO DIARIO (Wordle Style) */
+.btn-endgame-daily-share {
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(41, 121, 255, 0.3) 0%, transparent 65%),
+        linear-gradient(135deg, rgba(18, 38, 70, 0.95) 0%, rgba(10, 20, 42, 0.98) 100%) !important;
+    border: 1.5px solid #2979ff !important;
+    border-top: 2px solid #93c5fd !important;
+    color: #ffffff !important;
+    border-radius: 14px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(41, 121, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 13px !important;
+    margin-top: 6px !important;
+}
+.btn-endgame-daily-share i {
+    color: #93c5fd !important;
+    filter: drop-shadow(0 0 8px rgba(41, 121, 255, 0.7));
+}
+.btn-endgame-daily-share:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    border-color: #60a5fa !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(41, 121, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
 /* ☀️ ADAPTACIÓN EN MODO CLARO (CRISTAL DIURNO CON IDENTIDAD) */
 [data-theme="light"] .guessr-option-btn {
     border: 1.5px solid #cbd5e1 !important;
@@ -4610,6 +4759,63 @@ body.video-abierto .hero-section {
 }
 [data-theme="light"] .btn-order-confirm.antiguedad i {
     color: #7c3aed !important;
+    filter: none;
+}
+
+/* ☀️ Adaptación Modo Claro Botoneras Fin de Partida */
+[data-theme="light"] .btn-endgame-save {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%) !important;
+    border: 1.5px solid #00cc66 !important;
+    border-top: 2px solid #86efac !important;
+    color: #04160a !important;
+    box-shadow: 0 4px 14px rgba(0, 204, 102, 0.18) !important;
+}
+[data-theme="light"] .btn-endgame-save i {
+    color: #00a854 !important;
+    filter: none;
+}
+
+[data-theme="light"] .btn-endgame-replay {
+    background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+    border: 1.5px solid #2563eb !important;
+    border-top: 2px solid #93c5fd !important;
+    color: #1e3a8a !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15) !important;
+}
+[data-theme="light"] .btn-endgame-replay i {
+    color: #2563eb !important;
+    filter: none;
+}
+
+[data-theme="light"] .btn-endgame-rank {
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%) !important;
+    border: 1.5px solid #d97706 !important;
+    border-top: 2px solid #fde68a !important;
+    color: #78350f !important;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.18) !important;
+}
+
+[data-theme="light"] .btn-endgame-back {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #334155 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+}
+[data-theme="light"] .btn-endgame-back:hover {
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .btn-endgame-daily-share {
+    background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important;
+    border: 1.5px solid #2563eb !important;
+    border-top: 2px solid #93c5fd !important;
+    color: #1e3a8a !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.18) !important;
+}
+[data-theme="light"] .btn-endgame-daily-share i {
+    color: #2563eb !important;
     filter: none;
 }
 /* ========================================================

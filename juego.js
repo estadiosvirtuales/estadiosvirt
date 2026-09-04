@@ -3595,8 +3595,8 @@ async function finalizarJuegoGuessr(){
 
         // Botón inteligente: Vuelve a la liga si jugaste por liga, sino al global
         const botonFinal = ligaJugada 
-            ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
-            : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
+            ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
+            : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="padding:13px 24px;max-width:100%;width:100%;"><img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;"> Ver Tabla de Posiciones</button>`;
 
         container.innerHTML = `
         <div style="text-align:center;padding:48px 14px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
@@ -3644,11 +3644,11 @@ async function finalizarJuegoGuessr(){
 
     const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
     const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
-    const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d primary" style="padding:14px;width:100%;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d secondary" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
+    const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d btn-endgame-save" style="padding:13px;width:100%;font-size:.95rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d btn-endgame-save" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d btn-endgame-back" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
     
     let botonCompartirDiario = '';
     if (esModoDiario) {
-        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d" style="background:#2979ff; color:#fff; width:100%; padding:14px; margin-top:10px; box-shadow: 0 5px 0 #004ba0; font-size: 1rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
+        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     }
     
     container.innerHTML=`
@@ -3666,9 +3666,9 @@ async function finalizarJuegoGuessr(){
         
         ${histHTML} <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:100%;">
             ${guardarBtn}${botonCompartirDiario}
-            <div style="display:flex;gap:10px;margin-top:10px;">
-                <button onclick="abrirModalRanking()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-fill ph-medal"></i> Ranking</button>
-                <button onclick="iniciarTrivia()" class="btn-3d secondary" style="flex:1;font-size:.85rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+                <button onclick="abrirModalRanking()" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking</button>
+                <button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>
             </div>
        </div>
     </div>`;
@@ -4420,8 +4420,8 @@ function renderJuegoOrden(revelar = false){
     } else {
         const esGoogle = esUsuarioGoogle();
         const btnGuardar = esGoogle 
-            ? `<button id="btn-guardar-score-orden" type="button" onclick="guardarScoreOrden(this)" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar récord</button>` 
-            : `<button type="button" onclick="pedirLoginParaGuardar()" class="btn-3d primary" style="flex:1;padding:12px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
+            ? `<button id="btn-guardar-score-orden" type="button" onclick="guardarScoreOrden(this)" class="btn-3d btn-endgame-save" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar récord</button>` 
+            : `<button type="button" onclick="pedirLoginParaGuardar()" class="btn-3d btn-endgame-save" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
         
         const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
 
@@ -4438,14 +4438,14 @@ function renderJuegoOrden(revelar = false){
             </div>
             <div style="display:flex;gap:8px;margin-bottom:8px;">
                 ${btnGuardar}
-                <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d secondary" style="padding:12px 14px;font-size:.85rem;display:flex;align-items:center;justify-content:center;gap:5px;" title="Rejugar">
+                <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d btn-endgame-replay" style="padding:12px 14px;font-size:.85rem;" title="Rejugar">
                     <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
                 </button>
-                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-order-medal-rank" style="padding:10px 14px;display:flex;align-items:center;justify-content:center;" title="Ver Ranking">
+                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-endgame-rank" style="padding:10px 14px;" title="Ver Ranking">
                     <img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;">
                 </button>
             </div>
-            <button type="button" onclick="abrirModalOrden()" class="btn-3d secondary" style="width:100%;padding:9px;font-size:.80rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-endgame-back" style="width:100%;padding:10px;font-size:.82rem;font-weight:800;">
                 <i class="ph-bold ph-arrow-left"></i> Volver al menú de desafíos
             </button>
         </div>`;
@@ -5335,8 +5335,8 @@ async function manejarAbandonoRival() {
     }
 
     const botonFinal = versusLigaOrigen
-        ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
-        : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d primary" style="padding:12px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-medal"></i> Ver Tabla de Posiciones</button>`;
+        ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
+        : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="padding:13px 24px;max-width:100%;width:100%;"><img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;"> Ver Tabla de Posiciones</button>`;
     container.innerHTML = `
     <div style="text-align:center;padding:32px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg-color);">
         <div style="width: 125px; height: 125px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center;">
