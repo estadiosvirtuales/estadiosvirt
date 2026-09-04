@@ -2397,7 +2397,7 @@ function activarBotDeRescate() {
         
         // Referencias a jugadores/ídolos
         "Dibu_Fan", "ElBicho_CR", "Messi_Goat", "Enzo_F", "Julian_21", "Araña_9", "Motorcito_7",
-        "Paredes_Leyenda", "Licha_15", "Pipa_Gol", "Fideo_11", "Toro_22", "Cuti_Fan",
+        "Paredes_Leyenda", "Licha_15", "Pipa_Gol", "Fideo_11", "Toro_22", "Cuti",
         
         // Folklore y Clubes (Versión disimulada)
         "Santi_Casla", "Juani_Albiceleste", "Bostero_22", "Millo91", "ReyDeCopas_7", "Rojo_Diablo",
