@@ -1439,15 +1439,29 @@ async function guardarScorePendiente(btnElement) {
         nombreParaGuardar = u.name.split(' ')[0];
     }
 
-    // Si el usuario invitado no tiene apodo configurado, se lo solicitamos para el ranking
+    // Si el usuario invitado no tiene apodo configurado, se lo solicitamos para el ranking validando disponibilidad
     if (!nombreParaGuardar) {
         let nuevoNick = prompt("🏆 ¡Gran puntaje! Ingresá tu apodo para figurar en el ranking:");
-        if (nuevoNick === null) return; // Si cancela el aviso, no procesa el guardado
+        if (nuevoNick === null) return;
         nuevoNick = nuevoNick.trim();
         if (!nuevoNick) {
             nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
         }
         if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+
+        let disponible = await verificarApodoDisponible(nuevoNick);
+        while (!disponible) {
+            showToast(`El apodo "${nuevoNick}" ya está en uso 🚫`, 'ph-warning-circle', 'danger');
+            nuevoNick = prompt(`⚠️ El apodo "${nuevoNick}" ya pertenece a otro jugador. Ingresá uno diferente:`);
+            if (nuevoNick === null) return;
+            nuevoNick = nuevoNick.trim();
+            if (!nuevoNick) {
+                nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+            }
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            disponible = await verificarApodoDisponible(nuevoNick);
+        }
+
         setPref('ev_custom_nick', nuevoNick);
         nombreParaGuardar = nuevoNick;
         renderizarBotonLogin();
@@ -2556,7 +2570,22 @@ function unirseSalaPrivada(salaId) {
             return; 
         }
         nuevoNick = nuevoNick.trim() || ("Jugador_" + Math.random().toString(36).substring(2, 6).toUpperCase());
-        setPref('ev_custom_nick', nuevoNick.substring(0, 16));
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+
+        let disponible = await verificarApodoDisponible(nuevoNick);
+        while (!disponible) {
+            showToast(`El apodo "${nuevoNick}" ya está en uso 🚫`, 'ph-warning-circle', 'danger');
+            nuevoNick = prompt(`⚠️ El apodo "${nuevoNick}" ya pertenece a otro jugador. Ingresá uno diferente:`);
+            if (nuevoNick === null) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return;
+            }
+            nuevoNick = nuevoNick.trim() || ("Jugador_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            disponible = await verificarApodoDisponible(nuevoNick);
+        }
+
+        setPref('ev_custom_nick', nuevoNick);
     }
 
     versusPartidaId = salaId;
@@ -2601,6 +2630,20 @@ async function buscarPartidaVersus() {
             nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
         }
         if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+
+        let disponible = await verificarApodoDisponible(nuevoNick);
+        while (!disponible) {
+            showToast(`El apodo "${nuevoNick}" ya está en uso 🚫`, 'ph-warning-circle', 'danger');
+            nuevoNick = prompt(`⚠️ El apodo "${nuevoNick}" ya pertenece a otro jugador. Ingresá uno diferente:`);
+            if (nuevoNick === null) return;
+            nuevoNick = nuevoNick.trim();
+            if (!nuevoNick) {
+                nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+            }
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            disponible = await verificarApodoDisponible(nuevoNick);
+        }
+
         setPref('ev_custom_nick', nuevoNick);
     }
 
@@ -4824,6 +4867,77 @@ window.actualizarAvatarLive = function() {
     }
 };
 
+// 🛡️ VALIDADOR GLOBAL DE UNICIDAD DE APODOS
+async function verificarApodoDisponible(apodoBuscado) {
+    if (!supabaseClient || !apodoBuscado) return true;
+    const apodoLimpio = apodoBuscado.trim();
+    if (!apodoLimpio) return false;
+
+    const u = obtenerUsuarioLogueado();
+    const miEmail = (u && u.email) ? u.email.trim().toLowerCase() : '';
+    const miId = getUserId();
+
+    try {
+        // 1. Verificamos en la tabla de rankings si el apodo ya fue registrado por otro jugador
+        const { data: filasRanking, error: errRanking } = await supabaseClient
+            .from('ranking')
+            .select('nombre, email')
+            .ilike('nombre', apodoLimpio)
+            .limit(20);
+
+        if (!errRanking && filasRanking && filasRanking.length > 0) {
+            for (const fila of filasRanking) {
+                const emailFila = (fila.email || '').trim().toLowerCase();
+                // Si el registro pertenece a la misma cuenta de Google, se le permite conservarlo
+                if (miEmail && emailFila === miEmail) {
+                    continue;
+                }
+                return false; // Ocupado por otro jugador
+            }
+        }
+
+        // 2. Verificamos en los perfiles guardados de la nube
+        try {
+            const { data: filasPerfiles, error: errPerfiles } = await supabaseClient
+                .from('perfiles')
+                .select('id_usuario, datos_juego')
+                .filter('datos_juego->preferencias->>custom_nick', 'ilike', apodoLimpio)
+                .limit(10);
+
+            if (!errPerfiles && filasPerfiles && filasPerfiles.length > 0) {
+                for (const perfil of filasPerfiles) {
+                    if (miId !== 'guest' && perfil.id_usuario === miId) {
+                        continue;
+                    }
+                    return false; // Ocupado por otro perfil registrado
+                }
+            }
+        } catch (e) {}
+
+        // 3. Verificamos en la tabla de usuarios registrados
+        try {
+            const { data: filasUsuarios } = await supabaseClient
+                .from('usuarios')
+                .select('nombre, email')
+                .ilike('nombre', apodoLimpio)
+                .limit(10);
+
+            if (filasUsuarios && filasUsuarios.length > 0) {
+                for (const usr of filasUsuarios) {
+                    const emailUsr = (usr.email || '').trim().toLowerCase();
+                    if (miEmail && emailUsr === miEmail) continue;
+                    return false;
+                }
+            }
+        } catch (e) {}
+
+        return true;
+    } catch (err) {
+        console.error("Error al validar disponibilidad del apodo:", err);
+        return true;
+    }
+}
+
 async function guardarPersonalizacion(){
     const u = obtenerUsuarioLogueado();
     const nickViejo = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Anónimo');
@@ -4832,6 +4946,18 @@ async function guardarPersonalizacion(){
     let nickNuevo = nickViejo;
     if (nickInput && nickInput.value.trim() !== '') {
         nickNuevo = nickInput.value.trim().substring(0, 16);
+    }
+
+    // 🔒 Si el usuario intenta cambiar el apodo o asignar uno nuevo, se valida disponibilidad
+    if (nickNuevo.toLowerCase() !== nickViejo.toLowerCase()) {
+        const disponible = await verificarApodoDisponible(nickNuevo);
+        if (!disponible) {
+            showToast(`El apodo "${nickNuevo}" ya pertenece a otro jugador. Elegí otro 🚫`, 'ph-warning-circle', 'danger');
+            if (nickInput) nickInput.value = nickViejo;
+            const futName = document.getElementById('fut-name-display');
+            if (futName) futName.textContent = nickViejo || (u ? u.name.split(' ')[0] : 'Jugador');
+            return;
+        }
     }
 
     // 1. Guardado inmediato e incondicional de todos los atributos
