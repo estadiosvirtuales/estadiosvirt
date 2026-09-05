@@ -167,78 +167,52 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
         return;
     }
     try {
-        if (modoJuego === 'guessr') {
-            // 🏆 MODO GUESSR INDIVIDUAL: No duplica jugadores y solo actualiza si supera su récord anterior
-            let consulta = supabaseClient
-                .from('ranking')
-                .select('puntaje')
-                .eq('juego', modoJuego);
-
-            if (emailJugador) {
-                consulta = consulta.eq('email', emailJugador);
-            } else {
-                consulta = consulta.eq('nombre', nombreJugador);
-            }
-
-            const { data: filaExistente } = await consulta.order('puntaje', { ascending: false }).limit(1);
-
-            if (filaExistente && filaExistente.length > 0) {
-                const mejorPrevio = filaExistente[0].puntaje || 0;
-
-                if (puntosLogrados > mejorPrevio) {
-                    let updateQuery = supabaseClient
-                        .from('ranking')
-                        .update({ puntaje: puntosLogrados, nombre: nombreJugador })
-                        .eq('juego', modoJuego);
-
-                    if (emailJugador) {
-                        updateQuery = updateQuery.eq('email', emailJugador);
-                    } else {
-                        updateQuery = updateQuery.eq('nombre', nombreJugador);
-                    }
-                    await updateQuery;
-                    console.log(`🏆 ¡Nuevo récord individual en StadiumGuessr (${puntosLogrados} pts) ha reemplazado al viejo!`);
-                }
-            } else {
-                await supabaseClient.from('ranking').insert([
-                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                ]);
-            }
-        } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
-            // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA (BLINDADO CONTRA BLOQUEOS DE SUPABASE)
+        if (modoJuego === 'guessr') {} else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
+            // 🏆 PUNTAJE EN LIGA PRIVADA (INSERCIÓN DIRECTA Y SEGURA PARA INVITADOS Y REGISTRADOS)
             const nombreLimpio = (nombreJugador || '').trim();
-            const { data: filaExistente } = await supabaseClient
+            if (!nombreLimpio) return;
+
+            // 1. Buscamos el mejor puntaje que ya tenga registrado este jugador en la liga
+            const { data: filasPrevias } = await supabaseClient
                 .from('ranking')
                 .select('id, puntaje')
                 .eq('juego', modoJuego)
                 .ilike('nombre', nombreLimpio)
+                .order('puntaje', { ascending: false })
                 .limit(1);
 
-            if (filaExistente && filaExistente.length > 0) {
-                const mejorPrevio = filaExistente[0].puntaje || 0;
+            const mejorPrevio = (filasPrevias && filasPrevias.length > 0) ? (filasPrevias[0].puntaje || 0) : -1;
 
-                if (puntosLogrados > mejorPrevio) {
-                    // Intentamos actualizar la fila existente
-                    const { error: errUpdate } = await supabaseClient
+            // 2. Solo si supera su récord anterior (o si estaba en 0)
+            if (puntosLogrados > mejorPrevio) {
+                let actualizado = false;
+                if (filasPrevias && filasPrevias.length > 0) {
+                    // Intentamos update solicitando retorno (.select()) para saber si realmente se modificó la fila
+                    const { data: updData, error: updErr } = await supabaseClient
                         .from('ranking')
                         .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
-                        .eq('id', filaExistente[0].id);
+                        .eq('id', filasPrevias[0].id)
+                        .select();
 
-                    // Si Supabase bloquea el UPDATE por políticas de invitados (RLS), insertamos el récord
-                    if (errUpdate) {
-                        console.warn("Update restringido por base de datos, asegurando puntaje con insert:", errUpdate.message);
-                        await supabaseClient.from('ranking').insert([
-                            { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                        ]);
-                    } else {
-                        console.log(`🏆 ¡Nuevo récord en liga (${puntosLogrados} pts) actualizado con éxito!`);
+                    if (!updErr && updData && updData.length > 0) {
+                        actualizado = true;
+                        console.log(`🏆 ¡Récord en liga (${puntosLogrados} pts) actualizado!`);
                     }
                 }
-            } else {
-                // Si aún no figuraba, lo insertamos directamente
-                await supabaseClient.from('ranking').insert([
-                    { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                ]);
+
+                // Si Supabase bloqueó el UPDATE a invitados (RLS) o no existía fila, INSERTAMOS
+                if (!actualizado) {
+                    const { error: insErr } = await supabaseClient
+                        .from('ranking')
+                        .insert([
+                            { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                        ]);
+                    if (insErr) {
+                        console.error("Error al insertar puntaje en liga:", insErr);
+                    } else {
+                        console.log(`🏆 ¡Récord en liga (${puntosLogrados} pts) insertado con éxito!`);
+                    }
+                }
             }
         } else if (modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
             // 🏆 DESAFÍO DE ORDEN (CAPACIDAD / ANTIGÜEDAD): No duplica y solo actualiza si supera su récord
@@ -3639,14 +3613,15 @@ async function finalizarJuegoGuessr(){
 
         const id = getUserId();
         const u = obtenerUsuarioLogueado();
-        const nombreLocal = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Invitado')).trim();
+        const nombreLocal = obtenerNombreDisplay().trim();
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
 
         let nombreRivalFinal = (versusRivalNombre || "RIVAL").toUpperCase();
         let cartelResultado = "";
         let colorResultado = "#ffea00";
         
-        const ligaJugada = versusLigaOrigen; // Rescatamos el nombre de la liga en la que estamos
+        // Rescatamos el nombre de la liga (de la variable o de localStorage si se recargó)
+        const ligaJugada = versusLigaOrigen || localStorage.getItem('ev_codigo_liga_amigos');
 
         // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Si el partido nació en una)
         if (ligaJugada) {
@@ -6353,15 +6328,13 @@ async function abrirModalLigaAmigosPrivada() {
     nombreLigaActivaCache = nombreLiga;
     vistaLigaActual = 'puntaje';   // Siempre arrancamos en la pestaña de puntaje al reabrir el modal
     cacheTriunfosLiga = null;      // Invalidamos el cache de triunfos: se vuelve a pedir si el usuario abre esa pestaña
-    miNombreRankingLiga = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+    miNombreRankingLiga = obtenerNombreDisplay().trim();
 
     if (body) {
         body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:var(--accent-color);"></i></div>`;
     }
 
     try {
-        // Traemos un lote grande de filas (puede haber varias por integrante: el fichaje en 0,
-        // partidas viejas de antes de este arreglo, etc.) y después agrupamos nosotros.
         const { data, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
@@ -6371,14 +6344,14 @@ async function abrirModalLigaAmigosPrivada() {
 
         if (error) throw error;
 
-        // 🧹 Agrupamos por nombre y nos quedamos con el MEJOR puntaje de cada integrante,
-        // así cada persona aparece una sola vez en la tabla (nunca duplicada por partida o por el 0 inicial).
+        // 🧹 Agrupamos sin distinción de mayúsculas/minúsculas y conservamos el puntaje récord
         const mejorPorIntegrante = {};
         (data || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
             const p = row.puntaje || 0;
-            if (!mejorPorIntegrante[n] || p > mejorPorIntegrante[n].puntaje) {
-                mejorPorIntegrante[n] = { nombre: n, puntaje: p };
+            const clave = n.toLowerCase();
+            if (!mejorPorIntegrante[clave] || p > mejorPorIntegrante[clave].puntaje) {
+                mejorPorIntegrante[clave] = { nombre: n, puntaje: p };
             }
         });
 
