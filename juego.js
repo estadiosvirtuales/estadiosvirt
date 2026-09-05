@@ -4867,7 +4867,7 @@ window.actualizarAvatarLive = function() {
     }
 };
 
-// 🛡️ VALIDADOR GLOBAL DE UNICIDAD DE APODOS
+// 🛡️ VALIDADOR GLOBAL DE UNICIDAD DE APODOS (RESERVA HISTÓRICA TOTAL)
 async function verificarApodoDisponible(apodoBuscado) {
     if (!supabaseClient || !apodoBuscado) return true;
     const apodoLimpio = apodoBuscado.trim();
@@ -4876,62 +4876,69 @@ async function verificarApodoDisponible(apodoBuscado) {
     const u = obtenerUsuarioLogueado();
     const miEmail = (u && u.email) ? u.email.trim().toLowerCase() : '';
     const miId = getUserId();
+    const apodoLower = apodoLimpio.toLowerCase();
 
     try {
-        // 1. Verificamos en la tabla de rankings si el apodo ya fue registrado por otro jugador
+        // 1. Verificamos en la tabla de rankings históricos (todos los modos y ligas)
         const { data: filasRanking, error: errRanking } = await supabaseClient
             .from('ranking')
             .select('nombre, email')
             .ilike('nombre', apodoLimpio)
-            .limit(20);
+            .limit(50);
 
         if (!errRanking && filasRanking && filasRanking.length > 0) {
             for (const fila of filasRanking) {
-                const emailFila = (fila.email || '').trim().toLowerCase();
-                // Si el registro pertenece a la misma cuenta de Google, se le permite conservarlo
-                if (miEmail && emailFila === miEmail) {
-                    continue;
+                if ((fila.nombre || '').trim().toLowerCase() === apodoLower) {
+                    const emailFila = (fila.email || '').trim().toLowerCase();
+                    // Si el apodo pertenece a tu misma cuenta de Google, te lo permite conservar
+                    if (miEmail && emailFila && emailFila === miEmail) {
+                        continue;
+                    }
+                    return false; // Ya fue utilizado históricamente en el ranking
                 }
-                return false; // Ocupado por otro jugador
             }
         }
 
-        // 2. Verificamos en los perfiles guardados de la nube
+        // 2. Verificamos en los perfiles guardados de la nube (inspección directa en memoria)
         try {
-            const { data: filasPerfiles, error: errPerfiles } = await supabaseClient
+            const { data: perfilesNube } = await supabaseClient
                 .from('perfiles')
-                .select('id_usuario, datos_juego')
-                .filter('datos_juego->preferencias->>custom_nick', 'ilike', apodoLimpio)
-                .limit(10);
+                .select('id_usuario, datos_juego');
 
-            if (!errPerfiles && filasPerfiles && filasPerfiles.length > 0) {
-                for (const perfil of filasPerfiles) {
-                    if (miId !== 'guest' && perfil.id_usuario === miId) {
+            if (perfilesNube && perfilesNube.length > 0) {
+                for (const p of perfilesNube) {
+                    const nickGuardado = (p.datos_juego?.preferencias?.custom_nick || '').trim().toLowerCase();
+                    if (nickGuardado === apodoLower) {
+                        if (miId !== 'guest' && p.id_usuario === miId) {
+                            continue; // Es tu propio perfil autenticado
+                        }
+                        return false; // Apodo reservado por un perfil de la nube
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn("Aviso al comprobar perfiles:", e);
+        }
+
+        // 3. Verificamos en historiales de duelos 1 vs 1 (victorias y derrotas)
+        try {
+            const [{ data: victorias }, { data: derrotas }] = await Promise.all([
+                supabaseClient.from('victorias_versus').select('nombre, id_usuario').ilike('nombre', apodoLimpio).limit(20),
+                supabaseClient.from('derrotas_versus').select('nombre, id_usuario').ilike('nombre', apodoLimpio).limit(20)
+            ]);
+
+            const partidasVersus = [...(victorias || []), ...(derrotas || [])];
+            for (const partida of partidasVersus) {
+                if ((partida.nombre || '').trim().toLowerCase() === apodoLower) {
+                    if (miId !== 'guest' && partida.id_usuario === miId) {
                         continue;
                     }
-                    return false; // Ocupado por otro perfil registrado
+                    return false; // Registrado en duelos 1v1 históricos
                 }
             }
         } catch (e) {}
 
-        // 3. Verificamos en la tabla de usuarios registrados
-        try {
-            const { data: filasUsuarios } = await supabaseClient
-                .from('usuarios')
-                .select('nombre, email')
-                .ilike('nombre', apodoLimpio)
-                .limit(10);
-
-            if (filasUsuarios && filasUsuarios.length > 0) {
-                for (const usr of filasUsuarios) {
-                    const emailUsr = (usr.email || '').trim().toLowerCase();
-                    if (miEmail && emailUsr === miEmail) continue;
-                    return false;
-                }
-            }
-        } catch (e) {}
-
-        return true;
+        return true; // Apodo 100% disponible
     } catch (err) {
         console.error("Error al validar disponibilidad del apodo:", err);
         return true;
