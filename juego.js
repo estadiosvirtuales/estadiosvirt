@@ -2559,7 +2559,7 @@ window.compartirLinkPrivado = async function(link) {
     });
 }
 
-function unirseSalaPrivada(salaId) {
+async function unirseSalaPrivada(salaId) {
     const idRed = obtenerIdRedVersus();
 
     let nickExistente = getPref('ev_custom_nick', '');
