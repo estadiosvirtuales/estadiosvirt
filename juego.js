@@ -3708,8 +3708,12 @@ async function finalizarJuegoGuessr(){
     const guardarBtn=`<button id="btn-guardar-guessr" onclick="guardarScoreGuessr(this)" class="btn-3d btn-endgame-save" style="padding:13px;width:100%;font-size:.95rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`;
     
     let botonCompartirDiario = '';
+    let botonRejugar = '';
+
     if (esModoDiario) {
         botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
+    } else {
+        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
     }
     
     container.innerHTML=`
@@ -3729,11 +3733,12 @@ async function finalizarJuegoGuessr(){
             ${guardarBtn}${botonCompartirDiario}
             <div style="display:flex;gap:10px;margin-top:6px;">
                 <button onclick="abrirModalRanking()" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking</button>
-                <button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>
+                ${botonRejugar}
             </div>
        </div>
     </div>`;
     container.scrollTop = 0;
+    esModoDiario = false;
 }
 
 function guardarScoreGuessr(btn){
