@@ -204,7 +204,7 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
                     { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
                 ]);
             }
-        } else if (modoJuego.startsWith('guessr_')) {
+        } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
             // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA (NO DUPLICA JUGADORES)
             // 1. Buscamos si el jugador ya está fichado en esta liga (Ej: si está con 0 puntos)
             const { data: filaExistente, error: errorSelect } = await supabaseClient
@@ -1429,22 +1429,49 @@ function manejarClickLogin(){
     else abrirModalPrivacy();
 }
 function esUsuarioGoogle(){const u=obtenerUsuarioLogueado();return u&&u.loginMethod==='google';}
-function guardarScorePendiente() {
+async function guardarScorePendiente(btnElement) {
     if (pendingScore === null) return;
-    
-    if (!esUsuarioGoogle()) {
-        pedirLoginParaGuardar();
-        return;
-    }
 
     const u = obtenerUsuarioLogueado();
-    const nombreParaGuardar = getPref('ev_custom_nick', '') || u.name;
-    const emailParaGuardar = u.email || '';
+    let nombreParaGuardar = getPref('ev_custom_nick', '');
 
-    // Manda el puntaje exclusivamente a la tabla que corresponde al minijuego (ej: 'guessr' global)
-    enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
+    if (!nombreParaGuardar && u && u.name) {
+        nombreParaGuardar = u.name.split(' ')[0];
+    }
 
-    showToast(`¡${pendingScore} puntos guardados en el ranking global! 🚀`);
+    // Si el usuario invitado no tiene apodo configurado, se lo solicitamos para el ranking
+    if (!nombreParaGuardar) {
+        let nuevoNick = prompt("🏆 ¡Gran puntaje! Ingresá tu apodo para figurar en el ranking:");
+        if (nuevoNick === null) return; // Si cancela el aviso, no procesa el guardado
+        nuevoNick = nuevoNick.trim();
+        if (!nuevoNick) {
+            nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+        }
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+        setPref('ev_custom_nick', nuevoNick);
+        nombreParaGuardar = nuevoNick;
+        renderizarBotonLogin();
+    }
+
+    const emailParaGuardar = (u && u.email) ? u.email : '';
+
+    // 1. Envía el puntaje a la tabla oficial del modo jugado
+    await enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
+
+    // 2. Si el usuario pertenece a una Liga de Amigos y jugó StadiumGuessr, actualiza también su récord en la liga
+    const ligaAmigos = localStorage.getItem('ev_codigo_liga_amigos');
+    if (ligaAmigos && pendingScoreType === 'guessr') {
+        await enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, 'duelo_' + ligaAmigos);
+    }
+
+    showToast(`¡${pendingScore.toLocaleString('es-AR')} puntos guardados en el ranking! 🚀`);
+
+    if (btnElement) {
+        btnElement.innerHTML = `<i class="ph-bold ph-check"></i> ¡Guardado!`;
+        btnElement.disabled = true;
+        btnElement.style.opacity = '0.7';
+    }
+
     pendingScore = null;
     pendingScoreType = null;
 }
@@ -3648,8 +3675,8 @@ async function finalizarJuegoGuessr(){
     pendingScoreType='guessr';
 
     const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
-    const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)],esGoogle=esUsuarioGoogle();
-    const guardarBtn=esGoogle?`<button onclick="guardarScoreGuessr()" class="btn-3d btn-endgame-save" style="padding:13px;width:100%;font-size:.95rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`:`<div class="google-wall"><i class="ph-duotone ph-google-logo google-wall-icon"></i><h3>Guardá tu puntaje</h3><p>Para guardar tus resultados y aparecer en el ranking global, necesitás una cuenta de Google.</p><button onclick="pedirLoginParaGuardar()" class="btn-3d btn-endgame-save" style="padding:12px 24px;"><i class="ph-fill ph-sign-in"></i> Entrar con Google</button><button onclick="compartirResultado()" class="btn-3d btn-endgame-back" style="padding:10px 20px;font-size:.88rem;"><i class="ph-bold ph-share-network"></i> Compartir</button></div>`;
+    const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+    const guardarBtn=`<button id="btn-guardar-guessr" onclick="guardarScoreGuessr(this)" class="btn-3d btn-endgame-save" style="padding:13px;width:100%;font-size:.95rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`;
     
     let botonCompartirDiario = '';
     if (esModoDiario) {
@@ -3680,7 +3707,11 @@ async function finalizarJuegoGuessr(){
     container.scrollTop = 0;
 }
 
-function guardarScoreGuessr(){pendingScore=guessrPuntosTotales;pendingScoreType='guessr';guardarScorePendiente();}
+function guardarScoreGuessr(btn){
+    pendingScore=guessrPuntosTotales;
+    pendingScoreType='guessr';
+    guardarScorePendiente(btn);
+}
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
 
@@ -4411,22 +4442,8 @@ function renderJuegoOrden(revelar = false){
         : '';
 
     let botonera = '';
-    if (!revelar) {
-        const claseColorModo = orderModo === 'antiguedad' ? 'antiguedad' : 'capacidad';
-        botonera = `
-        <div style="display:flex;gap:10px;margin-top:14px;margin-bottom:8px;flex-shrink:0;">
-            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-order-back" style="width:25%;padding:12px;display:flex;align-items:center;justify-content:center;" title="Volver al menú de orden">
-                <i class="ph-bold ph-arrow-left" style="font-size:1.2rem;"></i>
-            </button>
-            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d btn-order-confirm ${claseColorModo}" style="width:75%;padding:12px;font-size:0.95rem;display:flex;align-items:center;justify-content:center;gap:8px;">
-                <span>Confirmar orden</span> <i class="ph-bold ph-check-circle" style="font-size:1.15rem;"></i>
-            </button>
-        </div>`;
-    } else {
-        const esGoogle = esUsuarioGoogle();
-        const btnGuardar = esGoogle 
-            ? `<button id="btn-guardar-score-orden" type="button" onclick="guardarScoreOrden(this)" class="btn-3d btn-endgame-save" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar récord</button>` 
-            : `<button type="button" onclick="pedirLoginParaGuardar()" class="btn-3d btn-endgame-save" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-sign-in"></i> Entrar y guardar</button>`;
+    if (!revelar) {} else {
+        const btnGuardar = `<button id="btn-guardar-score-orden" type="button" onclick="guardarScoreOrden(this)" class="btn-3d btn-endgame-save" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar récord</button>`;
         
         const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
 
@@ -5313,8 +5330,9 @@ async function manejarAbandonoRival() {
     
     // Impactamos el triunfo en la base de datos remota de Supabase
         try {
-            if (supabaseClient && id && id !== 'guest') {
-                await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: versusLigaOrigen }]);
+            if (supabaseClient) {
+                const idFinal = (id && id !== 'guest') ? id : obtenerIdRedVersus();
+                await supabaseClient.from('victorias_versus').insert([{ id_usuario: idFinal, nombre: nombreLocal, liga: versusLigaOrigen }]);
                 console.log("[1v1] Victoria por abandono asentada en la nube de Supabase.");
             }
             
