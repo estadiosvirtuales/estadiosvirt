@@ -2030,6 +2030,7 @@ function cerrarModalRanking(){document.getElementById('ranking-modal').style.dis
 let destinoDificultadActual = { modo: '', extra: null };
 
 function abrirModalGuessr() {
+    destinoDificultadActual = { modo: '', extra: null };
     volverAModosGuessr();
     document.getElementById('guessr-modal').style.display = 'flex';
 }
@@ -2084,6 +2085,7 @@ window.confirmarDificultadYEliminarModal = function(diff) {
     guessrDificultad = diff;
     const modo = destinoDificultadActual.modo;
     const extra = destinoDificultadActual.extra;
+    destinoDificultadActual = { modo: '', extra: null };
     
     cerrarModalGuessr();
     
