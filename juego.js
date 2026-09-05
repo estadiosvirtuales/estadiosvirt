@@ -205,31 +205,39 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
                 ]);
             }
         } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
-            // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA (NO DUPLICA JUGADORES)
-            // 1. Buscamos si el jugador ya está fichado en esta liga (Ej: si está con 0 puntos)
-            const { data: filaExistente, error: errorSelect } = await supabaseClient
+            // 🏆 PUNTAJE DENTRO DE UNA LIGA PRIVADA (BLINDADO CONTRA BLOQUEOS DE SUPABASE)
+            const nombreLimpio = (nombreJugador || '').trim();
+            const { data: filaExistente } = await supabaseClient
                 .from('ranking')
-                .select('puntaje')
+                .select('id, puntaje')
                 .eq('juego', modoJuego)
-                .eq('nombre', nombreJugador)
+                .ilike('nombre', nombreLimpio)
                 .limit(1);
 
             if (filaExistente && filaExistente.length > 0) {
-                // Ya existe en la liga. Vemos si superó su propio récord.
                 const mejorPrevio = filaExistente[0].puntaje || 0;
 
                 if (puntosLogrados > mejorPrevio) {
-                    // ¡REEMPLAZA LOS PUNTOS ANTERIORES! (No hace una fila nueva)
-                    await supabaseClient.from('ranking')
-                        .update({ puntaje: puntosLogrados, email: emailJugador })
-                        .eq('juego', modoJuego)
-                        .eq('nombre', nombreJugador);
-                    console.log(`🏆 ¡Nuevo récord en liga (${puntosLogrados} pts) ha reemplazado al viejo!`);
+                    // Intentamos actualizar la fila existente
+                    const { error: errUpdate } = await supabaseClient
+                        .from('ranking')
+                        .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
+                        .eq('id', filaExistente[0].id);
+
+                    // Si Supabase bloquea el UPDATE por políticas de invitados (RLS), insertamos el récord
+                    if (errUpdate) {
+                        console.warn("Update restringido por base de datos, asegurando puntaje con insert:", errUpdate.message);
+                        await supabaseClient.from('ranking').insert([
+                            { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                        ]);
+                    } else {
+                        console.log(`🏆 ¡Nuevo récord en liga (${puntosLogrados} pts) actualizado con éxito!`);
+                    }
                 }
             } else {
-                // Nunca jugó ni fue fichado, lo insertamos por primera vez
+                // Si aún no figuraba, lo insertamos directamente
                 await supabaseClient.from('ranking').insert([
-                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                    { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
                 ]);
             }
         } else if (modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
@@ -3630,7 +3638,8 @@ async function finalizarJuegoGuessr(){
         }
 
         const id = getUserId();
-        const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
+        const u = obtenerUsuarioLogueado();
+        const nombreLocal = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Invitado')).trim();
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
 
         let nombreRivalFinal = (versusRivalNombre || "RIVAL").toUpperCase();
@@ -3641,7 +3650,7 @@ async function finalizarJuegoGuessr(){
 
         // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Si el partido nació en una)
         if (ligaJugada) {
-            await enviarPuntaje(nombreLocal, guessrPuntosTotales, obtenerUsuarioLogueado()?.email || '', 'duelo_' + ligaJugada);
+            await enviarPuntaje(nombreLocal, guessrPuntosTotales, u?.email || '', 'duelo_' + ligaJugada);
         }
         
         if (guessrPuntosTotales > rivalPuntosTotales) {
@@ -5861,6 +5870,32 @@ async function crearOCargarLigaAmigos(esCreacion) {
     }
 
     const idUsuario = getUserId();
+    const u = obtenerUsuarioLogueado();
+
+    // 🔒 Si es invitado y todavía no tiene apodo, se lo pedimos antes de ficharlo en la liga
+    let miNickLiga = getPref('ev_custom_nick', '');
+    if (!miNickLiga && (!u || u.id === 'guest')) {
+        let nuevoNick = prompt("🏆 ¡Antes de ingresar a la liga! Elegí tu apodo de jugador:");
+        if (nuevoNick === null) return;
+        nuevoNick = nuevoNick.trim();
+        if (!nuevoNick) nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+
+        let disponible = await verificarApodoDisponible(nuevoNick);
+        while (!disponible) {
+            showToast(`El apodo "${nuevoNick}" ya está en uso 🚫`, 'ph-warning-circle', 'danger');
+            nuevoNick = prompt(`⚠️ El apodo "${nuevoNick}" ya pertenece a otro jugador. Ingresá uno diferente:`);
+            if (nuevoNick === null) return;
+            nuevoNick = nuevoNick.trim();
+            if (!nuevoNick) nuevoNick = "Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            disponible = await verificarApodoDisponible(nuevoNick);
+        }
+
+        setPref('ev_custom_nick', nuevoNick);
+        miNickLiga = nuevoNick;
+        renderizarBotonLogin();
+    }
 
     if (esCreacion) {
         // 🛡️ MODO CREACIÓN CON SEGURIDAD TOTAL: Intentamos insertar directamente en la tabla de control
