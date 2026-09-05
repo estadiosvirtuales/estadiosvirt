@@ -7587,3 +7587,10 @@ html[data-theme="light"] .xp-bar-big-fill {
         text-shadow: none !important;
     }
 }
+/* 🎮 LISTA VERTICAL UNIFICADA PARA MODOS DE STADIUMGUESSR */
+.guessr-menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
