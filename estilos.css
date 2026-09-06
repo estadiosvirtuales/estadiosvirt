@@ -7664,11 +7664,11 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* 1. Fuego del Botón: escala óptica idéntica a las medallas */
 #ranking-modal .ranking-left-panel .ranking-tab-img[src*="fuego"] {
     position: absolute !important;
-    left: 2px !important;
+    left: 9px !important;
     top: 50% !important;
     transform: translateY(-50%) scale(1.65) !important;
-    width: 48px !important;
-    height: 48px !important;
+    width: 49px !important;
+    height: 49px !important;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 8px rgba(255, 145, 0, 0.6)) !important;
 }
 
