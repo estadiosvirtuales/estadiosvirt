@@ -7667,8 +7667,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     left: 9px !important;
     top: 50% !important;
     transform: translateY(-50%) scale(1.65) !important;
-    width: 49px !important;
-    height: 49px !important;
+    width: 50px !important;
+    height: 50px !important;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 8px rgba(255, 145, 0, 0.6)) !important;
 }
 
