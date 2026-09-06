@@ -7594,3 +7594,103 @@ html[data-theme="light"] .xp-bar-big-fill {
     gap: 12px;
     width: 100%;
 }
+/* 🔥 ESTILOS TEMÁTICOS PARA PESTAÑAS DEL SALÓN DE LA FAMA */
+.ranking-tabs-row .tab-btn-diario.active {
+    border-color: #ff9100 !important;
+    box-shadow: 0 0 16px rgba(255, 145, 0, 0.45), inset 0 0 8px rgba(255, 145, 0, 0.2) !important;
+    color: #ff9100 !important;
+}
+
+.ranking-tabs-row .tab-btn-diario.active span {
+    color: #ff9100 !important;
+    text-shadow: 0 0 8px rgba(255, 145, 0, 0.5) !important;
+}
+
+.ranking-tabs-row .tab-btn-semanal.active {
+    border-color: #eab308 !important;
+    box-shadow: 0 0 16px rgba(234, 179, 8, 0.45), inset 0 0 8px rgba(234, 179, 8, 0.2) !important;
+    color: #eab308 !important;
+}
+
+.ranking-tabs-row .tab-btn-semanal.active span {
+    color: #eab308 !important;
+    text-shadow: 0 0 8px rgba(234, 179, 8, 0.5) !important;
+}
+
+.ranking-tabs-row .tab-btn-versus.active {
+    border-color: #2979ff !important;
+    box-shadow: 0 0 16px rgba(41, 121, 255, 0.45), inset 0 0 8px rgba(41, 121, 255, 0.2) !important;
+    color: #2979ff !important;
+}
+
+.ranking-tabs-row .tab-btn-versus.active span {
+    color: #2979ff !important;
+    text-shadow: 0 0 8px rgba(41, 121, 255, 0.5) !important;
+}
+
+/* Resplandor naranja para el escenario del Reto Diario */
+.trophy-glow-backdrop.glow-orange {
+    background: radial-gradient(circle, rgba(255, 145, 0, 0.5) 0%, rgba(255, 109, 0, 0.15) 55%, transparent 75%) !important;
+}
+/* 🔥 ESTILOS PARA LA PESTAÑA DE RETO DIARIO EN EL RANKING */
+.ranking-tabs-row .tab-btn-diario {
+    border: 1.5px solid rgba(255, 145, 0, 0.4) !important;
+    background: rgba(255, 145, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.ranking-tabs-row .tab-btn-diario:hover {
+    border-color: #ff9100 !important;
+    box-shadow: 0 0 14px rgba(255, 145, 0, 0.4) !important;
+}
+
+.ranking-tabs-row .tab-btn-diario span {
+    color: #ff9100 !important;
+    font-weight: 800 !important;
+}
+
+.ranking-tabs-row .tab-btn-diario.active {
+    background: linear-gradient(135deg, #ff9100 0%, #ff5722 100%) !important;
+    border-color: #ffa726 !important;
+    box-shadow: 0 0 20px rgba(255, 145, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+.ranking-tabs-row .tab-btn-diario.active span {
+    color: #120600 !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+
+/* 1. Fuego del Botón: escala óptica idéntica a las medallas */
+#ranking-modal .ranking-left-panel .ranking-tab-img[src*="fuego"] {
+    position: absolute !important;
+    left: 2px !important;
+    top: 50% !important;
+    transform: translateY(-50%) scale(1.65) !important;
+    width: 48px !important;
+    height: 48px !important;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 8px rgba(255, 145, 0, 0.6)) !important;
+}
+
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="fuego"] {
+    transform: translateY(-50%) scale(1.8) rotate(-3deg) !important;
+}
+
+/* 2. Fuego Superior Central: tamaño de impacto idéntico a la Copa */
+#ranking-modal .ranking-brand-box .trophy-main-img[src*="fuego"] {
+    transform: scale(2.0) !important;
+    transform-origin: center center !important;
+    filter: drop-shadow(0 0 20px rgba(255, 145, 0, 0.85)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.9)) !important;
+}
+
+/* 3. Fuego de la Cápsula Superior Derecha */
+.badge-title-png-icon[src*="fuego"] {
+    transform: scale(1.7) !important;
+    margin: -4px 6px -4px 2px !important;
+    filter: drop-shadow(0 0 6px rgba(255, 145, 0, 0.7)) !important;
+}
+
+/* Escenario y aura del trofeo central para Reto Diario */
+.trophy-glow-backdrop.glow-orange {
+    background: radial-gradient(circle, rgba(255, 145, 0, 0.6) 0%, rgba(255, 87, 34, 0.2) 55%, transparent 75%) !important;
+}

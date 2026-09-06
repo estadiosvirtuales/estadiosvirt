@@ -214,6 +214,31 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
                     }
                 }
             }
+        } else if (modoJuego.startsWith('diario_')) {
+            // 📅 RETO DIARIO (Puntaje único por fecha para cada jugador)
+            let consulta = supabaseClient
+                .from('ranking')
+                .select('id, puntaje')
+                .eq('juego', modoJuego);
+
+            if (emailJugador) {
+                consulta = consulta.eq('email', emailJugador);
+            } else {
+                consulta = consulta.ilike('nombre', nombreJugador);
+            }
+
+            const { data: filaExistente } = await consulta.limit(1);
+
+            if (filaExistente && filaExistente.length > 0) {
+                await supabaseClient
+                    .from('ranking')
+                    .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreJugador })
+                    .eq('id', filaExistente[0].id);
+            } else {
+                await supabaseClient.from('ranking').insert([
+                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                ]);
+            }
         } else if (modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
             // 🏆 DESAFÍO DE ORDEN (CAPACIDAD / ANTIGÜEDAD): No duplica y solo actualiza si supera su récord
             let consulta = supabaseClient
@@ -1454,9 +1479,14 @@ async function guardarScorePendiente(btnElement) {
     // 1. Envía el puntaje a la tabla oficial del modo jugado
     await enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, pendingScoreType);
 
-    // 2. Si el usuario pertenece a una Liga de Amigos y jugó StadiumGuessr, actualiza también su récord en la liga
+    // Si jugó el Reto Diario, también computa su puntaje en el ranking individual general
+    if (pendingScoreType.startsWith('diario_')) {
+        await enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, 'guessr');
+    }
+
+    // 2. Si el usuario pertenece a una Liga de Amigos y jugó StadiumGuessr o Reto Diario, actualiza también su récord en la liga
     const ligaAmigos = localStorage.getItem('ev_codigo_liga_amigos');
-    if (ligaAmigos && pendingScoreType === 'guessr') {
+    if (ligaAmigos && (pendingScoreType === 'guessr' || pendingScoreType.startsWith('diario_'))) {
         await enviarPuntaje(nombreParaGuardar, pendingScore, emailParaGuardar, 'duelo_' + ligaAmigos);
     }
 
@@ -3235,7 +3265,7 @@ function iniciarRetoDiario() {
     // 👇 CONTROL DIARIO: REVISA SI YA JUGÓ HOY 👇
     const idUsuario = getUserId();
     const hoy = new Date();
-    const fechaHoy = hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
+    const fechaHoy = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
     const ultimoRetoJugado = localStorage.getItem('ev_reto_diario_fecha_' + idUsuario);
 
     if (ultimoRetoJugado === fechaHoy) {
@@ -3678,11 +3708,13 @@ async function finalizarJuegoGuessr(){
     // ==========================================
     // CIERRE MODO SOLITARIO / RETO DIARIO
     // ==========================================
-    if (esModoDiario) {
+    const eraRetoDiario = esModoDiario;
+    const hoyObj = new Date();
+    const fechaHoyStr = hoyObj.getFullYear() + '-' + String(hoyObj.getMonth() + 1).padStart(2, '0') + '-' + String(hoyObj.getDate()).padStart(2, '0');
+
+    if (eraRetoDiario) {
         const idUsuario = getUserId();
-        const hoy = new Date();
-        const fechaHoy = hoy.getFullYear() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getDate();
-        localStorage.setItem('ev_reto_diario_fecha_' + idUsuario, fechaHoy);
+        localStorage.setItem('ev_reto_diario_fecha_' + idUsuario, fechaHoyStr);
     }
 
     if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
@@ -3693,15 +3725,15 @@ async function finalizarJuegoGuessr(){
 
     // ⚡ Multiplicador exclusivo de XP según la dificultad elegida (el puntaje del juego y ranking queda estándar sobre 25.000 pts)
     let multXP = 1.0;
-    if (!esModoVersus && !esModoDiario) {
+    if (!esModoVersus && !eraRetoDiario) {
         if (guessrDificultad === 'facil') multXP = 0.8;
         else if (guessrDificultad === 'dificil') multXP = 1.5;
     }
     const xpGanada = Math.round(guessrPuntosTotales * multXP);
     agregarXP(xpGanada);
 
-    pendingScore=guessrPuntosTotales;
-    pendingScoreType='guessr';
+    pendingScore = guessrPuntosTotales;
+    pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : 'guessr';
 
     const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
     const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
@@ -3709,8 +3741,9 @@ async function finalizarJuegoGuessr(){
     
     let botonCompartirDiario = '';
     let botonRejugar = '';
+    const paramRanking = eraRetoDiario ? "'diario'" : "'solo'";
 
-    if (esModoDiario) {
+    if (eraRetoDiario) {
         botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     } else {
         botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
@@ -3732,7 +3765,7 @@ async function finalizarJuegoGuessr(){
         ${histHTML} <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:100%;">
             ${guardarBtn}${botonCompartirDiario}
             <div style="display:flex;gap:10px;margin-top:6px;">
-                <button onclick="abrirModalRanking()" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking</button>
+                <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking</button>
                 ${botonRejugar}
             </div>
        </div>
@@ -3742,8 +3775,8 @@ async function finalizarJuegoGuessr(){
 }
 
 function guardarScoreGuessr(btn){
-    pendingScore=guessrPuntosTotales;
-    pendingScoreType='guessr';
+    pendingScore = guessrPuntosTotales;
+    if (!pendingScoreType) pendingScoreType = 'guessr';
     guardarScorePendiente(btn);
 }
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
@@ -3791,20 +3824,33 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
     let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
     let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : '';
+    let activeDiario = modoEspecifico === 'diario' ? 'active' : '';
 
     const u = obtenerUsuarioLogueado();
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos');
 
+    // Estilos visuales del botón Reto Diario: naranja neón inactivo y fuego pleno activo
+    const estiloDiarioBtn = activeDiario
+        ? 'background: linear-gradient(135deg, #ff9100 0%, #ff5722 100%) !important; border: 1.5px solid #ffa726 !important; box-shadow: 0 0 20px rgba(255, 145, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;'
+        : 'border: 1.5px solid rgba(255, 145, 0, 0.45) !important; background: rgba(255, 145, 0, 0.06) !important;';
+    const estiloDiarioTxt = activeDiario
+        ? 'color: #120600 !important; font-weight: 900 !important; text-shadow: none !important;'
+        : 'color: #ff9100 !important; font-weight: 800 !important; text-shadow: 0 0 8px rgba(255, 145, 0, 0.35);';
+
     let subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
-        <button class="liga-tab-btn ${activeSolo}" onclick="abrirModalRanking('solo')">
+        <button class="liga-tab-btn tab-btn-solo ${activeSolo}" onclick="abrirModalRanking('solo')">
             <img src="ranking-icon-solo.png" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
         </button>
-        <button class="liga-tab-btn ${activeVHist}" onclick="abrirModalRanking('v_historico')">
+        <button class="liga-tab-btn tab-btn-versus ${activeVHist}" onclick="abrirModalRanking('v_historico')">
             <img src="ranking-icon-1v1.png" alt="1v1 Historial" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>
         </button>
-        <button class="liga-tab-btn ${activeVSem}" onclick="abrirModalRanking('v_semanal')">
+        <button class="liga-tab-btn tab-btn-semanal ${activeVSem}" onclick="abrirModalRanking('v_semanal')">
             <img src="ranking-icon-semanal.png" alt="Semanal" class="ranking-tab-img"> <span>Semanal</span>
+        </button>
+        <button class="liga-tab-btn tab-btn-diario ${activeDiario}" onclick="abrirModalRanking('diario')" style="${estiloDiarioBtn}">
+            <img src="fuego.png" alt="Reto Diario" class="ranking-tab-img"> 
+            <span style="${estiloDiarioTxt}">Reto Diario</span>
         </button>
     </div>`;
 
@@ -3817,7 +3863,79 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
         ];
 
-        if (modoEspecifico === 'solo') {
+        if (modoEspecifico === 'diario') {
+            const hoy = new Date();
+            const fechaHoy = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+            const fechaVisual = String(hoy.getDate()).padStart(2, '0') + '/' + String(hoy.getMonth() + 1).padStart(2, '0');
+            const juegoClave = 'diario_' + fechaHoy;
+
+            const { data: rankingRaw, error } = await supabaseClient
+                .from('ranking')
+                .select('nombre, puntaje')
+                .eq('juego', juegoClave)
+                .order('puntaje', { ascending: false })
+                .limit(200);
+
+            if (error) throw error;
+
+            const mejorPorJugador = {};
+            (rankingRaw || []).forEach(row => {
+                const n = (row.nombre || 'Anónimo').trim();
+                const p = row.puntaje || 0;
+                const clave = n.toLowerCase();
+                if (!mejorPorJugador[clave] || p > mejorPorJugador[clave].puntaje) {
+                    mejorPorJugador[clave] = { nombre: n, puntaje: p };
+                }
+            });
+
+            const ranking = Object.values(mejorPorJugador)
+                .sort((a, b) => b.puntaje - a.puntaje)
+                .slice(0, 10);
+
+            const miFila = ranking.find(f => (f.nombre || '').toLowerCase() === miNombre.toLowerCase());
+            const miPuntosHoy = miFila ? `${miFila.puntaje.toLocaleString('es-AR')} pts` : 'Sin jugar';
+            const miPuesto = miFila ? `#${ranking.indexOf(miFila) + 1}` : 'Sin clasif.';
+
+            headerConfig = {
+                img: 'fuego.png',
+                glowClass: 'glow-orange',
+                badgeImg: 'fuego.png',
+                badgeTitle: 'Reto Diario',
+                badgeSub: fechaVisual,
+                badgeColor: '#ff9100',
+                pill1Label: 'TU PUNTAJE HOY',
+                pill1Val: miPuntosHoy,
+                pill1Icon: 'ph-target',
+                pill2Label: 'TU PUESTO',
+                pill2Val: miPuesto,
+                pill2Icon: 'ph-trophy',
+                pill3Label: 'RACHA ACTIVA',
+                pill3Val: `🔥 ${userStats.rachaActual || 1} Días`,
+                pill3Icon: 'ph-flame'
+            };
+
+            htmlContenido += `<div class="liga-table-card">`;
+            if (!ranking || !ranking.length) {
+                htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún nadie registró puntaje en el reto de hoy. ¡Sé el primero!</p>`;
+            } else {
+                ranking.forEach((f, i) => {
+                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const nombreJugador = (f.nombre || 'Anónimo').trim();
+                    const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
+                    htmlContenido += `
+                    <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
+                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                            ${med} ${sanitizarHTML(nombreJugador)}
+                        </span>
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                            ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                        </span>
+                    </div>`;
+                });
+            }
+            htmlContenido += '</div>';
+
+        } else if (modoEspecifico === 'solo') {
             const { data: rankingRaw, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
