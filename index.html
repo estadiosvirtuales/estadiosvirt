@@ -138,6 +138,23 @@
 <button class="btn-3d primary levelup-close" onclick="cerrarLevelUp()">¡Vamos! <i class="ph-bold ph-arrow-right"></i></button>
 </div>
 </div>
+
+<!-- 🎁 OVERLAY RECOMPENSAS DE TEMPORADA Y RETO DIARIO -->
+<div id="reward-overlay">
+<div class="reward-box" id="reward-box">
+<div class="reward-icon" id="reward-icon"><img src="medalla-oro.png" class="reward-medal-img" alt="Medalla"></div>
+<div class="reward-title" id="reward-title">¡Rey del Reto Diario!</div>
+<div class="reward-sub" id="reward-sub">Tu precisión aérea no tuvo rival.</div>
+<div class="reward-pill">
+    <span class="reward-pill-label" id="reward-pill-label">Premio</span>
+    <strong class="reward-pill-xp" id="reward-pill-xp">+0 XP</strong>
+</div>
+<button id="reward-claim-btn" class="btn-3d reward-claim-btn" onclick="cerrarModalPremio()">
+    <span>¡Reclamar Premio!</span>
+    <img src="cohete.png" alt="Cohete" class="reward-btn-cohete">
+</button>
+</div>
+</div>
 <header class="app-header">
 <a class="app-brand" href="#" onclick="window.mostrarLigas();return false;">
 <img class="app-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png" alt="Logo" onerror="this.style.display='none';">
@@ -412,8 +429,8 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <div class="reto-banner-text">
             <span class="shortcut-kicker kicker-reto"><span class="live-dot-pulse dot-reto"></span> DIARIO</span>
             <strong>Reto Diario</strong>
-            <span class="reto-sub-desc">Completá el desafío del día</span>
-            <span class="reto-sub-pill pill-reto">5 Estadios <img src="fuego.png" class="sub-pill-img" alt="Fuego"></span>
+            <span class="reto-sub-desc">¡Premio de XP al #1 del día! 👑</span>
+            <span class="reto-sub-pill pill-reto">Premio al #1 👑</span>
         </div>
     </button>
 

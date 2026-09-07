@@ -1247,6 +1247,183 @@ lanzarConfetti();
 }
 function cerrarLevelUp(){document.getElementById('levelup-overlay').classList.remove('active');}
 
+let colaPremiosPendientes = [];
+
+window.mostrarModalPremio = function(data) {
+    const overlay = document.getElementById('reward-overlay');
+    if (!overlay) return;
+    document.getElementById('reward-icon').innerHTML = data.icono;
+    document.getElementById('reward-title').textContent = data.titulo;
+    document.getElementById('reward-sub').textContent = data.subtitulo;
+    document.getElementById('reward-pill-label').textContent = data.botinNombre;
+    document.getElementById('reward-pill-xp').textContent = `+${data.xp.toLocaleString('es-AR')} XP`;
+    
+    const btn = document.getElementById('reward-claim-btn');
+    if (btn) {
+        btn.innerHTML = `<span>¡Reclamar Premio!</span> <img src="cohete.png" alt="Cohete" class="reward-btn-cohete">`;
+    }
+
+    overlay.style.display = 'flex';
+    overlay.classList.add('active');
+    lanzarConfetti();
+};
+
+window.cerrarModalPremio = function() {
+    const overlay = document.getElementById('reward-overlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.display = 'none';
+    }
+    if (colaPremiosPendientes.length > 0) {
+        const siguiente = colaPremiosPendientes.shift();
+        setTimeout(() => window.mostrarModalPremio(siguiente), 400);
+    }
+};
+
+async function verificarPremiosPendientes() {
+    if (!supabaseClient) return;
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim();
+    if (!miNombre || miNombre === 'Jugador' || miNombre === 'Invitado') return;
+    const miNombreLower = miNombre.toLowerCase();
+
+    const nivelIdx = calcularNivelIdx(userStats.xpTotal);
+    const nivelActual = NIVELES[nivelIdx];
+    const nivelSig = NIVELES[Math.min(nivelIdx + 1, NIVELES.length - 1)];
+    const spanNivel = (nivelSig.min === Infinity ? 12000 : (nivelSig.min - nivelActual.min)) || 8000;
+
+    // 1. 📅 RECOMPENSA RETO DIARIO (10% DEL NIVEL AL #1 DE AYER)
+    try {
+        const ayer = new Date();
+        ayer.setDate(ayer.getDate() - 1);
+        const fechaAyerStr = ayer.getFullYear() + '-' + String(ayer.getMonth() + 1).padStart(2, '0') + '-' + String(ayer.getDate()).padStart(2, '0');
+        const claveDiarioAyer = 'diario_' + fechaAyerStr;
+        const storageDiarioKey = `ev_premio_diario_${fechaAyerStr}_${miNombreLower}`;
+
+        if (!localStorage.getItem(storageDiarioKey)) {
+            const { data: rankingAyer, error: errDiario } = await supabaseClient
+                .from('ranking')
+                .select('nombre, puntaje')
+                .eq('juego', claveDiarioAyer)
+                .order('puntaje', { ascending: false })
+                .limit(50);
+
+            if (!errDiario && rankingAyer && rankingAyer.length > 0) {
+                const mejorPorJugador = {};
+                rankingAyer.forEach(row => {
+                    const n = (row.nombre || '').trim();
+                    const p = row.puntaje || 0;
+                    const k = n.toLowerCase();
+                    if (n && (!mejorPorJugador[k] || p > mejorPorJugador[k].puntaje)) {
+                        mejorPorJugador[k] = { nombre: n, puntaje: p };
+                    }
+                });
+                const tablaAyer = Object.values(mejorPorJugador).sort((a, b) => b.puntaje - a.puntaje);
+
+                if (tablaAyer.length > 0 && tablaAyer[0].puntaje > 0 && tablaAyer[0].nombre.trim().toLowerCase() === miNombreLower) {
+                    const xpPremio = Math.max(400, Math.round(spanNivel * 0.10));
+                    localStorage.setItem(storageDiarioKey, '1');
+                    agregarXP(xpPremio);
+
+                    colaPremiosPendientes.push({
+                        icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Medalla Oro">',
+                        titulo: '¡Rey del Reto Diario!',
+                        subtitulo: `Ayer coronaste el puesto #1 con ${tablaAyer[0].puntaje.toLocaleString('es-AR')} puntos. Tu precisión aérea no tuvo rival.`,
+                        botinNombre: 'Premio',
+                        xp: xpPremio
+                    });
+                }
+            }
+        }
+    } catch (e) {
+        console.warn("Aviso en verificación de premio diario:", e);
+    }
+
+    // 2. ⚔️ RECOMPENSA PODIO SEMANAL 1 VS 1 (1º: 40%, 2º: 30%, 3º: 20% DEL NIVEL)
+    try {
+        const ahora = new Date();
+        const diaSemana = ahora.getDay();
+        const diasHaciaAtras = diaSemana === 0 ? 7 : diaSemana;
+        const domingoCierre = new Date(ahora);
+        domingoCierre.setDate(ahora.getDate() - diasHaciaAtras);
+        domingoCierre.setHours(23, 59, 59, 999);
+
+        const lunesInicio = new Date(domingoCierre);
+        lunesInicio.setDate(domingoCierre.getDate() - 6);
+        lunesInicio.setHours(0, 0, 0, 0);
+
+        const fechaSemanaStr = `${lunesInicio.getFullYear()}-${String(lunesInicio.getMonth() + 1).padStart(2, '0')}-${String(lunesInicio.getDate()).padStart(2, '0')}`;
+        const storageSemanaKey = `ev_premio_semanal_${fechaSemanaStr}_${miNombreLower}`;
+
+        if (!localStorage.getItem(storageSemanaKey)) {
+            const { data: victoriasRaw, error: errSemana } = await supabaseClient
+                .from('victorias_versus')
+                .select('nombre')
+                .gte('created_at', lunesInicio.toISOString())
+                .lte('created_at', domingoCierre.toISOString());
+
+            if (!errSemana && victoriasRaw && victoriasRaw.length > 0) {
+                const conteo = {};
+                victoriasRaw.forEach(row => {
+                    const n = (row.nombre || '').trim();
+                    if (n) {
+                        const k = n.toLowerCase();
+                        if (!conteo[k]) conteo[k] = { nombre: n, victorias: 0 };
+                        conteo[k].victorias++;
+                    }
+                });
+                const podio = Object.values(conteo).sort((a, b) => b.victorias - a.victorias).slice(0, 3);
+                const puesto = podio.findIndex(p => p.nombre.trim().toLowerCase() === miNombreLower && p.victorias > 0);
+
+                if (puesto !== -1) {
+                    const porcentajes = [0.40, 0.30, 0.20];
+                    const mult = porcentajes[puesto];
+                    const xpPremio = Math.max(800, Math.round(spanNivel * mult));
+                    localStorage.setItem(storageSemanaKey, '1');
+                    agregarXP(xpPremio);
+
+                    const configs = [
+                        {
+                            icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Oro">',
+                            titulo: '¡Campeón de la Semana!',
+                            subtitulo: 'Te consagraste en el puesto #1 del 1 vs 1 semanal. La gloria es tuya.',
+                            botin: 'Premio'
+                        },
+                        {
+                            icono: '<img src="medalla-plata.png" class="reward-medal-img" alt="Plata">',
+                            titulo: '¡Subcampeón Semanal!',
+                            subtitulo: 'Peleaste hasta el último minuto y conquistaste el puesto #2 del podio.',
+                            botin: 'Premio'
+                        },
+                        {
+                            icono: '<img src="medalla-bronce.png" class="reward-medal-img" alt="Bronce">',
+                            titulo: '¡Podio de Bronce!',
+                            subtitulo: 'Te metiste en el puesto #3 entre los mejores duelistas de la semana.',
+                            botin: 'Premio'
+                        }
+                    ];
+
+                    const cfg = configs[puesto];
+                    colaPremiosPendientes.push({
+                        icono: cfg.icono,
+                        titulo: cfg.titulo,
+                        subtitulo: cfg.subtitulo,
+                        botinNombre: cfg.botin,
+                        xp: xpPremio
+                    });
+                }
+            }
+        }
+    } catch (e) {
+        console.warn("Aviso en verificación de premio semanal:", e);
+    }
+
+    if (colaPremiosPendientes.length > 0) {
+        const primero = colaPremiosPendientes.shift();
+        setTimeout(() => mostrarModalPremio(primero), 800);
+    }
+}
+
 function lanzarConfetti(){
 const overlay=document.getElementById('levelup-overlay');
 const colors=['#00e676','#eab308','#a78bfa','#ff4757','#2979ff'];
@@ -1343,6 +1520,7 @@ async function manejarRespuestaGoogle(response){
 
     showToast(`¡Bienvenido, ${user.name.split(' ')[0]}! 🎉`);
     if (pendingScore !== null) setTimeout(() => guardarScorePendiente(), 500);
+    setTimeout(() => verificarPremiosPendientes(), 1000);
 }
 
 async function registrarUsuarioEnSupabase(user) {
@@ -4042,10 +4220,16 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill2Label: 'TU PUESTO',
                 pill2Val: miPuesto,
                 pill2Icon: 'ph-trophy',
-                pill3Label: 'RACHA ACTIVA',
-                pill3Val: `🔥 ${userStats.rachaActual || 1} Días`,
-                pill3Icon: 'ph-flame'
+                pill3Label: 'PREMIO AL #1',
+                pill3Val: '👑 Botín de XP',
+                pill3Icon: 'ph-crown'
             };
+
+            htmlContenido += `
+            <div class="ranking-reward-notice diario">
+                <i class="ph-fill ph-crown"></i>
+                <span><b>Botín de Conquistador:</b> El puesto #1 de hoy a las 23:59 se lleva un <b>Cofre de XP</b>.</span>
+            </div>`;
 
             htmlContenido += `<div class="liga-table-card">`;
             if (!ranking || !ranking.length) {
@@ -4230,9 +4414,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 badgeTitle: 'Temporada Activa',
                 badgeSub: 'Top Semanal',
                 badgeColor: '#eab308',
-                pill1Label: 'RACHA ACTIVA',
-                pill1Val: `🔥 ${userStats.rachaActual || 1} Días`,
-                pill1Icon: 'ph-flame',
+                pill1Label: 'PREMIOS PODIO',
+                pill1Val: '🥇🥈🥉 Cofres de XP',
+                pill1Icon: 'ph-gift',
                 pill2Label: 'TU PUESTO',
                 pill2Val: miPuestoSemanal,
                 pill2Icon: 'ph-hash',
@@ -4240,6 +4424,12 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill3Val: textoCierre,
                 pill3Icon: 'ph-clock-countdown'
             };
+
+            htmlContenido += `
+            <div class="ranking-reward-notice semanal">
+                <i class="ph-fill ph-trophy"></i>
+                <span><b>Premios de Temporada:</b> Los 3 primeros al finalizar el domingo ganan <b>Cofres de XP</b>.</span>
+            </div>`;
 
             htmlContenido += `<div class="liga-table-card">`;
             if (!ranking || !ranking.length) {
@@ -5866,6 +6056,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     renderizarBotonLogin();
 
     try { await indexarCatalogoMasivo(); } catch(e) { console.warn(e); }
+
+    setTimeout(() => verificarPremiosPendientes(), 1200);
 
     const lastGid = localStorage.getItem('ev_last_gid');
     if (lastGid) {
