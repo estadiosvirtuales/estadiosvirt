@@ -1248,15 +1248,19 @@ lanzarConfetti();
 function cerrarLevelUp(){document.getElementById('levelup-overlay').classList.remove('active');}
 
 let colaPremiosPendientes = [];
+let xpPremioEnPantalla = 0;
 
 window.mostrarModalPremio = function(data) {
     const overlay = document.getElementById('reward-overlay');
     if (!overlay) return;
+
+    xpPremioEnPantalla = Number(data.xp) || 0;
+
     document.getElementById('reward-icon').innerHTML = data.icono;
     document.getElementById('reward-title').textContent = data.titulo;
     document.getElementById('reward-sub').textContent = data.subtitulo;
     document.getElementById('reward-pill-label').textContent = data.botinNombre;
-    document.getElementById('reward-pill-xp').textContent = `+${data.xp.toLocaleString('es-AR')} XP`;
+    document.getElementById('reward-pill-xp').textContent = `+${xpPremioEnPantalla.toLocaleString('es-AR')} XP`;
     
     const btn = document.getElementById('reward-claim-btn');
     if (btn) {
@@ -1274,6 +1278,14 @@ window.cerrarModalPremio = function() {
         overlay.classList.remove('active');
         overlay.style.display = 'none';
     }
+
+    // ⚡ Acreditación en vivo al momento de tocar el botón
+    if (xpPremioEnPantalla > 0) {
+        agregarXP(xpPremioEnPantalla);
+        showToast(`¡+${xpPremioEnPantalla.toLocaleString('es-AR')} XP acreditados a tu cuenta! 🚀`, 'ph-sparkle', 'success');
+        xpPremioEnPantalla = 0;
+    }
+
     if (colaPremiosPendientes.length > 0) {
         const siguiente = colaPremiosPendientes.shift();
         setTimeout(() => window.mostrarModalPremio(siguiente), 400);
@@ -1323,7 +1335,6 @@ async function verificarPremiosPendientes() {
                 if (tablaAyer.length > 0 && tablaAyer[0].puntaje > 0 && tablaAyer[0].nombre.trim().toLowerCase() === miNombreLower) {
                     const xpPremio = Math.max(400, Math.round(spanNivel * 0.10));
                     localStorage.setItem(storageDiarioKey, '1');
-                    agregarXP(xpPremio);
 
                     colaPremiosPendientes.push({
                         icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Medalla Oro">',
@@ -1380,7 +1391,6 @@ async function verificarPremiosPendientes() {
                     const mult = porcentajes[puesto];
                     const xpPremio = Math.max(800, Math.round(spanNivel * mult));
                     localStorage.setItem(storageSemanaKey, '1');
-                    agregarXP(xpPremio);
 
                     const configs = [
                         {
@@ -1420,9 +1430,25 @@ async function verificarPremiosPendientes() {
 
     if (colaPremiosPendientes.length > 0) {
         const primero = colaPremiosPendientes.shift();
-        setTimeout(() => mostrarModalPremio(primero), 800);
+        setTimeout(() => window.mostrarModalPremio(primero), 800);
     }
 }
+```
+
+---
+
+### Prueba en vivo
+
+Ahora, cuando pegues el comando en la consola:
+
+```javascript
+mostrarModalPremio({
+    icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Medalla Oro">',
+    titulo: '¡Rey del Reto Diario!',
+    subtitulo: 'Ayer coronaste el puesto #1 con 24.850 puntos. Tu precisión aérea no tuvo rival.',
+    botinNombre: 'Premio',
+    xp: 1200
+});
 
 function lanzarConfetti(){
 const overlay=document.getElementById('levelup-overlay');
