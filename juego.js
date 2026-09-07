@@ -3598,6 +3598,8 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
     const container=document.getElementById('modal-video-container');
+    // 🛑 Corte instantáneo de video y audio en el milisegundo cero
+    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2.5rem;color:var(--accent-color);"></i></div>';
     document.getElementById('game-ui').style.display='none';
     container.style.height='100%';
     
