@@ -1079,7 +1079,7 @@ function generarAvatarHTML(avatarImg) {
 
 let estadiosCargados=[],catalogoGlobal=[];
 const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119","1916896887"];
-let guessrRondaActual=0,guessrPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
+let guessrRondaActual=0,guessrPuntosTotales=0,rivalPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
 let guessrDificultad = 'medio';
 let guessrTimerIndividualInterval = null;
 let guessrTiempoRestanteIndividual = 30;
@@ -2036,6 +2036,10 @@ function cerrarModalVideo(){
     if (versusCountdownInterval) { clearInterval(versusCountdownInterval); versusCountdownInterval = null; }
     const banner = document.getElementById('versus-next-round-banner');
     if (banner) banner.remove();
+    const sb = document.getElementById('versus-live-scoreboard');
+    if (sb) sb.style.display = 'none';
+    const gt = document.getElementById('game-title');
+    if (gt) gt.style.display = 'inline-flex';
     document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');document.getElementById('modal-card').classList.remove('resultado-final');
     try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
     try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
@@ -2904,17 +2908,112 @@ function conectarRealtimeVersus() {
         });
 }
 
-// Reloj de arena visual de 15 segundos si el rival arriesga primero
+// Renderiza el Scoreboard 1 vs 1 en tiempo real con puntajes y estados mutuos
+function renderizarScoreboardVersus(alerta = null) {
+    const sb = document.getElementById('versus-live-scoreboard');
+    const gt = document.getElementById('game-title');
+    if (!sb) return;
+
+    if (!esModoVersus) {
+        sb.style.display = 'none';
+        if (gt) gt.style.display = 'inline-flex';
+        return;
+    }
+
+    sb.style.display = 'flex';
+    if (gt) gt.style.display = 'none';
+
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos')).trim();
+    const rivalNombre = (versusRivalNombre || 'Rival').trim();
+
+    // Diferencia de puntos para corona de líder
+    const diff = Math.abs(guessrPuntosTotales - rivalPuntosTotales);
+    let liderBadgeUser = '';
+    let liderBadgeRival = '';
+    if (guessrPuntosTotales > rivalPuntosTotales && guessrPuntosTotales > 0) {
+        liderBadgeUser = `<span class="vs-lead-pill" title="Liderás por ${diff} pts">👑 +${diff}</span>`;
+    } else if (rivalPuntosTotales > guessrPuntosTotales && rivalPuntosTotales > 0) {
+        liderBadgeRival = `<span class="vs-lead-pill rival" title="Lidera por ${diff} pts">👑 +${diff}</span>`;
+    }
+
+    // Estados dinámicos de la ronda actual
+    let statusUserHtml = '';
+    let statusRivalHtml = '';
+
+    if (resultadosRondaMostrados && rivalDataRonda) {
+        const misPtsRonda = guessrHistorialRondas.length ? (guessrHistorialRondas[guessrHistorialRondas.length - 1]?.puntos || 0) : 0;
+        statusUserHtml = `<span class="vs-status-tag gained">+${misPtsRonda} pts</span>`;
+        statusRivalHtml = `<span class="vs-status-tag gained rival">+${rivalDataRonda.puntos || 0} pts</span>`;
+    } else {
+        if (miGuessConfirmado) {
+            statusUserHtml = `<span class="vs-status-tag ready"><i class="ph-bold ph-check"></i> Listo</span>`;
+        } else {
+            statusUserHtml = `<span class="vs-status-tag thinking"><i class="ph-bold ph-dots-three animate-pulse"></i> Pensando</span>`;
+        }
+
+        if (rivalGuessConfirmado) {
+            if (versusTimerInterval && !miGuessConfirmado) {
+                statusRivalHtml = `<span class="vs-status-tag hurry"><i class="ph-bold ph-lightning"></i> ¡Arriesgó! (<span id="vs-sb-rival-tag-sec">${versusTiempoRestante}s</span>)</span>`;
+            } else {
+                statusRivalHtml = `<span class="vs-status-tag ready rival"><i class="ph-bold ph-check"></i> Listo</span>`;
+            }
+        } else {
+            statusRivalHtml = `<span class="vs-status-tag thinking"><i class="ph-bold ph-dots-three animate-pulse"></i> Pensando</span>`;
+        }
+    }
+
+    let alertHtml = '';
+    if (alerta) {
+        alertHtml = `<div id="vs-sb-alert-box" class="vs-sb-alert">${alerta}</div>`;
+    }
+
+    sb.innerHTML = `
+        <div class="vs-sb-main-row">
+            <div class="vs-sb-col user ${guessrPuntosTotales >= rivalPuntosTotales && guessrPuntosTotales > 0 ? 'leading' : ''}">
+                <div class="vs-sb-meta">
+                    <span class="vs-sb-tag user">VOS</span>
+                    <span class="vs-sb-name" title="${sanitizarHTML(miNombre)}">${sanitizarHTML(miNombre)}</span>
+                    ${liderBadgeUser}
+                </div>
+                <div class="vs-sb-score">${guessrPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></div>
+                <div class="vs-sb-status-box">${statusUserHtml}</div>
+            </div>
+
+            <div class="vs-sb-center">
+                <div class="vs-sb-vs-badge">VS</div>
+                <span class="vs-sb-round-badge">R${guessrRondaActual}/5</span>
+            </div>
+
+            <div class="vs-sb-col rival ${rivalPuntosTotales >= guessrPuntosTotales && rivalPuntosTotales > 0 ? 'leading' : ''}">
+                <div class="vs-sb-meta">
+                    ${liderBadgeRival}
+                    <span class="vs-sb-name" title="${sanitizarHTML(rivalNombre)}">${sanitizarHTML(rivalNombre)}</span>
+                    <span class="vs-sb-tag rival">RIVAL</span>
+                </div>
+                <div class="vs-sb-score">${rivalPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></div>
+                <div class="vs-sb-status-box">${statusRivalHtml}</div>
+            </div>
+        </div>
+        ${alertHtml}
+    `;
+}
+
+// Reloj de arena visual de 15 segundos si el rival arriesga primero (Fijo, sin parpadeos)
 function iniciarCuentaRegresivaVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     versusTiempoRestante = 15;
     
+    renderizarScoreboardVersus('<i class="ph-bold ph-timer" style="color:var(--danger-color);"></i> ¡' + sanitizarHTML(versusRivalNombre) + ' arriesgó! Te quedan <b id="vs-sb-timer-sec">' + versusTiempoRestante + 's</b>');
+
     versusTimerInterval = setInterval(() => {
         versusTiempoRestante--;
-        const titleEl = document.getElementById('game-title');
-        if (titleEl) {
-            titleEl.innerHTML = `<i class="ph-bold ph-timer animate-pulse" style="color:var(--danger-color);"></i> ¡RIVAL ELIGIÓ! TE QUEDAN <span style="color:var(--danger-color); font-weight:900;">${versusTiempoRestante}s</span>`;
-        }
+        
+        // Actualizamos de forma atómica los números sin regenerar el cartel ni la pantalla
+        const timerSec = document.getElementById('vs-sb-timer-sec');
+        const rivalTagSec = document.getElementById('vs-sb-rival-tag-sec');
+        if (timerSec) timerSec.textContent = versusTiempoRestante + 's';
+        if (rivalTagSec) rivalTagSec.textContent = versusTiempoRestante + 's';
 
         if (versusTiempoRestante <= 0) {
             clearInterval(versusTimerInterval);
@@ -2966,8 +3065,6 @@ function confirmarArriesgoLocalVersus() {
             btn.style.border = "1.5px solid rgba(41, 121, 255, 0.45)";
             btn.style.borderTop = "1.5px solid rgba(147, 197, 253, 0.7)";
             btn.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.4), 0 0 12px rgba(41, 121, 255, 0.3)";
-            const titleEl = document.getElementById('game-title');
-            if (titleEl) titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; ¡Ubicación enviada! ⏳`;
             
             iniciarRelojEsperaRivalVersus();
 
@@ -2982,16 +3079,20 @@ function confirmarArriesgoLocalVersus() {
     }
 }
 
-// Reloj de resguardo que evita que el primer jugador se quede colgado
+// Reloj de resguardo que evita que el primer jugador se quede colgado (Fijo, sin parpadeos)
 function iniciarRelojEsperaRivalVersus() {
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     versusTiempoRestante = 15;
     
+    renderizarScoreboardVersus('<i class="ph-bold ph-hourglass animate-spin"></i> Esperando a ' + sanitizarHTML(versusRivalNombre) + '... <b id="vs-sb-wait-sec">' + versusTiempoRestante + 's</b>');
+
     versusTimerInterval = setInterval(() => {
         versusTiempoRestante--;
-        const titleEl = document.getElementById('game-title');
-        if (titleEl) {
-            titleEl.innerHTML = `RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; Esperando oponente... <span style="color:var(--danger-color); font-weight:900;">${versusTiempoRestante}s</span>`;
+        
+        // Actualizamos únicamente el texto del segundo sin desmontar el cartel
+        const waitSec = document.getElementById('vs-sb-wait-sec');
+        if (waitSec) {
+            waitSec.textContent = versusTiempoRestante + 's';
         }
 
         if (versusTiempoRestante <= 0) {
@@ -3053,7 +3154,7 @@ function mostrarResultadosMutuosVersus() {
     guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
 
     const fraseFolkloreVersus = obtenerFraseFolklore(miDist);
-    document.getElementById('game-title').innerHTML = `<div style="font-size: 0.85rem; color: var(--xp-gold); font-weight: 900; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; animation: bounceFun 0.4s ease;">${fraseFolkloreVersus}</div><div style="font-size: 0.8rem; opacity: 0.8;"><span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5</div>`;
+    renderizarScoreboardVersus('<div style="color:var(--xp-gold); font-weight:900;">' + fraseFolkloreVersus + '</div>');
 
     const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
     const emoji = miDist < 50 ? '🎯' : miDist < 200 ? '✈️' : miDist < 800 ? '🗺️' : '🌍';
@@ -3438,16 +3539,30 @@ if (hintsBox) {
     }
 }
 
+// Scoreboard en vivo para 1v1 o HUD clásico para Solitario / Reto Diario
+if (esModoVersus) {
+    renderizarScoreboardVersus();
+} else {
+    const sb = document.getElementById('versus-live-scoreboard');
+    if (sb) sb.style.display = 'none';
+    const gt = document.getElementById('game-title');
+    if (gt) gt.style.display = 'inline-flex';
+}
+
 // ⏱️ CONTRARRELOJ EN MODO DIFÍCIL (30s)
 if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
 if (guessrDificultad === 'dificil' && !esModoDiario) {
     guessrTiempoRestanteIndividual = 30;
-    document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+    if (!esModoVersus) {
+        document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+    }
     
     guessrTimerIndividualInterval = setInterval(() => {
         guessrTiempoRestanteIndividual--;
-        const gt = document.getElementById('game-title');
-        if (gt) gt.innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+        if (!esModoVersus) {
+            const gt = document.getElementById('game-title');
+            if (gt) gt.innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+        }
         
         if (guessrTiempoRestanteIndividual <= 0) {
             clearInterval(guessrTimerIndividualInterval);
@@ -3457,7 +3572,7 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
             else procesarArriesgoGuessr();
         }
     }, 1000);
-} else {
+} else if (!esModoVersus) {
     document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
 }
 const btn=document.getElementById('game-action-btn');btn.style.background='';btn.style.color='';btn.style.boxShadow='';btn.style.border='';btn.style.borderTop='';btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();

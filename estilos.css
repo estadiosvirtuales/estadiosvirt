@@ -7756,3 +7756,272 @@ html[data-theme="light"] .xp-bar-big-fill {
 .trophy-glow-backdrop.glow-orange {
     background: radial-gradient(circle, rgba(255, 145, 0, 0.6) 0%, rgba(255, 87, 34, 0.2) 55%, transparent 75%) !important;
 }
+/* ========================================================
+   ⚔️ SCOREBOARD EN VIVO PARA 1 VS 1 (VERSUS REALTIME HUD)
+   ======================================================== */
+.versus-scoreboard-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+    background: linear-gradient(165deg, rgba(14, 24, 40, 0.94) 0%, rgba(8, 14, 25, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 8px 10px 7px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0, 255, 119, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    font-family: 'Outfit', sans-serif !important;
+    user-select: none;
+    gap: 5px;
+    animation: fadeSlideUp 0.3s ease;
+}
+
+.vs-sb-main-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.vs-sb-col {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    min-width: 0;
+    transition: all 0.25s ease;
+}
+
+/* Columna Usuario (Vos) */
+.vs-sb-col.user {
+    border-left: 3px solid #00ff77;
+    text-align: left;
+}
+.vs-sb-col.user.leading {
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.12) 0%, rgba(0, 255, 119, 0.02) 100%);
+    border-color: rgba(0, 255, 119, 0.35);
+    border-left: 3px solid #00ff77;
+    box-shadow: inset 0 0 12px rgba(0, 255, 119, 0.1);
+}
+
+/* Columna Rival */
+.vs-sb-col.rival {
+    border-right: 3px solid #2979ff;
+    text-align: right;
+}
+.vs-sb-col.rival.leading {
+    background: linear-gradient(225deg, rgba(41, 121, 255, 0.12) 0%, rgba(41, 121, 255, 0.02) 100%);
+    border-color: rgba(41, 121, 255, 0.35);
+    border-right: 3px solid #2979ff;
+    box-shadow: inset 0 0 12px rgba(41, 121, 255, 0.1);
+}
+
+.vs-sb-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 3px;
+    min-width: 0;
+    overflow: hidden;
+}
+.vs-sb-col.rival .vs-sb-meta {
+    justify-content: flex-end;
+}
+
+.vs-sb-tag {
+    font-size: 0.52rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    padding: 1px 5px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+.vs-sb-tag.user {
+    background: rgba(0, 255, 119, 0.2);
+    color: #00ff77;
+    border: 1px solid rgba(0, 255, 119, 0.4);
+}
+.vs-sb-tag.rival {
+    background: rgba(41, 121, 255, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(41, 121, 255, 0.4);
+}
+
+.vs-sb-name {
+    color: #cbd5e1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.70rem;
+    font-weight: 800;
+}
+
+.vs-lead-pill {
+    font-size: 0.50rem;
+    font-weight: 900;
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: rgba(234, 179, 8, 0.2);
+    border: 1px solid rgba(234, 179, 8, 0.5);
+    color: #fde047;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.vs-sb-score {
+    font-size: 1.12rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+.vs-sb-col.user .vs-sb-score {
+    color: #00ff77;
+    text-shadow: 0 0 10px rgba(0, 255, 119, 0.45);
+}
+.vs-sb-col.rival .vs-sb-score {
+    color: #60a5fa;
+    text-shadow: 0 0 10px rgba(41, 121, 255, 0.45);
+}
+.vs-sb-score small {
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.vs-sb-status-box {
+    margin-top: 3px;
+    min-height: 16px;
+    display: flex;
+    align-items: center;
+}
+.vs-sb-col.rival .vs-sb-status-box {
+    justify-content: flex-end;
+}
+
+.vs-status-tag {
+    font-size: 0.60rem;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+}
+.vs-status-tag.thinking {
+    background: rgba(255, 255, 255, 0.06);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.vs-status-tag.ready {
+    background: rgba(0, 255, 119, 0.15);
+    color: #00ff77;
+    border: 1px solid rgba(0, 255, 119, 0.4);
+}
+.vs-status-tag.ready.rival {
+    background: rgba(41, 121, 255, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(41, 121, 255, 0.4);
+}
+.vs-status-tag.hurry {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff6b81;
+    border: 1px solid rgba(255, 71, 87, 0.5);
+}
+.vs-status-tag.gained {
+    background: rgba(0, 255, 119, 0.22);
+    color: #ffffff;
+    font-weight: 900;
+    border: 1px solid #00ff77;
+    box-shadow: 0 0 8px rgba(0, 255, 119, 0.35);
+    animation: bounceFun 0.4s ease;
+}
+.vs-status-tag.gained.rival {
+    background: rgba(41, 121, 255, 0.22);
+    color: #ffffff;
+    border-color: #2979ff;
+    box-shadow: 0 0 8px rgba(41, 121, 255, 0.35);
+}
+
+/* Centro VS */
+.vs-sb-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+}
+.vs-sb-vs-badge {
+    font-size: 0.62rem;
+    font-weight: 900;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    padding: 2px 7px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
+.vs-sb-round-badge {
+    font-size: 0.56rem;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+/* Alerta inferior del Scoreboard */
+.vs-sb-alert {
+    width: 100%;
+    text-align: center;
+    font-size: 0.66rem;
+    font-weight: 800;
+    color: #fde68a;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 3px 8px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ☀️ Adaptación Modo Claro para el Scoreboard Versus */
+[data-theme="light"] .versus-scoreboard-box {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
+}
+[data-theme="light"] .vs-sb-col {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .vs-sb-name {
+    color: #0f172a !important;
+}
+[data-theme="light"] .vs-sb-col.user .vs-sb-score {
+    color: #00a854 !important;
+    text-shadow: none !important;
+}
+[data-theme="light"] .vs-sb-col.rival .vs-sb-score {
+    color: #0066ff !important;
+    text-shadow: none !important;
+}
+[data-theme="light"] .vs-sb-alert {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
