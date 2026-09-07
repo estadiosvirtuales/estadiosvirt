@@ -3652,10 +3652,10 @@ async function finalizarJuegoGuessr(){
         let cartelResultado = "";
         let colorResultado = "#ffea00";
         
-        // Rescatamos el nombre de la liga (de la variable o de localStorage si se recargó)
-        const ligaJugada = versusLigaOrigen || localStorage.getItem('ev_codigo_liga_amigos');
+        // 🎯 La partida solo pertenece a la liga si nació desde un reto directo adentro de ella
+        const ligaJugada = versusLigaOrigen;
 
-        // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Si el partido nació en una)
+        // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Únicamente si el duelo nació en la liga)
         if (ligaJugada) {
             await enviarPuntaje(nombreLocal, guessrPuntosTotales, u?.email || '', 'duelo_' + ligaJugada);
         }
@@ -3666,7 +3666,7 @@ async function finalizarJuegoGuessr(){
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
             guardarStats(); 
-            // Guardamos el triunfo (liga queda en null automáticamente si el duelo no nació en una liga)
+            // Guardamos el triunfo en el historial global (o con liga si nació en una)
             try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
         } else if (guessrPuntosTotales < rivalPuntosTotales) {
             cartelResultado = "<span>DERROTA</span> ❌";
@@ -3684,10 +3684,13 @@ async function finalizarJuegoGuessr(){
 
         versusLigaOrigen = null; // Limpiamos para el próximo partido
 
-        // Botón inteligente: Vuelve a la liga si jugaste por liga, sino al global
+        // Botonera inteligente: si jugaste por liga te devuelve a ella; si jugaste por fuera te da opciones de 1v1
         const botonFinal = ligaJugada 
             ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
-            : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="padding:13px 24px;max-width:100%;width:100%;"><img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;"> Ver Tabla de Posiciones</button>`;
+            : `<div style="display:flex;gap:10px;width:100%;max-width:100%;">
+                <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking 1v1</button>
+                <button onclick="cerrarModalVideo(); buscarPartidaVersus();" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-sword"></i> Nuevo 1 vs 1</button>
+               </div>`;
 
         container.innerHTML = `
         <div style="text-align:center;padding:48px 14px 24px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100%;box-sizing:border-box;background:var(--bg-color);">
