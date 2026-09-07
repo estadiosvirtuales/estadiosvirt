@@ -1082,7 +1082,7 @@ const todosLosGids=["0","861264971","554922783","88250864","2013531070","1655653
 let guessrRondaActual=0,guessrPuntosTotales=0,rivalPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
 let guessrDificultad = 'medio';
 let guessrTimerIndividualInterval = null;
-let guessrTiempoRestanteIndividual = 30;
+let guessrTiempoRestanteIndividual = 45;
 let guessrMapInstance=null,guessrUserMarker=null,guessrTargetMarker=null,guessrPolyline=null,guessrSelectedLatLng=null;
 let usuarioLogueadoCache = undefined;
 let previewMapInstance=null;
@@ -2983,6 +2983,10 @@ function renderizarScoreboardVersus(alerta = null) {
             <div class="vs-sb-center">
                 <div class="vs-sb-vs-badge">VS</div>
                 <span class="vs-sb-round-badge">R${guessrRondaActual}/5</span>
+                ${guessrDificultad === 'dificil' && !miGuessConfirmado && !rivalGuessConfirmado && !resultadosRondaMostrados ? `
+                <span class="vs-sb-timer-badge" id="vs-sb-leyenda-timer">
+                    <i class="ph-bold ph-timer"></i> <span id="vs-sb-leyenda-sec">${guessrTiempoRestanteIndividual}s</span>
+                </span>` : ''}
             </div>
 
             <div class="vs-sb-col rival ${rivalPuntosTotales >= guessrPuntosTotales && rivalPuntosTotales > 0 ? 'leading' : ''}">
@@ -3001,6 +3005,7 @@ function renderizarScoreboardVersus(alerta = null) {
 
 // Reloj de arena visual de 15 segundos si el rival arriesga primero (Fijo, sin parpadeos)
 function iniciarCuentaRegresivaVersus() {
+    if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     versusTiempoRestante = 15;
     
@@ -3029,6 +3034,7 @@ function iniciarCuentaRegresivaVersus() {
 // Procesa el click de confirmación local en el modo Versus
 function confirmarArriesgoLocalVersus() {
     try {
+        if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
         if (versusTimerInterval) clearInterval(versusTimerInterval);
         if (botAntesTimer) clearTimeout(botAntesTimer);
 
@@ -3113,6 +3119,7 @@ function mostrarResultadosMutuosVersus() {
     resultadosRondaMostrados = true;
     if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(true);
 
+    if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
     if (versusTimerInterval) clearInterval(versusTimerInterval);
     if (versusCountdownInterval) clearInterval(versusCountdownInterval);
 
@@ -3204,7 +3211,7 @@ function mostrarResultadosMutuosVersus() {
 
         const btnCountdown = document.getElementById('versus-round-countdown');
         if (btnCountdown) {
-            btnCountdown.innerHTML = `⏱️ ${textoAccion} <b style="color:#000;">${Math.max(0, segundosRestantes)}s</b>`;
+            btnCountdown.innerHTML = `⏱️ ${textoAccion} <b style="color:#ffffff;">${Math.max(0, segundosRestantes)}s</b>`;
         }
 
         if (segundosRestantes <= 0) {
@@ -3539,6 +3546,12 @@ if (hintsBox) {
     }
 }
 
+// ⏱️ CONTRARRELOJ EN MODO DIFÍCIL / LEYENDA (45s)
+if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
+if (guessrDificultad === 'dificil' && !esModoDiario) {
+    guessrTiempoRestanteIndividual = 45;
+}
+
 // Scoreboard en vivo para 1v1 o HUD clásico para Solitario / Reto Diario
 if (esModoVersus) {
     renderizarScoreboardVersus();
@@ -3549,17 +3562,17 @@ if (esModoVersus) {
     if (gt) gt.style.display = 'inline-flex';
 }
 
-// ⏱️ CONTRARRELOJ EN MODO DIFÍCIL (30s)
-if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
 if (guessrDificultad === 'dificil' && !esModoDiario) {
-    guessrTiempoRestanteIndividual = 30;
     if (!esModoVersus) {
         document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
     }
     
     guessrTimerIndividualInterval = setInterval(() => {
         guessrTiempoRestanteIndividual--;
-        if (!esModoVersus) {
+        if (esModoVersus) {
+            const sec = document.getElementById('vs-sb-leyenda-sec');
+            if (sec) sec.textContent = guessrTiempoRestanteIndividual + 's';
+        } else {
             const gt = document.getElementById('game-title');
             if (gt) gt.innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
         }
