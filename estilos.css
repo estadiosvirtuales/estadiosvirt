@@ -5973,33 +5973,50 @@ body.video-abierto .hero-section {
     }
 
     .ranking-left-panel .ranking-tabs-row {
-        flex-direction: row !important;
-        gap: 6px !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
         width: 100% !important;
     }
 
-    /* 📱 SALÓN DE LA FAMA EN CELULAR (3 BOTONES: INDIVIDUAL, 1 VS 1, SEMANAL) */
+    /* 📱 SALÓN DE LA FAMA EN CELULAR (2 ARRIBA Y 2 ABAJO) */
     #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
-        height: 38px !important;
-        font-size: 0.57rem !important;
-        letter-spacing: -0.2px !important;
-        padding: 0 4px 0 26px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        font-size: 0.70rem !important;
+        letter-spacing: 0px !important;
+        padding: 0 6px 0 34px !important;
         justify-content: center !important;
         border-radius: 12px !important;
         position: relative !important;
         white-space: nowrap !important;
         overflow: visible !important;
+        box-sizing: border-box !important;
     }
 
     #ranking-modal .ranking-left-panel .ranking-tab-img {
         position: absolute !important;
-        left: 2px !important;
-        top: calc(50% - 1px) !important;
+        left: 5px !important;
+        top: 50% !important;
         transform: translateY(-50%) !important;
-        width: 25px !important;
-        height: 25px !important;
+        width: 26px !important;
+        height: 26px !important;
         margin: 0 !important;
+    }
+
+    /* Calibración proporcional para el fuego en celular */
+    #ranking-modal .ranking-left-panel .ranking-tab-img[src*="fuego"] {
+        width: 28px !important;
+        height: 28px !important;
+        left: 4px !important;
+        top: 50% !important;
+        transform: translateY(-50%) scale(1.45) !important;
+    }
+
+    #ranking-modal .ranking-brand-box .trophy-main-img[src*="fuego"] {
+        transform: scale(1.8) !important;
+        transform-origin: center center !important;
     }
 
     /* 📱 LIGA DE AMIGOS EN CELULAR (2 BOTONES: PUNTAJE MÁX., HISTORIAL W/L) */
