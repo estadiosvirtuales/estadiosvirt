@@ -8322,19 +8322,19 @@ html[data-theme="light"] .xp-bar-big-fill {
     .ranking-pills-column {
         display: flex !important;
         flex-direction: row !important;
-        gap: 6px !important;
+        gap: 4px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
     .ranking-pills-column .header-stat-pill {
         flex: 1 1 0 !important;
         min-width: 0 !important;
-        padding: 8px 5px !important;
-        gap: 6px !important;
+        padding: 6px 4px !important;
+        gap: 4px !important;
         align-items: center !important;
     }
     .ranking-pills-column .header-stat-pill i {
-        font-size: 1.1rem !important;
+        font-size: 0.88rem !important;
         flex-shrink: 0 !important;
     }
     .ranking-pills-column .stat-pill-info {
@@ -8344,16 +8344,19 @@ html[data-theme="light"] .xp-bar-big-fill {
         flex-direction: column !important;
     }
     .ranking-pills-column .stat-pill-info span {
-        font-size: 0.62rem !important;
+        font-size: 0.54rem !important;
+        letter-spacing: -0.2px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        line-height: 1.1 !important;
     }
     .ranking-pills-column .stat-pill-info strong {
-        font-size: 0.78rem !important;
+        font-size: 0.68rem !important;
+        letter-spacing: -0.3px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        letter-spacing: -0.2px !important;
+        line-height: 1.15 !important;
     }
 }
