@@ -158,21 +158,62 @@ async function cargarProgresoDesdeSupabase() {
     }
 }
 
-// Función universal para mandar puntajes a Supabase
 // Función universal y segura para mandar puntajes a Supabase (Modo Híbrido)
-// Función universal para mandar puntajes a Supabase (Modo Híbrido)
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
     if (!supabaseClient) {
         console.error("No se pudo mandar el puntaje: Supabase no está activo.");
         return;
     }
     try {
-        if (modoJuego === 'guessr') {} else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
-            // 🏆 PUNTAJE EN LIGA PRIVADA (INSERCIÓN DIRECTA Y SEGURA PARA INVITADOS Y REGISTRADOS)
-            const nombreLimpio = (nombreJugador || '').trim();
-            if (!nombreLimpio) return;
+        const nombreLimpio = (nombreJugador || '').trim();
+        if (!nombreLimpio) return;
 
-            // 1. Buscamos el mejor puntaje que ya tenga registrado este jugador en la liga
+        if (modoJuego === 'guessr' || modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
+            // 🏆 MODO INDIVIDUAL GUESSR / ORDEN: Inserción y actualización segura con blindaje anti-duplicados
+            let consulta = supabaseClient
+                .from('ranking')
+                .select('id, puntaje')
+                .eq('juego', modoJuego);
+
+            if (emailJugador) {
+                consulta = consulta.eq('email', emailJugador);
+            } else {
+                consulta = consulta.ilike('nombre', nombreLimpio);
+            }
+
+            const { data: filasPrevias } = await consulta.order('puntaje', { ascending: false }).limit(1);
+            const mejorPrevio = (filasPrevias && filasPrevias.length > 0) ? (filasPrevias[0].puntaje || 0) : -1;
+
+            if (puntosLogrados > mejorPrevio) {
+                let actualizado = false;
+                if (filasPrevias && filasPrevias.length > 0) {
+                    const { data: updData, error: updErr } = await supabaseClient
+                        .from('ranking')
+                        .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
+                        .eq('id', filasPrevias[0].id)
+                        .select();
+
+                    if (!updErr && updData && updData.length > 0) {
+                        actualizado = true;
+                        console.log(`🏆 ¡Nuevo récord en ${modoJuego} (${puntosLogrados} pts) actualizado!`);
+                    }
+                }
+
+                if (!actualizado) {
+                    const { error: insErr } = await supabaseClient
+                        .from('ranking')
+                        .insert([
+                            { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                        ]);
+                    if (insErr) {
+                        console.error(`Error al insertar récord en ${modoJuego}:`, insErr);
+                    } else {
+                        console.log(`🏆 ¡Récord en ${modoJuego} (${puntosLogrados} pts) insertado con éxito!`);
+                    }
+                }
+            }
+        } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
+            // 🏆 PUNTAJE EN LIGA PRIVADA (INSERCIÓN DIRECTA Y SEGURA PARA INVITADOS Y REGISTRADOS)
             const { data: filasPrevias } = await supabaseClient
                 .from('ranking')
                 .select('id, puntaje')
@@ -183,11 +224,9 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
 
             const mejorPrevio = (filasPrevias && filasPrevias.length > 0) ? (filasPrevias[0].puntaje || 0) : -1;
 
-            // 2. Solo si supera su récord anterior (o si estaba en 0)
             if (puntosLogrados > mejorPrevio) {
                 let actualizado = false;
                 if (filasPrevias && filasPrevias.length > 0) {
-                    // Intentamos update solicitando retorno (.select()) para saber si realmente se modificó la fila
                     const { data: updData, error: updErr } = await supabaseClient
                         .from('ranking')
                         .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
@@ -200,7 +239,6 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
                     }
                 }
 
-                // Si Supabase bloqueó el UPDATE a invitados (RLS) o no existía fila, INSERTAMOS
                 if (!actualizado) {
                     const { error: insErr } = await supabaseClient
                         .from('ranking')
@@ -224,7 +262,7 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
             if (emailJugador) {
                 consulta = consulta.eq('email', emailJugador);
             } else {
-                consulta = consulta.ilike('nombre', nombreJugador);
+                consulta = consulta.ilike('nombre', nombreLimpio);
             }
 
             const { data: filaExistente } = await consulta.limit(1);
@@ -232,54 +270,17 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
             if (filaExistente && filaExistente.length > 0) {
                 await supabaseClient
                     .from('ranking')
-                    .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreJugador })
+                    .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
                     .eq('id', filaExistente[0].id);
             } else {
                 await supabaseClient.from('ranking').insert([
-                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                ]);
-            }
-        } else if (modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
-            // 🏆 DESAFÍO DE ORDEN (CAPACIDAD / ANTIGÜEDAD): No duplica y solo actualiza si supera su récord
-            let consulta = supabaseClient
-                .from('ranking')
-                .select('puntaje')
-                .eq('juego', modoJuego);
-
-            if (emailJugador) {
-                consulta = consulta.eq('email', emailJugador);
-            } else {
-                consulta = consulta.eq('nombre', nombreJugador);
-            }
-
-            const { data: filaExistente } = await consulta.order('puntaje', { ascending: false }).limit(1);
-
-            if (filaExistente && filaExistente.length > 0) {
-                const mejorPrevio = filaExistente[0].puntaje || 0;
-
-                if (puntosLogrados > mejorPrevio) {
-                    let updateQuery = supabaseClient
-                        .from('ranking')
-                        .update({ puntaje: puntosLogrados, nombre: nombreJugador })
-                        .eq('juego', modoJuego);
-
-                    if (emailJugador) {
-                        updateQuery = updateQuery.eq('email', emailJugador);
-                    } else {
-                        updateQuery = updateQuery.eq('nombre', nombreJugador);
-                    }
-                    await updateQuery;
-                    console.log(`🏆 ¡Nuevo récord en ${modoJuego} (${puntosLogrados} pts) ha reemplazado al viejo!`);
-                }
-            } else {
-                await supabaseClient.from('ranking').insert([
-                    { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                    { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
                 ]);
             }
         } else {
             // OTROS MINIJUEGOS
             await supabaseClient.from('ranking').insert([
-                { nombre: nombreJugador, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
             ]);
         }
     } catch (err) {
@@ -4319,7 +4320,8 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 }
             }
 
-            if (!recordReal && userStats.maxScore && userStats.maxScore <= 25000) {
+            // 🎯 Toma siempre el mayor puntaje entre lo que tiene la nube y tu récord local
+            if (userStats.maxScore && userStats.maxScore <= 25000 && userStats.maxScore > recordReal) {
                 recordReal = userStats.maxScore;
             }
 
