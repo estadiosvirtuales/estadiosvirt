@@ -5278,6 +5278,8 @@ window.cambiarAvatarPaso = function(direccion) {
     actualizarAvatarLive();
 };
 
+let ultimoNivelRenderizadoAvatares = null;
+
 window.abrirModalSelectorAvatar = function() {
     const m = document.getElementById('avatar-selector-modal');
     if (!m) return;
@@ -5303,9 +5305,22 @@ function renderizarAvataresGrid() {
         subInfo.innerHTML = `Tu rango: <b>Nivel ${miNivel}</b> · Desbloqueados: <b style="color:var(--accent-color);">${desbloqueadosCount} / ${AVATARES_LISTA.length}</b>`;
     }
 
-    container.innerHTML = AVATARES_LISTA.map(item => {
+    // ⚡ CACHÉ EN DOM: Si la grilla ya existe y el nivel no cambió, solo actualiza la carta seleccionada al instante
+    if (container.children.length > 0 && ultimoNivelRenderizadoAvatares === miNivel) {
+        container.querySelectorAll('.avatar-grid-card').forEach(card => {
+            const cardId = card.getAttribute('data-avatar-id');
+            card.classList.toggle('selected', cardId === actual);
+        });
+        return;
+    }
+
+    ultimoNivelRenderizadoAvatares = miNivel;
+
+    // 🚀 RENDER INTELIGENTE: Las primeras 12 cargan al instante con prioridad alta, las demás bajo demanda al scrollear
+    container.innerHTML = AVATARES_LISTA.map((item, idx) => {
         const isSel = item.id === actual;
         const isLocked = miNivel < item.nivel;
+        const esPrioritario = idx < 12;
         
         let overlayHTML = '';
         if (isLocked) {
@@ -5318,9 +5333,15 @@ function renderizarAvataresGrid() {
 
         return `
         <div class="avatar-grid-card ${isSel ? 'selected' : ''} ${isLocked ? 'locked' : 'unlocked'}" 
+             data-avatar-id="${item.id}"
              onclick="seleccionarAvatarDirecto('${item.id}', ${item.nivel})">
             <div class="avatar-grid-img-wrap">
-                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" decoding="async" loading="eager">
+                <img src="${item.id}" 
+                     alt="${item.label}" 
+                     class="${isLocked ? 'avatar-locked-blur' : ''}" 
+                     decoding="async" 
+                     loading="${esPrioritario ? 'eager' : 'lazy'}" 
+                     ${esPrioritario ? 'fetchpriority="high"' : ''}>
                 ${overlayHTML}
             </div>
             <span>${item.label}</span>
