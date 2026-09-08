@@ -4232,7 +4232,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill2Val: miPuesto,
                 pill2Icon: 'ph-trophy',
                 pill3Label: 'PREMIO',
-                pill3Val: 'Al #1 👑',
+                pill3Val: '<span class="pill-val-desktop">Cofre de XP al #1 👑</span><span class="pill-val-mobile">Al #1 👑</span>',
                 pill3Icon: 'ph-crown'
             };
 
@@ -4426,7 +4426,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 badgeSub: 'Top Semanal',
                 badgeColor: '#eab308',
                 pill1Label: 'PREMIOS PODIO',
-                pill1Val: '🥇🥈🥉 Cofres de XP',
+                pill1Val: 'Cofres de XP',
                 pill1Icon: 'ph-gift',
                 pill2Label: 'TU PUESTO',
                 pill2Val: miPuestoSemanal,

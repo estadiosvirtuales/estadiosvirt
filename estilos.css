@@ -8297,7 +8297,20 @@ html[data-theme="light"] .xp-bar-big-fill {
     color: #854d0e !important;
 }
 /* 📱 AJUSTE RESPONSIVE PASTILLAS DEL RANKING EN CELULAR */
+.pill-val-mobile {
+    display: none !important;
+}
+.pill-val-desktop {
+    display: inline !important;
+}
+
 @media (max-width: 768px) {
+    .pill-val-desktop {
+        display: none !important;
+    }
+    .pill-val-mobile {
+        display: inline !important;
+    }
     .ranking-pills-column {
         display: flex !important;
         flex-direction: row !important;
