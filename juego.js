@@ -4231,8 +4231,8 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill2Label: 'TU PUESTO',
                 pill2Val: miPuesto,
                 pill2Icon: 'ph-trophy',
-                pill3Label: 'PREMIO AL #1',
-                pill3Val: '👑 Botín de XP',
+                pill3Label: 'PREMIO',
+                pill3Val: 'Al #1 👑',
                 pill3Icon: 'ph-crown'
             };
 
