@@ -3066,8 +3066,8 @@ body.video-abierto .hero-section {
     }
 
     .welcome-heading-img {
-        max-width: 94vw !important; /* 👈 [CELU] ANCHO MÁXIMO (ocupa casi todo el ancho útil de la pantalla) */
-        height: 50px !important;    /* 👈 [CELU] ALTO MÁXIMO: Subilo a 52px o 55px si la querés más imponente */
+        max-width: 96vw !important; /* 👈 [CELU] ANCHO MÁXIMO (ocupa casi todo el ancho útil de la pantalla) */
+        height: 55px !important;    /* 👈 [CELU] ALTO MÁXIMO: Subilo a 52px o 55px si la querés más imponente */
         margin-top: 5px !important;
         margin-bottom: 10px !important;
     }
