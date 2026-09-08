@@ -8296,3 +8296,43 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-color: #facc15 !important;
     color: #854d0e !important;
 }
+/* 📱 AJUSTE RESPONSIVE PASTILLAS DEL RANKING EN CELULAR */
+@media (max-width: 768px) {
+    .ranking-pills-column {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 6px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .ranking-pills-column .header-stat-pill {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        padding: 8px 5px !important;
+        gap: 6px !important;
+        align-items: center !important;
+    }
+    .ranking-pills-column .header-stat-pill i {
+        font-size: 1.1rem !important;
+        flex-shrink: 0 !important;
+    }
+    .ranking-pills-column .stat-pill-info {
+        min-width: 0 !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .ranking-pills-column .stat-pill-info span {
+        font-size: 0.62rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    .ranking-pills-column .stat-pill-info strong {
+        font-size: 0.78rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: -0.2px !important;
+    }
+}
