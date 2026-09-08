@@ -8302,6 +8302,10 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 .pill-val-desktop {
     display: inline !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    text-transform: none !important;
 }
 
 @media (max-width: 768px) {
@@ -8310,6 +8314,10 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
     .pill-val-mobile {
         display: inline !important;
+        color: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        text-transform: none !important;
     }
     .ranking-pills-column {
         display: flex !important;
