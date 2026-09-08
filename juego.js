@@ -1071,9 +1071,24 @@ window.cambiarBanderaPaso = function(direccion) {
     abrirModalSelectorEscudo();
 };
 
-function generarAvatarHTML(avatarImg) {
+function generarAvatarHTML(avatarImg, forzarDesbloqueado = false) {
     let imgNombre = avatarImg || '1.png';
     if (!imgNombre.includes('.')) imgNombre += '.png';
+    
+    const nivelReq = obtenerNivelAvatar(imgNombre);
+    const nivelUser = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    const estaBloqueado = !forzarDesbloqueado && (nivelUser < nivelReq);
+
+    if (estaBloqueado) {
+        return `
+        <div class="ac-avatar-full is-locked">
+            <img src="${imgNombre}" class="ac-avatar-img-full avatar-locked-blur" alt="Avatar">
+            <div class="avatar-card-lock-badge">
+                <i class="ph-fill ph-lock-key"></i>
+                <span>NIVEL ${nivelReq}</span>
+            </div>
+        </div>`;
+    }
     
     return `<div class="ac-avatar-full"><img src="${imgNombre}" class="ac-avatar-img-full" alt="Avatar"></div>`;
 }
@@ -1707,6 +1722,61 @@ function renderizarBotonLogin(){
     
     container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()" title="Ver tu perfil y carta"><div style="text-align:right;"><div class="hero-profile-name">${nombre}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${pos}</div></div>${avatarHTML}</div>`;
     ancestralHeaderNivel();
+}
+
+// 👤 MEMORIA Y GENERADOR DEL CÍRCULO DE AVATAR PARA TODOS LOS RANKINGS
+let cacheAvataresUsuarios = {};
+
+function obtenerAvatarParaUsuario(nombre) {
+    const n = (nombre || '').trim();
+    if (!n) return '1.png';
+    const nLower = n.toLowerCase();
+
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim().toLowerCase();
+    if (nLower === miNombre || nLower === 'vos' || nLower === 'invitado') {
+        return getPref('ev_avatar_hair', '1.png');
+    }
+
+    if (cacheAvataresUsuarios[nLower]) {
+        return cacheAvataresUsuarios[nLower];
+    }
+
+    let hash = 0;
+    for (let i = 0; i < n.length; i++) {
+        hash = (hash << 5) - hash + n.charCodeAt(i);
+        hash |= 0;
+    }
+    const listaAvatares = (typeof AVATARES_LISTA !== 'undefined' && AVATARES_LISTA.length) ? AVATARES_LISTA : [];
+    if (listaAvatares.length) {
+        const idx = Math.abs(hash) % listaAvatares.length;
+        return listaAvatares[idx].id;
+    }
+    return '1.png';
+}
+
+function obtenerAvatarCirculoHTML(nombreJugador, avatarDirecto = null) {
+    const avatarImg = avatarDirecto || obtenerAvatarParaUsuario(nombreJugador);
+    return `<div class="ranking-avatar-circle" title="${sanitizarHTML(nombreJugador)}"><div class="ranking-avatar-inner">${generarAvatarHTML(avatarImg, true)}</div></div>`;
+}
+
+async function precargarAvataresComunidad() {
+    if (!supabaseClient) return;
+    try {
+        const { data, error } = await supabaseClient
+            .from('perfiles')
+            .select('datos_juego')
+            .limit(150);
+        if (!error && data) {
+            data.forEach(p => {
+                const nick = p.datos_juego?.preferencias?.custom_nick;
+                const avatar = p.datos_juego?.preferencias?.avatar_hair;
+                if (nick && avatar) {
+                    cacheAvataresUsuarios[nick.trim().toLowerCase()] = avatar;
+                }
+            });
+        }
+    } catch(e) {}
 }
 function guardarVotoLocal(estadio,p){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');v[estadio]=p;localStorage.setItem('ev_votos_locales',JSON.stringify(v));}
 function obtenerVotoLocal(estadio){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');return v[estadio]||0;}
@@ -4140,6 +4210,7 @@ function compartirRetoDiarioWordle() {
 }
 
 async function abrirModalRanking(modoEspecifico = 'solo') {
+    precargarAvataresComunidad();
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
@@ -4254,7 +4325,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                            ${med} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                             ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
@@ -4356,7 +4427,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                            ${med} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                             ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
@@ -4399,7 +4470,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                            ${med} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                             ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
@@ -4455,7 +4526,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                            ${med} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                             ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
@@ -4528,6 +4599,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     }
 }
 async function abrirModalRankingOrden(modo = 'capacidad') {
+    precargarAvataresComunidad();
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
@@ -4682,7 +4754,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                 htmlContenido += `
                 <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                     <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                        ${med} ${sanitizarHTML(nombreJugador)}
+                        ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                     </span>
                     <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                         ${(f.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
@@ -5112,28 +5184,76 @@ if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML=
 else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 };
 const AVATARES_LISTA = [
-    { id: '1.png', label: 'Jugador 1' }, { id: '2.png', label: 'Jugador 2' }, { id: '3.png', label: 'Jugador 3' },
-    { id: '4.png', label: 'Jugador 4' }, { id: '5.png', label: 'Jugador 5' }, { id: '6.png', label: 'Jugador 6' },
-    { id: '7.png', label: 'Jugador 7' }, { id: '8.png', label: 'Jugador 8' }, { id: '9.png', label: 'Jugador 9' },
-    { id: '10.png', label: 'Jugador 10' }, { id: '11.png', label: 'Jugador 11' }, { id: '12.png', label: 'Jugador 12' },
-    { id: '13.png', label: 'Jugador 13' }, { id: '14.png', label: 'Jugador 14' }, { id: '15.png', label: 'Jugador 15' },
-    { id: '16.png', label: 'Jugador 16' }, { id: '17.png', label: 'Jugador 17' }, { id: '18.png', label: 'Jugador 18' },
-    { id: '19.png', label: 'Jugador 19' }, { id: '20.png', label: 'Jugador 20' }, { id: '21.png', label: 'Jugador 21' },
-    { id: '22.png', label: 'Jugador 22' }, { id: '23.png', label: 'Jugador 23' }, { id: '24.png', label: 'Jugador 24' },
-    { id: '25.png', label: 'Jugador 25' }, { id: '26.png', label: 'Jugador 26' }, { id: '27.png', label: 'Jugador 27' },
-    { id: '28.png', label: 'Jugador 28' }, { id: '29.png', label: 'Jugador 29' }, { id: '30.png', label: 'Jugador 30' },
-    { id: '31.png', label: 'Jugadora 31' }, { id: '32.png', label: 'Jugador 32' }, { id: '33.png', label: 'Jugadora 33' },
-    { id: '34.png', label: 'Jugador 34' }, { id: '35.png', label: 'Jugador 35' }, { id: '36.png', label: 'Jugador 36' },
-    { id: '37.png', label: 'Jugadora 37' }, { id: '38.png', label: 'Jugador 38' }, { id: '39.png', label: 'Jugador 39' },
-    { id: '40.png', label: 'Jugadora 40' }, { id: '41.png', label: 'Jugador 41' }, { id: '42.png', label: 'Jugador 42' },
-    { id: '43.png', label: 'Jugadora 43' }, { id: '44.png', label: 'Jugador 44' }, { id: '45.png', label: 'Jugadora 45' },
-    { id: '46.png', label: 'Jugador 46' }, { id: '47.png', label: 'Jugador 47' }, { id: '48.png', label: 'Jugadora 48' },
-    { id: '49.png', label: 'Jugador 49' }, { id: '50.png', label: 'Jugador 50' },
-    { id: '51.png', label: 'Jugador 51' }, { id: '52.png', label: 'Jugador 52' }, { id: '53.png', label: 'Jugador 53' },
-    { id: '54.png', label: 'Jugador 54' }, { id: '55.png', label: 'Jugador 55' }, { id: '56.png', label: 'Jugador 56' }, 
-    { id: '57.png', label: 'Jugador 57' }, { id: '58.png', label: 'Jugador 58' }, { id: '59.png', label: 'Jugador 59' },
-    { id: '60.png', label: 'Jugador 60' }, { id: '61.png', label: 'Jugador 61' }, { id: '62.png', label: 'Jugador 62' },
-    { id: '63.png', label: 'Jugador 63' }
+    // 🌟 INICIALES DISPONIBLES (NIVEL 0 - 7 JUGADORES)
+    { id: '1.png', label: 'Jugador 1', nivel: 0 },
+    { id: '2.png', label: 'Jugador 2', nivel: 0 },
+    { id: '3.png', label: 'Jugador 3', nivel: 0 },
+    { id: '4.png', label: 'Jugador 4', nivel: 0 },
+    { id: '31.png', label: 'Jugadora 31', nivel: 0 },
+    { id: '32.png', label: 'Jugador 32', nivel: 0 },
+    { id: '33.png', label: 'Jugadora 33', nivel: 0 },
+
+    // ⚡ DESBLOQUEOS PROGRESIVOS (NIVELES 1 A 10: 2 POR NIVEL)
+    { id: '5.png', label: 'Jugador 5', nivel: 1 },
+    { id: '6.png', label: 'Jugador 6', nivel: 1 },
+    { id: '7.png', label: 'Jugador 7', nivel: 2 },
+    { id: '8.png', label: 'Jugador 8', nivel: 2 },
+    { id: '9.png', label: 'Jugador 9', nivel: 3 },
+    { id: '10.png', label: 'Jugador 10', nivel: 3 },
+    { id: '11.png', label: 'Jugador 11', nivel: 4 },
+    { id: '12.png', label: 'Jugador 12', nivel: 4 },
+    { id: '13.png', label: 'Jugador 13', nivel: 5 },
+    { id: '14.png', label: 'Jugador 14', nivel: 5 },
+    { id: '15.png', label: 'Jugador 15', nivel: 6 },
+    { id: '16.png', label: 'Jugador 16', nivel: 6 },
+    { id: '17.png', label: 'Jugador 17', nivel: 7 },
+    { id: '18.png', label: 'Jugador 18', nivel: 7 },
+    { id: '19.png', label: 'Jugador 19', nivel: 8 },
+    { id: '20.png', label: 'Jugador 20', nivel: 8 },
+    { id: '21.png', label: 'Jugador 21', nivel: 9 },
+    { id: '22.png', label: 'Jugador 22', nivel: 9 },
+    { id: '23.png', label: 'Jugador 23', nivel: 10 },
+    { id: '24.png', label: 'Jugador 24', nivel: 10 },
+
+    // ⚡ DESBLOQUEOS MEDIOS (NIVELES 11 A 20: 2 POR NIVEL)
+    { id: '25.png', label: 'Jugador 25', nivel: 11 },
+    { id: '26.png', label: 'Jugador 26', nivel: 11 },
+    { id: '27.png', label: 'Jugador 27', nivel: 12 },
+    { id: '28.png', label: 'Jugador 28', nivel: 12 },
+    { id: '29.png', label: 'Jugador 29', nivel: 13 },
+    { id: '30.png', label: 'Jugador 30', nivel: 13 },
+    { id: '34.png', label: 'Jugador 34', nivel: 14 },
+    { id: '35.png', label: 'Jugador 35', nivel: 14 },
+    { id: '36.png', label: 'Jugador 36', nivel: 15 },
+    { id: '37.png', label: 'Jugadora 37', nivel: 15 },
+    { id: '38.png', label: 'Jugador 38', nivel: 16 },
+    { id: '39.png', label: 'Jugador 39', nivel: 16 },
+    { id: '40.png', label: 'Jugadora 40', nivel: 17 },
+    { id: '41.png', label: 'Jugador 41', nivel: 17 },
+    { id: '42.png', label: 'Jugador 42', nivel: 18 },
+    { id: '43.png', label: 'Jugadora 43', nivel: 18 },
+    { id: '44.png', label: 'Jugador 44', nivel: 19 },
+    { id: '45.png', label: 'Jugadora 45', nivel: 19 },
+    { id: '46.png', label: 'Jugador 46', nivel: 20 },
+    { id: '47.png', label: 'Jugador 47', nivel: 20 },
+
+    // 🏆 DESBLOQUEOS EXPERTOS (NIVELES 21 A 36: 1 POR NIVEL)
+    { id: '48.png', label: 'Jugadora 48', nivel: 21 },
+    { id: '49.png', label: 'Jugador 49', nivel: 22 },
+    { id: '50.png', label: 'Jugador 50', nivel: 23 },
+    { id: '51.png', label: 'Jugador 51', nivel: 24 },
+    { id: '52.png', label: 'Jugador 52', nivel: 25 },
+    { id: '53.png', label: 'Jugador 53', nivel: 26 },
+    { id: '54.png', label: 'Jugador 54', nivel: 27 },
+    { id: '55.png', label: 'Jugador 55', nivel: 28 },
+    { id: '56.png', label: 'Jugador 56', nivel: 29 },
+    { id: '57.png', label: 'Jugador 57', nivel: 30 },
+    { id: '58.png', label: 'Jugador 58', nivel: 31 },
+    { id: '59.png', label: 'Jugador 59', nivel: 32 },
+    { id: '60.png', label: 'Jugador 60', nivel: 33 },
+    { id: '61.png', label: 'Jugador 61', nivel: 34 },
+    { id: '62.png', label: 'Jugador 62', nivel: 35 },
+    { id: '63.png', label: 'Jugador 63', nivel: 36 }
 ];
 
 function obtenerNombreAvatar(id) {
@@ -5141,9 +5261,13 @@ function obtenerNombreAvatar(id) {
     return item ? item.label : 'Jugador 1';
 }
 
+function obtenerNivelAvatar(id) {
+    const item = AVATARES_LISTA.find(a => a.id === id);
+    return (item && item.nivel !== undefined) ? item.nivel : 0;
+}
+
 window.cambiarAvatarPaso = function(direccion) {
     const input = document.getElementById('avatar-hair-input');
-    const label = document.getElementById('avatar-hair-label');
     if (!input) return;
     let valActual = input.value || '1.png';
     let idx = AVATARES_LISTA.findIndex(a => a.id === valActual);
@@ -5151,8 +5275,70 @@ window.cambiarAvatarPaso = function(direccion) {
     idx = (idx + direccion + AVATARES_LISTA.length) % AVATARES_LISTA.length;
     const nuevo = AVATARES_LISTA[idx];
     input.value = nuevo.id;
-    if (label) label.textContent = nuevo.label;
     actualizarAvatarLive();
+};
+
+window.abrirModalSelectorAvatar = function() {
+    const m = document.getElementById('avatar-selector-modal');
+    if (!m) return;
+    m.style.display = 'flex';
+    renderizarAvataresGrid();
+};
+
+window.cerrarModalSelectorAvatar = function() {
+    const m = document.getElementById('avatar-selector-modal');
+    if (m) m.style.display = 'none';
+};
+
+function renderizarAvataresGrid() {
+    const container = document.getElementById('avatares-grid-container');
+    const subInfo = document.getElementById('avatar-modal-sub-info');
+    if (!container) return;
+
+    const actual = document.getElementById('avatar-hair-input')?.value || '1.png';
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    const desbloqueadosCount = AVATARES_LISTA.filter(a => miNivel >= a.nivel).length;
+
+    if (subInfo) {
+        subInfo.innerHTML = `Tu rango: <b>Nivel ${miNivel}</b> · Desbloqueados: <b style="color:var(--accent-color);">${desbloqueadosCount} / ${AVATARES_LISTA.length}</b>`;
+    }
+
+    container.innerHTML = AVATARES_LISTA.map(item => {
+        const isSel = item.id === actual;
+        const isLocked = miNivel < item.nivel;
+        
+        let overlayHTML = '';
+        if (isLocked) {
+            overlayHTML = `
+            <div class="avatar-grid-lock-mask">
+                <i class="ph-fill ph-lock-key"></i>
+                <span>NV. ${item.nivel}</span>
+            </div>`;
+        }
+
+        return `
+        <div class="avatar-grid-card ${isSel ? 'selected' : ''} ${isLocked ? 'locked' : 'unlocked'}" 
+             onclick="seleccionarAvatarDirecto('${item.id}', ${item.nivel})">
+            <div class="avatar-grid-img-wrap">
+                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" decoding="async" loading="eager">
+                ${overlayHTML}
+            </div>
+            <span>${item.label}</span>
+        </div>`;
+    }).join('');
+}
+
+window.seleccionarAvatarDirecto = function(id, nivelReq) {
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    if (miNivel < nivelReq) {
+        showToast(`¡Este futbolista se desbloquea en el Nivel ${nivelReq}! 🔒`, 'ph-lock-key', 'warning');
+        return;
+    }
+
+    const input = document.getElementById('avatar-hair-input');
+    if (input) input.value = id;
+    actualizarAvatarLive();
+    cerrarModalSelectorAvatar();
 };
 
 
@@ -5296,10 +5482,18 @@ window.seleccionarPosicionCancha = function(pos) {
 
 window.actualizarAvatarLive = function() {
     const hInput = document.getElementById('avatar-hair-input');
+    const hLabel = document.getElementById('avatar-hair-label');
+
     if (hInput) {
+        const imgId = hInput.value || '1.png';
         const container = document.getElementById('fut-avatar-live-container');
-        if(container) { container.innerHTML = generarAvatarHTML(hInput.value); }
+        if (container) { container.innerHTML = generarAvatarHTML(imgId); }
+
+        if (hLabel) {
+            hLabel.innerHTML = `<span>${obtenerNombreAvatar(imgId)}</span> <i class="ph-bold ph-magnifying-glass" style="color:var(--accent-color); font-size:0.85rem; flex-shrink:0;"></i>`;
+        }
     }
+
     const posInput = document.getElementById('avatar-pos-input');
     if(posInput) { const futPos = document.getElementById('fut-pos-display');if(futPos) futPos.textContent = posInput.value; }
     const logoInput = document.getElementById('avatar-logo-input');
@@ -5430,9 +5624,20 @@ async function guardarPersonalizacion(){
     if (futName) {
         futName.textContent = nickNuevo || (u ? u.name.split(' ')[0] : 'Jugador');
     }
+    if (nickNuevo) {
+        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = document.getElementById('avatar-hair-input')?.value || '1.png';
+    }
     
     const hairInput = document.getElementById('avatar-hair-input');
-    if (hairInput) setPref('ev_avatar_hair', hairInput.value);
+    if (hairInput) {
+        const nivelReq = obtenerNivelAvatar(hairInput.value);
+        const nivelUser = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+        if (nivelUser < nivelReq) {
+            showToast(`¡Este futbolista se desbloquea en el Nivel ${nivelReq}! Seguí sumando XP 🔒`, 'ph-lock-key', 'warning');
+            return;
+        }
+        setPref('ev_avatar_hair', hairInput.value);
+    }
 
     const logoInput = document.getElementById('avatar-logo-input');
     if (logoInput) setPref('ev_avatar_logo', logoInput.value);
@@ -5636,10 +5841,11 @@ document.getElementById('profile-modal-body').innerHTML=`
                     <div class="avatar-divider"></div>
                     <label class="avatar-nick-label"><img src="selecciona-tu-jugador.png" class="custom-label-icon" alt="Jugador"> SELECCIONÁ TU JUGADOR/A</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-                        <div class="avatar-stepper-box">
-                            <button type="button" class="avatar-stepper-btn" onclick="cambiarAvatarPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
-                            <span class="avatar-stepper-label" id="avatar-hair-label">${obtenerNombreAvatar(savedHair)}</span>
-                            <button type="button" class="avatar-stepper-btn" onclick="cambiarAvatarPaso(1)"><i class="ph-bold ph-caret-right"></i></button>
+                        <div class="avatar-stepper-box" onclick="abrirModalSelectorAvatar()" style="cursor:pointer;" title="Elegir futbolista">
+                            <span class="avatar-stepper-label" id="avatar-hair-label" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                                <span>${obtenerNombreAvatar(savedHair)}</span>
+                                <i class="ph-bold ph-magnifying-glass" style="color:var(--accent-color); font-size:0.85rem; flex-shrink:0;"></i>
+                            </span>
                             <input type="hidden" id="avatar-hair-input" value="${savedHair}">
                         </div>
                         <div class="avatar-stepper-box" onclick="abrirModalSelectorEscudo()" style="cursor:pointer;" title="Elegir escudo o bandera">
@@ -6005,7 +6211,7 @@ function precargarImagenesUI() {
         'posicion.png', 'apodo.png', 'guardar-cambios.png'
     ];
 
-    const avatares = Array.from({ length: 57 }, (_, i) => `${i + 1}.png`);
+    const avatares = Array.from({ length: 63 }, (_, i) => `${i + 1}.png`);
 
     // Descarga inmediata de la UI esencial
     uiEsencial.forEach(src => {
@@ -6538,7 +6744,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             htmlContenido += `
             <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                 <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
-                    ${med} ${sanitizarHTML(nombreRival)} ${indicadorOnline}
+                    ${med} ${obtenerAvatarCirculoHTML(nombreRival)} ${sanitizarHTML(nombreRival)} ${indicadorOnline}
                 </span>
                 <span style="display:flex; align-items:center; gap:12px;">
                     ${bloquePuntos}
