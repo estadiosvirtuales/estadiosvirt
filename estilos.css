@@ -286,10 +286,10 @@ body > * {
 .welcome-heading-img {
     display: block;
     width: 100%;
-    max-width: 540px;
-    height: 54px;
+    max-width: 1350px;
+    height: 135px;
     object-fit: contain;
-    margin: 0 auto 12px auto;
+    margin: 0 auto -10px auto;
     animation: fadeSlideUp 0.45s 0.05s ease both;
     user-select: none;
     pointer-events: none;
@@ -3066,10 +3066,10 @@ body.video-abierto .hero-section {
     }
 
     .welcome-heading-img {
-        max-width: 90vw !important;
-        height: 38px !important;
+        max-width: 94vw !important; /* 👈 [CELU] ANCHO MÁXIMO (ocupa casi todo el ancho útil de la pantalla) */
+        height: 50px !important;    /* 👈 [CELU] ALTO MÁXIMO: Subilo a 52px o 55px si la querés más imponente */
         margin-top: 5px !important;
-        margin-bottom: 8px !important;
+        margin-bottom: 10px !important;
     }
 
     /* 3. Acotamos el subtítulo SOLO a la portada hero (sin infectar párrafos de modales) */
