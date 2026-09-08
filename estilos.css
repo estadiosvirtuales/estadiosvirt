@@ -290,7 +290,6 @@ body > * {
     height: 135px;
     object-fit: contain;
     margin: -10px auto -10px auto;
-    animation: fadeSlideUp 0.45s 0.05s ease both;
     user-select: none;
     pointer-events: none;
 }
