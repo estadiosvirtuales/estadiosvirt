@@ -8636,7 +8636,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
     .ranking-avatar-circle .ranking-avatar-inner {
         transform: scale(0.26);
-        left: -37px;
+        left: -39px;
         bottom: -21px; /* 👈 Centrado y bajado para que respire la frente en móvil */
     }
 }
