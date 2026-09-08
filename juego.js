@@ -1715,7 +1715,7 @@ function renderizarBotonLogin(){
     if(!container) return;
     const u=obtenerUsuarioLogueado();
     const avatarImg = getPref('ev_avatar_hair', '1.png');
-    const avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -32px; bottom: -18px;">${generarAvatarHTML(avatarImg)}</div></div>`;
+    const avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -34px; bottom: -18px;">${generarAvatarHTML(avatarImg)}</div></div>`;
     const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
     const nombre = obtenerNombreDisplay();
     const pos = getPref('ev_user_pos', 'DT');
