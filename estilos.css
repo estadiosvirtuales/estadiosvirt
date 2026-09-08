@@ -8622,7 +8622,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     position: absolute;
     width: 100px;
     height: 100px;
-    left: -35px;
+    left: -37px;
     bottom: -21px; /* 👈 Baja el avatar para darle aire a la frente en PC */
     pointer-events: none;
 }
