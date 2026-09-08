@@ -283,30 +283,16 @@ body > * {
     color: #00ff77;
 }
 
-.welcome-heading {
-    font-size: 3.1rem;
-    font-weight: 900;
-    margin-bottom: 12px;
-    letter-spacing: -0.5px;
-    line-height: 1.05;
-    text-transform: uppercase;
-    display: inline-block;
+.welcome-heading-img {
+    display: block;
+    width: 100%;
+    max-width: 540px;
+    height: 54px;
+    object-fit: contain;
+    margin: 0 auto 12px auto;
     animation: fadeSlideUp 0.45s 0.05s ease both;
     user-select: none;
-    
-    /* 💿 ESTADIOS: Relieve 3D Cromado Metálico */
-    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 38%, #94a3b8 50%, #ffffff 53%, #cbd5e1 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 4px 0 #050911) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.85));
-}
-
-.welcome-heading .accent-word {
-    /* ⚡ VIRTUALES: Verde Esmeralda Deportivo Equilibrado */
-    background: linear-gradient(180deg, #d1fae5 0%, #00d66c 38%, #009e4f 50%, #34d399 53%, #00753a 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 3px 0 #022c13) drop-shadow(0 0 12px rgba(0, 214, 108, 0.4)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.8));
+    pointer-events: none;
 }
 
 .welcome-sub {
@@ -3077,6 +3063,13 @@ body.video-abierto .hero-section {
         max-width: 100% !important;
         word-break: break-word !important;
         letter-spacing: -0.5px !important;
+    }
+
+    .welcome-heading-img {
+        max-width: 90vw !important;
+        height: 38px !important;
+        margin-top: 5px !important;
+        margin-bottom: 8px !important;
     }
 
     /* 3. Acotamos el subtítulo SOLO a la portada hero (sin infectar párrafos de modales) */
