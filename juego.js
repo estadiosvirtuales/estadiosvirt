@@ -1279,7 +1279,6 @@ window.cerrarModalPremio = function() {
         overlay.style.display = 'none';
     }
 
-    // ⚡ Acreditación en vivo al momento de tocar el botón
     if (xpPremioEnPantalla > 0) {
         agregarXP(xpPremioEnPantalla);
         showToast(`¡+${xpPremioEnPantalla.toLocaleString('es-AR')} XP acreditados a tu cuenta! 🚀`, 'ph-sparkle', 'success');
@@ -1433,25 +1432,10 @@ async function verificarPremiosPendientes() {
         setTimeout(() => window.mostrarModalPremio(primero), 800);
     }
 }
-```
-
----
-
-### Prueba en vivo
-
-Ahora, cuando pegues el comando en la consola:
-
-```javascript
-mostrarModalPremio({
-    icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Medalla Oro">',
-    titulo: '¡Rey del Reto Diario!',
-    subtitulo: 'Ayer coronaste el puesto #1 con 24.850 puntos. Tu precisión aérea no tuvo rival.',
-    botinNombre: 'Premio',
-    xp: 1200
-});
 
 function lanzarConfetti(){
-const overlay=document.getElementById('levelup-overlay');
+const overlay = document.getElementById('reward-overlay')?.classList.contains('active') ? document.getElementById('reward-overlay') : document.getElementById('levelup-overlay');
+if (!overlay) return;
 const colors=['#00e676','#eab308','#a78bfa','#ff4757','#2979ff'];
 for(let i=0;i<30;i++){
 const p=document.createElement('div');p.className='confetti-piece';
@@ -1459,6 +1443,9 @@ p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*40}%;background:
 overlay.appendChild(p);setTimeout(()=>p.remove(),1500);
 }
 }
+```[cite: 1, 2, 3]
+
+Guardá el archivo y recargá el navegador con **Ctrl + F5**. El perfil de usuario volverá a aparecer arriba a la derecha y todos los botones recuperarán su funcionamiento inmediato[cite: 1, 2].
 
 function showToast(msg,icon='ph-check-circle',tipo=''){
 const c=document.getElementById('toast-container');const t=document.createElement('div');
