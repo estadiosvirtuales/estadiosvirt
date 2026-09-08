@@ -1443,9 +1443,7 @@ p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*40}%;background:
 overlay.appendChild(p);setTimeout(()=>p.remove(),1500);
 }
 }
-```[cite: 1, 2, 3]
 
-Guardá el archivo y recargá el navegador con **Ctrl + F5**. El perfil de usuario volverá a aparecer arriba a la derecha y todos los botones recuperarán su funcionamiento inmediato[cite: 1, 2].
 
 function showToast(msg,icon='ph-check-circle',tipo=''){
 const c=document.getElementById('toast-container');const t=document.createElement('div');
