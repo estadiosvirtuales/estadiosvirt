@@ -5418,10 +5418,12 @@ const FORMACIONES_TACTICAS = {
 };
 
 let formacionTacticaActual = '4-3-3';
+let posicionNodoIdx = null;
 
 window.cambiarFormacionTactica = function(fKey) {
     if (!FORMACIONES_TACTICAS[fKey]) return;
     formacionTacticaActual = fKey;
+    posicionNodoIdx = null;
     renderizarCanchaTactica();
 };
 
@@ -5433,11 +5435,19 @@ window.renderizarCanchaTactica = function() {
     const f = FORMACIONES_TACTICAS[formacionTacticaActual] || FORMACIONES_TACTICAS['4-3-3'];
     const posActual = document.getElementById('avatar-pos-input')?.value || 'DC';
 
+    // Si es DT ningún nodo de campo se enciende; si es jugador y no hay índice específico o cambió de posición, toma el primer índice correspondiente
+    if (posActual === 'DT') {
+        posicionNodoIdx = null;
+    } else if (posicionNodoIdx === null || !f.posiciones[posicionNodoIdx] || f.posiciones[posicionNodoIdx].pos !== posActual) {
+        const idxCoincidente = f.posiciones.findIndex(p => p.pos === posActual);
+        posicionNodoIdx = idxCoincidente !== -1 ? idxCoincidente : 0;
+    }
+
     tabs.forEach(t => t.classList.toggle('active', t.dataset.form === formacionTacticaActual));
 
-    container.innerHTML = f.posiciones.map(item => {
-        const isSel = item.pos === posActual;
-        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}')">${item.pos}</button>`;
+    container.innerHTML = f.posiciones.map((item, idx) => {
+        const isSel = (posActual !== 'DT') && (idx === posicionNodoIdx);
+        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}', ${idx})">${item.pos}</button>`;
     }).join('');
 
     const dtBtn = document.querySelector('.dt-node');
@@ -5454,7 +5464,7 @@ window.togglePitchPicker = function(el) {
     }
 };
 
-window.seleccionarPosicionCancha = function(pos) {
+window.seleccionarPosicionCancha = function(pos, idx = null) {
     const input = document.getElementById('avatar-pos-input');
     const label = document.getElementById('pitch-pos-selected-name');
     const headerPreview = document.getElementById('pitch-header-preview');
@@ -5463,7 +5473,11 @@ window.seleccionarPosicionCancha = function(pos) {
     if (label) label.textContent = textoCompleto;
     if (headerPreview) headerPreview.textContent = pos;
 
-    if (pos !== 'DT') {
+    if (pos === 'DT') {
+        posicionNodoIdx = null;
+    } else if (idx !== null) {
+        posicionNodoIdx = idx;
+    } else {
         const actual = FORMACIONES_TACTICAS[formacionTacticaActual];
         const estaEnActual = actual && actual.posiciones.some(p => p.pos === pos);
         if (!estaEnActual) {
@@ -5474,6 +5488,9 @@ window.seleccionarPosicionCancha = function(pos) {
                 }
             }
         }
+        const f = FORMACIONES_TACTICAS[formacionTacticaActual];
+        const idxEncontrado = f.posiciones.findIndex(p => p.pos === pos);
+        posicionNodoIdx = idxEncontrado !== -1 ? idxEncontrado : 0;
     }
 
     renderizarCanchaTactica();
