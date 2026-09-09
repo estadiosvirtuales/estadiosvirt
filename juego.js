@@ -158,7 +158,7 @@ async function cargarProgresoDesdeSupabase() {
     }
 }
 
-// Función universal y segura para mandar puntajes a Supabase (Modo Híbrido)
+// Función universal y blindada para mandar puntajes a Supabase (Validación en Servidor)
 async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJuego) {
     if (!supabaseClient) {
         console.error("No se pudo mandar el puntaje: Supabase no está activo.");
@@ -168,123 +168,29 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
         const nombreLimpio = (nombreJugador || '').trim();
         if (!nombreLimpio) return;
 
-        if (modoJuego === 'guessr' || modoJuego === 'capacidad' || modoJuego === 'antiguedad') {
-            // 🏆 MODO INDIVIDUAL GUESSR / ORDEN: Inserción y actualización segura con blindaje anti-duplicados
-            let consulta = supabaseClient
-                .from('ranking')
-                .select('id, puntaje')
-                .eq('juego', modoJuego);
+        // 🛡️ Filtro local preventivo (0 a 25.000)
+        const puntajeSeguro = Math.min(25000, Math.max(0, parseInt(puntosLogrados) || 0));
+        const emailLimpio = (emailJugador || '').trim();
 
-            if (emailJugador) {
-                consulta = consulta.eq('email', emailJugador);
-            } else {
-                consulta = consulta.ilike('nombre', nombreLimpio);
-            }
+        // 1. Envío blindado mediante la función RPC de Postgres
+        const { data, error } = await supabaseClient.rpc('registrar_record_partida', {
+            p_nombre: nombreLimpio,
+            p_puntaje: puntajeSeguro,
+            p_email: emailLimpio,
+            p_juego: modoJuego
+        });
 
-            const { data: filasPrevias } = await consulta.order('puntaje', { ascending: false }).limit(1);
-            const mejorPrevio = (filasPrevias && filasPrevias.length > 0) ? (filasPrevias[0].puntaje || 0) : -1;
-
-            if (puntosLogrados > mejorPrevio) {
-                let actualizado = false;
-                if (filasPrevias && filasPrevias.length > 0) {
-                    const { data: updData, error: updErr } = await supabaseClient
-                        .from('ranking')
-                        .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
-                        .eq('id', filasPrevias[0].id)
-                        .select();
-
-                    if (!updErr && updData && updData.length > 0) {
-                        actualizado = true;
-                        console.log(`🏆 ¡Nuevo récord en ${modoJuego} (${puntosLogrados} pts) actualizado!`);
-                    }
-                }
-
-                if (!actualizado) {
-                    const { error: insErr } = await supabaseClient
-                        .from('ranking')
-                        .insert([
-                            { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                        ]);
-                    if (insErr) {
-                        console.error(`Error al insertar récord en ${modoJuego}:`, insErr);
-                    } else {
-                        console.log(`🏆 ¡Récord en ${modoJuego} (${puntosLogrados} pts) insertado con éxito!`);
-                    }
-                }
-            }
-        } else if (modoJuego.startsWith('guessr_') || modoJuego.startsWith('duelo_')) {
-            // 🏆 PUNTAJE EN LIGA PRIVADA (INSERCIÓN DIRECTA Y SEGURA PARA INVITADOS Y REGISTRADOS)
-            const { data: filasPrevias } = await supabaseClient
-                .from('ranking')
-                .select('id, puntaje')
-                .eq('juego', modoJuego)
-                .ilike('nombre', nombreLimpio)
-                .order('puntaje', { ascending: false })
-                .limit(1);
-
-            const mejorPrevio = (filasPrevias && filasPrevias.length > 0) ? (filasPrevias[0].puntaje || 0) : -1;
-
-            if (puntosLogrados > mejorPrevio) {
-                let actualizado = false;
-                if (filasPrevias && filasPrevias.length > 0) {
-                    const { data: updData, error: updErr } = await supabaseClient
-                        .from('ranking')
-                        .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
-                        .eq('id', filasPrevias[0].id)
-                        .select();
-
-                    if (!updErr && updData && updData.length > 0) {
-                        actualizado = true;
-                        console.log(`🏆 ¡Récord en liga (${puntosLogrados} pts) actualizado!`);
-                    }
-                }
-
-                if (!actualizado) {
-                    const { error: insErr } = await supabaseClient
-                        .from('ranking')
-                        .insert([
-                            { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                        ]);
-                    if (insErr) {
-                        console.error("Error al insertar puntaje en liga:", insErr);
-                    } else {
-                        console.log(`🏆 ¡Récord en liga (${puntosLogrados} pts) insertado con éxito!`);
-                    }
-                }
-            }
-        } else if (modoJuego.startsWith('diario_')) {
-            // 📅 RETO DIARIO (Puntaje único por fecha para cada jugador)
-            let consulta = supabaseClient
-                .from('ranking')
-                .select('id, puntaje')
-                .eq('juego', modoJuego);
-
-            if (emailJugador) {
-                consulta = consulta.eq('email', emailJugador);
-            } else {
-                consulta = consulta.ilike('nombre', nombreLimpio);
-            }
-
-            const { data: filaExistente } = await consulta.limit(1);
-
-            if (filaExistente && filaExistente.length > 0) {
-                await supabaseClient
-                    .from('ranking')
-                    .update({ puntaje: puntosLogrados, email: emailJugador, nombre: nombreLimpio })
-                    .eq('id', filaExistente[0].id);
-            } else {
-                await supabaseClient.from('ranking').insert([
-                    { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
-                ]);
-            }
-        } else {
-            // OTROS MINIJUEGOS
+        if (error) {
+            console.warn("Aviso al registrar récord vía RPC, intentando fallback seguro:", error.message);
+            // Fallback directo sujeto a la restricción CHECK de Postgres
             await supabaseClient.from('ranking').insert([
-                { nombre: nombreLimpio, puntaje: puntosLogrados, email: emailJugador, juego: modoJuego }
+                { nombre: nombreLimpio, puntaje: puntajeSeguro, email: emailLimpio || null, juego: modoJuego }
             ]);
+        } else {
+            console.log(`🏆 [${modoJuego}] Récord validado por el servidor (${puntajeSeguro} pts):`, data?.accion);
         }
     } catch (err) {
-        console.error("Error inesperado de conexión:", err);
+        console.error("Error inesperado al registrar puntaje:", err);
     }
 }
 // ========================================================
