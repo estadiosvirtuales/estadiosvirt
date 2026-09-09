@@ -8972,19 +8972,23 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 18px 14px !important;
     }
     .btn-inspect-invite-liga {
-        max-width: 220px;
-        height: 30px;
-        min-height: 30px;
-        font-size: 0.65rem;
-        margin-top: 8px;
-        padding: 0 10px;
+        width: auto !important;
+        max-width: min(290px, 92%) !important;
+        height: auto !important;
+        min-height: 34px !important;
+        font-size: 0.63rem !important;
+        letter-spacing: 0.2px !important;
+        margin: 10px auto 0 auto !important;
+        padding: 6px 14px !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
     }
     .btn-invitar-liga {
-        max-width: 210px;
-        height: 32px;
-        min-height: 32px;
-        font-size: 0.68rem;
-        padding: 0 10px;
+        max-width: 230px !important;
+        height: 32px !important;
+        min-height: 32px !important;
+        font-size: 0.68rem !important;
+        padding: 0 12px !important;
     }
 }
 
