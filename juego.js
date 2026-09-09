@@ -1325,7 +1325,8 @@ async function verificarPremiosPendientes() {
         ayer.setDate(ayer.getDate() - 1);
         const fechaAyerStr = ayer.getFullYear() + '-' + String(ayer.getMonth() + 1).padStart(2, '0') + '-' + String(ayer.getDate()).padStart(2, '0');
         const claveDiarioAyer = 'diario_' + fechaAyerStr;
-        const storageDiarioKey = `ev_premio_diario_${fechaAyerStr}_${miNombreLower}`;
+        const idUserPremio = getUserId();
+        const storageDiarioKey = `ev_premio_diario_${fechaAyerStr}_${idUserPremio}`;
 
         if (!localStorage.getItem(storageDiarioKey)) {
             const { data: rankingAyer, error: errDiario } = await supabaseClient
@@ -1379,7 +1380,7 @@ async function verificarPremiosPendientes() {
         lunesInicio.setHours(0, 0, 0, 0);
 
         const fechaSemanaStr = `${lunesInicio.getFullYear()}-${String(lunesInicio.getMonth() + 1).padStart(2, '0')}-${String(lunesInicio.getDate()).padStart(2, '0')}`;
-        const storageSemanaKey = `ev_premio_semanal_${fechaSemanaStr}_${miNombreLower}`;
+        const storageSemanaKey = `ev_premio_semanal_${fechaSemanaStr}_${idUserPremio}`;
 
         if (!localStorage.getItem(storageSemanaKey)) {
             const { data: victoriasRaw, error: errSemana } = await supabaseClient
