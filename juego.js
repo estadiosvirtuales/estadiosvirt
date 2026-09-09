@@ -6134,24 +6134,66 @@ async function guardarPersonalizacion(){
 
     showToast('¡Personalización guardada! 🎉', 'ph-check-circle', 'success');
 
-    // 3. Sincronización asíncrona de apodo en ligas (sin trabar el guardado local)
-    if (nickViejo !== nickNuevo && typeof supabaseClient !== 'undefined' && supabaseClient) {
+    // 3. Sincronización asíncrona de apodo en TODOS los rankings y ligas
+        if (nickViejo.toLowerCase() !== nickNuevo.toLowerCase() && typeof supabaseClient !== 'undefined' && supabaseClient) {
+            actualizarApodoEnTodoElSistema(nickViejo, nickNuevo);
+        }
+    }
+
+async function actualizarApodoEnTodoElSistema(nickViejo, nickNuevo) {
+    if (!supabaseClient || !nickNuevo) return;
+    const u = obtenerUsuarioLogueado();
+    const miEmail = (u && u.email) ? u.email.trim() : '';
+    const idUser = getUserId();
+    const vLimpio = (nickViejo || '').trim();
+    const nLimpio = (nickNuevo || '').trim();
+
+    try {
+        // 1. Ejecutar función maestra en Supabase (un solo viaje de red blindado)
+        await supabaseClient.rpc('actualizar_apodo_global', {
+            p_id_usuario: idUser,
+            p_email: miEmail,
+            p_nombre_viejo: vLimpio,
+            p_nombre_nuevo: nLimpio
+        });
+
+        // 2. Fallback de cliente directo en ranking (Reto Diario, Guessr, Capacidad, Antigüedad)
+        if (miEmail) {
+            await supabaseClient.from('ranking').update({ nombre: nLimpio }).eq('email', miEmail);
+        }
+        if (vLimpio && vLimpio !== 'Anónimo' && vLimpio !== 'Invitado') {
+            await supabaseClient.from('ranking').update({ nombre: nLimpio }).ilike('nombre', vLimpio);
+        }
+
+        // 3. Fallback directo en duelos 1v1
+        if (idUser && idUser !== 'guest') {
+            await supabaseClient.from('victorias_versus').update({ nombre: nLimpio }).eq('id_usuario', idUser);
+            await supabaseClient.from('derrotas_versus').update({ nombre: nLimpio }).eq('id_usuario', idUser);
+        }
+        if (vLimpio && vLimpio !== 'Anónimo' && vLimpio !== 'Invitado') {
+            await supabaseClient.from('victorias_versus').update({ nombre: nLimpio }).ilike('nombre', vLimpio);
+            await supabaseClient.from('derrotas_versus').update({ nombre: nLimpio }).ilike('nombre', vLimpio);
+        }
+
+        // 4. Actualizar presencia y tablas de liga de amigos en vivo
         const nombreLiga = localStorage.getItem('ev_codigo_liga_amigos');
         if (nombreLiga) {
             try {
                 await supabaseClient.rpc('actualizar_apodo_liga', {
                     p_liga: nombreLiga,
-                    p_nombre_viejo: nickViejo,
-                    p_nombre_nuevo: nickNuevo
+                    p_nombre_viejo: vLimpio,
+                    p_nombre_nuevo: nLimpio
                 });
-                
-                if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
-                    ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
-                }
-            } catch (err) {
-                console.warn("Sincronización de apodo en liga postergada:", err);
+            } catch(e) {}
+
+            if (typeof ligaAmigosChannel !== 'undefined' && ligaAmigosChannel) {
+                ligaAmigosChannel.send({ type: 'broadcast', event: 'fuerza_refresh', payload: {} });
             }
         }
+
+        console.log(`✅ Apodo actualizado en todos los rankings: "${vLimpio}" ➔ "${nLimpio}"`);
+    } catch (err) {
+        console.error("Error al actualizar apodo globalmente:", err);
     }
 }
 

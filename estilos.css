@@ -8884,40 +8884,45 @@ html[data-theme="light"] .xp-bar-big-fill {
    ======================================================== */
 .btn-invitar-liga {
     width: 100%;
-    max-width: 280px;
-    padding: 10px 18px;
-    font-size: 0.82rem;
+    max-width: 240px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 0.74rem;
     font-weight: 900;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
     border-radius: 12px;
     background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(10, 36, 24, 0.95) 100%) !important;
     border: 1.5px solid #00e676 !important;
     border-top: 2px solid #a7f3d0 !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 255, 119, 0.25) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 14px rgba(0, 255, 119, 0.2) !important;
     cursor: pointer;
     transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 7px;
     text-transform: uppercase;
 }
 
 .btn-invitar-liga:hover {
     transform: translateY(-2px) scale(1.02);
     border-color: #69ff9c !important;
-    box-shadow: 0 6px 20px rgba(0, 255, 119, 0.45) !important;
+    box-shadow: 0 6px 18px rgba(0, 255, 119, 0.35) !important;
 }
 
 .btn-inspect-invite-liga {
-    width: 100%;
-    margin-top: 14px;
-    padding: 11px 16px;
-    font-size: 0.84rem;
+    width: auto;
+    max-width: 240px;
+    height: 34px;
+    min-height: 34px;
+    margin: 10px auto 0 auto;
+    padding: 0 14px;
+    font-size: 0.72rem;
     font-weight: 900;
     letter-spacing: 0.3px;
-    border-radius: 14px;
+    border-radius: 12px;
     background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(14, 28, 44, 0.95) 100%) !important;
     border: 1.5px solid var(--accent-color) !important;
     border-top: 2px solid #a7f3d0 !important;
@@ -8926,16 +8931,40 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 14px var(--accent-glow) !important;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 12px var(--accent-glow) !important;
     transition: all 0.22s ease !important;
     box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn-inspect-invite-liga:hover {
     transform: translateY(-2px) scale(1.02);
     border-color: #69ff9c !important;
-    box-shadow: 0 8px 24px var(--accent-glow) !important;
+    box-shadow: 0 6px 18px var(--accent-glow) !important;
+}
+
+@media (max-width: 768px) {
+    .inspect-modal-box {
+        padding: 18px 14px !important;
+    }
+    .btn-inspect-invite-liga {
+        max-width: 220px;
+        height: 30px;
+        min-height: 30px;
+        font-size: 0.65rem;
+        margin-top: 8px;
+        padding: 0 10px;
+    }
+    .btn-invitar-liga {
+        max-width: 210px;
+        height: 32px;
+        min-height: 32px;
+        font-size: 0.68rem;
+        padding: 0 10px;
+    }
 }
 
 [data-theme="light"] .btn-invitar-liga {
