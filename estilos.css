@@ -8640,3 +8640,312 @@ html[data-theme="light"] .xp-bar-big-fill {
         bottom: -21px; /* 👈 Centrado y bajado para que respire la frente en móvil */
     }
 }
+/* ========================================================
+   🔍 MODAL DE INSPECCIÓN DE CARTA DE RIVAL
+   ======================================================== */
+/* ========================================================
+   🔍 MODAL DE INSPECCIÓN DE CARTA DE RIVAL
+   ======================================================== */
+#inspect-profile-modal {
+    z-index: 10050 !important; /* Capa superior absoluta por encima de ligas y rankings */
+}
+
+.inspect-modal-box {
+    max-width: 420px !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    padding: 24px 20px !important;
+    border-radius: 22px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+}
+
+.inspect-clickable-user {
+    cursor: pointer;
+    transition: transform 0.18s ease, color 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.inspect-clickable-user:hover {
+    color: var(--accent-color) !important;
+    transform: translateX(3px);
+}
+
+.inspect-clickable-user:hover .ranking-avatar-circle {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 14px var(--accent-glow) !important;
+    transform: scale(1.08);
+}
+
+.inspect-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin-top: 14px;
+}
+
+.inspect-stat-pill {
+    background: linear-gradient(165deg, rgba(20, 32, 52, 0.85) 0%, rgba(10, 16, 28, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+}
+
+.inspect-stat-pill i {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    margin-bottom: 2px;
+}
+
+.inspect-stat-pill span {
+    font-size: 0.52rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.inspect-stat-pill strong {
+    font-size: 0.82rem;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.inspect-clickable-user {
+    cursor: pointer;
+    transition: transform 0.18s ease, color 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.inspect-clickable-user:hover {
+    color: var(--accent-color) !important;
+    transform: translateX(3px);
+}
+
+.inspect-clickable-user:hover .ranking-avatar-circle {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 14px var(--accent-glow) !important;
+    transform: scale(1.08);
+}
+
+.inspect-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin-top: 14px;
+}
+
+.inspect-stat-pill {
+    background: linear-gradient(165deg, rgba(20, 32, 52, 0.85) 0%, rgba(10, 16, 28, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 2px;
+}
+
+.inspect-stat-pill i {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    margin-bottom: 2px;
+}
+
+.inspect-stat-pill span {
+    font-size: 0.52rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.inspect-stat-pill strong {
+    font-size: 0.82rem;
+    font-weight: 900;
+    color: #ffffff;
+}
+/* ========================================================
+   🔍 BUSCADOR Y FILA FIJA DE TU POSICIÓN EN RANKINGS
+   ======================================================== */
+.ranking-table-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.ranking-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 190px;
+    flex: 1;
+    max-width: 260px;
+}
+
+.ranking-search-box i {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.ranking-search-input {
+    width: 100%;
+    padding: 7px 12px 7px 34px;
+    border-radius: 20px;
+    background: rgba(14, 24, 40, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    color: var(--text-main);
+    font-size: 0.76rem;
+    font-weight: 700;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.ranking-search-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-glow);
+    background: rgba(18, 30, 50, 0.95);
+}
+
+.ranking-rows-scroll {
+    max-height: 440px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+/* Fila anclada al final si estás fuera del Top 50 */
+.sticky-user-row {
+    border-top: 2px dashed var(--accent-color) !important;
+    background: linear-gradient(90deg, rgba(0, 230, 118, 0.25) 0%, rgba(0, 230, 118, 0.08) 100%) !important;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.6);
+}
+
+.sticky-rank-pill {
+    background: var(--accent-color);
+    color: #000000;
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 6px;
+    display: inline-block;
+    min-width: 32px;
+    text-align: center;
+}
+
+[data-theme="light"] .ranking-search-input {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+@media (max-width: 768px) {
+    .ranking-table-top-bar {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    .ranking-search-box {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+/* ========================================================
+   👥 BOTONES DE INVITACIÓN A LIGA DE AMIGOS
+   ======================================================== */
+.btn-invitar-liga {
+    width: 100%;
+    max-width: 280px;
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(10, 36, 24, 0.95) 100%) !important;
+    border: 1.5px solid #00e676 !important;
+    border-top: 2px solid #a7f3d0 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 255, 119, 0.25) !important;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-transform: uppercase;
+}
+
+.btn-invitar-liga:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: #69ff9c !important;
+    box-shadow: 0 6px 20px rgba(0, 255, 119, 0.45) !important;
+}
+
+.btn-inspect-invite-liga {
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px 16px;
+    font-size: 0.84rem;
+    font-weight: 900;
+    letter-spacing: 0.3px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(14, 28, 44, 0.95) 100%) !important;
+    border: 1.5px solid var(--accent-color) !important;
+    border-top: 2px solid #a7f3d0 !important;
+    color: #ffffff !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 14px var(--accent-glow) !important;
+    transition: all 0.22s ease !important;
+    box-sizing: border-box;
+}
+
+.btn-inspect-invite-liga:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: #69ff9c !important;
+    box-shadow: 0 8px 24px var(--accent-glow) !important;
+}
+
+[data-theme="light"] .btn-invitar-liga {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%) !important;
+    border-color: #00cc66 !important;
+    color: #04160a !important;
+}
+
+[data-theme="light"] .btn-inspect-invite-liga {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%) !important;
+    border-color: #00cc66 !important;
+    color: #04160a !important;
+}

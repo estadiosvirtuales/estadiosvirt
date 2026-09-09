@@ -1760,6 +1760,384 @@ function obtenerAvatarCirculoHTML(nombreJugador, avatarDirecto = null) {
     return `<div class="ranking-avatar-circle" title="${sanitizarHTML(nombreJugador)}"><div class="ranking-avatar-inner">${generarAvatarHTML(avatarImg, true)}</div></div>`;
 }
 
+window.cerrarModalInspeccionarRival = function() {
+    const m = document.getElementById('inspect-profile-modal');
+    if (m) m.style.display = 'none';
+};
+
+// 📨 ENVÍA LA INVITACIÓN DIRECTA AL PERFIL DEL USUARIO DESCONOCIDO
+window.enviarInvitacionDirectaRival = async function(nombreLiga, nombreRival, btn) {
+    if (!supabaseClient) return;
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Jugador')).trim();
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Enviando invitación...`;
+    }
+
+    try {
+        // Verificar si ya le enviaste una invitación que aún no respondió
+        const { data: previas } = await supabaseClient
+            .from('invitaciones_liga')
+            .select('id')
+            .eq('liga', nombreLiga)
+            .ilike('para_nombre', nombreRival.trim())
+            .eq('estado', 'pendiente')
+            .limit(1);
+
+        if (previas && previas.length > 0) {
+            showToast(`Ya le enviaste una invitación pendiente a ${nombreRival} ⏳`, 'ph-hourglass', 'warning');
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> Invitación pendiente`;
+            return;
+        }
+
+        const { error } = await supabaseClient
+            .from('invitaciones_liga')
+            .insert([{
+                de_nombre: miNombre,
+                para_nombre: nombreRival.trim(),
+                liga: nombreLiga,
+                estado: 'pendiente'
+            }]);
+
+        if (error) throw error;
+
+        showToast(`¡Invitación enviada a ${nombreRival}! Le aparecerá en su pantalla 🚀`, 'ph-paper-plane-tilt', 'success');
+        if (btn) {
+            btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Invitación enviada!`;
+            btn.style.opacity = '0.7';
+        }
+    } catch (err) {
+        console.error("Error al enviar invitación:", err);
+        showToast("Error al enviar la invitación.", "ph-warning-circle", "danger");
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="ph-bold ph-paper-plane-tilt"></i> Reintentar invitación`;
+        }
+    }
+};
+
+// 🔔 COMPRUEBA SI TENÉS INVITACIONES PENDIENTES DE OTROS JUGADORES
+async function verificarInvitacionesLigaPendientes() {
+    if (!supabaseClient) return;
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim();
+    if (!miNombre || miNombre === 'Jugador' || miNombre === 'Invitado') return;
+
+    // Si ya pertenecés a una liga, no mostramos invitaciones nuevas para no pisarte la actual
+    if (localStorage.getItem('ev_codigo_liga_amigos')) return;
+
+    try {
+        const { data: invs, error } = await supabaseClient
+            .from('invitaciones_liga')
+            .select('id, de_nombre, liga')
+            .ilike('para_nombre', miNombre)
+            .eq('estado', 'pendiente')
+            .order('created_at', { ascending: false })
+            .limit(1);
+
+        if (!error && invs && invs.length > 0) {
+            mostrarPopupInvitacionLiga(invs[0]);
+        }
+    } catch (e) {}
+}
+
+function mostrarPopupInvitacionLiga(inv) {
+    const existente = document.getElementById('invitacion-liga-popup');
+    if (existente) existente.remove();
+
+    const popup = document.createElement('div');
+    popup.id = 'invitacion-liga-popup';
+    popup.style.cssText = `
+        position: fixed; top: 24px; left: 0; right: 0; margin: 0 auto; width: max-content; max-width: 92%;
+        background: var(--glass-bg); border: 2px solid var(--accent-color); padding: 18px 22px; border-radius: 16px;
+        z-index: 100060; display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center;
+        box-shadow: var(--shadow-strong); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        animation: fadeSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    `;
+
+    const nombreVisual = inv.liga.replace(/_/g, ' ');
+
+    popup.innerHTML = `
+        <div style="font-weight:900; font-size:0.95rem; color:var(--text-main);">
+            <i class="ph-duotone ph-envelope-open" style="color:var(--accent-color); font-size:1.3rem; vertical-align:middle;"></i> 
+            ¡<b>${sanitizarHTML(inv.de_nombre)}</b> te invitó a sumarte a su liga <b>${sanitizarHTML(nombreVisual)}</b>!
+        </div>
+        <div style="display:flex; gap:10px; width:100%;">
+            <button onclick="responderInvitacionLiga(${inv.id}, '${inv.liga}', true)" class="btn-3d primary" style="flex:1; padding:12px;"><i class="ph-bold ph-check"></i> Unirme</button>
+            <button onclick="responderInvitacionLiga(${inv.id}, '${inv.liga}', false)" class="btn-3d secondary" style="flex:1; padding:12px;"><i class="ph-bold ph-x"></i> Rechazar</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+}
+
+window.responderInvitacionLiga = async function(idInv, nombreLiga, aceptar) {
+    const popup = document.getElementById('invitacion-liga-popup');
+    if (popup) popup.remove();
+
+    if (supabaseClient && idInv) {
+        try {
+            await supabaseClient
+                .from('invitaciones_liga')
+                .update({ estado: aceptar ? 'aceptada' : 'rechazada' })
+                .eq('id', idInv);
+        } catch (e) {}
+    }
+
+    if (aceptar) {
+        await unirseALigaPorLink(nombreLiga);
+    } else {
+        showToast("Invitación rechazada.", "ph-x-circle", "info");
+    }
+};
+
+// 🔗 GENERADOR Y COMPARTIDOR DE ENLACE DE LIGA
+window.compartirLinkLiga = async function(nombreLiga, rivalNombre = null) {
+    if (!nombreLiga) return;
+    const urlLimpia = window.location.origin + window.location.pathname;
+    const link = `${urlLimpia}?liga=${encodeURIComponent(nombreLiga)}`;
+    const nombreVisual = nombreLiga.replace(/_/g, ' ');
+
+    const msg = rivalNombre 
+        ? `⚽ ¡Hola ${rivalNombre}! Te invito a unirte a mi liga "${nombreVisual}" en Estadios Virtuales 🌍🏆\nEntrá a este link para sumarte:\n\n${link}`
+        : `⚽ ¡Sumate a mi liga "${nombreVisual}" en Estadios Virtuales! 🌍🏆\nEntrá a este link para competir contra nosotros:\n\n${link}`;
+
+    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (esMobile && navigator.share) {
+        try {
+            await navigator.share({
+                title: `Liga ${nombreVisual} | Estadios Virtuales`,
+                text: msg
+            });
+            showToast('¡Invitación enviada! 🚀', 'ph-check-circle', 'success');
+            return;
+        } catch(e) {}
+    }
+
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg).then(() => {
+            showToast(`¡Link de ${nombreVisual} copiado! Pegalo en WhatsApp 📲`, 'ph-check-circle', 'success');
+        }).catch(() => {
+            showToast('Error al copiar el enlace.', 'ph-warning-circle', 'danger');
+        });
+    }
+};
+
+// 🚀 UNIÓN AUTOMÁTICA CUANDO UN USUARIO ABRE UN LINK CON ?liga=
+async function unirseALigaPorLink(nombreLigaRaw) {
+    if (!nombreLigaRaw) return;
+    let nombreLiga = decodeURIComponent(nombreLigaRaw).trim().toUpperCase().replace(/\s+/g, '_');
+
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    let intentos = 0;
+    while (!supabaseClient && intentos < 25) {
+        await new Promise(r => setTimeout(r, 150));
+        intentos++;
+    }
+
+    if (!supabaseClient) {
+        showToast("Error de conexión al ingresar a la liga.", "ph-warning-circle", "danger");
+        return;
+    }
+
+    const u = obtenerUsuarioLogueado();
+    let miNick = getPref('ev_custom_nick', '');
+
+    if (!miNick && (!u || u.id === 'guest')) {
+        let nuevoNick = prompt(`🏆 ¡Te invitaron a la liga "${nombreLiga.replace(/_/g, ' ')}"! Ingresá tu apodo:`);
+        if (nuevoNick === null) return;
+        nuevoNick = nuevoNick.trim() || ("Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+
+        let disponible = await verificarApodoDisponible(nuevoNick);
+        while (!disponible) {
+            showToast(`El apodo "${nuevoNick}" ya está en uso 🚫`, 'ph-warning-circle', 'danger');
+            nuevoNick = prompt(`⚠️ El apodo "${nuevoNick}" ya pertenece a otro jugador. Ingresá uno diferente:`);
+            if (nuevoNick === null) return;
+            nuevoNick = nuevoNick.trim() || ("Invitado_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+            if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+            disponible = await verificarApodoDisponible(nuevoNick);
+        }
+        setPref('ev_custom_nick', nuevoNick);
+        miNick = nuevoNick;
+        renderizarBotonLogin();
+    }
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('ligas')
+            .select('nombre_liga')
+            .eq('nombre_liga', nombreLiga)
+            .limit(1);
+
+        if (error || !data || data.length === 0) {
+            showToast("La liga del enlace no existe o fue dada de baja. 🚫", "ph-warning-circle", "danger");
+            return;
+        }
+
+        localStorage.setItem('ev_codigo_liga_amigos', nombreLiga);
+
+        const nombreParaFichar = getPref('ev_custom_nick', '') || (u ? u.name : 'Anónimo');
+        const emailParaFichar = u ? u.email : '';
+
+        const { data: existente } = await supabaseClient
+            .from('ranking')
+            .select('nombre')
+            .eq('juego', 'duelo_' + nombreLiga)
+            .eq('nombre', nombreParaFichar)
+            .limit(1);
+
+        if (!existente || existente.length === 0) {
+            await supabaseClient
+                .from('ranking')
+                .insert([
+                    { nombre: nombreParaFichar, puntaje: 0, email: emailParaFichar, juego: 'duelo_' + nombreLiga }
+                ]);
+        }
+
+        guardarStats();
+        showToast(`¡Te uniste a la liga: ${nombreLiga.replace(/_/g, ' ')}! 👥🔥`, "ph-users-three", "success");
+        abrirModalLigaAmigosPrivada();
+    } catch(err) {
+        console.error("Error al unirse por link de liga:", err);
+    }
+}
+
+window.inspeccionarPerfilRival = async function(nombreRival) {
+    const n = (nombreRival || '').trim();
+    if (!n || n.toLowerCase() === 'anónimo') return;
+
+    const modal = document.getElementById('inspect-profile-modal');
+    const body = document.getElementById('inspect-profile-body');
+    if (!modal || !body) return;
+
+    body.innerHTML = `
+        <div style="text-align:center; padding:40px 20px; color:var(--text-muted);">
+            <i class="ph-duotone ph-circle-notch" style="font-size:2.2rem; color:var(--accent-color); animation:spinSlow 1s linear infinite;"></i>
+            <p style="margin-top:12px; font-size:0.85rem; font-weight:700;">Cargando perfil de ${sanitizarHTML(n)}...</p>
+        </div>
+    `;
+    modal.style.display = 'flex';
+
+    let datosRival = {
+        custom_nick: n,
+        card_theme: 'arg',
+        avatar_hair: obtenerAvatarParaUsuario(n),
+        user_pos: 'DC',
+        avatar_logo: 'ev',
+        xpTotal: 0,
+        nivelActual: 0,
+        ovr: 60,
+        rachaActual: 1,
+        partidasGanadas: 0,
+        votosRealizados: 0,
+        triviasVistas: 0,
+        partidasJugadas: 0
+    };
+
+    if (supabaseClient) {
+        try {
+            const { data: perfiles } = await supabaseClient
+                .from('perfiles')
+                .select('experiencia, datos_juego')
+                .limit(200);
+
+            if (perfiles && perfiles.length > 0) {
+                const encontrado = perfiles.find(p => {
+                    const nick = p.datos_juego?.preferencias?.custom_nick;
+                    return nick && nick.trim().toLowerCase() === n.toLowerCase();
+                });
+
+                if (encontrado) {
+                    const dj = encontrado.datos_juego || {};
+                    const pref = dj.preferencias || {};
+                    datosRival.xpTotal = encontrado.experiencia || dj.xpTotal || 0;
+                    datosRival.nivelActual = calcularNivelIdx(datosRival.xpTotal);
+                    datosRival.ovr = NIVELES[datosRival.nivelActual]?.ovr || 60;
+                    datosRival.card_theme = pref.card_theme || 'arg';
+                    datosRival.avatar_hair = pref.avatar_hair || datosRival.avatar_hair;
+                    datosRival.user_pos = pref.user_pos || 'DC';
+                    datosRival.avatar_logo = pref.avatar_logo || 'ev';
+                    datosRival.rachaActual = dj.rachaActual || 1;
+                    datosRival.partidasGanadas = dj.partidasGanadas || 0;
+                    datosRival.votosRealizados = dj.votosRealizados || 0;
+                    datosRival.triviasVistas = dj.triviasVistas || 0;
+                    datosRival.partidasJugadas = dj.partidasJugadas || 0;
+                }
+            }
+
+            if (datosRival.partidasGanadas === 0) {
+                const { count } = await supabaseClient
+                    .from('victorias_versus')
+                    .select('*', { count: 'exact', head: true })
+                    .ilike('nombre', n);
+                if (count) datosRival.partidasGanadas = count;
+            }
+        } catch (e) {
+            console.warn("Aviso al cargar perfil de rival:", e);
+        }
+    }
+
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim().toLowerCase();
+    const miLigaActual = localStorage.getItem('ev_codigo_liga_amigos');
+
+    let botonInvitarLigaHTML = '';
+    if (miLigaActual && n.toLowerCase() !== miNombre) {
+        botonInvitarLigaHTML = `
+            <button type="button" onclick="enviarInvitacionDirectaRival('${sanitizarHTML(miLigaActual)}', '${sanitizarHTML(n)}', this)" class="btn-inspect-invite-liga">
+                <i class="ph-bold ph-paper-plane-tilt"></i> Invitar a mi liga (${sanitizarHTML(miLigaActual.replace(/_/g, ' '))})
+            </button>
+        `;
+    }
+
+    body.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+            <div class="fut-card ${datosRival.card_theme}" style="transform:scale(0.92); margin:4px 0 -12px 0;">
+                <div class="fut-card-shine"></div>
+                <div class="fut-top">
+                    <div class="fut-badge-meta">
+                        <div class="fut-ovr">${datosRival.ovr}</div>
+                        <div class="fut-pos">${datosRival.user_pos}</div>
+                        <img src="${obtenerUrlEscudo(datosRival.avatar_logo)}" class="fut-club-icon" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                    </div>
+                    <div class="fut-avatar-container">${generarAvatarHTML(datosRival.avatar_hair, true)}</div>
+                </div>
+                <div class="fut-name">${sanitizarHTML(datosRival.custom_nick)}</div>
+                <div class="fut-stats-row">
+                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.partidasGanadas}</span><span class="fut-stat-label">PG</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.xpTotal > 999 ? (datosRival.xpTotal/1000).toFixed(1)+'K' : datosRival.xpTotal}</span><span class="fut-stat-label">XP</span></div>
+                </div>
+            </div>
+
+            <div class="inspect-stats-grid">
+                <div class="inspect-stat-pill">
+                    <i class="ph-bold ph-shield-star"></i>
+                    <span>Nivel</span>
+                    <strong>Nivel ${datosRival.nivelActual}</strong>
+                </div>
+                <div class="inspect-stat-pill">
+                    <i class="ph-bold ph-fire" style="color:#ff9f05;"></i>
+                    <span>Racha</span>
+                    <strong>${datosRival.rachaActual} Días</strong>
+                </div>
+                <div class="inspect-stat-pill">
+                    <i class="ph-bold ph-sword" style="color:#3b82f6;"></i>
+                    <span>Victorias</span>
+                    <strong>${datosRival.partidasGanadas} PG</strong>
+                </div>
+            </div>
+
+            ${botonInvitarLigaHTML}
+        </div>
+    `;
+};
+
 async function precargarAvataresComunidad() {
     if (!supabaseClient) return;
     try {
@@ -1778,6 +2156,16 @@ async function precargarAvataresComunidad() {
         }
     } catch(e) {}
 }
+
+window.filtrarJugadoresRanking = function(term) {
+    const q = (term || '').toLowerCase().trim();
+    const filas = document.querySelectorAll('.ranking-right-panel .liga-table-card .liga-row-item:not(.sticky-user-row)');
+    filas.forEach(f => {
+        const nombreEl = f.querySelector('.inspect-clickable-user');
+        const nombre = nombreEl ? nombreEl.textContent.toLowerCase() : '';
+        f.style.display = (!q || nombre.includes(q)) ? 'flex' : 'none';
+    });
+};
 function guardarVotoLocal(estadio,p){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');v[estadio]=p;localStorage.setItem('ev_votos_locales',JSON.stringify(v));}
 function obtenerVotoLocal(estadio){const v=JSON.parse(localStorage.getItem('ev_votos_locales')||'{}');return v[estadio]||0;}
 async function registrarVoto(event, estadio, club, puntuacion) {
@@ -4223,7 +4611,6 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     const u = obtenerUsuarioLogueado();
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos');
 
-    // Estilos visuales del botón Reto Diario: naranja neón inactivo y fuego pleno activo
     const estiloDiarioBtn = activeDiario
         ? 'background: linear-gradient(135deg, #ff9100 0%, #ff5722 100%) !important; border: 1.5px solid #ffa726 !important; box-shadow: 0 0 20px rgba(255, 145, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;'
         : 'border: 1.5px solid rgba(255, 145, 0, 0.45) !important; background: rgba(255, 145, 0, 0.06) !important;';
@@ -4268,7 +4655,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 .select('nombre, puntaje')
                 .eq('juego', juegoClave)
                 .order('puntaje', { ascending: false })
-                .limit(200);
+                .limit(500);
 
             if (error) throw error;
 
@@ -4282,20 +4669,20 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 }
             });
 
-            const ranking = Object.values(mejorPorJugador)
-                .sort((a, b) => b.puntaje - a.puntaje)
-                .slice(0, 10);
+            const todosOrdenados = Object.values(mejorPorJugador).sort((a, b) => b.puntaje - a.puntaje);
+            const ranking = todosOrdenados.slice(0, 50); // ⚡ TOP 50
 
-            const miFila = ranking.find(f => (f.nombre || '').toLowerCase() === miNombre.toLowerCase());
+            const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').toLowerCase() === miNombre.toLowerCase());
+            const miFila = miPuestoIdx !== -1 ? todosOrdenados[miPuestoIdx] : null;
             const miPuntosHoy = miFila ? `${miFila.puntaje.toLocaleString('es-AR')} pts` : 'Sin jugar';
-            const miPuesto = miFila ? `#${ranking.indexOf(miFila) + 1}` : 'Sin clasif.';
+            const miPuesto = miPuestoIdx !== -1 ? `#${miPuestoIdx + 1}` : 'Sin clasif.';
 
             headerConfig = {
                 img: 'fuego.png',
                 glowClass: 'glow-orange',
                 badgeImg: 'fuego.png',
-                badgeTitle: 'Reto Diario',
-                badgeSub: fechaVisual,
+                badgeTitle: 'Top 50 Global',
+                badgeSub: `Diario (${fechaVisual})`,
                 badgeColor: '#ff9100',
                 pill1Label: 'TU PUNTAJE HOY',
                 pill1Val: miPuntosHoy,
@@ -4314,7 +4701,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 <span><b>Botín de Conquistador:</b> El puesto #1 de hoy a las 23:59 se lleva un <b>Cofre de XP</b>.</span>
             </div>`;
 
-            htmlContenido += `<div class="liga-table-card">`;
+            htmlContenido += `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún nadie registró puntaje en el reto de hoy. ¡Sé el primero!</p>`;
             } else {
@@ -4324,7 +4711,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
                             ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
@@ -4335,16 +4722,30 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             }
             htmlContenido += '</div>';
 
+            // 📌 FILA ANCLADA (STICKY) SI ESTÁS FUERA DEL TOP 50
+            if (miPuestoIdx >= 50 && miFila) {
+                htmlContenido += `
+                <div class="liga-row-item sticky-user-row es-propio">
+                    <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
+                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                    </span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        ${miFila.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                    </span>
+                </div>`;
+            }
+
+            htmlContenido += '</div>';
+
         } else if (modoEspecifico === 'solo') {
             const { data: rankingRaw, error } = await supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
                 .eq('juego', 'guessr')
                 .order('puntaje', { ascending: false })
-                .limit(200);
+                .limit(500);
             if (error) throw error;
 
-            // 🧹 Agrupamos por jugador para que cada usuario figure una sola vez con su mejor récord
             const mejorPorJugador = {};
             (rankingRaw || []).forEach(row => {
                 const n = (row.nombre || 'Anónimo').trim();
@@ -4355,9 +4756,8 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 }
             });
 
-            const ranking = Object.values(mejorPorJugador)
-                .sort((a, b) => b.puntaje - a.puntaje)
-                .slice(0, 10);
+            const todosOrdenados = Object.values(mejorPorJugador).sort((a, b) => b.puntaje - a.puntaje);
+            const ranking = todosOrdenados.slice(0, 50); // ⚡ TOP 50
 
             let recordReal = 0;
             const miEmail = u && u.email ? u.email : '';
@@ -4372,9 +4772,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     .order('puntaje', { ascending: false })
                     .limit(1);
 
-                if (filaPorEmail && filaPorEmail.length > 0) {
-                    recordReal = filaPorEmail[0].puntaje || 0;
-                }
+                if (filaPorEmail && filaPorEmail.length > 0) recordReal = filaPorEmail[0].puntaje || 0;
             }
 
             if (!recordReal && miApodo) {
@@ -4386,23 +4784,21 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     .order('puntaje', { ascending: false })
                     .limit(1);
 
-                if (filaPorNombre && filaPorNombre.length > 0) {
-                    recordReal = filaPorNombre[0].puntaje || 0;
-                }
+                if (filaPorNombre && filaPorNombre.length > 0) recordReal = filaPorNombre[0].puntaje || 0;
             }
 
-            // 🎯 Toma siempre el mayor puntaje entre lo que tiene la nube y tu récord local
             if (userStats.maxScore && userStats.maxScore <= 25000 && userStats.maxScore > recordReal) {
                 recordReal = userStats.maxScore;
             }
 
             const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
+            const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
 
             headerConfig = {
                 img: 'liga-trofeo-header.png',
                 glowClass: 'glow-green',
                 badgeImg: 'ranking-icon-solo.png',
-                badgeTitle: 'Top 10 Global',
+                badgeTitle: 'Top 50 Global',
                 badgeSub: 'Individual',
                 badgeColor: '#00ff77',
                 pill1Label: 'MEJOR PARTIDA',
@@ -4416,7 +4812,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill3Icon: 'ph-game-controller'
             };
 
-            htmlContenido += `<div class="liga-table-card">`;
+            htmlContenido += `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay registros solitarios.</p>`;
             } else {
@@ -4426,7 +4822,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
                             ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
@@ -4437,16 +4833,34 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             }
             htmlContenido += '</div>';
 
+            // 📌 FILA ANCLADA (STICKY) SI ESTÁS FUERA DEL TOP 50
+            if (miPuestoIdx >= 50 && recordReal > 0) {
+                htmlContenido += `
+                <div class="liga-row-item sticky-user-row es-propio">
+                    <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
+                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                    </span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        ${recordReal.toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                    </span>
+                </div>`;
+            }
+
+            htmlContenido += '</div>';
+
         } else if (modoEspecifico === 'v_historico') {
-            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'historico' });
+            const { data: rankingCompleto, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'historico' });
             if (error) throw error;
+
+            const ranking = (rankingCompleto || []).slice(0, 50); // ⚡ TOP 50
+            const miPuestoIdx = (rankingCompleto || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
 
             headerConfig = {
                 img: 'ranking-icon-1v1.png',
                 glowClass: 'glow-blue',
                 badgeImg: 'ranking-icon-1v1.png',
-                badgeTitle: 'Duelos 1 vs 1',
-                badgeSub: 'Histórico',
+                badgeTitle: 'Top 50 Global',
+                badgeSub: '1 vs 1 Histórico',
                 badgeColor: '#2979ff',
                 pill1Label: 'VICTORIAS',
                 pill1Val: `${userStats.partidasGanadas || 0} PG`,
@@ -4459,7 +4873,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill3Icon: 'ph-users-three'
             };
 
-            htmlContenido += `<div class="liga-table-card">`;
+            htmlContenido += `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
             } else {
@@ -4469,7 +4883,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
                             ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
@@ -4480,11 +4894,28 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             }
             htmlContenido += '</div>';
 
+            // 📌 FILA ANCLADA (STICKY) SI ESTÁS FUERA DEL TOP 50
+            if (miPuestoIdx >= 50 && (userStats.partidasGanadas || 0) > 0) {
+                const misWins = rankingCompleto[miPuestoIdx]?.victorias_acumuladas || userStats.partidasGanadas || 0;
+                htmlContenido += `
+                <div class="liga-row-item sticky-user-row es-propio">
+                    <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
+                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                    </span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        ${misWins} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                    </span>
+                </div>`;
+            }
+
+            htmlContenido += '</div>';
+
         } else if (modoEspecifico === 'v_semanal') {
-            const { data: ranking, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
+            const { data: rankingCompleto, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
             if (error) throw error;
 
-            const miIdx = (ranking || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
+            const ranking = (rankingCompleto || []).slice(0, 50); // ⚡ TOP 50
+            const miIdx = (rankingCompleto || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
             const miPuestoSemanal = miIdx !== -1 ? `#${miIdx + 1}` : 'Sin clasif.';
 
             const diaSemana = new Date().getDay();
@@ -4495,8 +4926,8 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 img: 'ranking-icon-semanal.png',
                 glowClass: 'glow-gold',
                 badgeImg: 'ranking-icon-semanal.png',
-                badgeTitle: 'Temporada Activa',
-                badgeSub: 'Top Semanal',
+                badgeTitle: 'Top 50 Semanal',
+                badgeSub: 'Temporada Activa',
                 badgeColor: '#eab308',
                 pill1Label: 'PREMIOS PODIO',
                 pill1Val: 'Cofres de XP',
@@ -4515,7 +4946,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 <span><b>Premios de Temporada:</b> Los 3 primeros al finalizar el domingo ganan <b>Cofres de XP</b>.</span>
             </div>`;
 
-            htmlContenido += `<div class="liga-table-card">`;
+            htmlContenido += `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
             if (!ranking || !ranking.length) {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
             } else {
@@ -4525,7 +4956,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                        <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
                             ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                         </span>
                         <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
@@ -4534,6 +4965,22 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     </div>`;
                 });
             }
+            htmlContenido += '</div>';
+
+            // 📌 FILA ANCLADA (STICKY) SI ESTÁS FUERA DEL TOP 50
+            if (miIdx >= 50) {
+                const misWinsSemana = rankingCompleto[miIdx]?.victorias_acumuladas || 0;
+                htmlContenido += `
+                <div class="liga-row-item sticky-user-row es-propio">
+                    <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
+                        <span class="sticky-rank-pill">#${miIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                    </span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        ${misWinsSemana} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                    </span>
+                </div>`;
+            }
+
             htmlContenido += '</div>';
         }
 
@@ -4588,6 +5035,12 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                         <span class="badge-sep">·</span>
                         <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
                     </div>
+
+                    <!-- 🔍 BUSCADOR EN VIVO DE JUGADORES -->
+                    <div class="ranking-search-box">
+                        <i class="ph-bold ph-magnifying-glass"></i>
+                        <input type="text" class="ranking-search-input" placeholder="Buscar jugador..." oninput="filtrarJugadoresRanking(this.value)">
+                    </div>
                 </div>
                 ${htmlContenido}
             </div>
@@ -4598,6 +5051,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
+
 async function abrirModalRankingOrden(modo = 'capacidad') {
     precargarAvataresComunidad();
     const body = document.getElementById('ranking-modal-body');
@@ -4626,11 +5080,10 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             .select('nombre, puntaje')
             .eq('juego', modo)
             .order('puntaje', { ascending: false })
-            .limit(200);
+            .limit(500);
 
         if (error) throw error;
 
-        // 🧹 Agrupamos por jugador para que cada usuario figure una sola vez con su mejor récord
         const mejorPorJugador = {};
         (rankingRaw || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
@@ -4641,9 +5094,8 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             }
         });
 
-        const ranking = Object.values(mejorPorJugador)
-            .sort((a, b) => b.puntaje - a.puntaje)
-            .slice(0, 10);
+        const todosOrdenados = Object.values(mejorPorJugador).sort((a, b) => b.puntaje - a.puntaje);
+        const ranking = todosOrdenados.slice(0, 50); // ⚡ TOP 50
 
         let recordReal = 0;
         const miEmail = u && u.email ? u.email : '';
@@ -4658,9 +5110,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                 .order('puntaje', { ascending: false })
                 .limit(1);
 
-            if (filaPorEmail && filaPorEmail.length > 0) {
-                recordReal = filaPorEmail[0].puntaje || 0;
-            }
+            if (filaPorEmail && filaPorEmail.length > 0) recordReal = filaPorEmail[0].puntaje || 0;
         }
 
         if (!recordReal && miApodo) {
@@ -4672,25 +5122,19 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                 .order('puntaje', { ascending: false })
                 .limit(1);
 
-            if (filaPorNombre && filaPorNombre.length > 0) {
-                recordReal = filaPorNombre[0].puntaje || 0;
-            }
+            if (filaPorNombre && filaPorNombre.length > 0) recordReal = filaPorNombre[0].puntaje || 0;
         }
 
         const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
-
-        const miIdx = (ranking || []).findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
-        const textoPosicion = miIdx !== -1 ? `#${miIdx + 1}` : (recordReal > 0 ? '+10' : 'Sin clasif.');
+        const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
+        const textoPosicion = miPuestoIdx !== -1 ? `#${miPuestoIdx + 1}` : (recordReal > 0 ? '+50' : 'Sin clasif.');
 
         let cantPartidas = userStats['partidas_' + modo] || 0;
         if (supabaseClient) {
             try {
                 let qPartidas = supabaseClient.from('ranking').select('*', { count: 'exact', head: true }).eq('juego', modo);
-                if (miEmail) {
-                    qPartidas = qPartidas.eq('email', miEmail);
-                } else if (miApodo) {
-                    qPartidas = qPartidas.ilike('nombre', miApodo);
-                }
+                if (miEmail) qPartidas = qPartidas.eq('email', miEmail);
+                else if (miApodo) qPartidas = qPartidas.ilike('nombre', miApodo);
                 const { count: partidasDb } = await qPartidas;
                 if (partidasDb !== null && partidasDb > cantPartidas) {
                     cantPartidas = partidasDb;
@@ -4705,7 +5149,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             fallback: 'capacidad.png',
             glowClass: 'glow-gold',
             badgeImg: 'capacidad.jpg',
-            badgeTitle: 'Top 10 Global',
+            badgeTitle: 'Top 50 Global',
             badgeSub: 'Capacidad',
             badgeColor: '#fbbf24',
             pill1Label: 'TU RÉCORD',
@@ -4722,7 +5166,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             fallback: 'antiguedad.png',
             glowClass: 'glow-blue',
             badgeImg: 'antiguedad.jpg',
-            badgeTitle: 'Top 10 Global',
+            badgeTitle: 'Top 50 Global',
             badgeSub: 'Antigüedad',
             badgeColor: '#a78bfa',
             pill1Label: 'TU RÉCORD',
@@ -4742,7 +5186,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
         ];
 
-        let htmlContenido = `<div class="liga-table-card">`;
+        let htmlContenido = `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
         if (!ranking || !ranking.length) {
             htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:36px 20px;font-size:0.85rem;">Aún no hay récords registrados en este modo.</p>`;
         } else {
@@ -4753,7 +5197,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
 
                 htmlContenido += `
                 <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                    <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                    <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
                         ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
                     </span>
                     <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
@@ -4762,6 +5206,21 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                 </div>`;
             });
         }
+        htmlContenido += '</div>';
+
+        // 📌 FILA ANCLADA (STICKY) SI ESTÁS FUERA DEL TOP 50
+        if (miPuestoIdx >= 50 && recordReal > 0) {
+            htmlContenido += `
+            <div class="liga-row-item sticky-user-row es-propio">
+                <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
+                    <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                </span>
+                <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                    ${recordReal.toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
+                </span>
+            </div>`;
+        }
+
         htmlContenido += '</div>';
 
         body.innerHTML = `
@@ -4815,6 +5274,12 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                         <span class="badge-sep">·</span>
                         <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
                     </div>
+
+                    <!-- 🔍 BUSCADOR EN VIVO DE JUGADORES -->
+                    <div class="ranking-search-box">
+                        <i class="ph-bold ph-magnifying-glass"></i>
+                        <input type="text" class="ranking-search-input" placeholder="Buscar jugador..." oninput="filtrarJugadoresRanking(this.value)">
+                    </div>
                 </div>
                 ${htmlContenido}
             </div>
@@ -4825,6 +5290,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         body.innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger-color);"><i class="ph-duotone ph-warning-circle" style="font-size:3rem;"></i><br><br><b>Error de conexión con la base de datos</b></div>`;
     }
 }
+
 function abrirModalOrden() {
     const modal = document.getElementById('order-modal');
     const body = document.getElementById('order-modal-body');
@@ -5278,8 +5744,6 @@ window.cambiarAvatarPaso = function(direccion) {
     actualizarAvatarLive();
 };
 
-let ultimoNivelRenderizadoAvatares = null;
-
 window.abrirModalSelectorAvatar = function() {
     const m = document.getElementById('avatar-selector-modal');
     if (!m) return;
@@ -5305,22 +5769,9 @@ function renderizarAvataresGrid() {
         subInfo.innerHTML = `Tu rango: <b>Nivel ${miNivel}</b> · Desbloqueados: <b style="color:var(--accent-color);">${desbloqueadosCount} / ${AVATARES_LISTA.length}</b>`;
     }
 
-    // ⚡ CACHÉ EN DOM: Si la grilla ya existe y el nivel no cambió, solo actualiza la carta seleccionada al instante
-    if (container.children.length > 0 && ultimoNivelRenderizadoAvatares === miNivel) {
-        container.querySelectorAll('.avatar-grid-card').forEach(card => {
-            const cardId = card.getAttribute('data-avatar-id');
-            card.classList.toggle('selected', cardId === actual);
-        });
-        return;
-    }
-
-    ultimoNivelRenderizadoAvatares = miNivel;
-
-    // 🚀 RENDER INTELIGENTE: Las primeras 12 cargan al instante con prioridad alta, las demás bajo demanda al scrollear
-    container.innerHTML = AVATARES_LISTA.map((item, idx) => {
+    container.innerHTML = AVATARES_LISTA.map(item => {
         const isSel = item.id === actual;
         const isLocked = miNivel < item.nivel;
-        const esPrioritario = idx < 12;
         
         let overlayHTML = '';
         if (isLocked) {
@@ -5333,15 +5784,9 @@ function renderizarAvataresGrid() {
 
         return `
         <div class="avatar-grid-card ${isSel ? 'selected' : ''} ${isLocked ? 'locked' : 'unlocked'}" 
-             data-avatar-id="${item.id}"
              onclick="seleccionarAvatarDirecto('${item.id}', ${item.nivel})">
             <div class="avatar-grid-img-wrap">
-                <img src="${item.id}" 
-                     alt="${item.label}" 
-                     class="${isLocked ? 'avatar-locked-blur' : ''}" 
-                     decoding="async" 
-                     loading="${esPrioritario ? 'eager' : 'lazy'}" 
-                     ${esPrioritario ? 'fetchpriority="high"' : ''}>
+                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" decoding="async" loading="eager">
                 ${overlayHTML}
             </div>
             <span>${item.label}</span>
@@ -5439,12 +5884,10 @@ const FORMACIONES_TACTICAS = {
 };
 
 let formacionTacticaActual = '4-3-3';
-let posicionNodoIdx = null;
 
 window.cambiarFormacionTactica = function(fKey) {
     if (!FORMACIONES_TACTICAS[fKey]) return;
     formacionTacticaActual = fKey;
-    posicionNodoIdx = null;
     renderizarCanchaTactica();
 };
 
@@ -5456,19 +5899,11 @@ window.renderizarCanchaTactica = function() {
     const f = FORMACIONES_TACTICAS[formacionTacticaActual] || FORMACIONES_TACTICAS['4-3-3'];
     const posActual = document.getElementById('avatar-pos-input')?.value || 'DC';
 
-    // Si es DT ningún nodo de campo se enciende; si es jugador y no hay índice específico o cambió de posición, toma el primer índice correspondiente
-    if (posActual === 'DT') {
-        posicionNodoIdx = null;
-    } else if (posicionNodoIdx === null || !f.posiciones[posicionNodoIdx] || f.posiciones[posicionNodoIdx].pos !== posActual) {
-        const idxCoincidente = f.posiciones.findIndex(p => p.pos === posActual);
-        posicionNodoIdx = idxCoincidente !== -1 ? idxCoincidente : 0;
-    }
-
     tabs.forEach(t => t.classList.toggle('active', t.dataset.form === formacionTacticaActual));
 
-    container.innerHTML = f.posiciones.map((item, idx) => {
-        const isSel = (posActual !== 'DT') && (idx === posicionNodoIdx);
-        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}', ${idx})">${item.pos}</button>`;
+    container.innerHTML = f.posiciones.map(item => {
+        const isSel = item.pos === posActual;
+        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}')">${item.pos}</button>`;
     }).join('');
 
     const dtBtn = document.querySelector('.dt-node');
@@ -5485,7 +5920,7 @@ window.togglePitchPicker = function(el) {
     }
 };
 
-window.seleccionarPosicionCancha = function(pos, idx = null) {
+window.seleccionarPosicionCancha = function(pos) {
     const input = document.getElementById('avatar-pos-input');
     const label = document.getElementById('pitch-pos-selected-name');
     const headerPreview = document.getElementById('pitch-header-preview');
@@ -5494,11 +5929,7 @@ window.seleccionarPosicionCancha = function(pos, idx = null) {
     if (label) label.textContent = textoCompleto;
     if (headerPreview) headerPreview.textContent = pos;
 
-    if (pos === 'DT') {
-        posicionNodoIdx = null;
-    } else if (idx !== null) {
-        posicionNodoIdx = idx;
-    } else {
+    if (pos !== 'DT') {
         const actual = FORMACIONES_TACTICAS[formacionTacticaActual];
         const estaEnActual = actual && actual.posiciones.some(p => p.pos === pos);
         if (!estaEnActual) {
@@ -5509,9 +5940,6 @@ window.seleccionarPosicionCancha = function(pos, idx = null) {
                 }
             }
         }
-        const f = FORMACIONES_TACTICAS[formacionTacticaActual];
-        const idxEncontrado = f.posiciones.findIndex(p => p.pos === pos);
-        posicionNodoIdx = idxEncontrado !== -1 ? idxEncontrado : 0;
     }
 
     renderizarCanchaTactica();
@@ -6315,6 +6743,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     try { await indexarCatalogoMasivo(); } catch(e) { console.warn(e); }
 
     setTimeout(() => verificarPremiosPendientes(), 1200);
+    setTimeout(() => verificarInvitacionesLigaPendientes(), 1600);
 
     const lastGid = localStorage.getItem('ev_last_gid');
     if (lastGid) {
@@ -6327,12 +6756,15 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     guardarStats();
 
-    // 👇 ESCANEO DE LINK: Revisa si alguien nos mandó un link de sala privada
+    // 👇 ESCANEO DE LINK: Revisa si alguien nos mandó un link de sala privada o de liga
     const urlParams = new URLSearchParams(window.location.search);
     const salaPrivadaId = urlParams.get('sala');
+    const ligaParamId = urlParams.get('liga');
     if (salaPrivadaId) {
         versusLigaOrigen = null;
         unirseSalaPrivada(salaPrivadaId);
+    } else if (ligaParamId) {
+        unirseALigaPorLink(ligaParamId);
     }
 });
 
@@ -6734,7 +7166,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         </button>
     </div>`;
 
-    let htmlContenido = `<div class="liga-table-card">`;
+    let htmlContenido = `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
 
     if (!lista || lista.length === 0) {
         htmlContenido += `
@@ -6781,7 +7213,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
             htmlContenido += `
             <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                <span style="font-weight:700; display:flex; align-items:center; gap:8px;">
+                <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
                     ${med} ${obtenerAvatarCirculoHTML(nombreRival)} ${sanitizarHTML(nombreRival)} ${indicadorOnline}
                 </span>
                 <span style="display:flex; align-items:center; gap:12px;">
@@ -6792,7 +7224,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         });
     }
 
-    htmlContenido += `</div>`;
+    htmlContenido += `</div></div>`;
 
     body.innerHTML = `
     <div class="ranking-split-grid">
@@ -6845,9 +7277,18 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                     <span class="badge-sep">·</span>
                     <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
                 </div>
+
+                <!-- 🔍 BUSCADOR EN VIVO DE INTEGRANTES -->
+                <div class="ranking-search-box">
+                    <i class="ph-bold ph-magnifying-glass"></i>
+                    <input type="text" class="ranking-search-input" placeholder="Buscar en la liga..." oninput="filtrarJugadoresRanking(this.value)">
+                </div>
             </div>
             ${htmlContenido}
-            <div style="width: 100%; display: flex; justify-content: center; margin-top: 16px; margin-bottom: 6px;">
+            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 16px; margin-bottom: 6px;">
+                <button onclick="compartirLinkLiga('${sanitizarHTML(nombreVisualLiga)}')" class="btn-invitar-liga">
+                    <i class="ph-bold ph-share-network"></i> Invitar a mi liga
+                </button>
                 <button onclick="salirLigaAmigos()" class="btn-salir-liga">
                     <i class="ph-bold ph-sign-out"></i> SALIR DE LA LIGA
                 </button>
@@ -6905,7 +7346,7 @@ window.cambiarVistaLiga = async function(vista) {
 
         cacheTriunfosLiga = Object.values(statsLiga)
             .sort((a, b) => b.triunfos - a.triunfos) // El que tiene más victorias va primero
-            .slice(0, 15);
+            .slice(0, 50);
 
         vistaLigaActual = 'triunfos';
         renderizarCuerpoLiga(cacheTriunfosLiga, nombreLigaActivaCache, miNombreRankingLiga, 'triunfos');
@@ -7064,7 +7505,7 @@ async function abrirModalLigaAmigosPrivada() {
 
         cacheTop15Ligas = Object.values(mejorPorIntegrante)
             .sort((a, b) => b.puntaje - a.puntaje)
-            .slice(0, 15);
+            .slice(0, 50);
 
         renderizarCuerpoLiga(cacheTop15Ligas, nombreLiga, miNombreRankingLiga, 'puntaje');
     } catch (e) {

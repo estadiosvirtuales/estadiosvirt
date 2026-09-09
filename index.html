@@ -784,6 +784,13 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <div id="ranking-modal-body"></div>
 </div>
 </div>
+<!-- 🔍 MODAL INSPECCIONAR CARTA Y PERFIL DE RIVAL -->
+<div id="inspect-profile-modal" class="modal-overlay" style="display:none; z-index:10030;" onclick="cerrarModalInspeccionarRival()">
+    <div class="modal-content inspect-modal-box" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="cerrarModalInspeccionarRival()"><i class="ph-bold ph-x"></i></button>
+        <div id="inspect-profile-body"></div>
+    </div>
+</div>
 <div id="liga-amigos-modal" class="modal-overlay" onclick="cerrarModalLigaAmigosPrivada()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <button class="close-btn" onclick="cerrarModalLigaAmigosPrivada()"><i class="ph-bold ph-x"></i></button>
