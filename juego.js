@@ -2069,12 +2069,22 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                 }
             }
 
-            if (datosRival.partidasGanadas === 0) {
-                const { count } = await supabaseClient
-                    .from('victorias_versus')
-                    .select('*', { count: 'exact', head: true })
-                    .ilike('nombre', n);
-                if (count) datosRival.partidasGanadas = count;
+            // 🎯 Verdad única: consultamos SIEMPRE las victorias oficiales en la tabla victorias_versus
+            const { count: victoriasReales } = await supabaseClient
+                .from('victorias_versus')
+                .select('*', { count: 'exact', head: true })
+                .ilike('nombre', n);
+
+            if (victoriasReales !== null && victoriasReales !== undefined) {
+                datosRival.partidasGanadas = victoriasReales;
+            }
+
+            // Si estás inspeccionando tu propia carta, saneamos el almacenamiento local del teléfono
+            const uActual = obtenerUsuarioLogueado();
+            const miNickActual = (getPref('ev_custom_nick', '') || (uActual ? uActual.name.split(' ')[0] : '')).trim().toLowerCase();
+            if (n.toLowerCase() === miNickActual && victoriasReales !== null && victoriasReales !== undefined) {
+                userStats.partidasGanadas = victoriasReales;
+                guardarStats();
             }
         } catch (e) {
             console.warn("Aviso al cargar perfil de rival:", e);
