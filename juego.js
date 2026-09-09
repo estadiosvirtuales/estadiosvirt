@@ -4856,6 +4856,15 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const ranking = (rankingCompleto || []).slice(0, 50); // ⚡ TOP 50
             const miPuestoIdx = (rankingCompleto || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
 
+            // 🎯 Sincronización: si estás en el ranking, toma las victorias oficiales de la nube
+            const victoriasReales = miPuestoIdx !== -1 
+                ? Number(rankingCompleto[miPuestoIdx].victorias_acumuladas) 
+                : (userStats.partidasGanadas || 0);
+
+            // Ajustamos las jugadas para que el ratio nunca supere el 100%
+            const jugadasReales = Math.max(victoriasReales, userStats.partidasJugadas || 0);
+            const ratioReal = jugadasReales > 0 ? Math.round((victoriasReales / jugadasReales) * 100) : 0;
+
             headerConfig = {
                 img: 'ranking-icon-1v1.png',
                 glowClass: 'glow-blue',
@@ -4864,13 +4873,13 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 badgeSub: '1 vs 1 Histórico',
                 badgeColor: '#2979ff',
                 pill1Label: 'VICTORIAS',
-                pill1Val: `${userStats.partidasGanadas || 0} PG`,
+                pill1Val: `${victoriasReales} PG`,
                 pill1Icon: 'ph-sword',
                 pill2Label: 'RATIO 1V1',
-                pill2Val: userStats.partidasJugadas ? `${Math.round(((userStats.partidasGanadas || 0) / userStats.partidasJugadas) * 100)}% W/L` : '0% W/L',
+                pill2Val: `${ratioReal}% W/L`,
                 pill2Icon: 'ph-chart-line-up',
                 pill3Label: 'DUELOS',
-                pill3Val: `${userStats.partidasJugadas || 0} Jugados`,
+                pill3Val: `${jugadasReales} Jugados`,
                 pill3Icon: 'ph-users-three'
             };
 
