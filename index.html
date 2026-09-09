@@ -128,6 +128,13 @@
     border-color: transparent transparent #ffffff transparent !important;
 }
 </style>
+<!-- Configuración PWA / Modo App Nativa -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#090e15">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Estadios Virt.">
+    <link rel="apple-touch-icon" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png">
 </head>
 <body>
 <div class="toast-container" id="toast-container"></div>
@@ -913,5 +920,15 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <i class="ph-duotone ph-chat-centered-text"></i>
     </button>
 </div>
+<!-- Registro del Service Worker PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('📱 PWA lista y registrada. Ámbito:', reg.scope))
+            .catch(err => console.warn('Aviso Service Worker PWA:', err));
+        });
+      }
+    </script>
 </body>
 </html>
