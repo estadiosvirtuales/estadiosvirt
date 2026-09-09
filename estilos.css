@@ -35,7 +35,13 @@
   
   --pitch-line: rgba(0, 204, 102, 0.06);
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent !important;
+}
 html {
     height: 100%;
 }
@@ -45,6 +51,24 @@ html, body {
     width: 100% !important;
     max-width: 100vw !important;
     position: relative;
+    /* 🚀 Optimización PWA / Móvil: evita tirón de recarga y elimina delay táctil */
+    overscroll-behavior-y: contain;
+    touch-action: manipulation;
+}
+
+/* Respuesta táctil instantánea y sin selección accidental de texto */
+button, .btn-3d, .card, .pitch-pos-node, .theme-dot, .logro-card-v2, .escudo-card-item {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Aceleración por GPU para modales y elementos flotantes */
+.modal-overlay, .fut-card, .trivia-balloon, #guessr-floating-map-box, #matchmaking-lobby {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
 }
 body {
     min-height: 100dvh;
@@ -708,7 +732,7 @@ body > * {
 .tab[data-gid="879164460"] .tab-bg{background:linear-gradient(135deg,#1a3a6b 0%,#6b1a1a 25%,#1a6b3a 50%,#6b6b1a 75%,#1a3a6b 100%)}
 .tab[data-gid="879164460"] .tab-swatch{background:conic-gradient(#e63946 0%,#457b9d 25%,#2a9d8f 50%,#e9c46a 75%,#e63946 100%)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;flex:1}
-.card{background:var(--card-bg);border-radius:20px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease;cursor:pointer;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.card{background:var(--card-bg);border-radius:20px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease;cursor:pointer;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 4px 20px rgba(0,0,0,.3);content-visibility:auto;contain-intrinsic-size:320px}
 .card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px var(--accent-color)}
 .estadio-foto-container{width:100%;height:190px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:28px;transition:filter .3s}
 .estadio-foto-container::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,20,.9) 0%,rgba(0,0,0,.05) 60%);z-index:1}
