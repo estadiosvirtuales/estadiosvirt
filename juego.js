@@ -3691,7 +3691,7 @@ function iniciarCuentaRegresivaVersus() {
 }
 
 // Procesa el click de confirmación local en el modo Versus
-function confirmarArriesgoLocalVersus() {
+async function confirmarArriesgoLocalVersus() {
     try {
         if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
         if (versusTimerInterval) clearInterval(versusTimerInterval);
@@ -3705,11 +3705,43 @@ function confirmarArriesgoLocalVersus() {
             guessrSelectedLatLng = { lat: 0, lng: 0 };
         }
 
-        const tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
-        const tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
-        
-        const dist = calcularDistanciaHaversine(guessrSelectedLatLng.lat, guessrSelectedLatLng.lng, tLat, tLng);
-        const pts = isNaN(dist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -dist / 1200)));
+        let tLat = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Latitud')).trim().replace(',', '.'));
+        let tLng = parseFloat(String(bscarPropiedad(guessrEstadioCorrecto, 'Longitud')).trim().replace(',', '.'));
+        let dist = 0;
+        let pts = 0;
+
+        const nombreEstadio = bscarPropiedad(guessrEstadioCorrecto, 'Estadio');
+        const latUsuario = guessrSelectedLatLng.lat;
+        const lngUsuario = guessrSelectedLatLng.lng;
+
+        // 🛡️ Validación en servidor por RPC
+        if (supabaseClient) {
+            try {
+                const { data: resCalculo, error } = await supabaseClient.rpc('calcular_puntaje_tiro', {
+                    p_estadio: nombreEstadio,
+                    p_lat: latUsuario,
+                    p_lng: lngUsuario
+                });
+
+                if (!error && resCalculo) {
+                    dist = resCalculo.distancia;
+                    pts = resCalculo.puntos;
+                    if (resCalculo.lat_real && resCalculo.lng_real) {
+                        tLat = resCalculo.lat_real;
+                        tLng = resCalculo.lng_real;
+                    }
+                } else {
+                    dist = calcularDistanciaHaversine(latUsuario, lngUsuario, tLat, tLng);
+                    pts = isNaN(dist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -dist / 1200)));
+                }
+            } catch (e) {
+                dist = calcularDistanciaHaversine(latUsuario, lngUsuario, tLat, tLng);
+                pts = isNaN(dist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -dist / 1200)));
+            }
+        } else {
+            dist = calcularDistanciaHaversine(latUsuario, lngUsuario, tLat, tLng);
+            pts = isNaN(dist) ? 0 : Math.max(0, Math.round(5000 * Math.pow(Math.E, -dist / 1200)));
+        }
 
         miGuessConfirmado = true;
 
@@ -4308,9 +4340,9 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
     }
 }
 
-function procesarArriesgoGuessr(){
+async function procesarArriesgoGuessr(){
 if (esModoVersus) {
-    confirmarArriesgoLocalVersus();
+    await confirmarArriesgoLocalVersus();
     return;
 }
 if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(true);
@@ -4318,9 +4350,43 @@ if (typeof toggleExpandirMapaGuessr === 'function') toggleExpandirMapaGuessr(tru
 const btn=document.getElementById('game-action-btn');if(btn.getAttribute('data-estado')==='procesando'||btn.getAttribute('data-estado')==='resultado')return;btn.setAttribute('data-estado','procesando');btn.disabled=true;
 if (guessrTimerIndividualInterval) clearInterval(guessrTimerIndividualInterval);
 
-const tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
-const dist=calcularDistanciaHaversine(guessrSelectedLatLng.lat,guessrSelectedLatLng.lng,tLat,tLng);
-const pts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
+let tLat=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Latitud')).trim().replace(',','.')),tLng=parseFloat(String(bscarPropiedad(guessrEstadioCorrecto,'Longitud')).trim().replace(',','.'));
+let dist = 0;
+let pts = 0;
+
+const nombreEstadio = bscarPropiedad(guessrEstadioCorrecto, 'Estadio');
+const latUsuario = guessrSelectedLatLng ? guessrSelectedLatLng.lat : 0;
+const lngUsuario = guessrSelectedLatLng ? guessrSelectedLatLng.lng : 0;
+
+// 🛡️ Validación en servidor por RPC
+if (supabaseClient) {
+    try {
+        const { data: resCalculo, error } = await supabaseClient.rpc('calcular_puntaje_tiro', {
+            p_estadio: nombreEstadio,
+            p_lat: latUsuario,
+            p_lng: lngUsuario
+        });
+
+        if (!error && resCalculo) {
+            dist = resCalculo.distancia;
+            pts = resCalculo.puntos;
+            if (resCalculo.lat_real && resCalculo.lng_real) {
+                tLat = resCalculo.lat_real;
+                tLng = resCalculo.lng_real;
+            }
+        } else {
+            dist = calcularDistanciaHaversine(latUsuario, lngUsuario, tLat, tLng);
+            pts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
+        }
+    } catch (e) {
+        dist = calcularDistanciaHaversine(latUsuario, lngUsuario, tLat, tLng);
+        pts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
+    }
+} else {
+    dist = calcularDistanciaHaversine(latUsuario, lngUsuario, tLat, tLng);
+    pts = isNaN(dist)?0:Math.max(0,Math.round(5000*Math.pow(Math.E,-dist/1200)));
+}
+
 guessrPuntosTotales += pts;
 guessrHistorialRondas.push({
     ronda: guessrRondaActual,
