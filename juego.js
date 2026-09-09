@@ -7266,7 +7266,32 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         });
     }
 
-    htmlContenido += `</div></div>`;
+    htmlContenido += `</div>`;
+
+    // 📌 FILA ANCLADA (STICKY) EN LIGA SI ESTÁS FUERA DEL TOP 50
+    const miPuestoLigaIdx = (lista || []).findIndex(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
+    if (miPuestoLigaIdx >= 50 && miFila) {
+        let bloquePuntosSticky = "";
+        if (tipoVista === 'triunfos') {
+            bloquePuntosSticky = `<div style="display:flex; align-items:center; gap:6px;">
+                                    <strong style="color:#00e676; font-weight:900;">${miFila.triunfos || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">W</span></strong>
+                                    <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
+                                    <strong style="color:#ff4757; font-weight:900;">${miFila.derrotas || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">L</span></strong>
+                                  </div>`;
+        } else {
+            bloquePuntosSticky = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${(miFila.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
+        }
+
+        htmlContenido += `
+        <div class="liga-row-item sticky-user-row es-propio">
+            <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
+                <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
+            </span>
+            <span>${bloquePuntosSticky}</span>
+        </div>`;
+    }
+
+    htmlContenido += `</div>`;
 
     body.innerHTML = `
     <div class="ranking-split-grid">
