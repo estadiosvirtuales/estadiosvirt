@@ -8914,14 +8914,14 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 .btn-inspect-invite-liga {
     width: auto;
-    max-width: 240px;
-    height: 34px;
-    min-height: 34px;
-    margin: 10px auto 0 auto;
-    padding: 0 14px;
-    font-size: 0.72rem;
+    max-width: 340px;
+    min-height: 38px;
+    margin: 12px auto 0 auto;
+    padding: 8px 18px;
+    font-size: 0.76rem;
     font-weight: 900;
     letter-spacing: 0.3px;
+    line-height: 1.2;
     border-radius: 12px;
     background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(14, 28, 44, 0.95) 100%) !important;
     border: 1.5px solid var(--accent-color) !important;
@@ -8931,13 +8931,11 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 12px var(--accent-glow) !important;
     transition: all 0.22s ease !important;
     box-sizing: border-box;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .btn-inspect-invite-liga:hover {
