@@ -4551,7 +4551,7 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML = `
-    <div style="text-align:center; padding:44px 14px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background:var(--bg-color);">
+    <div style="text-align:center; padding:44px 14px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.18) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.08) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <h2 style="font-size:1.35rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
         <p style="color:var(--text-muted); margin-bottom:10px; font-size:.82rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
