@@ -7745,34 +7745,20 @@ function abrirModalPrivacyDirecto() {
         if (btn) btn.disabled = false;
     }
 }
+const FALLBACK_PIXEL_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
 async function urlABase64Seguro(url) {
-    if (!url || typeof url !== 'string') return url || '';
+    if (!url || typeof url !== 'string') return FALLBACK_PIXEL_BASE64;
     if (url.startsWith('data:image')) return url;
 
     let absUrl;
     try {
         absUrl = new URL(url, window.location.href).href;
     } catch (err) {
-        return url;
+        return FALLBACK_PIXEL_BASE64;
     }
 
-    // 1. Extracción directa y sincrónica desde memoria de pantalla si la imagen ya está visible
-    const domImg = Array.from(document.images).find(i => i.src === absUrl && i.complete && i.naturalWidth > 0);
-    if (domImg) {
-        try {
-            const canvas = document.createElement('canvas');
-            canvas.width = domImg.naturalWidth || 300;
-            canvas.height = domImg.naturalHeight || 300;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(domImg, 0, 0);
-            const dataUri = canvas.toDataURL('image/png');
-            if (dataUri && dataUri.startsWith('data:image/png')) {
-                return dataUri;
-            }
-        } catch (e) {}
-    }
-
-    // 2. Fetch directo (mismo origen o con cabeceras CORS válidas)
+    // 1. Fetch directo (mismo origen o con cabeceras CORS válidas)
     try {
         const res = await fetch(absUrl, { mode: 'cors' });
         if (res.ok) {
@@ -7789,7 +7775,7 @@ async function urlABase64Seguro(url) {
         }
     } catch (e) {}
 
-    // 3. Fallback por Proxy CORS si la imagen viene de un dominio externo
+    // 2. Fallback por Proxy CORS si la imagen viene de un dominio externo
     if (absUrl.startsWith('http')) {
         try {
             const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
@@ -7809,8 +7795,7 @@ async function urlABase64Seguro(url) {
         } catch (e) {}
     }
 
-    // 🛡️ Si la descarga directa falla, conservamos la URL original en vez de reemplazarla por un pixel vacío
-    return absUrl;
+    return FALLBACK_PIXEL_BASE64;
 }
 
 async function compartirCartaFUT() {
@@ -7831,10 +7816,10 @@ async function compartirCartaFUT() {
     const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
 
-    // 1. Ubicación fuera de pantalla con z-index positivo para que Safari iOS no descarte texturas
+    // 1. Contenedor anclado a (0,0) detrás de la interfaz para captura exacta sin desfasajes
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
-    poster.style.cssText = 'position: fixed; left: -9999px; top: 0; width: 450px; height: 800px; z-index: 1; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
+    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
     const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png', window.location.href).href;
     const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.png', window.location.href).href;
@@ -7893,23 +7878,16 @@ async function compartirCartaFUT() {
 
     document.body.appendChild(poster);
 
-    // Clon de la carta FUT con limpieza de máscaras WebKit
+    // Clon de la carta FUT
     const cardClone = cardElement.cloneNode(true);
     cardClone.id = "fut-card-clone";
     cardClone.style.transform = 'scale(1.16)';
     cardClone.style.transformOrigin = 'center center';
     cardClone.style.margin = '0';
-
-    // 🍏 BLINDAJE SAFARI: Remueve máscaras que tornan invisible el rostro del jugador en foreignObject
-    cardClone.querySelectorAll('.ac-avatar-full').forEach(el => {
-        el.style.webkitMaskImage = 'none';
-        el.style.maskImage = 'none';
-    });
-
     poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
 
     try {
-        // Conversión a Base64 y precarga de todas las imágenes
+        // Conversión a Base64 de todas las imágenes
         const allImages = Array.from(poster.querySelectorAll('img'));
         await Promise.all(allImages.map(async (img) => {
             const rawSrc = img.getAttribute('src') || img.src;
@@ -7930,19 +7908,13 @@ async function compartirCartaFUT() {
 
         await new Promise(r => setTimeout(r, 200));
 
-        const opcionesRender = {
+        const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
             pixelRatio: 2.2,
             backgroundColor: '#090e15',
             width: 450,
             height: 800
-        };
-
-        // 🍏 RESOLUCIÓN SAFARI WEBKIT (Issue #361): Doble ejecución para forzar decodificación de texturas en GPU
-        await htmlToImage.toJpeg(poster, { ...opcionesRender, quality: 0.1, pixelRatio: 1 });
-        await new Promise(r => setTimeout(r, 200));
-
-        const dataUrl = await htmlToImage.toJpeg(poster, opcionesRender);
+        });
 
         poster.remove();
 
