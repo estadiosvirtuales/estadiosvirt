@@ -6742,70 +6742,31 @@ async function inicializarSupabaseSeguro() {
 function precargarImagenesUI() {
     const URL_ESCUDOS_BASE = 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/';
 
-    // 1. Prioridad 1: Portada, Minijuegos, Modales y Estadios Hero
+    // Solo precargamos lo indispensable de la portada de inicio
     const uiEsencial = [
-        URL_ESCUDOS_BASE + 'baul.png',
         URL_ESCUDOS_BASE + 'Logo.png',
-        URL_ESCUDOS_BASE + 'BOMBONERA.png',
-        URL_ESCUDOS_BASE + 'MARACANA.png',
-        URL_ESCUDOS_BASE + 'GENERICO.png',
+        URL_ESCUDOS_BASE + 'baul.png',
         'mundo.png', 'podio.png', 'avion.png', 'catalogo.png',
-        'capacidad.png', 'antiguedad.png',
-        'liga-trofeo-header.png', 'medalla-oro.png', 'medalla-plata.png', 'medalla-bronce.png',
-        'ranking-icon-solo.png', 'ranking-icon-1v1.png', 'ranking-icon-semanal.png',
-        'liga-icon-puntaje.png', 'liga-icon-historial.png',
-        'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-liga.png', 'icono-ranking.png'
+        'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-ranking.png'
     ];
 
-    // 2. Prioridad 2: Niveles, Vitrina de Logros, Panel de Edición y los 57 Avatares
-    const niveles = [
-        'pelota.png', 'precision.png', 'estrella.png', 'medalla.png', 'trofeo.png',
-        'coronaoro.png', 'fuego.png', 'rayo.png', 'diamante.png', 'estrellaplata.png', 'cohete.png'
-    ];
-
-    const logros = [
-        'catador.png', 'curioso.png', 'piloto.png', 'explorador.png', 'aventurero.png',
-        'constante.png', 'record.png', 'acumulador.png', 'dominante.png', 'primer-despegue.png',
-        'identidad.png', 'bautismo-de-fuego.png', 'gps-humano.png', 'ojo-de-aguila.png',
-        'perfeccionista.png', 'estratega.png'
-    ];
-
-    const personalizacion = [
-        'personaliza-tu-carta.png', 'diseño-de-la-carta.png', 'selecciona-tu-jugador.png',
-        'posicion.png', 'apodo.png', 'guardar-cambios.png'
-    ];
-
-    const avatares = Array.from({ length: 63 }, (_, i) => `${i + 1}.png`);
-
-    // Descarga inmediata de la UI esencial
     uiEsencial.forEach(src => {
         const img = new Image();
         img.src = src;
     });
 
-    // Descarga fluida de elementos secundarios y todos los escudos
-    const ejecutarColaCompleta = () => {
-        const colaSecundaria = [...niveles, ...logros, ...personalizacion, ...avatares];
-        colaSecundaria.forEach(src => {
+    // Postergamos avatares y escudos para cuando el usuario lleve 6 segundos en la web y NO esté jugando
+    const postergarColaPesada = () => {
+        if (document.body.classList.contains('video-abierto')) return; // Si ya está jugando, no le robamos ancho de banda
+
+        const avatares = Array.from({ length: 63 }, (_, i) => `${i + 1}.png`);
+        avatares.forEach(src => {
             const img = new Image();
             img.src = src;
         });
-
-        if (typeof ESCUDOS_MAP !== 'undefined') {
-            Object.values(ESCUDOS_MAP).forEach(url => {
-                if (url && typeof url === 'string') {
-                    const img = new Image();
-                    img.src = url;
-                }
-            });
-        }
     };
 
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(ejecutarColaCompleta);
-    } else {
-        setTimeout(ejecutarColaCompleta, 300);
-    }
+    setTimeout(postergarColaPesada, 6000);
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
