@@ -7805,7 +7805,7 @@ async function compartirCartaFUT() {
         return;
     }
 
-    showToast("Generando póster 9:16... 🎨", "ph-hourglass", "info");
+    showToast("Preparando tu carta", "ph-hourglass", "info");
 
     const nivelIdx = calcularNivelIdx(userStats.xpTotal);
     const nivel = NIVELES[nivelIdx];
