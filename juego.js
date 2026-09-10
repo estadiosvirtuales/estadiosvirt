@@ -4370,7 +4370,7 @@ async function finalizarJuegoGuessr(){
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
 
     // 👇 1. ARMAMOS LA TABLA DE DESGLOSE PARA TODOS LOS MODOS 👇
-    let histHTML=`<div style="width:100%;max-width:100%;text-align:left;margin:0 auto 20px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:16px;padding:12px 14px;box-sizing:border-box;"><h4 style="font-size:.8rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
+    let histHTML=`<div style="width:100%;max-width:100%;text-align:left;margin:0 auto 10px;background:var(--surface-color);border:2px solid var(--border-strong);border-radius:14px;padding:8px 12px;box-sizing:border-box;"><h4 style="font-size:.74rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
     
     guessrHistorialRondas.forEach(item => {
         const dT = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
@@ -4551,24 +4551,24 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML = `
-    <div style="text-align:center; padding:58px 16px 30px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background:var(--bg-color);">
-        <h2 style="font-size:1.5rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:4px; letter-spacing:-.5px;">¡Misión Completada!</h2>
-        <p style="color:var(--text-muted); margin-bottom:16px; font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+    <div style="text-align:center; padding:44px 14px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background:var(--bg-color);">
+        <h2 style="font-size:1.35rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
+        <p style="color:var(--text-muted); margin-bottom:10px; font-size:.82rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
-        <div class="result-score-ring">
-            <svg width="120" height="120" viewBox="0 0 120 120">
+        <div class="result-score-ring" style="width:84px; height:84px; margin:0 auto 10px;">
+            <svg width="84" height="84" viewBox="0 0 120 120" style="width:84px; height:84px;">
                 <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
                 <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 6px ${strokeColor});"/>
             </svg>
-            <div class="score-num"><strong style="font-size:1.6rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem; color:var(--text-muted); font-weight:700;">PUNTOS</span></div>
+            <div class="score-num"><strong style="font-size:1.15rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.60rem; color:var(--text-muted); font-weight:700; margin-top:1px;">PTS</span></div>
         </div>
         
         ${histHTML} 
-        <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:100%;">
+        <div style="display:flex; flex-direction:column; gap:8px; width:100%; max-width:100%;">
             ${cartelGuardado}
             ${botonCompartirDiario}
-            <div style="display:flex; gap:10px; margin-top:6px;">
-                <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px; height:22px; object-fit:contain;"> Ranking</button>
+            <div style="display:flex; gap:8px; margin-top:2px;">
+                <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.84rem; padding:10px;"><img src="medalla-oro.png" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking</button>
                 ${botonRejugar}
             </div>
        </div>
