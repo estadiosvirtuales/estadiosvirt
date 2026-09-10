@@ -9003,3 +9003,44 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-color: #00cc66 !important;
     color: #04160a !important;
 }
+/* 🖥️ PANTALLA FINAL SIN SCROLL EN PC (2 COLUMNAS) */
+@media (min-width: 769px) {
+    #modal-card.resultado-final-layout {
+        max-width: 760px !important;
+        width: 760px !important;
+        height: auto !important;
+        max-height: 90vh !important;
+    }
+    .endgame-grid-layout {
+        display: grid !important;
+        grid-template-columns: 1fr 1.15fr !important;
+        grid-template-areas:
+            "header list"
+            "ring   list"
+            "action list";
+        gap: 8px 24px !important;
+        align-items: center !important;
+        text-align: left !important;
+        width: 100% !important;
+        max-width: 720px !important;
+    }
+    .endgame-area-header {
+        grid-area: header;
+        text-align: center;
+    }
+    .endgame-area-ring {
+        grid-area: ring;
+        display: flex;
+        justify-content: center;
+        margin: 4px auto !important;
+    }
+    .endgame-area-action {
+        grid-area: action;
+        width: 100%;
+    }
+    .endgame-area-list {
+        grid-area: list;
+        width: 100%;
+        margin: 0 !important;
+    }
+}
