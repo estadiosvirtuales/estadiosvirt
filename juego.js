@@ -2555,7 +2555,7 @@ function abrirModalVideo(event,link,esJuego=false){
         
         // ⚡ SIN MARGEN NEGATIVO: El iframe se mantiene 100% visible para evitar el bloqueo del decodificador de Chrome Móvil
         const est="width:100%;height:100%;border:none;";
-        const mascaraHTML = esJuego ? `<div class="yt-title-mask"><img src="mundo.jpg" alt="Logo" class="yt-mask-icon" onerror="this.src='mundo.png';"><span>STADIUMGUESSR</span></div>` : '';
+        const mascaraHTML = esJuego ? `<div class="yt-title-mask"><img src="mundo.png" alt="Logo" class="yt-mask-icon"><span>STADIUMGUESSR</span></div>` : '';
         container.innerHTML=`${mascaraHTML}<iframe src="${url}" style="${est}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
         
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
@@ -4499,9 +4499,46 @@ async function finalizarJuegoGuessr(){
     pendingScore = guessrPuntosTotales;
     pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : 'guessr';
 
-    const strokeColor=guessrPuntosTotales>15000?'#00e676':guessrPuntosTotales>8000?'#ff8f00':'#ff4757',circumf=2*Math.PI*44,dashOff=circumf-(circumf*Math.min(guessrPuntosTotales,25000)/25000);
-    const nivelActual=NIVELES[calcularNivelIdx(userStats.xpTotal)];
-    const guardarBtn=`<button id="btn-guardar-guessr" onclick="guardarScoreGuessr(this)" class="btn-3d btn-endgame-save" style="padding:13px;width:100%;font-size:.95rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar en ranking</button>`;
+    // 🚀 AUTO-GUARDADO SILENCIOSO E INSTANTÁNEO EN SERVIDOR
+    const u = obtenerUsuarioLogueado();
+    let nombreParaGuardar = getPref('ev_custom_nick', '');
+    if (!nombreParaGuardar && u && u.name) {
+        nombreParaGuardar = u.name.split(' ')[0];
+    }
+    if (!nombreParaGuardar) {
+        const prefijos = ['Hincha', 'DT', 'Pibe', 'Capitan', 'Goleador'];
+        const pref = prefijos[Math.floor(Math.random() * prefijos.length)];
+        nombreParaGuardar = `${pref}_${Math.floor(100 + Math.random() * 900)}`;
+        setPref('ev_custom_nick', nombreParaGuardar);
+        renderizarBotonLogin();
+    }
+
+    const emailParaGuardar = (u && u.email) ? u.email : '';
+    enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, pendingScoreType);
+
+    if (eraRetoDiario) {
+        enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, 'guessr');
+    }
+    const ligaAmigos = localStorage.getItem('ev_codigo_liga_amigos');
+    if (ligaAmigos) {
+        enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, 'duelo_' + ligaAmigos);
+    }
+
+    const strokeColor = guessrPuntosTotales > 15000 ? '#00e676' : guessrPuntosTotales > 8000 ? '#ff8f00' : '#ff4757';
+    const circumf = 2 * Math.PI * 44;
+    const dashOff = circumf - (circumf * Math.min(guessrPuntosTotales, 25000) / 25000);
+    const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
+
+    // Placa interactiva: confirma el registro del puntaje y permite cambiar el apodo en el acto
+    const cartelGuardado = `
+    <div style="width:100%; background:linear-gradient(135deg, rgba(0,255,119,0.12) 0%, rgba(10,36,24,0.85) 100%); border:1.5px solid #00e676; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:8px; box-sizing:border-box;">
+        <span style="font-size:0.80rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+            <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1.15rem; flex-shrink:0;"></i> Récord anotado como <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreParaGuardar)}</b>
+        </span>
+        <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:6px 12px; font-size:0.72rem; height:auto; min-height:auto; flex-shrink:0; border-radius:8px;">
+            <i class="ph-bold ph-pencil-simple"></i> Cambiar
+        </button>
+    </div>`;
     
     let botonCompartirDiario = '';
     let botonRejugar = '';
@@ -4510,26 +4547,28 @@ async function finalizarJuegoGuessr(){
     if (eraRetoDiario) {
         botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     } else {
-        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
+        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
     }
     
-    container.innerHTML=`
-    <div style="text-align:center;padding:58px 16px 30px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:100%;box-sizing:border-box;background:var(--bg-color);">
-        <h2 style="font-size:1.5rem;font-weight:900;text-transform:uppercase;margin-top:0;margin-bottom:4px;letter-spacing:-.5px;">¡Misión Completada!</h2>
-        <p style="color:var(--text-muted);margin-bottom:16px;font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+    container.innerHTML = `
+    <div style="text-align:center; padding:58px 16px 30px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background:var(--bg-color);">
+        <h2 style="font-size:1.5rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:4px; letter-spacing:-.5px;">¡Misión Completada!</h2>
+        <p style="color:var(--text-muted); margin-bottom:16px; font-size:.9rem;">Reconocimiento aéreo finalizado · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
         
         <div class="result-score-ring">
             <svg width="120" height="120" viewBox="0 0 120 120">
                 <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
-                <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px ${strokeColor});"/>
+                <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 6px ${strokeColor});"/>
             </svg>
-            <div class="score-num"><strong style="font-size:1.6rem;color:${strokeColor};font-weight:900;line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem;color:var(--text-muted);font-weight:700;">PUNTOS</span></div>
+            <div class="score-num"><strong style="font-size:1.6rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales}</strong><span style="font-size:.72rem; color:var(--text-muted); font-weight:700;">PUNTOS</span></div>
         </div>
         
-        ${histHTML} <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:100%;">
-            ${guardarBtn}${botonCompartirDiario}
-            <div style="display:flex;gap:10px;margin-top:6px;">
-                <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking</button>
+        ${histHTML} 
+        <div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:100%;">
+            ${cartelGuardado}
+            ${botonCompartirDiario}
+            <div style="display:flex; gap:10px; margin-top:6px;">
+                <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px; height:22px; object-fit:contain;"> Ranking</button>
                 ${botonRejugar}
             </div>
        </div>
@@ -4543,6 +4582,31 @@ function guardarScoreGuessr(btn){
     if (!pendingScoreType) pendingScoreType = 'guessr';
     guardarScorePendiente(btn);
 }
+window.cambiarApodoDesdePantallaFinal = async function() {
+    const apodoActual = getPref('ev_custom_nick', '') || 'Invitado';
+    let nuevo = prompt("Ingresá tu apodo para el ranking:", apodoActual);
+    if (nuevo === null) return;
+    nuevo = nuevo.trim();
+    if (!nuevo) return;
+    if (nuevo.length > 16) nuevo = nuevo.substring(0, 16);
+    if (nuevo.toLowerCase() === apodoActual.toLowerCase()) return;
+
+    const disponible = await verificarApodoDisponible(nuevo);
+    if (!disponible) {
+        showToast(`El apodo "${nuevo}" ya pertenece a otro jugador 🚫`, 'ph-warning-circle', 'danger');
+        return;
+    }
+
+    const viejo = apodoActual;
+    setPref('ev_custom_nick', nuevo);
+    renderizarBotonLogin();
+
+    const lbl = document.getElementById('lbl-apodo-guardado');
+    if (lbl) lbl.textContent = nuevo;
+
+    await actualizarApodoEnTodoElSistema(viejo, nuevo);
+    showToast(`¡Récord actualizado a nombre de ${nuevo}! 🎉`, 'ph-check-circle', 'success');
+};
 function calcularDistanciaHaversine(lat1,lon1,lat2,lon2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 function compartirResultado(){const msg=`⚽ ¡Hice ${guessrPuntosTotales} puntos en StadiumGuessr | Estadios Virtuales! 🌍✈️ ¿Podés superarme?`;if(navigator.share)navigator.share({title:'StadiumGuessr',text:msg,url:location.href}).catch(()=>{});else{navigator.clipboard.writeText(`${msg} ${location.href}`).then(()=>showToast('¡Resultado copiado!')).catch(()=>showToast(`Puntaje: ${guessrPuntosTotales} pts`));}}
 
@@ -5979,7 +6043,7 @@ async function verificarApodoDisponible(apodoBuscado) {
         // 1. Verificamos en la tabla de rankings históricos (todos los modos y ligas)
         const { data: filasRanking, error: errRanking } = await supabaseClient
             .from('ranking')
-            .select('nombre, email')
+            .select('nombre')
             .ilike('nombre', apodoLimpio)
             .limit(50);
 
@@ -6966,29 +7030,10 @@ function obtenerFraseFolklore(dist) {
 // ========================================================
 function dispararJuicinessRonda(distancia) {
     const card = document.getElementById('modal-card');
-    
-    // 1. Efecto de sonido nativo usando URLs estables de assets libres
-    let sonidoUrl = "";
-    if (distancia < 15) {
-        sonidoUrl = "https://assets.mixkit.co/active_storage/sfx/2043/2043-84.wav"; // Silbato festejo / Gol
-    } else if (distancia < 600) {
-        sonidoUrl = "https://assets.mixkit.co/active_storage/sfx/2039/2043-84.wav"; // Toque seco limpio
-    } else {
-        sonidoUrl = "https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav"; // Alerta / Error gracioso
-    }
 
-    try {
-        const audio = new Audio(sonidoUrl);
-        audio.volume = 0.4;
-        audio.play();
-    } catch (e) {
-        console.log("Audio bloqueado por el navegador hasta que interactúe el usuario.");
-    }
-
-    // 2. Efecto de sacudida de pantalla (Screen Shake) si le erró por mucho
+    // Efecto de sacudida de pantalla (Screen Shake) si le erró por mucho
     if (distancia >= 600 && card) {
         card.classList.add('animate-wrong');
-        // Limpiamos la clase cuando termina la animación para que pueda volver a sacudirse en la otra ronda
         setTimeout(() => {
             card.classList.remove('animate-wrong');
         }, 400);
