@@ -4583,7 +4583,7 @@ async function finalizarJuegoGuessr(){
                         </svg>
                         <div class="score-num"><strong style="font-size:1.25rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.65rem; color:var(--text-muted); font-weight:700; margin-top:2px;">PTS</span></div>
                     </div>
-                </div>f
+                </div>
             </div>
             
             <div class="endgame-area-action">
