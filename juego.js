@@ -4562,29 +4562,32 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML = `
-    <div style="text-align:center; padding:38px 16px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.18) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.08) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
+    <div style="text-align:center; padding:40px 22px 22px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <div class="endgame-grid-layout">
             <div class="endgame-area-header">
-                <h2 style="font-size:1.35rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
-                <p style="color:var(--text-muted); margin-bottom:8px; font-size:.80rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+                <h2 style="font-size:1.45rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:3px; letter-spacing:-.5px;">¡Misión Completada!</h2>
+                <p style="color:var(--text-muted); margin-bottom:6px; font-size:.82rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
             </div>
             
             <div class="endgame-area-ring">
-                <div class="result-score-ring" style="width:84px; height:84px; margin:0 auto 6px;">
-                    <svg width="84" height="84" viewBox="0 0 120 120" style="width:84px; height:84px;">
-                        <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
-                        <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 6px ${strokeColor});"/>
-                    </svg>
-                    <div class="score-num"><strong style="font-size:1.15rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.60rem; color:var(--text-muted); font-weight:700; margin-top:1px;">PTS</span></div>
+                <div class="endgame-ring-glow-wrapper">
+                    <div class="endgame-ring-aura" style="background: radial-gradient(circle, ${strokeColor} 0%, ${strokeColor}44 42%, transparent 72%);"></div>
+                    <div class="result-score-ring" style="width:96px; height:96px; margin:0 auto; position:relative; z-index:1;">
+                        <svg width="96" height="96" viewBox="0 0 120 120" style="width:96px; height:96px;">
+                            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
+                            <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 8px ${strokeColor});"/>
+                        </svg>
+                        <div class="score-num"><strong style="font-size:1.25rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.65rem; color:var(--text-muted); font-weight:700; margin-top:2px;">PTS</span></div>
+                    </div>
                 </div>
             </div>
             
             <div class="endgame-area-action">
-                <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
                     ${cartelGuardado}
                     ${botonCompartirDiario}
-                    <div style="display:flex; gap:8px;">
-                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.84rem; padding:10px;"><img src="medalla-oro.png" alt="Ranking" style="width:18px; height:18px; object-fit:contain;"> Ranking</button>
+                    <div style="display:flex; gap:10px;">
+                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;"><img src="medalla-oro.png" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking</button>
                         ${botonRejugar}
                     </div>
                 </div>

@@ -9003,26 +9003,44 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-color: #00cc66 !important;
     color: #04160a !important;
 }
-/* 🖥️ PANTALLA FINAL SIN SCROLL EN PC (2 COLUMNAS) */
+/* 🖥️ PANTALLA FINAL SIN SCROLL EN PC (2 COLUMNAS + RESPLANDOR) */
+.endgame-ring-glow-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.endgame-ring-aura {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(26px);
+    opacity: 0.6;
+    transform: translateZ(0);
+}
+
 @media (min-width: 769px) {
     #modal-card.resultado-final-layout {
-        max-width: 760px !important;
-        width: 760px !important;
+        max-width: 840px !important;
+        width: 840px !important;
         height: auto !important;
-        max-height: 90vh !important;
+        max-height: 92vh !important;
     }
     .endgame-grid-layout {
         display: grid !important;
-        grid-template-columns: 1fr 1.15fr !important;
+        grid-template-columns: 1fr 1.18fr !important;
         grid-template-areas:
             "header list"
             "ring   list"
             "action list";
-        gap: 8px 24px !important;
+        gap: 16px 36px !important;
         align-items: center !important;
         text-align: left !important;
         width: 100% !important;
-        max-width: 720px !important;
+        max-width: 790px !important;
     }
     .endgame-area-header {
         grid-area: header;
@@ -9032,7 +9050,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         grid-area: ring;
         display: flex;
         justify-content: center;
-        margin: 4px auto !important;
+        align-items: center;
+        margin: 6px auto !important;
     }
     .endgame-area-action {
         grid-area: action;
