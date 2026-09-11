@@ -6791,10 +6791,12 @@ function precargarImagenesUI() {
     setTimeout(postergarColaPesada, 6000);
 }
 
-window.addEventListener('DOMContentLoaded', async () => {
-    // ⚡ Precarga silenciosa en memoria RAM de todos los íconos de modales para evitar flickering
-    precargarImagenesUI();
+// 🚀 La precarga arranca DESPUÉS de que la página terminó de cargar por completo (detiene el spinner de la pestaña)
+window.addEventListener('load', () => {
+    setTimeout(precargarImagenesUI, 1200);
+});
 
+window.addEventListener('DOMContentLoaded', async () => {
     // ⚡ 1. Renderizamos la interfaz visual de inmediato (Perfil de usuario y botones)
     renderizarBotonLogin();
     ancestralHeaderNivel();
