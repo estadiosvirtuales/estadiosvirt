@@ -5527,7 +5527,7 @@ function renderJuegoOrden(revelar = false){
     let botonera = '';
     if (!revelar) {
         botonera = `
-        <div style="margin-top: 10px; width: 100%; flex-shrink: 0; box-sizing: border-box;">
+        <div style="margin-top: 10px; margin-bottom: 14px; width: 100%; flex-shrink: 0; box-sizing: border-box;">
             <button type="button" onclick="procesarResultadoOrden()" class="btn-3d" style="width: 100%; min-height: unset !important; height: auto !important; padding: 10px 18px !important; font-size: 0.88rem !important; font-weight: 900 !important; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; border-radius: 12px !important; background: linear-gradient(135deg, #00e676 0%, #00b0ff 50%, #2979ff 100%) !important; color: #ffffff !important; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.35) !important; border-top: 2px solid rgba(255, 255, 255, 0.75) !important; box-shadow: 0 4px 16px rgba(0, 230, 118, 0.35), 0 0 14px rgba(41, 121, 255, 0.3) !important; box-sizing: border-box; cursor: pointer;">
                 <span style="display: flex; align-items: center; gap: 8px;">
                     <i class="ph-fill ph-rocket-launch" style="font-size: 1.15rem;"></i>
