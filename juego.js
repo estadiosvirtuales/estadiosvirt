@@ -5527,9 +5527,13 @@ function renderJuegoOrden(revelar = false){
     let botonera = '';
     if (!revelar) {
         botonera = `
-        <div style="margin-top: 12px; width: 100%; flex-shrink: 0;">
-            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d primary" style="width: 100%; padding: 14px; font-size: 0.95rem; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <i class="ph-bold ph-check-circle"></i> ¡Confirmar orden!
+        <div style="margin-top: 14px; width: 100%; flex-shrink: 0; box-sizing: border-box;">
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d" style="width: 100%; padding: 15px 22px; font-size: 0.96rem; font-weight: 900; letter-spacing: 0.6px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; border-radius: 14px; background: linear-gradient(135deg, #00e676 0%, #00b0ff 50%, #2979ff 100%); color: #ffffff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); border: 1.5px solid rgba(255, 255, 255, 0.35); border-top: 2px solid rgba(255, 255, 255, 0.7); box-shadow: 0 6px 22px rgba(0, 230, 118, 0.4), 0 0 18px rgba(41, 121, 255, 0.35); box-sizing: border-box; cursor: pointer;">
+                <span style="display: flex; align-items: center; gap: 10px;">
+                    <i class="ph-fill ph-rocket-launch" style="font-size: 1.25rem;"></i>
+                    <span>¡Confirmar orden!</span>
+                </span>
+                <i class="ph-bold ph-arrow-right" style="font-size: 1.15rem; opacity: 0.85;"></i>
             </button>
         </div>`;
     } else {
