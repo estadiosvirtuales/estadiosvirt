@@ -4836,40 +4836,17 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const todosOrdenados = Object.values(mejorPorJugador).sort((a, b) => b.puntaje - a.puntaje);
             const ranking = todosOrdenados.slice(0, 50); // ⚡ TOP 50
 
-            let recordReal = 0;
-            const miEmail = u && u.email ? u.email : '';
             const miApodo = (miNombre || '').trim().toLowerCase();
+            const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
+            const miFila = miPuestoIdx !== -1 ? todosOrdenados[miPuestoIdx] : null;
 
-            if (miEmail) {
-                const { data: filaPorEmail } = await supabaseClient
-                    .from('ranking')
-                    .select('puntaje')
-                    .eq('juego', 'guessr')
-                    .eq('email', miEmail)
-                    .order('puntaje', { ascending: false })
-                    .limit(1);
-
-                if (filaPorEmail && filaPorEmail.length > 0) recordReal = filaPorEmail[0].puntaje || 0;
-            }
-
-            if (!recordReal && miApodo) {
-                const { data: filaPorNombre } = await supabaseClient
-                    .from('ranking')
-                    .select('puntaje')
-                    .eq('juego', 'guessr')
-                    .ilike('nombre', miApodo)
-                    .order('puntaje', { ascending: false })
-                    .limit(1);
-
-                if (filaPorNombre && filaPorNombre.length > 0) recordReal = filaPorNombre[0].puntaje || 0;
-            }
-
+            // 🎯 Récord personal exclusivo del usuario (de su propia fila en el ranking o de su sesión local)
+            let recordReal = miFila ? (miFila.puntaje || 0) : 0;
             if (userStats.maxScore && userStats.maxScore <= 25000 && userStats.maxScore > recordReal) {
                 recordReal = userStats.maxScore;
             }
 
             const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
-            const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
 
             headerConfig = {
                 img: 'liga-trofeo-header.png',
@@ -4878,7 +4855,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 badgeTitle: 'Top 50 Global',
                 badgeSub: 'Individual',
                 badgeColor: '#00ff77',
-                pill1Label: 'MEJOR PARTIDA',
+                pill1Label: 'TU MEJOR PARTIDA',
                 pill1Val: textoRecord,
                 pill1Icon: 'ph-trophy',
                 pill2Label: 'TU RANGO',
