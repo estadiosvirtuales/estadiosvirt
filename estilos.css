@@ -9022,6 +9022,22 @@ html[data-theme="light"] .xp-bar-big-fill {
     transform: translateZ(0);
 }
 
+/* 📱 CELULAR: Flujo vertical natural (Título -> Círculo -> Desglose -> Botones) */
+.endgame-grid-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.endgame-area-list {
+    width: 100%;
+    margin-bottom: 4px;
+}
+.endgame-area-action {
+    width: 100%;
+}
+
+/* 🖥️ PC: 2 Columnas balanceadas sin scroll */
 @media (min-width: 769px) {
     #modal-card.resultado-final-layout {
         max-width: 840px !important;
@@ -9056,6 +9072,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     .endgame-area-action {
         grid-area: action;
         width: 100%;
+        margin-top: 0 !important;
     }
     .endgame-area-list {
         grid-area: list;

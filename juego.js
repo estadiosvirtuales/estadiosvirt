@@ -4586,19 +4586,19 @@ async function finalizarJuegoGuessr(){
                 </div>
             </div>
             
-            <div class="endgame-area-action">
-                <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
+            <div class="endgame-area-list">
+                ${histHTML}
+            </div>
+
+            <div class="endgame-area-action" style="margin-top: 10px; width: 100%;">
+                <div style="display:flex; flex-direction:column; gap:10px; width:100%;">
                     ${cartelGuardado}
                     ${botonCompartirDiario}
-                    <div style="display:flex; gap:10px;">
+                    <div style="display:flex; gap:10px; width:100%;">
                         <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;"><img src="medalla-oro.png" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking</button>
                         ${botonRejugar}
                     </div>
                 </div>
-            </div>
-
-            <div class="endgame-area-list">
-                ${histHTML}
             </div>
         </div>
     </div>`;
