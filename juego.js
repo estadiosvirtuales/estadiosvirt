@@ -5525,7 +5525,14 @@ function renderJuegoOrden(revelar = false){
         : '';
 
     let botonera = '';
-    if (!revelar) {} else {
+    if (!revelar) {
+        botonera = `
+        <div style="margin-top: 12px; width: 100%; flex-shrink: 0;">
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d primary" style="width: 100%; padding: 14px; font-size: 0.95rem; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="ph-bold ph-check-circle"></i> ¡Confirmar orden!
+            </button>
+        </div>`;
+    } else {
         const u = obtenerUsuarioLogueado();
         const nombreGuardadoOrden = getPref('ev_custom_nick', '') || (u && u.name ? u.name.split(' ')[0] : 'Jugador');
         const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
@@ -6740,7 +6747,7 @@ async function manejarAbandonoRival() {
         ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
         : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="padding:13px 24px;max-width:100%;width:100%;"><img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;"> Ver Tabla de Posiciones</button>`;
     container.innerHTML = `
-    <div style="text-align:center;padding:36px 22px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;box-sizing:border-box;background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">5
+    <div style="text-align:center;padding:36px 22px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;box-sizing:border-box;background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <div style="width: 125px; height: 125px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center;">
             <img src="liga-trofeo-header.png" alt="Trofeo" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 18px rgba(0, 230, 118, 0.9)) drop-shadow(0 0 35px rgba(0, 230, 118, 0.45)); animation: rayoGlow 2.5s infinite alternate ease-in-out;">
         </div>
