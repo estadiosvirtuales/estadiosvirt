@@ -1356,14 +1356,17 @@ async function verificarPremiosPendientes() {
     }
 }
 
-function lanzarConfetti(){
-const overlay = document.getElementById('reward-overlay')?.classList.contains('active') ? document.getElementById('reward-overlay') : document.getElementById('levelup-overlay');
+function lanzarConfetti(targetCustom = null){
+const overlay = targetCustom 
+    || (document.getElementById('reward-overlay')?.classList.contains('active') ? document.getElementById('reward-overlay') : null)
+    || (document.getElementById('levelup-overlay')?.classList.contains('active') ? document.getElementById('levelup-overlay') : null)
+    || document.getElementById('modal-card');
 if (!overlay) return;
-const colors=['#00e676','#eab308','#a78bfa','#ff4757','#2979ff'];
-for(let i=0;i<30;i++){
+const colors=['#00e676','#eab308','#a78bfa','#ff4757','#2979ff','#ffd700'];
+for(let i=0;i<45;i++){
 const p=document.createElement('div');p.className='confetti-piece';
-p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*40}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*.5}s;animation-duration:${.8+Math.random()*.8}s;transform:rotate(${Math.random()*360}deg);`;
-overlay.appendChild(p);setTimeout(()=>p.remove(),1500);
+p.style.cssText=`position:absolute;left:${Math.random()*100}%;top:${Math.random()*20}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*.4}s;animation-duration:${1+Math.random()*1.1}s;transform:rotate(${Math.random()*360}deg);pointer-events:none;z-index:99999;`;
+overlay.appendChild(p);setTimeout(()=>p.remove(),2400);
 }
 }
 
@@ -4478,6 +4481,7 @@ async function finalizarJuegoGuessr(){
                 </div>
             </div>
         </div>`;
+        setTimeout(() => lanzarConfetti(document.getElementById('modal-card')), 250);
         return;
     }
 
@@ -4579,7 +4583,7 @@ async function finalizarJuegoGuessr(){
                         </svg>
                         <div class="score-num"><strong style="font-size:1.25rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.65rem; color:var(--text-muted); font-weight:700; margin-top:2px;">PTS</span></div>
                     </div>
-                </div>
+                </div>f
             </div>
             
             <div class="endgame-area-action">
@@ -4600,6 +4604,7 @@ async function finalizarJuegoGuessr(){
     </div>`;
     container.scrollTop = 0;
     esModoDiario = false;
+    setTimeout(() => lanzarConfetti(document.getElementById('modal-card')), 250);
 }
 
 function guardarScoreGuessr(btn){
@@ -5635,6 +5640,8 @@ function procesarResultadoOrden(){
     agregarXP(orderPuntosGanados);
     guardarStats();
     renderJuegoOrden(true);
+    const targetOrden = document.getElementById('order-modal-body') || document.getElementById('order-modal');
+    setTimeout(() => lanzarConfetti(targetOrden), 250);
 }
 
 function guardarScoreOrden(btn){
@@ -6744,6 +6751,7 @@ async function manejarAbandonoRival() {
         ${botonFinal}
     </div>`;
     
+    setTimeout(() => lanzarConfetti(document.getElementById('modal-card')), 250);
     versusLigaOrigen = null;
     esModoVersus = false;
     versusPartidaEnCurso = false;
