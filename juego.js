@@ -4395,8 +4395,8 @@ async function finalizarJuegoGuessr(){
     histHTML+='</div>';
     // 👆 FIN DE LA TABLA 👆
 
-    // ==========================================
-    // CIERRE MODO VERSUS (1v1)
+// ==========================================
+    // CIERRE MODO VERSUS (1v1, SALA PRIVADA Y LIGAS)
     // ==========================================
     if (esModoVersus) {
         esModoVersus = false;          
@@ -4416,10 +4416,8 @@ async function finalizarJuegoGuessr(){
         let cartelResultado = "";
         let colorResultado = "#ffea00";
         
-        // 🎯 La partida solo pertenece a la liga si nació desde un reto directo adentro de ella
         const ligaJugada = versusLigaOrigen;
 
-        // ACÁ MANDAMOS LOS PUNTOS A LA LIGA (Únicamente si el duelo nació en la liga)
         if (ligaJugada) {
             await enviarPuntaje(nombreLocal, guessrPuntosTotales, u?.email || '', 'duelo_' + ligaJugada);
         }
@@ -4430,14 +4428,12 @@ async function finalizarJuegoGuessr(){
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
             guardarStats(); 
-            // Guardamos el triunfo en el historial global (o con liga si nació en una)
             try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
         } else if (guessrPuntosTotales < rivalPuntosTotales) {
             cartelResultado = "<span>DERROTA</span> ❌";
             colorResultado = "#ff4757";
             showToast("Derrota. ¡A entrenar para la revancha! ⚽", "ph-x-circle", "danger");
             
-            // 🛡️ CANDADO: Solo guarda la derrota (L) si el duelo nació adentro de una Liga Privada
             if (ligaJugada) {
                 try { await supabaseClient.from('derrotas_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
             }
@@ -4446,37 +4442,36 @@ async function finalizarJuegoGuessr(){
             colorResultado = "#2979ff";
         }
 
-        versusLigaOrigen = null; // Limpiamos para el próximo partido
+        versusLigaOrigen = null;
 
-        // Botonera inteligente: si jugaste por liga te devuelve a ella; si jugaste por fuera te da opciones de 1v1
         const botonFinal = ligaJugada 
-            ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
-            : `<div style="display:flex;gap:10px;width:100%;max-width:100%;">
-                <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:22px;height:22px;object-fit:contain;"> Ranking 1v1</button>
+            ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
+            : `<div style="display:flex;gap:10px;width:100%;">
+                <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:20px;height:20px;object-fit:contain;"> Ranking 1v1</button>
                 <button onclick="cerrarModalVideo(); buscarPartidaVersus();" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-sword"></i> Nuevo 1 vs 1</button>
                </div>`;
 
         container.innerHTML = `
-        <div style="text-align:center; padding:36px 18px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.18) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.08) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
+        <div style="text-align:center; padding:38px 20px 22px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
             <div class="endgame-grid-layout">
                 <div class="endgame-area-header">
                     <h2 style="font-size:1.6rem; font-weight:900; text-transform:uppercase; margin-bottom:4px; color:${colorResultado}; display:flex; align-items:center; justify-content:center; gap:8px;">${cartelResultado}</h2>
-                    <p style="color:var(--text-muted); margin-bottom:10px; font-size:.85rem;">Marcador Final del Mano a Mano</p>
+                    <p style="color:var(--text-muted); margin-bottom:6px; font-size:.84rem;">Marcador Final del Mano a Mano</p>
                 </div>
                 
-                <div class="endgame-area-ring" style="width:100%;">
-                    <div class="vs-card-banner" style="display:flex; align-items:center; gap:16px; background:var(--surface-color); border:2px solid var(--border-strong); padding:10px 16px; border-radius:14px; width:100%; box-sizing:border-box; justify-content:center;">
-                        <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">VOS</div><strong class="vs-user-score" style="font-size:1.5rem; font-weight:900;">${guessrPuntosTotales}</strong></div>
-                        <div class="vs-text-divider" style="font-size:1.05rem; font-weight:900;">VS</div>
-                        <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">${nombreRivalFinal}</div><strong class="vs-rival-score" style="font-size:1.5rem; font-weight:900;">${rivalPuntosTotales}</strong></div>
+                <div class="endgame-area-ring">
+                    <div class="vs-card-banner" style="display:flex; align-items:center; gap:16px; background:var(--surface-color); border:2px solid var(--border-strong); padding:10px 18px; border-radius:14px; width:100%; box-sizing:border-box; justify-content:center;">
+                        <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">VOS</div><strong class="vs-user-score" style="font-size:1.55rem; font-weight:900;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong></div>
+                        <div class="vs-text-divider" style="font-size:1.1rem; font-weight:900;">VS</div>
+                        <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">${nombreRivalFinal}</div><strong class="vs-rival-score" style="font-size:1.55rem; font-weight:900;">${rivalPuntosTotales.toLocaleString('es-AR')}</strong></div>
                     </div>
                 </div>
-                
+
                 <div class="endgame-area-list">
                     ${histHTML}
                 </div>
                 
-                <div class="endgame-area-action" style="margin-top: 10px; width: 100%;">
+                <div class="endgame-area-action">
                     ${botonFinal}
                 </div>
             </div>
@@ -4503,7 +4498,6 @@ async function finalizarJuegoGuessr(){
     if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;
     guardarStats();
 
-    // ⚡ Multiplicador exclusivo de XP según la dificultad elegida
     let multXP = 1.0;
     if (!esModoVersus && !eraRetoDiario) {
         if (guessrDificultad === 'facil') multXP = 0.8;
@@ -4515,7 +4509,7 @@ async function finalizarJuegoGuessr(){
     pendingScore = guessrPuntosTotales;
     pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : 'guessr';
 
-    // 🚀 AUTO-GUARDADO SILENCIOSO E INSTANTÁNEO EN SERVIDOR
+    // 🚀 AUTO-GUARDADO SILENCIOSO EN SERVIDOR
     const u = obtenerUsuarioLogueado();
     let nombreParaGuardar = getPref('ev_custom_nick', '');
     if (!nombreParaGuardar && u && u.name) {
@@ -4560,13 +4554,13 @@ async function finalizarJuegoGuessr(){
     const paramRanking = eraRetoDiario ? "'diario'" : "'solo'";
 
     if (eraRetoDiario) {
-        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
+        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share" style="width:100%;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     } else {
-        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.84rem; padding:10px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
+        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
     }
     
     container.innerHTML = `
-    <div style="text-align:center; padding:40px 22px 22px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
+    <div style="text-align:center; padding:38px 20px 22px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <div class="endgame-grid-layout">
             <div class="endgame-area-header">
                 <h2 style="font-size:1.45rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:3px; letter-spacing:-.5px;">¡Misión Completada!</h2>
@@ -4585,12 +4579,12 @@ async function finalizarJuegoGuessr(){
                     </div>
                 </div>
             </div>
-            
+
             <div class="endgame-area-list">
                 ${histHTML}
             </div>
 
-            <div class="endgame-area-action" style="margin-top: 10px; width: 100%;">
+            <div class="endgame-area-action">
                 <div style="display:flex; flex-direction:column; gap:10px; width:100%;">
                     ${cartelGuardado}
                     ${botonCompartirDiario}
@@ -5532,31 +5526,41 @@ function renderJuegoOrden(revelar = false){
 
     let botonera = '';
     if (!revelar) {} else {
-        const btnGuardar = `<button id="btn-guardar-score-orden" type="button" onclick="guardarScoreOrden(this)" class="btn-3d btn-endgame-save" style="flex:1;padding:12px;font-size:.85rem;"><i class="ph-fill ph-paper-plane-tilt"></i> Guardar récord</button>`;
-        
+        const u = obtenerUsuarioLogueado();
+        const nombreGuardadoOrden = getPref('ev_custom_nick', '') || (u && u.name ? u.name.split(' ')[0] : 'Jugador');
         const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
 
+        const cartelGuardadoOrden = `
+        <div style="width:100%; background:linear-gradient(135deg, rgba(0,255,119,0.12) 0%, rgba(10,36,24,0.85) 100%); border:1.5px solid #00e676; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; box-sizing:border-box; margin-bottom:10px;">
+            <span style="font-size:0.78rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1.1rem; flex-shrink:0;"></i> Récord anotado: <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreGuardadoOrden)}</b>
+            </span>
+            <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:5px 10px; font-size:0.70rem; height:auto; min-height:auto; flex-shrink:0; border-radius:8px;">
+                <i class="ph-bold ph-pencil-simple"></i> Cambiar
+            </button>
+        </div>`;
+
         botonera = `
-        <div style="background:var(--surface-color);border:2px solid var(--border-strong);padding:14px;border-radius:18px;margin-top:10px;flex-shrink:0;box-shadow:0 -5px 20px rgba(0,0,0,.3);">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="background:var(--surface-color); border:2px solid var(--border-strong); padding:14px; border-radius:18px; margin-top:14px; flex-shrink:0; box-shadow:0 -5px 20px rgba(0,0,0,.3); width:100%; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <div>
-                    <div style="font-size:.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:1px;">Puntaje obtenido</div>
-                    <strong style="font-size:1.75rem;color:var(--accent-color);font-weight:900;">${orderPuntosGanados.toLocaleString('es-AR')} <span style="font-size:.85rem;color:var(--text-muted);font-weight:700;">pts</span></strong>
+                    <div style="font-size:.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:800; letter-spacing:1px;">Puntaje obtenido</div>
+                    <strong style="font-size:1.6rem; color:var(--accent-color); font-weight:900;">${orderPuntosGanados.toLocaleString('es-AR')} <span style="font-size:.85rem; color:var(--text-muted); font-weight:700;">pts</span></strong>
                 </div>
                 <div style="text-align:right;">
-                    <span style="font-size:.75rem;color:${nivelActual.color};font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span>
+                    <span style="font-size:.78rem; color:${nivelActual.color}; font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span>
                 </div>
             </div>
-            <div style="display:flex;gap:8px;margin-bottom:8px;">
-                ${btnGuardar}
-                <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d btn-endgame-replay" style="padding:12px 14px;font-size:.85rem;" title="Rejugar">
+            ${cartelGuardadoOrden}
+            <div style="display:flex; gap:10px; margin-bottom:8px;">
+                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;">
+                    <img src="medalla-oro.png" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking
+                </button>
+                <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;">
                     <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
                 </button>
-                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-endgame-rank" style="padding:10px 14px;" title="Ver Ranking">
-                    <img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;">
-                </button>
             </div>
-            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-endgame-back" style="width:100%;padding:10px;font-size:.82rem;font-weight:800;">
+            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-endgame-back" style="width:100%; padding:10px; font-size:.82rem; font-weight:800;">
                 <i class="ph-bold ph-arrow-left"></i> Volver al menú de desafíos
             </button>
         </div>`;
@@ -5616,6 +5620,23 @@ function procesarResultadoOrden(){
     userStats['partidas_' + orderModo] = (userStats['partidas_' + orderModo] || 0) + 1;
     agregarXP(orderPuntosGanados);
     guardarStats();
+
+    // 🚀 AUTO-GUARDADO SILENCIOSO EN SERVIDOR PARA DESAFÍOS DE ORDEN
+    const u = obtenerUsuarioLogueado();
+    let nombreParaGuardar = getPref('ev_custom_nick', '');
+    if (!nombreParaGuardar && u && u.name) {
+        nombreParaGuardar = u.name.split(' ')[0];
+    }
+    if (!nombreParaGuardar) {
+        const prefijos = ['Hincha', 'DT', 'Pibe', 'Capitan', 'Goleador'];
+        const pref = prefijos[Math.floor(Math.random() * prefijos.length)];
+        nombreParaGuardar = `${pref}_${Math.floor(100 + Math.random() * 900)}`;
+        setPref('ev_custom_nick', nombreParaGuardar);
+        renderizarBotonLogin();
+    }
+    const emailParaGuardar = (u && u.email) ? u.email : '';
+    enviarPuntaje(nombreParaGuardar, orderPuntosGanados, emailParaGuardar, orderModo);
+
     renderJuegoOrden(true);
     const targetOrden = document.getElementById('order-modal-body') || document.getElementById('order-modal');
     setTimeout(() => lanzarConfetti(targetOrden), 250);

@@ -9003,7 +9003,9 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-color: #00cc66 !important;
     color: #04160a !important;
 }
-/* 🖥️ PANTALLA FINAL SIN SCROLL EN PC (2 COLUMNAS + RESPLANDOR) */
+/* ========================================================
+   🏆 MOTOR UNIVERSAL DE MODALES DE FIN DE PARTIDA
+   ======================================================== */
 .endgame-ring-glow-wrapper {
     position: relative;
     display: flex;
@@ -9012,34 +9014,51 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 .endgame-ring-aura {
     position: absolute;
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
-    filter: blur(26px);
-    opacity: 0.6;
+    filter: blur(24px);
+    opacity: 0.55;
     transform: translateZ(0);
 }
 
-/* 📱 CELULAR: Flujo vertical natural (Título -> Círculo -> Desglose -> Botones) */
+/* 📱 CELULAR: Flujo vertical con separaciones exactas y limpias */
 .endgame-grid-layout {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
+.endgame-area-header {
+    width: 100%;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.endgame-area-ring {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 14px !important; /* Separación nítida con la lista */
+}
+.endgame-area-ring .vs-card-banner {
+    margin: 0 !important;
+}
 .endgame-area-list {
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 14px !important; /* Separación nítida con los botones */
 }
 .endgame-area-action {
     width: 100%;
+    margin-top: 0 !important;
 }
 
-/* 🖥️ PC: 2 Columnas balanceadas sin scroll */
+/* 🖥️ PC: 2 Columnas balanceadas y espaciosas sin scroll */
 @media (min-width: 769px) {
-    #modal-card.resultado-final-layout {
+    #modal-card.resultado-final-layout,
+    #order-modal .modal-card.resultado-orden-layout {
         max-width: 840px !important;
         width: 840px !important;
         height: auto !important;
@@ -9052,7 +9071,7 @@ html[data-theme="light"] .xp-bar-big-fill {
             "header list"
             "ring   list"
             "action list";
-        gap: 16px 36px !important;
+        gap: 14px 36px !important;
         align-items: center !important;
         text-align: left !important;
         width: 100% !important;
@@ -9061,13 +9080,11 @@ html[data-theme="light"] .xp-bar-big-fill {
     .endgame-area-header {
         grid-area: header;
         text-align: center;
+        margin-bottom: 0 !important;
     }
     .endgame-area-ring {
         grid-area: ring;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 6px auto !important;
+        margin: 4px auto !important;
     }
     .endgame-area-action {
         grid-area: action;
