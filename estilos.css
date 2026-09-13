@@ -9041,14 +9041,14 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 14px !important; /* Separación nítida con la lista */
+    margin-bottom: 8px !important;
 }
 .endgame-area-ring .vs-card-banner {
     margin: 0 !important;
 }
 .endgame-area-list {
     width: 100%;
-    margin-bottom: 14px !important; /* Separación nítida con los botones */
+    margin-bottom: 8px !important;
 }
 .endgame-area-action {
     width: 100%;
