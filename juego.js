@@ -4372,66 +4372,28 @@ async function finalizarJuegoGuessr(){
     
     if(guessrMapInstance){try{guessrMapInstance.remove();}catch(e){}guessrMapInstance=null;}
 
-    const cartelGuardado = `
-    <div style="width:100%; background:linear-gradient(135deg, rgba(0,255,119,0.12) 0%, rgba(10,36,24,0.85) 100%); border:1.5px solid #00e676; border-radius:10px; padding:6px 10px; display:flex; align-items:center; justify-content:space-between; gap:6px; box-sizing:border-box;">
-        <span style="font-size:0.74rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-            <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1rem; flex-shrink:0;"></i> Récord anotado: <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreParaGuardar)}</b>
-        </span>
-        <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:4px 8px; font-size:0.66rem; height:auto; min-height:auto; flex-shrink:0; border-radius:6px;">
-            <i class="ph-bold ph-pencil-simple"></i> Cambiar
-        </button>
-    </div>`;
+    // 👇 1. ARMAMOS LA TABLA DE DESGLOSE PARA TODOS LOS MODOS 👇
+    let histHTML=`<div style="width:100%;max-width:100%;text-align:left;margin:0 auto 6px;background:var(--surface-color);border:1.5px solid var(--border-strong);border-radius:12px;padding:5px 10px;box-sizing:border-box;"><h4 style="font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;padding-bottom:3px;border-bottom:1px dashed var(--border-subtle);">Desglose por ronda</h4>`;
     
-    let botonCompartirDiario = '';
-    let botonRejugar = '';
-    const paramRanking = eraRetoDiario ? "'diario'" : "'solo'";
-
-    if (eraRetoDiario) {
-        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share" style="width:100%; padding:9px 12px; font-size:.82rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
-    } else {
-        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.82rem; padding:9px 12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
-    }
-    
-    container.innerHTML = `
-    <div style="text-align:center; padding:26px 14px 14px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
-        <div class="endgame-grid-layout">
-            <div class="endgame-area-header">
-                <h2 style="font-size:1.22rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
-                <p style="color:var(--text-muted); margin-bottom:4px; font-size:.75rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+    guessrHistorialRondas.forEach(item => {
+        const dT = isNaN(item.distancia) ? '?' : (item.distancia < 1 ? `${Math.round(item.distancia * 1000)} m` : `${item.distancia.toFixed(1)} km`);
+        const starClass = item.puntos > 3000 ? 'pts-high' : item.puntos > 1000 ? 'pts-mid' : 'pts-low';
+        
+        histHTML += `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border-subtle);font-size:.80rem;gap:6px;">
+            <div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;">
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2;"><b style="color:var(--accent-color);">R${item.ronda}:</b> ${item.estadio}</span>
+                <span style="font-size:0.65rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:0px;">${item.club || ''}</span>
             </div>
-            
-            <div class="endgame-area-ring">
-                <div class="endgame-ring-glow-wrapper">
-                    <div class="endgame-ring-aura" style="width:105px; height:105px; background: radial-gradient(circle, ${strokeColor} 0%, ${strokeColor}44 42%, transparent 72%);"></div>
-                    <div class="result-score-ring" style="width:76px; height:76px; margin:0 auto; position:relative; z-index:1;">
-                        <svg width="76" height="76" viewBox="0 0 120 120" style="width:76px; height:76px;">
-                            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
-                            <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 8px ${strokeColor});"/>
-                        </svg>
-                        <div class="score-num"><strong style="font-size:0.92rem; color:${strokeColor}; font-weight:900; line-height:1; letter-spacing:-0.3px;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.50rem; color:var(--text-muted); font-weight:800; margin-top:2px; letter-spacing:0.6px;">PTS</span></div>
-                    </div>
-                </div>
-            </div>
+            <span style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+                <span style="color:var(--text-muted);font-size:.70rem;">${dT}</span>
+                <b class="pts-breakdown ${starClass}" style="padding:2px 6px; font-size:.74rem;">+${item.puntos}</b>
+            </span>
+        </div>`;
+    });
+    histHTML+='</div>';
 
-            <div class="endgame-area-list">
-                ${histHTML}
-            </div>
-
-            <div class="endgame-area-action">
-                <div style="display:flex; flex-direction:column; gap:7px; width:100%;">
-                    ${cartelGuardado}
-                    ${botonCompartirDiario}
-                    <div style="display:flex; gap:8px; width:100%;">
-                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.82rem; padding:9px 12px;"><img src="medalla-oro.png" alt="Ranking" style="width:17px; height:17px; object-fit:contain;"> Ranking</button>
-                        ${botonRejugar}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`;
-    // 👆 FIN DE LA TABLA 👆
-
-// ==========================================
+    // ==========================================
     // CIERRE MODO VERSUS (1v1, SALA PRIVADA Y LIGAS)
     // ==========================================
     if (esModoVersus) {
@@ -4576,11 +4538,11 @@ async function finalizarJuegoGuessr(){
     const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
 
     const cartelGuardado = `
-    <div style="width:100%; background:linear-gradient(135deg, rgba(0,255,119,0.12) 0%, rgba(10,36,24,0.85) 100%); border:1.5px solid #00e676; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; box-sizing:border-box;">
-        <span style="font-size:0.78rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-            <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1.1rem; flex-shrink:0;"></i> Récord anotado: <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreParaGuardar)}</b>
+    <div style="width:100%; background:linear-gradient(135deg, rgba(0,255,119,0.12) 0%, rgba(10,36,24,0.85) 100%); border:1.5px solid #00e676; border-radius:10px; padding:6px 10px; display:flex; align-items:center; justify-content:space-between; gap:6px; box-sizing:border-box;">
+        <span style="font-size:0.74rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+            <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1rem; flex-shrink:0;"></i> Récord anotado: <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreParaGuardar)}</b>
         </span>
-        <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:5px 10px; font-size:0.70rem; height:auto; min-height:auto; flex-shrink:0; border-radius:8px;">
+        <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:4px 8px; font-size:0.66rem; height:auto; min-height:auto; flex-shrink:0; border-radius:6px;">
             <i class="ph-bold ph-pencil-simple"></i> Cambiar
         </button>
     </div>`;
@@ -4590,28 +4552,28 @@ async function finalizarJuegoGuessr(){
     const paramRanking = eraRetoDiario ? "'diario'" : "'solo'";
 
     if (eraRetoDiario) {
-        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share" style="width:100%;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
+        botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share" style="width:100%; padding:9px 12px; font-size:.82rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     } else {
-        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
+        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.82rem; padding:9px 12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
     }
     
     container.innerHTML = `
-    <div style="text-align:center; padding:38px 20px 22px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
+    <div style="text-align:center; padding:26px 14px 14px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <div class="endgame-grid-layout">
             <div class="endgame-area-header">
-                <h2 style="font-size:1.45rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:3px; letter-spacing:-.5px;">¡Misión Completada!</h2>
-                <p style="color:var(--text-muted); margin-bottom:6px; font-size:.82rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+                <h2 style="font-size:1.22rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
+                <p style="color:var(--text-muted); margin-bottom:4px; font-size:.75rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
             </div>
             
             <div class="endgame-area-ring">
                 <div class="endgame-ring-glow-wrapper">
-                    <div class="endgame-ring-aura" style="background: radial-gradient(circle, ${strokeColor} 0%, ${strokeColor}44 42%, transparent 72%);"></div>
-                    <div class="result-score-ring" style="width:96px; height:96px; margin:0 auto; position:relative; z-index:1;">
-                        <svg width="96" height="96" viewBox="0 0 120 120" style="width:96px; height:96px;">
+                    <div class="endgame-ring-aura" style="width:105px; height:105px; background: radial-gradient(circle, ${strokeColor} 0%, ${strokeColor}44 42%, transparent 72%);"></div>
+                    <div class="result-score-ring" style="width:76px; height:76px; margin:0 auto; position:relative; z-index:1;">
+                        <svg width="76" height="76" viewBox="0 0 120 120" style="width:76px; height:76px;">
                             <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
                             <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 8px ${strokeColor});"/>
                         </svg>
-                        <div class="score-num"><strong style="font-size:1.05rem; color:${strokeColor}; font-weight:900; line-height:1; letter-spacing:-0.4px;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.56rem; color:var(--text-muted); font-weight:800; margin-top:3px; letter-spacing:0.8px;">PTS</span></div>
+                        <div class="score-num"><strong style="font-size:0.92rem; color:${strokeColor}; font-weight:900; line-height:1; letter-spacing:-0.3px;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.50rem; color:var(--text-muted); font-weight:800; margin-top:2px; letter-spacing:0.6px;">PTS</span></div>
                     </div>
                 </div>
             </div>
@@ -4621,11 +4583,11 @@ async function finalizarJuegoGuessr(){
             </div>
 
             <div class="endgame-area-action">
-                <div style="display:flex; flex-direction:column; gap:10px; width:100%;">
+                <div style="display:flex; flex-direction:column; gap:7px; width:100%;">
                     ${cartelGuardado}
                     ${botonCompartirDiario}
-                    <div style="display:flex; gap:10px; width:100%;">
-                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;"><img src="medalla-oro.png" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking</button>
+                    <div style="display:flex; gap:8px; width:100%;">
+                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.82rem; padding:9px 12px;"><img src="medalla-oro.png" alt="Ranking" style="width:17px; height:17px; object-fit:contain;"> Ranking</button>
                         ${botonRejugar}
                     </div>
                 </div>
@@ -5564,7 +5526,7 @@ function renderJuegoOrden(revelar = false){
     if (!revelar) {
         botonera = `
         <div style="margin-top: 10px; margin-bottom: 14px; width: 100%; flex-shrink: 0; box-sizing: border-box;">
-            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d" style="width: 100%; min-height: unset !important; height: auto !important; padding: 10px 18px !important; font-size: 0.88rem !important; font-weight: 900 !important; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; border-radius: 12px !important; background: linear-gradient(135deg, #00e676 0%, #00b0ff 50%, #2979ff 100%) !important; color: #ffffff !important; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.35) !important; border-top: 2px solid rgba(255, 255, 255, 0.75) !important; box-shadow: 0 4px 16px rgba(0, 230, 118, 0.35), 0 0 14px rgba(41, 121, 255, 0.3) !important; box-sizing: border-box; cursor: pointer;">
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d" style="width: 100%; min-height: unset !important; height: auto !important; padding: 10px 18px !important; font-size: 0.88rem !important; font-weight: 900 !important; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; border-radius: 12px !important; background: linear-gradient(135deg, #00e5ff 0%, #2979ff 55%, #1a237e 100%) !important; color: #ffffff !important; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.35) !important; border-top: 2px solid rgba(255, 255, 255, 0.8) !important; box-shadow: 0 4px 18px rgba(41, 121, 255, 0.45), 0 0 16px rgba(0, 229, 255, 0.35) !important; box-sizing: border-box; cursor: pointer;">
                 <span style="display: flex; align-items: center; gap: 8px;">
                     <i class="ph-fill ph-rocket-launch" style="font-size: 1.15rem;"></i>
                     <span>¡Confirmar orden!</span>
