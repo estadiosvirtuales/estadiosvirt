@@ -4575,7 +4575,7 @@ async function finalizarJuegoGuessr(){
                             <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
                             <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 8px ${strokeColor});"/>
                         </svg>
-                        <div class="score-num"><strong style="font-size:1.25rem; color:${strokeColor}; font-weight:900; line-height:1;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.65rem; color:var(--text-muted); font-weight:700; margin-top:2px;">PTS</span></div>
+                        <div class="score-num"><strong style="font-size:1.05rem; color:${strokeColor}; font-weight:900; line-height:1; letter-spacing:-0.4px;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.56rem; color:var(--text-muted); font-weight:800; margin-top:3px; letter-spacing:0.8px;">PTS</span></div>
                     </div>
                 </div>
             </div>
