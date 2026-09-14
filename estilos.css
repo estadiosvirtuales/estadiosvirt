@@ -6150,37 +6150,70 @@ body.video-abierto .hero-section {
 @media (max-width: 768px) {
     #ranking-modal .modal-content,
     #liga-amigos-modal .modal-content {
-        width: 92% !important;
+        width: 94% !important;
         max-width: 100% !important;
         height: auto !important;
-        max-height: 85vh !important;
-        padding: 20px 14px !important;
+        max-height: 88vh !important;
+        padding: 14px 12px !important;
     }
 
     .ranking-split-grid {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px !important;
+    }
+
+    /* 🏆 Cabecera horizontal compacta (Copa + Título en un solo renglón) */
+    .ranking-brand-box {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        margin-bottom: 2px !important;
+        width: 100% !important;
+    }
+
+    .ranking-brand-box .trophy-stage-wrapper {
+        width: auto !important;
+        margin: 0 !important;
     }
 
     .ranking-brand-box .trophy-main-img-box {
-        width: 80px;
-        height: 80px;
+        width: 36px !important;
+        height: 36px !important;
     }
 
     .ranking-brand-box .trophy-glow-backdrop {
-        width: 140px;
-        height: 90px;
+        width: 50px !important;
+        height: 50px !important;
+        filter: blur(12px) !important;
+    }
+
+    .ranking-brand-box .trophy-main-img {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    #ranking-modal .ranking-brand-box .trophy-main-img[src*="fuego"],
+    #ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"],
+    #ranking-modal .ranking-brand-box .trophy-main-img[src*="antiguedad"] {
+        transform: scale(1.1) !important;
     }
 
     .ranking-brand-box .liga-modal-title {
-        font-size: 1.2rem;
+        font-size: 1.12rem !important;
+        margin: 0 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.3px !important;
     }
 
+    /* 📊 Pastillas de estadísticas estilizadas y delgadas */
     .ranking-pills-column {
-        flex-direction: row;
-        width: 100%;
-        gap: 6px;
+        flex-direction: row !important;
+        width: 100% !important;
+        gap: 4px !important;
+        margin-bottom: 2px !important;
     }
 
     .ranking-sidebar-menu {
@@ -6193,7 +6226,7 @@ body.video-abierto .hero-section {
     .ranking-left-panel .ranking-tabs-row {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 8px !important;
+        gap: 6px !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
@@ -6201,14 +6234,14 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
-    /* 📱 SALÓN DE LA FAMA EN CELULAR (AJUSTE Y CONTENCIÓN 100%) */
+    /* 📱 SALÓN DE LA FAMA EN CELULAR (Botones proporcionados) */
     #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
-        height: 40px !important;
-        min-height: 40px !important;
-        max-height: 40px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
         font-size: 0.63rem !important;
         font-weight: 900 !important;
         letter-spacing: -0.2px !important;
@@ -6231,14 +6264,14 @@ body.video-abierto .hero-section {
         line-height: 1 !important;
     }
 
-    /* 🎯 ÍCONOS EN MÓVIL (LOS 3 NORMALES: INDIVIDUAL, 1V1 Y SEMANAL) */
+    /* 🎯 ÍCONOS EN MÓVIL */
     html body #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img {
         position: absolute !important;
         left: 5px !important;
         top: 50% !important;
         transform: translateY(-50%) scale(1) !important;
-        width: 35px !important;
-        height: 35px !important;
+        width: 32px !important;
+        height: 32px !important;
         margin: 0 !important;
         object-fit: contain !important;
         flex-shrink: 0 !important;
@@ -6246,14 +6279,13 @@ body.video-abierto .hero-section {
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7)) !important;
     }
 
-    /* 🔥 ÍCONO EXCLUSIVO DE RETO DIARIO (MÁS GRANDE Y ALINEADO) */
     html body #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img[src*="fuego"] {
         position: absolute !important;
-        left: -10px !important;
+        left: -8px !important;
         top: 50% !important;
         transform: translateY(-50%) scale(1) !important;
-        width: 65px !important;   /* 👈 Modificá acá si lo querés aún más grande o chico */
-        height: 65px !important;  /* 👈 Mantenelo igual al width */
+        width: 58px !important;
+        height: 58px !important;
         margin: 0 !important;
         object-fit: contain !important;
         flex-shrink: 0 !important;
@@ -6266,15 +6298,10 @@ body.video-abierto .hero-section {
         transform: translateY(-50%) scale(1) !important;
     }
 
-    #ranking-modal .ranking-brand-box .trophy-main-img[src*="fuego"] {
-        transform: scale(1.8) !important;
-        transform-origin: center center !important;
-    }
-
-    /* 📱 LIGA DE AMIGOS EN CELULAR (2 BOTONES: PUNTAJE MÁX., HISTORIAL W/L) */
+    /* 📱 LIGA DE AMIGOS EN CELULAR */
     #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
-        height: 40px !important;
+        height: 38px !important;
         font-size: 0.66rem !important;
         letter-spacing: 0.1px !important;
         padding: 0 8px 0 32px !important;
@@ -6290,62 +6317,55 @@ body.video-abierto .hero-section {
         left: 4px !important;
         top: calc(50% - 1px) !important;
         transform: translateY(-50%) !important;
-        width: 30px !important;
-        height: 30px !important;
+        width: 28px !important;
+        height: 28px !important;
         margin: 0 !important;
     }
 
-    /* 🏆 DESAFÍO DE ORDEN EN CELULAR (2 BOTONES: CAPACIDAD Y ANTIGÜEDAD) */
+    /* 🏆 DESAFÍO DE ORDEN EN CELULAR */
     #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"],
     #ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
-        width: 36px !important;
-        height: 36px !important;
+        width: 32px !important;
+        height: 32px !important;
         left: 2px !important;
         top: calc(50% - 1px) !important;
     }
 
     .ranking-right-panel .liga-row-item {
-        padding: 11px 14px;
-        font-size: 0.86rem;
+        padding: 9px 12px !important;
+        font-size: 0.86rem !important;
     }
 
-    /* 🏷️ Título Badge en Celulares (Cápsula Flotante Centrada como Captura 25) */
+    /* 🚫 Ocultamos la cápsula flotante redundante en celular para que la tabla suba */
+    .ranking-active-badge {
+        display: none !important;
+    }
+
+    /* 🔍 Buscador limpio y pegado directamente a los modos */
     .ranking-table-top-bar {
         display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 6px !important;
+        margin-top: 2px !important;
         width: 100% !important;
         padding: 0 !important;
     }
 
-    .ranking-active-badge {
-        width: max-content !important;
-        max-width: 94% !important;
-        padding: 5px 12px !important;
+    .ranking-search-box {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* Carteles informativos de premios (Reto Diario y Semanal) más finos */
+    .ranking-reward-notice {
+        padding: 5px 8px !important;
+        font-size: 0.66rem !important;
+        margin-bottom: 6px !important;
+        border-radius: 9px !important;
         gap: 6px !important;
-        margin: 0 auto !important;
     }
 
-    .badge-title-png-icon {
-        width: 20px !important;
-        height: 20px !important;
-        margin: 0 !important;
-    }
-
-    .badge-title-text {
-        font-size: 0.68rem !important;
-        letter-spacing: 0.2px !important;
-    }
-
-    .badge-sub-pill {
-        font-size: 0.55rem !important;
-        padding: 2px 6px !important;
-        letter-spacing: 0.3px !important;
-    }
-
-    .badge-sep {
-        font-size: 0.65rem !important;
+    .ranking-rows-scroll {
+        max-height: 54vh !important;
     }
 }
 
