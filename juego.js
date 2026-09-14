@@ -1215,6 +1215,7 @@ window.cerrarModalPremio = function() {
 
 async function verificarPremiosPendientes() {
     if (!supabaseClient) return;
+    const idUsuario = getUserId();
     const u = obtenerUsuarioLogueado();
     const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim();
     if (!miNombre || miNombre === 'Jugador' || miNombre === 'Invitado') return;
@@ -1231,8 +1232,7 @@ async function verificarPremiosPendientes() {
         ayer.setDate(ayer.getDate() - 1);
         const fechaAyerStr = ayer.getFullYear() + '-' + String(ayer.getMonth() + 1).padStart(2, '0') + '-' + String(ayer.getDate()).padStart(2, '0');
         const claveDiarioAyer = 'diario_' + fechaAyerStr;
-        const idUserPremio = getUserId();
-        const storageDiarioKey = `ev_premio_diario_${fechaAyerStr}_${idUserPremio}`;
+        const storageDiarioKey = `ev_premio_diario_${fechaAyerStr}_${idUsuario}`;
 
         if (!localStorage.getItem(storageDiarioKey)) {
             const { data: rankingAyer, error: errDiario } = await supabaseClient
@@ -1277,16 +1277,14 @@ async function verificarPremiosPendientes() {
         const ahora = new Date();
         const diaSemana = ahora.getDay();
         const diasHaciaAtras = diaSemana === 0 ? 7 : diaSemana;
-        const domingoCierre = new Date(ahora);
-        domingoCierre.setDate(ahora.getDate() - diasHaciaAtras);
-        domingoCierre.setHours(23, 59, 59, 999);
-
-        const lunesInicio = new Date(domingoCierre);
-        lunesInicio.setDate(domingoCierre.getDate() - 6);
-        lunesInicio.setHours(0, 0, 0, 0);
+        
+        // Domingo de cierre exacto de la semana pasada (23:59:59.999)
+        const domingoCierre = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() - diasHaciaAtras, 23, 59, 59, 999);
+        // Lunes de inicio exacto de la semana pasada (00:00:00.000)
+        const lunesInicio = new Date(domingoCierre.getFullYear(), domingoCierre.getMonth(), domingoCierre.getDate() - 6, 0, 0, 0, 0);
 
         const fechaSemanaStr = `${lunesInicio.getFullYear()}-${String(lunesInicio.getMonth() + 1).padStart(2, '0')}-${String(lunesInicio.getDate()).padStart(2, '0')}`;
-        const storageSemanaKey = `ev_premio_semanal_${fechaSemanaStr}_${idUserPremio}`;
+        const storageSemanaKey = `ev_premio_semanal_${fechaSemanaStr}_${idUsuario}`;
 
         if (!localStorage.getItem(storageSemanaKey)) {
             const { data: victoriasRaw, error: errSemana } = await supabaseClient
