@@ -872,8 +872,10 @@ function obtenerUrlEscudo(id) {
         }
     }
 
-    // 3. Diccionario oficial de respaldo
-    return ESCUDOS_MAP[id] || ESCUDOS_MAP['ev'];
+    // 3. Diccionario oficial de respaldo y guardado en memoria RAM
+    const fallbackUrl = ESCUDOS_MAP[id] || ESCUDOS_MAP['ev'];
+    ESCUDOS_MAP[id] = fallbackUrl;
+    return fallbackUrl;
 }
 
 let categoriaEscudosActual = 'todos';
@@ -2140,12 +2142,17 @@ function sanitizarHTML(texto) {
     };
     return texto.toString().replace(/[&<>"']/g, m => mapa[m]);
 }
-function bscarPropiedad(obj,clave){
-if(!obj)return '';const cl=clave.toLowerCase().trim();
-
-for(let k in obj){if(k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g,'').trim()===cl)return obj[k];}
-for(let k in obj){if(k.toLowerCase().includes(cl))return obj[k];}
-return obj[clave]||'';
+function bscarPropiedad(obj, clave) {
+    if (!obj) return '';
+    if (obj[clave] !== undefined && obj[clave] !== null) return obj[clave];
+    const cl = clave.toLowerCase().trim();
+    for (let k in obj) {
+        if (k.toLowerCase().replace(/[\u200B-\u200D\uFEFF]/g, '').trim() === cl) return obj[k];
+    }
+    for (let k in obj) {
+        if (k.toLowerCase().includes(cl)) return obj[k];
+    }
+    return '';
 }
 const COLORES_CLUBES={
     // ARGENTINA
@@ -4212,12 +4219,12 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
             btn.disabled = false;
         });
 
-        const resizeObserver = new ResizeObserver(() => {
-            if (guessrMapInstance) guessrMapInstance.invalidateSize();
-        });
-        resizeObserver.observe(mapContainer);
-
-        guessrMapInstance.on('unload', () => resizeObserver.disconnect());
+        if (!window._guessrMapResizeObs) {
+            window._guessrMapResizeObs = new ResizeObserver(() => {
+                if (guessrMapInstance) guessrMapInstance.invalidateSize();
+            });
+            window._guessrMapResizeObs.observe(mapContainer);
+        }
 
         const mapBox = document.getElementById('guessr-floating-map-box');
         if (mapBox && !mapBox.dataset.leaveBound) {
