@@ -6166,7 +6166,7 @@ body.video-abierto .hero-section {
     /* 🏆 Cabecera en 2 columnas: Trofeo a la izquierda y las 3 estadísticas apiladas a la derecha */
     .ranking-left-panel {
         display: grid !important;
-        grid-template-columns: 88px 1fr !important;
+        grid-template-columns: auto 1fr !important;
         gap: 12px !important;
         align-items: center !important;
         width: 100% !important;
@@ -6179,8 +6179,8 @@ body.video-abierto .hero-section {
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 100% !important;
-        margin: 0 !important;
+        width: auto !important;
+        margin: 0 0 0 16px !important; /* 👈 Desplaza el ícono hacia la derecha */
         padding: 0 !important;
     }
 
@@ -6195,14 +6195,14 @@ body.video-abierto .hero-section {
     }
 
     .ranking-brand-box .trophy-main-img-box {
-        width: 86px !important;
-        height: 86px !important;
+        width: 70px !important; /* 👈 Reducido de 86px a 70px */
+        height: 70px !important;
     }
 
     .ranking-brand-box .trophy-glow-backdrop {
-        width: 90px !important;
-        height: 90px !important;
-        filter: blur(14px) !important;
+        width: 76px !important;
+        height: 76px !important;
+        filter: blur(12px) !important;
     }
 
     .ranking-brand-box .trophy-main-img {
