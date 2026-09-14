@@ -6181,7 +6181,7 @@ body.video-abierto .hero-section {
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 102px !important;
+        width: 125px !important; /* 👈 Ancho asignado a la columna del trofeo */
         margin: 0 !important;
         padding: 0 !important;
         flex-shrink: 0 !important;
@@ -6197,19 +6197,21 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
+    /* 🏆 TAMAÑO DEL ÍCONO PRINCIPAL EN TODOS LOS RANKINGS (CELULAR) */
     #ranking-modal .ranking-brand-box .trophy-main-img-box,
     #liga-amigos-modal .ranking-brand-box .trophy-main-img-box,
     .ranking-brand-box .trophy-main-img-box {
-        width: 100px !important;
-        height: 100px !important;
+        width: 125px !important;  /* 👈 Subilo a 130px o 135px si lo querés aún más grande */
+        height: 125px !important; /* 👈 Mantener igual al width */
     }
 
+    /* 🌟 HALO DE LUZ DETRÁS DEL ÍCONO */
     #ranking-modal .ranking-brand-box .trophy-glow-backdrop,
     #liga-amigos-modal .ranking-brand-box .trophy-glow-backdrop,
     .ranking-brand-box .trophy-glow-backdrop {
-        width: 106px !important;
-        height: 106px !important;
-        filter: blur(14px) !important;
+        width: 130px !important;
+        height: 130px !important;
+        filter: blur(16px) !important;
     }
 
     #ranking-modal .ranking-brand-box .trophy-main-img,
