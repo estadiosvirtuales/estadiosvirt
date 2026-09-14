@@ -8426,6 +8426,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         gap: 5px !important;
         width: 160px !important;
         max-width: 160px !important;
+        margin-left: auto !important;
+        justify-self: end !important;
         box-sizing: border-box !important;
     }
     .ranking-pills-column .header-stat-pill {
