@@ -6163,15 +6163,30 @@ body.video-abierto .hero-section {
         gap: 8px !important;
     }
 
-    /* 🏆 Cabecera horizontal compacta (Copa + Título en un solo renglón) */
+    /* 🏆 Cabecera en 2 columnas: Trofeo a la izquierda y las 3 estadísticas apiladas a la derecha */
+    .ranking-left-panel {
+        display: grid !important;
+        grid-template-columns: 88px 1fr !important;
+        gap: 12px !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-bottom: 2px !important;
+    }
+
     .ranking-brand-box {
+        grid-column: 1 !important;
         display: flex !important;
-        flex-direction: row !important;
+        flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 8px !important;
-        margin-bottom: 2px !important;
         width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Ocultamos el título textual en celular para darle ese espacio a las estadísticas */
+    .ranking-brand-box .liga-modal-title {
+        display: none !important;
     }
 
     .ranking-brand-box .trophy-stage-wrapper {
@@ -6180,47 +6195,100 @@ body.video-abierto .hero-section {
     }
 
     .ranking-brand-box .trophy-main-img-box {
-        width: 36px !important;
-        height: 36px !important;
+        width: 86px !important;
+        height: 86px !important;
     }
 
     .ranking-brand-box .trophy-glow-backdrop {
-        width: 50px !important;
-        height: 50px !important;
-        filter: blur(12px) !important;
+        width: 90px !important;
+        height: 90px !important;
+        filter: blur(14px) !important;
     }
 
     .ranking-brand-box .trophy-main-img {
         width: 100% !important;
         height: 100% !important;
+        object-fit: contain !important;
     }
 
     #ranking-modal .ranking-brand-box .trophy-main-img[src*="fuego"],
     #ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"],
     #ranking-modal .ranking-brand-box .trophy-main-img[src*="antiguedad"] {
-        transform: scale(1.1) !important;
+        transform: scale(1.15) !important;
+        transform-origin: center center !important;
     }
 
-    .ranking-brand-box .liga-modal-title {
-        font-size: 1.12rem !important;
-        margin: 0 !important;
-        line-height: 1.1 !important;
-        letter-spacing: -0.3px !important;
-    }
-
-    /* 📊 Pastillas de estadísticas estilizadas y delgadas */
+    /* 📊 Las 3 pastillas de estadísticas apiladas verticalmente con ancho completo */
     .ranking-pills-column {
-        flex-direction: row !important;
+        grid-column: 2 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 5px !important;
         width: 100% !important;
-        gap: 4px !important;
-        margin-bottom: 2px !important;
+        margin: 0 !important;
+    }
+
+    .ranking-pills-column .header-stat-pill {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 5px 12px !important;
+        gap: 8px !important;
+        border-radius: 10px !important;
+        min-height: 27px !important;
+        height: auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .ranking-pills-column .header-stat-pill i {
+        font-size: 1.05rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .ranking-pills-column .stat-pill-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        flex: 1 !important;
+    }
+
+    .ranking-pills-column .stat-pill-info span {
+        font-size: 0.52rem !important;
+        font-weight: 800 !important;
+        color: var(--text-muted) !important;
+        letter-spacing: 0.5px !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        line-height: 1.1 !important;
+        width: 100% !important;
+    }
+
+    .ranking-pills-column .stat-pill-info strong {
+        font-size: 0.74rem !important;
+        font-weight: 900 !important;
+        color: #ffffff !important;
+        letter-spacing: 0.2px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        line-height: 1.15 !important;
+        width: 100% !important;
     }
 
     .ranking-sidebar-menu {
-        margin-top: 0 !important;
+        grid-column: 1 / -1 !important;
+        margin-top: 4px !important;
         padding-top: 0 !important;
         border-top: none !important;
-        width: 100%;
+        width: 100% !important;
     }
 
     .ranking-left-panel .ranking-tabs-row {
