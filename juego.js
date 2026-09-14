@@ -5616,12 +5616,13 @@ function seleccionarFilaOrden(idx){
 
 function procesarResultadoOrden(){
     const t = (performance.now() - orderStartTime) / 1000;
-    const bonus = Math.max(0, Math.round((60 - t) * 20));
+    // ⚡ Escalado a base 10.000 (Bonus de velocidad proporcional hasta +2.400 pts)
+    const bonus = Math.max(0, Math.round((60 - t) * 40));
     let dev = 0;
     orderList.forEach((e, i) => dev += Math.abs(i - e.correctIdx));
-    const base = Math.max(0, 5000 - (dev * 600));
+    const base = Math.max(0, 10000 - (dev * 1200));
     if (dev === 0) userStats.ordenSinFallar = true;
-    orderPuntosGanados = Math.round(base + (bonus * (base / 5000)));
+    orderPuntosGanados = Math.round(base + (bonus * (base / 10000)));
     pendingScore = orderPuntosGanados;
     pendingScoreType = orderModo;
     userStats['partidas_' + orderModo] = (userStats['partidas_' + orderModo] || 0) + 1;
