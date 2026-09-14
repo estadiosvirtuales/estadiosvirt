@@ -8413,54 +8413,65 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 @media (max-width: 768px) {
     .pill-val-desktop {
-        display: none !important;
+        display: inline !important;
     }
     .pill-val-mobile {
-        display: inline !important;
-        color: inherit !important;
-        font-size: inherit !important;
-        font-weight: inherit !important;
-        text-transform: none !important;
+        display: none !important;
     }
     .ranking-pills-column {
         display: flex !important;
-        flex-direction: row !important;
-        gap: 4px !important;
+        flex-direction: column !important;
+        gap: 5px !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
     .ranking-pills-column .header-stat-pill {
-        flex: 1 1 0 !important;
-        min-width: 0 !important;
-        padding: 6px 4px !important;
-        gap: 4px !important;
+        display: flex !important;
+        flex-direction: row !important;
         align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        min-height: 28px !important;
+        height: auto !important;
+        padding: 4px 10px !important;
+        gap: 8px !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
     }
     .ranking-pills-column .header-stat-pill i {
-        font-size: 0.88rem !important;
+        font-size: 1rem !important;
         flex-shrink: 0 !important;
     }
     .ranking-pills-column .stat-pill-info {
         min-width: 0 !important;
-        overflow: hidden !important;
+        flex: 1 !important;
         display: flex !important;
         flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
     }
     .ranking-pills-column .stat-pill-info span {
-        font-size: 0.54rem !important;
-        letter-spacing: -0.2px !important;
+        font-size: 0.52rem !important;
+        font-weight: 800 !important;
+        color: var(--text-muted) !important;
+        letter-spacing: 0.5px !important;
+        text-transform: uppercase !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         line-height: 1.1 !important;
+        width: 100% !important;
     }
     .ranking-pills-column .stat-pill-info strong {
-        font-size: 0.68rem !important;
-        letter-spacing: -0.3px !important;
+        font-size: 0.74rem !important;
+        font-weight: 900 !important;
+        color: #ffffff !important;
+        letter-spacing: 0.2px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         line-height: 1.15 !important;
+        width: 100% !important;
     }
 
     /* ⚡ REDUCCIÓN DE ESPACIO VERTICAL DEL HUD */
