@@ -6218,7 +6218,7 @@ body.video-abierto .hero-section {
         transform-origin: center center !important;
     }
 
-    /* 📊 Las 3 pastillas de estadísticas con ancho compacto y proporcionado */
+    /* 📊 Las 3 pastillas de estadísticas alineadas al borde derecho */
     .ranking-pills-column {
         grid-column: 2 !important;
         display: flex !important;
@@ -6227,7 +6227,8 @@ body.video-abierto .hero-section {
         gap: 5px !important;
         width: 160px !important;
         max-width: 160px !important;
-        margin: 0 !important;
+        margin: 0 0 0 auto !important;
+        justify-self: end !important;
     }
 
     .ranking-pills-column .header-stat-pill {
