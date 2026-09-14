@@ -9024,6 +9024,17 @@ html[data-theme="light"] .xp-bar-big-fill {
     transform: translateZ(0);
 }
 
+/* 📱 CELULAR Y GENERAL: La ventana abraza el contenido sin dejar vacío abajo */
+#modal-card.resultado-final-layout {
+    height: auto !important;
+    min-height: unset !important;
+    max-height: 92vh !important;
+}
+#modal-card.resultado-final-layout #modal-video-container {
+    height: auto !important;
+    min-height: unset !important;
+}
+
 /* 📱 CELULAR: Flujo vertical con separaciones exactas y limpias */
 .endgame-grid-layout {
     display: flex;

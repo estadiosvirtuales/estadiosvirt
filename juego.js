@@ -4363,7 +4363,7 @@ async function finalizarJuegoGuessr(){
     // 🛑 Corte instantáneo de video y audio en el milisegundo cero
     container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2.5rem;color:var(--accent-color);"></i></div>';
     document.getElementById('game-ui').style.display='none';
-    container.style.height='100%';
+    container.style.height='auto';
     
     const card = document.getElementById('modal-card');
     card.classList.remove('stadium-guessr-layout');
@@ -4450,7 +4450,7 @@ async function finalizarJuegoGuessr(){
                </div>`;
 
         container.innerHTML = `
-        <div style="text-align:center; padding:38px 20px 22px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; min-height:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
+        <div style="text-align:center; padding:30px 18px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:auto; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
             <div class="endgame-grid-layout">
                 <div class="endgame-area-header">
                     <h2 style="font-size:1.6rem; font-weight:900; text-transform:uppercase; margin-bottom:4px; color:${colorResultado}; display:flex; align-items:center; justify-content:center; gap:8px;">${cartelResultado}</h2>
@@ -4558,7 +4558,7 @@ async function finalizarJuegoGuessr(){
     }
     
     container.innerHTML = `
-    <div style="text-align:center; padding:26px 14px 14px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
+    <div style="text-align:center; padding:26px 14px 20px; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:flex-start; width:100%; height:auto; box-sizing:border-box; background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <div class="endgame-grid-layout">
             <div class="endgame-area-header">
                 <h2 style="font-size:1.22rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
