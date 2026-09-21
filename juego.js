@@ -6863,17 +6863,53 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     guardarStats();
 
-    // 👇 ESCANEO DE LINK: Revisa si alguien nos mandó un link de sala privada o de liga
+    // 👇 ESCANEO DE LINK: Revisa si alguien nos mandó link de sala privada, liga o estadio específico
     const urlParams = new URLSearchParams(window.location.search);
     const salaPrivadaId = urlParams.get('sala');
     const ligaParamId = urlParams.get('liga');
+    const estadioParam = urlParams.get('estadio');
+
     if (salaPrivadaId) {
         versusLigaOrigen = null;
         unirseSalaPrivada(salaPrivadaId);
     } else if (ligaParamId) {
         unirseALigaPorLink(ligaParamId);
+    } else if (estadioParam) {
+        abrirEstadioPorParametro(estadioParam);
     }
 });
+
+// 🌐 DEEP LINKING: Abre directamente el video y ficha del estadio recibido por URL
+function abrirEstadioPorParametro(param) {
+    if (!param || !catalogoGlobal || catalogoGlobal.length === 0) return;
+
+    const normalizar = (txt) => (txt || '')
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "")
+        .trim();
+
+    const buscado = normalizar(decodeURIComponent(param).replace(/[-_]/g, ' '));
+
+    const encontrado = catalogoGlobal.find(e => {
+        const est = normalizar(bscarPropiedad(e, 'Estadio'));
+        const club = normalizar(bscarPropiedad(e, 'Club'));
+        return est.includes(buscado) || buscado.includes(est) || club.includes(buscado);
+    });
+
+    if (encontrado) {
+        const linkVideo = bscarPropiedad(encontrado, 'Link del Video')?.trim();
+        const nombreEstadio = bscarPropiedad(encontrado, 'Estadio');
+        const club = bscarPropiedad(encontrado, 'Club');
+
+        showToast(`🏟️ Explorando: ${nombreEstadio} (${club})`, 'ph-airplane-tilt', 'success');
+
+        if (linkVideo && linkVideo !== '#' && !linkVideo.includes('[Pegá tu link')) {
+            abrirModalVideo(null, linkVideo, false);
+        }
+    }
+}
 
 // Abre o cierra el buzón flotante de sugerencias
 function toggleBuzonSugerencias() {
