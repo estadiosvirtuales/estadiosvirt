@@ -1,7 +1,7 @@
 name: Generar Paginas SEO y Sitemap
 
 on:
-  workflow_dispatch: # Permite ejecutarlo manualmente con un botón
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generar carpetas de estadios y sitemap
+      - name: Limpiar carpetas viejas y generar nuevas por club
         run: |
           node -e '
           const fs = require("fs");
@@ -28,13 +28,33 @@ jobs:
           const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22";
           const DOMAIN = "https://www.estadiosvirtuales.com";
 
-          function limpiarSlug(txt) {
+          // Limpieza de carpetas autogeneradas anteriores (reconoce las que tienen redirección)
+          console.log("Limpiando carpetas generadas anteriores...");
+          const carpetasIgnoradas = new Set([".git", ".github", "escudos", "node_modules"]);
+          const elementosRaiz = fs.readdirSync(process.cwd(), { withFileTypes: true });
+
+          elementosRaiz.forEach(item => {
+              if (item.isDirectory() && !carpetasIgnoradas.has(item.name)) {
+                  const rutaIndex = path.join(process.cwd(), item.name, "index.html");
+                  if (fs.existsSync(rutaIndex)) {
+                      const contenido = fs.readFileSync(rutaIndex, "utf8");
+                      // Si es una carpeta generada por el script, la borra
+                      if (contenido.includes("?estadio=") || contenido.includes("Estadios Virtuales")) {
+                          fs.rmSync(path.join(process.cwd(), item.name), { recursive: true, force: true });
+                          console.log(`Eliminada carpeta anterior: ${item.name}`);
+                      }
+                  }
+              }
+          });
+
+          // Función para compactar: minúsculas, sin tildes, sin espacios ni guiones
+          function limpiarCompacto(txt) {
               return (txt || "")
                   .toLowerCase()
                   .normalize("NFD")
                   .replace(/[\u0300-\u036f]/g, "")
-                  .replace(/[^a-z0-9]+/g, "-")
-                  .replace(/^-+|-+$/g, "");
+                  .replace(/[^a-z0-9]/g, "")
+                  .trim();
           }
 
           async function run() {
@@ -58,17 +78,17 @@ jobs:
                   const capacidad = item.capacidad ? parseInt(item.capacidad).toLocaleString("es-AR") : "No especificada";
                   const anio = item.anio || "No especificado";
                   const foto = item.foto || "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png";
-                  const dato = (item.dato_curioso || "Recorre este templo del futbol mundial desde el aire.").replace(/"/g, "&quot;");
                   const lat = item.latitud || "-34.6037";
                   const lng = item.longitud || "-58.3816";
 
-                  if (!estadio) return;
+                  if (!estadio || !club) return;
 
-                  let slug = limpiarSlug(estadio);
+                  // Carpeta con nombre de club compacto: "estudiantesdelaplata", "bocajuniors"
+                  let slug = limpiarCompacto(club);
 
-                  // Desempate anticolisiones: si dos canchas comparten nombre, se anexa el club
+                  // Desempate si dos clubes comparten nombre en distintos países
                   if (slugsUsados.has(slug)) {
-                      slug = `${slug}-${limpiarSlug(club)}`;
+                      slug = `${slug}${limpiarCompacto(pais)}`;
                   }
                   slugsUsados.add(slug);
 
@@ -83,13 +103,13 @@ jobs:
           <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Estadio ${estadio} (${club}) desde el aire | Estadios Virtuales</title>
-              <meta name="description" content="Descubri el estadio ${estadio} de ${club} (${pais}) desde el aire. Capacidad para ${capacidad} espectadores, datos historicos y recorrido interactivo en video HD.">
+              <title>Estadio de ${club} (${estadio}) desde el aire | Estadios Virtuales</title>
+              <meta name="description" content="Conoce el estadio ${estadio} de ${club} (${pais}) desde el aire. Capacidad para ${capacidad} espectadores, datos historicos y sobrevuelo en video HD.">
               <link rel="canonical" href="${canonicalUrl}">
 
               <meta property="og:type" content="website">
-              <meta property="og:title" content="Estadio ${estadio} - ${club} | Estadios Virtuales">
-              <meta property="og:description" content="Recorrido aereo HD, capacidad e historia de ${estadio}.">
+              <meta property="og:title" content="Estadio de ${club} (${estadio}) | Estadios Virtuales">
+              <meta property="og:description" content="Recorrido aereo HD, capacidad e historia de la cancha de ${club}.">
               <meta property="og:image" content="${foto}">
               <meta property="og:url" content="${canonicalUrl}">
 
@@ -112,9 +132,9 @@ jobs:
               }
               </script>
 
-              <meta http-equiv="refresh" content="0; url=/?estadio=${encodeURIComponent(slug)}">
+              <meta http-equiv="refresh" content="0; url=/?estadio=${slug}">
               <script>
-                  window.location.replace("/?estadio=" + encodeURIComponent("${slug}"));
+                  window.location.replace("/?estadio=" + "${slug}");
               </script>
 
               <style>
@@ -133,14 +153,14 @@ jobs:
               </style>
           </head>
           <body>
-              <p>Ingresando al estadio ${estadio}... <br><br>Si no redirige automaticamente, <a href="/?estadio=${encodeURIComponent(slug)}">hace clic aca</a>.</p>
+              <p>Ingresando al estadio de ${club}... <br><br>Si no redirige automaticamente, <a href="/?estadio=${slug}">hace clic aca</a>.</p>
           </body>
           </html>`;
 
                   fs.writeFileSync(path.join(dir, "index.html"), html, "utf8");
               });
 
-              // Generar sitemap.xml
+              // Actualizar sitemap.xml
               const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
@@ -152,11 +172,11 @@ jobs:
 
               fs.writeFileSync(path.join(process.cwd(), "sitemap.xml"), sitemap, "utf8");
 
-              // Generar robots.txt
+              // Actualizar robots.txt
               const robots = `User-agent: *\nAllow: /\nSitemap: ${DOMAIN}/sitemap.xml\n`;
               fs.writeFileSync(path.join(process.cwd(), "robots.txt"), robots, "utf8");
 
-              console.log("Proceso completado con exito.");
+              console.log("Limpieza y generacion completada con exito.");
           }
 
           run();
@@ -166,5 +186,5 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generar páginas SEO y sitemap" && git push)
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Reemplazar carpetas viejas por nombres de club y actualizar sitemap" && git push)
