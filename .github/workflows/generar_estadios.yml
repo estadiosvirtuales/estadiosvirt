@@ -1,0 +1,170 @@
+name: Generar Paginas SEO y Sitemap
+
+on:
+  workflow_dispatch: # Permite ejecutarlo manualmente con un botón
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generar carpetas de estadios y sitemap
+        run: |
+          node -e '
+          const fs = require("fs");
+          const path = require("path");
+
+          const SUPABASE_URL = "https://prqqhxyajyhrlqynpocd.supabase.co";
+          const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22";
+          const DOMAIN = "https://www.estadiosvirtuales.com";
+
+          function limpiarSlug(txt) {
+              return (txt || "")
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/^-+|-+$/g, "");
+          }
+
+          async function run() {
+              console.log("Conectando a Supabase...");
+              const res = await fetch(`${SUPABASE_URL}/rest/v1/estadios_catalogo?select=*`, {
+                  headers: {
+                      "apikey": SUPABASE_KEY,
+                      "Authorization": `Bearer ${SUPABASE_KEY}`
+                  }
+              });
+              const data = await res.json();
+              console.log(`Descargados ${data.length} estadios.`);
+
+              const urlsSitemap = [];
+              const slugsUsados = new Set();
+
+              data.forEach(item => {
+                  const estadio = (item.estadio || "").trim();
+                  const club = (item.club || "").trim();
+                  const pais = (item.pais || "Argentina").trim();
+                  const capacidad = item.capacidad ? parseInt(item.capacidad).toLocaleString("es-AR") : "No especificada";
+                  const anio = item.anio || "No especificado";
+                  const foto = item.foto || "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png";
+                  const dato = (item.dato_curioso || "Recorre este templo del futbol mundial desde el aire.").replace(/"/g, "&quot;");
+                  const lat = item.latitud || "-34.6037";
+                  const lng = item.longitud || "-58.3816";
+
+                  if (!estadio) return;
+
+                  let slug = limpiarSlug(estadio);
+
+                  // Desempate anticolisiones: si dos canchas comparten nombre, se anexa el club
+                  if (slugsUsados.has(slug)) {
+                      slug = `${slug}-${limpiarSlug(club)}`;
+                  }
+                  slugsUsados.add(slug);
+
+                  const dir = path.join(process.cwd(), slug);
+                  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+                  const canonicalUrl = `${DOMAIN}/${slug}`;
+                  urlsSitemap.push(canonicalUrl);
+
+                  const html = `<!DOCTYPE html>
+          <html lang="es">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Estadio ${estadio} (${club}) desde el aire | Estadios Virtuales</title>
+              <meta name="description" content="Descubri el estadio ${estadio} de ${club} (${pais}) desde el aire. Capacidad para ${capacidad} espectadores, datos historicos y recorrido interactivo en video HD.">
+              <link rel="canonical" href="${canonicalUrl}">
+
+              <meta property="og:type" content="website">
+              <meta property="og:title" content="Estadio ${estadio} - ${club} | Estadios Virtuales">
+              <meta property="og:description" content="Recorrido aereo HD, capacidad e historia de ${estadio}.">
+              <meta property="og:image" content="${foto}">
+              <meta property="og:url" content="${canonicalUrl}">
+
+              <script type="application/ld+json">
+              {
+                "@context": "https://schema.org",
+                "@type": "StadiumOrArena",
+                "name": "${estadio}",
+                "maximumAttendeeCapacity": "${capacidad}",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressCountry": "${pais}"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": "${lat}",
+                  "longitude": "${lng}"
+                },
+                "url": "${canonicalUrl}"
+              }
+              </script>
+
+              <meta http-equiv="refresh" content="0; url=/?estadio=${encodeURIComponent(slug)}">
+              <script>
+                  window.location.replace("/?estadio=" + encodeURIComponent("${slug}"));
+              </script>
+
+              <style>
+                  body {
+                      background-color: #0e141b;
+                      color: #f0f4f8;
+                      font-family: system-ui, -apple-system, sans-serif;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      height: 100vh;
+                      margin: 0;
+                      text-align: center;
+                  }
+                  a { color: #00e676; font-weight: bold; text-decoration: none; }
+              </style>
+          </head>
+          <body>
+              <p>Ingresando al estadio ${estadio}... <br><br>Si no redirige automaticamente, <a href="/?estadio=${encodeURIComponent(slug)}">hace clic aca</a>.</p>
+          </body>
+          </html>`;
+
+                  fs.writeFileSync(path.join(dir, "index.html"), html, "utf8");
+              });
+
+              // Generar sitemap.xml
+              const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url>
+              <loc>${DOMAIN}/</loc>
+              <priority>1.0</priority>
+            </url>
+          ${urlsSitemap.map(u => `  <url>\n    <loc>${u}</loc>\n    <priority>0.8</priority>\n  </url>`).join("\n")}
+          </urlset>`;
+
+              fs.writeFileSync(path.join(process.cwd(), "sitemap.xml"), sitemap, "utf8");
+
+              // Generar robots.txt
+              const robots = `User-agent: *\nAllow: /\nSitemap: ${DOMAIN}/sitemap.xml\n`;
+              fs.writeFileSync(path.join(process.cwd(), "robots.txt"), robots, "utf8");
+
+              console.log("Proceso completado con exito.");
+          }
+
+          run();
+          '
+
+      - name: Guardar y commitear cambios
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generar páginas SEO y sitemap" && git push)
