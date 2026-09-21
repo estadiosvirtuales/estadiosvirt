@@ -6887,16 +6887,51 @@ function abrirEstadioPorParametro(param) {
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
         .trim();
 
-    const buscado = normalizar(decodeURIComponent(param).replace(/[-_]/g, ' '));
+    const textoLimpio = decodeURIComponent(param).replace(/[-_]/g, ' ');
+    const buscado = normalizar(textoLimpio);
+    const palabrasBuscadas = buscado.split(' ').filter(p => p.length >= 3);
 
-    const encontrado = catalogoGlobal.find(e => {
+    // Sistema de puntuación por relevancia:
+    const puntuados = catalogoGlobal.map(e => {
         const est = normalizar(bscarPropiedad(e, 'Estadio'));
         const club = normalizar(bscarPropiedad(e, 'Club'));
-        return est.includes(buscado) || buscado.includes(est) || club.includes(buscado);
+        const pais = normalizar(bscarPropiedad(e, 'País'));
+        const combo = `${est} ${club} ${pais}`;
+
+        let score = 0;
+
+        // Coincidencia exacta de estadio o club
+        if (est === buscado) score += 100;
+        if (club === buscado) score += 80;
+
+        // Suma puntos por cada palabra que coincida
+        palabrasBuscadas.forEach(p => {
+            if (est.includes(p)) score += 30;
+            if (club.includes(p)) score += 25;
+            if (pais.includes(p)) score += 10;
+        });
+
+        // Coincidencia de subfrase completa
+        if (combo.includes(buscado)) score += 40;
+
+        const capacidad = parseInt(String(bscarPropiedad(e, 'Capacidad')).replace(/[^0-9]/g, '')) || 0;
+
+        return { estadio: e, score, capacidad };
+    }).filter(item => item.score > 0);
+
+    if (puntuados.length === 0) return;
+
+    // Ordenamos por mayor puntaje de coincidencia; si empatan en texto, por capacidad
+    puntuados.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return b.capacidad - a.capacidad;
     });
+
+    const encontrado = puntuados[0].estadio;
 
     if (encontrado) {
         const linkVideo = bscarPropiedad(encontrado, 'Link del Video')?.trim();
