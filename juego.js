@@ -6883,7 +6883,16 @@ window.addEventListener('DOMContentLoaded', async () => {
 function abrirEstadioPorParametro(param) {
     if (!param || !catalogoGlobal || catalogoGlobal.length === 0) return;
 
-    const normalizar = (txt) => (txt || '')
+    // Limpia eliminando tildes, espacios y guiones para comparar texto compacto
+    const compactar = (txt) => (txt || '')
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]/g, "")
+        .trim();
+
+    // Limpia manteniendo espacios para búsquedas tradicionales
+    const normalizarEspacios = (txt) => (txt || '')
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -6892,31 +6901,47 @@ function abrirEstadioPorParametro(param) {
         .trim();
 
     const textoLimpio = decodeURIComponent(param).replace(/[-_]/g, ' ');
-    const buscado = normalizar(textoLimpio);
-    const palabrasBuscadas = buscado.split(' ').filter(p => p.length >= 3);
+    const buscadoCompacto = compactar(param);
+    const buscadoConEspacios = normalizarEspacios(textoLimpio);
+    const palabrasBuscadas = buscadoConEspacios.split(' ').filter(p => p.length >= 3);
 
-    // Sistema de puntuación por relevancia:
+    if (!buscadoCompacto && !buscadoConEspacios) return;
+
+    // Sistema de puntuación: soporta nombres compactados sin guiones (ej: "estudiantesdelaplata") y con guiones/espacios
     const puntuados = catalogoGlobal.map(e => {
-        const est = normalizar(bscarPropiedad(e, 'Estadio'));
-        const club = normalizar(bscarPropiedad(e, 'Club'));
-        const pais = normalizar(bscarPropiedad(e, 'País'));
-        const combo = `${est} ${club} ${pais}`;
+        const nombreEstadio = bscarPropiedad(e, 'Estadio');
+        const nombreClub = bscarPropiedad(e, 'Club');
+        const nombrePais = bscarPropiedad(e, 'País');
+
+        const estCompacto = compactar(nombreEstadio);
+        const clubCompacto = compactar(nombreClub);
+
+        const estConEspacios = normalizarEspacios(nombreEstadio);
+        const clubConEspacios = normalizarEspacios(nombreClub);
+        const paisConEspacios = normalizarEspacios(nombrePais);
+        const comboConEspacios = `${estConEspacios} ${clubConEspacios} ${paisConEspacios}`;
 
         let score = 0;
 
-        // Coincidencia exacta de estadio o club
-        if (est === buscado) score += 100;
-        if (club === buscado) score += 80;
+        // 1. Coincidencia exacta compacta (prioridad máxima por club: "estudiantesdelaplata" -> 200 pts)
+        if (clubCompacto && clubCompacto === buscadoCompacto) score += 200;
+        if (estCompacto && estCompacto === buscadoCompacto) score += 180;
 
-        // Suma puntos por cada palabra que coincida
+        // 2. Coincidencia parcial compacta
+        if (clubCompacto && (clubCompacto.includes(buscadoCompacto) || (buscadoCompacto.length >= 4 && buscadoCompacto.includes(clubCompacto)))) score += 90;
+        if (estCompacto && (estCompacto.includes(buscadoCompacto) || (buscadoCompacto.length >= 4 && buscadoCompacto.includes(estCompacto)))) score += 70;
+
+        // 3. Coincidencia con espacios tradicional
+        if (clubConEspacios === buscadoConEspacios) score += 100;
+        if (estConEspacios === buscadoConEspacios) score += 90;
+
         palabrasBuscadas.forEach(p => {
-            if (est.includes(p)) score += 30;
-            if (club.includes(p)) score += 25;
-            if (pais.includes(p)) score += 10;
+            if (estConEspacios.includes(p)) score += 30;
+            if (clubConEspacios.includes(p)) score += 25;
+            if (paisConEspacios.includes(p)) score += 10;
         });
 
-        // Coincidencia de subfrase completa
-        if (combo.includes(buscado)) score += 40;
+        if (comboConEspacios.includes(buscadoConEspacios)) score += 40;
 
         const capacidad = parseInt(String(bscarPropiedad(e, 'Capacidad')).replace(/[^0-9]/g, '')) || 0;
 
