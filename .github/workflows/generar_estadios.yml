@@ -28,20 +28,19 @@ jobs:
           const SUPABASE_KEY = "sb_publishable_7bkpzmqDo95a7noCy-JE3A_C1HDVQ22";
           const DOMAIN = "https://www.estadiosvirtuales.com";
 
-          // Limpieza de carpetas autogeneradas anteriores (reconoce las que tienen redirección)
-          console.log("Limpiando carpetas generadas anteriores...");
-          const carpetasIgnoradas = new Set([".git", ".github", "escudos", "node_modules"]);
+          // 1. Limpieza de carpetas autogeneradas anteriores
+          console.log("Borrando carpetas generadas con formato anterior...");
+          const carpetasProtegidas = new Set([".git", ".github", "escudos", "node_modules", "downloads"]);
           const elementosRaiz = fs.readdirSync(process.cwd(), { withFileTypes: true });
 
           elementosRaiz.forEach(item => {
-              if (item.isDirectory() && !carpetasIgnoradas.has(item.name)) {
+              if (item.isDirectory() && !carpetasProtegidas.has(item.name)) {
                   const rutaIndex = path.join(process.cwd(), item.name, "index.html");
                   if (fs.existsSync(rutaIndex)) {
                       const contenido = fs.readFileSync(rutaIndex, "utf8");
-                      // Si es una carpeta generada por el script, la borra
                       if (contenido.includes("?estadio=") || contenido.includes("Estadios Virtuales")) {
                           fs.rmSync(path.join(process.cwd(), item.name), { recursive: true, force: true });
-                          console.log(`Eliminada carpeta anterior: ${item.name}`);
+                          console.log(`Eliminada carpeta vieja: ${item.name}`);
                       }
                   }
               }
@@ -75,15 +74,21 @@ jobs:
                   const estadio = (item.estadio || "").trim();
                   const club = (item.club || "").trim();
                   const pais = (item.pais || "Argentina").trim();
-                  const capacidad = item.capacidad ? parseInt(item.capacidad).toLocaleString("es-AR") : "No especificada";
+
+                  // Número entero limpio para Schema (ej: 32530) y texto formateado para la meta descripción (ej: 32.530)
+                  const capNum = item.capacidad ? parseInt(String(item.capacidad).replace(/[^0-9]/g, "")) : null;
+                  const capacidadTexto = capNum ? capNum.toLocaleString("es-AR") : "No especificada";
+
                   const anio = item.anio || "No especificado";
                   const foto = item.foto || "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png";
-                  const lat = item.latitud || "-34.6037";
-                  const lng = item.longitud || "-58.3816";
+
+                  // Coordenadas estrictas con punto decimal para Schema.org
+                  const latNum = parseFloat(String(item.latitud || "-34.6037").replace(",", ".")) || -34.6037;
+                  const lngNum = parseFloat(String(item.longitud || "-58.3816").replace(",", ".")) || -58.3816;
 
                   if (!estadio || !club) return;
 
-                  // Carpeta con nombre de club compacto: "estudiantesdelaplata", "bocajuniors"
+                  // Carpeta por nombre de club sin guiones: "estudiantesdelaplata", "bocajuniors"
                   let slug = limpiarCompacto(club);
 
                   // Desempate si dos clubes comparten nombre en distintos países
@@ -98,13 +103,15 @@ jobs:
                   const canonicalUrl = `${DOMAIN}/${slug}`;
                   urlsSitemap.push(canonicalUrl);
 
+                  const schemaCapacidad = capNum ? `"maximumAttendeeCapacity": ${capNum},` : "";
+
                   const html = `<!DOCTYPE html>
           <html lang="es">
           <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
               <title>Estadio de ${club} (${estadio}) desde el aire | Estadios Virtuales</title>
-              <meta name="description" content="Conoce el estadio ${estadio} de ${club} (${pais}) desde el aire. Capacidad para ${capacidad} espectadores, datos historicos y sobrevuelo en video HD.">
+              <meta name="description" content="Conoce el estadio ${estadio} de ${club} (${pais}) desde el aire. Capacidad para ${capacidadTexto} espectadores, datos historicos y sobrevuelo en video HD.">
               <link rel="canonical" href="${canonicalUrl}">
 
               <meta property="og:type" content="website">
@@ -118,15 +125,15 @@ jobs:
                 "@context": "https://schema.org",
                 "@type": "StadiumOrArena",
                 "name": "${estadio}",
-                "maximumAttendeeCapacity": "${capacidad}",
+                ${schemaCapacidad}
                 "address": {
                   "@type": "PostalAddress",
                   "addressCountry": "${pais}"
                 },
                 "geo": {
                   "@type": "GeoCoordinates",
-                  "latitude": "${lat}",
-                  "longitude": "${lng}"
+                  "latitude": ${latNum},
+                  "longitude": ${lngNum}
                 },
                 "url": "${canonicalUrl}"
               }
@@ -160,7 +167,7 @@ jobs:
                   fs.writeFileSync(path.join(dir, "index.html"), html, "utf8");
               });
 
-              // Actualizar sitemap.xml
+              // Generar sitemap.xml
               const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
           <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url>
@@ -172,7 +179,7 @@ jobs:
 
               fs.writeFileSync(path.join(process.cwd(), "sitemap.xml"), sitemap, "utf8");
 
-              // Actualizar robots.txt
+              // Generar robots.txt
               const robots = `User-agent: *\nAllow: /\nSitemap: ${DOMAIN}/sitemap.xml\n`;
               fs.writeFileSync(path.join(process.cwd(), "robots.txt"), robots, "utf8");
 
@@ -187,4 +194,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Reemplazar carpetas viejas por nombres de club y actualizar sitemap" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Limpiar carpetas viejas, generar carpetas por club y corregir Schema" && git push)
