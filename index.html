@@ -33,13 +33,13 @@
 <link rel="preload" as="image" href="estadios_virtuales1.png" fetchpriority="high">
 <link rel="preload" as="image" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.png">
 <link rel="preload" as="image" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png">
-<link rel="preload" as="image" href="mundo.png">
-<link rel="preload" as="image" href="podio.png">
-<link rel="preload" as="image" href="avion.png">
-<link rel="preload" as="image" href="catalogo.png">
-<link rel="preload" as="image" href="capacidad.png">
-<link rel="preload" as="image" href="antiguedad.png">
-<link rel="preload" as="image" href="medalla-oro.png">
+<link rel="preload" as="image" href="mundo.webp">
+<link rel="preload" as="image" href="podio.webp">
+<link rel="preload" as="image" href="avion.webp">
+<link rel="preload" as="image" href="catalogo.webp">
+<link rel="preload" as="image" href="capacidad.webp">
+<link rel="preload" as="image" href="antiguedad.webp">
+<link rel="preload" as="image" href="medalla-oro.webp">
 <style>
 /* ☕ ESTILOS DEL BOTÓN CAFECITO Y SU GLOBO FLOTANTE */
 .cafecito-wrapper {
@@ -401,7 +401,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 <div class="game-modes">
 <button class="game-card btn-guessr" onclick="abrirModalGuessr()">
-    <img src="mundo.png" alt="StadiumGuessr" class="game-3d-icon">
+    <img src="mundo.webp" alt="StadiumGuessr" class="game-3d-icon">
     <div class="game-card-text">
         <strong>StadiumGuessr</strong>
         <span>Adiviná la ubicación</span>
@@ -409,7 +409,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </button>
 
 <button class="game-card btn-order" onclick="abrirModalOrden()">
-    <img src="podio.png" alt="Ordenar Estadios" class="game-3d-icon">
+    <img src="podio.webp" alt="Ordenar Estadios" class="game-3d-icon">
     <div class="game-card-text">
         <strong>Ordenar Estadios</strong>
         <span>Capacidad y Edad</span>
@@ -417,7 +417,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </button>
 
 <button class="game-card btn-random" onclick="dispararVueloAleatorio(event)">
-    <img src="avion.png" alt="Vuelo Aleatorio" class="game-3d-icon">
+    <img src="avion.webp" alt="Vuelo Aleatorio" class="game-3d-icon">
     <div class="game-card-text">
         <strong>Vuelo Aleatorio</strong>
         <span>Descubrí al azar</span>
@@ -425,7 +425,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </button>
 
 <button class="game-card btn-catalog" onclick="abrirCatalogo()">
-    <img src="catalogo.png" alt="Explorá el Catálogo" class="game-3d-icon">
+    <img src="catalogo.webp" alt="Explorá el Catálogo" class="game-3d-icon">
     <div class="game-card-text">
         <strong>Explorá el Catálogo</strong>
         <span>Países, ligas y clubes</span>
@@ -707,7 +707,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         
         <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 4px auto 22px auto; padding: 0 8px;">
             <div style="width: 105px; height: 100px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 20px rgba(0, 255, 119, 0.75));">
-                <img src="mundo.png" alt="StadiumGuessr" style="width: 100%; height: 100%; object-fit: contain;">
+                <img src="mundo.webp" alt="StadiumGuessr" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
                 <h2 id="guessr-modal-title" style="font-size: 1.65rem; font-weight: 900; color: var(--text-main); text-transform: uppercase; letter-spacing: -0.5px; margin: 0 0 3px 0; line-height: 1.15;">StadiumGuessr</h2>
@@ -718,7 +718,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <!-- VISTA 1: MENÚ PRINCIPAL DE MODOS -->
         <div class="guessr-menu-container" id="guessr-view-modos" style="display: flex; flex-direction: column; gap: 14px;">
             <button onclick="mostrarPasoDificultad('solo')" class="guessr-option-btn btn-opt-solo">
-                <div class="guessr-option-icon"><img src="icono-individual.png" alt="Individual" style="width: 100%; height: 100%; object-fit: contain;"></div>
+                <div class="guessr-option-icon"><img src="icono-individual.webp" alt="Individual" style="width: 100%; height: 100%; object-fit: contain;"></div>
                 <div class="guessr-option-text">
                     <strong>Modo Individual</strong>
                     <span>Adiviná estadios a tu propio ritmo y sumá XP</span>
@@ -726,7 +726,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
             </button>
 
             <button onclick="mostrarPasoDificultad('versus_global')" class="guessr-option-btn btn-opt-versus">
-                <div class="guessr-option-icon"><img src="icono-1v1.png" alt="1v1" style="width: 100%; height: 100%; object-fit: contain;"></div>
+                <div class="guessr-option-icon"><img src="icono-1v1.webp" alt="1v1" style="width: 100%; height: 100%; object-fit: contain;"></div>
                 <div class="guessr-option-text">
                     <strong>1 vs 1 Global</strong>
                     <span>Partida rápida multijugador en vivo</span>
@@ -734,7 +734,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
             </button>
 
             <button onclick="mostrarPasoDificultad('sala_privada')" class="guessr-option-btn btn-opt-privada">
-                <div class="guessr-option-icon"><img src="icono-privada.png" alt="Sala Privada" style="width: 100%; height: 100%; object-fit: contain;"></div>
+                <div class="guessr-option-icon"><img src="icono-privada.webp" alt="Sala Privada" style="width: 100%; height: 100%; object-fit: contain;"></div>
                 <div class="guessr-option-text">
                     <strong>Sala Privada</strong>
                     <span>Creá una sala y retá a tus amigos por link</span>
@@ -742,7 +742,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
             </button>
 
             <button onclick="cerrarModalGuessr(); abrirModalRanking()" class="guessr-option-btn btn-opt-ranking">
-                <div class="guessr-option-icon"><img src="icono-ranking.png" alt="Ranking" style="width: 100%; height: 100%; object-fit: contain;"></div>
+                <div class="guessr-option-icon"><img src="icono-ranking.webp" alt="Ranking" style="width: 100%; height: 100%; object-fit: contain;"></div>
                 <div class="guessr-option-text">
                     <strong>Tabla de Posiciones</strong>
                     <span>Mirá los mejores puntajes del ranking global</span>

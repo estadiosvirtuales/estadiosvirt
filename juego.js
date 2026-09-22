@@ -1018,7 +1018,7 @@ const NIVELES=(function(){
 const n=[];
 const baseColors=["#cd7f32","#9ca3af","#eab308","#a78bfa","#ff4757","#00e676","#2979ff"];
 const baseClasses=["level-pibe","level-volante","level-crack","level-leyenda","level-leyenda","level-leyenda","level-leyenda"];
-const baseIcons=["pelota.png","precision.png","estrella.png","medalla.png","trofeo.png","coronaoro.png","fuego.png","rayo.png","diamante.png","estrellaplata.png","cohete.png"];
+const baseIcons=["pelota.webp","precision.webp","estrella.webp","medalla.webp","trofeo.webp","coronaoro.webp","fuego.webp","rayo.webp","diamante.webp","estrellaplata.webp","cohete.webp"];
 const baseNames=["Amateur","Promesa","Pibe","Reserva","Volante","Enganche","Goleador","Crack","Ídolo","Capitán","Galáctico","Leyenda","Inmortal","Mito","Dios del Fútbol"];
 for(let i=0;i<1000;i++){
 let xpReq=i===0?0:Math.floor(8000*Math.pow(i,1.5));
@@ -1029,7 +1029,7 @@ let tierIndex=Math.floor(i/5);
 let name=(baseNames[Math.min(tierIndex,baseNames.length-1)])+(i>0?` Lvl ${i}`:"");
 let colorIdx=Math.min(Math.floor(i/8),baseColors.length-1);
 let emojiIdx=Math.min(Math.floor(i/4),baseIcons.length-1);
-const iconUrl = baseIcons[emojiIdx] || "pelota.png";
+const iconUrl = baseIcons[emojiIdx] || "pelota.webp";
 const iconHtml = `<img src="${iconUrl}" class="level-icon-img" style="width:2.4em; height:2.4em; object-fit:contain; vertical-align:middle; display:inline-block;" alt="icon">`;
 n.push({min:xpReq,max:nextXpReq-1,nombre:name,ovr:ovr,color:baseColors[colorIdx]||"#a78bfa",emoji:iconHtml,iconUrl:iconUrl,cssClass:baseClasses[colorIdx]||"level-leyenda"});
 }
@@ -1189,7 +1189,7 @@ window.mostrarModalPremio = function(data) {
     
     const btn = document.getElementById('reward-claim-btn');
     if (btn) {
-        btn.innerHTML = `<span>¡Reclamar Premio!</span> <img src="cohete.png" alt="Cohete" class="reward-btn-cohete">`;
+        btn.innerHTML = `<span>¡Reclamar Premio!</span> <img src="cohete.webp" alt="Cohete" class="reward-btn-cohete">`;
     }
 
     overlay.style.display = 'flex';
@@ -1262,7 +1262,7 @@ async function verificarPremiosPendientes() {
                     localStorage.setItem(storageDiarioKey, '1');
 
                     colaPremiosPendientes.push({
-                        icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Medalla Oro">',
+                        icono: '<img src="medalla-oro.webp" class="reward-medal-img" alt="Medalla Oro">',
                         titulo: '¡Rey del Reto Diario!',
                         subtitulo: `Ayer coronaste el puesto #1 con ${tablaAyer[0].puntaje.toLocaleString('es-AR')} puntos. Tu precisión aérea no tuvo rival.`,
                         botinNombre: 'Premio',
@@ -1317,19 +1317,19 @@ async function verificarPremiosPendientes() {
 
                     const configs = [
                         {
-                            icono: '<img src="medalla-oro.png" class="reward-medal-img" alt="Oro">',
+                            icono: '<img src="medalla-oro.webp" class="reward-medal-img" alt="Oro">',
                             titulo: '¡Campeón de la Semana!',
                             subtitulo: 'Te consagraste en el puesto #1 del 1 vs 1 semanal. La gloria es tuya.',
                             botin: 'Premio'
                         },
                         {
-                            icono: '<img src="medalla-plata.png" class="reward-medal-img" alt="Plata">',
+                            icono: '<img src="medalla-plata.webp" class="reward-medal-img" alt="Plata">',
                             titulo: '¡Subcampeón Semanal!',
                             subtitulo: 'Peleaste hasta el último minuto y conquistaste el puesto #2 del podio.',
                             botin: 'Premio'
                         },
                         {
-                            icono: '<img src="medalla-bronce.png" class="reward-medal-img" alt="Bronce">',
+                            icono: '<img src="medalla-bronce.webp" class="reward-medal-img" alt="Bronce">',
                             titulo: '¡Podio de Bronce!',
                             subtitulo: 'Te metiste en el puesto #3 entre los mejores duelistas de la semana.',
                             botin: 'Premio'
@@ -2564,7 +2564,7 @@ function abrirModalVideo(event,link,esJuego=false){
         
         // ⚡ SIN MARGEN NEGATIVO: El iframe se mantiene 100% visible para evitar el bloqueo del decodificador de Chrome Móvil
         const est="width:100%;height:100%;border:none;";
-        const mascaraHTML = esJuego ? `<div class="yt-title-mask"><img src="mundo.png" alt="Logo" class="yt-mask-icon"><span>STADIUMGUESSR</span></div>` : '';
+        const mascaraHTML = esJuego ? `<div class="yt-title-mask"><img src="mundo.webp" alt="Logo" class="yt-mask-icon"><span>STADIUMGUESSR</span></div>` : '';
         container.innerHTML=`${mascaraHTML}<iframe src="${url}" style="${est}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
         
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
@@ -3107,7 +3107,7 @@ function abrirLobbyPrivado(link, codigo) {
     lobby.innerHTML = `
         <div class="private-lobby-header">
             <div class="private-lobby-title-wrap">
-                <img src="icono-privada.png" alt="Sala Privada" class="private-lobby-icon">
+                <img src="icono-privada.webp" alt="Sala Privada" class="private-lobby-icon">
                 <div class="private-lobby-title-text">
                     <strong>Duelo Privado</strong>
                     <span class="private-lobby-badge">SALA #${codigo}</span>
@@ -4164,11 +4164,11 @@ if (hintsBox) {
             </button>
             <div class="guessr-hint-balloon" id="guessr-hint-balloon" onclick="event.stopPropagation()">
                 <div class="guessr-hint-row">
-                    <img src="mundo.png" class="hint-icon" alt="País">
+                    <img src="mundo.webp" class="hint-icon" alt="País">
                     <span>País: <b style="color:var(--accent-color);">${paisEstadio}</b></span>
                 </div>
                 <div class="guessr-hint-row">
-                    <img src="capacidad.png" class="hint-icon" alt="Capacidad">
+                    <img src="capacidad.webp" class="hint-icon" alt="Capacidad">
                     <span>Capacidad: <b style="color:var(--accent-color);">${capTexto}</b></span>
                 </div>
                 <div class="guessr-hint-trivia">
@@ -4458,7 +4458,7 @@ async function finalizarJuegoGuessr(){
         }
         
         if (guessrPuntosTotales > rivalPuntosTotales) {
-            cartelResultado = `<span>¡VICTORIA!</span> <img src="liga-trofeo-header.png" alt="Trofeo" class="vs-result-trophy">`;
+            cartelResultado = `<span>¡VICTORIA!</span> <img src="liga-trofeo-header.webp" alt="Trofeo" class="vs-result-trophy">`;
             colorResultado = "#00e676";
             showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
@@ -4482,7 +4482,7 @@ async function finalizarJuegoGuessr(){
         const botonFinal = ligaJugada 
             ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
             : `<div style="display:flex;gap:10px;width:100%;">
-                <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.png" alt="Ranking" style="width:20px;height:20px;object-fit:contain;"> Ranking 1v1</button>
+                <button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="flex:1;font-size:.88rem;padding:12px;"><img src="medalla-oro.webp" alt="Ranking" style="width:20px;height:20px;object-fit:contain;"> Ranking 1v1</button>
                 <button onclick="cerrarModalVideo(); buscarPartidaVersus();" class="btn-3d btn-endgame-replay" style="flex:1;font-size:.88rem;padding:12px;"><i class="ph-bold ph-sword"></i> Nuevo 1 vs 1</button>
                </div>`;
 
@@ -4624,7 +4624,7 @@ async function finalizarJuegoGuessr(){
                     ${cartelGuardado}
                     ${botonCompartirDiario}
                     <div style="display:flex; gap:8px; width:100%;">
-                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.82rem; padding:9px 12px;"><img src="medalla-oro.png" alt="Ranking" style="width:17px; height:17px; object-fit:contain;"> Ranking</button>
+                        <button onclick="abrirModalRanking(${paramRanking})" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.82rem; padding:9px 12px;"><img src="medalla-oro.webp" alt="Ranking" style="width:17px; height:17px; object-fit:contain;"> Ranking</button>
                         ${botonRejugar}
                     </div>
                 </div>
@@ -4727,16 +4727,16 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
     let subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
         <button class="liga-tab-btn tab-btn-solo ${activeSolo}" onclick="abrirModalRanking('solo')">
-            <img src="ranking-icon-solo.png" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
+            <img src="ranking-icon-solo.webp" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
         </button>
         <button class="liga-tab-btn tab-btn-versus ${activeVHist}" onclick="abrirModalRanking('v_historico')">
-            <img src="ranking-icon-1v1.png" alt="1v1 Historial" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>
+            <img src="ranking-icon-1v1.webp" alt="1v1 Historial" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>
         </button>
         <button class="liga-tab-btn tab-btn-semanal ${activeVSem}" onclick="abrirModalRanking('v_semanal')">
-            <img src="ranking-icon-semanal.png" alt="Semanal" class="ranking-tab-img"> <span>Semanal</span>
+            <img src="ranking-icon-semanal.webp" alt="Semanal" class="ranking-tab-img"> <span>Semanal</span>
         </button>
         <button class="liga-tab-btn tab-btn-diario ${activeDiario}" onclick="abrirModalRanking('diario')" style="${estiloDiarioBtn}">
-            <img src="fuego.png" alt="Reto Diario" class="ranking-tab-img"> 
+            <img src="fuego.webp" alt="Reto Diario" class="ranking-tab-img"> 
             <span style="${estiloDiarioTxt}">Reto Diario</span>
         </button>
     </div>`;
@@ -4745,9 +4745,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         let htmlContenido = "";
         let headerConfig = {};
         const medallas3D = [
-            '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+            '<img src="medalla-oro.webp" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-plata.webp" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-bronce.webp" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
         ];
 
         if (modoEspecifico === 'diario') {
@@ -4783,10 +4783,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const miPuntosHoy = miFila ? `${miFila.puntaje.toLocaleString('es-AR')} pts` : 'Sin jugar';
             const miPuesto = miPuestoIdx !== -1 ? `#${miPuestoIdx + 1}` : 'Sin clasif.';
 
-            headerConfig = {
-                img: 'fuego.png',
+           headerConfig = {
+                img: 'fuego.webp',
                 glowClass: 'glow-orange',
-                badgeImg: 'fuego.png',
+                badgeImg: 'fuego.webp',
                 badgeTitle: 'Top 50 Global',
                 badgeSub: `Diario (${fechaVisual})`,
                 badgeColor: '#ff9100',
@@ -4878,9 +4878,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
 
             headerConfig = {
-                img: 'liga-trofeo-header.png',
+                img: 'liga-trofeo-header.webp',
                 glowClass: 'glow-green',
-                badgeImg: 'ranking-icon-solo.png',
+                badgeImg: 'ranking-icon-solo.webp',
                 badgeTitle: 'Top 50 Global',
                 badgeSub: 'Individual',
                 badgeColor: '#00ff77',
@@ -4948,9 +4948,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const ratioReal = jugadasReales > 0 ? Math.round((victoriasReales / jugadasReales) * 100) : 0;
 
             headerConfig = {
-                img: 'ranking-icon-1v1.png',
+                img: 'ranking-icon-1v1.webp',
                 glowClass: 'glow-blue',
-                badgeImg: 'ranking-icon-1v1.png',
+                badgeImg: 'ranking-icon-1v1.webp',
                 badgeTitle: 'Top 50 Global',
                 badgeSub: '1 vs 1 Histórico',
                 badgeColor: '#2979ff',
@@ -5015,9 +5015,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const textoCierre = diasParaCierre === 0 ? 'Hoy 23:59' : `Domingo (${diasParaCierre}d)`;
 
             headerConfig = {
-                img: 'ranking-icon-semanal.png',
+                img: 'ranking-icon-semanal.webp',
                 glowClass: 'glow-gold',
-                badgeImg: 'ranking-icon-semanal.png',
+                badgeImg: 'ranking-icon-semanal.webp',
                 badgeTitle: 'Top 50 Semanal',
                 badgeSub: 'Temporada Activa',
                 badgeColor: '#eab308',
@@ -5159,10 +5159,10 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
     const subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
         <button class="liga-tab-btn ${activeCap}" onclick="abrirModalRankingOrden('capacidad')">
-            <img src="capacidad.jpg" alt="Capacidad" class="ranking-tab-img" onerror="this.src='capacidad.png';"> <span>Capacidad</span>
+            <img src="capacidad.webp" alt="Capacidad" class="ranking-tab-img"> <span>Capacidad</span>
         </button>
         <button class="liga-tab-btn ${activeAnt}" onclick="abrirModalRankingOrden('antiguedad')">
-            <img src="antiguedad.jpg" alt="Antigüedad" class="ranking-tab-img" onerror="this.src='antiguedad.png';"> <span>Antigüedad</span>
+            <img src="antiguedad.webp" alt="Antigüedad" class="ranking-tab-img"> <span>Antigüedad</span>
         </button>
     </div>`;
 
@@ -5237,10 +5237,10 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         const textoPartidas = `${cantPartidas} ${cantPartidas === 1 ? 'Jugada' : 'Jugadas'}`;
 
         const headerConfig = modo === 'capacidad' ? {
-            img: 'capacidad.jpg',
-            fallback: 'capacidad.png',
+            img: 'capacidad.webp',
+            fallback: 'capacidad.webp',
             glowClass: 'glow-gold',
-            badgeImg: 'capacidad.jpg',
+            badgeImg: 'capacidad.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: 'Capacidad',
             badgeColor: '#fbbf24',
@@ -5254,10 +5254,10 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             pill3Val: textoPartidas,
             pill3Icon: 'ph-game-controller'
         } : {
-            img: 'antiguedad.jpg',
-            fallback: 'antiguedad.png',
+            img: 'antiguedad.webp',
+            fallback: 'antiguedad.webp',
             glowClass: 'glow-blue',
-            badgeImg: 'antiguedad.jpg',
+            badgeImg: 'antiguedad.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: 'Antigüedad',
             badgeColor: '#a78bfa',
@@ -5273,9 +5273,9 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         };
 
         const medallas3D = [
-            '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+            '<img src="medalla-oro.webp" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-plata.webp" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+            '<img src="medalla-bronce.webp" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
         ];
 
         let htmlContenido = `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
@@ -5398,7 +5398,7 @@ function abrirModalOrden() {
         <!-- CABECERA DE PODIO -->
         <div style="margin-bottom: 18px;">
             <div style="width: 140px; height: 120px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75));">
-                <img src="podio.png" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;">
+                <img src="podio.webp" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Orden</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 380px; line-height: 1.45; margin: 0 auto;">
@@ -5410,7 +5410,7 @@ function abrirModalOrden() {
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 380px; margin-bottom: 18px;">
             <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-capacidad" style="padding: 14px 18px;">
                 <div class="guessr-option-icon">
-                    <img src="capacidad.png" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
+                    <img src="capacidad.webp" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
                     <strong style="font-size: 1rem; color: #fbbf24;">Por Capacidad</strong>
@@ -5420,7 +5420,7 @@ function abrirModalOrden() {
 
             <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-antiguedad" style="padding: 14px 18px;">
                 <div class="guessr-option-icon">
-                    <img src="antiguedad.png" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
+                    <img src="antiguedad.webp" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
                     <strong style="font-size: 1rem; color: #c084fc;">Por Antigüedad</strong>
@@ -5432,7 +5432,7 @@ function abrirModalOrden() {
         <!-- TABLA DE POSICIONES -->
         <div style="width: 100%; max-width: 380px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
             <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d btn-order-ranking-gold" style="width: 100%; padding: 12px; font-size: 0.88rem; font-weight: 800; gap: 8px;">
-                <img src="medalla-oro.png" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Desafíos
+                <img src="medalla-oro.webp" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Desafíos
             </button>
         </div>
     </div>`;
@@ -5489,8 +5489,8 @@ function renderJuegoOrden(revelar = false){
     if (!body) return;
 
     const imgIcono = orderModo === 'capacidad' 
-        ? '<img src="capacidad.png" alt="Capacidad" style="width:38px;height:38px;object-fit:contain;">' 
-        : '<img src="antiguedad.png" alt="Antigüedad" style="width:38px;height:38px;object-fit:contain;">';
+        ? '<img src="capacidad.webp" alt="Capacidad" style="width:38px;height:38px;object-fit:contain;">' 
+        : '<img src="antiguedad.webp" alt="Antigüedad" style="width:38px;height:38px;object-fit:contain;">';
 
     const titulo = orderModo === 'capacidad' ? 'Mayor a Menor Capacidad' : 'Del Más Antiguo al Más Moderno';
     const labelTop = orderModo === 'capacidad' ? '⬆ MÁS GRANDE' : '⬆ MÁS ANTIGUO';
@@ -5600,7 +5600,7 @@ function renderJuegoOrden(revelar = false){
             ${cartelGuardadoOrden}
             <div style="display:flex; gap:10px; margin-bottom:8px;">
                 <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;">
-                    <img src="medalla-oro.png" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking
+                    <img src="medalla-oro.webp" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking
                 </button>
                 <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;">
                     <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
@@ -5779,8 +5779,8 @@ window.cambiarTemaPaso = function(direccion) {
 };
 
 window.toggleCustomization=function(){const panel=document.getElementById('customization-panel-wrapper');const btn=document.getElementById('btn-toggle-custom');
-if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
-else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
+if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML='<img src="personaliza-tu-carta.webp" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
+else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.webp" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 };
 const AVATARES_LISTA = [
     // 🌟 INICIALES DISPONIBLES (NIVEL 0 - 7 JUGADORES)
@@ -6464,7 +6464,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                     </div>
 
             <div class="profile-card-actions-row">
-                <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()"><img src="personaliza-tu-carta.png" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼</button>
+                <button class="btn-3d secondary" id="btn-toggle-custom" onclick="toggleCustomization()"><img src="personaliza-tu-carta.webp" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼</button>
                 <div class="share-btn-wrapper">
                     <button class="btn-3d secondary" id="btn-share-card" onclick="compartirCartaFUT()"><i class="ph-bold ph-share-network"></i></button>
                     <div class="share-tooltip">Compartí tu carta</div>
@@ -6473,7 +6473,7 @@ document.getElementById('profile-modal-body').innerHTML=`
             <div id="customization-panel-wrapper">
                 <div class="avatar-picker">
                     <div class="avatar-picker-label theme-stepper-wrapper">
-                        <span class="theme-stepper-title"><img src="diseño-de-la-carta.png" class="custom-label-icon" alt="Diseño"> DISEÑO DE LA CARTA</span>
+                        <span class="theme-stepper-title"><img src="diseño-de-la-carta.webp" class="custom-label-icon" alt="Diseño"> DISEÑO DE LA CARTA</span>
                         <div class="theme-stepper-control">
                             <button type="button" class="avatar-stepper-btn" onclick="cambiarTemaPaso(-1)"><i class="ph-bold ph-caret-left"></i></button>
                             <div class="theme-dot td-${savedTheme} active" id="theme-current-badge" data-tema="${savedTheme}"></div>
@@ -6482,7 +6482,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                     </div>
                     <div class="avatar-divider"></div>
-                    <label class="avatar-nick-label"><img src="selecciona-tu-jugador.png" class="custom-label-icon" alt="Jugador"> SELECCIONÁ TU JUGADOR/A</label>
+                    <label class="avatar-nick-label"><img src="selecciona-tu-jugador.webp" class="custom-label-icon" alt="Jugador"> SELECCIONÁ TU JUGADOR/A</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
                         <div class="avatar-stepper-box" onclick="abrirModalSelectorAvatar()" style="cursor:pointer;" title="Elegir futbolista">
                             <span class="avatar-stepper-label" id="avatar-hair-label" style="display:flex;align-items:center;justify-content:center;gap:6px;">
@@ -6500,7 +6500,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                     </div>
                     <div class="avatar-picker-label pitch-stepper-wrapper" onclick="window.togglePitchPicker(this)">
-                        <img src="posicion.png" class="custom-label-icon" alt="Posición">
+                        <img src="posicion.webp" class="custom-label-icon" alt="Posición">
                         <span class="theme-stepper-title pitch-title-text">POSICIÓN</span>
                         <div class="pitch-header-control">
                             <span class="pitch-current-preview" id="pitch-header-preview">${savedPos}</span>
@@ -6531,11 +6531,11 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                         <input type="hidden" id="avatar-pos-input" value="${savedPos}">
                     </div>
-                    <label class="avatar-nick-label"><img src="apodo.png" class="custom-label-icon" alt="Apodo"> APODO</label>
+                    <label class="avatar-nick-label"><img src="apodo.webp" class="custom-label-icon" alt="Apodo"> APODO</label>
                     <div class="avatar-nickname-row">
                         <input type="text" class="avatar-nickname-input" id="avatar-nick-input" placeholder="Tu apodo…" maxlength="16" value="${savedNick}" oninput="const fn=document.getElementById('fut-name-display');if(fn)fn.textContent=this.value||'${nombreDefault.replace(/'/g,"\\'")}';">
                     </div>
-                    <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><img src="guardar-cambios.png" class="btn-custom-icon" alt="Guardar"> GUARDAR CAMBIOS</button>
+                    <button class="avatar-save-btn" onclick="guardarPersonalizacion()"><img src="guardar-cambios.webp" class="btn-custom-icon" alt="Guardar"> GUARDAR CAMBIOS</button>
                 </div>
             </div>
             ${authBtnHTML}
@@ -6711,26 +6711,26 @@ function calcularLogros(){
         const progActual=val-(tierActual*step);
         logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
     }
-    addTierLogro('voto','<img src="catador.png" class="logro-img-icon" alt="Catador">','Catador',s.votosRealizados,5,' califs','common');
-    addTierLogro('trivia','<img src="curioso.png" class="logro-img-icon" alt="Curioso">','Curioso',s.triviasVistas,5,' trivias','common');
-    addTierLogro('guessr','<img src="piloto.png" class="logro-img-icon" alt="Piloto">','Piloto',s.partidasJugadas,5,' partidas','common');
-    addTierLogro('liga','<img src="explorador.png" class="logro-img-icon" alt="Explorador">','Explorador',s.ligasExploradas.size,2,' ligas','common');
-    addTierLogro('aleat','<img src="aventurero.png" class="logro-img-icon" alt="Aventurero">','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
-    addTierLogro('racha','<img src="constante.png" class="logro-img-icon" alt="Constante">','Constante',s.rachaActual||1,7,' días','rare');
-    addTierLogro('maxscore','<img src="record.png" class="logro-img-icon" alt="Récord">','Récord',s.maxScore||0,5000,' pts','epic');
-    addTierLogro('xptotal','<img src="acumulador.png" class="logro-img-icon" alt="Acumulador">','Acumulador',s.xpTotal||0,10000,' XP','epic');
+    addTierLogro('voto','<img src="catador.webp" class="logro-img-icon" alt="Catador">','Catador',s.votosRealizados,5,' califs','common');
+    addTierLogro('trivia','<img src="curioso.webp" class="logro-img-icon" alt="Curioso">','Curioso',s.triviasVistas,5,' trivias','common');
+    addTierLogro('guessr','<img src="piloto.webp" class="logro-img-icon" alt="Piloto">','Piloto',s.partidasJugadas,5,' partidas','common');
+    addTierLogro('liga','<img src="explorador.webp" class="logro-img-icon" alt="Explorador">','Explorador',s.ligasExploradas.size,2,' ligas','common');
+    addTierLogro('aleat','<img src="aventurero.webp" class="logro-img-icon" alt="Aventurero">','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
+    addTierLogro('racha','<img src="constante.webp" class="logro-img-icon" alt="Constante">','Constante',s.rachaActual||1,7,' días','rare');
+    addTierLogro('maxscore','<img src="record.webp" class="logro-img-icon" alt="Récord">','Récord',s.maxScore||0,5000,' pts','epic');
+    addTierLogro('xptotal','<img src="acumulador.webp" class="logro-img-icon" alt="Acumulador">','Acumulador',s.xpTotal||0,10000,' XP','epic');
 
 // ⚔️ NUEVOS LOGROS COMPETITIVOS DEL VERSUS 1V1
-addTierLogro('versus_win','<img src="dominante.png" class="logro-img-icon" alt="Dominante">','Dominante',s.partidasGanadas||0,3,' victorias','epic');
+addTierLogro('versus_win','<img src="dominante.webp" class="logro-img-icon" alt="Dominante">','Dominante',s.partidasGanadas||0,3,' victorias','epic');
 
-logros.push({id:'bienvenido',icon:'<img src="primer-despegue.png" class="logro-img-icon" alt="Primer Despegue">',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
-logros.push({id:'nick',icon:'<img src="identidad.png" class="logro-img-icon" alt="Identidad">',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
-logros.push({id:'primer_versus',icon:'<img src="bautismo-de-fuego.png" class="logro-img-icon" alt="Bautismo de Fuego">',name:'Bautismo de Fuego',rarity:'common',req:'Ganá tu primer Versus 1v1',unlocked:(s.partidasGanadas||0)>=1,pct:(s.partidasGanadas||0)>=1?100:0,pctLabel:''});
+logros.push({id:'bienvenido',icon:'<img src="primer-despegue.webp" class="logro-img-icon" alt="Primer Despegue">',name:'Primer Despegue',rarity:'common',req:'Abrí la app por primera vez',unlocked:s.sesionesTotal>=1,pct:s.sesionesTotal>=1?100:0,pctLabel:''});
+logros.push({id:'nick',icon:'<img src="identidad.webp" class="logro-img-icon" alt="Identidad">',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
+logros.push({id:'primer_versus',icon:'<img src="bautismo-de-fuego.webp" class="logro-img-icon" alt="Bautismo de Fuego">',name:'Bautismo de Fuego',rarity:'common',req:'Ganá tu primer Versus 1v1',unlocked:(s.partidasGanadas||0)>=1,pct:(s.partidasGanadas||0)>=1?100:0,pctLabel:''});
 
-logros.push({id:'localista',icon:'<img src="gps-humano.png" class="logro-img-icon" alt="GPS Humano">',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
-logros.push({id:'unKm',icon:'<img src="ojo-de-aguila.png" class="logro-img-icon" alt="Ojo de Águila">',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
-logros.push({id:'perfecto',icon:'<img src="perfeccionista.png" class="logro-img-icon" alt="Perfeccionista">',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
-logros.push({id:'ordenPerfecto',icon:'<img src="estratega.png" class="logro-img-icon" alt="Estratega">',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
+logros.push({id:'localista',icon:'<img src="gps-humano.webp" class="logro-img-icon" alt="GPS Humano">',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
+logros.push({id:'unKm',icon:'<img src="ojo-de-aguila.webp" class="logro-img-icon" alt="Ojo de Águila">',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
+logros.push({id:'perfecto',icon:'<img src="perfeccionista.webp" class="logro-img-icon" alt="Perfeccionista">',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
+logros.push({id:'ordenPerfecto',icon:'<img src="estratega.webp" class="logro-img-icon" alt="Estratega">',name:'Estratega',rarity:'epic',req:'Orden perfecto sin errores',unlocked:s.ordenSinFallar,pct:s.ordenSinFallar?100:0,pctLabel:''});
     return logros;
 }
 // Función para rescatar al jugador si el oponente se desconecta o abandona (Adjudica Victoria)
@@ -6787,11 +6787,11 @@ async function manejarAbandonoRival() {
 
     const botonFinal = versusLigaOrigen
         ? `<button onclick="cerrarModalVideo(); abrirModalLigaAmigosPrivada();" class="btn-3d btn-endgame-save" style="padding:13px 24px;max-width:100%;width:100%;"><i class="ph-fill ph-users-three"></i> Volver a mi Liga</button>`
-        : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="padding:13px 24px;max-width:100%;width:100%;"><img src="medalla-oro.png" alt="Ranking" style="width:24px;height:24px;object-fit:contain;"> Ver Tabla de Posiciones</button>`;
+        : `<button onclick="cerrarModalVideo(); abrirModalRanking('v_historico');" class="btn-3d btn-endgame-rank" style="padding:13px 24px;max-width:100%;width:100%;"><img src="medalla-oro.webp" alt="Ranking" style="width:24px;height:24px;object-fit:contain;"> Ver Tabla de Posiciones</button>`;
     container.innerHTML = `
     <div style="text-align:center;padding:36px 22px;color:var(--text-main);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;box-sizing:border-box;background: radial-gradient(circle at 50% -15%, rgba(0, 230, 118, 0.20) 0%, transparent 65%), radial-gradient(circle at 50% 105%, rgba(41, 121, 255, 0.10) 0%, transparent 55%), linear-gradient(180deg, #0c1520 0%, #060a10 100%);">
         <div style="width: 125px; height: 125px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center;">
-            <img src="liga-trofeo-header.png" alt="Trofeo" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 18px rgba(0, 230, 118, 0.9)) drop-shadow(0 0 35px rgba(0, 230, 118, 0.45)); animation: rayoGlow 2.5s infinite alternate ease-in-out;">
+            <img src="liga-trofeo-header.webp" alt="Trofeo" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 18px rgba(0, 230, 118, 0.9)) drop-shadow(0 0 35px rgba(0, 230, 118, 0.45)); animation: rayoGlow 2.5s infinite alternate ease-in-out;">
         </div>
         <h2 style="font-size:1.85rem;font-weight:900;text-transform:uppercase;margin-bottom:10px;color:#00e676;text-shadow:0 0 18px rgba(0,230,118,0.55);letter-spacing:-0.5px;">¡VICTORIA POR ABANDONO!</h2>
         <p style="color:var(--text-muted);margin-bottom:24px;font-size:.95rem;max-width:340px;line-height:1.5;">Tu oponente abandonó la sesión o se quedó sin datos.</p>
@@ -6826,8 +6826,8 @@ function precargarImagenesUI() {
     const uiEsencial = [
         URL_ESCUDOS_BASE + 'Logo.png',
         URL_ESCUDOS_BASE + 'baul.png',
-        'mundo.png', 'podio.png', 'avion.png', 'catalogo.png',
-        'icono-individual.png', 'icono-1v1.png', 'icono-privada.png', 'icono-ranking.png'
+        'mundo.webp', 'podio.webp', 'avion.webp', 'catalogo.webp',
+        'icono-individual.webp', 'icono-1v1.webp', 'icono-privada.webp', 'icono-ranking.webp'
     ];
 
     uiEsencial.forEach(src => {
@@ -7351,18 +7351,18 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
     // 🎨 Configuración dinámica de ícono, resplandor y colores según la pestaña activa
     const headerConfig = esPuntaje ? {
-        img: 'liga-icon-puntaje.png',
+        img: 'liga-icon-puntaje.webp',
         alt: 'Puntaje Máximo',
         glowClass: 'glow-green',
-        badgeImg: 'liga-icon-puntaje.png',
+        badgeImg: 'liga-icon-puntaje.webp',
         badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
         badgeSub: 'Puntaje Máximo',
         badgeColor: '#00ff77'
     } : {
-        img: 'liga-icon-historial.png',
+        img: 'liga-icon-historial.webp',
         alt: 'Historial W/L',
         glowClass: 'glow-blue',
-        badgeImg: 'liga-icon-historial.png',
+        badgeImg: 'liga-icon-historial.webp',
         badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
         badgeSub: 'Historial W/L',
         badgeColor: '#2979ff'
@@ -7378,10 +7378,10 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     const subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
         <button class="liga-tab-btn ${esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('puntaje')">
-            <img src="liga-icon-puntaje.png" alt="Puntaje" class="ranking-tab-img"> <span>Puntaje máx.</span>
+            <img src="liga-icon-puntaje.webp" alt="Puntaje" class="ranking-tab-img"> <span>Puntaje máx.</span>
         </button>
         <button class="liga-tab-btn ${!esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('triunfos')">
-            <img src="liga-icon-historial.png" alt="Historial" class="ranking-tab-img"> <span>Historial W/L</span>
+            <img src="liga-icon-historial.webp" alt="Historial" class="ranking-tab-img"> <span>Historial W/L</span>
         </button>
     </div>`;
 
@@ -7397,9 +7397,9 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     } else {
         lista.forEach((f, i) => {
             const medallas3D = [
-                '<img src="medalla-oro.png" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-                '<img src="medalla-plata.png" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-                '<img src="medalla-bronce.png" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+                '<img src="medalla-oro.webp" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+                '<img src="medalla-plata.webp" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
+                '<img src="medalla-bronce.webp" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
             ];
             const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
             const nombreRival = (f.nombre || 'Anónimo').trim();
@@ -7413,7 +7413,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             if (estaOnline) {
                 indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:8px; box-shadow:0 0 8px #00e676; animation: pulseGlow 2s infinite;" title="Mirando la liga ahora"></span>`;
                 if (!esPropio) {
-                    botonReto = `<img src="liga-icon-historial.png" alt="Desafiar" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; width:28px; height:28px; object-fit:contain; margin-left:8px; transition:transform 0.15s; vertical-align:middle; filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.5));" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo">`;
+                    botonReto = `<img src="liga-icon-historial.webp" alt="Desafiar" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; width:28px; height:28px; object-fit:contain; margin-left:8px; transition:transform 0.15s; vertical-align:middle; filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.5));" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo">`;
                 }
             }
 
@@ -7696,7 +7696,7 @@ async function abrirModalLigaAmigosPrivada() {
                 <div class="trophy-stage-wrapper" style="margin-bottom:10px;">
                     <div class="trophy-glow-backdrop glow-green"></div>
                     <div class="trophy-main-img-box">
-                        <img src="liga-trofeo-header.png" alt="Liga de Amigos" class="trophy-main-img">
+                        <img src="liga-trofeo-header.webp" alt="Liga de Amigos" class="trophy-main-img">
                     </div>
                 </div>
                 <h2 class="liga-modal-title" style="margin-bottom:6px;">Liga Privada de Amigos</h2>
@@ -8007,10 +8007,10 @@ async function compartirCartaFUT() {
     poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
     const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png', window.location.href).href;
-    const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.png', window.location.href).href;
-    const fuegoIconUrl = new URL('fuego.png', window.location.href).href;
-    const trofeoIconUrl = new URL('trofeo.png', window.location.href).href;
-    const dueloIconUrl = new URL('liga-icon-historial.png', window.location.href).href;
+    const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.webp', window.location.href).href;
+    const fuegoIconUrl = new URL('fuego.webp', window.location.href).href;
+    const trofeoIconUrl = new URL('trofeo.webp', window.location.href).href;
+    const dueloIconUrl = new URL('liga-icon-historial.webp', window.location.href).href;
 
     poster.innerHTML = `
         <div class="poster-header" style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
