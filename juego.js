@@ -5921,7 +5921,7 @@ function renderizarAvataresGrid() {
         <div class="avatar-grid-card ${isSel ? 'selected' : ''} ${isLocked ? 'locked' : 'unlocked'}" 
              onclick="seleccionarAvatarDirecto('${item.id}', ${item.nivel})">
             <div class="avatar-grid-img-wrap">
-                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" decoding="async" loading="eager">
+                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" decoding="async" loading="lazy">
                 ${overlayHTML}
             </div>
             <span>${item.label}</span>
