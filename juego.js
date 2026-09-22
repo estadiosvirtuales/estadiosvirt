@@ -980,8 +980,9 @@ window.cambiarBanderaPaso = function(direccion) {
 };
 
 function generarAvatarHTML(avatarImg, forzarDesbloqueado = false) {
-    let imgNombre = avatarImg || '1.png';
-    if (!imgNombre.includes('.')) imgNombre += '.png';
+    // Blindaje: si el usuario o la base tenían guardado .png, lo migra a .webp en el acto
+    let imgNombre = (avatarImg || '1.webp').replace(/\.png$/i, '.webp');
+    if (!imgNombre.includes('.')) imgNombre += '.webp';
     
     const nivelReq = obtenerNivelAvatar(imgNombre);
     const nivelUser = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
@@ -1624,7 +1625,7 @@ function renderizarBotonLogin(){
     const container=document.getElementById('hero-google-profile');
     if(!container) return;
     const u=obtenerUsuarioLogueado();
-    const avatarImg = getPref('ev_avatar_hair', '1.png');
+    const avatarImg = getPref('ev_avatar_hair', '1.webp').replace(/\.png$/i, '.webp');
     const avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -34px; bottom: -18px;">${generarAvatarHTML(avatarImg)}</div></div>`;
     const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
     const nombre = obtenerNombreDisplay();
@@ -1639,13 +1640,13 @@ let cacheAvataresUsuarios = {};
 
 function obtenerAvatarParaUsuario(nombre) {
     const n = (nombre || '').trim();
-    if (!n) return '1.png';
+    if (!n) return '1.webp';
     const nLower = n.toLowerCase();
 
     const u = obtenerUsuarioLogueado();
     const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim().toLowerCase();
     if (nLower === miNombre || nLower === 'vos' || nLower === 'invitado') {
-        return getPref('ev_avatar_hair', '1.png');
+        return getPref('ev_avatar_hair', '1.webp').replace(/\.png$/i, '.webp');
     }
 
     if (cacheAvataresUsuarios[nLower]) {
@@ -1662,7 +1663,7 @@ function obtenerAvatarParaUsuario(nombre) {
         const idx = Math.abs(hash) % listaAvatares.length;
         return listaAvatares[idx].id;
     }
-    return '1.png';
+    return '1.webp';
 }
 
 function obtenerAvatarCirculoHTML(nombreJugador, avatarDirecto = null) {
@@ -5783,91 +5784,93 @@ else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-cart
 };
 const AVATARES_LISTA = [
     // 🌟 INICIALES DISPONIBLES (NIVEL 0 - 7 JUGADORES)
-    { id: '1.png', label: 'Jugador 1', nivel: 0 },
-    { id: '2.png', label: 'Jugador 2', nivel: 0 },
-    { id: '3.png', label: 'Jugador 3', nivel: 0 },
-    { id: '4.png', label: 'Jugador 4', nivel: 0 },
-    { id: '31.png', label: 'Jugadora 31', nivel: 0 },
-    { id: '32.png', label: 'Jugador 32', nivel: 0 },
-    { id: '33.png', label: 'Jugadora 33', nivel: 0 },
+    { id: '1.webp', label: 'Jugador 1', nivel: 0 },
+    { id: '2.webp', label: 'Jugador 2', nivel: 0 },
+    { id: '3.webp', label: 'Jugador 3', nivel: 0 },
+    { id: '4.webp', label: 'Jugador 4', nivel: 0 },
+    { id: '31.webp', label: 'Jugadora 31', nivel: 0 },
+    { id: '32.webp', label: 'Jugador 32', nivel: 0 },
+    { id: '33.webp', label: 'Jugadora 33', nivel: 0 },
 
     // ⚡ DESBLOQUEOS PROGRESIVOS (NIVELES 1 A 10: 2 POR NIVEL)
-    { id: '5.png', label: 'Jugador 5', nivel: 1 },
-    { id: '6.png', label: 'Jugador 6', nivel: 1 },
-    { id: '7.png', label: 'Jugador 7', nivel: 2 },
-    { id: '8.png', label: 'Jugador 8', nivel: 2 },
-    { id: '9.png', label: 'Jugador 9', nivel: 3 },
-    { id: '10.png', label: 'Jugador 10', nivel: 3 },
-    { id: '11.png', label: 'Jugador 11', nivel: 4 },
-    { id: '12.png', label: 'Jugador 12', nivel: 4 },
-    { id: '13.png', label: 'Jugador 13', nivel: 5 },
-    { id: '14.png', label: 'Jugador 14', nivel: 5 },
-    { id: '15.png', label: 'Jugador 15', nivel: 6 },
-    { id: '16.png', label: 'Jugador 16', nivel: 6 },
-    { id: '17.png', label: 'Jugador 17', nivel: 7 },
-    { id: '18.png', label: 'Jugador 18', nivel: 7 },
-    { id: '19.png', label: 'Jugador 19', nivel: 8 },
-    { id: '20.png', label: 'Jugador 20', nivel: 8 },
-    { id: '21.png', label: 'Jugador 21', nivel: 9 },
-    { id: '22.png', label: 'Jugador 22', nivel: 9 },
-    { id: '23.png', label: 'Jugador 23', nivel: 10 },
-    { id: '24.png', label: 'Jugador 24', nivel: 10 },
+    { id: '5.webp', label: 'Jugador 5', nivel: 1 },
+    { id: '6.webp', label: 'Jugador 6', nivel: 1 },
+    { id: '7.webp', label: 'Jugador 7', nivel: 2 },
+    { id: '8.webp', label: 'Jugador 8', nivel: 2 },
+    { id: '9.webp', label: 'Jugador 9', nivel: 3 },
+    { id: '10.webp', label: 'Jugador 10', nivel: 3 },
+    { id: '11.webp', label: 'Jugador 11', nivel: 4 },
+    { id: '12.webp', label: 'Jugador 12', nivel: 4 },
+    { id: '13.webp', label: 'Jugador 13', nivel: 5 },
+    { id: '14.webp', label: 'Jugador 14', nivel: 5 },
+    { id: '15.webp', label: 'Jugador 15', nivel: 6 },
+    { id: '16.webp', label: 'Jugador 16', nivel: 6 },
+    { id: '17.webp', label: 'Jugador 17', nivel: 7 },
+    { id: '18.webp', label: 'Jugador 18', nivel: 7 },
+    { id: '19.webp', label: 'Jugador 19', nivel: 8 },
+    { id: '20.webp', label: 'Jugador 20', nivel: 8 },
+    { id: '21.webp', label: 'Jugador 21', nivel: 9 },
+    { id: '22.webp', label: 'Jugador 22', nivel: 9 },
+    { id: '23.webp', label: 'Jugador 23', nivel: 10 },
+    { id: '24.webp', label: 'Jugador 24', nivel: 10 },
 
     // ⚡ DESBLOQUEOS MEDIOS (NIVELES 11 A 20: 2 POR NIVEL)
-    { id: '25.png', label: 'Jugador 25', nivel: 11 },
-    { id: '26.png', label: 'Jugador 26', nivel: 11 },
-    { id: '27.png', label: 'Jugador 27', nivel: 12 },
-    { id: '28.png', label: 'Jugador 28', nivel: 12 },
-    { id: '29.png', label: 'Jugador 29', nivel: 13 },
-    { id: '30.png', label: 'Jugador 30', nivel: 13 },
-    { id: '34.png', label: 'Jugador 34', nivel: 14 },
-    { id: '35.png', label: 'Jugador 35', nivel: 14 },
-    { id: '36.png', label: 'Jugador 36', nivel: 15 },
-    { id: '37.png', label: 'Jugadora 37', nivel: 15 },
-    { id: '38.png', label: 'Jugador 38', nivel: 16 },
-    { id: '39.png', label: 'Jugador 39', nivel: 16 },
-    { id: '40.png', label: 'Jugadora 40', nivel: 17 },
-    { id: '41.png', label: 'Jugador 41', nivel: 17 },
-    { id: '42.png', label: 'Jugador 42', nivel: 18 },
-    { id: '43.png', label: 'Jugadora 43', nivel: 18 },
-    { id: '44.png', label: 'Jugador 44', nivel: 19 },
-    { id: '45.png', label: 'Jugadora 45', nivel: 19 },
-    { id: '46.png', label: 'Jugador 46', nivel: 20 },
-    { id: '47.png', label: 'Jugador 47', nivel: 20 },
+    { id: '25.webp', label: 'Jugador 25', nivel: 11 },
+    { id: '26.webp', label: 'Jugador 26', nivel: 11 },
+    { id: '27.webp', label: 'Jugador 27', nivel: 12 },
+    { id: '28.webp', label: 'Jugador 28', nivel: 12 },
+    { id: '29.webp', label: 'Jugador 29', nivel: 13 },
+    { id: '30.webp', label: 'Jugador 30', nivel: 13 },
+    { id: '34.webp', label: 'Jugador 34', nivel: 14 },
+    { id: '35.webp', label: 'Jugador 35', nivel: 14 },
+    { id: '36.webp', label: 'Jugador 36', nivel: 15 },
+    { id: '37.webp', label: 'Jugadora 37', nivel: 15 },
+    { id: '38.webp', label: 'Jugador 38', nivel: 16 },
+    { id: '39.webp', label: 'Jugador 39', nivel: 16 },
+    { id: '40.webp', label: 'Jugadora 40', nivel: 17 },
+    { id: '41.webp', label: 'Jugador 41', nivel: 17 },
+    { id: '42.webp', label: 'Jugador 42', nivel: 18 },
+    { id: '43.webp', label: 'Jugadora 43', nivel: 18 },
+    { id: '44.webp', label: 'Jugador 44', nivel: 19 },
+    { id: '45.webp', label: 'Jugadora 45', nivel: 19 },
+    { id: '46.webp', label: 'Jugador 46', nivel: 20 },
+    { id: '47.webp', label: 'Jugador 47', nivel: 20 },
 
     // 🏆 DESBLOQUEOS EXPERTOS (NIVELES 21 A 36: 1 POR NIVEL)
-    { id: '48.png', label: 'Jugadora 48', nivel: 21 },
-    { id: '49.png', label: 'Jugador 49', nivel: 22 },
-    { id: '50.png', label: 'Jugador 50', nivel: 23 },
-    { id: '51.png', label: 'Jugador 51', nivel: 24 },
-    { id: '52.png', label: 'Jugador 52', nivel: 25 },
-    { id: '53.png', label: 'Jugador 53', nivel: 26 },
-    { id: '54.png', label: 'Jugador 54', nivel: 27 },
-    { id: '55.png', label: 'Jugador 55', nivel: 28 },
-    { id: '56.png', label: 'Jugador 56', nivel: 29 },
-    { id: '57.png', label: 'Jugador 57', nivel: 30 },
-    { id: '58.png', label: 'Jugador 58', nivel: 31 },
-    { id: '59.png', label: 'Jugador 59', nivel: 32 },
-    { id: '60.png', label: 'Jugador 60', nivel: 33 },
-    { id: '61.png', label: 'Jugador 61', nivel: 34 },
-    { id: '62.png', label: 'Jugador 62', nivel: 35 },
-    { id: '63.png', label: 'Jugador 63', nivel: 36 }
+    { id: '48.webp', label: 'Jugadora 48', nivel: 21 },
+    { id: '49.webp', label: 'Jugador 49', nivel: 22 },
+    { id: '50.webp', label: 'Jugador 50', nivel: 23 },
+    { id: '51.webp', label: 'Jugador 51', nivel: 24 },
+    { id: '52.webp', label: 'Jugador 52', nivel: 25 },
+    { id: '53.webp', label: 'Jugador 53', nivel: 26 },
+    { id: '54.webp', label: 'Jugador 54', nivel: 27 },
+    { id: '55.webp', label: 'Jugador 55', nivel: 28 },
+    { id: '56.webp', label: 'Jugador 56', nivel: 29 },
+    { id: '57.webp', label: 'Jugador 57', nivel: 30 },
+    { id: '58.webp', label: 'Jugador 58', nivel: 31 },
+    { id: '59.webp', label: 'Jugador 59', nivel: 32 },
+    { id: '60.webp', label: 'Jugador 60', nivel: 33 },
+    { id: '61.webp', label: 'Jugador 61', nivel: 34 },
+    { id: '62.webp', label: 'Jugador 62', nivel: 35 },
+    { id: '63.webp', label: 'Jugador 63', nivel: 36 }
 ];
 
 function obtenerNombreAvatar(id) {
-    const item = AVATARES_LISTA.find(a => a.id === id);
+    const idLimpio = (id || '').replace(/\.png$/i, '.webp');
+    const item = AVATARES_LISTA.find(a => a.id === idLimpio);
     return item ? item.label : 'Jugador 1';
 }
 
 function obtenerNivelAvatar(id) {
-    const item = AVATARES_LISTA.find(a => a.id === id);
+    const idLimpio = (id || '').replace(/\.png$/i, '.webp');
+    const item = AVATARES_LISTA.find(a => a.id === idLimpio);
     return (item && item.nivel !== undefined) ? item.nivel : 0;
 }
 
 window.cambiarAvatarPaso = function(direccion) {
     const input = document.getElementById('avatar-hair-input');
     if (!input) return;
-    let valActual = input.value || '1.png';
+    let valActual = (input.value || '1.webp').replace(/\.png$/i, '.webp');
     let idx = AVATARES_LISTA.findIndex(a => a.id === valActual);
     if (idx === -1) idx = 0;
     idx = (idx + direccion + AVATARES_LISTA.length) % AVATARES_LISTA.length;
@@ -5893,7 +5896,7 @@ function renderizarAvataresGrid() {
     const subInfo = document.getElementById('avatar-modal-sub-info');
     if (!container) return;
 
-    const actual = document.getElementById('avatar-hair-input')?.value || '1.png';
+    const actual = (document.getElementById('avatar-hair-input')?.value || '1.webp').replace(/\.png$/i, '.webp');
     const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
     const desbloqueadosCount = AVATARES_LISTA.filter(a => miNivel >= a.nivel).length;
 
@@ -6836,7 +6839,7 @@ function precargarImagenesUI() {
     const postergarColaPesada = () => {
         if (document.body.classList.contains('video-abierto')) return; // Si ya está jugando, no le robamos ancho de banda
 
-        const avatares = Array.from({ length: 63 }, (_, i) => `${i + 1}.png`);
+        const avatares = Array.from({ length: 63 }, (_, i) => `${i + 1}.webp`);
         avatares.forEach(src => {
             const img = new Image();
             img.src = src;
