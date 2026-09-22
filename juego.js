@@ -3968,24 +3968,55 @@ function obtenerEstadiosRetoDiario() {
     return seleccionados.map(e => bscarPropiedad(e, 'Estadio'));
 }
 
-function iniciarRetoDiario() {
+async function iniciarRetoDiario() {
     cerrarLobbyEspera(); // Limpiamos por las dudas
     if (!catalogoGlobal.length) {
         showToast('Esperá que cargue el catálogo de estadios...', 'ph-info', 'warning');
         return;
     }
 
-    // 👇 CONTROL DIARIO: REVISA SI YA JUGÓ HOY 👇
     const idUsuario = getUserId();
+    const u = obtenerUsuarioLogueado();
+    const miEmail = (u && u.email) ? u.email.trim() : '';
+    const miNick = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim();
+
     const hoy = new Date();
     const fechaHoy = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
-    const ultimoRetoJugado = localStorage.getItem('ev_reto_diario_fecha_' + idUsuario);
+    const storageKey = 'ev_reto_diario_fecha_' + idUsuario;
 
+    // 1. Verificación rápida local en disco
+    const ultimoRetoJugado = localStorage.getItem(storageKey);
     if (ultimoRetoJugado === fechaHoy) {
         showToast("¡Ya completaste el reto de hoy! Volvé mañana. ⏳", "ph-calendar-check", "warning");
-        return; // Frena la ejecución y no lo deja jugar
+        return;
     }
-    // 👆 FIN DEL CONTROL DIARIO 👆
+
+    // 2. 🛡️ Verificación en la nube: bloquea si ya jugó hoy desde otro dispositivo (PC o celular)
+    if (supabaseClient && (miEmail || (miNick && miNick !== 'Invitado' && miNick !== 'Jugador'))) {
+        try {
+            let consulta = supabaseClient
+                .from('ranking')
+                .select('id')
+                .eq('juego', 'diario_' + fechaHoy);
+
+            if (miEmail) {
+                consulta = consulta.eq('email', miEmail);
+            } else {
+                consulta = consulta.ilike('nombre', miNick);
+            }
+
+            const { data: yaJugoNube, error } = await consulta.limit(1);
+
+            if (!error && yaJugoNube && yaJugoNube.length > 0) {
+                // Guarda la marca local para que la próxima ni siquiera tenga que consultar a internet
+                localStorage.setItem(storageKey, fechaHoy);
+                showToast("¡Ya completaste el reto de hoy desde otro dispositivo! Volvé mañana. ⏳", "ph-calendar-check", "warning");
+                return;
+            }
+        } catch (err) {
+            console.warn("Aviso en validación cruzada de reto diario:", err);
+        }
+    }
 
     // Configuramos el juego
     esModoVersus = false; 
@@ -6907,7 +6938,7 @@ function abrirEstadioPorParametro(param) {
 
     if (!buscadoCompacto && !buscadoConEspacios) return;
 
-    // Sistema de puntuación: soporta nombres compactados sin guiones (ej: "estudiantesdelaplata") y con guiones/espacios
+    // Sistema de puntuación: soporta nombres sin guiones ("estudiantesdelaplata") y con espacios
     const puntuados = catalogoGlobal.map(e => {
         const nombreEstadio = bscarPropiedad(e, 'Estadio');
         const nombreClub = bscarPropiedad(e, 'Club');
@@ -6925,13 +6956,14 @@ function abrirEstadioPorParametro(param) {
 
         // 1. Coincidencia exacta compacta (prioridad máxima por club: "estudiantesdelaplata" -> 200 pts)
         if (clubCompacto && clubCompacto === buscadoCompacto) score += 200;
+        // 2. Coincidencia exacta de estadio compacto
         if (estCompacto && estCompacto === buscadoCompacto) score += 180;
 
-        // 2. Coincidencia parcial compacta
+        // 3. Coincidencia parcial compacta
         if (clubCompacto && (clubCompacto.includes(buscadoCompacto) || (buscadoCompacto.length >= 4 && buscadoCompacto.includes(clubCompacto)))) score += 90;
         if (estCompacto && (estCompacto.includes(buscadoCompacto) || (buscadoCompacto.length >= 4 && buscadoCompacto.includes(estCompacto)))) score += 70;
 
-        // 3. Coincidencia con espacios tradicional
+        // 4. Coincidencia con espacios tradicional
         if (clubConEspacios === buscadoConEspacios) score += 100;
         if (estConEspacios === buscadoConEspacios) score += 90;
 
