@@ -6089,7 +6089,7 @@ window.actualizarAvatarLive = function() {
     const hLabel = document.getElementById('avatar-hair-label');
 
     if (hInput) {
-        const imgId = hInput.value || '1.png';
+        const imgId = hInput.value || '1.webp';
         const container = document.getElementById('fut-avatar-live-container');
         if (container) { container.innerHTML = generarAvatarHTML(imgId); }
 
@@ -6229,7 +6229,7 @@ async function guardarPersonalizacion(){
         futName.textContent = nickNuevo || (u ? u.name.split(' ')[0] : 'Jugador');
     }
     if (nickNuevo) {
-        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = document.getElementById('avatar-hair-input')?.value || '1.png';
+        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = document.getElementById('avatar-hair-input')?.value || '1.webp';
     }
     
     const hairInput = document.getElementById('avatar-hair-input');
@@ -6369,7 +6369,7 @@ const savedNick=getPref('ev_custom_nick',''),savedPos=getPref('ev_user_pos','DT'
 const validThemes = TEMAS_LISTA.map(t => t.k);
 if (!validThemes.includes(savedTheme)) savedTheme = 'arg';
 const currentTemaObj = TEMAS_LISTA.find(t => t.k === savedTheme) || { k: 'arg', l: 'ARG', nombre: 'Argentina' };
-const savedHair = getPref('ev_avatar_hair', '1.png');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
+const savedHair = getPref('ev_avatar_hair', '1.webp');const savedShirt = getPref('ev_avatar_shirt', 'solid');const savedColor = getPref('ev_avatar_color', '#00e676');const savedColor2 = getPref('ev_avatar_color2', '#ffffff');const savedNum = getPref('ev_avatar_num', '10');const savedLogo = getPref('ev_avatar_logo', 'ev');
 const activeCardClass=savedTheme;
 
 const authBtnHTML = esGoogle 
