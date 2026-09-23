@@ -667,69 +667,244 @@ body > * {
 .tabs-container{display:flex;flex-direction:column;gap:8px}
 .liga-country-group{width:100%}
 /* ========================================================
-   OPTIMIZACIÓN DE RENDIMIENTO MÓVIL: BOTONES Y CATÁLOGO
+   🏆 CATÁLOGO MODERNO: ACORDEÓN DE PAÍSES Y LIGAS
    ======================================================== */
+.liga-country-group {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+/* 🌍 Botón Principal de País (Acordeón Cyber Glassmorphism) */
 .liga-country-btn {
-    display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 16px; 
-    border-radius: 14px; border: 2px solid var(--border-strong); 
-    background: var(--bg-color); color: var(--text-main); 
-    font-size: .92rem; font-weight: 800; cursor: pointer; text-align: left;
-    box-shadow: 0 3px 0 rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.25);
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
-    transform: translateZ(0); 
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: linear-gradient(165deg, rgba(20, 32, 54, 0.90) 0%, rgba(10, 16, 28, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    box-sizing: border-box;
 }
-.liga-country-btn:hover { border-color: var(--accent-color); color: var(--accent-color); transform: translateY(-3px) translateZ(0); box-shadow: 0 7px 0 rgba(0,0,0,.4), 0 10px 24px rgba(0,0,0,.4); }
-.liga-country-btn:active { transform: translateY(2px) translateZ(0); box-shadow: 0 1px 0 rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.3); }
-.liga-country-btn img { width: 22px; border-radius: 2px; box-shadow: 0 0 3px rgba(0,0,0,.5); }
-.liga-country-btn .chevron { margin-left: auto; transition: transform .25s ease; font-size: .85rem; }
-.liga-country-group.open .liga-country-btn { border-color: var(--accent-color); color: var(--accent-color); }
-.liga-country-group.open .liga-country-btn .chevron { transform: rotate(180deg); }
 
+.liga-country-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 255, 119, 0.45);
+    background: linear-gradient(165deg, rgba(26, 42, 68, 0.92) 0%, rgba(12, 20, 34, 0.98) 100%);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 255, 119, 0.15);
+}
+
+.liga-country-btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.country-flag-icon {
+    width: 24px;
+    height: 17px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.country-name {
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    flex: 1;
+}
+
+.liga-country-btn .chevron {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    transition: transform 0.25s ease, color 0.2s ease;
+}
+
+/* Estado Expandido / Abierto */
+.liga-country-group.open .liga-country-btn {
+    border-color: #00ff77;
+    border-top: 2px solid #86efac;
+    color: #00ff77;
+    background: linear-gradient(165deg, rgba(14, 38, 26, 0.94) 0%, rgba(8, 20, 14, 0.98) 100%);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 255, 119, 0.22);
+}
+
+.liga-country-group.open .liga-country-btn .country-name {
+    color: #00ff77;
+}
+
+.liga-country-group.open .liga-country-btn .chevron {
+    transform: rotate(180deg);
+    color: #00ff77;
+}
+
+/* 📂 Contenedor Desplegable de Ligas */
 .liga-country-leagues {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
-    max-height: 0; overflow: hidden; margin-top: 0; opacity: 0;
-    transition: max-height .3s ease-out, margin-top .3s ease-out, opacity .2s ease-out;
-}
-.liga-country-group.open .liga-country-leagues {
-    max-height: 800px; /* Agrandado a 800px por si en el futuro metés muchos botones de liga en un mismo país */
-    margin-top: 10px; 
-    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 0;
+    overflow: hidden;
+    margin-top: 0;
+    opacity: 0;
+    padding-left: 10px;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.25s ease, opacity 0.2s ease;
 }
 
-.tab {
-    display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 14px; 
-    border: 2px solid transparent; cursor: pointer; font-size: .9rem; font-weight: 700; 
-    color: #fff; position: relative; overflow: hidden; text-align: left; 
-    box-shadow: 0 3px 0 rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.25); min-height: 48px; width: 100%;
-    transition: transform .2s cubic-bezier(.175,.885,.32,1.275), box-shadow .2s ease, border-color .2s ease;
-    transform: translateZ(0);
+.liga-country-group.open .liga-country-leagues {
+    max-height: 500px;
+    margin-top: 8px;
+    opacity: 1;
+    overflow: visible;
 }
-.tab-bg{position:absolute;inset:0;z-index:0;transition:opacity .2s}
-.tab::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:1;border-radius:12px;transition:background .2s}
-.tab:hover::before,.tab.active::before{background:rgba(0,0,0,.22)}
-.tab:hover{transform:translateY(-3px) scale(1.01);border-color:rgba(255,255,255,.4);box-shadow:0 7px 0 rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.4)}
-.tab.active{border-color:var(--accent-color);box-shadow:0 5px 0 rgba(0,0,0,.35),0 8px 25px rgba(0,230,118,.25)}
-.tab.active::after{content:'';position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--accent-color);box-shadow:0 0 8px var(--accent-color);z-index:3}
-.tab-swatch{width:28px;height:20px;border-radius:5px;border:2px solid rgba(255,255,255,.3);flex-shrink:0;z-index:2;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.4)}
-.tab-name{z-index:2;position:relative;text-shadow:0 1px 4px rgba(0,0,0,.8);font-size:.9rem;font-weight:700}
-.tab[data-gid="0"] .tab-bg,.tab[data-gid="861264971"] .tab-bg{background:linear-gradient(135deg,#74acdf 0%,#74acdf 40%,#fff 40%,#fff 60%,#74acdf 60%)}
-.tab[data-gid="0"] .tab-swatch,.tab[data-gid="861264971"] .tab-swatch{background:linear-gradient(135deg,#74acdf 50%,#fff 50%)}
-.tab[data-gid="554922783"] .tab-bg{background:linear-gradient(135deg,#cf142b 0%,#cf142b 45%,#fff 45%,#fff 55%,#cf142b 55%)}
-.tab[data-gid="554922783"] .tab-swatch{background:linear-gradient(135deg,#cf142b 50%,#fff 50%)}
-.tab[data-gid="88250864"] .tab-bg{background:linear-gradient(160deg,#c60b1e 0%,#c60b1e 35%,#ffc400 35%,#ffc400 65%,#c60b1e 65%)}
-.tab[data-gid="88250864"] .tab-swatch{background:linear-gradient(180deg,#c60b1e 33%,#ffc400 33%,#ffc400 66%,#c60b1e 66%)}
-.tab[data-gid="2013531070"] .tab-bg{background:linear-gradient(135deg,#009246 0%,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%)}
-.tab[data-gid="2013531070"] .tab-swatch{background:linear-gradient(90deg,#009246 33%,#fff 33%,#fff 66%,#ce2b37 66%)}
-.tab[data-gid="165565330"] .tab-bg{background:linear-gradient(135deg,#002395 0%,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%)}
-.tab[data-gid="165565330"] .tab-swatch{background:linear-gradient(90deg,#002395 33%,#fff 33%,#fff 66%,#ed2939 66%)}
-.tab[data-gid="96716546"] .tab-bg{background:linear-gradient(160deg,#000 0%,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%)}
-.tab[data-gid="96716546"] .tab-swatch{background:linear-gradient(180deg,#000 33%,#dd0000 33%,#dd0000 66%,#ffce00 66%)}
-.tab[data-gid="58862486"] .tab-bg{background:linear-gradient(135deg,#009c3b 0%,#009c3b 40%,#ffdf00 40%,#ffdf00 70%,#009c3b 70%)}
-.tab[data-gid="58862486"] .tab-swatch{background:linear-gradient(135deg,#009c3b 50%,#ffdf00 50%)}
-.tab[data-gid="304687071"] .tab-bg{background:linear-gradient(135deg,#d52b1e 0%,#d52b1e 45%,#fff 45%,#fff 65%,#0039a6 65%)}
-.tab[data-gid="304687071"] .tab-swatch{background:linear-gradient(90deg,#d52b1e 40%,#fff 40%,#fff 60%,#0039a6 60%)}
-.tab[data-gid="879164460"] .tab-bg{background:linear-gradient(135deg,#1a3a6b 0%,#6b1a1a 25%,#1a6b3a 50%,#6b6b1a 75%,#1a3a6b 100%)}
-.tab[data-gid="879164460"] .tab-swatch{background:conic-gradient(#e63946 0%,#457b9d 25%,#2a9d8f 50%,#e9c46a 75%,#e63946 100%)}
+
+/* ⚽ Botones de Torneos/Ligas (.tab) */
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255, 255, 255, 0.10);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.22);
+    background: linear-gradient(165deg, rgba(16, 24, 40, 0.85) 0%, rgba(8, 14, 25, 0.95) 100%);
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    min-height: 42px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    box-sizing: border-box;
+}
+
+.tab:hover:not(.active) {
+    transform: translateX(4px);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: linear-gradient(165deg, rgba(24, 34, 54, 0.9) 0%, rgba(12, 18, 30, 0.98) 100%);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+}
+
+.tab:active {
+    transform: translateX(2px) scale(0.98);
+}
+
+.tab-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.tab:hover .tab-dot {
+    background: #00ff77;
+    box-shadow: 0 0 6px #00ff77;
+}
+
+.tab-name {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    flex: 1;
+}
+
+/* 🟢 Liga Activa / Seleccionada */
+.tab.active {
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(10, 36, 24, 0.95) 100%) !important;
+    border: 1.5px solid #00ff77 !important;
+    border-top: 2px solid #a7f3d0 !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 255, 119, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    transform: translateX(4px) !important;
+}
+
+.tab.active .tab-dot {
+    background: #00ff77 !important;
+    box-shadow: 0 0 8px #00ff77 !important;
+    transform: scale(1.2);
+}
+
+.tab.active .tab-name {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(0, 255, 119, 0.4);
+}
+
+/* ☀️ Adaptación en Modo Claro */
+[data-theme="light"] .liga-country-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .liga-country-btn:hover {
+    border-color: #00cc66 !important;
+    background: #f4fbf7 !important;
+    box-shadow: 0 6px 16px rgba(0, 204, 102, 0.15) !important;
+}
+
+[data-theme="light"] .liga-country-btn .country-name {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .liga-country-group.open .liga-country-btn {
+    background: #f0fdf4 !important;
+    border-color: #00cc66 !important;
+    border-top: 2px solid #86efac !important;
+    box-shadow: 0 4px 14px rgba(0, 204, 102, 0.18) !important;
+}
+
+[data-theme="light"] .liga-country-group.open .liga-country-btn .country-name,
+[data-theme="light"] .liga-country-group.open .liga-country-btn .chevron {
+    color: #00a854 !important;
+}
+
+[data-theme="light"] .tab {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #334155 !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+}
+
+[data-theme="light"] .tab:hover:not(.active) {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .tab.active {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%) !important;
+    border-color: #00cc66 !important;
+    border-top: 2px solid #86efac !important;
+    box-shadow: 0 4px 14px rgba(0, 204, 102, 0.18) !important;
+}
+
+[data-theme="light"] .tab.active .tab-name {
+    color: #04160a !important;
+    text-shadow: none !important;
+}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;flex:1}
 .card{background:var(--card-bg);border-radius:20px;overflow:hidden;transition:transform .3s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s ease;cursor:pointer;display:flex;flex-direction:column;border:1px solid var(--border-subtle);box-shadow:0 4px 20px rgba(0,0,0,.3);content-visibility:auto;contain-intrinsic-size:320px}
 .card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px var(--accent-color)}
