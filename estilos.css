@@ -950,17 +950,16 @@ body > * {
     gap: 10px;
     padding: 10px 14px;
     border-radius: 12px;
-    border: 1.5px solid rgba(255, 255, 255, 0.10);
-    border-top: 1.5px solid rgba(255, 255, 255, 0.22);
-    background: linear-gradient(165deg, rgba(16, 24, 40, 0.85) 0%, rgba(8, 14, 25, 0.95) 100%);
-    color: var(--text-main);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.30);
+    color: #ffffff;
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     text-align: left;
     width: 100%;
     min-height: 42px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -968,12 +967,19 @@ body > * {
     box-sizing: border-box;
 }
 
+.tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+
 .tab:hover:not(.active) {
-    transform: translateX(4px);
-    border-color: rgba(255, 255, 255, 0.28);
-    background: linear-gradient(165deg, rgba(24, 34, 54, 0.9) 0%, rgba(12, 18, 30, 0.98) 100%);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
-    color: #ffffff;
+    transform: translateX(4px) scale(1.01);
+    filter: brightness(1.15);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
 .tab:active {
@@ -981,46 +987,163 @@ body > * {
 }
 
 .tab-dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.4);
     flex-shrink: 0;
     transition: all 0.2s ease;
 }
 
-.tab:hover .tab-dot {
-    background: #00ff77;
-    box-shadow: 0 0 6px #00ff77;
-}
-
 .tab-name {
     font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.2px;
+    font-weight: 900;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     flex: 1;
 }
 
-/* 🟢 Liga Activa / Seleccionada */
+/* ========================================================
+   🎨 COLORES ESPECÍFICOS DE CADA LIGA (.tab por GID)
+   ======================================================== */
+
+/* 🇦🇷 Argentina: Primera División y Primera Nacional */
+.tab[data-gid="0"],
+.tab[data-gid="861264971"] {
+    background: linear-gradient(135deg, rgba(67, 161, 213, 0.38) 0%, rgba(14, 26, 44, 0.94) 50%, rgba(255, 255, 255, 0.15) 100%) !important;
+    border-color: rgba(116, 172, 223, 0.45) !important;
+    border-top: 2px solid #bde0fe !important;
+}
+.tab[data-gid="0"] .tab-dot,
+.tab[data-gid="861264971"] .tab-dot {
+    background: #74acdf;
+    box-shadow: 0 0 8px #74acdf;
+}
+
+/* 🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League */
+.tab[data-gid="554922783"] {
+    background: linear-gradient(135deg, rgba(200, 16, 46, 0.38) 0%, rgba(18, 14, 30, 0.94) 50%, rgba(255, 255, 255, 0.15) 100%) !important;
+    border-color: rgba(200, 16, 46, 0.45) !important;
+    border-top: 2px solid #fca5a5 !important;
+}
+.tab[data-gid="554922783"] .tab-dot {
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+}
+
+/* 🇪🇸 La Liga */
+.tab[data-gid="88250864"] {
+    background: linear-gradient(135deg, rgba(198, 11, 30, 0.38) 0%, rgba(24, 18, 22, 0.94) 45%, rgba(255, 196, 0, 0.28) 100%) !important;
+    border-color: rgba(255, 196, 0, 0.45) !important;
+    border-top: 2px solid #fef08a !important;
+}
+.tab[data-gid="88250864"] .tab-dot {
+    background: #ffc400;
+    box-shadow: 0 0 8px #ffc400;
+}
+
+/* 🇮🇹 Serie A */
+.tab[data-gid="2013531070"] {
+    background: linear-gradient(135deg, rgba(0, 146, 70, 0.38) 0%, rgba(14, 22, 28, 0.94) 50%, rgba(206, 43, 55, 0.32) 100%) !important;
+    border-color: rgba(0, 146, 70, 0.45) !important;
+    border-top: 2px solid #86efac !important;
+}
+.tab[data-gid="2013531070"] .tab-dot {
+    background: #00e676;
+    box-shadow: 0 0 8px #00e676;
+}
+
+/* 🇫🇷 Ligue 1 */
+.tab[data-gid="165565330"] {
+    background: linear-gradient(135deg, rgba(0, 35, 149, 0.42) 0%, rgba(14, 18, 34, 0.94) 50%, rgba(237, 41, 57, 0.32) 100%) !important;
+    border-color: rgba(59, 130, 246, 0.45) !important;
+    border-top: 2px solid #93c5fd !important;
+}
+.tab[data-gid="165565330"] .tab-dot {
+    background: #3b82f6;
+    box-shadow: 0 0 8px #3b82f6;
+}
+
+/* 🇩🇪 Bundesliga */
+.tab[data-gid="96716546"] {
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.85) 0%, rgba(221, 0, 0, 0.38) 50%, rgba(255, 206, 0, 0.30) 100%) !important;
+    border-color: rgba(221, 0, 0, 0.45) !important;
+    border-top: 2px solid #fde047 !important;
+}
+.tab[data-gid="96716546"] .tab-dot {
+    background: #ffce00;
+    box-shadow: 0 0 8px #ffce00;
+}
+
+/* 🇧🇷 Brasileirao */
+.tab[data-gid="58862486"] {
+    background: linear-gradient(135deg, rgba(0, 156, 59, 0.42) 0%, rgba(10, 24, 16, 0.94) 45%, rgba(255, 223, 0, 0.28) 100%) !important;
+    border-color: rgba(0, 156, 59, 0.5) !important;
+    border-top: 2px solid #fef08a !important;
+}
+.tab[data-gid="58862486"] .tab-dot {
+    background: #00ff77;
+    box-shadow: 0 0 8px #00ff77;
+}
+
+/* 🇨🇱 Liga Chile */
+.tab[data-gid="304687071"] {
+    background: linear-gradient(135deg, rgba(213, 43, 30, 0.38) 0%, rgba(20, 16, 26, 0.94) 50%, rgba(0, 57, 166, 0.35) 100%) !important;
+    border-color: rgba(213, 43, 30, 0.45) !important;
+    border-top: 2px solid #fca5a5 !important;
+}
+.tab[data-gid="304687071"] .tab-dot {
+    background: #d52b1e;
+    box-shadow: 0 0 8px #d52b1e;
+}
+
+/* 🇳🇱 Eredivisie */
+.tab[data-gid="1616215119"] {
+    background: linear-gradient(135deg, rgba(243, 108, 33, 0.42) 0%, rgba(26, 16, 12, 0.94) 50%, rgba(33, 70, 139, 0.32) 100%) !important;
+    border-color: rgba(243, 108, 33, 0.5) !important;
+    border-top: 2px solid #fdba74 !important;
+}
+.tab[data-gid="1616215119"] .tab-dot {
+    background: #f97316;
+    box-shadow: 0 0 8px #f97316;
+}
+
+/* 🇵🇹 Primeira Liga */
+.tab[data-gid="1916896887"] {
+    background: linear-gradient(135deg, rgba(4, 106, 56, 0.38) 0%, rgba(14, 22, 16, 0.94) 45%, rgba(218, 2, 14, 0.35) 100%) !important;
+    border-color: rgba(4, 106, 56, 0.45) !important;
+    border-top: 2px solid #86efac !important;
+}
+.tab[data-gid="1916896887"] .tab-dot {
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+}
+
+/* 🌍 Copa del Mundo */
+.tab[data-gid="879164460"] {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.35) 0%, rgba(16, 24, 42, 0.94) 50%, rgba(41, 121, 255, 0.32) 100%) !important;
+    border-color: rgba(234, 179, 8, 0.45) !important;
+    border-top: 2px solid #fde047 !important;
+}
+.tab[data-gid="879164460"] .tab-dot {
+    background: #eab308;
+    box-shadow: 0 0 8px #eab308;
+}
+
+/* 🟢 Estado Activo / Seleccionado (Resalta con resplandor neón blanco y verde) */
 .tab.active {
-    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(10, 36, 24, 0.95) 100%) !important;
-    border: 1.5px solid #00ff77 !important;
-    border-top: 2px solid #a7f3d0 !important;
-    color: #ffffff !important;
-    font-weight: 900 !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 255, 119, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
-    transform: translateX(4px) !important;
+    border-color: #ffffff !important;
+    border-top: 2.5px solid #ffffff !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 20px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    transform: translateX(6px) scale(1.02) !important;
+    filter: brightness(1.25) !important;
 }
 
 .tab.active .tab-dot {
-    background: #00ff77 !important;
-    box-shadow: 0 0 8px #00ff77 !important;
-    transform: scale(1.2);
-}
-
-.tab.active .tab-name {
-    color: #ffffff !important;
-    text-shadow: 0 0 10px rgba(0, 255, 119, 0.4);
+    transform: scale(1.3) !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 10px #ffffff !important;
 }
 
 /* ☀️ Adaptación en Modo Claro */
