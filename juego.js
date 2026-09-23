@@ -213,7 +213,7 @@ const GOOGLE_CLIENT_ID="768963974490-llof395lvphcmmebbkm2ktrn08lffp3a.apps.googl
 const URL_BASE = 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/';
 
 const ESCUDOS_MAP = {
-  'ev': URL_BASE + 'Logo.png',
+  'ev': URL_BASE + 'Logo.webp',
   
   // 🌍 PAÍSES / SELECCIONES
   'ar': 'https://flagcdn.com/w80/ar.png', 'br': 'https://flagcdn.com/w80/br.png',
@@ -832,14 +832,17 @@ const BANDERAS_LISTA = [
 ];
 
 function obtenerUrlEscudo(id) {
-    if (!id || id === 'ev') return ESCUDOS_MAP['ev'];
-    if (ESCUDOS_MAP[id]) return ESCUDOS_MAP[id];
+    const aWebp = (url) => (!url || url.includes('flagcdn.com')) ? url : url.replace(/\.png$/i, '.webp');
+
+    if (!id || id === 'ev') return aWebp(ESCUDOS_MAP['ev']);
+    if (ESCUDOS_MAP[id]) return aWebp(ESCUDOS_MAP[id]);
     
     // 1. Memoria persistente: si ya se resolvió antes, no espera a Supabase en el F5
     const cached = localStorage.getItem('ev_escudo_url_' + id);
     if (cached) {
-        ESCUDOS_MAP[id] = cached;
-        return cached;
+        const urlFinal = aWebp(cached);
+        ESCUDOS_MAP[id] = urlFinal;
+        return urlFinal;
     }
 
     // 2. Si es un club, buscar en catalogoGlobal limpiando tildes y caracteres especiales
@@ -863,7 +866,7 @@ function obtenerUrlEscudo(id) {
             if (encontrado) {
                 const foto = bscarPropiedad(encontrado, 'Foto');
                 if (foto && foto.trim()) {
-                    const urlLimpia = foto.trim();
+                    const urlLimpia = aWebp(foto.trim());
                     ESCUDOS_MAP[id] = urlLimpia;
                     localStorage.setItem('ev_escudo_url_' + id, urlLimpia);
                     return urlLimpia;
@@ -873,7 +876,7 @@ function obtenerUrlEscudo(id) {
     }
 
     // 3. Diccionario oficial de respaldo y guardado en memoria RAM
-    const fallbackUrl = ESCUDOS_MAP[id] || ESCUDOS_MAP['ev'];
+    const fallbackUrl = aWebp(ESCUDOS_MAP[id] || ESCUDOS_MAP['ev']);
     ESCUDOS_MAP[id] = fallbackUrl;
     return fallbackUrl;
 }
@@ -2794,7 +2797,7 @@ async function indexarCatalogoMasivo() {
             'Estadio': fila.estadio,
             'Club': fila.club,
             'País': fila.pais,
-            'Foto': fila.foto,
+            'Foto': (fila.foto || '').replace(/\.png$/i, '.webp'),
             'Link del Video': fila.link_video,
             'Latitud': fila.latitud,
             'Longitud': fila.longitud,
@@ -6824,8 +6827,8 @@ function precargarImagenesUI() {
 
     // Solo precargamos lo indispensable de la portada de inicio
     const uiEsencial = [
-        URL_ESCUDOS_BASE + 'Logo.png',
-        URL_ESCUDOS_BASE + 'baul.png',
+        URL_ESCUDOS_BASE + 'Logo.webp',
+        URL_ESCUDOS_BASE + 'baul.webp',
         'mundo.webp', 'podio.webp', 'avion.webp', 'catalogo.webp',
         'icono-individual.webp', 'icono-1v1.webp', 'icono-privada.webp', 'icono-ranking.webp'
     ];
@@ -8006,7 +8009,7 @@ async function compartirCartaFUT() {
     poster.id = 'poster-export-container';
     poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
-    const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.png', window.location.href).href;
+    const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp', window.location.href).href;
     const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.webp', window.location.href).href;
     const fuegoIconUrl = new URL('fuego.webp', window.location.href).href;
     const trofeoIconUrl = new URL('trofeo.webp', window.location.href).href;
