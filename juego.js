@@ -5786,82 +5786,88 @@ if(!panel.classList.contains('open')){panel.classList.add('open');btn.innerHTML=
 else{panel.classList.remove('open');btn.innerHTML='<img src="personaliza-tu-carta.webp" class="btn-custom-icon" alt="Icono"> PERSONALIZÁ TU CARTA ▼';}
 };
 const AVATARES_LISTA = [
-    // 🌟 INICIALES DISPONIBLES (NIVEL 0 - 7 JUGADORES)
-    { id: '1.webp', label: 'Jugador 1', nivel: 0 },
-    { id: '2.webp', label: 'Jugador 2', nivel: 0 },
-    { id: '3.webp', label: 'Jugador 3', nivel: 0 },
-    { id: '4.webp', label: 'Jugador 4', nivel: 0 },
-    { id: '31.webp', label: 'Jugador 31', nivel: 0 },
-    { id: '32.webp', label: 'Jugador 32', nivel: 0 },
-    { id: '33.webp', label: 'Jugador 33', nivel: 0 },
+    // 🌟 INICIALES DISPONIBLES (NIVEL 0 - 6 JUGADORES)
+    { id: '7.webp', label: 'Pedri', nivel: 0 },
+    { id: '9.webp', label: 'O. Dembélé', nivel: 0 },
+    { id: '12.webp', label: 'F. Valverde', nivel: 0 },
+    { id: '13.webp', label: 'Rodri', nivel: 0 },
+    { id: '55.webp', label: 'Yerry Mina', nivel: 0 },
+    { id: '61.webp', label: 'Gary Medel', nivel: 0 },
 
-    // ⚡ DESBLOQUEOS PROGRESIVOS (NIVELES 1 A 10: 2 POR NIVEL)
-    { id: '5.webp', label: 'Jugador 5', nivel: 1 },
-    { id: '6.webp', label: 'Jugador 6', nivel: 1 },
-    { id: '7.webp', label: 'Jugador 7', nivel: 2 },
-    { id: '8.webp', label: 'Jugador 8', nivel: 2 },
-    { id: '9.webp', label: 'Jugador 9', nivel: 3 },
-    { id: '10.webp', label: 'Jugador 10', nivel: 3 },
-    { id: '11.webp', label: 'Jugador 11', nivel: 4 },
-    { id: '12.webp', label: 'Jugador 12', nivel: 4 },
-    { id: '13.webp', label: 'Jugador 13', nivel: 5 },
-    { id: '14.webp', label: 'Jugador 14', nivel: 5 },
-    { id: '15.webp', label: 'Jugador 15', nivel: 6 },
-    { id: '16.webp', label: 'Jugador 16', nivel: 6 },
-    { id: '17.webp', label: 'Jugador 17', nivel: 7 },
-    { id: '18.webp', label: 'Jugador 18', nivel: 7 },
-    { id: '19.webp', label: 'Jugador 19', nivel: 8 },
-    { id: '20.webp', label: 'Jugador 20', nivel: 8 },
-    { id: '21.webp', label: 'Jugador 21', nivel: 9 },
-    { id: '22.webp', label: 'Jugador 22', nivel: 9 },
-    { id: '23.webp', label: 'Jugador 23', nivel: 10 },
-    { id: '24.webp', label: 'Jugador 24', nivel: 10 },
+    // ⚡ NIVELES 1 A 10 (SCALONETA & FIGURAS)
+    { id: '16.webp', label: 'L. Paredes', nivel: 1 },
+    { id: '17.webp', label: 'E. Fernández', nivel: 2 },
+    { id: '18.webp', label: 'R. De Paul', nivel: 3 },
+    { id: '19.webp', label: 'Julián Álvarez', nivel: 4 },
+    { id: '20.webp', label: 'Lautaro Martínez', nivel: 5 },
+    { id: '21.webp', label: 'Cuti Romero', nivel: 6 },
+    { id: '22.webp', label: 'L. Martínez', nivel: 7 },
+    { id: '23.webp', label: 'A. Mac Allister', nivel: 8 },
+    { id: '24.webp', label: 'Dibu Martínez', nivel: 9 },
+    { id: '51.webp', label: 'Luis Díaz', nivel: 10 },
 
-    // ⚡ DESBLOQUEOS MEDIOS (NIVELES 11 A 20: 2 POR NIVEL)
-    { id: '25.webp', label: 'Jugador 25', nivel: 11 },
-    { id: '26.webp', label: 'Jugador 26', nivel: 11 },
-    { id: '27.webp', label: 'Jugador 27', nivel: 12 },
-    { id: '28.webp', label: 'Jugador 28', nivel: 12 },
-    { id: '29.webp', label: 'Jugador 29', nivel: 13 },
-    { id: '30.webp', label: 'Jugador 30', nivel: 13 },
-    { id: '34.webp', label: 'Jugador 34', nivel: 14 },
-    { id: '35.webp', label: 'Jugador 35', nivel: 14 },
-    { id: '36.webp', label: 'Jugador 36', nivel: 15 },
-    { id: '37.webp', label: 'Jugador 37', nivel: 15 },
-    { id: '38.webp', label: 'Jugador 38', nivel: 16 },
-    { id: '39.webp', label: 'Jugador 39', nivel: 16 },
-    { id: '40.webp', label: 'Jugador 40', nivel: 17 },
-    { id: '41.webp', label: 'Jugador 41', nivel: 17 },
-    { id: '42.webp', label: 'Jugador 42', nivel: 18 },
-    { id: '43.webp', label: 'Jugador 43', nivel: 18 },
-    { id: '44.webp', label: 'Jugador 44', nivel: 19 },
-    { id: '45.webp', label: 'Jugador 45', nivel: 19 },
-    { id: '46.webp', label: 'Jugador 46', nivel: 20 },
-    { id: '47.webp', label: 'Jugador 47', nivel: 20 },
+    // 🔥 NIVELES 11 A 20 (ELITE INTERNACIONAL)
+    { id: '8.webp', label: 'T. Courtois', nivel: 11 },
+    { id: '10.webp', label: 'Harry Kane', nivel: 12 },
+    { id: '11.webp', label: 'J. Bellingham', nivel: 13 },
+    { id: '14.webp', label: 'G. Donnarumma', nivel: 14 },
+    { id: '15.webp', label: 'Á. Di María', nivel: 15 },
+    { id: '26.webp', label: 'Kun Agüero', nivel: 16 },
+    { id: '36.webp', label: 'E. Cavani', nivel: 17 },
+    { id: '52.webp', label: 'James Rodríguez', nivel: 18 },
+    { id: '53.webp', label: 'R. Falcao', nivel: 19 },
+    { id: '59.webp', label: 'Alexis Sánchez', nivel: 20 },
 
-    // 🏆 DESBLOQUEOS EXPERTOS (NIVELES 21 A 36: 1 POR NIVEL)
-    { id: '48.webp', label: 'Jugador 48', nivel: 21 },
-    { id: '49.webp', label: 'Jugador 49', nivel: 22 },
-    { id: '50.webp', label: 'Jugador 50', nivel: 23 },
-    { id: '51.webp', label: 'Jugador 51', nivel: 24 },
-    { id: '52.webp', label: 'Jugador 52', nivel: 25 },
-    { id: '53.webp', label: 'Jugador 53', nivel: 26 },
-    { id: '54.webp', label: 'Jugador 54', nivel: 27 },
-    { id: '55.webp', label: 'Jugador 55', nivel: 28 },
-    { id: '56.webp', label: 'Jugador 56', nivel: 29 },
-    { id: '57.webp', label: 'Jugador 57', nivel: 30 },
-    { id: '58.webp', label: 'Jugador 58', nivel: 31 },
-    { id: '59.webp', label: 'Jugador 59', nivel: 32 },
-    { id: '60.webp', label: 'Jugador 60', nivel: 33 },
-    { id: '61.webp', label: 'Jugador 61', nivel: 34 },
-    { id: '62.webp', label: 'Jugador 62', nivel: 35 },
-    { id: '63.webp', label: 'Jugador 63', nivel: 36 }
+    // 🚀 NIVELES 21 A 30 (CRACKS, CAPITANES & TÉCNICOS)
+    { id: '5.webp', label: 'E. Haaland', nivel: 21 },
+    { id: '4.webp', label: 'K. Mbappé', nivel: 22 },
+    { id: '6.webp', label: 'Vinicius Jr', nivel: 23 },
+    { id: '37.webp', label: 'Sergio Ramos', nivel: 24 },
+    { id: '35.webp', label: 'Luis Suárez', nivel: 25 },
+    { id: '60.webp', label: 'Claudio Bravo', nivel: 26 },
+    { id: '54.webp', label: 'David Ospina', nivel: 27 },
+    { id: '45.webp', label: 'Lionel Scaloni', nivel: 28 },
+    { id: '48.webp', label: 'M. Gallardo', nivel: 29 },
+    { id: '46.webp', label: 'Pep Guardiola', nivel: 30 },
+
+    // 🏆 NIVELES 31 A 40 (REFERENTES & CRISTIANO RONALDO)
+    { id: '38.webp', label: 'S. Busquets', nivel: 31 },
+    { id: '43.webp', label: 'Toni Kroos', nivel: 32 },
+    { id: '42.webp', label: 'Luka Modrić', nivel: 33 },
+    { id: '58.webp', label: 'Arturo Vidal', nivel: 34 },
+    { id: '27.webp', label: 'Carlos Tevez', nivel: 35 },
+    { id: '49.webp', label: 'J. Mourinho', nivel: 36 },
+    { id: '47.webp', label: 'Carlo Ancelotti', nivel: 37 },
+    { id: '41.webp', label: 'Z. Ibrahimović', nivel: 38 },
+    { id: '3.webp', label: 'Neymar Jr', nivel: 39 },
+    { id: '2.webp', label: 'Cristiano Ronaldo', nivel: 40 },
+
+    // 👑 NIVELES 41 A 50 (MAGOS & LIONEL MESSI)
+    { id: '39.webp', label: 'Xavi Hernández', nivel: 41 },
+    { id: '40.webp', label: 'Andrés Iniesta', nivel: 42 },
+    { id: '44.webp', label: 'Andrea Pirlo', nivel: 43 },
+    { id: '29.webp', label: 'J. S. Verón', nivel: 44 },
+    { id: '28.webp', label: 'J. R. Riquelme', nivel: 45 },
+    { id: '34.webp', label: 'Cafú', nivel: 46 },
+    { id: '33.webp', label: 'Roberto Carlos', nivel: 47 },
+    { id: '50.webp', label: 'Zinedine Zidane', nivel: 48 },
+    { id: '31.webp', label: 'Ronaldinho', nivel: 49 },
+    { id: '1.webp', label: 'Lionel Messi', nivel: 50 },
+
+    // 🌌 NIVELES 51 A 60 (LEYENDAS HISTÓRICAS & MARADONA)
+    { id: '56.webp', label: 'René Higuita', nivel: 51 },
+    { id: '57.webp', label: 'C. Valderrama', nivel: 52 },
+    { id: '62.webp', label: 'Iván Zamorano', nivel: 54 },
+    { id: '63.webp', label: 'Marcelo Salas', nivel: 56 },
+    { id: '32.webp', label: 'Ronaldo R9', nivel: 58 },
+    { id: '30.webp', label: 'Pelé', nivel: 59 },
+    { id: '25.webp', label: 'Diego Maradona', nivel: 60 }
 ];
 
 function obtenerNombreAvatar(id) {
     const idLimpio = (id || '').replace(/\.png$/i, '.webp');
     const item = AVATARES_LISTA.find(a => a.id === idLimpio);
-    return item ? item.label : 'Jugador 1';
+    return item ? item.label : 'Pedri';
 }
 
 function obtenerNivelAvatar(id) {
