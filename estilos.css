@@ -3139,6 +3139,14 @@ body.video-abierto .hero-section {
     padding: 0 !important;
 }
 
+/* 🗺️ VISTA PREVIA DE MAPA EN CELULAR (ALTURA FIJA PARA LEAFLET) */
+#map-modal .modal-content {
+    height: 75vh !important;
+    min-height: 380px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
 /* 📱 EN CELULAR: Video a pantalla completa y mapa flotante en panel inferior */
 .modal-content.stadium-guessr-layout{width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;border:none!important;padding:0!important}
 .modal-content.stadium-guessr-layout .video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important}
