@@ -445,7 +445,7 @@ body > * {
 .level-volante{background:rgba(156,163,175,.15);color:var(--xp-silver);border:1px solid rgba(156,163,175,.3)}
 .level-crack{background:rgba(234,179,8,.15);color:var(--xp-gold);border:1px solid rgba(234,179,8,.3)}
 .level-leyenda{background:rgba(167,139,250,.15);color:var(--xp-legend);border:1px solid rgba(167,139,250,.3)}
-#levelup-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(16px)}
+#levelup-overlay{position:fixed;inset:0;z-index:10040 !important;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(16px)}
 #levelup-overlay.active{display:flex}
 .levelup-box{text-align:center;animation:levelUpPop .6s cubic-bezier(.175,.885,.32,1.275) forwards}
 .levelup-icon{font-size:5rem;filter:drop-shadow(0 0 30px var(--accent-color));margin-bottom:16px;display:block}

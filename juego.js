@@ -5913,7 +5913,8 @@ function reproducirSonidoApertura() {
 
 // 📦 1. Verificación al cargar: Si es usuario nuevo, mostrar Sobre de Bienvenida
 function verificarSobreBienvenida() {
-    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto');
+    const id = getUserId();
+    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto_' + id);
     if (!sobreYaAbierto) {
         setTimeout(() => {
             const modal = document.getElementById('modal-pack-bienvenida');
@@ -5955,9 +5956,10 @@ function animarAperturaSobre() {
 
 // 👑 3. Selección del Capitán Inicial
 function seleccionarCapitanInicial(avatarId) {
-    // 1. Guardar en almacenamiento y en la preferencia nativa exacta del juego
-    localStorage.setItem('ev_avatar_seleccionado', avatarId);
-    localStorage.setItem('ev_pack_bienvenida_abierto', 'true');
+    const id = getUserId();
+    // 1. Guardar en almacenamiento y en la preferencia nativa exacta del juego vinculada al usuario
+    localStorage.setItem('ev_avatar_seleccionado_' + id, avatarId);
+    localStorage.setItem('ev_pack_bienvenida_abierto_' + id, 'true');
     setPref('ev_avatar_hair', avatarId);
 
     // 2. Sincronizar el input de personalización del perfil si está en pantalla
@@ -5994,16 +5996,17 @@ function seleccionarCapitanInicial(avatarId) {
 
 // 🏆 4. Verificador de Recompensa al Subir de Nivel
 function comprobarRecompensaNivel(nivelActual) {
+    const id = getUserId();
     const nivelNum = Number(nivelActual);
-    const recompensasVistas = JSON.parse(localStorage.getItem('ev_recompensas_vistas') || '[]');
+    const recompensasVistas = JSON.parse(localStorage.getItem('ev_recompensas_vistas_' + id) || '[]');
 
     // Buscar el primer avatar desbloqueado que aún no se le haya presentado en pantalla
     const nuevoFichaje = AVATARES_LISTA.find(a => a.nivel > 0 && a.nivel <= nivelNum && !recompensasVistas.includes(a.id));
     if (!nuevoFichaje) return;
 
-    // Registrar como visto para no repetir alerta
+    // Registrar como visto para este usuario para no repetir alerta
     recompensasVistas.push(nuevoFichaje.id);
-    localStorage.setItem('ev_recompensas_vistas', JSON.stringify(recompensasVistas));
+    localStorage.setItem('ev_recompensas_vistas_' + id, JSON.stringify(recompensasVistas));
 
     reproducirSonidoApertura();
     document.getElementById('ev-reward-level-tag').textContent = `¡NIVEL ${nuevoFichaje.nivel} ALCANZADO!`;
