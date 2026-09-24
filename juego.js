@@ -1173,7 +1173,14 @@ document.getElementById('levelup-sub').innerHTML=`Ahora sos <b style="color:${ni
 overlay.classList.add('active');
 lanzarConfetti();
 }
-function cerrarLevelUp(){document.getElementById('levelup-overlay').classList.remove('active');}
+function cerrarLevelUp(){
+    document.getElementById('levelup-overlay').classList.remove('active');
+    setTimeout(() => {
+        if (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) {
+            comprobarRecompensaNivel(userStats.nivelActual);
+        }
+    }, 350);
+}
 
 let colaPremiosPendientes = [];
 let xpPremioEnPantalla = 0;
@@ -5881,6 +5888,153 @@ function obtenerNombreAvatar(id) {
     const item = AVATARES_LISTA.find(a => a.id === idLimpio);
     return item ? item.label : 'El Canario';
 }
+
+/* ==========================================================================
+   🎁 LÓGICA DE SOBRE DE BIENVENIDA Y DESBLOQUEOS POR NIVEL
+   ========================================================================== */
+
+// 🔊 Efecto sonoro de apertura nativo (sin archivos externos para máxima rapidez)
+function reproducirSonidoApertura() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+    } catch(e) {}
+}
+
+// 📦 1. Verificación al cargar: Si es usuario nuevo, mostrar Sobre de Bienvenida
+function verificarSobreBienvenida() {
+    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto');
+    if (!sobreYaAbierto) {
+        setTimeout(() => {
+            const modal = document.getElementById('modal-pack-bienvenida');
+            if (modal) modal.style.display = 'flex';
+        }, 1200);
+    }
+}
+
+// 💥 2. Animación al tocar "Abrir Sobre"
+function animarAperturaSobre() {
+    reproducirSonidoApertura();
+    const sobre = document.getElementById('ev-pack-cerrado');
+    sobre.classList.add('ev-pack-abriendo');
+
+    setTimeout(() => {
+        sobre.style.display = 'none';
+        const contenedorGrilla = document.getElementById('ev-pack-grilla-iniciales');
+        contenedorGrilla.innerHTML = '';
+
+        // Filtrar los 6 jugadores de Nivel 0
+        const iniciales = AVATARES_LISTA.filter(a => a.nivel === 0);
+        iniciales.forEach(jugador => {
+            const item = document.createElement('div');
+            item.className = 'ev-card-pick';
+            item.onclick = () => seleccionarCapitanInicial(jugador.id);
+            item.innerHTML = `
+                <div class="ev-card-pick-avatar-wrap">
+                    <img src="${jugador.id}" alt="${jugador.label}">
+                </div>
+                <span class="ev-card-pick-name">${jugador.label}</span>
+                <div class="ev-card-pick-btn">ELEGIR</div>
+            `;
+            contenedorGrilla.appendChild(item);
+        });
+
+        document.getElementById('ev-pack-revelado').style.display = 'block';
+    }, 1100);
+}
+
+// 👑 3. Selección del Capitán Inicial
+function seleccionarCapitanInicial(avatarId) {
+    // 1. Guardar en almacenamiento y en la preferencia nativa exacta del juego
+    localStorage.setItem('ev_avatar_seleccionado', avatarId);
+    localStorage.setItem('ev_pack_bienvenida_abierto', 'true');
+    setPref('ev_avatar_hair', avatarId);
+
+    // 2. Sincronizar el input de personalización del perfil si está en pantalla
+    const hairInput = document.getElementById('avatar-hair-input');
+    if (hairInput) {
+        hairInput.value = avatarId;
+    }
+
+    // 3. Renderizar el avatar directamente dentro del contenedor oficial de la carta FUT
+    const futContainer = document.getElementById('fut-avatar-live-container');
+    if (futContainer) {
+        futContainer.innerHTML = generarAvatarHTML(avatarId);
+    }
+
+    // 4. Ejecutar la función nativa de actualización en vivo de la carta
+    if (typeof actualizarAvatarLive === 'function') {
+        actualizarAvatarLive();
+    }
+
+    // 5. Redibujar el botón de perfil con el nuevo avatar en la barra superior
+    if (typeof renderizarBotonLogin === 'function') {
+        renderizarBotonLogin();
+    }
+
+    // 6. Persistir en estadísticas y sincronizar con la nube
+    guardarStats();
+
+    // 7. Cerrar el sobre de bienvenida y confirmar
+    const modal = document.getElementById('modal-pack-bienvenida');
+    if (modal) modal.style.display = 'none';
+
+    showToast(`¡Elegiste a ${obtenerNombreAvatar(avatarId)} como tu capitán! `, 'ph-check-circle', 'success');
+}
+
+// 🏆 4. Verificador de Recompensa al Subir de Nivel
+function comprobarRecompensaNivel(nivelActual) {
+    const nivelNum = Number(nivelActual);
+    const recompensasVistas = JSON.parse(localStorage.getItem('ev_recompensas_vistas') || '[]');
+
+    // Buscar el primer avatar desbloqueado que aún no se le haya presentado en pantalla
+    const nuevoFichaje = AVATARES_LISTA.find(a => a.nivel > 0 && a.nivel <= nivelNum && !recompensasVistas.includes(a.id));
+    if (!nuevoFichaje) return;
+
+    // Registrar como visto para no repetir alerta
+    recompensasVistas.push(nuevoFichaje.id);
+    localStorage.setItem('ev_recompensas_vistas', JSON.stringify(recompensasVistas));
+
+    reproducirSonidoApertura();
+    document.getElementById('ev-reward-level-tag').textContent = `¡NIVEL ${nuevoFichaje.nivel} ALCANZADO!`;
+    document.getElementById('ev-reward-img').src = nuevoFichaje.id;
+    document.getElementById('ev-reward-name').textContent = nuevoFichaje.label;
+
+    const btnEquipar = document.getElementById('ev-btn-equipar-premio');
+    btnEquipar.onclick = () => {
+        seleccionarCapitanInicial(nuevoFichaje.id);
+        cerrarModalRecompensa();
+    };
+
+    document.getElementById('modal-recompensa-avatar').style.display = 'flex';
+    if (typeof lanzarConfetti === 'function') {
+        lanzarConfetti(document.getElementById('modal-recompensa-avatar'));
+    }
+}
+
+function cerrarModalRecompensa() {
+    document.getElementById('modal-recompensa-avatar').style.display = 'none';
+
+    // Si hubo más de un fichaje desbloqueado en la misma subida de nivel, abre el siguiente
+    setTimeout(() => {
+        if (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) {
+            comprobarRecompensaNivel(userStats.nivelActual);
+        }
+    }, 350);
+}
+
+// Activar la verificación al cargar la página
+window.addEventListener('DOMContentLoaded', verificarSobreBienvenida);
 
 function obtenerNivelAvatar(id) {
     const idLimpio = (id || '').replace(/\.png$/i, '.webp');

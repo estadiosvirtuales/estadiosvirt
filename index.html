@@ -936,5 +936,55 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         });
       }
     </script>
+<!-- 🎁 MODAL 1: SOBRE DE BIENVENIDA (PACK OPENING INICIAL) -->
+    <div id="modal-pack-bienvenida" class="ev-pack-overlay" style="display: none;">
+        <div class="ev-pack-container">
+            <!-- FASE 1: SOBRE CERRADO -->
+            <div id="ev-pack-cerrado" class="ev-pack-card">
+                <div class="ev-pack-glow"></div>
+                <div class="ev-pack-badge">PACK INICIAL</div>
+                <div class="ev-pack-emblem">
+                    <img src="sobre-icono.webp" alt="Sobre EV" class="ev-pack-vault-img">
+                </div>
+                <h3 class="ev-pack-title">SOBRE DE BIENVENIDA</h3>
+                <p class="ev-pack-sub">Contiene tus 6 primeros futbolistas de potrero</p>
+                <button type="button" class="ev-btn-abrir-pack" onclick="animarAperturaSobre()">
+                    ABRIR SOBRE
+                </button>
+            </div>
+
+            <!-- FASE 2: REVELACIÓN DE CARTAS (OCULTO AL INICIO) -->
+            <div id="ev-pack-revelado" class="ev-pack-reveal-box" style="display: none;">
+                <h3 class="ev-reveal-title">¡ELIGE A TU CAPITÁN INICIAL!</h3>
+                <p class="ev-reveal-sub">Selecciona el futbolista que liderará tu carta FUT <span style="opacity: 0.8; font-size: 0.82rem;">(podrás cambiarlo cuando quieras)</span>:</p>
+                <div id="ev-pack-grilla-iniciales" class="ev-pack-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🏆 MODAL 2: ALERTA DE NUEVO FICHAJE (DESBLOQUEO POR NIVEL) -->
+    <div id="modal-recompensa-avatar" class="ev-pack-overlay" style="display: none;">
+        <div class="ev-reward-container">
+            <div class="ev-reward-glow"></div>
+            <div class="ev-reward-level-badge" id="ev-reward-level-tag">¡NIVEL ALCANZADO!</div>
+            <h2 class="ev-reward-headline">¡NUEVO FICHAJE DESBLOQUEADO!</h2>
+            
+            <div class="ev-reward-card">
+                <div class="ev-reward-card-inner">
+                    <img id="ev-reward-img" src="" alt="Avatar Desbloqueado">
+                    <span id="ev-reward-name" class="ev-reward-name">Apodo</span>
+                </div>
+            </div>
+
+            <div class="ev-reward-actions">
+                <button type="button" id="ev-btn-equipar-premio" class="ev-btn-equipar">
+                    EQUIPAR EN MI CARTA
+                </button>
+                <button type="button" class="ev-btn-cerrar-premio" onclick="cerrarModalRecompensa()">
+                    SEGUIR JUGANDO
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
