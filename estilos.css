@@ -10034,13 +10034,12 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* Logo con remoción absoluta de fondo negro */
 .ev-card-back-logo {
-    width: 76px;
-    height: 76px;
+    width: 94px;
+    height: 94px;
     object-fit: contain;
     margin: auto 0;
     filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
     animation: evFlotar 3s ease-in-out infinite;
-    mix-blend-mode: screen; /* Vuelve 100% transparente cualquier fondo negro */
     background: transparent !important;
 }
 
@@ -10226,8 +10225,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .reward-back-logo {
-    width: 88px !important;
-    height: 88px !important;
+    width: 106px !important;
+    height: 106px !important;
     margin: auto 0 !important;
 }
 
@@ -10328,8 +10327,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
     }
     .ev-card-back-logo {
-        width: 58px;
-        height: 58px;
+        width: 74px;
+        height: 74px;
     }
 }
 
@@ -10464,31 +10463,31 @@ html[data-theme="light"] .xp-bar-big-fill {
     top: -30vmax;
     left: -30vmax;
     background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.45) 0%, rgba(0, 242, 254, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 4.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.top-right {
     top: -30vmax;
     right: -30vmax;
     background: radial-gradient(circle at 65% 35%, rgba(255, 215, 0, 0.45) 0%, rgba(255, 215, 0, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 4.0s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.7s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.bottom-left {
     bottom: -30vmax;
     left: -30vmax;
     background: radial-gradient(circle at 35% 65%, rgba(0, 255, 119, 0.40) 0%, rgba(0, 255, 119, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 4.0s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.bottom-right {
     bottom: -30vmax;
     right: -30vmax;
     background: radial-gradient(circle at 65% 65%, rgba(255, 230, 109, 0.42) 0%, rgba(255, 230, 109, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 4.0s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Halo central de concentración sobre el sobre o la carta (4.0s) */
+/* Halo central de concentración sobre el sobre o la carta (3.7s) */
 .ev-center-ambient-glow {
     position: absolute;
     top: 50%;
@@ -10501,7 +10500,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     filter: blur(55px);
     opacity: 0;
     mix-blend-mode: screen;
-    animation: evCenterGlowAnim 4.0s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCenterGlowAnim 3.7s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes evCornerSpotAnim {
