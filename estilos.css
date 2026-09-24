@@ -10034,8 +10034,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* Logo con remoción absoluta de fondo negro */
 .ev-card-back-logo {
-    width: 94px;
-    height: 94px;
+    width: 134px;
+    height: 134px;
     object-fit: contain;
     margin: auto 0;
     filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
@@ -10225,8 +10225,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .reward-back-logo {
-    width: 106px !important;
-    height: 106px !important;
+    width: 120px !important;
+    height: 120px !important;
     margin: auto 0 !important;
 }
 
@@ -10327,8 +10327,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
     }
     .ev-card-back-logo {
-        width: 74px;
-        height: 74px;
+        width: 114px;
+        height: 114px;
     }
 }
 
