@@ -10336,8 +10336,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
     /* 📱 [CELULAR] TAMAÑO DEL LOGO EN EL DORSO */
     .ev-card-back-logo {
-        width: 114px;
-        height: 114px;
+        width: 130px;
+        height: 130px;
     }
     /* 📱 [CELULAR] POSICIÓN DEL BOTÓN TOCÁ (NO SE MUEVE AL CAMBIAR EL LOGO) */
     .ev-card-back-text {
