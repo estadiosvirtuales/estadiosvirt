@@ -10483,31 +10483,31 @@ html[data-theme="light"] .xp-bar-big-fill {
     top: -30vmax;
     left: -30vmax;
     background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.45) 0%, rgba(0, 242, 254, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.top-right {
     top: -30vmax;
     right: -30vmax;
     background: radial-gradient(circle at 65% 35%, rgba(255, 215, 0, 0.45) 0%, rgba(255, 215, 0, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.7s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.2s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.bottom-left {
     bottom: -30vmax;
     left: -30vmax;
     background: radial-gradient(circle at 35% 65%, rgba(0, 255, 119, 0.40) 0%, rgba(0, 255, 119, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.2s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.bottom-right {
     bottom: -30vmax;
     right: -30vmax;
     background: radial-gradient(circle at 65% 65%, rgba(255, 230, 109, 0.42) 0%, rgba(255, 230, 109, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 3.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Halo central de concentración sobre el sobre o la carta (3.7s) */
+/* Halo central de concentración sobre el sobre o la carta (3.2s) */
 .ev-center-ambient-glow {
     position: absolute;
     top: 50%;
@@ -10520,7 +10520,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     filter: blur(55px);
     opacity: 0;
     mix-blend-mode: screen;
-    animation: evCenterGlowAnim 3.7s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCenterGlowAnim 3.2s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes evCornerSpotAnim {
