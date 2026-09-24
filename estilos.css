@@ -10035,8 +10035,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* Logo centrado en el espacio disponible */
 .ev-card-back-logo {
-    width: 120px;
-    height: 120px;
+    width: 135px;
+    height: 135px;
     object-fit: contain;
     margin: auto 0;
     filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
