@@ -1179,11 +1179,11 @@ function dispararEfectoLucesGaming() {
         <div class="ev-fx-shockwave-2"></div>
     `;
 
-    for (let i = 0; i < 18; i++) {
+    for (let i = 0; i < 22; i++) {
         const spark = document.createElement('div');
         spark.className = 'ev-fx-spark';
-        spark.style.setProperty('--angle', `${i * 20}deg`);
-        spark.style.animationDelay = `${Math.random() * 0.15}s`;
+        spark.style.setProperty('--angle', `${i * (360 / 22)}deg`);
+        spark.style.animationDelay = `${Math.random() * 0.35}s`;
         fxContainer.appendChild(spark);
     }
 
@@ -1191,7 +1191,7 @@ function dispararEfectoLucesGaming() {
 
     setTimeout(() => {
         if (fxContainer) fxContainer.remove();
-    }, 2400);
+    }, 4000);
 }
 
 function mostrarLevelUp(nivel){
