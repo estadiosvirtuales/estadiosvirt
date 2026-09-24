@@ -10034,8 +10034,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* Logo con remoción absoluta de fondo negro */
 .ev-card-back-logo {
-    width: 60px;
-    height: 60px;
+    width: 76px;
+    height: 76px;
     object-fit: contain;
     margin: auto 0;
     filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
@@ -10169,52 +10169,87 @@ html[data-theme="light"] .xp-bar-big-fill {
 .ev-reward-card {
     width: 200px;
     height: 270px;
-    background: linear-gradient(145deg, #111e38 0%, #080f1e 100%);
-    border: 2px solid #ffd700;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: transparent;
+    border: none;
     margin-bottom: 24px;
-    box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
-    animation: evSuspenseCardReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes evSuspenseCardReveal {
-    0% {
-        transform: scale(0) translateY(50px) rotateY(180deg);
-        opacity: 0;
-        filter: blur(16px) brightness(2.6);
-    }
-    40% {
-        transform: scale(0.28) translateY(24px) rotateY(90deg);
-        opacity: 0.55;
-        filter: blur(8px) brightness(1.8);
-    }
-    72% {
-        transform: scale(0.88) translateY(-6px) rotateY(15deg);
-        opacity: 0.95;
-        filter: blur(2px) brightness(1.25);
-    }
-    88% {
-        transform: scale(1.10) translateY(-8px) rotateY(0deg);
-        opacity: 1;
-        filter: blur(0px) brightness(1.1);
-    }
-    100% {
-        transform: scale(1) translateY(0) rotateY(0deg);
-        opacity: 1;
-        filter: blur(0px) brightness(1);
-    }
+    perspective: 1100px;
+    cursor: pointer;
+    user-select: none;
+    animation: evSuspenseCardPick 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .ev-reward-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.25, 1.1);
+}
+
+.ev-reward-card.is-flipped .ev-reward-card-inner {
+    transform: rotateY(180deg);
+}
+
+.ev-reward-card-front,
+.ev-reward-card-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* 🃏 DORSO DEL PREMIO POR NIVEL */
+.ev-reward-card-back {
+    transform: rotateY(0deg);
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.2) 0%, transparent 68%),
+        linear-gradient(150deg, #16253d 0%, #080f1b 100%);
+    border: 2px solid #ffd700;
+    border-top: 2.5px solid #fff5a5;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 215, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    padding: 24px 14px 20px;
 }
 
-.ev-reward-card-inner img {
+.ev-reward-card:not(.is-flipped):hover .ev-reward-card-back {
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.6);
+    transform: translateY(-3px) scale(1.02);
+}
+
+.reward-back-logo {
+    width: 88px !important;
+    height: 88px !important;
+    margin: auto 0 !important;
+}
+
+/* 🌟 FRENTE DEL PREMIO REVELADO */
+.ev-reward-card-front {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, #111e38 0%, #080f1e 100%);
+    border: 2px solid #ffd700;
+    border-top: 2.5px solid #fff5a5;
+    box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 14px;
+}
+
+.ev-reward-card.is-flipped:hover .ev-reward-card-front {
+    box-shadow: 0 0 45px rgba(255, 215, 0, 0.6);
+}
+
+.ev-reward-card-front img {
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -10293,8 +10328,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
     }
     .ev-card-back-logo {
-        width: 48px;
-        height: 48px;
+        width: 58px;
+        height: 58px;
     }
 }
 

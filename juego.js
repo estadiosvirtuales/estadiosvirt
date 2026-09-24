@@ -6066,6 +6066,15 @@ function seleccionarCapitanInicial(avatarId) {
     showToast(`¡Elegiste a ${obtenerNombreAvatar(avatarId)} como tu capitán! `, 'ph-check-circle', 'success');
 }
 
+window.voltearCartaPremio = function(el) {
+    if (!el.classList.contains('is-flipped')) {
+        reproducirSonidoApertura();
+        el.classList.add('is-flipped');
+        const actions = document.getElementById('ev-reward-actions-box');
+        if (actions) actions.style.display = 'flex';
+    }
+};
+
 // 🏆 4. Verificador de Recompensa al Subir de Nivel
 function comprobarRecompensaNivel(nivelActual) {
     const id = getUserId();
@@ -6080,7 +6089,12 @@ function comprobarRecompensaNivel(nivelActual) {
     recompensasVistas.push(nuevoFichaje.id);
     localStorage.setItem('ev_recompensas_vistas_' + id, JSON.stringify(recompensasVistas));
 
-    reproducirSonidoApertura();
+    const cardBox = document.getElementById('ev-reward-card-box');
+    if (cardBox) cardBox.classList.remove('is-flipped');
+
+    const actionsBox = document.getElementById('ev-reward-actions-box');
+    if (actionsBox) actionsBox.style.display = 'none';
+
     document.getElementById('ev-reward-level-tag').textContent = `¡NIVEL ${nuevoFichaje.nivel} ALCANZADO!`;
     document.getElementById('ev-reward-img').src = nuevoFichaje.id;
     document.getElementById('ev-reward-name').textContent = nuevoFichaje.label;
