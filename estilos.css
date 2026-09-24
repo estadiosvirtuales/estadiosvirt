@@ -10015,6 +10015,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     border: 1.5px solid rgba(0, 255, 119, 0.35);
     border-top: 2px solid #00ff77;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    padding-bottom: 38px !important; /* Reserva el espacio inferior para que el logo no tape el botón */
 }
 
 /* Hover sin alterar rotación: solo resalta el borde y sombra */
@@ -10032,10 +10033,10 @@ html[data-theme="light"] .xp-bar-big-fill {
     pointer-events: none;
 }
 
-/* Logo con remoción absoluta de fondo negro */
+/* Logo centrado en el espacio disponible */
 .ev-card-back-logo {
-    width: 134px;
-    height: 134px;
+    width: 120px;
+    height: 120px;
     object-fit: contain;
     margin: auto 0;
     filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
@@ -10043,7 +10044,12 @@ html[data-theme="light"] .xp-bar-big-fill {
     background: transparent !important;
 }
 
+/* Botón TOCÁ anclado fijamente al fondo sin moverse */
 .ev-card-back-text {
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
     background: rgba(0, 255, 119, 0.16);
     border: 1px solid rgba(0, 255, 119, 0.5);
     color: #00ff77;
@@ -10054,6 +10060,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     border-radius: 12px;
     text-shadow: 0 0 8px rgba(0, 255, 119, 0.5);
     animation: timerPulse 1.6s infinite ease-in-out;
+    white-space: nowrap !important;
+    z-index: 5 !important;
 }
 
 /* 🌟 FRENTE DE LA CARTA (JUGADOR REVELADO) */
@@ -10215,8 +10223,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 24px 14px 20px;
+    justify-content: center;
+    padding: 24px 14px 44px;
 }
 
 .ev-reward-card:not(.is-flipped):hover .ev-reward-card-back {
@@ -10326,9 +10334,21 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 1.2px;
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
     }
+    /* 📱 [CELULAR] TAMAÑO DEL LOGO EN EL DORSO */
     .ev-card-back-logo {
-        width: 114px;
-        height: 114px;
+        width: 74px;
+        height: 74px;
+    }
+    /* 📱 [CELULAR] POSICIÓN DEL BOTÓN TOCÁ (NO SE MUEVE AL CAMBIAR EL LOGO) */
+    .ev-card-back-text {
+        bottom: 8px !important;
+        font-size: 0.62rem !important;
+        padding: 2px 10px !important;
+    }
+    /* 📱 [CELULAR] LOGO EN CARTA DE NIVEL */
+    .reward-back-logo {
+        width: 105px !important;
+        height: 105px !important;
     }
 }
 
