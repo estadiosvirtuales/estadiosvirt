@@ -5861,7 +5861,19 @@ const AVATARES_LISTA = [
     { id: '63.webp', label: 'Gran Matador', nivel: 56 },
     { id: '32.webp', label: 'El Fenómeno', nivel: 58 },
     { id: '30.webp', label: 'O Rei', nivel: 59 },
-    { id: '25.webp', label: 'El Barrilete', nivel: 60 }
+    { id: '25.webp', label: 'El Barrilete', nivel: 60 },
+
+    // 💎 NIVELES 61 A 75 (ÉLITE CLÁSICA & BALONES DE ORO)
+    { id: '64.webp', label: 'Tiburón', nivel: 61 },
+    { id: '65.webp', label: 'El Santo', nivel: 62 },
+    { id: '66.webp', label: 'Sir David', nivel: 64 },
+    { id: '67.webp', label: 'El Príncipe', nivel: 66 },
+    { id: '68.webp', label: 'Superman', nivel: 68 },
+    { id: '69.webp', label: 'Il Capitano', nivel: 70 },
+    { id: '70.webp', label: 'Pepo', nivel: 71 },
+    { id: '71.webp', label: 'Tití', nivel: 72 },
+    { id: '72.webp', label: 'El Eterno', nivel: 74 },
+    { id: '73.webp', label: 'Fútbol Total', nivel: 75 }
 ];
 
 function obtenerNombreAvatar(id) {
