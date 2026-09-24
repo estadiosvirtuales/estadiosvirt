@@ -10008,14 +10008,14 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 🃏 DORSO DE LA CARTA (ESTILO CYBER VAULT) */
 .ev-card-pick-back {
-    transform: rotateY(0deg);
+    transform: rotateY(0deg) translateZ(1px);
     background: 
         radial-gradient(circle at 50% 50%, rgba(0, 255, 119, 0.18) 0%, transparent 68%),
         linear-gradient(150deg, #101c30 0%, #060b14 100%);
     border: 1.5px solid rgba(0, 255, 119, 0.35);
     border-top: 2px solid #00ff77;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    padding-bottom: 38px !important; /* Reserva el espacio inferior para que el logo no tape el botón */
+    padding-bottom: 38px !important;
 }
 
 /* Hover sin alterar rotación: solo resalta el borde y sombra */
@@ -10066,7 +10066,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* 🌟 FRENTE DE LA CARTA (JUGADOR REVELADO) */
 .ev-card-pick-front {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) translateZ(1px);
     background: linear-gradient(150deg, #132238 0%, #080f1a 100%);
     border: 1.5px solid rgba(255, 215, 0, 0.45);
     border-top: 2px solid rgba(255, 230, 109, 0.85);
@@ -10079,11 +10079,11 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75), 0 0 28px rgba(255, 215, 0, 0.5);
 }
 
+/* Contenedor transparente y libre de sombras fijas durante el giro */
 .ev-card-pick:hover {
-    transform: translateY(-8px) scale(1.04);
-    border-color: #ffd700;
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 215, 0, 0.45);
-    background: linear-gradient(150deg, #182e4d 0%, #0c1729 100%);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .ev-card-pick-badge {
