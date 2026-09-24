@@ -1165,13 +1165,42 @@ const userPos=getPref('ev_user_pos','DT');
 if(badge&&dot&&label){badge.style.display='flex';dot.style.background=nivel.color;dot.style.boxShadow=`0 0 6px ${nivel.color}`;label.innerHTML=nivel.emoji+' '+userPos;}
 }
 
+function dispararEfectoLucesGaming() {
+    const viejo = document.querySelector('.ev-gaming-fx-overlay');
+    if (viejo) viejo.remove();
+
+    const fxContainer = document.createElement('div');
+    fxContainer.className = 'ev-gaming-fx-overlay';
+
+    fxContainer.innerHTML = `
+        <div class="ev-fx-flash"></div>
+        <div class="ev-fx-rays"></div>
+        <div class="ev-fx-shockwave"></div>
+        <div class="ev-fx-shockwave-2"></div>
+    `;
+
+    for (let i = 0; i < 18; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'ev-fx-spark';
+        spark.style.setProperty('--angle', `${i * 20}deg`);
+        spark.style.animationDelay = `${Math.random() * 0.15}s`;
+        fxContainer.appendChild(spark);
+    }
+
+    document.body.appendChild(fxContainer);
+
+    setTimeout(() => {
+        if (fxContainer) fxContainer.remove();
+    }, 2400);
+}
+
 function mostrarLevelUp(nivel){
 const overlay=document.getElementById('levelup-overlay');
 document.getElementById('levelup-icon').innerHTML=`<img src="${nivel.iconUrl}" style="width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 0 20px ${nivel.color});">`;
 document.getElementById('levelup-title').textContent='¡Subiste de nivel!';
 document.getElementById('levelup-sub').innerHTML=`Ahora sos <b style="color:${nivel.color};">${nivel.nombre}</b>`;
 overlay.classList.add('active');
-lanzarConfetti();
+dispararEfectoLucesGaming();
 }
 function cerrarLevelUp(){
     document.getElementById('levelup-overlay').classList.remove('active');
@@ -5931,6 +5960,7 @@ function animarAperturaSobre() {
 
     setTimeout(() => {
         sobre.style.display = 'none';
+        dispararEfectoLucesGaming();
         const contenedorGrilla = document.getElementById('ev-pack-grilla-iniciales');
         contenedorGrilla.innerHTML = '';
 
@@ -6020,9 +6050,7 @@ function comprobarRecompensaNivel(nivelActual) {
     };
 
     document.getElementById('modal-recompensa-avatar').style.display = 'flex';
-    if (typeof lanzarConfetti === 'function') {
-        lanzarConfetti(document.getElementById('modal-recompensa-avatar'));
-    }
+    dispararEfectoLucesGaming();
 }
 
 function cerrarModalRecompensa() {
