@@ -10236,3 +10236,85 @@ html[data-theme="light"] .xp-bar-big-fill {
     70% { opacity: 0.8; }
     100% { opacity: 0; transform: rotate(var(--angle)) translateY(calc(-50vmax)) scaleY(2.5); }
 }
+
+/* ==========================================================================
+   🏟️ ILUMINACIÓN AMBIENTAL DE ESTADIO DESDE LAS 4 ESQUINAS (SOBRES Y CARTAS)
+   ========================================================================== */
+.ev-pack-lights-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100060 !important;
+    overflow: hidden;
+}
+
+/* Focos de luz volumétrica suave en las 4 esquinas (sin rayos cortantes) */
+.ev-corner-spot {
+    position: absolute;
+    width: 75vmax;
+    height: 75vmax;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0;
+    mix-blend-mode: screen;
+}
+
+.ev-corner-spot.top-left {
+    top: -30vmax;
+    left: -30vmax;
+    background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.45) 0%, rgba(0, 242, 254, 0.12) 45%, transparent 70%);
+    animation: evCornerSpotAnim 3.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-corner-spot.top-right {
+    top: -30vmax;
+    right: -30vmax;
+    background: radial-gradient(circle at 65% 35%, rgba(255, 215, 0, 0.45) 0%, rgba(255, 215, 0, 0.12) 45%, transparent 70%);
+    animation: evCornerSpotAnim 3.8s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-corner-spot.bottom-left {
+    bottom: -30vmax;
+    left: -30vmax;
+    background: radial-gradient(circle at 35% 65%, rgba(0, 255, 119, 0.40) 0%, rgba(0, 255, 119, 0.12) 45%, transparent 70%);
+    animation: evCornerSpotAnim 3.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-corner-spot.bottom-right {
+    bottom: -30vmax;
+    right: -30vmax;
+    background: radial-gradient(circle at 65% 65%, rgba(255, 230, 109, 0.42) 0%, rgba(255, 230, 109, 0.12) 45%, transparent 70%);
+    animation: evCornerSpotAnim 3.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Halo central de concentración sobre el sobre o la carta */
+.ev-center-ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85vmax;
+    height: 85vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 215, 0, 0.16) 28%, rgba(0, 242, 254, 0.08) 55%, transparent 75%);
+    filter: blur(55px);
+    opacity: 0;
+    mix-blend-mode: screen;
+    animation: evCenterGlowAnim 3.8s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes evCornerSpotAnim {
+    0% { opacity: 0; transform: scale(0.65); }
+    18% { opacity: 0.95; transform: scale(1.05); }
+    65% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.15); }
+}
+
+@keyframes evCenterGlowAnim {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.55); }
+    22% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    70% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.22); }
+}

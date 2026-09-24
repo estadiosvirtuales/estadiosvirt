@@ -1194,6 +1194,28 @@ function dispararEfectoLucesGaming() {
     }, 4000);
 }
 
+function dispararEfectoPackOpening() {
+    const viejo = document.querySelector('.ev-pack-lights-overlay');
+    if (viejo) viejo.remove();
+
+    const fxContainer = document.createElement('div');
+    fxContainer.className = 'ev-pack-lights-overlay';
+
+    fxContainer.innerHTML = `
+        <div class="ev-corner-spot top-left"></div>
+        <div class="ev-corner-spot top-right"></div>
+        <div class="ev-corner-spot bottom-left"></div>
+        <div class="ev-corner-spot bottom-right"></div>
+        <div class="ev-center-ambient-glow"></div>
+    `;
+
+    document.body.appendChild(fxContainer);
+
+    setTimeout(() => {
+        if (fxContainer) fxContainer.remove();
+    }, 3800);
+}
+
 function mostrarLevelUp(nivel){
 const overlay=document.getElementById('levelup-overlay');
 document.getElementById('levelup-icon').innerHTML=`<img src="${nivel.iconUrl}" style="width:200px; height:200px; object-fit:contain; filter:drop-shadow(0 0 20px ${nivel.color});">`;
@@ -5960,7 +5982,7 @@ function animarAperturaSobre() {
 
     setTimeout(() => {
         sobre.style.display = 'none';
-        dispararEfectoLucesGaming();
+        dispararEfectoPackOpening();
         const contenedorGrilla = document.getElementById('ev-pack-grilla-iniciales');
         contenedorGrilla.innerHTML = '';
 
@@ -6050,7 +6072,7 @@ function comprobarRecompensaNivel(nivelActual) {
     };
 
     document.getElementById('modal-recompensa-avatar').style.display = 'flex';
-    dispararEfectoLucesGaming();
+    dispararEfectoPackOpening();
 }
 
 function cerrarModalRecompensa() {
