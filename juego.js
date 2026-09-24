@@ -1213,7 +1213,7 @@ function dispararEfectoPackOpening() {
 
     setTimeout(() => {
         if (fxContainer) fxContainer.remove();
-    }, 3200);
+    }, 2900);
 }
 
 function mostrarLevelUp(nivel){
