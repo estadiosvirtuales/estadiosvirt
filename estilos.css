@@ -9927,21 +9927,18 @@ html[data-theme="light"] .xp-bar-big-fill {
     width: 100%;
 }
 
-/* 🏆 CARTA FUT DE POTRERO CON REVELACIÓN DE SUSPENSO */
+/* 🏆 CONTENEDOR 3D FLIP CARD */
 .ev-card-pick {
     position: relative;
-    background: linear-gradient(150deg, #132238 0%, #080f1a 100%);
-    border: 1.5px solid rgba(255, 215, 0, 0.35);
-    border-top: 2px solid rgba(255, 230, 109, 0.7);
-    border-radius: 18px;
-    padding: 14px 10px 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    height: 178px;
+    min-height: 178px;
+    background: transparent;
+    border: none;
+    padding: 0;
     cursor: pointer;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-    overflow: hidden;
+    perspective: 1100px;
+    user-select: none;
     animation: evSuspenseCardPick 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -9974,6 +9971,105 @@ html[data-theme="light"] .xp-bar-big-fill {
         opacity: 1;
         filter: blur(0px) brightness(1);
     }
+}
+
+/* 🔄 EJE DE ROTACIÓN 3D */
+.ev-card-pick-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.25, 1.1);
+}
+
+/* La carta gira solo con la clase fijada por el click */
+.ev-card-pick.is-flipped .ev-card-pick-inner {
+    transform: rotateY(180deg);
+}
+
+.ev-card-pick-front,
+.ev-card-pick-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 10px 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* 🃏 DORSO DE LA CARTA (ESTILO CYBER VAULT) */
+.ev-card-pick-back {
+    transform: rotateY(0deg);
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(0, 255, 119, 0.18) 0%, transparent 68%),
+        linear-gradient(150deg, #101c30 0%, #060b14 100%);
+    border: 1.5px solid rgba(0, 255, 119, 0.35);
+    border-top: 2px solid #00ff77;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Hover sin alterar rotación: solo resalta el borde y sombra */
+.ev-card-pick:not(.is-flipped):hover .ev-card-pick-back {
+    border-color: #00ff77;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 255, 119, 0.45);
+}
+
+.ev-card-back-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 14px),
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 14px);
+    pointer-events: none;
+}
+
+/* Logo con remoción absoluta de fondo negro */
+.ev-card-back-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin: auto 0;
+    filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
+    animation: evFlotar 3s ease-in-out infinite;
+    mix-blend-mode: screen; /* Vuelve 100% transparente cualquier fondo negro */
+    background: transparent !important;
+}
+
+.ev-card-back-text {
+    background: rgba(0, 255, 119, 0.16);
+    border: 1px solid rgba(0, 255, 119, 0.5);
+    color: #00ff77;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    text-shadow: 0 0 8px rgba(0, 255, 119, 0.5);
+    animation: timerPulse 1.6s infinite ease-in-out;
+}
+
+/* 🌟 FRENTE DE LA CARTA (JUGADOR REVELADO) */
+.ev-card-pick-front {
+    transform: rotateY(180deg);
+    background: linear-gradient(150deg, #132238 0%, #080f1a 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.45);
+    border-top: 2px solid rgba(255, 230, 109, 0.85);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 215, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Hover sobre la carta ya dada vuelta: resalta el oro sin alterar el ángulo */
+.ev-card-pick.is-flipped:hover .ev-card-pick-front {
+    border-color: #ffd700;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75), 0 0 28px rgba(255, 215, 0, 0.5);
 }
 
 .ev-card-pick:hover {
@@ -10186,11 +10282,19 @@ html[data-theme="light"] .xp-bar-big-fill {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
+    .ev-card-pick {
+        height: 160px;
+        min-height: 160px;
+    }
     .ev-card-pick-avatar-wrap {
         width: 62px;
         height: 62px;
         padding: 1.2px;
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+    }
+    .ev-card-back-logo {
+        width: 48px;
+        height: 48px;
     }
 }
 

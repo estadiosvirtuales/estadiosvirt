@@ -5974,6 +5974,15 @@ function verificarSobreBienvenida() {
     }
 }
 
+window.voltearCartaPick = function(elemento, avatarId) {
+    if (!elemento.classList.contains('is-flipped')) {
+        reproducirSonidoApertura();
+        elemento.classList.add('is-flipped');
+    } else {
+        seleccionarCapitanInicial(avatarId);
+    }
+};
+
 // 💥 2. Animación al tocar "Abrir Sobre"
 function animarAperturaSobre() {
     reproducirSonidoApertura();
@@ -5991,13 +6000,24 @@ function animarAperturaSobre() {
         iniciales.forEach(jugador => {
             const item = document.createElement('div');
             item.className = 'ev-card-pick';
-            item.onclick = () => seleccionarCapitanInicial(jugador.id);
+            item.setAttribute('onclick', `voltearCartaPick(this, '${jugador.id}')`);
             item.innerHTML = `
-                <div class="ev-card-pick-avatar-wrap">
-                    <img src="${jugador.id}" alt="${jugador.label}">
+                <div class="ev-card-pick-inner">
+                    <!-- DORSO (TOCAR PARA REVELAR) -->
+                    <div class="ev-card-pick-back">
+                        <div class="ev-card-back-pattern"></div>
+                        <img src="logo-cartas.webp" class="ev-card-back-logo" alt="EV">
+                        <span class="ev-card-back-text">TOCÁ</span>
+                    </div>
+                    <!-- FRENTE (JUGADOR REVELADO) -->
+                    <div class="ev-card-pick-front">
+                        <div class="ev-card-pick-avatar-wrap">
+                            <img src="${jugador.id}" alt="${jugador.label}">
+                        </div>
+                        <span class="ev-card-pick-name">${jugador.label}</span>
+                        <div class="ev-card-pick-btn">ELEGIR</div>
+                    </div>
                 </div>
-                <span class="ev-card-pick-name">${jugador.label}</span>
-                <div class="ev-card-pick-btn">ELEGIR</div>
             `;
             contenedorGrilla.appendChild(item);
         });
