@@ -1179,11 +1179,11 @@ function dispararEfectoLucesGaming() {
         <div class="ev-fx-shockwave-2"></div>
     `;
 
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < 14; i++) {
         const spark = document.createElement('div');
         spark.className = 'ev-fx-spark';
-        spark.style.setProperty('--angle', `${i * (360 / 22)}deg`);
-        spark.style.animationDelay = `${Math.random() * 0.35}s`;
+        spark.style.setProperty('--angle', `${i * (360 / 14)}deg`);
+        spark.style.animationDelay = `${Math.random() * 0.2}s`;
         fxContainer.appendChild(spark);
     }
 
@@ -1191,7 +1191,7 @@ function dispararEfectoLucesGaming() {
 
     setTimeout(() => {
         if (fxContainer) fxContainer.remove();
-    }, 4000);
+    }, 3200);
 }
 
 function dispararEfectoPackOpening() {
@@ -1213,7 +1213,7 @@ function dispararEfectoPackOpening() {
 
     setTimeout(() => {
         if (fxContainer) fxContainer.remove();
-    }, 2900);
+    }, 1350);
 }
 
 function mostrarLevelUp(nivel){
@@ -5849,7 +5849,7 @@ const AVATARES_LISTA = [
     { id: '9.webp', label: 'El Mosquito', nivel: 0 },
     { id: '12.webp', label: 'El Halcón', nivel: 0 },
     { id: '13.webp', label: 'El Timón', nivel: 0 },
-    { id: '55.webp', label: 'El Espigado', nivel: 0 },
+    { id: '55.webp', label: 'Yerry', nivel: 0 },
     { id: '61.webp', label: 'El Pitbull', nivel: 0 },
 
     // ⚡ NIVELES 1 A 10 (SCALONETA & FIGURAS)
@@ -5866,9 +5866,9 @@ const AVATARES_LISTA = [
 
     // 🔥 NIVELES 11 A 20 (ELITE INTERNACIONAL)
     { id: '8.webp', label: 'La Muralla', nivel: 11 },
-    { id: '10.webp', label: 'Huracán', nivel: 12 },
+    { id: '10.webp', label: 'Hurricane', nivel: 12 },
     { id: '11.webp', label: 'Golden Boy', nivel: 13 },
-    { id: '14.webp', label: 'El Gigante', nivel: 14 },
+    { id: '14.webp', label: 'Gigio', nivel: 14 },
     { id: '15.webp', label: 'El Fideo', nivel: 15 },
     { id: '26.webp', label: 'El Kun', nivel: 16 },
     { id: '36.webp', label: 'El Matador', nivel: 17 },
@@ -5878,7 +5878,7 @@ const AVATARES_LISTA = [
 
     // 🚀 NIVELES 21 A 30 (CRACKS, CAPITANES & TÉCNICOS)
     { id: '5.webp', label: 'El Androide', nivel: 21 },
-    { id: '4.webp', label: 'La Tortuga', nivel: 22 },
+    { id: '4.webp', label: 'Kiki', nivel: 22 },
     { id: '6.webp', label: 'Ousadia', nivel: 23 },
     { id: '37.webp', label: 'El Gladiador', nivel: 24 },
     { id: '35.webp', label: 'El Pistolero', nivel: 25 },
@@ -5909,7 +5909,7 @@ const AVATARES_LISTA = [
     { id: '34.webp', label: 'Il Pendolino', nivel: 46 },
     { id: '33.webp', label: 'El Hombre Bala', nivel: 47 },
     { id: '50.webp', label: 'Mago de Marsella', nivel: 48 },
-    { id: '31.webp', label: 'La Sonrisa', nivel: 49 },
+    { id: '31.webp', label: 'Dinho', nivel: 49 },
     { id: '1.webp', label: 'La Pulga', nivel: 50 },
 
     // 🌌 NIVELES 51 A 60 (LEYENDAS HISTÓRICAS & MARADONA)
