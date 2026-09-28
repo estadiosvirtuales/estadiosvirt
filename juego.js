@@ -2679,6 +2679,8 @@ function cerrarModalVideo(){
     try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
     try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
     guessrUserMarker=guessrTargetMarker=guessrPolyline=null;guessrSelectedLatLng=null;
+    guessrRondaActual = 0;
+    verificarSobreBienvenidaPostPartida();
 }
 
 function abrirModalMapa(estadio,pais,lat,lng){
@@ -2693,8 +2695,12 @@ function cerrarModalOrden(){
     if (m) m.style.display = 'none';
     orderSelectedIdx = null;
     orderList = [];
+    verificarSobreBienvenidaPostPartida();
 }
-function cerrarModalRanking(){document.getElementById('ranking-modal').style.display='none';}
+function cerrarModalRanking(){
+    document.getElementById('ranking-modal').style.display='none';
+    verificarSobreBienvenidaPostPartida();
+}
 
 let destinoDificultadActual = { modo: '', extra: null };
 
@@ -4177,6 +4183,9 @@ window.seleccionarDificultadGuessr = function(diff, btn) {
 };
 // MOTOR DEL GUESSR ADAPTADO (Y CON EL TYPO TOTALMENTE REPARADO)
 function lanzarRondaGuessr(){
+const idPartida = getUserId();
+localStorage.setItem('ev_primera_partida_iniciada_' + idPartida, 'true');
+localStorage.setItem('ev_primera_partida_iniciada_global', 'true');
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
 // === REEMPLAZA DESDE ACÁ ===
@@ -4457,6 +4466,8 @@ function avanzarDeRondaGuessr(){[guessrUserMarker,guessrTargetMarker,guessrPolyl
 
 // CIERRE DEL JUEGO ADAPTADO PARA MULTIJUGADOR (HUMANO/BOT) Y SOLITARIO
 async function finalizarJuegoGuessr(){
+    localStorage.setItem('ev_primera_partida_finalizada_' + getUserId(), 'true');
+    localStorage.setItem('ev_primera_partida_finalizada_global', 'true');
     const container=document.getElementById('modal-video-container');
     // 🛑 Corte instantáneo de video y audio en el milisegundo cero
     container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2.5rem;color:var(--accent-color);"></i></div>';
@@ -5500,6 +5511,9 @@ function abrirModalOrden() {
 }
 
 function iniciarJuegoOrden(modo){
+    const idPartida = getUserId();
+    localStorage.setItem('ev_primera_partida_iniciada_' + idPartida, 'true');
+    localStorage.setItem('ev_primera_partida_iniciada_global', 'true');
     const pool = catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados;
     if (!pool.length) {
         showToast('Esperá un momento...', 'ph-info', 'danger');
@@ -5715,6 +5729,8 @@ function seleccionarFilaOrden(idx){
 }
 
 function procesarResultadoOrden(){
+    localStorage.setItem('ev_primera_partida_finalizada_' + getUserId(), 'true');
+    localStorage.setItem('ev_primera_partida_finalizada_global', 'true');
     const t = (performance.now() - orderStartTime) / 1000;
     // ⚡ Escalado a base 10.000 (Bonus de velocidad proporcional hasta +2.400 pts)
     const bonus = Math.max(0, Math.round((60 - t) * 40));
@@ -5962,15 +5978,37 @@ function reproducirSonidoApertura() {
     } catch(e) {}
 }
 
-// 📦 1. Verificación al cargar: Si es usuario nuevo, mostrar Sobre de Bienvenida
-function verificarSobreBienvenida() {
+// 📦 1. Verificación tras completar o abandonar la primera partida al volver a la pantalla principal
+function verificarSobreBienvenidaPostPartida() {
     const id = getUserId();
-    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto_' + id);
-    if (!sobreYaAbierto) {
+    // Candado estricto: si ya se abrió en esta cuenta O en este navegador, queda bloqueado para siempre
+    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto_' + id) || localStorage.getItem('ev_pack_bienvenida_abierto_global');
+    
+    // Detecta si completó la partida O si la abandonó antes de terminar
+    const jugoOAbandono = localStorage.getItem('ev_primera_partida_finalizada_' + id) || 
+                          localStorage.getItem('ev_primera_partida_finalizada_global') ||
+                          localStorage.getItem('ev_primera_partida_iniciada_' + id) ||
+                          localStorage.getItem('ev_primera_partida_iniciada_global');
+
+    // Si ya tuvo contacto con el juego y aún no abrió su sobre de bienvenida
+    if (jugoOAbandono && !sobreYaAbierto) {
         setTimeout(() => {
-            const modal = document.getElementById('modal-pack-bienvenida');
-            if (modal) modal.style.display = 'flex';
-        }, 1200);
+            // Chequear que el usuario realmente esté en la interfaz principal sin otros modales encima
+            const rankingModal = document.getElementById('ranking-modal');
+            const videoModal = document.getElementById('video-modal');
+            const orderModal = document.getElementById('order-modal');
+            const ligaModal = document.getElementById('liga-amigos-modal');
+
+            const algunModalAbierto = (rankingModal && rankingModal.style.display === 'flex') ||
+                                      (videoModal && videoModal.style.display === 'flex') ||
+                                      (orderModal && orderModal.style.display === 'flex') ||
+                                      (ligaModal && ligaModal.style.display === 'flex');
+
+            if (!algunModalAbierto) {
+                const modal = document.getElementById('modal-pack-bienvenida');
+                if (modal) modal.style.display = 'flex';
+            }
+        }, 350);
     }
 }
 
@@ -6032,6 +6070,7 @@ function seleccionarCapitanInicial(avatarId) {
     // 1. Guardar en almacenamiento y en la preferencia nativa exacta del juego vinculada al usuario
     localStorage.setItem('ev_avatar_seleccionado_' + id, avatarId);
     localStorage.setItem('ev_pack_bienvenida_abierto_' + id, 'true');
+    localStorage.setItem('ev_pack_bienvenida_abierto_global', 'true'); // Candado definitivo: nunca más vuelve a abrirse
     setPref('ev_avatar_hair', avatarId);
 
     // 2. Sincronizar el input de personalización del perfil si está en pantalla
@@ -6120,8 +6159,7 @@ function cerrarModalRecompensa() {
     }, 350);
 }
 
-// Activar la verificación al cargar la página
-window.addEventListener('DOMContentLoaded', verificarSobreBienvenida);
+// El sobre de bienvenida ahora se activa únicamente al finalizar la primera partida
 
 function obtenerNivelAvatar(id) {
     const idLimpio = (id || '').replace(/\.png$/i, '.webp');
@@ -7014,6 +7052,8 @@ async function manejarAbandonoRival() {
     userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
     // 🔥 INYECTAMOS ACÁ: Suma también el partido jugado por abandono, manteniendo el balance perfecto
     userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
+    localStorage.setItem('ev_primera_partida_finalizada_' + id, 'true');
+    localStorage.setItem('ev_primera_partida_finalizada_global', 'true');
     guardarStats();
     agregarXP(1000); 
     
@@ -7147,6 +7187,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     setTimeout(() => verificarPremiosPendientes(), 1200);
     setTimeout(() => verificarInvitacionesLigaPendientes(), 1600);
+    setTimeout(() => verificarSobreBienvenidaPostPartida(), 1400);
 
     const lastGid = localStorage.getItem('ev_last_gid');
     if (lastGid) {
@@ -7931,6 +7972,7 @@ function cerrarModalLigaAmigosPrivada() {
         ligaAmigosChannel = null;
     }
     usuariosOnlineLiga = [];
+    verificarSobreBienvenidaPostPartida();
 }
 
 // ==========================================
