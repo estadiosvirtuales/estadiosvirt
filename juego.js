@@ -246,7 +246,7 @@ n[999].max=Infinity;
 return n;
 })();
 
- logrosTabActual='todos';
+
 
 function obtenerUsuarioLogueado() {
     // Si ya lo leímos en esta sesión, devolvemos la memoria RAM (súper rápido)
@@ -889,16 +889,17 @@ const sub=document.querySelector('.login-modal-sub');if(sub)sub.innerHTML=`<b st
 const ok=localStorage.getItem('ev_privacy_accepted')==='1';if(ok)abrirLoginModal();else abrirModalPrivacy();}
 function obtenerNombreDisplay(){const customNick=getPref('ev_custom_nick','');if(customNick)return customNick;const u=obtenerUsuarioLogueado();if(u)return u.name.split(' ')[0];return 'Jugador';}
 function renderizarBotonLogin(){
-    const container=document.getElementById('hero-google-profile');
-    if(!container) return;
-    const u=obtenerUsuarioLogueado();
+    const container = document.getElementById('hero-google-profile');
+    if (!container) return;
+    const u = obtenerUsuarioLogueado();
     const avatarImg = getPref('ev_avatar_hair', '1.webp').replace(/\.png$/i, '.webp');
-    const avatarHTML=`<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -34px; bottom: -18px;">${generarAvatarHTML(avatarImg)}</div></div>`;
-    const nivel=NIVELES[calcularNivelIdx(userStats.xpTotal)];
+    const avatarInner = typeof generarAvatarHTML === 'function' ? generarAvatarHTML(avatarImg) : `<img src="${avatarImg}" style="width:100%;height:100%;object-fit:cover;">`;
+    const avatarHTML = `<div style="width:36px;height:36px;border-radius:50%;border:2px solid var(--accent-color);display:flex;align-items:center;justify-content:center;background:#71a8ff;box-shadow:0 0 8px var(--accent-glow); position:relative; overflow:hidden;"><div style="transform: scale(0.35); transform-origin: center 75%; position:absolute; width:100px; height:100px; left: -34px; bottom: -18px;">${avatarInner}</div></div>`;
+    const nivel = NIVELES[calcularNivelIdx(userStats.xpTotal)];
     const nombre = obtenerNombreDisplay();
     const pos = getPref('ev_user_pos', 'DT');
     
-    container.innerHTML=`<div class="hero-profile-wrapper" onclick="abrirModalPerfil()" title="Ver tu perfil y carta"><div style="text-align:right;"><div class="hero-profile-name">${nombre}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${pos}</div></div>${avatarHTML}</div>`;
+    container.innerHTML = `<div class="hero-profile-wrapper" onclick="typeof abrirModalPerfil === 'function' && abrirModalPerfil()" title="Ver tu perfil y carta"><div style="text-align:right;"><div class="hero-profile-name">${nombre}</div><div class="hero-profile-sub"><span style="color:${nivel.color};">${nivel.emoji}</span> ${pos}</div></div>${avatarHTML}</div>`;
     ancestralHeaderNivel();
 }
 
@@ -5098,219 +5099,7 @@ function abrirModalPrivacyDirecto() {
         if (btn) btn.disabled = false;
     }
 }
-const FALLBACK_PIXEL_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
-async function urlABase64Seguro(url) {
-    if (!url || typeof url !== 'string') return FALLBACK_PIXEL_BASE64;
-    if (url.startsWith('data:image')) return url;
-
-    let absUrl;
-    try {
-        absUrl = new URL(url, window.location.href).href;
-    } catch (err) {
-        return FALLBACK_PIXEL_BASE64;
-    }
-
-    // 1. Fetch directo (mismo origen o con cabeceras CORS válidas)
-    try {
-        const res = await fetch(absUrl, { mode: 'cors' });
-        if (res.ok) {
-            const blob = await res.blob();
-            const dataUri = await new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
-            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
-                return dataUri;
-            }
-        }
-    } catch (e) {}
-
-    // 2. Fallback por Proxy CORS si la imagen viene de un dominio externo
-    if (absUrl.startsWith('http')) {
-        try {
-            const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
-            const resProxy = await fetch(proxyUrl, { mode: 'cors' });
-            if (resProxy.ok) {
-                const blob = await resProxy.blob();
-                const dataUri = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(blob);
-                });
-                if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
-                    return dataUri;
-                }
-            }
-        } catch (e) {}
-    }
-
-    return FALLBACK_PIXEL_BASE64;
-}
-
-async function compartirCartaFUT() {
-    const cardElement = document.getElementById('fut-card-main');
-    if (!cardElement) {
-        showToast("No se encontró la carta para exportar", "ph-warning-circle", "danger");
-        return;
-    }
-
-    showToast("Preparando tu carta", "ph-hourglass", "info");
-
-    const nivelIdx = calcularNivelIdx(userStats.xpTotal);
-    const nivel = NIVELES[nivelIdx];
-    const racha = userStats.rachaActual || 1;
-    const victorias = userStats.partidasGanadas || 0;
-    const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name.split(' ')[0] : 'Jugador');
-
-    const urlReto = `https://www.estadiosvirtuales.com?desafio=${encodeURIComponent(customNick)}`;
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
-
-    // 1. Contenedor anclado a (0,0) detrás de la interfaz para captura exacta sin desfasajes
-    const poster = document.createElement('div');
-    poster.id = 'poster-export-container';
-    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
-
-    const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp', window.location.href).href;
-    const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.webp', window.location.href).href;
-    const fuegoIconUrl = new URL('fuego.webp', window.location.href).href;
-    const trofeoIconUrl = new URL('trofeo.webp', window.location.href).href;
-    const dueloIconUrl = new URL('liga-icon-historial.webp', window.location.href).href;
-
-    poster.innerHTML = `
-        <div class="poster-header" style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
-            <img class="poster-logo" src="${logoHeaderUrl}" alt="Logo" style="width:38px; height:38px; border-radius:10px; border:1.5px solid var(--accent-color); object-fit:cover;">
-            <div class="poster-header-text" style="display:flex; flex-direction:column; text-align:left;">
-                <div class="poster-title" style="font-size:1.15rem; font-weight:900; letter-spacing:1.5px; color:#ffffff; text-transform:uppercase;">Estadios Virtuales</div>
-                <div class="poster-subtitle" style="font-size:0.65rem; font-weight:800; letter-spacing:2px; color:var(--accent-color); text-transform:uppercase;">El mundo desde el aire</div>
-            </div>
-        </div>
-
-        <div class="poster-card-wrapper" style="position:relative; display:flex; justify-content:center; align-items:center; margin:6px 0; width:100%; height:455px;">
-            <div id="poster-card-clone-container" style="z-index:5;"></div>
-        </div>
-
-        <div class="poster-stats-badges">
-            <div class="poster-badge">
-                <img src="${nivelIconUrl}" class="poster-badge-icon icon-poster-rango" alt="Nivel">
-                <div class="poster-badge-text-group">
-                    <span class="poster-badge-title">${nivel.nombre.replace(/\s+Lvl\s+\d+/i, '')}</span>
-                    <span class="poster-badge-sub sub-lvl">Nivel ${nivelIdx}</span>
-                </div>
-            </div>
-            <div class="poster-badge">
-                <img src="${fuegoIconUrl}" class="poster-badge-icon icon-poster-racha" alt="Racha">
-                <div class="poster-badge-text-group">
-                    <span class="poster-badge-title">${racha} Días</span>
-                    <span class="poster-badge-sub sub-streak">Racha</span>
-                </div>
-            </div>
-            <div class="poster-badge">
-                <img src="${trofeoIconUrl}" class="poster-badge-icon icon-poster-victorias" alt="Victorias">
-                <div class="poster-badge-text-group">
-                    <span class="poster-badge-title">${victorias} PG</span>
-                    <span class="poster-badge-sub sub-wins">Victorias</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="poster-footer-cta">
-            <img class="poster-qr" src="${qrApiUrl}" alt="QR">
-            <div class="poster-cta-text">
-                <strong>¿Te animás a ganarme?</strong>
-                <span>Escaneá el QR y desafiame en vivo.</span>
-            </div>
-            <div class="poster-cta-duel">
-                <img src="${dueloIconUrl}" alt="Duelo 1v1" class="poster-duel-img">
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(poster);
-
-    // Clon de la carta FUT
-    const cardClone = cardElement.cloneNode(true);
-    cardClone.id = "fut-card-clone";
-    cardClone.style.transform = 'scale(1.16)';
-    cardClone.style.transformOrigin = 'center center';
-    cardClone.style.margin = '0';
-    poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
-
-    try {
-        // Conversión a Base64 de todas las imágenes
-        const allImages = Array.from(poster.querySelectorAll('img'));
-        await Promise.all(allImages.map(async (img) => {
-            const rawSrc = img.getAttribute('src') || img.src;
-            const b64 = await urlABase64Seguro(rawSrc);
-            
-            img.src = b64;
-            img.removeAttribute('srcset');
-            img.removeAttribute('crossorigin');
-            img.removeAttribute('loading');
-            img.removeAttribute('referrerpolicy');
-
-            if (img.decode) {
-                try { await img.decode(); } catch (e) {}
-            } else if (!img.complete) {
-                await new Promise(res => { img.onload = res; img.onerror = res; });
-            }
-        }));
-
-        await new Promise(r => setTimeout(r, 200));
-
-        const dataUrl = await htmlToImage.toJpeg(poster, {
-            quality: 0.95,
-            pixelRatio: 2.2,
-            backgroundColor: '#090e15',
-            width: 450,
-            height: 800
-        });
-
-        poster.remove();
-
-        const triggerDownload = () => {
-            const link = document.createElement('a');
-            link.download = `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`;
-            link.href = dataUrl;
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
-        };
-
-        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-        if (esMobile && navigator.canShare) {
-            try {
-                const res = await fetch(dataUrl);
-                const blob = await res.blob();
-                const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
-
-                if (navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        files: [file],
-                        title: 'Mi Carta en Estadios Virtuales ⚽',
-                        text: `🏆 ¡Mirá mi carta de Estadios Virtuales! ¿Podés ganarme en un 1v1? 🌍⚽`
-                    });
-                    showToast("¡Listo para compartir!", "ph-share-network", "success");
-                    return;
-                }
-            } catch (shareErr) {
-                console.warn("Cancelación de compartir nativo, procediendo a descarga directa:", shareErr);
-            }
-        }
-
-        triggerDownload();
-
-    } catch (error) {
-        console.error("Error al exportar el póster de la carta FUT:", error);
-        if (poster && poster.parentNode) poster.remove();
-        showToast("Error al generar la imagen. Intentá de nuevo.", "ph-warning-circle", "danger");
-    }
-}
 window.toggleGuessrHintBalloon = function(event) {
     if (event) event.stopPropagation();
     const balloon = document.getElementById('guessr-hint-balloon');
