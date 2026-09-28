@@ -246,7 +246,7 @@ n[999].max=Infinity;
 return n;
 })();
 
-let logrosTabActual='todos';
+ logrosTabActual='todos';
 
 function obtenerUsuarioLogueado() {
     // Si ya lo leímos en esta sesión, devolvemos la memoria RAM (súper rápido)
