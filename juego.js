@@ -1457,8 +1457,13 @@ let destinoDificultadActual = { modo: '', extra: null };
 
 function abrirModalGuessr() {
     destinoDificultadActual = { modo: '', extra: null };
-    volverAModosGuessr();
-    document.getElementById('guessr-modal').style.display = 'flex';
+    if (typeof volverAModosGuessr === 'function') {
+        volverAModosGuessr();
+    }
+    const modal = document.getElementById('guessr-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
 }
 
 function cerrarModalGuessr() {
@@ -1493,9 +1498,9 @@ window.volverAModosGuessr = function() {
     const title = document.getElementById('guessr-modal-title');
     const sub = document.getElementById('guessr-modal-sub');
 
-    if (destinoDificultadActual.modo === 'reto_amigo') {
+    if (destinoDificultadActual && destinoDificultadActual.modo === 'reto_amigo') {
         cerrarModalGuessr();
-        abrirModalLigaAmigosPrivada();
+        if (typeof abrirModalLigaAmigosPrivada === 'function') abrirModalLigaAmigosPrivada();
         destinoDificultadActual = { modo: '', extra: null };
         return;
     }
