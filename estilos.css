@@ -445,9 +445,9 @@ body > * {
 .level-volante{background:rgba(156,163,175,.15);color:var(--xp-silver);border:1px solid rgba(156,163,175,.3)}
 .level-crack{background:rgba(234,179,8,.15);color:var(--xp-gold);border:1px solid rgba(234,179,8,.3)}
 .level-leyenda{background:rgba(167,139,250,.15);color:var(--xp-legend);border:1px solid rgba(167,139,250,.3)}
-#levelup-overlay{position:fixed;inset:0;z-index:10040 !important;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(16px)}
+#levelup-overlay{position:fixed;inset:0;z-index:10040 !important;display:none;align-items:center;justify-content:center;background:rgba(4,8,16,.94);transform:translateZ(0)}
 #levelup-overlay.active{display:flex}
-.levelup-box{text-align:center;animation:levelUpPop .6s cubic-bezier(.175,.885,.32,1.275) forwards}
+.levelup-box{text-align:center;animation:levelUpPop .6s cubic-bezier(.175,.885,.32,1.275) forwards;transform:translateZ(0);will-change:transform,opacity}
 .levelup-icon{font-size:5rem;filter:drop-shadow(0 0 30px var(--accent-color));margin-bottom:16px;display:block}
 .levelup-title{font-size:2.4rem;font-weight:900;color:var(--accent-color);text-transform:uppercase;letter-spacing:-1px}
 .levelup-sub{font-size:1.1rem;color:var(--text-muted);margin-top:8px}
@@ -9942,34 +9942,26 @@ html[data-theme="light"] .xp-bar-big-fill {
     animation: evSuspenseCardPick 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Escalonamiento secuencial en el sobre inicial para mayor emoción */
-.ev-card-pick:nth-child(1) { animation-delay: 0.05s; }
-.ev-card-pick:nth-child(2) { animation-delay: 0.15s; }
-.ev-card-pick:nth-child(3) { animation-delay: 0.25s; }
-.ev-card-pick:nth-child(4) { animation-delay: 0.35s; }
-.ev-card-pick:nth-child(5) { animation-delay: 0.45s; }
-.ev-card-pick:nth-child(6) { animation-delay: 0.55s; }
+/* Escalonamiento secuencial optimizado por GPU */
+.ev-card-pick:nth-child(1) { animation-delay: 0.04s; }
+.ev-card-pick:nth-child(2) { animation-delay: 0.10s; }
+.ev-card-pick:nth-child(3) { animation-delay: 0.16s; }
+.ev-card-pick:nth-child(4) { animation-delay: 0.22s; }
+.ev-card-pick:nth-child(5) { animation-delay: 0.28s; }
+.ev-card-pick:nth-child(6) { animation-delay: 0.34s; }
 
 @keyframes evSuspenseCardPick {
     0% {
-        transform: scale(0) translateY(35px);
+        transform: translate3d(0, 32px, 0) scale(0);
         opacity: 0;
-        filter: blur(12px) brightness(2.2);
     }
-    45% {
-        transform: scale(0.35) translateY(18px);
-        opacity: 0.65;
-        filter: blur(6px) brightness(1.6);
-    }
-    82% {
-        transform: scale(1.07) translateY(-5px);
+    65% {
+        transform: translate3d(0, -6px, 0) scale(1.06);
         opacity: 1;
-        filter: blur(0px) brightness(1.15);
     }
     100% {
-        transform: scale(1) translateY(0);
+        transform: translate3d(0, 0, 0) scale(1);
         opacity: 1;
-        filter: blur(0px) brightness(1);
     }
 }
 
@@ -20904,7 +20896,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 /* ==========================================================================
-   ⚡ EFECTO GAMING: DESTELLO Y RAYOS DE LUZ EN PANTALLA COMPLETA
+   ⚡ EFECTO GAMING: DESTELLO Y RAYOS DE LUZ EN PANTALLA COMPLETA (60/120 FPS)
    ========================================================================== */
 .ev-gaming-fx-overlay {
     position: fixed;
@@ -20917,97 +20909,115 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     align-items: center;
     justify-content: center;
+    contain: strict;
+    transform: translateZ(0);
 }
 
 /* 1. Flash enceguecedor radial de apertura */
 .ev-fx-flash {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95) 0%, rgba(255, 220, 100, 0.5) 38%, rgba(0, 255, 119, 0.3) 68%, transparent 100%);
-    animation: evFxFlashAnim 1.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95) 0%, rgba(255, 220, 100, 0.4) 38%, rgba(0, 255, 119, 0.2) 68%, transparent 100%);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evFxFlashAnim 1.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
 }
 
-/* 2. Rayos de luz volumétricos en 360° estilo Pack Opening (4s de rotación y brillo sostenido) */
+/* 2. Rayos de luz volumétricos nativos (sin blur de software) */
 .ev-fx-rays {
     position: absolute;
-    width: 240vmax;
-    height: 240vmax;
+    width: 140vmax;
+    height: 140vmax;
     background: repeating-conic-gradient(
         from 0deg,
-        rgba(255, 215, 0, 0.32) 0deg 12deg,
-        transparent 12deg 24deg,
-        rgba(0, 242, 254, 0.28) 24deg 36deg,
-        transparent 36deg 48deg
+        rgba(255, 215, 0, 0.24) 0deg 8deg,
+        transparent 14deg 22deg,
+        rgba(0, 242, 254, 0.20) 22deg 30deg,
+        transparent 36deg 44deg
     );
     border-radius: 50%;
     mix-blend-mode: screen;
-    animation: evFxRaysSpin 4.0s cubic-bezier(0.15, 0.85, 0.25, 1) forwards;
-    filter: blur(12px);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evFxRaysSpin 1.35s cubic-bezier(0.15, 0.85, 0.25, 1) forwards;
 }
 
-/* 3. Primer anillo de choque */
+/* 3. Primer anillo de choque por escala GPU (cero reflow) */
 .ev-fx-shockwave {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    top: 50%;
+    left: 50%;
+    width: 80vmax;
+    height: 80vmax;
+    margin-top: -40vmax;
+    margin-left: -40vmax;
     border-radius: 50%;
-    border: 3.5px solid rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 35px rgba(0, 255, 119, 0.9), inset 0 0 25px rgba(255, 215, 0, 0.8);
-    animation: evFxShockwaveAnim 2.0s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
+    border: 3px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(0, 255, 119, 0.8);
+    transform: translateZ(0) scale(0.05);
+    will-change: transform, opacity;
+    animation: evFxShockwaveScale 1.35s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
 }
 
 /* 4. Segundo anillo de choque retardado */
 .ev-fx-shockwave-2 {
     position: absolute;
-    width: 20px;
-    height: 20px;
+    top: 50%;
+    left: 50%;
+    width: 80vmax;
+    height: 80vmax;
+    margin-top: -40vmax;
+    margin-left: -40vmax;
     border-radius: 50%;
     border: 2px solid rgba(255, 215, 0, 0.85);
-    box-shadow: 0 0 45px rgba(255, 215, 0, 0.75);
-    animation: evFxShockwaveAnim 2.4s 0.2s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+    transform: translateZ(0) scale(0.05);
+    will-change: transform, opacity;
+    animation: evFxShockwaveScale 1.35s 0.1s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
 }
 
-/* 5. Estelas de luz proyectadas a los bordes */
+/* 5. Estelas ligeras aceleradas */
 .ev-fx-spark {
     position: absolute;
-    width: 4px;
-    height: 100px;
+    width: 3.5px;
+    height: 75px;
     background: linear-gradient(180deg, #ffffff, #ffd700, transparent);
     border-radius: 4px;
-    filter: drop-shadow(0 0 12px #00ff77);
-    animation: evFxSparkFly 2.2s cubic-bezier(0.15, 0.9, 0.25, 1) forwards;
+    box-shadow: 0 0 8px #00ff77;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evFxSparkFly 1.35s cubic-bezier(0.15, 0.9, 0.25, 1) forwards;
     transform-origin: center bottom;
 }
 
 @keyframes evFxFlashAnim {
     0% { opacity: 0; transform: scale(0.6); }
-    12% { opacity: 1; transform: scale(1); }
-    55% { opacity: 0.45; transform: scale(1.15); }
-    100% { opacity: 0; transform: scale(1.5); }
+    15% { opacity: 1; transform: scale(1); }
+    60% { opacity: 0.4; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.35); }
 }
 
 @keyframes evFxRaysSpin {
     0% { transform: rotate(0deg) scale(0.2); opacity: 0; }
-    15% { opacity: 0.95; transform: rotate(35deg) scale(1); }
-    65% { opacity: 0.8; transform: rotate(140deg) scale(1.15); }
-    85% { opacity: 0.45; }
-    100% { transform: rotate(240deg) scale(1.35); opacity: 0; }
+    20% { opacity: 0.9; transform: rotate(30deg) scale(1); }
+    70% { opacity: 0.7; transform: rotate(110deg) scale(1.1); }
+    100% { transform: rotate(180deg) scale(1.25); opacity: 0; }
 }
 
-@keyframes evFxShockwaveAnim {
-    0% { width: 10px; height: 10px; opacity: 1; }
+@keyframes evFxShockwaveScale {
+    0% { transform: scale(0.05); opacity: 1; }
     40% { opacity: 0.9; }
-    100% { width: 160vmax; height: 160vmax; opacity: 0; border-width: 1px; }
+    100% { transform: scale(2.2); opacity: 0; }
 }
 
 @keyframes evFxSparkFly {
     0% { opacity: 1; transform: rotate(var(--angle)) translateY(0) scaleY(1); }
     70% { opacity: 0.8; }
-    100% { opacity: 0; transform: rotate(var(--angle)) translateY(calc(-50vmax)) scaleY(2.5); }
+    100% { opacity: 0; transform: rotate(var(--angle)) translateY(calc(-45vmax)) scaleY(2.2); }
 }
 
 /* ==========================================================================
-   🏟️ ILUMINACIÓN AMBIENTAL DE ESTADIO DESDE LAS 4 ESQUINAS (SOBRES Y CARTAS)
+   🏟️ ILUMINACIÓN AMBIENTAL DE ESTADIO (100% GPU COMPOSITED)
    ========================================================================== */
 .ev-pack-lights-overlay {
     position: fixed;
@@ -21017,61 +21027,64 @@ html[data-theme="light"] .xp-bar-big-fill {
     pointer-events: none;
     z-index: 100060 !important;
     overflow: hidden;
+    contain: strict;
+    transform: translateZ(0);
 }
 
-/* Focos de luz volumétrica suave en las 4 esquinas (sin rayos cortantes) */
+/* Focos sin filtros de blur artificiales: el degradado radial ya difumina naturalmente */
 .ev-corner-spot {
     position: absolute;
     width: 75vmax;
     height: 75vmax;
     border-radius: 50%;
-    filter: blur(48px);
     opacity: 0;
     mix-blend-mode: screen;
+    transform: translateZ(0);
+    will-change: transform, opacity;
 }
 
 .ev-corner-spot.top-left {
     top: -30vmax;
     left: -30vmax;
     background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.45) 0%, rgba(0, 242, 254, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.top-right {
     top: -30vmax;
     right: -30vmax;
     background: radial-gradient(circle at 65% 35%, rgba(255, 215, 0, 0.45) 0%, rgba(255, 215, 0, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.2s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 1.35s 0.04s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.bottom-left {
     bottom: -30vmax;
     left: -30vmax;
     background: radial-gradient(circle at 35% 65%, rgba(0, 255, 119, 0.40) 0%, rgba(0, 255, 119, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.2s 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 1.35s 0.06s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .ev-corner-spot.bottom-right {
     bottom: -30vmax;
     right: -30vmax;
     background: radial-gradient(circle at 65% 65%, rgba(255, 230, 109, 0.42) 0%, rgba(255, 230, 109, 0.12) 45%, transparent 70%);
-    animation: evCornerSpotAnim 3.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: evCornerSpotAnim 1.35s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Halo central de concentración sobre el sobre o la carta (3.2s) */
+/* Halo central sincronizado a 1.35s */
 .ev-center-ambient-glow {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(0);
     width: 85vmax;
     height: 85vmax;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 215, 0, 0.16) 28%, rgba(0, 242, 254, 0.08) 55%, transparent 75%);
-    filter: blur(55px);
     opacity: 0;
     mix-blend-mode: screen;
-    animation: evCenterGlowAnim 3.2s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+    animation: evCenterGlowAnim 1.35s 0.03s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes evCornerSpotAnim {
