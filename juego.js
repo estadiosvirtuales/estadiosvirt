@@ -5312,7 +5312,7 @@ const AVATARES_LISTA = [
     { id: '22.webp', label: 'El Carnicero', nivel: 7 },
     { id: '23.webp', label: 'El Colorado', nivel: 8 },
     { id: '24.webp', label: 'El Guardián', nivel: 9 },
-    { id: '51.webp', label: 'Yerry', nivel: 10 },
+    { id: '51.webp', label: 'El Guajiro', nivel: 10 },
 
     // 🔥 NIVELES 11 A 20 (ELITE INTERNACIONAL)
     { id: '8.webp', label: 'La Muralla', nivel: 11 },
