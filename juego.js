@@ -5753,10 +5753,12 @@ const FORMACIONES_TACTICAS = {
 };
 
 let formacionTacticaActual = '4-3-3';
+let nodoPosicionSeleccionadoIdx = null;
 
 window.cambiarFormacionTactica = function(fKey) {
     if (!FORMACIONES_TACTICAS[fKey]) return;
     formacionTacticaActual = fKey;
+    nodoPosicionSeleccionadoIdx = null;
     renderizarCanchaTactica();
 };
 
@@ -5770,9 +5772,23 @@ window.renderizarCanchaTactica = function() {
 
     tabs.forEach(t => t.classList.toggle('active', t.dataset.form === formacionTacticaActual));
 
-    container.innerHTML = f.posiciones.map(item => {
-        const isSel = item.pos === posActual;
-        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}')">${item.pos}</button>`;
+    if (posActual === 'DT') {
+        nodoPosicionSeleccionadoIdx = -1;
+    } else {
+        if (nodoPosicionSeleccionadoIdx === null || nodoPosicionSeleccionadoIdx < 0 || !f.posiciones[nodoPosicionSeleccionadoIdx] || f.posiciones[nodoPosicionSeleccionadoIdx].pos !== posActual) {
+            const idxGuardado = parseInt(getPref('ev_user_pos_idx', '-1'));
+            if (idxGuardado >= 0 && f.posiciones[idxGuardado] && f.posiciones[idxGuardado].pos === posActual) {
+                nodoPosicionSeleccionadoIdx = idxGuardado;
+            } else {
+                const foundIdx = f.posiciones.findIndex(p => p.pos === posActual);
+                nodoPosicionSeleccionadoIdx = foundIdx !== -1 ? foundIdx : 0;
+            }
+        }
+    }
+
+    container.innerHTML = f.posiciones.map((item, idx) => {
+        const isSel = (posActual !== 'DT') && (idx === nodoPosicionSeleccionadoIdx);
+        return `<button type="button" class="pitch-pos-node ${isSel ? 'active' : ''}" data-pos="${item.pos}" style="top: ${item.top}; left: ${item.left};" onclick="seleccionarPosicionCancha('${item.pos}', ${idx})">${item.pos}</button>`;
     }).join('');
 
     const dtBtn = document.querySelector('.dt-node');
@@ -5789,7 +5805,7 @@ window.togglePitchPicker = function(el) {
     }
 };
 
-window.seleccionarPosicionCancha = function(pos) {
+window.seleccionarPosicionCancha = function(pos, idx = null) {
     const input = document.getElementById('avatar-pos-input');
     const label = document.getElementById('pitch-pos-selected-name');
     const headerPreview = document.getElementById('pitch-header-preview');
@@ -5798,13 +5814,23 @@ window.seleccionarPosicionCancha = function(pos) {
     if (label) label.textContent = textoCompleto;
     if (headerPreview) headerPreview.textContent = pos;
 
-    if (pos !== 'DT') {
+    if (pos === 'DT') {
+        nodoPosicionSeleccionadoIdx = -1;
+        setPref('ev_user_pos_idx', -1);
+    } else {
+        if (idx !== null) {
+            nodoPosicionSeleccionadoIdx = idx;
+            setPref('ev_user_pos_idx', idx);
+        }
         const actual = FORMACIONES_TACTICAS[formacionTacticaActual];
         const estaEnActual = actual && actual.posiciones.some(p => p.pos === pos);
         if (!estaEnActual) {
             for (let k in FORMACIONES_TACTICAS) {
-                if (FORMACIONES_TACTICAS[k].posiciones.some(p => p.pos === pos)) {
+                const found = FORMACIONES_TACTICAS[k].posiciones.findIndex(p => p.pos === pos);
+                if (found !== -1) {
                     formacionTacticaActual = k;
+                    nodoPosicionSeleccionadoIdx = found;
+                    setPref('ev_user_pos_idx', found);
                     break;
                 }
             }
