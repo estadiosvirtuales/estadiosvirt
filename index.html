@@ -434,7 +434,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 
 
-<!-- ⚡ ATAJOS HERO: RETO DIARIO Y LIGA DE AMIGOS -->
+<!-- ⚡ ATAJOS HERO: RETO DIARIO, TU ONCE INICIAL Y LIGA DE AMIGOS -->
 <div class="hero-shortcuts-row">
     <button class="btn-reto-banner" onclick="iniciarRetoDiario()">
         <div class="shortcut-ambient-glow glow-reto"></div>
@@ -446,6 +446,18 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
             <span class="reto-sub-pill pill-reto">Premio al #1 👑</span>
         </div>
     </button>
+
+    <!-- ⚽ BOTÓN TÁCTICO: TU ONCE INICIAL -->
+    <div class="once-banner-wrapper">
+        <button type="button" class="btn-once-banner" onclick="abrirModalOnceInicial()" title="Armá tu once inicial">
+            <div class="shortcut-ambient-glow glow-reto"></div>
+            <img src="posicion.webp" alt="Once Inicial" class="once-banner-img">
+            <div class="reto-banner-text">
+                <strong>Tu Once Inicial</strong>
+                <span class="reto-sub-desc">Armá tu equipo</span>
+            </div>
+        </button>
+    </div>
 
     <button class="btn-liga-banner" onclick="abrirModalLigaAmigosPrivada()">
         <div class="shortcut-ambient-glow glow-liga"></div>
@@ -804,6 +816,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <div id="inspect-profile-body"></div>
     </div>
 </div>
+
 <div id="liga-amigos-modal" class="modal-overlay" onclick="cerrarModalLigaAmigosPrivada()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <button class="close-btn" onclick="cerrarModalLigaAmigosPrivada()"><i class="ph-bold ph-x"></i></button>
@@ -827,8 +840,8 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
     </div>
 </div>
 
-<!-- 🛡️ MODAL SELECTOR DE ESCUDOS Y BANDERAS (SLOT ÚNICO) -->
-<div id="escudo-selector-modal" class="modal-overlay" style="display:none;" onclick="cerrarModalSelectorEscudo()">
+<!-- 🛡️ MODAL SELECTOR DE ESCUDOS Y BANDERAS -->
+<div id="selector-escudos-modal" class="modal-overlay" style="display:none; z-index:10055;" onclick="cerrarModalSelectorEscudo()">
     <div class="modal-content" style="max-width:540px; height:85vh; max-height:85vh; padding:22px 18px; display:flex; flex-direction:column; overflow:hidden;" onclick="event.stopPropagation()">
         <button class="close-btn" onclick="cerrarModalSelectorEscudo()"><i class="ph-bold ph-x"></i></button>
         
@@ -909,6 +922,53 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 <script src="juego.js"></script>
 <script src="orden.js"></script>
+
+
+
+<!-- ⚽ MODAL TU ONCE INICIAL (PANORÁMICO 2 COLUMNAS) -->
+<div id="once-inicial-modal" class="modal-overlay" style="display:none; z-index:10045;" onclick="cerrarModalOnceInicial()">
+    <div class="modal-content once-modal-box" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="cerrarModalOnceInicial()"><i class="ph-bold ph-x"></i></button>
+
+        <div class="once-modal-header">
+            <div class="once-title-group">
+                <i class="ph-fill ph-strategy" style="color:var(--accent-color); font-size:1.6rem;"></i>
+                <h2>Tu Once Inicial</h2>
+            </div>
+            <p id="once-stats-counter" class="once-stats-sub"></p>
+        </div>
+
+        <div class="once-top-actions-bar">
+            <div class="pitch-formations-bar" id="once-formation-tabs"></div>
+            <div class="once-quick-btns">
+                <button type="button" class="btn-3d primary once-quick-btn" onclick="autocompletarOnceInicial()">
+                    <i class="ph-bold ph-magic-wand"></i> Auto-completar
+                </button>
+                <button type="button" class="btn-3d secondary once-quick-btn danger" onclick="limpiarOnceInicial()" title="Vaciar cancha">
+                    <i class="ph-bold ph-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 🏟 DISTRIBUCIÓN 2 COLUMNAS: CANCHA A LA IZQUIERDA Y JUGADORES A LA DERECHA -->
+        <div class="once-layout-split">
+            <!-- 🏟 CANCHA TÁCTICA A LA IZQUIERDA -->
+            <div class="once-tactical-field" id="once-pitch-container">
+                <div class="pitch-line-center"></div>
+                <div class="pitch-circle-center"></div>
+                <div class="pitch-box-top"></div>
+                <div class="pitch-box-bottom"></div>
+                <div id="once-pitch-nodes"></div>
+            </div>
+
+            <!-- 🃏 BANQUILLO DE FUTBOLISTAS A LA DERECHA -->
+            <div class="once-drawer-wrapper" id="once-players-drawer">
+                <div id="once-drawer-title" class="once-drawer-title"></div>
+                <div id="once-players-grid" class="once-players-scroll-grid"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- 📬 BUZÓN DE SUGERENCIAS DISCRETO -->
 <div id="sugerencias-container" style="position: fixed; bottom: 22px; right: 22px; z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">

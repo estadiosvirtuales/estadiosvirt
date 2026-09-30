@@ -891,7 +891,7 @@ window.desplazarTabsEscudos = function(desplazamiento) {
 };
 
 window.abrirModalSelectorEscudo = function() {
-    const m = document.getElementById('escudo-selector-modal');
+    const m = document.getElementById('selector-escudos-modal');
     if (!m) return;
     m.style.display = 'flex';
     const input = document.getElementById('buscador-escudos');
@@ -900,8 +900,9 @@ window.abrirModalSelectorEscudo = function() {
 };
 
 window.cerrarModalSelectorEscudo = function() {
-    const m = document.getElementById('escudo-selector-modal');
+    const m = document.getElementById('selector-escudos-modal');
     if (m) m.style.display = 'none';
+    selectorEscudoParaOnceActivo = false;
 };
 
 window.cambiarCategoriaEscudos = function(cat, btn) {
@@ -949,11 +950,32 @@ function renderizarEscudosGrid(lista) {
     }).join('');
 }
 
+let selectorEscudoParaOnceActivo = false;
+
+window.abrirSelectorEscudoParaOnce = function() {
+    selectorEscudoParaOnceActivo = true;
+    const modalEscudos = document.getElementById('selector-escudos-modal');
+    if (modalEscudos) modalEscudos.style.zIndex = '10055';
+    abrirModalSelectorEscudo();
+};
+
 window.seleccionarEscudoDirecto = function(id) {
+    const urlFinal = obtenerUrlEscudo(id);
+
+    if (selectorEscudoParaOnceActivo) {
+        selectorEscudoParaOnceActivo = false;
+        userStats.onceEscudo = id;
+        localStorage.setItem('ev_once_escudo_' + getUserId(), id);
+        guardarStats();
+        renderizarOnceInicial();
+        cerrarModalSelectorEscudo();
+        showToast("¡Escudo del club actualizado! 🛡️", "ph-shield-check", "success");
+        return;
+    }
+
     const input = document.getElementById('avatar-logo-input');
     const preview = document.getElementById('avatar-logo-preview');
     const futClub = document.getElementById('fut-club-display');
-    const urlFinal = obtenerUrlEscudo(id);
 
     if (input) input.value = id;
     if (preview) preview.src = urlFinal;
@@ -962,7 +984,6 @@ window.seleccionarEscudoDirecto = function(id) {
         futClub.setAttribute('referrerpolicy', 'no-referrer');
     }
 
-    // Guardado persistente inmediato para blindar contra F5
     setPref('ev_avatar_logo', id);
     if (urlFinal && urlFinal !== ESCUDOS_MAP['ev']) {
         localStorage.setItem('ev_escudo_url_' + id, urlFinal);
@@ -5734,6 +5755,22 @@ const FORMACIONES_TACTICAS = {
             { pos: 'POR', top: '92%', left: '50%' }
         ]
     },
+    '4-3-1-2': {
+        nombre: '4-3-1-2',
+        posiciones: [
+            { pos: 'DC', top: '15%', left: '36%' },
+            { pos: 'DC', top: '15%', left: '64%' },
+            { pos: 'MCO', top: '34%', left: '50%' },
+            { pos: 'MC', top: '50%', left: '26%' },
+            { pos: 'MCD', top: '56%', left: '50%' },
+            { pos: 'MC', top: '50%', left: '74%' },
+            { pos: 'LI', top: '76%', left: '18%' },
+            { pos: 'DFC', top: '78%', left: '38%' },
+            { pos: 'DFC', top: '78%', left: '62%' },
+            { pos: 'LD', top: '76%', left: '82%' },
+            { pos: 'POR', top: '92%', left: '50%' }
+        ]
+    },
     '3-5-2': {
         nombre: '3-5-2',
         posiciones: [
@@ -7911,4 +7948,500 @@ window.toggleGuessrHintBalloon = function(event) {
     if (event) event.stopPropagation();
     const balloon = document.getElementById('guessr-hint-balloon');
     if (balloon) balloon.classList.toggle('active');
+};
+
+// ========================================================
+// ⚽ MOTOR DE "TU ONCE INICIAL" (DT, CAPITÁN, ESCUDO & DRAG)
+// ========================================================
+let formacionOnceActual = '4-3-3';
+let slotActivoOnce = null;
+let dragSourceSlotOnce = null;
+let touchOriginIdxOnce = null;
+let touchCloneElOnce = null;
+let touchMovedOnce = false;
+
+function obtenerOnceInicial() {
+    if (!userStats.onceInicial || typeof userStats.onceInicial !== 'object') {
+        const guardado = localStorage.getItem('ev_once_inicial_' + getUserId());
+        try {
+            userStats.onceInicial = guardado ? JSON.parse(guardado) : {};
+        } catch(e) {
+            userStats.onceInicial = {};
+        }
+    }
+    return userStats.onceInicial;
+}
+
+function obtenerCapitanOnce() {
+    return userStats.onceCapitan || localStorage.getItem('ev_once_capitan_' + getUserId()) || null;
+}
+
+window.designarCapitanOnce = function(idx, event) {
+    if (event) {
+        event.stopPropagation();
+        if (event.preventDefault) event.preventDefault();
+    }
+    const once = obtenerOnceInicial();
+    const avatar = once[idx];
+    if (!avatar) return;
+
+    const actual = obtenerCapitanOnce();
+    if (actual === avatar) {
+        userStats.onceCapitan = null;
+        localStorage.removeItem('ev_once_capitan_' + getUserId());
+        showToast("Capitán desmarcado.", "ph-crown", "info");
+    } else {
+        userStats.onceCapitan = avatar;
+        localStorage.setItem('ev_once_capitan_' + getUserId(), avatar);
+        showToast(`¡${obtenerNombreAvatar(avatar)} es el capitán del equipo! 👑`, "ph-crown", "success");
+    }
+    guardarStats();
+    renderizarOnceInicial();
+};
+
+window.abrirModalOnceInicial = function() {
+    const modal = document.getElementById('once-inicial-modal');
+    if (!modal) return;
+    formacionOnceActual = getPref('ev_once_formacion', '4-3-3');
+    slotActivoOnce = null;
+    modal.style.display = 'flex';
+    renderizarOnceInicial();
+};
+
+window.cerrarModalOnceInicial = function() {
+    const modal = document.getElementById('once-inicial-modal');
+    if (modal) modal.style.display = 'none';
+    slotActivoOnce = null;
+    guardarStats();
+};
+
+window.cambiarFormacionOnce = function(fKey) {
+    if (!FORMACIONES_TACTICAS[fKey]) return;
+    formacionOnceActual = fKey;
+    setPref('ev_once_formacion', fKey);
+    slotActivoOnce = null;
+    renderizarOnceInicial();
+};
+
+window.seleccionarSlotOnce = function(idx) {
+    slotActivoOnce = (slotActivoOnce === idx) ? null : idx;
+    renderizarOnceInicial();
+    if (slotActivoOnce !== null) {
+        setTimeout(() => {
+            const drawer = document.getElementById('once-players-drawer');
+            if (drawer) drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+};
+
+window.asignarJugadorAOnce = function(avatarId) {
+    if (slotActivoOnce === null) {
+        showToast("Tocá primero una posición en la cancha o el DT para ubicarlo.", "ph-info", "warning");
+        return;
+    }
+    const nivelReq = obtenerNivelAvatar(avatarId);
+    const nivelUser = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    if (nivelUser < nivelReq) {
+        showToast(`¡Este futbolista se desbloquea en el Nivel ${nivelReq}! 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
+    const once = obtenerOnceInicial();
+    const avatarLimpio = avatarId.replace(/\.png$/i, '.webp');
+
+    for (let k in once) {
+        if (once[k] === avatarLimpio) delete once[k];
+    }
+
+    once[slotActivoOnce] = avatarLimpio;
+    userStats.onceInicial = once;
+    localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(once));
+    guardarStats();
+
+    const rolTexto = slotActivoOnce === 'DT' ? 'asumió la dirección técnica' : 'ingresó al once titular';
+    showToast(`¡${obtenerNombreAvatar(avatarLimpio)} ${rolTexto}! ⚽`, "ph-check-circle", "success");
+    slotActivoOnce = null;
+    renderizarOnceInicial();
+};
+
+window.quitarJugadorDeOnce = function(idx, event) {
+    if (event) {
+        event.stopPropagation();
+        if (event.preventDefault) event.preventDefault();
+    }
+    const once = obtenerOnceInicial();
+    if (once[idx]) {
+        const removido = once[idx];
+        delete once[idx];
+        if (obtenerCapitanOnce() === removido) {
+            userStats.onceCapitan = null;
+            localStorage.removeItem('ev_once_capitan_' + getUserId());
+        }
+        userStats.onceInicial = once;
+        localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(once));
+        guardarStats();
+        if (slotActivoOnce === idx) slotActivoOnce = null;
+        renderizarOnceInicial();
+        showToast("Puesto liberado.", "ph-trash", "info");
+    }
+};
+
+window.autocompletarOnceInicial = function() {
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    const desbloqueados = AVATARES_LISTA.filter(a => miNivel >= a.nivel).sort((a, b) => b.nivel - a.nivel);
+    if (!desbloqueados.length) {
+        showToast("No tenés futbolistas desbloqueados suficientes.", "ph-warning-circle", "warning");
+        return;
+    }
+
+    const f = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+    const once = obtenerOnceInicial();
+    let asignados = new Set(Object.values(once));
+    let agregados = 0;
+
+    for (let i = 0; i < f.posiciones.length; i++) {
+        if (!once[i]) {
+            const libre = desbloqueados.find(a => !asignados.has(a.id));
+            if (libre) {
+                once[i] = libre.id;
+                asignados.add(libre.id);
+                agregados++;
+            }
+        }
+    }
+
+    if (!once['DT']) {
+        const dtLibre = desbloqueados.find(a => !asignados.has(a.id));
+        if (dtLibre) {
+            once['DT'] = dtLibre.id;
+            asignados.add(dtLibre.id);
+            agregados++;
+        }
+    }
+
+    userStats.onceInicial = once;
+    localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(once));
+    guardarStats();
+    slotActivoOnce = null;
+    renderizarOnceInicial();
+    showToast(agregados > 0 ? `¡Equipo completado con tus mejores futbolistas! 🔥` : "Tu formación ya está completa.", "ph-strategy", "success");
+};
+
+window.limpiarOnceInicial = function() {
+    if (!confirm("¿Querés vaciar el equipo completo (titulares y DT)?")) return;
+    userStats.onceInicial = {};
+    userStats.onceCapitan = null;
+    localStorage.removeItem('ev_once_capitan_' + getUserId());
+    localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify({}));
+    guardarStats();
+    slotActivoOnce = null;
+    renderizarOnceInicial();
+    showToast("Formación vaciada.", "ph-trash", "info");
+};
+
+window.intercambiarPosicionesOnce = function(idx1, idx2) {
+    const once = obtenerOnceInicial();
+    const p1 = once[idx1];
+    const p2 = once[idx2];
+
+    if (p2) {
+        once[idx1] = p2;
+    } else {
+        delete once[idx1];
+    }
+    once[idx2] = p1;
+
+    userStats.onceInicial = once;
+    localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(once));
+    guardarStats();
+    slotActivoOnce = null;
+    renderizarOnceInicial();
+    showToast("¡Posición actualizada en la cancha! 🔄", "ph-arrows-left-right", "success");
+};
+
+// --- DRAG & DROP EN ESCRITORIO (PC) ---
+window.iniciarArrastreOnce = function(e, idx) {
+    dragSourceSlotOnce = idx;
+    e.dataTransfer.setData("text/plain", idx);
+    e.dataTransfer.effectAllowed = "move";
+    const node = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    if (node) node.classList.add('is-dragging');
+};
+
+window.permitirArrastreSobreOnce = function(e, idx) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    const targetNode = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    if (targetNode && dragSourceSlotOnce !== idx) {
+        targetNode.classList.add('is-drag-over');
+    }
+};
+
+window.salirArrastreSobreOnce = function(e, idx) {
+    const targetNode = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    if (targetNode) targetNode.classList.remove('is-drag-over');
+};
+
+window.finalizarArrastreOnce = function(e) {
+    document.querySelectorAll('.once-slot-node').forEach(n => {
+        n.classList.remove('is-dragging', 'is-drag-over');
+    });
+    dragSourceSlotOnce = null;
+};
+
+window.soltarJugadorEnOnce = function(e, targetIdx) {
+    e.preventDefault();
+    const sourceIdx = dragSourceSlotOnce !== null ? dragSourceSlotOnce : parseInt(e.dataTransfer.getData("text/plain"));
+    document.querySelectorAll('.once-slot-node').forEach(n => {
+        n.classList.remove('is-dragging', 'is-drag-over');
+    });
+    dragSourceSlotOnce = null;
+
+    if (isNaN(sourceIdx) || sourceIdx === targetIdx) return;
+    intercambiarPosicionesOnce(sourceIdx, targetIdx);
+};
+
+// --- DESPLAZAMIENTO TÁCTIL EN CELULARES (TOUCH DRAG) ---
+window.iniciarTouchOnce = function(e, idx) {
+    const once = obtenerOnceInicial();
+    if (!once[idx]) return;
+    touchOriginIdxOnce = idx;
+    touchMovedOnce = false;
+
+    const touch = e.touches[0];
+    const originalSlot = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    if (originalSlot) originalSlot.classList.add('is-dragging');
+
+    if (touchCloneElOnce) touchCloneElOnce.remove();
+    touchCloneElOnce = document.createElement('div');
+    touchCloneElOnce.className = 'once-touch-ghost';
+    touchCloneElOnce.innerHTML = `<img src="${once[idx]}" class="once-avatar-img" alt="Arrastrando">`;
+    touchCloneElOnce.style.left = `${touch.clientX}px`;
+    touchCloneElOnce.style.top = `${touch.clientY}px`;
+    document.body.appendChild(touchCloneElOnce);
+};
+
+window.moverTouchOnce = function(e) {
+    if (touchOriginIdxOnce === null || !touchCloneElOnce) return;
+    touchMovedOnce = true;
+    if (e.cancelable) e.preventDefault();
+    const touch = e.touches[0];
+    touchCloneElOnce.style.left = `${touch.clientX}px`;
+    touchCloneElOnce.style.top = `${touch.clientY}px`;
+
+    touchCloneElOnce.style.display = 'none';
+    const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    touchCloneElOnce.style.display = 'flex';
+
+    document.querySelectorAll('.once-slot-node').forEach(n => n.classList.remove('is-drag-over'));
+    const targetSlot = elemBelow ? elemBelow.closest('.once-slot-node') : null;
+    if (targetSlot && parseInt(targetSlot.dataset.slotIdx) !== touchOriginIdxOnce) {
+        targetSlot.classList.add('is-drag-over');
+    }
+};
+
+window.soltarTouchOnce = function(e) {
+    if (touchOriginIdxOnce === null) return;
+
+    if (touchCloneElOnce) {
+        touchCloneElOnce.remove();
+        touchCloneElOnce = null;
+    }
+
+    const originSlot = document.querySelector(`.once-slot-node[data-slot-idx="${touchOriginIdxOnce}"]`);
+    if (originSlot) originSlot.classList.remove('is-dragging');
+
+    if (!touchMovedOnce) {
+        touchOriginIdxOnce = null;
+        return;
+    }
+
+    const touch = e.changedTouches[0];
+    const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    const targetSlot = elemBelow ? elemBelow.closest('.once-slot-node') : null;
+    document.querySelectorAll('.once-slot-node').forEach(n => n.classList.remove('is-drag-over'));
+
+    if (targetSlot) {
+        const targetIdx = parseInt(targetSlot.dataset.slotIdx);
+        if (!isNaN(targetIdx) && targetIdx !== touchOriginIdxOnce) {
+            intercambiarPosicionesOnce(touchOriginIdxOnce, targetIdx);
+        }
+    }
+    touchOriginIdxOnce = null;
+    touchMovedOnce = false;
+};
+
+function renderizarOnceInicial() {
+    const container = document.getElementById('once-pitch-nodes');
+    const tabsContainer = document.getElementById('once-formation-tabs');
+    const statsPill = document.getElementById('once-stats-counter');
+    const drawerContainer = document.getElementById('once-players-grid');
+    const drawerTitle = document.getElementById('once-drawer-title');
+    const headerTitleGroup = document.querySelector('.once-title-group');
+    if (!container || !drawerContainer) return;
+
+    const f = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+    const once = obtenerOnceInicial();
+    const capitanAvatar = obtenerCapitanOnce();
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    const dtAvatar = once['DT'] || null;
+    const escudoClub = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
+    const itemEscudo = (typeof BANDERAS_LISTA !== 'undefined') ? BANDERAS_LISTA.find(b => b.id === escudoClub) : null;
+    const nombreClub = itemEscudo ? itemEscudo.label : 'Estadios Virt.';
+
+    // 🎨 Teñido dinámico del modal con los colores oficiales del escudo
+    const modalBox = document.querySelector('.once-modal-box');
+    if (modalBox) {
+        const fondClub = (itemEscudo && escudoClub !== 'ev')
+            ? (typeof obtenerFondoClub === 'function' ? obtenerFondoClub(itemEscudo.label, itemEscudo.label) : '')
+            : 'linear-gradient(135deg, rgba(0, 230, 118, 0.25) 0%, rgba(41, 121, 255, 0.2) 100%)';
+        const esLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const overlayGrad = esLight
+            ? 'linear-gradient(180deg, rgba(240, 247, 243, 0.85) 0%, rgba(226, 232, 228, 0.95) 100%)'
+            : 'linear-gradient(180deg, rgba(12, 20, 34, 0.72) 0%, rgba(6, 10, 18, 0.94) 100%)';
+        modalBox.style.setProperty('background', `${overlayGrad}, ${fondClub}`, 'important');
+    }
+
+    // 1. Escudo interactivo del club junto al título (agrandado y con nombre del club)
+    if (headerTitleGroup) {
+        const textoClub = (itemEscudo && escudoClub !== 'ev') ? `<span class="once-team-name-tag">${sanitizarHTML(nombreClub)}</span>` : '';
+        headerTitleGroup.innerHTML = `
+            <div class="once-team-shield-box" onclick="abrirSelectorEscudoParaOnce()" title="Elegir escudo de tu equipo">
+                <img src="${obtenerUrlEscudo(escudoClub)}" alt="Escudo" class="once-team-shield-img">
+                <span class="once-shield-edit-tag"><i class="ph-bold ph-pencil-simple"></i></span>
+            </div>
+            <div class="once-title-text-wrap">
+                <h2>Tu Once Inicial</h2>
+                ${textoClub}
+            </div>
+        `;
+    }
+
+    // 2. Contador de titulares y stats
+    const ocupadosCount = Object.keys(once).filter(k => k !== 'DT' && parseInt(k) < f.posiciones.length && once[k]).length;
+    if (statsPill) {
+        statsPill.innerHTML = `Titulares: <b style="color:var(--accent-color);">${ocupadosCount}/11</b> · DT: <b style="color:${dtAvatar ? 'var(--accent-color)' : '#94a3b8'};">${dtAvatar ? 'Asignado' : 'Vacante'}</b> · Desbloqueados: <b style="color:#fbbf24;">${AVATARES_LISTA.filter(a => miNivel >= a.nivel).length}/${AVATARES_LISTA.length}</b>`;
+    }
+
+    // 3. Pestañas de formación
+    if (tabsContainer) {
+        tabsContainer.innerHTML = Object.keys(FORMACIONES_TACTICAS).map(k => `
+            <button type="button" class="pitch-form-tab ${k === formacionOnceActual ? 'active' : ''}" onclick="cambiarFormacionOnce('${k}')">${k}</button>
+        `).join('');
+    }
+
+    // 4. Renderizado de los 11 titulares en la cancha
+    let htmlNodos = f.posiciones.map((item, idx) => {
+        const avatarId = once[idx];
+        const isSlotActive = slotActivoOnce === idx;
+        const isCaptain = avatarId && (avatarId === capitanAvatar);
+
+        const dragAttrs = avatarId ? `
+            draggable="true"
+            ondragstart="iniciarArrastreOnce(event, ${idx})"
+            ondragend="finalizarArrastreOnce(event)"
+            ontouchstart="iniciarTouchOnce(event, ${idx})"
+            ontouchmove="moverTouchOnce(event)"
+            ontouchend="soltarTouchOnce(event)"
+        ` : '';
+
+        const dropAttrs = `
+            ondragover="permitirArrastreSobreOnce(event, ${idx})"
+            ondragleave="salirArrastreSobreOnce(event, ${idx})"
+            ondrop="soltarJugadorEnOnce(event, ${idx})"
+        `;
+
+        if (avatarId) {
+            return `
+            <div class="once-slot-node filled ${isSlotActive ? 'is-active-slot' : ''} ${isCaptain ? 'is-team-captain' : ''}" 
+                 data-slot-idx="${idx}" 
+                 style="top:${item.top}; left:${item.left};" 
+                 onclick="seleccionarSlotOnce(${idx})"
+                 ${dragAttrs}
+                 ${dropAttrs}>
+                <div class="once-avatar-circle">
+                    <img src="${avatarId}" alt="${item.pos}" class="once-avatar-img" draggable="false">
+                    <button type="button" class="once-slot-captain-btn ${isCaptain ? 'is-captain' : ''}" onclick="designarCapitanOnce(${idx}, event)" title="${isCaptain ? 'Capitán activo' : 'Nombrar Capitán (C)'}">C</button>
+                    <button type="button" class="once-slot-remove-btn" onclick="quitarJugadorDeOnce(${idx}, event)" ontouchstart="event.stopPropagation()" title="Quitar titular">✕</button>
+                </div>
+                <div class="once-pos-badge">${item.pos}</div>
+                <div class="once-player-label">${obtenerNombreAvatar(avatarId)}</div>
+            </div>`;
+        } else {
+            return `
+            <div class="once-slot-node empty ${isSlotActive ? 'is-active-slot' : ''}" 
+                 data-slot-idx="${idx}" 
+                 style="top:${item.top}; left:${item.left};" 
+                 onclick="seleccionarSlotOnce(${idx})"
+                 ${dropAttrs}>
+                <div class="once-empty-circle">
+                    <i class="ph-bold ph-plus"></i>
+                </div>
+                <div class="once-pos-badge empty">${item.pos}</div>
+                <div class="once-player-label empty">Vacante</div>
+            </div>`;
+        }
+    }).join('');
+
+    // 5. Corralito técnico del DT en la esquina de la cancha
+    const isDtActive = slotActivoOnce === 'DT';
+    const htmlDtCorralito = `
+        <div class="once-dt-bench ${isDtActive ? 'is-active-slot' : ''} ${dtAvatar ? 'filled' : 'empty'}" onclick="seleccionarSlotOnce('DT')" title="Elegir Director Técnico">
+            <div class="once-avatar-circle dt-circle">
+                ${dtAvatar ? `
+                    <img src="${dtAvatar}" alt="DT" class="once-avatar-img" draggable="false">
+                    <button type="button" class="once-slot-remove-btn" onclick="quitarJugadorDeOnce('DT', event)" ontouchstart="event.stopPropagation()" title="Quitar DT">✕</button>
+                ` : `
+                    <i class="ph-bold ph-clipboard-text"></i>
+                `}
+            </div>
+            <div class="once-pos-badge dt">DT</div>
+            <div class="once-player-label">${dtAvatar ? obtenerNombreAvatar(dtAvatar) : 'Elegir DT'}</div>
+        </div>
+    `;
+
+    container.innerHTML = htmlNodos + htmlDtCorralito;
+
+    // 6. Título de la galería / banquillo
+    if (drawerTitle) {
+        if (slotActivoOnce === 'DT') {
+            drawerTitle.innerHTML = `<i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> Elegí al <b>Director Técnico</b> del equipo:`;
+        } else if (slotActivoOnce !== null) {
+            const posNom = f.posiciones[slotActivoOnce]?.pos || 'PUESTO';
+            drawerTitle.innerHTML = `<i class="ph-bold ph-hand-pointing" style="color:var(--accent-color);"></i> Elegí un futbolista para <b>${posNom}</b> (${slotActivoOnce + 1}º posición):`;
+        } else {
+            drawerTitle.innerHTML = `<i class="ph-bold ph-arrows-left-right" style="color:var(--accent-color);"></i> Mantené apretado un titular para moverlo de posición o tocalo para reemplazarlo:`;
+        }
+    }
+
+    // 7. Banquillo de cartas (sin globito verde por encima)
+    const jugadoresEnCancha = new Set(Object.values(once));
+    drawerContainer.innerHTML = AVATARES_LISTA.map(item => {
+        const isLocked = miNivel < item.nivel;
+        const yaEnCancha = jugadoresEnCancha.has(item.id);
+
+        let lockBadge = isLocked 
+            ? `<div class="avatar-grid-lock-mask"><i class="ph-fill ph-lock-key"></i><span>NV. ${item.nivel}</span></div>` 
+            : '';
+
+        return `
+        <div class="avatar-grid-card ${isLocked ? 'locked' : 'unlocked'} ${yaEnCancha ? 'in-pitch' : ''}" onclick="asignarJugadorAOnce('${item.id}')">
+            <div class="avatar-grid-img-wrap">
+                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" loading="lazy">
+                ${lockBadge}
+            </div>
+            <span>${item.label}</span>
+        </div>`;
+    }).join('');
+}
+window.manejarInteraccionOnce = function(e) {
+    const wrap = document.getElementById('once-btn-wrapper');
+    const esTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (esTouch && wrap && !wrap.classList.contains('show-tooltip')) {
+        e.preventDefault();
+        wrap.classList.add('show-tooltip');
+        setTimeout(() => wrap.classList.remove('show-tooltip'), 2500);
+        return;
+    }
+    abrirModalOnceInicial();
 };

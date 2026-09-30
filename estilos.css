@@ -4663,12 +4663,77 @@ body.video-abierto .hero-section {
 @media (max-width: 1024px) {
     .hero-shortcuts-row {
         display: flex !important;
-        gap: 12px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px !important;
         width: 100% !important;
         max-width: 440px !important;
         margin: 18px auto 0 auto !important;
         padding: 0 12px !important;
         box-sizing: border-box !important;
+    }
+
+    /* ⚽ Tu Once Inicial en Fila 1 (ancho completo centrado arriba) */
+    .once-banner-wrapper {
+        order: 1 !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        margin: 0 0 2px 0 !important;
+        pointer-events: auto !important;
+    }
+
+    .btn-once-banner {
+        width: auto !important;
+        min-width: 148px !important;
+        max-width: 165px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        padding: 0 12px 0 42px !important;
+        border-radius: 12px !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+
+    .once-banner-img {
+        width: 56px !important;
+        height: 56px !important;
+        left: -15px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        filter: drop-shadow(0 0 8px rgba(0, 255, 119, 0.75)) !important;
+    }
+
+    .btn-once-banner .reto-banner-text {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .btn-once-banner .reto-sub-desc,
+    .btn-once-banner .shortcut-kicker,
+    .btn-once-banner .reto-sub-pill {
+        display: none !important;
+    }
+
+    .btn-once-banner .reto-banner-text strong {
+        font-size: 0.80rem !important;
+        font-weight: 900 !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    /* ⚡ Reto Diario y Tu Liga en Fila 2 (lado a lado al 50%) */
+    .btn-reto-banner {
+        order: 2 !important;
+    }
+
+    .btn-liga-banner {
+        order: 3 !important;
     }
 
     .btn-reto-banner,
@@ -4680,7 +4745,7 @@ body.video-abierto .hero-section {
         top: auto !important;
         flex: 1 1 0 !important;
         width: auto !important;
-        max-width: 50% !important;
+        max-width: calc(50% - 5px) !important;
         height: 58px !important;
         min-height: 58px !important;
         padding: 0 8px 0 46px !important;
@@ -9265,6 +9330,14 @@ html[data-theme="light"] .xp-bar-big-fill {
    ======================================================== */
 #inspect-profile-modal {
     z-index: 10050 !important; /* Capa superior absoluta por encima de ligas y rankings */
+}
+
+#once-inicial-modal {
+    z-index: 10045 !important;
+}
+
+#selector-escudos-modal {
+    z-index: 10060 !important;
 }
 
 .inspect-modal-box {
@@ -14741,12 +14814,64 @@ body.video-abierto .hero-section {
 @media (max-width: 1024px) {
     .hero-shortcuts-row {
         display: flex !important;
-        gap: 12px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px !important;
         width: 100% !important;
         max-width: 440px !important;
         margin: 18px auto 0 auto !important;
         padding: 0 12px !important;
         box-sizing: border-box !important;
+    }
+
+    .btn-once-banner {
+        order: 1 !important;
+        width: 100% !important;
+        max-width: 175px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        padding: 0 16px 0 38px !important;
+        border-radius: 12px !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .btn-once-banner .once-banner-icon {
+        width: 24px !important;
+        height: 24px !important;
+        left: 10px !important;
+        font-size: 0.95rem !important;
+        border-radius: 7px !important;
+    }
+
+    .btn-once-banner .reto-banner-text {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .btn-once-banner .shortcut-kicker,
+    .btn-once-banner .reto-sub-desc,
+    .btn-once-banner .reto-sub-pill {
+        display: none !important;
+    }
+
+    .btn-once-banner .reto-banner-text strong {
+        font-size: 0.78rem !important;
+        font-weight: 900 !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    .btn-reto-banner {
+        order: 2 !important;
+    }
+
+    .btn-liga-banner {
+        order: 3 !important;
     }
 
     .btn-reto-banner,
@@ -14758,7 +14883,7 @@ body.video-abierto .hero-section {
         top: auto !important;
         flex: 1 1 0 !important;
         width: auto !important;
-        max-width: 50% !important;
+        max-width: calc(50% - 5px) !important;
         height: 58px !important;
         min-height: 58px !important;
         padding: 0 8px 0 46px !important;
@@ -21099,4 +21224,644 @@ html[data-theme="light"] .xp-bar-big-fill {
     22% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     70% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
     100% { opacity: 0; transform: translate(-50%, -50%) scale(1.22); }
+}
+/* ========================================================
+   ⚽ ESTILOS: TU ONCE INICIAL & CANCHA TÁCTICA
+   ======================================================== */
+.btn-once-link {
+    width: 100%;
+    max-width: 250px;
+    height: 34px;
+    min-height: 34px;
+    margin: 6px auto 0;
+    padding: 0 14px;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(10, 32, 20, 0.95) 100%) !important;
+    border: 1.5px solid rgba(0, 255, 119, 0.45) !important;
+    border-top: 2px solid #a7f3d0 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), 0 0 14px rgba(0, 255, 119, 0.2) !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.btn-once-link:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: #00ff77 !important;
+    box-shadow: 0 6px 18px rgba(0, 255, 119, 0.4) !important;
+}
+
+/* Modal Tu Once Inicial Panorámico */
+.once-modal-box {
+    max-width: 1080px !important;
+    width: 94% !important;
+    height: 88vh !important;
+    max-height: 88vh !important;
+    padding: 20px 24px !important;
+    border-radius: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.once-modal-header {
+    text-align: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.once-modal-box {
+    max-width: 1080px !important;
+    width: 94% !important;
+    height: 88vh !important;
+    max-height: 88vh !important;
+    padding: 20px 24px !important;
+    border-radius: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    transition: background 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.once-title-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.once-title-text-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.once-title-group h2 {
+    font-size: 1.45rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin: 0;
+    color: var(--text-main);
+    line-height: 1.1;
+}
+
+.once-team-name-tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-top: 2px;
+}
+
+.once-stats-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin: 3px 0 0 0;
+}
+
+.once-top-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.once-top-actions-bar .pitch-formations-bar {
+    flex: 1;
+    min-width: 220px;
+}
+
+.once-quick-btns {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.once-quick-btn {
+    padding: 6px 14px !important;
+    font-size: 0.74rem !important;
+    font-weight: 900 !important;
+    border-radius: 10px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+}
+
+.once-quick-btn.danger:hover {
+    border-color: var(--danger-color) !important;
+    color: var(--danger-color) !important;
+}
+
+/* 🏟 CONTENEDOR 2 COLUMNAS (CANCHA IZQUIERDA + PLANTEL DERECHA) */
+.once-layout-split {
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    gap: 18px;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.once-tactical-field {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    background: linear-gradient(180deg, #0d281a 0%, #06180f 100%);
+    border: 2px solid rgba(0, 230, 118, 0.4);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.7), 0 8px 24px rgba(0, 0, 0, 0.4);
+    user-select: none;
+    margin-bottom: 0 !important;
+}
+
+/* Nodos interactivos del Once Inicial */
+.once-slot-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.once-slot-node:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    z-index: 10;
+}
+
+.once-slot-node.is-active-slot {
+    transform: translate(-50%, -50%) scale(1.22) !important;
+    z-index: 12;
+}
+
+.once-avatar-circle {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #00ff77;
+    background: #091322;
+    box-shadow: 0 0 12px var(--accent-glow);
+    overflow: visible;
+}
+
+.once-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 15%;
+}
+
+.once-slot-remove-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--danger-color);
+    color: #fff;
+    border: 1px solid #fff;
+    font-size: 0.55rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.once-slot-node:hover .once-slot-remove-btn {
+    opacity: 1;
+}
+
+.once-empty-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    background: rgba(10, 18, 28, 0.7);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.once-slot-node.empty:hover .once-empty-circle,
+.once-slot-node.is-active-slot .once-empty-circle {
+    border-color: #00ff77;
+    color: #00ff77;
+    background: rgba(0, 255, 119, 0.15);
+    box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.once-pos-badge {
+    margin-top: -6px;
+    font-size: 0.52rem;
+    font-weight: 900;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: #00ff77;
+    color: #000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    line-height: 1.1;
+    z-index: 2;
+}
+
+.once-pos-badge.empty {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.once-player-label {
+    font-size: 0.55rem;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    margin-top: 2px;
+}
+
+.once-player-label.empty {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Banquillo / Drawer de Selección Inferior */
+.once-drawer-wrapper {
+    background: linear-gradient(165deg, rgba(14, 22, 38, 0.9) 0%, rgba(8, 12, 22, 0.95) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.once-drawer-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.once-players-scroll-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: 10px;
+    overflow-y: auto;
+    max-height: none !important;
+    flex: 1;
+    min-height: 0;
+    padding-right: 4px;
+    align-content: start;
+    scrollbar-width: thin;
+}
+
+/* 📱 ADAPTACIÓN PARA CELULARES (VUELVE A FLUJO VERTICAL APILADO) */
+@media (max-width: 860px) {
+    .once-modal-box {
+        max-width: 95% !important;
+        height: auto !important;
+        max-height: 92vh !important;
+        overflow-y: auto !important;
+        padding: 16px 12px !important;
+    }
+
+    .once-layout-split {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        overflow: visible !important;
+    }
+
+    .once-tactical-field {
+        height: 330px !important;
+        min-height: 330px !important;
+        flex: none !important;
+    }
+
+    .once-drawer-wrapper {
+        height: auto !important;
+        min-height: auto !important;
+        flex: none !important;
+        overflow: visible !important;
+    }
+
+    .once-players-scroll-grid {
+        max-height: 230px !important;
+        flex: none !important;
+    }
+}
+
+.once-card-in-pitch-badge {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 230, 118, 0.35);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.60rem;
+    font-weight: 900;
+    border-radius: 50%;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Adaptación responsive para celulares */
+@media (max-width: 768px) {
+    .once-tactical-field {
+        height: 290px;
+        min-height: 290px;
+    }
+
+    .once-avatar-circle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .once-empty-circle {
+        width: 32px;
+        height: 32px;
+    }
+}
+/* ========================================================
+   ⚽ BOTÓN TÁCTICO HERO: TU ONCE INICIAL (PC & BASE)
+   ======================================================== */
+.once-banner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.btn-once-banner {
+    position: relative;
+    pointer-events: auto;
+    width: 290px;
+    min-height: 82px;
+    height: 82px;
+    padding: 12px 18px 12px 82px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: linear-gradient(145deg, rgba(14, 28, 48, 0.94) 0%, rgba(8, 16, 26, 0.98) 100%);
+    border: 1.5px solid rgba(0, 255, 119, 0.35);
+    border-top: 2px solid rgba(110, 255, 180, 0.75);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 119, 0.15);
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, border-color 0.25s ease;
+    box-sizing: border-box;
+    user-select: none;
+    overflow: visible !important;
+}
+
+.btn-once-banner:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: #00ff77;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 255, 119, 0.35);
+}
+
+.btn-once-banner:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+/* 🏟️ Cancha 3D oficial del catálogo para el botón */
+.once-banner-img {
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%) translateZ(0);
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.85));
+    will-change: transform;
+    backface-visibility: hidden;
+    transition: transform 0.35s ease, filter 0.35s ease;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.btn-once-banner:hover .once-banner-img {
+    transform: translateY(-50%) scale(1.1) rotate(-4deg);
+    filter: drop-shadow(0 0 24px rgba(0, 255, 119, 1));
+}
+
+/* ☀️ Modo Claro */
+[data-theme="light"] .btn-once-banner {
+    background: #f0f7f3 !important;
+    border: 2px solid #a4bdae !important;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .btn-once-banner:hover {
+    border-color: #00cc66 !important;
+    box-shadow: 0 14px 30px rgba(0, 204, 102, 0.2) !important;
+}
+
+[data-theme="light"] .btn-once-banner .reto-banner-text strong {
+    color: #00cc66 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .btn-once-banner .reto-banner-text span {
+    color: #04160a !important;
+}
+/* ========================================================
+   🛡️ ESCUDO, CAPITÁN Y DT EN TU ONCE INICIAL
+   ======================================================== */
+.once-team-shield-box {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(8, 14, 24, 0.95);
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 16px var(--accent-glow);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0;
+}
+
+.once-team-shield-box:hover {
+    transform: scale(1.1);
+    border-color: #ffffff;
+    box-shadow: 0 0 22px var(--accent-glow);
+}
+
+.once-team-shield-img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+.once-shield-edit-tag {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    background: var(--accent-color);
+    color: #000;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 900;
+    border: 1.5px solid #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+}
+
+/* 👑 BOTÓN Y CINTA DE CAPITÁN EN EL NODO */
+.once-slot-captain-btn {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: rgba(14, 22, 38, 0.92);
+    color: #cbd5e1;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.55rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    z-index: 15;
+    opacity: 0;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.once-slot-node:hover .once-slot-captain-btn,
+.once-slot-captain-btn.is-captain {
+    opacity: 1;
+}
+
+.once-slot-captain-btn.is-captain {
+    background: linear-gradient(135deg, #ffd700 0%, #ff9100 100%) !important;
+    color: #050b14 !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8) !important;
+}
+
+.once-captain-armband-badge {
+    position: absolute;
+    bottom: -3px;
+    left: -3px;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd700 0%, #ff9100 100%);
+    border: 1.5px solid #ffffff;
+    color: #0b1325;
+    font-size: 0.58rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.85);
+    z-index: 14;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.once-slot-node.is-team-captain .once-avatar-circle {
+    border-color: #ffd700 !important;
+    box-shadow: 0 0 16px rgba(255, 215, 0, 0.6) !important;
+}
+
+/* 👔 BANQUILLO / CORRALITO DEL DT EN LA CANCHA */
+.once-dt-bench {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 12;
+    padding: 6px 10px;
+    border-radius: 14px;
+    background: rgba(10, 20, 32, 0.75);
+    border: 1.5px dashed rgba(0, 255, 119, 0.45);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+}
+
+.once-dt-bench:hover,
+.once-dt-bench.is-active-slot {
+    background: rgba(0, 255, 119, 0.16);
+    border-color: #00ff77;
+    border-style: solid;
+    transform: scale(1.08);
+    box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.once-pos-badge.dt {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* 🎯 RESALTE ELEGANTE DE CARTAS EN BANQUILLO SIN EL GLOBO VERDE ENCIMA */
+.avatar-grid-card.in-pitch {
+    border-color: rgba(0, 255, 119, 0.65) !important;
+    box-shadow: 0 0 14px rgba(0, 255, 119, 0.25) !important;
+    opacity: 0.85;
+}
+
+/* Ocultar definitivamente el globito verde previo */
+.once-card-in-pitch-badge {
+    display: none !important;
 }
