@@ -21606,13 +21606,13 @@ html[data-theme="light"] .xp-bar-big-fill {
     .once-layout-split {
         display: flex !important;
         flex-direction: column !important;
-        gap: 12px !important;
+        gap: 10px !important;
         overflow: visible !important;
     }
 
     .once-tactical-field {
-        height: 330px !important;
-        min-height: 330px !important;
+        height: 320px !important;
+        min-height: 320px !important;
         flex: none !important;
     }
 
@@ -21621,11 +21621,47 @@ html[data-theme="light"] .xp-bar-big-fill {
         min-height: auto !important;
         flex: none !important;
         overflow: visible !important;
+        padding: 10px 8px !important;
+    }
+
+    .once-drawer-title {
+        font-size: 0.70rem !important;
+        margin-bottom: 6px !important;
     }
 
     .once-players-scroll-grid {
-        max-height: 230px !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        max-height: 195px !important;
         flex: none !important;
+        padding-right: 2px !important;
+    }
+
+    /* 🃏 Tarjetas de futbolistas compactas y proporcionadas con la cancha */
+    .once-players-scroll-grid .avatar-grid-card {
+        height: 86px !important;
+        min-height: 86px !important;
+        padding: 4px 2px !important;
+        border-radius: 10px !important;
+    }
+
+    .once-players-scroll-grid .avatar-grid-img-wrap {
+        height: 56px !important;
+    }
+
+    .once-players-scroll-grid .avatar-grid-card span {
+        font-size: 0.52rem !important;
+        line-height: 1.1 !important;
+        margin-top: 1px !important;
+    }
+
+    .once-players-scroll-grid .avatar-grid-lock-mask i {
+        font-size: 0.85rem !important;
+    }
+
+    .once-players-scroll-grid .avatar-grid-lock-mask span {
+        font-size: 0.46rem !important;
+        padding: 1px 3px !important;
     }
 }
 
