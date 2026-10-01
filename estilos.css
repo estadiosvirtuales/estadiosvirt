@@ -21820,32 +21820,62 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 0 16px rgba(255, 215, 0, 0.6) !important;
 }
 
-/* 👔 BANQUILLO / CORRALITO DEL DT EN LA CANCHA */
+/* 👔 BANQUILLO DEL DT EN LA CANCHA (Sin recuadro y ajustado a la esquina) */
 .once-dt-bench {
     position: absolute;
-    bottom: 12px;
-    right: 14px;
+    bottom: 5px !important;
+    right: 6px !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    z-index: 12;
-    padding: 6px 10px;
-    border-radius: 14px;
-    background: rgba(10, 20, 32, 0.75);
-    border: 1.5px dashed rgba(0, 255, 119, 0.45);
-    backdrop-filter: blur(8px);
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     user-select: none;
 }
 
 .once-dt-bench:hover,
 .once-dt-bench.is-active-slot {
-    background: rgba(0, 255, 119, 0.16);
+    background: transparent !important;
+    border: none !important;
+    transform: scale(1.12) !important;
+    box-shadow: none !important;
+}
+
+.once-dt-bench.is-active-slot .once-avatar-circle {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 18px var(--accent-glow) !important;
+}
+
+.once-dt-bench.empty .dt-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+    background: rgba(10, 18, 28, 0.7);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+}
+
+.once-dt-bench.empty:hover .dt-circle,
+.once-dt-bench.empty.is-active-slot .dt-circle {
     border-color: #00ff77;
-    border-style: solid;
-    transform: scale(1.08);
-    box-shadow: 0 0 16px var(--accent-glow);
+    color: #00ff77;
+    box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.once-dt-bench .once-player-label {
+    max-width: 68px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .once-pos-badge.dt {
@@ -21864,4 +21894,44 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* Ocultar definitivamente el globito verde previo */
 .once-card-in-pitch-badge {
     display: none !important;
+}
+
+/* ☀️ ADAPTACIÓN MODO CLARO: MODAL TU ONCE INICIAL */
+[data-theme="light"] .once-drawer-wrapper {
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .once-drawer-title {
+    color: #0f172a !important;
+}
+
+[data-theme="light"] .once-drawer-title b {
+    color: #00a854 !important;
+}
+
+[data-theme="light"] .once-players-scroll-grid .avatar-grid-card {
+    background: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] .once-players-scroll-grid .avatar-grid-card:hover {
+    background: #ffffff !important;
+    border-color: #00cc66 !important;
+    box-shadow: 0 6px 16px rgba(0, 204, 102, 0.2) !important;
+}
+
+[data-theme="light"] .once-stats-sub {
+    color: #334155 !important;
+}
+
+[data-theme="light"] .once-team-shield-box {
+    background: #ffffff !important;
+    border-color: #00cc66 !important;
+    box-shadow: 0 0 14px rgba(0, 204, 102, 0.3) !important;
+}
+
+[data-theme="light"] .once-team-name-tag {
+    color: #008744 !important;
 }
