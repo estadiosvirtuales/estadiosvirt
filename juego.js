@@ -2105,6 +2105,11 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                     datosRival.votosRealizados = dj.votosRealizados || 0;
                     datosRival.triviasVistas = dj.triviasVistas || 0;
                     datosRival.partidasJugadas = dj.partidasJugadas || 0;
+                    // 👥 Descarga de su Once Inicial real
+                    datosRival.onceInicial = dj.onceInicial || null;
+                    datosRival.onceCapitan = dj.onceCapitan || null;
+                    datosRival.onceEscudo = dj.onceEscudo || pref.avatar_logo || 'ev';
+                    datosRival.mejorasJugadores = dj.mejorasJugadores || {};
                 }
             }
 
@@ -2118,7 +2123,6 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                 datosRival.partidasGanadas = victoriasReales;
             }
 
-            // Si estás inspeccionando tu propia carta, saneamos el almacenamiento local del teléfono
             const uActual = obtenerUsuarioLogueado();
             const miNickActual = (getPref('ev_custom_nick', '') || (uActual ? uActual.name.split(' ')[0] : '')).trim().toLowerCase();
             if (n.toLowerCase() === miNickActual && victoriasReales !== null && victoriasReales !== undefined) {
@@ -2130,11 +2134,23 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
         }
     }
 
+    window.datosUltimoRivalInspeccionado = datosRival;
+
     const u = obtenerUsuarioLogueado();
     const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim().toLowerCase();
     const miLigaActual = localStorage.getItem('ev_codigo_liga_amigos');
 
+    let botonDesafiarOnceHTML = '';
     let botonInvitarLigaHTML = '';
+
+    if (n.toLowerCase() !== miNombre) {
+        botonDesafiarOnceHTML = `
+            <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
+                <i class="ph-bold ph-sword"></i> Desafiar a su Once
+            </button>
+        `;
+    }
+
     if (miLigaActual && n.toLowerCase() !== miNombre) {
         botonInvitarLigaHTML = `
             <button type="button" onclick="enviarInvitacionDirectaRival('${sanitizarHTML(miLigaActual)}', '${sanitizarHTML(n)}', this)" class="btn-inspect-invite-liga">
@@ -2183,9 +2199,86 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                 </div>
             </div>
 
+            ${botonDesafiarOnceHTML}
             ${botonInvitarLigaHTML}
         </div>
     `;
+};
+
+// ⚔️ DISPARADOR DEL DESAFÍO DE PLANTELES ASINCRÓNICO
+window.iniciarDesafioOnceRivalDirecto = function() {
+    const rival = window.datosUltimoRivalInspeccionado;
+    if (!rival) return;
+
+    // 1. Validar que el usuario tenga su equipo completo
+    const onceUser = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const fUser = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) 
+        ? FORMACIONES_TACTICAS[formacionOnceActual] 
+        : { posiciones: Array(11).fill(0) };
+    let countUser = 0;
+    for (let i = 0; i < fUser.posiciones.length; i++) {
+        if (onceUser[i]) countUser++;
+    }
+
+    if (countUser < 11) {
+        const faltan = 11 - countUser;
+        showToast(`Completá tus 11 titulares para jugar un desafío de planteles (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
+    cerrarModalInspeccionarRival();
+
+    // 2. Determinar titulares y OVR del rival
+    let titularesRival = [];
+    let ovrRival = rival.ovr || 60;
+
+    if (rival.onceInicial && Object.keys(rival.onceInicial).length > 0) {
+        const onceR = rival.onceInicial;
+        const idsTitulares = Object.keys(onceR).filter(k => k !== 'DT' && onceR[k]).map(k => onceR[k]);
+        if (idsTitulares.length > 0) {
+            titularesRival = idsTitulares.map(id => obtenerNombreAvatar(id));
+            let sumaOvr = 0;
+            idsTitulares.forEach(id => {
+                const extra = (rival.mejorasJugadores && rival.mejorasJugadores[id]) || 0;
+                const item = AVATARES_LISTA.find(a => a.id === id);
+                const nivelReq = item ? item.nivel : 0;
+                const baseOvr = NIVELES[nivelReq]?.ovr || 50;
+                sumaOvr += Math.min(99, baseOvr + extra);
+            });
+            ovrRival = Math.round(sumaOvr / idsTitulares.length);
+            if (rival.onceCapitan) ovrRival += 2;
+            if (onceR['DT']) ovrRival += 1;
+        }
+    }
+
+    // Si el rival aún no armó su once, le asignamos titulares acordes a su nivel
+    if (!titularesRival.length) {
+        const poolDesbloqueados = AVATARES_LISTA.filter(a => (rival.nivelActual || 0) >= a.nivel);
+        const poolFinal = poolDesbloqueados.length >= 11 ? poolDesbloqueados : AVATARES_LISTA.slice(0, 11);
+        titularesRival = poolFinal.slice(0, 11).map(a => a.label);
+    }
+
+    // 3. Estructuración del partido único
+    torneoEstado = {
+        tier: 'desafio_once',
+        config: {
+            nombre: 'Desafío de Planteles',
+            premioSP: 2
+        },
+        rondaIdx: 0,
+        rivales: [{
+            id: rival.onceEscudo || rival.avatar_logo || 'ev',
+            nombre: rival.custom_nick,
+            ovr: ovrRival,
+            titulares: titularesRival
+        }],
+        partidoEnCurso: false,
+        recorridoPartidos: [],
+        esDesafioAsincronico: true
+    };
+
+    prepararVistaPartidoCopa();
+    document.getElementById('simulador-partido-modal').style.display = 'flex';
 };
 
 async function precargarAvataresComunidad() {
@@ -8546,10 +8639,11 @@ function prepararVistaPartidoCopa() {
     const nombreUsuario = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Tu Once');
     const ovrUsuario = calcularOvrEquipoOnce();
 
+    const esDesafio = torneoEstado.esDesafioAsincronico;
     const stageBadgeEl = document.getElementById('sim-stage-title');
     if (stageBadgeEl) {
         stageBadgeEl.className = 'sim-stage-badge';
-        stageBadgeEl.textContent = rondaNombre.toUpperCase();
+        stageBadgeEl.textContent = esDesafio ? 'DUELO DE COMUNIDAD' : rondaNombre.toUpperCase();
     }
     document.querySelector('.sim-scoreboard-card')?.classList.remove('campeon-glory');
     document.querySelector('.sim-match-layout')?.classList.remove('campeon-view');
@@ -8558,7 +8652,7 @@ function prepararVistaPartidoCopa() {
     // 🏟️ Ambientación arquitectónica de la arena según la jerarquía del torneo
     const arenaEl = document.querySelector('.sim-stadium-arena');
     if (arenaEl) {
-        arenaEl.className = `sim-stadium-arena tier-${torneoEstado.tier || 'nacional'}`;
+        arenaEl.className = `sim-stadium-arena tier-${esDesafio ? 'continental' : (torneoEstado.tier || 'nacional')}`;
     }
 
     // Equipo Usuario
@@ -8724,13 +8818,17 @@ window.iniciarSimulacionEnVivo = function() {
                 eventos.push({ min: min, tipo: 'ataque_user', texto: relFn(autor) });
             }
         } else {
+            const autorRival = (rival.titulares && rival.titulares.length)
+                ? rival.titulares[Math.floor(Math.random() * rival.titulares.length)]
+                : rival.nombre;
+
             if (esGol) {
                 golesRival++;
                 const relFn = relatosGolRival[Math.floor(Math.random() * relatosGolRival.length)];
-                eventos.push({ min: min, tipo: 'gol_rival', texto: relFn() });
+                eventos.push({ min: min, tipo: 'gol_rival', texto: relFn(autorRival) });
             } else {
                 const relFn = relatosAtaqueRival[Math.floor(Math.random() * relatosAtaqueRival.length)];
-                eventos.push({ min: min, tipo: 'ataque_rival', texto: relFn() });
+                eventos.push({ min: min, tipo: 'ataque_rival', texto: relFn(autorRival) });
             }
         }
     });
@@ -9165,91 +9263,122 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     });
 
     if (ganoUsuario) {
-        const esFinal = torneoEstado.rondaIdx === 3;
-        if (esFinal) {
-            // ¡CAMPEÓN DE LA COPA!
-            const premio = torneoEstado.config.premioSP;
+        if (torneoEstado.esDesafioAsincronico) {
+            // ⚔️ VICTORIA EN DESAFÍO DE COMUNIDAD
+            const premio = torneoEstado.config.premioSP || 2;
             userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
-            if (!userStats.copasGanadas) userStats.copasGanadas = [];
-            userStats.copasGanadas.push({
-                tier: torneoEstado.tier,
-                nombre: torneoEstado.config.nombre,
-                fecha: new Date().toISOString()
-            });
             guardarStats();
 
-            // 👑 Consagración en marcador y cabecera limpia
             const sbCard = document.querySelector('.sim-scoreboard-card');
             if (sbCard) sbCard.classList.add('campeon-glory');
-            document.querySelector('.sim-match-layout')?.classList.add('campeon-view');
 
             const stageTitle = document.getElementById('sim-stage-title');
             if (stageTitle) {
                 stageTitle.className = 'sim-stage-badge campeon';
-                stageTitle.innerHTML = `<i class="ph-fill ph-crown"></i> ¡CAMPEÓN DEL TORNEO!`;
+                stageTitle.innerHTML = `<i class="ph-fill ph-trophy"></i> ¡VICTORIA EN EL DUELO!`;
             }
 
-            // 📜 Desplegamos el recorrido completo en la columna de relatos
-            const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
-            timeline.innerHTML = `
-                <div class="sim-camino-wrapper">
-                    <div class="sim-camino-header">
-                        <i class="ph-fill ph-trophy"></i> EL CAMINO A LA GLORIA
-                    </div>
-                    <div class="sim-camino-list">
-                        ${torneoEstado.recorridoPartidos.map(p => `
-                            <div class="sim-camino-row">
-                                <span class="sim-camino-fase">${p.fase}</span>
-                                <div class="sim-camino-match">
-                                    <div class="sim-camino-team user">
-                                        <img src="${obtenerUrlEscudo(escudoUsuario)}" alt="Tu Club">
-                                        <span>Tu Once</span>
-                                    </div>
-                                    <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales}</span>
-                                    <div class="sim-camino-team rival">
-                                        <span>${p.rivalNombre}</span>
-                                        <img src="${obtenerUrlEscudo(p.rivalId)}" alt="${p.rivalNombre}">
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            // 🏆 Botón de gloria dorado
             btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
             btn.disabled = false;
-            btn.innerHTML = `<i class="ph-bold ph-crown"></i> ¡LEVANTAR COPA (+${premio} SP)!`;
+            btn.innerHTML = `<i class="ph-bold ph-trophy"></i> ¡RECLAMAR RECOMPENSA (+${premio} SP)!`;
             btn.onclick = () => {
                 cerrarModalSimuladorPartido();
-                showToast(`¡Campeón de la ${torneoEstado.config.nombre}! Sumaste +${premio} SP 🏆👑`, 'ph-trophy', 'success');
-                dispararFestejoCampeon(document.getElementById('torneo-copas-modal') || document.body);
+                showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Sumaste +${premio} SP 🔥`, 'ph-trophy', 'success');
+                dispararFestejoCampeon();
             };
 
-            // 🚀 Disparo de festejos multicapa en pantalla
             dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
         } else {
-            // Avanza a la siguiente ronda e inicia de inmediato la previa (3... 2... 1...)
-            torneoEstado.rondaIdx++;
-            const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
-            btn.className = 'btn-3d primary sim-main-btn';
-            btn.disabled = false;
-            btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
-            btn.onclick = () => {
-                prepararVistaPartidoCopa();
-                iniciarSimulacionEnVivo();
-            };
+            const esFinal = torneoEstado.rondaIdx === 3;
+            if (esFinal) {
+                // ¡CAMPEÓN DE LA COPA!
+                const premio = torneoEstado.config.premioSP;
+                userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
+                if (!userStats.copasGanadas) userStats.copasGanadas = [];
+                userStats.copasGanadas.push({
+                    tier: torneoEstado.tier,
+                    nombre: torneoEstado.config.nombre,
+                    fecha: new Date().toISOString()
+                });
+                guardarStats();
+
+                const sbCard = document.querySelector('.sim-scoreboard-card');
+                if (sbCard) sbCard.classList.add('campeon-glory');
+                document.querySelector('.sim-match-layout')?.classList.add('campeon-view');
+
+                const stageTitle = document.getElementById('sim-stage-title');
+                if (stageTitle) {
+                    stageTitle.className = 'sim-stage-badge campeon';
+                    stageTitle.innerHTML = `<i class="ph-fill ph-crown"></i> ¡CAMPEÓN DEL TORNEO!`;
+                }
+
+                const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
+                timeline.innerHTML = `
+                    <div class="sim-camino-wrapper">
+                        <div class="sim-camino-header">
+                            <i class="ph-fill ph-trophy"></i> EL CAMINO A LA GLORIA
+                        </div>
+                        <div class="sim-camino-list">
+                            ${torneoEstado.recorridoPartidos.map(p => `
+                                <div class="sim-camino-row">
+                                    <span class="sim-camino-fase">${p.fase}</span>
+                                    <div class="sim-camino-match">
+                                        <div class="sim-camino-team user">
+                                            <img src="${obtenerUrlEscudo(escudoUsuario)}" alt="Tu Club">
+                                            <span>Tu Once</span>
+                                        </div>
+                                        <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales}</span>
+                                        <div class="sim-camino-team rival">
+                                            <span>${p.rivalNombre}</span>
+                                            <img src="${obtenerUrlEscudo(p.rivalId)}" alt="${p.rivalNombre}">
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
+                btn.disabled = false;
+                btn.innerHTML = `<i class="ph-bold ph-crown"></i> ¡LEVANTAR COPA (+${premio} SP)!`;
+                btn.onclick = () => {
+                    cerrarModalSimuladorPartido();
+                    showToast(`¡Campeón de la ${torneoEstado.config.nombre}! Sumaste +${premio} SP 🏆👑`, 'ph-trophy', 'success');
+                    dispararFestejoCampeon(document.getElementById('torneo-copas-modal') || document.body);
+                };
+
+                dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
+            } else {
+                torneoEstado.rondaIdx++;
+                const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
+                btn.className = 'btn-3d primary sim-main-btn';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
+                btn.onclick = () => {
+                    prepararVistaPartidoCopa();
+                    iniciarSimulacionEnVivo();
+                };
+            }
         }
     } else {
-        // Eliminado del torneo
-        btn.className = 'btn-3d secondary sim-main-btn danger';
-        btn.disabled = false;
-        btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Eliminado · Volver a Entrenar`;
-        btn.onclick = () => {
-            cerrarModalSimuladorPartido();
-            showToast("Quedaste fuera de la Copa. ¡Entrená a tus jugadores y volvé a intentarlo! ⚽", "ph-x-circle", "danger");
-        };
+        if (torneoEstado.esDesafioAsincronico) {
+            btn.className = 'btn-3d secondary sim-main-btn danger';
+            btn.disabled = false;
+            btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Salir · Revancha más tarde`;
+            btn.onclick = () => {
+                cerrarModalSimuladorPartido();
+                showToast(`Caíste frente al equipo de ${rivalActual.nombre}. ¡A entrenar a tus titulares! ⚽`, "ph-x-circle", "danger");
+            };
+        } else {
+            btn.className = 'btn-3d secondary sim-main-btn danger';
+            btn.disabled = false;
+            btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Eliminado · Volver a Entrenar`;
+            btn.onclick = () => {
+                cerrarModalSimuladorPartido();
+                showToast("Quedaste fuera de la Copa. ¡Entrená a tus jugadores y volvé a intentarlo! ⚽", "ph-x-circle", "danger");
+            };
+        }
     }
 }
 
@@ -9811,4 +9940,270 @@ window.clickJugarCopaDesdeCarrera = function() {
 
     cerrarModalModoCarrera();
     abrirModalTorneoCopas();
+};
+
+// ========================================================
+// 👑 RANKING DE CLUBES Y SALÓN DE CAMPEONES (MODO CARRERA)
+// ========================================================
+window.cerrarModalRankingCarrera = function() {
+    const modal = document.getElementById('ranking-carrera-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+window.abrirModalRankingCarrera = async function() {
+    const modal = document.getElementById('ranking-carrera-modal');
+    const body = document.getElementById('ranking-carrera-modal-body');
+    if (!modal || !body) return;
+
+    modal.style.display = 'flex';
+    body.innerHTML = `
+        <div style="text-align:center; padding:60px 20px; color:var(--text-muted);">
+            <i class="ph-duotone ph-circle-notch animate-spin" style="font-size:2.5rem; color:#ffd700;"></i>
+            <p style="margin-top:14px; font-size:0.9rem; font-weight:800; color:var(--text-main);">Abriendo vitrina de campeones...</p>
+        </div>
+    `;
+
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos')).trim().toLowerCase();
+
+    try {
+        if (!supabaseClient) throw new Error("Sin conexión a la base de datos");
+
+        const { data: perfilesRaw, error } = await supabaseClient
+            .from('perfiles')
+            .select('id_usuario, experiencia, datos_juego')
+            .limit(300);
+
+        if (error) throw error;
+
+        // Procesar y contabilizar copas por DT
+        const rankingCampeones = [];
+
+        (perfilesRaw || []).forEach(p => {
+            const dj = p.datos_juego || {};
+            const pref = dj.preferencias || {};
+            const nick = (pref.custom_nick || '').trim();
+            if (!nick) return;
+
+            const copas = dj.copasGanadas || [];
+            let nac = 0, cont = 0, clubes = 0, mundial = 0;
+
+            copas.forEach(c => {
+                if (c.tier === 'nacional') nac++;
+                else if (c.tier === 'continental') cont++;
+                else if (c.tier === 'mundial_clubes') clubes++;
+                else if (c.tier === 'mundial') mundial++;
+            });
+
+            const totalCopas = copas.length;
+            const ovr = NIVELES[calcularNivelIdx(p.experiencia || 0)]?.ovr || 60;
+
+            rankingCampeones.push({
+                nombre: nick,
+                avatar: pref.avatar_hair || '1.webp',
+                escudo: dj.onceEscudo || pref.avatar_logo || 'ev',
+                ovr: ovr,
+                nac: nac,
+                cont: cont,
+                clubes: clubes,
+                mundial: mundial,
+                total: totalCopas
+            });
+        });
+
+        // Asegurar que el usuario actual figure con sus datos en vivo
+        const misCopas = userStats.copasGanadas || [];
+        const miNombreReal = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos')).trim();
+        const yaEstaEnLista = rankingCampeones.find(r => r.nombre.toLowerCase() === miNombre);
+
+        if (!yaEstaEnLista && miNombreReal) {
+            let nac = 0, cont = 0, clubes = 0, mundial = 0;
+            misCopas.forEach(c => {
+                if (c.tier === 'nacional') nac++;
+                else if (c.tier === 'continental') cont++;
+                else if (c.tier === 'mundial_clubes') clubes++;
+                else if (c.tier === 'mundial') mundial++;
+            });
+            rankingCampeones.push({
+                nombre: miNombreReal,
+                avatar: getPref('ev_avatar_hair', '1.webp'),
+                escudo: userStats.onceEscudo || getPref('ev_avatar_logo', 'ev'),
+                ovr: NIVELES[calcularNivelIdx(userStats.xpTotal)]?.ovr || 60,
+                nac: nac,
+                cont: cont,
+                clubes: clubes,
+                mundial: mundial,
+                total: misCopas.length
+            });
+        }
+
+        // Orden de mérito: mayor total de copas; si empatan, más mundiales, luego clubes, etc.
+        rankingCampeones.sort((a, b) => {
+            if (b.total !== a.total) return b.total - a.total;
+            if (b.mundial !== a.mundial) return b.mundial - a.mundial;
+            if (b.clubes !== a.clubes) return b.clubes - a.clubes;
+            if (b.cont !== a.cont) return b.cont - a.cont;
+            return b.ovr - a.ovr;
+        });
+
+        const medallas3D = [
+            '<img src="medalla-oro.webp" alt="1º" class="rank-cup-medal">',
+            '<img src="medalla-plata.webp" alt="2º" class="rank-cup-medal">',
+            '<img src="medalla-bronce.webp" alt="3º" class="rank-cup-medal">'
+        ];
+
+        let filasHTML = '';
+        rankingCampeones.forEach((item, idx) => {
+            const esMio = item.nombre.toLowerCase() === miNombre;
+            const rankBadge = idx < 3 ? medallas3D[idx] : `<span class="rank-num-text">${idx + 1}</span>`;
+
+            filasHTML += `
+                <div class="carrera-rank-row ${esMio ? 'es-propio' : ''}">
+                    <div class="carrera-rank-pos">${rankBadge}</div>
+                    
+                    <div class="carrera-rank-user" onclick="inspeccionarPerfilRival('${item.nombre.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(item.nombre)}">
+                        <div class="ranking-avatar-circle">
+                            <div class="ranking-avatar-inner">${generarAvatarHTML(item.avatar, true)}</div>
+                        </div>
+                        <div class="carrera-user-info">
+                            <span class="carrera-user-name">${sanitizarHTML(item.nombre)} ${esMio ? '(Vos)' : ''}</span>
+                            <span class="carrera-user-meta">OVR ${item.ovr} · <img src="${obtenerUrlEscudo(item.escudo)}" class="carrera-mini-shield"></span>
+                        </div>
+                    </div>
+
+                    <div class="carrera-rank-cups-breakdown">
+                        <span class="cup-pill nac" title="Copa Nacional"><img src="medalla-bronce.webp"> ${item.nac}</span>
+                        <span class="cup-pill cont" title="Copa Continental"><img src="medalla-plata.webp"> ${item.cont}</span>
+                        <span class="cup-pill club" title="Mundial de Clubes"><img src="medalla-oro.webp"> ${item.clubes}</span>
+                        <span class="cup-pill mund" title="Copa del Mundo"><img src="estrella.webp"> ${item.mundial}</span>
+                    </div>
+
+                    <div class="carrera-rank-total">
+                        <span class="total-cups-badge">
+                            <img src="trofeo.webp" alt="Títulos" class="carrera-mini-trofeo"> ${item.total}
+                        </span>
+                    </div>
+
+                    <div class="carrera-rank-action">
+                        ${esMio ? '<span class="carrera-action-self">Tu Club</span>' : `
+                            <button type="button" class="btn-desafiar-row" onclick="desafiarDesdeRankingCarrera('${item.nombre.replace(/'/g, "\\'")}')" title="Desafiar a su Once">
+                                <img src="liga-icon-historial.webp" alt="Desafiar" class="carrera-mini-swords">
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        });
+
+        body.innerHTML = `
+            <div class="carrera-ranking-container">
+                <div class="carrera-ranking-header">
+                    <div class="carrera-header-left">
+                        <div class="trophy-stage-wrapper">
+                            <div class="trophy-glow-backdrop glow-gold"></div>
+                            <div class="trophy-main-img-box">
+                                <img src="coronaoro.webp" alt="Salón de Campeones" class="trophy-main-img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carrera-header-right">
+                        <h2 class="carrera-ranking-title">Salón de Campeones</h2>
+                        <p class="carrera-ranking-sub">Los directores técnicos más laureados de la comunidad.</p>
+                    </div>
+                </div>
+
+                <div class="carrera-ranking-table-header">
+                    <span>#</span>
+                    <span>DT / Club</span>
+                    <span class="col-center">Desglose de Copas</span>
+                    <span class="col-center">Títulos</span>
+                    <span class="col-center">Duelo</span>
+                </div>
+
+                <div class="carrera-ranking-scroll">
+                    ${filasHTML || '<p style="text-align:center; padding:30px; color:var(--text-muted);">Aún no hay campeones registrados.</p>'}
+                </div>
+            </div>
+        `;
+
+    } catch (e) {
+        console.error("Error al cargar ranking de campeones:", e);
+        body.innerHTML = `
+            <div style="text-align:center; padding:40px; color:var(--danger-color);">
+                <i class="ph-duotone ph-warning-circle" style="font-size:2.5rem;"></i>
+                <p style="margin-top:10px; font-weight:800;">No se pudo conectar con el servidor.</p>
+            </div>
+        `;
+    }
+};
+
+window.desafiarDesdeRankingCarrera = async function(nombreRival) {
+    const onceUser = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const fUser = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) 
+        ? FORMACIONES_TACTICAS[formacionOnceActual] 
+        : { posiciones: Array(11).fill(0) };
+    let countUser = 0;
+    for (let i = 0; i < fUser.posiciones.length; i++) {
+        if (onceUser[i]) countUser++;
+    }
+
+    if (countUser < 11) {
+        const faltan = 11 - countUser;
+        showToast(`Completá tus 11 titulares para jugar un desafío de planteles (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
+    cerrarModalRankingCarrera();
+
+    let datosRival = {
+        custom_nick: nombreRival,
+        xpTotal: 0,
+        nivelActual: 0,
+        ovr: 60,
+        card_theme: 'arg',
+        avatar_hair: '1.webp',
+        user_pos: 'DC',
+        avatar_logo: 'ev',
+        onceInicial: null,
+        onceCapitan: null,
+        onceEscudo: 'ev',
+        mejorasJugadores: {}
+    };
+
+    try {
+        if (supabaseClient) {
+            const { data: perfiles } = await supabaseClient
+                .from('perfiles')
+                .select('id_usuario, experiencia, datos_juego');
+
+            if (perfiles) {
+                const encontrado = perfiles.find(p => {
+                    const dj = p.datos_juego || {};
+                    const pref = dj.preferencias || {};
+                    return (pref.custom_nick && pref.custom_nick.trim().toLowerCase() === nombreRival.trim().toLowerCase());
+                });
+
+                if (encontrado) {
+                    const dj = encontrado.datos_juego || {};
+                    const pref = dj.preferencias || {};
+                    datosRival.xpTotal = encontrado.experiencia || dj.xpTotal || 0;
+                    datosRival.nivelActual = calcularNivelIdx(datosRival.xpTotal);
+                    datosRival.ovr = NIVELES[datosRival.nivelActual]?.ovr || 60;
+                    datosRival.card_theme = pref.card_theme || 'arg';
+                    datosRival.avatar_hair = pref.avatar_hair || datosRival.avatar_hair;
+                    datosRival.user_pos = pref.user_pos || 'DC';
+                    datosRival.avatar_logo = pref.avatar_logo || 'ev';
+                    datosRival.onceInicial = dj.onceInicial || null;
+                    datosRival.onceCapitan = dj.onceCapitan || null;
+                    datosRival.onceEscudo = dj.onceEscudo || pref.avatar_logo || 'ev';
+                    datosRival.mejorasJugadores = dj.mejorasJugadores || {};
+                }
+            }
+        }
+    } catch (e) {
+        console.warn("Aviso al preparar duelo:", e);
+    }
+
+    window.datosUltimoRivalInspeccionado = datosRival;
+    iniciarDesafioOnceRivalDirecto();
 };

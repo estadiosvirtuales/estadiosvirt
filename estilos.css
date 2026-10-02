@@ -24542,3 +24542,416 @@ html[data-theme="light"] .xp-bar-big-fill {
     color: #d97706 !important;
     border-bottom-color: rgba(217, 119, 6, 0.35) !important;
 }
+
+/* ========================================================
+   👑 4TO BOTÓN MODO CARRERA: SALÓN DE CAMPEONES
+   ======================================================== */
+.btn-opt-campeones {
+    border-top: 2px solid rgba(255, 215, 0, 0.6) !important;
+    background: 
+        radial-gradient(circle at 10% 50%, rgba(255, 215, 0, 0.16) 0%, transparent 60%),
+        linear-gradient(165deg, rgba(32, 26, 12, 0.94) 0%, rgba(14, 12, 6, 0.98) 100%) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(255, 215, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+}
+.btn-opt-campeones:hover {
+    border-color: rgba(255, 215, 0, 0.75) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(255, 215, 0, 0.4) !important;
+}
+.btn-opt-campeones .guessr-option-icon {
+    background: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.28);
+}
+.btn-opt-campeones .guessr-option-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    transform: scale(1.15) !important;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)) !important;
+    transition: transform 0.25s ease !important;
+}
+.btn-opt-campeones:hover .guessr-option-icon img {
+    transform: scale(1.25) rotate(-4deg) !important;
+}
+
+/* ========================================================
+   🏆 MODAL SALÓN DE CAMPEONES (ENCABEZADO HORIZONTAL Y LISTA)
+   ======================================================== */
+.ranking-carrera-box {
+    max-width: 900px !important;
+    width: 94% !important;
+    height: auto !important;
+    max-height: 88vh !important;
+    padding: 22px 26px !important;
+    border-radius: 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+}
+
+.carrera-ranking-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* 👑 ENCABEZADO HORIZONTAL (Corona más imponente a la izquierda) */
+.carrera-ranking-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 22px !important;
+    margin-bottom: 16px !important;
+    padding: 0 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.carrera-header-left {
+    flex-shrink: 0;
+}
+
+.carrera-header-left .trophy-stage-wrapper {
+    width: auto !important;
+    margin: 0 !important;
+}
+
+.carrera-header-left .trophy-main-img-box {
+    width: 140px !important;
+    height: 140px !important;
+}
+
+.carrera-header-left .trophy-glow-backdrop {
+    width: 140px !important;
+    height: 140px !important;
+}
+
+.carrera-header-right {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 4px !important;
+}
+
+.carrera-ranking-title {
+    font-size: 1.65rem !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    letter-spacing: -0.5px !important;
+    margin: 0 !important;
+    line-height: 1.15 !important;
+}
+
+.carrera-ranking-sub {
+    font-size: 0.88rem !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+/* 📊 TABLA Y FILAS (ALINEACIÓN EXACTA PÍXEL POR PÍXEL) */
+.carrera-ranking-table-header {
+    display: grid;
+    grid-template-columns: 36px 1fr 260px 105px 65px;
+    gap: 6px;
+    /* 👈 16px a la izquierda (igual a la fila) y 36px a la derecha para compensar la barra de scroll */
+    padding: 8px 36px 8px 16px;
+    font-size: 0.70rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    border-bottom: 1px dashed var(--border-subtle);
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.carrera-ranking-table-header .col-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+.carrera-ranking-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 52vh;
+    overflow-y: auto;
+    padding: 8px 2px;
+    scrollbar-width: thin;
+}
+
+.carrera-ranking-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.carrera-ranking-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.carrera-ranking-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
+}
+
+.carrera-rank-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 260px 105px 65px;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(18, 26, 42, 0.94) 0%, rgba(9, 14, 25, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.carrera-rank-row:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 215, 0, 0.45);
+}
+
+.carrera-rank-row.es-propio {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.16) 0%, rgba(12, 28, 22, 0.96) 100%);
+    border: 1.5px solid #00ff77;
+    box-shadow: 0 0 14px rgba(0, 230, 118, 0.2);
+}
+
+.carrera-rank-pos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rank-cup-medal {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+.rank-num-text {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: var(--text-muted);
+}
+
+.carrera-rank-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    overflow: hidden;
+}
+.carrera-rank-user .ranking-avatar-circle {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+}
+.carrera-user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    line-height: 1.15;
+}
+.carrera-user-name {
+    font-size: 0.88rem;
+    font-weight: 900;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.carrera-user-meta {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+}
+.carrera-mini-shield {
+    width: 17px;
+    height: 17px;
+    object-fit: contain;
+}
+
+/* 🏅 ÍCONOS DE COPAS GRANDES Y LEGIBLES EN EL DESGLOSE */
+.carrera-rank-cups-breakdown {
+    display: flex;
+    gap: 7px;
+    justify-content: center;
+    align-items: center;
+}
+.cup-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.84rem;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.cup-pill img {
+    width: 27px !important;
+    height: 27px !important;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* ⭐ Estrellita del Mundial agrandada para igualar a las medallas */
+.cup-pill.mund img,
+.cup-pill img[src*="estrella"] {
+    width: 28px !important;
+    height: 28px !important;
+    transform: scale(2.2) !important;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.95)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8)) !important;
+}
+
+/* 🏆 COLUMNA TÍTULOS CON TROFEO WEBP BIEN GRANDE */
+.carrera-rank-total {
+    display: flex;
+    justify-content: center;
+}
+.total-cups-badge {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.24) 0%, rgba(234, 179, 8, 0.14) 100%);
+    border: 1.5px solid #ffd700;
+    color: #ffd700;
+    padding: 4px 14px;
+    border-radius: 11px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 4px 14px rgba(255, 215, 0, 0.2);
+}
+.carrera-mini-trofeo,
+.total-cups-badge img {
+    width: 32px !important;
+    height: 32px !important;
+    transform: scale(1.6) !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6)) !important;
+}
+.total-cups-badge i {
+    font-size: 1.55rem !important;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+}
+
+/* ⚔️ COLUMNA DUELO CON ESPADAS WEBP */
+.carrera-rank-action {
+    display: flex;
+    justify-content: center;
+}
+.btn-desafiar-row {
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.25) 0%, rgba(10, 36, 24, 0.95) 100%);
+    border: 1.5px solid #00ff77;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 0;
+}
+.btn-desafiar-row:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 16px #00ff77;
+}
+.carrera-mini-swords {
+    width: 26px !important;
+    height: 26px !important;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.7));
+}
+.carrera-action-self {
+    font-size: 0.66rem;
+    font-weight: 900;
+    color: #00ff77;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* 📱 Responsive Celular */
+@media (max-width: 768px) {
+    .ranking-carrera-box {
+        padding: 14px 10px !important;
+        max-width: 95% !important;
+    }
+    .carrera-ranking-header {
+        gap: 14px !important;
+        margin-bottom: 12px !important;
+    }
+    .carrera-header-left .trophy-main-img-box {
+        width: 75px !important;
+        height: 75px !important;
+    }
+    .carrera-header-left .trophy-glow-backdrop {
+        width: 90px !important;
+        height: 90px !important;
+    }
+    .carrera-ranking-title {
+        font-size: 1.25rem !important;
+    }
+    .carrera-ranking-sub {
+        font-size: 0.74rem !important;
+    }
+    .carrera-ranking-table-header {
+        display: none !important;
+    }
+    .carrera-rank-row {
+        grid-template-columns: 28px 1fr auto auto;
+        gap: 8px;
+        padding: 8px 10px;
+    }
+    .carrera-rank-cups-breakdown {
+        display: none !important;
+    }
+    .carrera-user-name {
+        font-size: 0.80rem;
+        max-width: 125px;
+    }
+    .btn-desafiar-row {
+        width: 34px;
+        height: 34px;
+    }
+    .carrera-mini-swords {
+        width: 22px !important;
+        height: 22px !important;
+    }
+    .total-cups-badge {
+        font-size: 0.88rem;
+        padding: 4px 9px;
+    }
+    .carrera-mini-trofeo {
+        width: 24px !important;
+        height: 24px !important;
+    }
+}
+
+/* ☀️ Adaptación Modo Claro Salón de Campeones */
+[data-theme="light"] .ranking-carrera-box {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+}
+[data-theme="light"] .carrera-ranking-title {
+    color: #04160a !important;
+}
+[data-theme="light"] .carrera-rank-row {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+}
+[data-theme="light"] .carrera-user-name {
+    color: #0f172a !important;
+}
