@@ -110,16 +110,22 @@ async function cargarProgresoDesdeSupabase() {
             if (perfilNube.datos_juego) {
                 const dj = perfilNube.datos_juego;
                 
-                // 1. Restauramos estadísticas, logros y medallas
-                userStats = {
-                    ...userStats,
-                    ...dj,
-                    ligas5: new Set(dj.ligas5 || []),
-                    triviasDescubiertas: new Set(dj.triviasDescubiertas || []),
-                    ligasExploradas: new Set(dj.ligasExploradas || []),
-                    activeDates: dj.activeDates || []
-                };
-                procesarRachaDiaria();
+                // 1. Restauramos estadísticas, logros, medallas y datos del Once Inicial
+                    userStats = {
+                        ...userStats,
+                        ...dj,
+                        ligas5: new Set(dj.ligas5 || []),
+                        triviasDescubiertas: new Set(dj.triviasDescubiertas || []),
+                        ligasExploradas: new Set(dj.ligasExploradas || []),
+                        activeDates: dj.activeDates || [],
+                        puntosHabilidad: dj.puntosHabilidad !== undefined ? dj.puntosHabilidad : (userStats.puntosHabilidad || 0),
+                        mejorasJugadores: dj.mejorasJugadores || userStats.mejorasJugadores || {},
+                        copasGanadas: dj.copasGanadas || userStats.copasGanadas || []
+                    };
+                    if (dj.onceInicial) localStorage.setItem('ev_once_inicial_' + id, JSON.stringify(dj.onceInicial));
+                    if (dj.onceCapitan) localStorage.setItem('ev_once_capitan_' + id, dj.onceCapitan);
+                    if (dj.onceEscudo) localStorage.setItem('ev_once_escudo_' + id, dj.onceEscudo);
+                    procesarRachaDiaria();
 
                 // 2. Restauramos toda tu personalización visual en el dispositivo
                 if (dj.preferencias) {
@@ -519,7 +525,27 @@ const ESCUDOS_MAP = {
   'ned_excelsior': URL_BASE + 'excelsior.webp',
   'ned_fortuna': URL_BASE + 'fortunasittard.webp',
   'ned_cambuur': URL_BASE + 'cambuur.webp',
-  'ned_telstar': URL_BASE + 'telstar.webp'
+  'ned_telstar': URL_BASE + 'telstar.webp',
+
+  // 🇲🇽 MÉXICO (LIGA MX)
+  'mex_america': URL_BASE + 'america1.webp',
+  'mex_chivas': URL_BASE + 'guadalajara.webp',
+  'mex_cruzazul': URL_BASE + 'cruzazul.webp',
+  'mex_pumas': URL_BASE + 'pumas.webp',
+  'mex_tigres': URL_BASE + 'tigres.webp',
+  'mex_monterrey': URL_BASE + 'monterrey.webp',
+  'mex_toluca': URL_BASE + 'toluca.webp',
+  'mex_pachuca': URL_BASE + 'pachuca.webp',
+  'mex_santos': URL_BASE + 'santos.webp',
+  'mex_leon': URL_BASE + 'leon.webp',
+  'mex_atlas': URL_BASE + 'atlas.webp',
+  'mex_tijuana': URL_BASE + 'tijuana.webp',
+  'mex_puebla': URL_BASE + 'puebla.webp',
+  'mex_necaxa': URL_BASE + 'necaxa.webp',
+  'mex_sanluis': URL_BASE + 'atleticosl.webp',
+  'mex_juarez': URL_BASE + 'juarez.webp',
+  'mex_queretaro': URL_BASE + 'queretaro.webp',
+  'mex_atlante': URL_BASE + 'Atlante_FC_2022_Logo.svg.webp'
 };
 
 const BANDERAS_LISTA = [
@@ -828,7 +854,27 @@ const BANDERAS_LISTA = [
     { id: 'ned_excelsior', label: 'Excelsior', cat: 'ned' },
     { id: 'ned_fortuna', label: 'Fortuna Sittard', cat: 'ned' },
     { id: 'ned_cambuur', label: 'SC Cambuur', cat: 'ned' },
-    { id: 'ned_telstar', label: 'Telstar', cat: 'ned' }
+    { id: 'ned_telstar', label: 'Telstar', cat: 'ned' },
+
+    // 🇲🇽 MÉXICO (LIGA MX)
+    { id: 'mex_america', label: 'Club América', cat: 'mex' },
+    { id: 'mex_chivas', label: 'Chivas Guadalajara', cat: 'mex' },
+    { id: 'mex_cruzazul', label: 'Cruz Azul', cat: 'mex' },
+    { id: 'mex_pumas', label: 'Pumas UNAM', cat: 'mex' },
+    { id: 'mex_tigres', label: 'Tigres UANL', cat: 'mex' },
+    { id: 'mex_monterrey', label: 'CF Monterrey', cat: 'mex' },
+    { id: 'mex_toluca', label: 'Toluca', cat: 'mex' },
+    { id: 'mex_pachuca', label: 'Pachuca', cat: 'mex' },
+    { id: 'mex_santos', label: 'Santos Laguna', cat: 'mex' },
+    { id: 'mex_leon', label: 'Club León', cat: 'mex' },
+    { id: 'mex_atlas', label: 'Atlas', cat: 'mex' },
+    { id: 'mex_tijuana', label: 'Club Tijuana', cat: 'mex' },
+    { id: 'mex_puebla', label: 'Puebla', cat: 'mex' },
+    { id: 'mex_necaxa', label: 'Necaxa', cat: 'mex' },
+    { id: 'mex_sanluis', label: 'Atlético San Luis', cat: 'mex' },
+    { id: 'mex_juarez', label: 'FC Juárez', cat: 'mex' },
+    { id: 'mex_queretaro', label: 'Querétaro', cat: 'mex' },
+    { id: 'mex_atlante', label: 'Atlante', cat: 'mex' }
 ];
 
 function obtenerUrlEscudo(id) {
@@ -1027,7 +1073,7 @@ function generarAvatarHTML(avatarImg, forzarDesbloqueado = false) {
 }
 
 let estadiosCargados=[],catalogoGlobal=[];
-const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119","1916896887"];
+const todosLosGids=["0","861264971","554922783","88250864","2013531070","165565330","96716546","58862486","304687071","879164460","1616215119","1916896887","120485921"];
 let guessrRondaActual=0,guessrPuntosTotales=0,rivalPuntosTotales=0,guessrEstadioCorrecto=null,guessrEstadiosJugados=[],guessrHistorialRondas=[];
 let guessrDificultad = 'medio';
 let guessrTimerIndividualInterval = null;
@@ -1148,6 +1194,8 @@ if(!userStats.activeDates) userStats.activeDates = [];
 if(userStats.xpTotal===undefined)userStats.xpTotal=0;
 if(userStats.maxScore>25000) userStats.maxScore = 25000; // 🛡️ Corrige récords inflados por el acumulador de XP previo
 if(userStats.partidasGanadas===undefined) userStats.partidasGanadas = 0;
+if(userStats.puntosHabilidad===undefined) userStats.puntosHabilidad = 0;
+if(!userStats.mejorasJugadores || typeof userStats.mejorasJugadores !== 'object') userStats.mejorasJugadores = {};
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 procesarRachaDiaria();
@@ -1471,7 +1519,7 @@ if(saved==='light'){document.documentElement.setAttribute('data-theme','light');
 })();
 
 let ligasPanelOpen=false;
-const LIGA_COLORS={"0":"#74acdf","861264971":"#74acdf","554922783":"#cf142b","88250864":"#c60b1e","2013531070":"#009246","165565330":"#002395","96716546":"#ffce00","58862486":"#009c3b","304687071":"#d52b1e","879164460":"#1a6b3a","1616215119": "#f36c21","1916896887":"#046A38"};
+const LIGA_COLORS={"0":"#74acdf","861264971":"#74acdf","554922783":"#cf142b","88250864":"#c60b1e","2013531070":"#009246","165565330":"#002395","96716546":"#ffce00","58862486":"#009c3b","304687071":"#d52b1e","879164460":"#1a6b3a","1616215119": "#f36c21","1916896887":"#046A38","120485921":"#006847"};
 function toggleLigasPanel(){const panel=document.getElementById('ligas-dropdown-panel'),btn=document.getElementById('liga-selector-btn');ligasPanelOpen=!ligasPanelOpen;panel.classList.toggle('open',ligasPanelOpen);btn.classList.toggle('open',ligasPanelOpen);}
 window.toggleLigaCountryGroup=function(btn){const grupo=btn.closest('.liga-country-group');if(grupo)grupo.classList.toggle('open');};
 function cerrarLigasPanel(){ligasPanelOpen=false;document.getElementById('ligas-dropdown-panel').classList.remove('open');document.getElementById('liga-selector-btn').classList.remove('open');}
@@ -2514,7 +2562,27 @@ const COLORES_CLUBES={
     "Fortuna Sittard": "linear-gradient(135deg, #ffcc00, #008000)",
     "PEC Zwolle": "linear-gradient(135deg, #00529f, #ffffff)",
     "SC Cambuur": "linear-gradient(135deg, #ffcc00, #00529f)",
-    "Telstar": "linear-gradient(135deg, #ffffff, #00529f, #e30613)"
+    "Telstar": "linear-gradient(135deg, #ffffff, #00529f, #e30613)",
+
+    // MÉXICO - LIGA MX
+    "Club América": "linear-gradient(135deg, #002b49, #ffd100, #c8102e)",
+    "Chivas Guadalajara": "linear-gradient(135deg, #0f2042, #ffffff, #c8102e)",
+    "Cruz Azul": "linear-gradient(135deg, #0033a0, #ffffff, #c8102e)",
+    "Pumas UNAM": "linear-gradient(135deg, #1b263b, #c5a059)",
+    "Tigres UANL": "linear-gradient(135deg, #0033a0, #ffb81c)",
+    "CF Monterrey": "linear-gradient(135deg, #001e44, #ffffff, #001e44)",
+    "Toluca": "linear-gradient(135deg, #c8102e, #ffffff, #c8102e)",
+    "Pachuca": "linear-gradient(135deg, #002f6c, #ffffff)",
+    "Santos Laguna": "linear-gradient(135deg, #006847, #ffffff)",
+    "Club León": "linear-gradient(135deg, #006847, #ffd100)",
+    "Atlas": "linear-gradient(135deg, #c8102e, #000000)",
+    "Club Tijuana": "linear-gradient(135deg, #c8102e, #000000)",
+    "Puebla": "linear-gradient(135deg, #002f6c, #ffffff)",
+    "Necaxa": "linear-gradient(135deg, #c8102e, #ffffff)",
+    "Atlético San Luis": "linear-gradient(135deg, #c8102e, #ffffff, #002f6c)",
+    "FC Juárez": "linear-gradient(135deg, #78be20, #c8102e, #000000)",
+    "Querétaro": "linear-gradient(135deg, #0033a0, #000000, #ffffff)",
+    "Atlante": "linear-gradient(135deg, #002f6c, #8b0000)"
 };
 
 const COLORES_PAISES={
@@ -4543,10 +4611,17 @@ async function finalizarJuegoGuessr(){
             await enviarPuntaje(nombreLocal, guessrPuntosTotales, u?.email || '', 'duelo_' + ligaJugada);
         }
         
+        let spPillVersus = '';
         if (guessrPuntosTotales > rivalPuntosTotales) {
             cartelResultado = `<span>¡VICTORIA!</span> <img src="liga-trofeo-header.webp" alt="Trofeo" class="vs-result-trophy">`;
             colorResultado = "#00e676";
-            showToast("¡Ganaste el partido! Victoria guardada en el ranking. 🔥", "ph-trophy", "success");
+
+            // ⚡ Acreditación de +2 SP por victoria en 1 vs 1
+            const spPremio1v1 = 2;
+            userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + spPremio1v1;
+            spPillVersus = `<div class="versus-sp-reward-pill"><i class="ph-bold ph-lightning"></i> Recompensa: +${spPremio1v1} SP</div>`;
+
+            showToast(`¡Ganaste el partido! +${spPremio1v1} SP de Habilidad 🔥`, "ph-trophy", "success");
             userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
             guardarStats(); 
             try { await supabaseClient.from('victorias_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
@@ -4577,7 +4652,8 @@ async function finalizarJuegoGuessr(){
             <div class="endgame-grid-layout">
                 <div class="endgame-area-header">
                     <h2 style="font-size:1.6rem; font-weight:900; text-transform:uppercase; margin-bottom:4px; color:${colorResultado}; display:flex; align-items:center; justify-content:center; gap:8px;">${cartelResultado}</h2>
-                    <p style="color:var(--text-muted); margin-bottom:6px; font-size:.84rem;">Marcador Final del Mano a Mano</p>
+                    <p style="color:var(--text-muted); margin-bottom:4px; font-size:.84rem;">Marcador Final del Mano a Mano</p>
+                    ${spPillVersus}
                 </div>
                 
                 <div class="endgame-area-ring">
@@ -4627,6 +4703,13 @@ async function finalizarJuegoGuessr(){
     const xpGanada = Math.round(guessrPuntosTotales * multXP);
     agregarXP(xpGanada);
 
+    // ⚡ Cálculo y acreditación de Puntos de Habilidad (SP) para el Once Inicial
+    let spGanados = Math.floor(guessrPuntosTotales / 3000);
+    const tirosAlArea = guessrHistorialRondas.filter(r => !isNaN(r.distancia) && r.distancia < 15).length;
+    if (tirosAlArea > 0) spGanados += tirosAlArea; // +1 SP bonus por cada tiro clavado a menos de 15 km
+    if (guessrPuntosTotales >= 20000) spGanados += 2; // +2 SP bonus por rendimiento galáctico
+    userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + spGanados;
+
     pendingScore = guessrPuntosTotales;
     pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : 'guessr';
 
@@ -4658,6 +4741,7 @@ async function finalizarJuegoGuessr(){
     const strokeColor = guessrPuntosTotales > 15000 ? '#00e676' : guessrPuntosTotales > 8000 ? '#ff8f00' : '#ff4757';
     const circumf = 2 * Math.PI * 44;
     const dashOff = circumf - (circumf * Math.min(guessrPuntosTotales, 25000) / 25000);
+    const spDashOff = spGanados > 0 ? (circumf - (circumf * Math.min(spGanados, 5) / 5)) : circumf;
     const nivelActual = NIVELES[calcularNivelIdx(userStats.xpTotal)];
 
     const cartelGuardado = `
@@ -4685,18 +4769,41 @@ async function finalizarJuegoGuessr(){
         <div class="endgame-grid-layout">
             <div class="endgame-area-header">
                 <h2 style="font-size:1.22rem; font-weight:900; text-transform:uppercase; margin-top:0; margin-bottom:2px; letter-spacing:-.5px;">¡Misión Completada!</h2>
-                <p style="color:var(--text-muted); margin-bottom:4px; font-size:.75rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span></p>
+                <p style="color:var(--text-muted); margin-bottom:4px; font-size:.75rem;">Reconocimiento aéreo · <span style="color:${nivelActual.color};">${nivelActual.emoji}${nivelActual.nombre}</span></p>
             </div>
             
-            <div class="endgame-area-ring">
+            <!-- ⚡ DOBLE CÍRCULO: PUNTOS A LA IZQUIERDA Y SP A LA DERECHA (CON TOOLTIP) -->
+            <div class="endgame-area-ring dual-rings-row">
+                <!-- 1. CÍRCULO IZQUIERDO: PUNTOS DE LA PARTIDA -->
                 <div class="endgame-ring-glow-wrapper">
-                    <div class="endgame-ring-aura" style="width:105px; height:105px; background: radial-gradient(circle, ${strokeColor} 0%, ${strokeColor}44 42%, transparent 72%);"></div>
+                    <div class="endgame-ring-aura" style="width:105px; height:105px; background: radial-gradient(circle, ${strokeColor} 0\%,${strokeColor}44 42%, transparent 72%);"></div>
                     <div class="result-score-ring" style="width:76px; height:76px; margin:0 auto; position:relative; z-index:1;">
                         <svg width="76" height="76" viewBox="0 0 120 120" style="width:76px; height:76px;">
                             <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
                             <circle cx="60" cy="60" r="44" fill="none" stroke="${strokeColor}" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${dashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 8px ${strokeColor});"/>
                         </svg>
-                        <div class="score-num"><strong style="font-size:0.92rem; color:${strokeColor}; font-weight:900; line-height:1; letter-spacing:-0.3px;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong><span style="font-size:.50rem; color:var(--text-muted); font-weight:800; margin-top:2px; letter-spacing:0.6px;">PTS</span></div>
+                        <div class="score-num">
+                            <strong style="font-size:0.92rem; color:${strokeColor}; font-weight:900; line-height:1; letter-spacing:-0.3px;">${guessrPuntosTotales.toLocaleString('es-AR')}</strong>
+                            <span style="font-size:.50rem; color:var(--text-muted); font-weight:800; margin-top:2px; letter-spacing:0.6px;">PTS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. CÍRCULO DERECHO: SP DE HABILIDAD + TOOLTIP FLOTANTE -->
+                <div class="endgame-ring-glow-wrapper sp-ring-wrapper" tabindex="0">
+                    <div class="sp-tooltip-bubble">
+                        Entrená a tus jugadores con SP para aumentar la calidad de tu equipo
+                    </div>
+                    <div class="endgame-ring-aura" style="width:105px; height:105px; background: radial-gradient(circle, #00ff77 0%, rgba(0,255,119,0.35) 42%, transparent 72%);"></div>
+                    <div class="result-score-ring" style="width:76px; height:76px; margin:0 auto; position:relative; z-index:1;">
+                        <svg width="76" height="76" viewBox="0 0 120 120" style="width:76px; height:76px;">
+                            <circle cx="60" cy="60" r="44" fill="none" stroke="var(--border-strong)" stroke-width="10"/>
+                            <circle cx="60" cy="60" r="44" fill="none" stroke="#00ff77" stroke-width="10" stroke-dasharray="${circumf.toFixed(1)}" stroke-dashoffset="${spDashOff.toFixed(1)}" stroke-linecap="round" style="transition:stroke-dashoffset 1.5s ease; filter:drop-shadow(0 0 8px #00ff77);"/>
+                        </svg>
+                        <div class="score-num">
+                            <strong style="font-size:1.02rem; color:#00ff77; font-weight:900; line-height:1; letter-spacing:-0.3px;">+${spGanados}</strong>
+                            <span style="font-size:.50rem; color:#a7f3d0; font-weight:800; margin-top:2px; letter-spacing:0.6px;">SP</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -5340,21 +5447,26 @@ const AVATARES_LISTA = [
     { id: '10.webp', label: 'Hurricane', nivel: 12 },
     { id: '11.webp', label: 'Golden Boy', nivel: 13 },
     { id: '14.webp', label: 'Gigio', nivel: 14 },
+    { id: 'Guilermo memo Ochoa.webp', label: 'Memo', nivel: 14 },
     { id: '15.webp', label: 'El Fideo', nivel: 15 },
     { id: '26.webp', label: 'El Kun', nivel: 16 },
     { id: '36.webp', label: 'El Matador', nivel: 17 },
     { id: '52.webp', label: 'El 10 Cafetero', nivel: 18 },
+    { id: 'Phil Foden.webp', label: 'The Sniper', nivel: 18 },
     { id: '53.webp', label: 'El Tigre', nivel: 19 },
     { id: '59.webp', label: 'Niño Maravilla', nivel: 20 },
 
     // 🚀 NIVELES 21 A 30 (CRACKS, CAPITANES & TÉCNICOS)
     { id: '5.webp', label: 'El Androide', nivel: 21 },
     { id: '4.webp', label: 'Kiki', nivel: 22 },
+    { id: 'Jordi Alba.webp', label: 'La Flecha', nivel: 22 },
     { id: '6.webp', label: 'Ousadia', nivel: 23 },
     { id: '37.webp', label: 'El Gladiador', nivel: 24 },
+    { id: 'Antoine Griezmann.webp', label: 'El Principito', nivel: 24 },
     { id: '35.webp', label: 'El Pistolero', nivel: 25 },
     { id: '60.webp', label: 'Capitán América', nivel: 26 },
     { id: '54.webp', label: 'El Candado', nivel: 27 },
+    { id: 'Marco Reus.webp', label: 'Woodyinho', nivel: 27 },
     { id: '45.webp', label: 'El Estratega', nivel: 28 },
     { id: '48.webp', label: 'El Muñeco', nivel: 29 },
     { id: '46.webp', label: 'El Filósofo', nivel: 30 },
@@ -5362,23 +5474,33 @@ const AVATARES_LISTA = [
     // 🏆 NIVELES 31 A 40 (REFERENTES & CRISTIANO RONALDO)
     { id: '38.webp', label: 'El Relojito', nivel: 31 },
     { id: '43.webp', label: 'El Francotirador', nivel: 32 },
+    { id: 'Gerard Pique.webp', label: 'Piquenbauer', nivel: 32 },
+    { id: 'Diego Simeone.webp', label: 'El Cholo', nivel: 33 },
     { id: '42.webp', label: 'Mago Balcánico', nivel: 33 },
     { id: '58.webp', label: 'El Rey Arturo', nivel: 34 },
     { id: '27.webp', label: 'El Apache', nivel: 35 },
+    { id: 'Jurgen Klopp.webp', label: 'Jürgen', nivel: 35 },
     { id: '49.webp', label: 'Special One', nivel: 36 },
     { id: '47.webp', label: 'Carletto', nivel: 37 },
+    { id: 'Virgil Van Dijk.webp', label: 'El Titán', nivel: 37 },
     { id: '41.webp', label: 'El León Sueco', nivel: 38 },
+    { id: 'Mohamed Salah.webp', label: 'El Faraón', nivel: 38 },
     { id: '3.webp', label: 'O Menino', nivel: 39 },
     { id: '2.webp', label: 'El Bicho', nivel: 40 },
 
     // 👑 NIVELES 41 A 50 (MAGOS & LIONEL MESSI)
     { id: '39.webp', label: 'El Arquitecto', nivel: 41 },
+    { id: 'Kevin De Bruyne.webp', label: 'El Mago Rubio', nivel: 41 },
     { id: '40.webp', label: 'El Ilusionista', nivel: 42 },
+    { id: 'Thomas Muller.webp', label: 'Raumdeuter', nivel: 42 },
     { id: '44.webp', label: 'El Maestro', nivel: 43 },
+    { id: 'Robert Lewandoski.webp', label: 'La Máquina', nivel: 43 },
     { id: '29.webp', label: 'La Brujita', nivel: 44 },
     { id: '28.webp', label: 'El Torero', nivel: 45 },
+    { id: 'Manuel Neuer.webp', label: 'El Muro Bávaro', nivel: 46 },
     { id: '34.webp', label: 'Il Pendolino', nivel: 46 },
     { id: '33.webp', label: 'El Hombre Bala', nivel: 47 },
+    { id: 'Marcelo.webp', label: 'La Magia Carioca', nivel: 48 },
     { id: '50.webp', label: 'Mago de Marsella', nivel: 48 },
     { id: '31.webp', label: 'Dinho', nivel: 49 },
     { id: '1.webp', label: 'La Pulga', nivel: 50 },
@@ -5386,23 +5508,36 @@ const AVATARES_LISTA = [
     // 🌌 NIVELES 51 A 60 (LEYENDAS HISTÓRICAS & MARADONA)
     { id: '56.webp', label: 'El Escorpión', nivel: 51 },
     { id: '57.webp', label: 'El Pibe', nivel: 52 },
+    { id: 'Diego Forlán.webp', label: 'Cachavacha', nivel: 53 },
     { id: '62.webp', label: 'Bam-Bam', nivel: 54 },
+    { id: 'Rafa Marquez.webp', label: 'Káiser de Michoacán', nivel: 55 },
     { id: '63.webp', label: 'Gran Matador', nivel: 56 },
+    { id: 'Javier Zanetti.webp', label: 'El Pupi', nivel: 57 },
     { id: '32.webp', label: 'El Fenómeno', nivel: 58 },
     { id: '30.webp', label: 'O Rei', nivel: 59 },
     { id: '25.webp', label: 'El Barrilete', nivel: 60 },
 
-    // 💎 NIVELES 61 A 75 (ÉLITE CLÁSICA & BALONES DE ORO)
+    // 💎 NIVELES 61 A 85 (ÉLITE CLÁSICA, BALONES DE ORO & DTs DE LEYENDA)
     { id: '64.webp', label: 'Tiburón', nivel: 61 },
     { id: '65.webp', label: 'El Santo', nivel: 62 },
+    { id: 'Philip Lahm.webp', label: 'El Reloj Alemán', nivel: 63 },
     { id: '66.webp', label: 'Sir David', nivel: 64 },
+    { id: 'Rio Ferdinand.webp', label: 'El Káiser Inglés', nivel: 65 },
     { id: '67.webp', label: 'El Príncipe', nivel: 66 },
+    { id: 'Steven Gerard.webp', label: 'Stevie G', nivel: 67 },
     { id: '68.webp', label: 'Superman', nivel: 68 },
+    { id: 'Didier Drogba.webp', label: 'El Elefante', nivel: 69 },
     { id: '69.webp', label: 'Il Capitano', nivel: 70 },
     { id: '70.webp', label: 'Pepo', nivel: 71 },
     { id: '71.webp', label: 'Tití', nivel: 72 },
+    { id: 'Wayne Rooney.webp', label: 'Bad Boy', nivel: 73 },
     { id: '72.webp', label: 'El Eterno', nivel: 74 },
-    { id: '73.webp', label: 'Fútbol Total', nivel: 75 }
+    { id: '73.webp', label: 'Fútbol Total', nivel: 75 },
+    { id: 'Alessandro del piero.webp', label: 'Pinturicchio', nivel: 76 },
+    { id: 'Luis Figo.webp', label: 'El Extremo de Oro', nivel: 78 },
+    { id: 'Xabi Alonso.webp', label: 'La Brújula', nivel: 80 },
+    { id: 'Firefly (3).webp', label: 'El Tulipán Negro', nivel: 82 },
+    { id: 'Alex Ferguson.webp', label: 'Sir Alex', nivel: 85 }
 ];
 
 function obtenerNombreAvatar(id) {
@@ -6382,6 +6517,40 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
             </div>
 
+            <!-- 🏆 PALMARÉS Y VITRINA DE COPAS EN PERFIL -->
+            <div class="geoguessr-dash-box palmares-profile-box">
+                <div class="dash-header-inline">
+                    <div class="dash-title-premium">
+                        <i class="ph-duotone ph-trophy" style="font-size:1.3rem; color:#fde047;"></i> Palmarés del Club
+                    </div>
+                    <span class="palmares-counter-badge">
+                        ${(userStats.copasGanadas || []).length} ${(userStats.copasGanadas || []).length === 1 ? 'Título' : 'Títulos'}
+                    </span>
+                </div>
+                <div class="palmares-cups-row">
+                    <div class="palmares-cup-item ${(userStats.copasGanadas || []).some(c => c.tier === 'nacional') ? 'unlocked' : 'locked'}">
+                        <img src="medalla-bronce.webp" alt="Copa Nacional" class="palmares-cup-img">
+                        <strong>Copa Nacional</strong>
+                        <span>${(userStats.copasGanadas || []).some(c => c.tier === 'nacional') ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
+                    </div>
+                    <div class="palmares-cup-item ${(userStats.copasGanadas || []).some(c => c.tier === 'continental') ? 'unlocked' : 'locked'}">
+                        <img src="medalla-plata.webp" alt="Copa Continental" class="palmares-cup-img">
+                        <strong>Continental</strong>
+                        <span>${(userStats.copasGanadas || []).some(c => c.tier === 'continental') ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
+                    </div>
+                    <div class="palmares-cup-item ${(userStats.copasGanadas || []).some(c => c.tier === 'mundial_clubes') ? 'unlocked' : 'locked'}">
+                        <img src="medalla-oro.webp" alt="Mundial de Clubes" class="palmares-cup-img">
+                        <strong>Mundial Clubes</strong>
+                        <span>${(userStats.copasGanadas || []).some(c => c.tier === 'mundial_clubes') ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
+                    </div>
+                    <div class="palmares-cup-item ${(userStats.copasGanadas || []).some(c => c.tier === 'mundial') ? 'unlocked' : 'locked'}">
+                        <img src="estrella.webp" alt="Copa del Mundo" class="palmares-cup-img">
+                        <strong>Copa del Mundo</strong>
+                        <span>${(userStats.copasGanadas || []).some(c => c.tier === 'mundial') ? '👑 Campeón' : '🔒 Sin ganar'}</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="geoguessr-dash-box logros-box-mobile" style="flex:1; display:flex; flex-direction:column;">
                 <div class="dash-header-inline logros-header-clickable" onclick="toggleLogrosMobile()">
                     <div class="dash-title-premium">
@@ -6524,6 +6693,27 @@ logros.push({id:'bienvenido',icon:'<img src="primer-despegue.webp" class="logro-
 logros.push({id:'nick',icon:'<img src="identidad.webp" class="logro-img-icon" alt="Identidad">',name:'Identidad',rarity:'common',req:'Personalizá tu apodo',unlocked:!!getPref('ev_custom_nick',''),pct:getPref('ev_custom_nick','')?100:0,pctLabel:''});
 logros.push({id:'primer_versus',icon:'<img src="bautismo-de-fuego.webp" class="logro-img-icon" alt="Bautismo de Fuego">',name:'Bautismo de Fuego',rarity:'common',req:'Ganá tu primer Versus 1v1',unlocked:(s.partidasGanadas||0)>=1,pct:(s.partidasGanadas||0)>=1?100:0,pctLabel:''});
 
+// 🏆 LOGROS DE TORNEOS Y ONCE INICIAL
+const copasGanadasArray = s.copasGanadas || [];
+const tieneNac = copasGanadasArray.some(c => c.tier === 'nacional');
+const tieneCont = copasGanadasArray.some(c => c.tier === 'continental');
+const tieneClubes = copasGanadasArray.some(c => c.tier === 'mundial_clubes');
+const tieneMundial = copasGanadasArray.some(c => c.tier === 'mundial');
+
+let maxOvrIndividual = 0;
+if (typeof AVATARES_LISTA !== 'undefined') {
+    AVATARES_LISTA.forEach(a => {
+        const ovr = obtenerOvrJugador(a.id);
+        if (ovr > maxOvrIndividual) maxOvrIndividual = ovr;
+    });
+}
+
+logros.push({id:'copa_nacional',icon:'<img src="medalla-bronce.webp" class="logro-img-icon" alt="Copa Nacional">',name:'Gloria Nacional',rarity:'rare',req:'Levantá la Copa Nacional',unlocked:tieneNac,pct:tieneNac?100:0,pctLabel:tieneNac?'1/1':'0/1'});
+logros.push({id:'copa_continental',icon:'<img src="medalla-plata.webp" class="logro-img-icon" alt="Copa Continental">',name:'Rey de América',rarity:'epic',req:'Levantá la Copa Continental',unlocked:tieneCont,pct:tieneCont?100:0,pctLabel:tieneCont?'1/1':'0/1'});
+logros.push({id:'copa_mundial_clubes',icon:'<img src="medalla-oro.webp" class="logro-img-icon" alt="Mundial de Clubes">',name:'Rey de Clubes',rarity:'epic',req:'Levantá el Mundial de Clubes',unlocked:tieneClubes,pct:tieneClubes?100:0,pctLabel:tieneClubes?'1/1':'0/1'});
+logros.push({id:'copa_mundial',icon:'<img src="estrella.webp" class="logro-img-icon" alt="Copa del Mundo">',name:'Campeón del Mundo',rarity:'epic',req:'Levantá la Copa del Mundo',unlocked:tieneMundial,pct:tieneMundial?100:0,pctLabel:tieneMundial?'1/1':'0/1'});
+logros.push({id:'entrenador_estrella',icon:'<img src="estrella.webp" class="logro-img-icon" alt="Estrella">',name:'DT Galáctico',rarity:'rare',req:'Entrená a un futbolista a 80+ OVR',unlocked:maxOvrIndividual>=80,pct:maxOvrIndividual>=80?100:Math.min(100, Math.round((maxOvrIndividual/80)*100)),pctLabel:`${maxOvrIndividual}/80 OVR`});
+
 logros.push({id:'localista',icon:'<img src="gps-humano.webp" class="logro-img-icon" alt="GPS Humano">',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
 logros.push({id:'unKm',icon:'<img src="ojo-de-aguila.webp" class="logro-img-icon" alt="Ojo de Águila">',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});
 logros.push({id:'perfecto',icon:'<img src="perfeccionista.webp" class="logro-img-icon" alt="Perfeccionista">',name:'Perfeccionista',rarity:'epic',req:'Todo Guessr >4000 pts',unlocked:s.guessrPerfecto,pct:s.guessrPerfecto?100:0,pctLabel:''});
@@ -6545,10 +6735,10 @@ async function manejarAbandonoRival() {
     const id = getUserId();
     const nombreLocal = getPref('ev_custom_nick', '') || obtenerUsuarioLogueado()?.name || 'Jugador';
     
-    // 🏅 COMPUTACIÓN REGLAMENTARIA: Sumamos victoria al perfil local y otorgamos XP de bonificación
+    // 🏅 COMPUTACIÓN REGLAMENTARIA: Sumamos victoria al perfil local, XP y +2 SP
     userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
-    // 🔥 INYECTAMOS ACÁ: Suma también el partido jugado por abandono, manteniendo el balance perfecto
     userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
+    userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + 2;
     localStorage.setItem('ev_primera_partida_finalizada_' + id, 'true');
     localStorage.setItem('ev_primera_partida_finalizada_global', 'true');
     guardarStats();
@@ -7976,6 +8166,1048 @@ function obtenerCapitanOnce() {
     return userStats.onceCapitan || localStorage.getItem('ev_once_capitan_' + getUserId()) || null;
 }
 
+// ⚡ MOTOR DE OVR INDIVIDUAL Y DEL EQUIPO
+function obtenerOvrJugador(avatarId) {
+    if (!avatarId) return 50;
+    const aLimpio = avatarId.replace(/\.png$/i, '.webp');
+    const item = AVATARES_LISTA.find(a => a.id === aLimpio);
+    const nivelReq = item ? item.nivel : 0;
+    const baseOvr = NIVELES[nivelReq]?.ovr || 50;
+    const extra = (userStats.mejorasJugadores && userStats.mejorasJugadores[aLimpio]) || 0;
+    return Math.min(99, baseOvr + extra);
+}
+
+function calcularOvrEquipoOnce() {
+    const once = obtenerOnceInicial();
+    const f = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+    let suma = 0;
+    let count = 0;
+    for (let i = 0; i < f.posiciones.length; i++) {
+        if (once[i]) {
+            suma += obtenerOvrJugador(once[i]);
+            count++;
+        }
+    }
+    if (count === 0) return 0;
+    return Math.round(suma / count);
+}
+
+window.mejorarJugadorOnce = function(avatarId, event) {
+    if (event) event.stopPropagation();
+    const spDisponibles = userStats.puntosHabilidad || 0;
+    const costoSP = 2;
+    if (spDisponibles < costoSP) {
+        showToast(`Necesitás ${costoSP} SP para mejorar a este futbolista. ¡Jugá StadiumGuessr para ganar más! ⚽`, "ph-warning-circle", "warning");
+        return;
+    }
+    const aLimpio = avatarId.replace(/\.png$/i, '.webp');
+    const ovrActual = obtenerOvrJugador(aLimpio);
+    if (ovrActual >= 99) {
+        showToast("¡Este futbolista ya alcanzó el tope de 99 OVR! 👑", "ph-crown", "info");
+        return;
+    }
+    userStats.puntosHabilidad = spDisponibles - costoSP;
+    if (!userStats.mejorasJugadores) userStats.mejorasJugadores = {};
+    userStats.mejorasJugadores[aLimpio] = (userStats.mejorasJugadores[aLimpio] || 0) + 1;
+    guardarStats();
+    renderizarOnceInicial();
+    showToast(`¡${obtenerNombreAvatar(aLimpio)} subió a ${ovrActual + 1} OVR! 🔥`, "ph-lightning", "success");
+};
+
+// ========================================================
+// 🏆 ACCESO Y CONTROL DEL TORNEO DE COPAS
+// ========================================================
+window.clickBotonTorneoOnce = function() {
+    const once = obtenerOnceInicial();
+    const f = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+    let count = 0;
+    for (let i = 0; i < f.posiciones.length; i++) {
+        if (once[i]) count++;
+    }
+
+    if (count < 11) {
+        const faltan = 11 - count;
+        showToast(`Completá los 11 titulares para clasificar a la Copa (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
+    cerrarModalOnceInicial();
+    abrirModalTorneoCopas();
+};
+
+window.abrirModalTorneoCopas = function() {
+    const modal = document.getElementById('torneo-copas-modal');
+    if (!modal) return;
+    const ovrEquipo = calcularOvrEquipoOnce();
+    const sub = document.getElementById('torneo-team-ovr-sub');
+    if (sub) {
+        sub.innerHTML = `Tu equipo promedia <b style="color:#38bdf8;">${ovrEquipo} OVR</b> · Elegí una copa para competir:`;
+    }
+
+    const copas = userStats.copasGanadas || [];
+    const ganoNac = copas.some(c => c.tier === 'nacional');
+    const ganoCont = copas.some(c => c.tier === 'continental');
+    const ganoClubes = copas.some(c => c.tier === 'mundial_clubes');
+    const ganoMundial = copas.some(c => c.tier === 'mundial');
+
+    // 🥉 TIER 1: Copa Nacional
+    const cardNac = document.querySelector('.torneo-tier-card[onclick*="nacional"]');
+    if (cardNac) {
+        const st = cardNac.querySelector('.tier-status');
+        if (ganoNac && st) {
+            st.className = 'tier-status ready won';
+            st.innerHTML = `👑 Campeón`;
+        }
+    }
+
+    // 🥈 TIER 2: Copa Continental
+    const cardCont = document.getElementById('tier-card-continental');
+    if (cardCont) {
+        const okCont = ovrEquipo >= 70 || ganoNac;
+        cardCont.classList.toggle('tier-unlocked', okCont);
+        cardCont.classList.toggle('tier-locked', !okCont);
+        const st = cardCont.querySelector('.tier-status');
+        const btn = cardCont.querySelector('.tier-action-btn');
+        if (okCont) {
+            if (st) {
+                st.className = `tier-status ready ${ganoCont ? 'won' : ''}`;
+                st.innerHTML = ganoCont ? `👑 Campeón` : `<i class="ph-bold ph-check"></i> Disponible`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Disputar Copa</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else {
+            if (st) {
+                st.className = 'tier-status locked';
+                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 70 OVR`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d secondary tier-action-btn';
+                btn.disabled = true;
+                btn.innerHTML = `<i class="ph-bold ph-lock-key"></i> Bloqueado`;
+            }
+        }
+    }
+
+    // 🥇 TIER 3: Mundial de Clubes
+    const cardClubes = document.getElementById('tier-card-mundial-clubes');
+    if (cardClubes) {
+        const okClubes = ovrEquipo >= 80 || ganoCont;
+        cardClubes.classList.toggle('tier-unlocked', okClubes);
+        cardClubes.classList.toggle('tier-locked', !okClubes);
+        const st = cardClubes.querySelector('.tier-status');
+        const btn = cardClubes.querySelector('.tier-action-btn');
+        if (okClubes) {
+            if (st) {
+                st.className = `tier-status ready ${ganoClubes ? 'won' : ''}`;
+                st.innerHTML = ganoClubes ? `👑 Campeón` : `<i class="ph-bold ph-check"></i> Disponible`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Disputar Copa</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else {
+            if (st) {
+                st.className = 'tier-status locked';
+                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 80 OVR`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d secondary tier-action-btn';
+                btn.disabled = true;
+                btn.innerHTML = `<i class="ph-bold ph-lock-key"></i> Bloqueado`;
+            }
+        }
+    }
+
+    // 👑 TIER 4: Copa del Mundo (Selecciones Nacionales)
+    const cardMundial = document.getElementById('tier-card-mundial');
+    if (cardMundial) {
+        const okMundial = ovrEquipo >= 85 || ganoClubes;
+        cardMundial.classList.toggle('tier-unlocked', okMundial);
+        cardMundial.classList.toggle('tier-locked', !okMundial);
+        const st = cardMundial.querySelector('.tier-status');
+        const btn = cardMundial.querySelector('.tier-action-btn');
+        if (okMundial) {
+            if (st) {
+                st.className = `tier-status ready ${ganoMundial ? 'won' : ''}`;
+                st.innerHTML = ganoMundial ? `👑 Campeón` : `<i class="ph-bold ph-check"></i> Disponible`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Disputar Copa</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else {
+            if (st) {
+                st.className = 'tier-status locked';
+                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 85 OVR`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d secondary tier-action-btn';
+                btn.disabled = true;
+                btn.innerHTML = `<i class="ph-bold ph-lock-key"></i> Bloqueado`;
+            }
+        }
+    }
+
+    modal.style.display = 'flex';
+};
+
+window.cerrarModalTorneoCopas = function() {
+    const modal = document.getElementById('torneo-copas-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+// ========================================================
+// 🏆 MOTOR DE SIMULACIÓN Y TORNEOS DE COPAS (OVRs FIJOS)
+// ========================================================
+let torneoEstado = null;
+let simIntervalo = null;
+
+// 📊 RATINGS FIJOS OFICIALES DE CADA EQUIPO Y SELECCIÓN
+const EQUIPOS_OVR = {
+    // 🌍 SELECCIONES NACIONALES
+    'ar': 87, 'fr': 87, 'gb-eng': 86, 'es': 86, 'br': 85, 'de': 85, 'pt': 85, 'nl': 84,
+    'it': 83, 'uy': 82, 'co': 81, 'hr': 81, 'mar': 81, 'be': 80, 'jp': 79, 'sen': 79,
+    'us': 78, 'mx': 78, 'ec': 78, 'ch': 78, 'dk': 78, 'at': 77, 'srb': 77, 'pl': 77,
+    'tr': 77, 'ua': 76, 'ng': 76, 'ci': 76, 'eg': 76, 'kr': 76, 'cl': 75, 'pe': 74,
+    'py': 75, 've': 74, 'bo': 70, 'au': 74, 'ca': 76, 'cz': 76, 'no': 77, 'sc': 76,
+
+    // 👑 ÉLITE MUNDIAL (CLUBES)
+    'esp_realmadrid': 88, 'eng_mancity': 88, 'eng_liverpool': 87, 'ger_bayern': 86,
+    'esp_barcelona': 86, 'eng_arsenal': 86, 'ita_inter': 85, 'fra_psg': 85,
+    'esp_atletico': 84, 'ita_juventus': 83, 'ita_milan': 83, 'eng_chelsea': 83,
+    'eng_manunited': 82, 'ger_dortmund': 82,
+
+    // 🌎 CONTINENTAL (CLUBES DE PRIMERA DIVISIÓN)
+    'ger_leverkusen': 82, 'ita_atalanta': 81, 'ita_napoli': 81, 'eng_tottenham': 81,
+    'eng_astonvilla': 80, 'eng_newcastle': 80, 'ita_roma': 80, 'ita_lazio': 79,
+    'esp_realsociedad': 79, 'esp_athletic': 79, 'por_sporting': 80, 'por_benfica': 80,
+    'por_porto': 79, 'ned_psv': 79, 'ned_feyenoord': 78, 'ned_ajax': 78,
+    'bra_flamengo': 78, 'bra_palmeiras': 78, 'bra_botafogo': 77, 'bra_atleticomg': 76,
+    'bra_saopaulo': 76, 'bra_fluminense': 76, 'bra_internacional': 76, 'bra_gremio': 75,
+    'bra_cruzeiro': 75, 'bra_corinthians': 75, 'bra_bahia': 74, 'bra_vasco': 74,
+    'arg_river': 76, 'arg_boca': 75, 'arg_racing': 75, 'arg_velez': 74,
+    'arg_talleres': 74, 'arg_estudiantes': 74, 'arg_independiente': 73, 'arg_sanlorenzo': 73,
+    'arg_huracan': 73, 'arg_rosario': 73, 'arg_lanus': 73, 'arg_argentinos': 73,
+    'arg_godoycruz': 72, 'arg_defensa': 72, 'arg_belgrano': 72, 'arg_newells': 72,
+    'col_millonarios': 72, 'col_nacional': 73, 'col_america': 72, 'col_junior': 72,
+    'col_santafe': 71, 'col_tolima': 71, 'col_cali': 70, 'col_medellin': 71,
+    'chi_colocolo': 73, 'chi_uchile': 72, 'chi_ucatolica': 72, 'chi_coquimbo': 70,
+    'mex_america': 78, 'mex_monterrey': 77, 'mex_tigres': 77, 'mex_cruzazul': 76,
+    'mex_chivas': 75, 'mex_toluca': 75, 'mex_pumas': 74, 'mex_pachuca': 74,
+    'mex_leon': 73, 'mex_santos': 72, 'mex_atlas': 72, 'mex_sanluis': 71,
+    'mex_tijuana': 71, 'mex_necaxa': 70, 'mex_puebla': 69, 'mex_juarez': 69,
+    'mex_queretaro': 68, 'mex_atlante': 66,
+
+    // 🏆 COPA NACIONAL (CLUBES DE ASCENSO / MENORES)
+    'arg_colon': 66, 'arg_quilmes': 65, 'arg_sanmartintuc': 65, 'arg_ferro': 64,
+    'arg_chacarita': 64, 'arg_allboys': 63, 'arg_atlanta': 63, 'arg_almirantebrown': 63,
+    'arg_moron': 63, 'arg_gimnasiamza': 63, 'arg_aldosivi': 64, 'arg_patronato': 63,
+    'arg_temperley': 63, 'arg_depmadryn': 62, 'arg_estudiantesba': 62, 'arg_estudiantesrc': 62,
+    'arg_almagro': 62, 'arg_chacoforever': 62, 'arg_maipu': 62, 'arg_defensores': 62,
+    'arg_agropecuario': 61, 'arg_mitre': 61, 'arg_guemes': 60, 'arg_sanmiguel': 60,
+    'arg_santelmo': 61, 'arg_tristansuarez': 60, 'arg_colegiales': 59, 'arg_acassuso': 58,
+    'arg_losandes': 59, 'arg_midland': 58, 'arg_centralnorte': 58, 'arg_ciudadbolivar': 58,
+    'eng_sunderland': 69, 'eng_coventry': 68, 'eng_hull': 67, 'ger_paderborn': 68,
+    'ger_elversberg': 67, 'bra_chapecoense': 66, 'bra_coritiba': 67, 'bra_mirassol': 67,
+    'bra_remo': 63, 'col_cucuta': 64, 'col_llaneros': 63, 'col_chico': 63,
+    'chi_laserena': 65, 'chi_dconcepcion': 63, 'chi_limache': 62, 'ned_cambuur': 65,
+    'ned_telstar': 62, 'por_tondela': 66, 'por_alverca': 64
+};
+
+const TORNEOS_CONFIG = {
+    'nacional': {
+        nombre: 'Copa Nacional',
+        premioSP: 10,
+        clubesIds: [
+            'arg_acassuso', 'arg_agropecuario', 'arg_allboys', 'arg_almagro', 'arg_almirantebrown',
+            'arg_atlanta', 'arg_centralnorte', 'arg_chacarita', 'arg_chacoforever',
+            'arg_ciudadbolivar', 'arg_colegiales', 'arg_defensores', 'arg_depmadryn', 'arg_maipu',
+            'arg_moron', 'arg_estudiantesba', 'arg_estudiantesrc', 'arg_ferro', 'arg_gimnasiamza',
+            'arg_guemes', 'arg_losandes', 'arg_midland', 'arg_mitre', 'arg_patronato',
+            'arg_quilmes', 'arg_colon', 'arg_aldosivi', 'arg_sanmartintuc', 'arg_sanmiguel',
+            'arg_santelmo', 'arg_temperley', 'arg_tristansuarez', 'chi_limache', 'chi_dconcepcion',
+            'chi_laserena', 'col_cucuta', 'col_llaneros', 'col_chico', 'bra_remo',
+            'bra_chapecoense', 'bra_mirassol', 'bra_coritiba', 'eng_coventry', 'eng_hull',
+            'eng_sunderland', 'ger_elversberg', 'ger_paderborn', 'ned_telstar', 'ned_cambuur',
+            'por_alverca', 'por_tondela'
+        ]
+    },
+    'continental': {
+        nombre: 'Copa Continental',
+        premioSP: 25,
+        clubesIds: [
+            'arg_boca', 'arg_river', 'arg_racing', 'arg_independiente', 'arg_sanlorenzo',
+            'arg_velez', 'arg_estudiantes', 'arg_talleres', 'arg_huracan', 'arg_rosario',
+            'arg_lanus', 'arg_argentinos', 'arg_godoycruz', 'arg_defensa', 'arg_belgrano',
+            'bra_flamengo', 'bra_palmeiras', 'bra_botafogo', 'bra_atleticomg', 'bra_saopaulo',
+            'bra_fluminense', 'bra_internacional', 'bra_gremio', 'bra_cruzeiro', 'bra_corinthians',
+            'col_nacional', 'col_millonarios', 'col_america', 'col_junior', 'col_santafe',
+            'chi_colocolo', 'chi_uchile', 'chi_ucatolica', 'chi_coquimbo',
+            'mex_america', 'mex_monterrey', 'mex_tigres', 'mex_cruzazul', 'mex_chivas', 'mex_toluca',
+            'esp_realsociedad', 'esp_athletic', 'esp_sevilla', 'esp_betis',
+            'ita_roma', 'ita_lazio', 'ita_atalanta', 'ita_napoli',
+            'eng_astonvilla', 'eng_newcastle', 'eng_tottenham',
+            'por_sporting', 'por_benfica', 'por_porto',
+            'ned_psv', 'ned_feyenoord', 'ned_ajax', 'ger_leverkusen'
+        ]
+    },
+    'mundial_clubes': {
+        nombre: 'Mundial de Clubes',
+        premioSP: 45,
+        clubesIds: [
+            'esp_realmadrid', 'eng_mancity', 'eng_liverpool', 'ger_bayern', 'esp_barcelona',
+            'eng_arsenal', 'ita_inter', 'fra_psg', 'esp_atletico', 'ita_juventus',
+            'ita_milan', 'eng_chelsea', 'eng_manunited', 'ger_dortmund'
+        ]
+    },
+    'mundial': {
+        nombre: 'Copa del Mundo',
+        premioSP: 75,
+        clubesIds: [
+            'ar', 'fr', 'gb-eng', 'es', 'br', 'de', 'pt', 'nl', 'it', 'uy',
+            'co', 'hr', 'mar', 'be', 'jp', 'sen', 'us', 'mx', 'ec', 'dk'
+        ]
+    }
+};
+
+const RONDAS_NOMBRES = ['Octavos de Final', 'Cuartos de Final', 'Semifinal', 'Gran Final'];
+
+window.seleccionarCopaParaJugar = function(tierKey) {
+    const ovrEquipo = calcularOvrEquipoOnce();
+    const copas = userStats.copasGanadas || [];
+
+    if (tierKey === 'continental' && ovrEquipo < 70 && !copas.some(c => c.tier === 'nacional')) {
+        showToast("Tu equipo necesita al menos 70 OVR o ganar la Copa Nacional para clasificar 🔒", "ph-lock-key", "warning");
+        return;
+    }
+    if (tierKey === 'mundial_clubes' && ovrEquipo < 80 && !copas.some(c => c.tier === 'continental')) {
+        showToast("El Mundial de Clubes requiere al menos 80 OVR o ganar la Copa Continental 🔒", "ph-lock-key", "warning");
+        return;
+    }
+    if (tierKey === 'mundial' && ovrEquipo < 85 && !copas.some(c => c.tier === 'mundial_clubes')) {
+        showToast("La Copa del Mundo requiere un Once Galáctico de 85+ OVR o ganar el Mundial de Clubes 👑🔒", "ph-lock-key", "warning");
+        return;
+    }
+
+    cerrarModalTorneoCopas();
+    cerrarModalOnceInicial();
+    iniciarTorneoDeCopas(tierKey);
+};
+
+function iniciarTorneoDeCopas(tierKey) {
+    const cfg = TORNEOS_CONFIG[tierKey] || TORNEOS_CONFIG['nacional'];
+    
+    let pool = BANDERAS_LISTA.filter(b => cfg.clubesIds.includes(b.id));
+    if (pool.length < 4) pool = BANDERAS_LISTA.filter(b => b.id !== 'ev');
+
+    // Elegimos 4 rivales al azar
+    const rivalesElegidos = [];
+    const copiaPool = [...pool];
+    for (let i = 0; i < 4; i++) {
+        if (!copiaPool.length) break;
+        const idx = Math.floor(Math.random() * copiaPool.length);
+        const item = copiaPool.splice(idx, 1)[0];
+        const ovrReal = EQUIPOS_OVR[item.id] || 70;
+        rivalesElegidos.push({
+            id: item.id,
+            nombre: item.label,
+            ovr: ovrReal
+        });
+    }
+
+    // 🎯 CURVA DE TORNEO PERFECTA: Ordenamos de menor a mayor OVR (Octavos -> Final)
+    rivalesElegidos.sort((a, b) => a.ovr - b.ovr);
+
+    torneoEstado = {
+        tier: tierKey,
+        config: cfg,
+        rondaIdx: 0,
+        rivales: rivalesElegidos,
+        partidoEnCurso: false
+    };
+
+    prepararVistaPartidoCopa();
+    document.getElementById('simulador-partido-modal').style.display = 'flex';
+}
+
+function prepararVistaPartidoCopa() {
+    if (!torneoEstado) return;
+    const rondaNombre = RONDAS_NOMBRES[torneoEstado.rondaIdx] || 'Partido de Copa';
+    const rival = torneoEstado.rivales[torneoEstado.rondaIdx];
+    
+    const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
+    const u = obtenerUsuarioLogueado();
+    const nombreUsuario = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Tu Once');
+    const ovrUsuario = calcularOvrEquipoOnce();
+
+    const stageBadgeEl = document.getElementById('sim-stage-title');
+    if (stageBadgeEl) {
+        stageBadgeEl.className = 'sim-stage-badge';
+        stageBadgeEl.textContent = rondaNombre.toUpperCase();
+    }
+    document.querySelector('.sim-scoreboard-card')?.classList.remove('campeon-glory');
+    document.getElementById('sim-tournament-title').textContent = torneoEstado.config.nombre.toUpperCase();
+
+    // 🏟️ Ambientación arquitectónica de la arena según la jerarquía del torneo
+    const arenaEl = document.querySelector('.sim-stadium-arena');
+    if (arenaEl) {
+        arenaEl.className = `sim-stadium-arena tier-${torneoEstado.tier || 'nacional'}`;
+    }
+
+    // Equipo Usuario
+    document.getElementById('sim-user-shield').src = obtenerUrlEscudo(escudoUsuario);
+    document.getElementById('sim-user-name').textContent = nombreUsuario;
+    document.getElementById('sim-user-ovr').textContent = `OVR ${ovrUsuario}`;
+
+    // Club Rival
+    document.getElementById('sim-rival-shield').src = obtenerUrlEscudo(rival.id);
+    document.getElementById('sim-rival-name').textContent = rival.nombre;
+    document.getElementById('sim-rival-ovr').textContent = `OVR ${rival.ovr}`;
+
+    // Marcador y reloj a cero
+    document.getElementById('sim-score-user').textContent = '0';
+    document.getElementById('sim-score-rival').textContent = '0';
+    document.getElementById('sim-match-clock').textContent = 'PREVIA';
+
+    // ⚽ Reinicio del campo vertical 2D y jugadores
+    const ball = document.getElementById('sim-pitch-ball');
+    if (ball) {
+        ball.style.left = '50%';
+        ball.style.top = '50%';
+        ball.className = 'sim-pitch-ball';
+    }
+    const tag = document.getElementById('sim-pitch-tag');
+    if (tag) tag.className = 'sim-pitch-tag';
+    const playersBox = document.getElementById('sim-pitch-players');
+    if (playersBox) playersBox.className = 'sim-pitch-players';
+    document.getElementById('sim-goal-top')?.classList.remove('goal-hit-user', 'goal-hit-rival');
+    document.getElementById('sim-goal-bottom')?.classList.remove('goal-hit-user', 'goal-hit-rival');
+
+    // Nombres en extremos de la cancha
+    const bUser = document.getElementById('sim-pitch-badge-user');
+    const bRival = document.getElementById('sim-pitch-badge-rival');
+    if (bUser) bUser.textContent = nombreUsuario;
+    if (bRival) bRival.textContent = rival.nombre;
+
+    const timeline = document.getElementById('sim-events-timeline');
+    timeline.innerHTML = `
+        <div class="sim-event-placeholder">
+            <i class="ph-bold ph-whistle"></i>
+            <span>Todo listo en la cancha. Tocá <b>Rodar la Pelota</b> para disputar el pase a la siguiente fase.</span>
+        </div>`;
+
+    const btn = document.getElementById('sim-btn-play');
+    btn.className = 'btn-3d primary sim-main-btn';
+    btn.disabled = false;
+    btn.innerHTML = `<span>Rodar la Pelota</span> <i class="ph-bold ph-play"></i>`;
+    btn.onclick = iniciarSimulacionEnVivo;
+}
+
+let simPreviaTimer = null;
+
+window.cerrarModalSimuladorPartido = function() {
+    if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
+    if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+    const m = document.getElementById('simulador-partido-modal');
+    if (m) m.style.display = 'none';
+    torneoEstado = null;
+    if (typeof verificarSobreBienvenidaPostPartida === 'function') {
+        verificarSobreBienvenidaPostPartida();
+    }
+};
+
+window.iniciarSimulacionEnVivo = function() {
+    if (!torneoEstado || torneoEstado.partidoEnCurso) return;
+    torneoEstado.partidoEnCurso = true;
+
+    if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
+    if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+
+    const btn = document.getElementById('sim-btn-play');
+    btn.disabled = true;
+
+    const timeline = document.getElementById('sim-events-timeline');
+    timeline.innerHTML = '';
+
+    const clock = document.getElementById('sim-match-clock');
+    const scoreUserEl = document.getElementById('sim-score-user');
+    const scoreRivalEl = document.getElementById('sim-score-rival');
+    const ballEl = document.getElementById('sim-pitch-ball');
+    const tagEl = document.getElementById('sim-pitch-tag');
+    const goalTop = document.getElementById('sim-goal-top');
+    const goalBottom = document.getElementById('sim-goal-bottom');
+
+    const once = obtenerOnceInicial();
+    const capitanId = obtenerCapitanOnce();
+    const ovrUsuario = calcularOvrEquipoOnce() + (capitanId ? 2 : 0) + (once['DT'] ? 1 : 0);
+    const rival = torneoEstado.rivales[torneoEstado.rondaIdx];
+    const ovrRival = rival.ovr;
+
+    // Lista de titulares de campo para adjudicar goles
+    const nombresTitulares = Object.keys(once)
+        .filter(k => k !== 'DT' && once[k])
+        .map(k => obtenerNombreAvatar(once[k]));
+    const nombreCapitan = capitanId ? obtenerNombreAvatar(capitanId) : (nombresTitulares[0] || 'Tu delantero');
+
+    // Probabilidad de goles ponderada por OVR
+    const difOvr = ovrUsuario - ovrRival;
+    const probUser = Math.max(0.2, Math.min(0.8, 0.5 + (difOvr * 0.035)));
+
+    let golesUser = 0;
+    let golesRival = 0;
+
+    // ⏱️ GENERADOR DE 5 A 12 JUGADAS (PERMITE GOLEADAS Y PARTIDAZOS 4-3 O 5-4)
+    const cantEventos = Math.floor(Math.random() * 8) + 5;
+    const minutos = [];
+    const cant1T = Math.ceil(cantEventos / 2);
+    
+    let intentosSeguridad = 0;
+    while (minutos.length < cant1T && intentosSeguridad < 180) {
+        const m = Math.floor(Math.random() * 42) + 3;
+        if (!minutos.some(x => Math.abs(x - m) < 4)) minutos.push(m);
+        intentosSeguridad++;
+    }
+    while (minutos.length < cantEventos && intentosSeguridad < 350) {
+        const m = Math.floor(Math.random() * 46) + 48;
+        if (!minutos.some(x => Math.abs(x - m) < 4)) minutos.push(m);
+        intentosSeguridad++;
+    }
+    minutos.sort((a, b) => a - b);
+
+    // 🎙️ REPERTORIO DE RELATOS DE FÚTBOL REAL
+    const relatosGolUser = [
+        autor => `¡GOLAZO! Bombazo inatajable al ángulo de <b>${autor}</b>.`,
+        autor => `¡GOL! Cabezazo letal de <b>${autor}</b> anticipando en el primer palo.`,
+        autor => `¡GOL! Exquisita definición de <b>${autor}</b> picándola sobre el arquero.`,
+        autor => `¡GOL! Mano a mano implacable de <b>${autor}</b> cruzándola contra el poste.`,
+        autor => `¡GOL! Violento remate rasante de <b>${autor}</b> tras una gran pared colectiva.`
+    ];
+    const relatosAtaqueUser = [
+        autor => `¡TRAVESAÑO! Tremendo misil de <b>${autor}</b> que hace vibrar el arco rival.`,
+        autor => `El arquero rival vuela contra su palo y desvía al córner el tiro de <b>${autor}</b>.`,
+        autor => `Mano a mano clarísimo de <b>${autor}</b> que tapa providencialmente el arquero.`,
+        autor => `Tiro libre envenenado de <b>${autor}</b> que se va rozando la escuadra.`
+    ];
+    const relatosGolRival = [
+        () => `Gol de <b>${rival.nombre}</b> definiendo fuerte al primer palo tras un desborde.`,
+        () => `Golazo de <b>${rival.nombre}</b> de media distancia clavándola al ángulo.`,
+        () => `Gol de <b>${rival.nombre}</b> capitalizando un rebote en el área chica.`,
+        () => `Gol de <b>${rival.nombre}</b> con una contra letal mano a mano.`
+    ];
+    const relatosAtaqueRival = [
+        () => `¡SALVADA MONUMENTAL! Tu arquero vuela y desvía al córner un bombazo de <b>${rival.nombre}</b>.`,
+        () => `El delantero de <b>${rival.nombre}</b> estrella un tiro en el poste y se salva tu arco.`,
+        () => `Tu arquero salva con los pies sobre la línea ante la entrada de <b>${rival.nombre}</b>.`,
+        () => `Cabezazo peligroso de <b>${rival.nombre}</b> que pasa a centímetros del travesaño.`
+    ];
+
+    const eventos = [];
+    minutos.forEach(min => {
+        const esParaUsuario = Math.random() < probUser;
+        const esGol = Math.random() < 0.48;
+        const autor = Math.random() < 0.45 ? nombreCapitan : (nombresTitulares[Math.floor(Math.random() * nombresTitulares.length)] || 'Tu delantero');
+
+        if (esParaUsuario) {
+            if (esGol) {
+                golesUser++;
+                const relFn = relatosGolUser[Math.floor(Math.random() * relatosGolUser.length)];
+                eventos.push({ min: min, tipo: 'gol_user', texto: relFn(autor) });
+            } else {
+                const relFn = relatosAtaqueUser[Math.floor(Math.random() * relatosAtaqueUser.length)];
+                eventos.push({ min: min, tipo: 'ataque_user', texto: relFn(autor) });
+            }
+        } else {
+            if (esGol) {
+                golesRival++;
+                const relFn = relatosGolRival[Math.floor(Math.random() * relatosGolRival.length)];
+                eventos.push({ min: min, tipo: 'gol_rival', texto: relFn() });
+            } else {
+                const relFn = relatosAtaqueRival[Math.floor(Math.random() * relatosAtaqueRival.length)];
+                eventos.push({ min: min, tipo: 'ataque_rival', texto: relFn() });
+            }
+        }
+    });
+
+    // 📋 COORDENADAS BASE DE FORMACIÓN (TOP %, LEFT %)
+    const POS_BASE = {
+        'dot-r-por': [7, 50],
+        'dot-r-def1': [18, 18], 'dot-r-def2': [19, 38], 'dot-r-def3': [19, 62], 'dot-r-def4': [18, 82],
+        'dot-r-med1': [32, 28], 'dot-r-med2': [33, 50], 'dot-r-med3': [32, 72],
+        'dot-r-del1': [44, 24], 'dot-r-del2': [43, 50], 'dot-r-del3': [44, 76],
+        'dot-u-del1': [56, 24], 'dot-u-del2': [57, 50], 'dot-u-del3': [56, 76],
+        'dot-u-med1': [68, 28], 'dot-u-med2': [67, 50], 'dot-u-med3': [68, 72],
+        'dot-u-def1': [81, 18], 'dot-u-def2': [80, 38], 'dot-u-def3': [80, 62], 'dot-u-def4': [81, 82],
+        'dot-u-por': [93, 50]
+    };
+
+    const moverDot = (id, topNum, leftNum) => {
+        const d = document.getElementById(id);
+        if (d) {
+            d.style.top = `${topNum}%`;
+            d.style.left = `${leftNum}%`;
+        }
+    };
+
+    const resetearDots = () => {
+        for (let id in POS_BASE) {
+            moverDot(id, POS_BASE[id][0], POS_BASE[id][1]);
+        }
+    };
+
+    resetearDots();
+
+    // 🏃‍♂️ MOTOR TÁCTICO FLUIDO DE LOS 22 JUGADORES (SIN CRUCES LATERALES NI DESFASES)
+    const moverPelota2DVertical = (evTipo) => {
+        if (!ballEl) return;
+        goalTop?.classList.remove('goal-hit-user', 'goal-hit-rival');
+        goalBottom?.classList.remove('goal-hit-user', 'goal-hit-rival');
+        if (tagEl) tagEl.className = 'sim-pitch-tag';
+
+        const esUsuario = evTipo.includes('user');
+        const esGol = evTipo.includes('gol');
+        const banda = Math.random() < 0.5 ? 'izq' : 'der';
+        const patron = Math.floor(Math.random() * 10);
+        const noise = () => (Math.random() - 0.5) * 2;
+
+        ballEl.className = 'sim-pitch-ball';
+
+        let p1 = { x: 50, y: 50 }, p2 = { x: 50, y: 30 }, p3 = { x: 50, y: 1 };
+
+        // ══════════════════════════════════════════════════════════
+        // ATACA TU EQUIPO (HACIA ARRIBA)
+        // ══════════════════════════════════════════════════════════
+        if (esUsuario) {
+            const esIzq = banda === 'izq';
+
+            // FASE 1 (0 ms): Salida / Construcción
+            if (patron === 1 || patron === 5) {
+                // Por banda
+                p1 = { x: esIzq ? 26 : 74, y: 52 };
+                p2 = { x: esIzq ? 16 : 84, y: 22 };
+                p3 = { x: esIzq ? 56 : 44, y: esGol ? 1 : 5 };
+            } else if (patron === 2) {
+                // Media distancia
+                p1 = { x: 50, y: 56 };
+                p2 = { x: esIzq ? 45 : 55, y: 36 };
+                p3 = { x: esIzq ? 43 : 57, y: esGol ? 1 : 5 };
+            } else if (patron === 6) {
+                // Córner
+                p1 = { x: esIzq ? 4 : 96, y: 3 };
+                p2 = { x: 50, y: 14 };
+                p3 = { x: esIzq ? 46 : 54, y: esGol ? 1 : 4 };
+            } else if (patron === 7) {
+                // Tiro libre
+                p1 = { x: 50, y: 32 };
+                p2 = { x: 50, y: 32 };
+                p3 = { x: esIzq ? 42 : 58, y: esGol ? 1 : 5 };
+            } else {
+                // Frontal / Pared / Contra / Carambola / Presión
+                p1 = { x: 50, y: 54 };
+                p2 = { x: esIzq ? 44 : 56, y: 26 };
+                p3 = { x: esIzq ? 46 : 54, y: esGol ? 1 : 4 };
+            }
+
+            ballEl.style.left = `${p1.x}%`;
+            ballEl.style.top = `${p1.y}%`;
+
+            // Movimiento táctico en bloque respetando carriles
+            moverDot('dot-u-por', 88, 50);
+            moverDot('dot-u-def1', 68 + noise(), 18 + noise());
+            moverDot('dot-u-def2', 70 + noise(), 38 + noise());
+            moverDot('dot-u-def3', 70 + noise(), 62 + noise());
+            moverDot('dot-u-def4', 68 + noise(), 82 + noise());
+
+            moverDot('dot-u-med1', 52 + noise(), 28 + (esIzq ? -4 : 0));
+            moverDot('dot-u-med2', 48 + noise(), 50 + (esIzq ? -4 : 4));
+            moverDot('dot-u-med3', 52 + noise(), 72 + (esIzq ? 0 : 4));
+
+            moverDot('dot-u-del1', (esIzq ? 32 : 40) + noise(), 22 + (esIzq ? -4 : 2));
+            moverDot('dot-u-del2', 34 + noise(), 50 + (esIzq ? -3 : 3));
+            moverDot('dot-u-del3', (esIzq ? 40 : 32) + noise(), 78 + (esIzq ? -2 : 4));
+
+            // Repliegue rival en su mitad de cancha
+            moverDot('dot-r-por', 8, 50);
+            moverDot('dot-r-def1', 14 + noise(), 22);
+            moverDot('dot-r-def2', 15 + noise(), 40);
+            moverDot('dot-r-def3', 15 + noise(), 60);
+            moverDot('dot-r-def4', 14 + noise(), 78);
+            moverDot('dot-r-med1', 25 + noise(), 30);
+            moverDot('dot-r-med2', 24 + noise(), 50);
+            moverDot('dot-r-med3', 25 + noise(), 70);
+
+            // FASE 2 (700 ms): Pase al área y desmarques
+            setTimeout(() => {
+                ballEl.style.left = `${p2.x}%`;
+                ballEl.style.top = `${p2.y}%`;
+
+                moverDot(esIzq ? 'dot-u-del1' : 'dot-u-del3', 20, esIzq ? 30 : 70);
+                moverDot('dot-u-del2', 18, 50);
+                moverDot('dot-r-por', 10, esIzq ? 46 : 54); // Arquero rival da 2 pasos adelante
+
+                // FASE 3 (1400 ms): Remate y definición
+                setTimeout(() => {
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${p3.x}%`;
+                    ballEl.style.top = `${p3.y}%`;
+
+                    if (esGol) {
+                        // El arquero rival se tira a contrapié (permaneciendo en su área chica)
+                        moverDot('dot-r-por', 8, p3.x > 50 ? 42 : 58);
+
+                        setTimeout(() => {
+                            ballEl.className = 'sim-pitch-ball in-net';
+                            goalTop?.classList.add('goal-hit-user');
+                            scoreUserEl.textContent = parseInt(scoreUserEl.textContent) + 1;
+                            scoreUserEl.classList.add('animate-bounce');
+                            setTimeout(() => scoreUserEl.classList.remove('animate-bounce'), 400);
+
+                            if (tagEl) {
+                                tagEl.textContent = '¡GOL!';
+                                tagEl.className = 'sim-pitch-tag visible user-tag';
+                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.top = '16%';
+                            }
+                        }, 400);
+                    } else {
+                        // El arquero rival vuela hacia el balón (dentro del área chica)
+                        moverDot('dot-r-por', 7, p3.x);
+
+                        setTimeout(() => {
+                            ballEl.classList.remove('shooting');
+                            const esPoste = Math.random() < 0.5;
+                            if (esPoste) {
+                                ballEl.style.top = '22%';
+                                ballEl.style.left = `${p3.x + (esIzq ? 6 : -6)}%`;
+                            } else {
+                                ballEl.style.top = '7%';
+                                ballEl.style.left = esIzq ? '14%' : '86%';
+                            }
+
+                            if (tagEl) {
+                                tagEl.textContent = esPoste ? '¡TRAVESAÑO!' : '¡SALVADA!';
+                                tagEl.className = 'sim-pitch-tag visible neutral-tag';
+                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.top = '16%';
+                            }
+                        }, 400);
+                    }
+                }, 700);
+            }, 700);
+
+        // ══════════════════════════════════════════════════════════
+        // ATACA EL RIVAL (HACIA ABAJO)
+        // ══════════════════════════════════════════════════════════
+        } else {
+            const esIzq = banda === 'izq';
+
+            if (patron === 1 || patron === 5) {
+                p1 = { x: esIzq ? 26 : 74, y: 48 };
+                p2 = { x: esIzq ? 16 : 84, y: 78 };
+                p3 = { x: esIzq ? 56 : 44, y: esGol ? 99 : 95 };
+            } else if (patron === 2) {
+                p1 = { x: 50, y: 44 };
+                p2 = { x: esIzq ? 45 : 55, y: 64 };
+                p3 = { x: esIzq ? 43 : 57, y: esGol ? 99 : 95 };
+            } else if (patron === 6) {
+                p1 = { x: esIzq ? 4 : 96, y: 97 };
+                p2 = { x: 50, y: 86 };
+                p3 = { x: esIzq ? 46 : 54, y: esGol ? 99 : 96 };
+            } else if (patron === 7) {
+                p1 = { x: 50, y: 68 };
+                p2 = { x: 50, y: 68 };
+                p3 = { x: esIzq ? 42 : 58, y: esGol ? 99 : 95 };
+            } else {
+                p1 = { x: 50, y: 46 };
+                p2 = { x: esIzq ? 44 : 56, y: 74 };
+                p3 = { x: esIzq ? 46 : 54, y: esGol ? 99 : 96 };
+            }
+
+            ballEl.style.left = `${p1.x}%`;
+            ballEl.style.top = `${p1.y}%`;
+
+            // Movimiento táctico del rival hacia adelante
+            moverDot('dot-r-por', 12, 50);
+            moverDot('dot-r-def1', 32 + noise(), 18 + noise());
+            moverDot('dot-r-def2', 30 + noise(), 38 + noise());
+            moverDot('dot-r-def3', 30 + noise(), 62 + noise());
+            moverDot('dot-r-def4', 32 + noise(), 82 + noise());
+
+            moverDot('dot-r-med1', 48 + noise(), 28 + (esIzq ? -4 : 0));
+            moverDot('dot-r-med2', 52 + noise(), 50 + (esIzq ? -4 : 4));
+            moverDot('dot-r-med3', 48 + noise(), 72 + (esIzq ? 0 : 4));
+
+            moverDot('dot-r-del1', (esIzq ? 68 : 60) + noise(), 22 + (esIzq ? -4 : 2));
+            moverDot('dot-r-del2', 66 + noise(), 50 + (esIzq ? -3 : 3));
+            moverDot('dot-r-del3', (esIzq ? 60 : 68) + noise(), 78 + (esIzq ? -2 : 4));
+
+            // Repliegue de tu equipo en su mitad de cancha
+            moverDot('dot-u-por', 92, 50);
+            moverDot('dot-u-def1', 86 + noise(), 22);
+            moverDot('dot-u-def2', 85 + noise(), 40);
+            moverDot('dot-u-def3', 85 + noise(), 60);
+            moverDot('dot-u-def4', 86 + noise(), 78);
+            moverDot('dot-u-med1', 75 + noise(), 30);
+            moverDot('dot-u-med2', 76 + noise(), 50);
+            moverDot('dot-u-med3', 75 + noise(), 70);
+
+            // FASE 2 (700 ms): Pase rival al área de tu equipo
+            setTimeout(() => {
+                ballEl.style.left = `${p2.x}%`;
+                ballEl.style.top = `${p2.y}%`;
+
+                moverDot(esIzq ? 'dot-r-del1' : 'dot-r-del3', 80, esIzq ? 30 : 70);
+                moverDot('dot-r-del2', 82, 50);
+                moverDot('dot-u-por', 90, esIzq ? 46 : 54); // Tu arquero achica en su área chica
+
+                // FASE 3 (1400 ms): Remate rival y definición
+                setTimeout(() => {
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${p3.x}%`;
+                    ballEl.style.top = `${p3.y}%`;
+
+                    if (esGol) {
+                        // Tu arquero se tira a contrapié (en su propia área)
+                        moverDot('dot-u-por', 92, p3.x > 50 ? 42 : 58);
+
+                        setTimeout(() => {
+                            ballEl.className = 'sim-pitch-ball in-net';
+                            goalBottom?.classList.add('goal-hit-rival');
+                            scoreRivalEl.textContent = parseInt(scoreRivalEl.textContent) + 1;
+                            scoreRivalEl.classList.add('animate-bounce');
+                            setTimeout(() => scoreRivalEl.classList.remove('animate-bounce'), 400);
+
+                            if (tagEl) {
+                                tagEl.textContent = 'GOL RIVAL';
+                                tagEl.className = 'sim-pitch-tag visible rival-tag';
+                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.top = '84%';
+                            }
+                        }, 400);
+                    } else {
+                        // Tu arquero vuela hacia el balón (dentro de su área chica)
+                        moverDot('dot-u-por', 93, p3.x);
+
+                        setTimeout(() => {
+                            ballEl.classList.remove('shooting');
+                            const esPoste = Math.random() < 0.5;
+                            if (esPoste) {
+                                ballEl.style.top = '78%';
+                                ballEl.style.left = `${p3.x + (esIzq ? 6 : -6)}%`;
+                            } else {
+                                ballEl.style.top = '93%';
+                                ballEl.style.left = esIzq ? '14%' : '86%';
+                            }
+
+                            if (tagEl) {
+                                tagEl.textContent = esPoste ? '¡TRAVESAÑO!' : '¡SALVADA!';
+                                tagEl.className = 'sim-pitch-tag visible neutral-tag';
+                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.top = '80%';
+                            }
+                        }, 400);
+                    }
+                }, 700);
+            }, 700);
+        }
+
+        // FASE 4 (2250 ms): Repliegue orgánico a posiciones de formación base
+        setTimeout(() => {
+            resetearDots();
+            ballEl.className = 'sim-pitch-ball';
+            ballEl.style.left = '50%';
+            ballEl.style.top = '50%';
+            if (tagEl) tagEl.classList.remove('visible');
+            goalTop?.classList.remove('goal-hit-user', 'goal-hit-rival');
+            goalBottom?.classList.remove('goal-hit-user', 'goal-hit-rival');
+        }, 2250);
+    };
+
+    // ⏱️ CUENTA REGRESIVA PREVIA DE 3 SEGUNDOS (3... 2... 1...)
+    let segundosPrevia = 3;
+    clock.textContent = '3s';
+    btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+    
+    if (tagEl) {
+        tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
+        tagEl.className = 'sim-pitch-tag visible neutral-tag';
+        tagEl.style.left = '50%';
+        tagEl.style.top = '50%';
+    }
+
+    simPreviaTimer = setInterval(() => {
+        segundosPrevia--;
+        if (segundosPrevia > 0) {
+            clock.textContent = `${segundosPrevia}s`;
+            btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+            if (tagEl) tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
+        } else {
+            clearInterval(simPreviaTimer);
+            simPreviaTimer = null;
+            if (tagEl) tagEl.classList.remove('visible');
+            btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Jugando el partido...`;
+
+            // 🚀 ARRANQUE INSTANTÁNEO AL LLEGAR A CERO (CERO ESPERA / CERO LAG)
+            let step = 0;
+            const ejecutarPasoSimulacion = () => {
+                if (step < eventos.length) {
+                    const ev = eventos[step];
+                    clock.textContent = `MIN ${ev.min}'`;
+
+                    // ⚽ Comienza el movimiento y desarrollo de la jugada en la cancha
+                    moverPelota2DVertical(ev.tipo);
+
+                    // 🎙️ El relato aparece sincronizado con la definición en el arco
+                    setTimeout(() => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = `sim-event-row ${ev.tipo}`;
+                        itemEl.innerHTML = `<span class="sim-ev-min">${ev.min}'</span> <span class="sim-ev-text">${ev.texto}</span>`;
+                        timeline.appendChild(itemEl);
+                        timeline.scrollTop = timeline.scrollHeight;
+                    }, 1800);
+
+                    step++;
+                } else {
+                    clearInterval(simIntervalo);
+                    simIntervalo = null;
+                    clock.textContent = 'FINAL 90\'';
+                    finalizarPartidoCopa(golesUser, golesRival);
+                }
+            };
+
+            // Ejecuta la primera situación de juego en el milisegundo exacto en que termina el 1...
+            ejecutarPasoSimulacion();
+            simIntervalo = setInterval(ejecutarPasoSimulacion, 2750);
+        }
+    }, 1000);
+};
+// 🏆 SISTEMA MULTICAPA DE CELEBRACIÓN DE CAMPEÓN (60/120 FPS)
+function dispararFestejoCampeon(targetModal = null) {
+    // 1. Rayos volumétricos y destellos gaming
+    if (typeof dispararEfectoLucesGaming === 'function') {
+        dispararEfectoLucesGaming();
+    }
+
+    // 2. Oleadas continuas de confeti tridimensional de campeón
+    const contenedor = targetModal || document.body;
+    const coloresCampeon = ['#ffd700', '#ffea00', '#ffffff', '#00ff77', '#69ff9c', '#f59e0b'];
+
+    const lanzarOleada = (cantidad) => {
+        for (let i = 0; i < cantidad; i++) {
+            const p = document.createElement('div');
+            p.className = 'confetti-piece';
+            const color = coloresCampeon[Math.floor(Math.random() * coloresCampeon.length)];
+            const esTiraLarga = Math.random() > 0.6;
+            const w = esTiraLarga ? (6 + Math.random() * 4) : (8 + Math.random() * 6);
+            const h = esTiraLarga ? (16 + Math.random() * 12) : (8 + Math.random() * 6);
+
+            p.style.cssText = `
+                position: absolute;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 15}%;
+                width: ${w}px;
+                height: ${h}px;
+                background: ${color};
+                box-shadow: 0 0 6px ${color};
+                animation-delay: ${Math.random() * 0.35}s;
+                animation-duration: ${1.3 + Math.random() * 1.2}s;
+                transform: rotate(${Math.random() * 360}deg);
+                pointer-events: none;
+                z-index: 99999;
+            `;
+            contenedor.appendChild(p);
+            setTimeout(() => p.remove(), 2600);
+        }
+    };
+
+    // 3 ráfagas escalonadas para llenar el aire sin saturar memoria
+    lanzarOleada(40);
+    setTimeout(() => lanzarOleada(35), 350);
+    setTimeout(() => lanzarOleada(30), 750);
+}
+function finalizarPartidoCopa(golesUser, golesRival) {
+    const timeline = document.getElementById('sim-events-timeline');
+    const btn = document.getElementById('sim-btn-play');
+    torneoEstado.partidoEnCurso = false;
+
+    let ganoUsuario = golesUser > golesRival;
+
+    // En caso de empate en los 90 minutos, definición por penales
+    if (golesUser === golesRival) {
+        const penUser = 4 + Math.round(Math.random());
+        const penRival = penUser === 5 ? (Math.random() < 0.5 ? 4 : 3) : 5;
+        ganoUsuario = penUser > penRival;
+
+        const penRow = document.createElement('div');
+        penRow.className = 'sim-event-row penales';
+        penRow.innerHTML = `<span class="sim-ev-min">PEN</span> <span class="sim-ev-text"><b>Definición por penales:</b> ${penUser} a ${penRival} (${ganoUsuario ? '¡Ganaste la tanda!' : 'Caíste en los penales'})</span>`;
+        timeline.appendChild(penRow);
+        timeline.scrollTop = timeline.scrollHeight;
+    }
+
+    if (ganoUsuario) {
+        const esFinal = torneoEstado.rondaIdx === 3;
+        if (esFinal) {
+            // ¡CAMPEÓN DE LA COPA!
+            const premio = torneoEstado.config.premioSP;
+            userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
+            if (!userStats.copasGanadas) userStats.copasGanadas = [];
+            userStats.copasGanadas.push({
+                tier: torneoEstado.tier,
+                nombre: torneoEstado.config.nombre,
+                fecha: new Date().toISOString()
+            });
+            guardarStats();
+
+            // 👑 Consagración en marcador y cabecera limpia
+            const sbCard = document.querySelector('.sim-scoreboard-card');
+            if (sbCard) sbCard.classList.add('campeon-glory');
+
+            const stageTitle = document.getElementById('sim-stage-title');
+            if (stageTitle) {
+                stageTitle.className = 'sim-stage-badge campeon';
+                stageTitle.innerHTML = `<i class="ph-fill ph-crown"></i> ¡CAMPEÓN DEL TORNEO!`;
+            }
+
+            // 🏆 Botón de gloria dorado
+            btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
+            btn.disabled = false;
+            btn.innerHTML = `<i class="ph-bold ph-crown"></i> ¡LEVANTAR COPA (+${premio} SP)!`;
+            btn.onclick = () => {
+                cerrarModalSimuladorPartido();
+                showToast(`¡Campeón de la ${torneoEstado.config.nombre}! Sumaste +${premio} SP 🏆👑`, 'ph-trophy', 'success');
+                dispararFestejoCampeon(document.getElementById('torneo-copas-modal') || document.body);
+            };
+
+            // 🚀 Disparo de festejos multicapa en pantalla
+            dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
+        } else {
+            // Avanza a la siguiente ronda
+            torneoEstado.rondaIdx++;
+            const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
+            btn.className = 'btn-3d primary sim-main-btn';
+            btn.disabled = false;
+            btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
+            btn.onclick = () => {
+                prepararVistaPartidoCopa();
+            };
+        }
+    } else {
+        // Eliminado del torneo
+        btn.className = 'btn-3d secondary sim-main-btn danger';
+        btn.disabled = false;
+        btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Eliminado · Volver a Entrenar`;
+        btn.onclick = () => {
+            cerrarModalSimuladorPartido();
+            showToast("Quedaste fuera de la Copa. ¡Entrená a tus jugadores y volvé a intentarlo! ⚽", "ph-x-circle", "danger");
+        };
+    }
+}
+
 window.designarCapitanOnce = function(idx, event) {
     if (event) {
         event.stopPropagation();
@@ -8317,10 +9549,30 @@ function renderizarOnceInicial() {
         `;
     }
 
-    // 2. Contador de titulares y stats
+    // 2. Contador de titulares, OVR promedio y Saldo SP
     const ocupadosCount = Object.keys(once).filter(k => k !== 'DT' && parseInt(k) < f.posiciones.length && once[k]).length;
+    const ovrEquipo = calcularOvrEquipoOnce();
+    const spDisponibles = userStats.puntosHabilidad || 0;
     if (statsPill) {
-        statsPill.innerHTML = `Titulares: <b style="color:var(--accent-color);">${ocupadosCount}/11</b> · DT: <b style="color:${dtAvatar ? 'var(--accent-color)' : '#94a3b8'};">${dtAvatar ? 'Asignado' : 'Vacante'}</b> · Desbloqueados: <b style="color:#fbbf24;">${AVATARES_LISTA.filter(a => miNivel >= a.nivel).length}/${AVATARES_LISTA.length}</b>`;
+        statsPill.innerHTML = `Titulares: <b style="color:var(--accent-color);">${ocupadosCount}/11</b> · OVR Equipo: <b style="color:#38bdf8;">${ovrEquipo > 0 ? ovrEquipo : '--'}</b> · Habilidad: <b style="color:#00ff77; text-shadow:0 0 8px rgba(0,255,119,0.4);">${spDisponibles} SP</b>`;
+    }
+
+    // 🔒 Dinámica del botón Torneo / Candado
+    const btnTorneo = document.getElementById('btn-torneo-once-trigger');
+    const lblTorneo = document.getElementById('lbl-torneo-btn');
+    const icoTorneo = document.getElementById('ico-torneo-btn');
+    if (btnTorneo && lblTorneo && icoTorneo) {
+        if (ocupadosCount >= 11) {
+            btnTorneo.className = 'btn-3d once-quick-btn btn-torneo-ready animate-pulse';
+            icoTorneo.className = 'ph-bold ph-trophy';
+            lblTorneo.textContent = '¡Jugar Copa!';
+            btnTorneo.title = 'Tu equipo está clasificado para competir';
+        } else {
+            btnTorneo.className = 'btn-3d once-quick-btn btn-torneo-locked';
+            icoTorneo.className = 'ph-bold ph-lock-key';
+            lblTorneo.textContent = `Copa (${ocupadosCount}/11)`;
+            btnTorneo.title = `Faltan ${11 - ocupadosCount} titulares para desbloquear el torneo`;
+        }
     }
 
     // 3. Pestañas de formación
@@ -8330,11 +9582,12 @@ function renderizarOnceInicial() {
         `).join('');
     }
 
-    // 4. Renderizado de los 11 titulares en la cancha
+    // 4. Renderizado de los 11 titulares en la cancha con OVR integrado
     let htmlNodos = f.posiciones.map((item, idx) => {
         const avatarId = once[idx];
         const isSlotActive = slotActivoOnce === idx;
         const isCaptain = avatarId && (avatarId === capitanAvatar);
+        const ovrIndividual = avatarId ? obtenerOvrJugador(avatarId) : 0;
 
         const dragAttrs = avatarId ? `
             draggable="true"
@@ -8364,7 +9617,7 @@ function renderizarOnceInicial() {
                     <button type="button" class="once-slot-captain-btn ${isCaptain ? 'is-captain' : ''}" onclick="designarCapitanOnce(${idx}, event)" title="${isCaptain ? 'Capitán activo' : 'Nombrar Capitán (C)'}">C</button>
                     <button type="button" class="once-slot-remove-btn" onclick="quitarJugadorDeOnce(${idx}, event)" ontouchstart="event.stopPropagation()" title="Quitar titular">✕</button>
                 </div>
-                <div class="once-pos-badge">${item.pos}</div>
+                <div class="once-pos-badge">${item.pos} · ${ovrIndividual}</div>
                 <div class="once-player-label">${obtenerNombreAvatar(avatarId)}</div>
             </div>`;
         } else {
@@ -8385,6 +9638,7 @@ function renderizarOnceInicial() {
 
     // 5. Corralito técnico del DT en la esquina de la cancha
     const isDtActive = slotActivoOnce === 'DT';
+    const ovrDt = dtAvatar ? obtenerOvrJugador(dtAvatar) : 0;
     const htmlDtCorralito = `
         <div class="once-dt-bench ${isDtActive ? 'is-active-slot' : ''} ${dtAvatar ? 'filled' : 'empty'}" onclick="seleccionarSlotOnce('DT')" title="Elegir Director Técnico">
             <div class="once-avatar-circle dt-circle">
@@ -8395,34 +9649,53 @@ function renderizarOnceInicial() {
                     <i class="ph-bold ph-clipboard-text"></i>
                 `}
             </div>
-            <div class="once-pos-badge dt">DT</div>
+            <div class="once-pos-badge dt">DT${dtAvatar ? ` · ${ovrDt}` : ''}</div>
             <div class="once-player-label">${dtAvatar ? obtenerNombreAvatar(dtAvatar) : 'Elegir DT'}</div>
         </div>
     `;
 
     container.innerHTML = htmlNodos + htmlDtCorralito;
 
-    // 6. Título de la galería / banquillo
+    // 6. Título y Barra de Entrenamiento interactivo
     if (drawerTitle) {
-        if (slotActivoOnce === 'DT') {
-            drawerTitle.innerHTML = `<i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> Elegí al <b>Director Técnico</b> del equipo:`;
+        if (slotActivoOnce === 'DT' && dtAvatar) {
+            const nomDt = obtenerNombreAvatar(dtAvatar);
+            drawerTitle.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
+                    <span><i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> DT: <b>${nomDt}</b> (OVR ${ovrDt})</span>
+                    <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${dtAvatar}', event)" style="padding:4px 10px; font-size:0.65rem; height:24px; min-height:24px; border-radius:8px; gap:4px; box-shadow:none;">
+                        <i class="ph-bold ph-lightning"></i> Entrenar (+1 OVR · 2 SP)
+                    </button>
+                </div>`;
+        } else if (slotActivoOnce !== null && once[slotActivoOnce]) {
+            const idTitular = once[slotActivoOnce];
+            const nomTitular = obtenerNombreAvatar(idTitular);
+            const ovrTitular = obtenerOvrJugador(idTitular);
+            drawerTitle.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
+                    <span><i class="ph-bold ph-user" style="color:var(--accent-color);"></i> <b>${nomTitular}</b> (OVR ${ovrTitular})</span>
+                    <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${idTitular}', event)" style="padding:4px 10px; font-size:0.65rem; height:24px; min-height:24px; border-radius:8px; gap:4px; box-shadow:none;">
+                        <i class="ph-bold ph-lightning"></i> Entrenar (+1 OVR · 2 SP)
+                    </button>
+                </div>`;
         } else if (slotActivoOnce !== null) {
             const posNom = f.posiciones[slotActivoOnce]?.pos || 'PUESTO';
             drawerTitle.innerHTML = `<i class="ph-bold ph-hand-pointing" style="color:var(--accent-color);"></i> Elegí un futbolista para <b>${posNom}</b> (${slotActivoOnce + 1}º posición):`;
         } else {
-            drawerTitle.innerHTML = `<i class="ph-bold ph-arrows-left-right" style="color:var(--accent-color);"></i> Mantené apretado un titular para moverlo de posición o tocalo para reemplazarlo:`;
+            drawerTitle.innerHTML = `<i class="ph-bold ph-lightning" style="color:#00ff77;"></i> Tocá un titular para <b>entrenarlo (+1 OVR)</b> o cambiarlo:`;
         }
     }
 
-    // 7. Banquillo de cartas (sin globito verde por encima)
+    // 7. Banquillo con OVR visible en cada carta
     const jugadoresEnCancha = new Set(Object.values(once));
     drawerContainer.innerHTML = AVATARES_LISTA.map(item => {
         const isLocked = miNivel < item.nivel;
         const yaEnCancha = jugadoresEnCancha.has(item.id);
+        const ovrCarta = obtenerOvrJugador(item.id);
 
         let lockBadge = isLocked 
             ? `<div class="avatar-grid-lock-mask"><i class="ph-fill ph-lock-key"></i><span>NV. ${item.nivel}</span></div>` 
-            : '';
+            : `<div class="once-drawer-ovr-tag">${ovrCarta}</div>`;
 
         return `
         <div class="avatar-grid-card ${isLocked ? 'locked' : 'unlocked'} ${yaEnCancha ? 'in-pitch' : ''}" onclick="asignarJugadorAOnce('${item.id}')">
@@ -8444,4 +9717,45 @@ window.manejarInteraccionOnce = function(e) {
         return;
     }
     abrirModalOnceInicial();
+};
+// ========================================================
+// 🎮 HUB DE MODO CARRERA (GESTIÓN, COPAS Y PALMARÉS)
+// ========================================================
+window.abrirModalModoCarrera = function() {
+    const modal = document.getElementById('carrera-modal');
+    if (!modal) return;
+
+    const ovr = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
+    const sp = (userStats && userStats.puntosHabilidad) || 0;
+    const copas = (userStats && userStats.copasGanadas) ? userStats.copasGanadas.length : 0;
+
+    const sub = document.getElementById('carrera-hub-sub');
+    if (sub) {
+        sub.innerHTML = `OVR Equipo: <b style="color:#38bdf8;">${ovr > 0 ? ovr : '--'}</b> · Habilidad: <b style="color:#00ff77;">${sp} SP</b> · Títulos: <b style="color:#fbbf24;">${copas}</b>`;
+    }
+
+    modal.style.display = 'flex';
+};
+
+window.cerrarModalModoCarrera = function() {
+    const modal = document.getElementById('carrera-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+window.clickJugarCopaDesdeCarrera = function() {
+    const once = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) ? FORMACIONES_TACTICAS[formacionOnceActual] : { posiciones: Array(11).fill(0) };
+    let count = 0;
+    for (let i = 0; i < f.posiciones.length; i++) {
+        if (once[i]) count++;
+    }
+
+    if (count < 11) {
+        const faltan = 11 - count;
+        showToast(`Completá los 11 titulares para clasificar a la Copa (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
+    cerrarModalModoCarrera();
+    abrirModalTorneoCopas();
 };
