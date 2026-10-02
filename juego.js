@@ -9680,9 +9680,17 @@ function renderizarOnceInicial() {
                 </div>`;
         } else if (slotActivoOnce !== null) {
             const posNom = f.posiciones[slotActivoOnce]?.pos || 'PUESTO';
-            drawerTitle.innerHTML = `<i class="ph-bold ph-hand-pointing" style="color:var(--accent-color);"></i> Elegí un futbolista para <b>${posNom}</b> (${slotActivoOnce + 1}º posición):`;
+            drawerTitle.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-align:center;">
+                    <i class="ph-bold ph-hand-pointing" style="color:var(--accent-color); font-size:1rem; flex-shrink:0;"></i>
+                    <span>Elegí un futbolista para <b>${posNom}</b> (${slotActivoOnce + 1}º posición):</span>
+                </div>`;
         } else {
-            drawerTitle.innerHTML = `<i class="ph-bold ph-lightning" style="color:#00ff77;"></i> Tocá un titular para <b>entrenarlo (+1 OVR)</b> o cambiarlo:`;
+            drawerTitle.innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-align:center;">
+                    <i class="ph-bold ph-lightning" style="color:#00ff77; font-size:1rem; flex-shrink:0;"></i>
+                    <span>Tocá un titular para <b>entrenarlo (+1 OVR)</b> o cambiarlo:</span>
+                </div>`;
         }
     }
 

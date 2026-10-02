@@ -21617,14 +21617,39 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .once-drawer-title {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     font-weight: 800;
     color: var(--text-main);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 6px;
     flex-shrink: 0;
+    width: 100%;
+}
+
+.once-drawer-banner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.25;
+    flex-wrap: wrap;
+}
+
+.once-drawer-banner i {
+    color: var(--accent-color);
+    font-size: 0.95rem;
+    filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.once-drawer-banner b {
+    color: var(--accent-color);
+    font-weight: 900;
 }
 
 .once-players-scroll-grid {
@@ -21690,30 +21715,82 @@ html[data-theme="light"] .xp-bar-big-fill {
     text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
-/* Adaptación responsive para celulares */
+/* Adaptación responsive para celulares (Fichas compactas y DT despejado) */
 @media (max-width: 768px) {
     .once-tactical-field {
-        height: 310px;
-        min-height: 310px;
+        height: 345px !important;
+        min-height: 345px !important;
     }
 
     .once-avatar-circle {
-        width: 41px;
-        height: 41px;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        box-shadow: 0 0 10px var(--accent-glow) !important;
     }
 
     .once-empty-circle {
-        width: 37px;
-        height: 37px;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        font-size: 0.85rem !important;
     }
 
     .once-pos-badge {
-        font-size: 0.54rem;
-        padding: 1px 7px;
+        font-size: 0.48rem !important;
+        padding: 1px 5px !important;
+        margin-top: -4px !important;
     }
 
     .once-player-label {
-        font-size: 0.57rem;
+        font-size: 0.50rem !important;
+        margin-top: 1px !important;
+        max-width: 58px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .once-captain-armband-badge {
+        width: 13px !important;
+        height: 13px !important;
+        font-size: 0.48rem !important;
+        bottom: -2px !important;
+        left: -2px !important;
+    }
+
+    .once-slot-captain-btn,
+    .once-slot-remove-btn {
+        width: 15px !important;
+        height: 15px !important;
+        font-size: 0.48rem !important;
+    }
+
+    /* 👔 DT en esquina inferior derecha en escala compacta sin colisión con LD */
+    .once-dt-bench {
+        bottom: 3px !important;
+        right: 4px !important;
+    }
+    .once-dt-bench .once-avatar-circle {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        min-height: 30px !important;
+    }
+    .once-dt-bench .dt-circle {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.82rem !important;
+    }
+    .once-dt-bench .once-pos-badge {
+        font-size: 0.46rem !important;
+        padding: 1px 4px !important;
+    }
+    .once-dt-bench .once-player-label {
+        font-size: 0.48rem !important;
+        max-width: 48px !important;
     }
 }
 /* ========================================================
