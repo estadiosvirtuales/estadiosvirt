@@ -8552,6 +8552,7 @@ function prepararVistaPartidoCopa() {
         stageBadgeEl.textContent = rondaNombre.toUpperCase();
     }
     document.querySelector('.sim-scoreboard-card')?.classList.remove('campeon-glory');
+    document.querySelector('.sim-match-layout')?.classList.remove('campeon-view');
     document.getElementById('sim-tournament-title').textContent = torneoEstado.config.nombre.toUpperCase();
 
     // 🏟️ Ambientación arquitectónica de la arena según la jerarquía del torneo
@@ -9180,6 +9181,7 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             // 👑 Consagración en marcador y cabecera limpia
             const sbCard = document.querySelector('.sim-scoreboard-card');
             if (sbCard) sbCard.classList.add('campeon-glory');
+            document.querySelector('.sim-match-layout')?.classList.add('campeon-view');
 
             const stageTitle = document.getElementById('sim-stage-title');
             if (stageTitle) {

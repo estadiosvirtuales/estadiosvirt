@@ -23156,65 +23156,124 @@ html[data-theme="light"] .xp-bar-big-fill {
 .sim-pitch-tag.rival-tag { background: #ff4757; color: #fff; box-shadow: 0 0 14px rgba(255, 71, 87, 0.8); }
 .sim-pitch-tag.neutral-tag { background: #fbbf24; color: #000; box-shadow: 0 0 14px rgba(251, 191, 36, 0.8); }
 
-/* 📱 EN CELULAR: CANCHA VERTICAL CENTRADA DEBAJO */
-@media (max-width: 768px) {
-    .sim-stadium-arena {
-        width: 250px !important;
-        height: 315px !important;
-        margin: 4px auto !important;
-        border-radius: 20px !important;
-    }
-    .sim-pitch-2d-vertical {
-        width: 182px !important;
-        height: 250px !important;
-    }
-    .sim-corner-stand {
-        width: 33px !important;
-        height: 28px !important;
-    }
-    .sim-stands.top, .sim-stands.bottom {
-        left: 32px !important;
-        right: 32px !important;
-        height: 28px !important;
-    }
-    .sim-stands.left, .sim-stands.right {
-        top: 27px !important;
-        bottom: 27px !important;
-        width: 33px !important;
-    }
-    .sim-pitch-team-badge {
-        font-size: 0.50rem !important;
-        padding: 1.5px 7px !important;
-    }
-    .sim-pitch-team-badge.top { top: 3px !important; }
-    .sim-pitch-team-badge.bottom { bottom: 3px !important; }
-    .sim-pitch-team-badge.top { top: 14px; }
-    .sim-pitch-team-badge.bottom { bottom: 14px; }
-}
-
-/* 📱 EN CELULAR: CANCHA VERTICAL CENTRADA DEBAJO DE JUGADAS */
+/* 📱 EN CELULAR: CALIBRACIÓN COMPACTA 100% VISIBLE (CERO SCROLL Y CERO TIRONES) */
 @media (max-width: 768px) {
     .simulador-modal-box {
         max-width: 95% !important;
-        padding: 16px 14px !important;
+        width: 95% !important;
+        max-height: 94vh !important;
+        padding: 10px 12px 10px !important;
+        overflow: hidden !important; /* Bloquea tirones y saltos de pantalla */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
     }
+
+    .sim-header {
+        margin-bottom: 4px !important;
+        gap: 2px !important;
+    }
+    .sim-tournament-name {
+        font-size: 1.05rem !important;
+    }
+    .sim-stage-badge {
+        font-size: 0.54rem !important;
+        padding: 1px 7px !important;
+    }
+
     .sim-match-layout {
         display: flex !important;
         flex-direction: column !important;
-        gap: 10px !important;
-        margin-bottom: 8px !important;
+        gap: 6px !important;
+        margin-bottom: 4px !important;
+        width: 100% !important;
     }
-    .sim-left-column {
-        gap: 8px !important;
+
+    .sim-scoreboard-card {
+        padding: 6px 10px !important;
+        border-radius: 12px !important;
+    }
+    .sim-team-shield-wrap {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    .sim-team-shield {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    .sim-score-digits {
+        font-size: 1.45rem !important;
+    }
+    .sim-team-name {
+        font-size: 0.68rem !important;
+        max-width: 80px !important;
+    }
+
+    /* Caja de relatos fija y contenida para que no empuje la pantalla */
+    .sim-events-wrapper {
+        padding: 6px 8px !important;
+        border-radius: 10px !important;
+        margin-bottom: 0 !important;
     }
     .sim-events-scroll {
-        min-height: 100px !important;
-        max-height: 130px !important;
+        min-height: 48px !important;
+        max-height: 52px !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain !important;
+    }
+    .sim-event-row {
+        padding: 3px 6px !important;
+        font-size: 0.70rem !important;
+    }
+    .sim-event-placeholder {
+        height: 48px !important;
+        font-size: 0.70rem !important;
+    }
+    .sim-event-placeholder i {
+        font-size: 1.2rem !important;
+    }
+
+    /* Cancha compacta que permite ver el botón siempre abajo */
+    .sim-stadium-arena {
+        width: 215px !important;
+        height: 240px !important;
+        margin: 0 auto !important;
+        border-radius: 18px !important;
     }
     .sim-pitch-2d-vertical {
-        width: 185px !important;
-        height: 250px !important;
-        margin: 4px auto !important;
+        width: 155px !important;
+        height: 195px !important;
+    }
+    .sim-corner-stand {
+        width: 26px !important;
+        height: 22px !important;
+    }
+    .sim-stands.top, .sim-stands.bottom {
+        left: 24px !important;
+        right: 24px !important;
+        height: 22px !important;
+    }
+    .sim-stands.left, .sim-stands.right {
+        top: 22px !important;
+        bottom: 22px !important;
+        width: 26px !important;
+    }
+    .sim-pitch-team-badge {
+        font-size: 0.46rem !important;
+        padding: 1px 6px !important;
+    }
+    .sim-pitch-team-badge.top { top: 4px !important; }
+    .sim-pitch-team-badge.bottom { bottom: 4px !important; }
+
+    /* Botón anclado y 100% visible sin necesidad de scrollear */
+    .sim-actions-footer {
+        margin-top: 4px !important;
+        flex-shrink: 0 !important;
+    }
+    .sim-main-btn {
+        height: 35px !important;
+        min-height: 35px !important;
+        font-size: 0.76rem !important;
     }
 }
 
@@ -24324,64 +24383,90 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* ========================================================
    📜 RECORRIDO DEL CAMPEÓN: EL CAMINO A LA GLORIA
    ======================================================== */
+.sim-match-layout.campeon-view {
+    display: flex !important;
+    flex-direction: column !important;
+    max-width: 520px;
+    margin: 0 auto 6px;
+    width: 100% !important;
+}
+
+/* Oculta la cancha una vez consagrado campeón para que el recorrido sea el protagonista */
+.sim-match-layout.campeon-view .sim-right-column {
+    display: none !important;
+}
+
+.sim-match-layout.campeon-view .sim-events-wrapper {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.sim-match-layout.campeon-view .sim-events-scroll {
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
 .sim-camino-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
-    animation: fadeSlideUp 0.4s ease forwards;
+    animation: fadeSlideUp 0.35s ease forwards;
 }
 
 .sim-camino-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    font-size: 0.72rem;
+    gap: 7px;
+    font-size: 0.80rem;
     font-weight: 900;
     color: #ffd700;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     padding-bottom: 4px;
-    border-bottom: 1px dashed rgba(255, 215, 0, 0.35);
+    border-bottom: 1px dashed rgba(255, 215, 0, 0.4);
 }
 
 .sim-camino-header i {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.7));
 }
 
 .sim-camino-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     width: 100%;
 }
 
 .sim-camino-row {
-    background: linear-gradient(135deg, rgba(20, 32, 54, 0.9) 0%, rgba(10, 16, 28, 0.95) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-left: 3px solid #00ff77;
-    border-radius: 10px;
-    padding: 6px 10px;
+    background: linear-gradient(135deg, rgba(18, 28, 48, 0.94) 0%, rgba(8, 14, 25, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-left: 3.5px solid #00ff77;
+    border-radius: 11px;
+    padding: 6px 12px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
     box-sizing: border-box;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .sim-camino-row:last-child {
-    border-left: 3.5px solid #ffd700;
-    background: linear-gradient(135deg, rgba(38, 30, 10, 0.92) 0%, rgba(14, 18, 28, 0.96) 100%);
+    border-left: 4px solid #ffd700;
+    background: linear-gradient(135deg, rgba(38, 30, 10, 0.95) 0%, rgba(16, 20, 30, 0.98) 100%);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.25);
 }
 
 .sim-camino-fase {
-    font-size: 0.56rem;
-    font-weight: 800;
+    font-size: 0.58rem;
+    font-weight: 900;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
 }
 
 .sim-camino-match {
@@ -24409,14 +24494,14 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .sim-camino-team img {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
     flex-shrink: 0;
 }
 
 .sim-camino-team span {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 800;
     color: #ffffff;
     overflow: hidden;
@@ -24424,22 +24509,22 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .sim-camino-score {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 900;
     color: #00ff77;
     background: rgba(0, 255, 119, 0.12);
-    border: 1px solid rgba(0, 255, 119, 0.35);
-    padding: 2px 8px;
+    border: 1px solid rgba(0, 255, 119, 0.4);
+    padding: 2px 10px;
     border-radius: 6px;
     white-space: nowrap;
-    text-shadow: 0 0 6px rgba(0, 255, 119, 0.4);
+    text-shadow: 0 0 6px rgba(0, 255, 119, 0.45);
 }
 
 .sim-camino-row:last-child .sim-camino-score {
     color: #ffd700;
-    border-color: rgba(255, 215, 0, 0.5);
-    background: rgba(255, 215, 0, 0.15);
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    border-color: rgba(255, 215, 0, 0.6);
+    background: rgba(255, 215, 0, 0.18);
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
 }
 
 /* ☀️ Adaptación Modo Claro */
