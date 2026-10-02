@@ -8528,7 +8528,8 @@ function iniciarTorneoDeCopas(tierKey) {
         config: cfg,
         rondaIdx: 0,
         rivales: rivalesElegidos,
-        partidoEnCurso: false
+        partidoEnCurso: false,
+        recorridoPartidos: [] // 📜 Guarda cada cruce con marcador y rival
     };
 
     prepararVistaPartidoCopa();
@@ -9135,12 +9136,14 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     torneoEstado.partidoEnCurso = false;
 
     let ganoUsuario = golesUser > golesRival;
+    let penalesTexto = '';
 
     // En caso de empate en los 90 minutos, definición por penales
     if (golesUser === golesRival) {
         const penUser = 4 + Math.round(Math.random());
         const penRival = penUser === 5 ? (Math.random() < 0.5 ? 4 : 3) : 5;
         ganoUsuario = penUser > penRival;
+        penalesTexto = ` (${penUser}-${penRival} pen.)`;
 
         const penRow = document.createElement('div');
         penRow.className = 'sim-event-row penales';
@@ -9148,6 +9151,17 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         timeline.appendChild(penRow);
         timeline.scrollTop = timeline.scrollHeight;
     }
+
+    // 📝 Registramos este cruce en el historial del torneo
+    const rivalActual = torneoEstado.rivales[torneoEstado.rondaIdx];
+    torneoEstado.recorridoPartidos.push({
+        fase: RONDAS_NOMBRES[torneoEstado.rondaIdx],
+        rivalNombre: rivalActual.nombre,
+        rivalId: rivalActual.id,
+        golesUser: golesUser,
+        golesRival: golesRival,
+        penales: penalesTexto
+    });
 
     if (ganoUsuario) {
         const esFinal = torneoEstado.rondaIdx === 3;
@@ -9172,6 +9186,34 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                 stageTitle.className = 'sim-stage-badge campeon';
                 stageTitle.innerHTML = `<i class="ph-fill ph-crown"></i> ¡CAMPEÓN DEL TORNEO!`;
             }
+
+            // 📜 Desplegamos el recorrido completo en la columna de relatos
+            const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
+            timeline.innerHTML = `
+                <div class="sim-camino-wrapper">
+                    <div class="sim-camino-header">
+                        <i class="ph-fill ph-trophy"></i> EL CAMINO A LA GLORIA
+                    </div>
+                    <div class="sim-camino-list">
+                        ${torneoEstado.recorridoPartidos.map(p => `
+                            <div class="sim-camino-row">
+                                <span class="sim-camino-fase">${p.fase}</span>
+                                <div class="sim-camino-match">
+                                    <div class="sim-camino-team user">
+                                        <img src="${obtenerUrlEscudo(escudoUsuario)}" alt="Tu Club">
+                                        <span>Tu Once</span>
+                                    </div>
+                                    <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales}</span>
+                                    <div class="sim-camino-team rival">
+                                        <span>${p.rivalNombre}</span>
+                                        <img src="${obtenerUrlEscudo(p.rivalId)}" alt="${p.rivalNombre}">
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
 
             // 🏆 Botón de gloria dorado
             btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
