@@ -9230,7 +9230,7 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             // 🚀 Disparo de festejos multicapa en pantalla
             dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
         } else {
-            // Avanza a la siguiente ronda
+            // Avanza a la siguiente ronda e inicia de inmediato la previa (3... 2... 1...)
             torneoEstado.rondaIdx++;
             const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
             btn.className = 'btn-3d primary sim-main-btn';
@@ -9238,6 +9238,7 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
             btn.onclick = () => {
                 prepararVistaPartidoCopa();
+                iniciarSimulacionEnVivo();
             };
         }
     } else {
