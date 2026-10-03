@@ -2144,11 +2144,19 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
     let botonInvitarLigaHTML = '';
 
     if (n.toLowerCase() !== miNombre) {
-        botonDesafiarOnceHTML = `
-            <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
-                <i class="ph-bold ph-sword"></i> Desafiar a su Once
-            </button>
-        `;
+        if (datosRival.nivelActual >= 6) {
+            botonDesafiarOnceHTML = `
+                <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
+                    <i class="ph-bold ph-sword"></i> Desafiar a su Once
+                </button>
+            `;
+        } else {
+            botonDesafiarOnceHTML = `
+                <div style="margin-top: 10px; font-size: 0.74rem; font-weight: 800; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px dashed var(--border-strong); text-align: center; width: 100%; max-width: 340px; box-sizing: border-box;">
+                    <i class="ph-bold ph-lock-key" style="color: #fbbf24; vertical-align: middle;"></i> Once en formación (Nivel ${datosRival.nivelActual}/6)
+                </div>
+            `;
+        }
     }
 
     if (miLigaActual && n.toLowerCase() !== miNombre) {
@@ -2210,6 +2218,11 @@ window.iniciarDesafioOnceRivalDirecto = function() {
     const rival = window.datosUltimoRivalInspeccionado;
     if (!rival) return;
 
+    if ((rival.nivelActual || 0) < 6) {
+        showToast(`${rival.custom_nick} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 6) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
     // 1. Validar que el usuario tenga su equipo completo
     const onceUser = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
     const fUser = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) 
@@ -2246,10 +2259,11 @@ window.iniciarDesafioOnceRivalDirecto = function() {
                 sumaOvr += Math.min(99, baseOvr + extra);
             });
             ovrRival = Math.round(sumaOvr / idsTitulares.length);
-            if (rival.onceCapitan) ovrRival += 2;
-            if (onceR['DT']) ovrRival += 1;
+                if (rival.onceCapitan) ovrRival += 2;
+                if (onceR['DT']) ovrRival += 1;
+                ovrRival = Math.min(99, ovrRival);
+            }
         }
-    }
 
     // Si el rival aún no armó su once, le asignamos titulares acordes a su nivel
     if (!titularesRival.length) {
@@ -8242,6 +8256,8 @@ let dragSourceSlotOnce = null;
 let touchOriginIdxOnce = null;
 let touchCloneElOnce = null;
 let touchMovedOnce = false;
+let touchStartXOnce = 0;
+let touchStartYOnce = 0;
 
 function obtenerOnceInicial() {
     if (!userStats.onceInicial || typeof userStats.onceInicial !== 'object') {
@@ -8282,7 +8298,10 @@ function calcularOvrEquipoOnce() {
         }
     }
     if (count === 0) return 0;
-    return Math.round(suma / count);
+    let ovrFinal = Math.round(suma / count);
+    if (typeof obtenerCapitanOnce === 'function' && obtenerCapitanOnce()) ovrFinal += 2;
+    if (once['DT']) ovrFinal += 1;
+    return Math.min(99, ovrFinal);
 }
 
 window.mejorarJugadorOnce = function(avatarId, event) {
@@ -8740,7 +8759,7 @@ window.iniciarSimulacionEnVivo = function() {
 
     const once = obtenerOnceInicial();
     const capitanId = obtenerCapitanOnce();
-    const ovrUsuario = calcularOvrEquipoOnce() + (capitanId ? 2 : 0) + (once['DT'] ? 1 : 0);
+    const ovrUsuario = Math.min(99, calcularOvrEquipoOnce());
     const rival = torneoEstado.rivales[torneoEstado.rondaIdx];
     const ovrRival = rival.ovr;
 
@@ -9284,10 +9303,9 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             btn.onclick = () => {
                 cerrarModalSimuladorPartido();
                 showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Sumaste +${premio} SP 🔥`, 'ph-trophy', 'success');
-                dispararFestejoCampeon();
             };
 
-            dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
+            dispararEfectoLucesGaming();
         } else {
             const esFinal = torneoEstado.rondaIdx === 3;
             if (esFinal) {
@@ -9607,7 +9625,7 @@ window.soltarJugadorEnOnce = function(e, targetIdx) {
     intercambiarPosicionesOnce(sourceIdx, targetIdx);
 };
 
-// --- DESPLAZAMIENTO TÁCTIL EN CELULARES (TOUCH DRAG) ---
+// --- DESPLAZAMIENTO TÁCTIL EN CELULARES (TOUCH DRAG CON UMBRAL DE TOQUE) ---
 window.iniciarTouchOnce = function(e, idx) {
     const once = obtenerOnceInicial();
     if (!once[idx]) return;
@@ -9615,23 +9633,33 @@ window.iniciarTouchOnce = function(e, idx) {
     touchMovedOnce = false;
 
     const touch = e.touches[0];
+    touchStartXOnce = touch.clientX;
+    touchStartYOnce = touch.clientY;
+
     const originalSlot = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
     if (originalSlot) originalSlot.classList.add('is-dragging');
-
-    if (touchCloneElOnce) touchCloneElOnce.remove();
-    touchCloneElOnce = document.createElement('div');
-    touchCloneElOnce.className = 'once-touch-ghost';
-    touchCloneElOnce.innerHTML = `<img src="${once[idx]}" class="once-avatar-img" alt="Arrastrando">`;
-    touchCloneElOnce.style.left = `${touch.clientX}px`;
-    touchCloneElOnce.style.top = `${touch.clientY}px`;
-    document.body.appendChild(touchCloneElOnce);
 };
 
 window.moverTouchOnce = function(e) {
-    if (touchOriginIdxOnce === null || !touchCloneElOnce) return;
-    touchMovedOnce = true;
-    if (e.cancelable) e.preventDefault();
+    if (touchOriginIdxOnce === null) return;
     const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartXOnce);
+    const dy = Math.abs(touch.clientY - touchStartYOnce);
+
+    // Si el desplazamiento supera los 8 píxeles, se activa el modo arrastre
+    if (!touchMovedOnce && (dx > 8 || dy > 8)) {
+        touchMovedOnce = true;
+        const once = obtenerOnceInicial();
+        if (touchCloneElOnce) touchCloneElOnce.remove();
+        touchCloneElOnce = document.createElement('div');
+        touchCloneElOnce.className = 'once-touch-ghost';
+        touchCloneElOnce.innerHTML = `<img src="${once[touchOriginIdxOnce]}" class="once-avatar-img" alt="Arrastrando">`;
+        document.body.appendChild(touchCloneElOnce);
+    }
+
+    if (!touchMovedOnce || !touchCloneElOnce) return;
+
+    if (e.cancelable) e.preventDefault();
     touchCloneElOnce.style.left = `${touch.clientX}px`;
     touchCloneElOnce.style.top = `${touch.clientY}px`;
 
@@ -9657,6 +9685,7 @@ window.soltarTouchOnce = function(e) {
     const originSlot = document.querySelector(`.once-slot-node[data-slot-idx="${touchOriginIdxOnce}"]`);
     if (originSlot) originSlot.classList.remove('is-dragging');
 
+    // Si fue un toque rápido sin arrastre, no se mueven fichas y se ejecuta la selección
     if (!touchMovedOnce) {
         touchOriginIdxOnce = null;
         return;
@@ -9788,7 +9817,7 @@ function renderizarOnceInicial() {
                  ${dropAttrs}>
                 <div class="once-avatar-circle">
                     <img src="${avatarId}" alt="${item.pos}" class="once-avatar-img" draggable="false">
-                    <button type="button" class="once-slot-captain-btn ${isCaptain ? 'is-captain' : ''}" onclick="designarCapitanOnce(${idx}, event)" title="${isCaptain ? 'Capitán activo' : 'Nombrar Capitán (C)'}">C</button>
+                    ${isCaptain ? '<div class="once-captain-armband-badge">C</div>' : ''}
                     <button type="button" class="once-slot-remove-btn" onclick="quitarJugadorDeOnce(${idx}, event)" ontouchstart="event.stopPropagation()" title="Quitar titular">✕</button>
                 </div>
                 <div class="once-pos-badge">${item.pos} · ${ovrIndividual}</div>
@@ -9835,22 +9864,40 @@ function renderizarOnceInicial() {
         if (slotActivoOnce === 'DT' && dtAvatar) {
             const nomDt = obtenerNombreAvatar(dtAvatar);
             drawerTitle.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
-                    <span><i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> DT: <b>${nomDt}</b> (OVR ${ovrDt})</span>
-                    <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${dtAvatar}', event)" style="padding:4px 10px; font-size:0.65rem; height:24px; min-height:24px; border-radius:8px; gap:4px; box-shadow:none;">
-                        <i class="ph-bold ph-lightning"></i> Entrenar (+1 OVR · 2 SP)
-                    </button>
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px; flex-wrap:wrap;">
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:55%;">
+                        <i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> DT: <b>${nomDt}</b> (OVR ${ovrDt})
+                    </span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${dtAvatar}', event)" style="padding:4px 10px; font-size:0.65rem; height:26px; min-height:26px; border-radius:8px; gap:4px; box-shadow:none;">
+                            <i class="ph-bold ph-lightning"></i> Entrenar (+1 OVR · 2 SP)
+                        </button>
+                        <button type="button" class="btn-3d secondary danger" onclick="quitarJugadorDeOnce('DT', event)" style="padding:4px 8px; font-size:0.65rem; height:26px; min-height:26px; border-radius:8px; box-shadow:none;" title="Quitar DT">
+                            <i class="ph-bold ph-trash"></i>
+                        </button>
+                    </div>
                 </div>`;
         } else if (slotActivoOnce !== null && once[slotActivoOnce]) {
             const idTitular = once[slotActivoOnce];
             const nomTitular = obtenerNombreAvatar(idTitular);
             const ovrTitular = obtenerOvrJugador(idTitular);
+            const isCap = (idTitular === capitanAvatar);
             drawerTitle.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
-                    <span><i class="ph-bold ph-user" style="color:var(--accent-color);"></i> <b>${nomTitular}</b> (OVR ${ovrTitular})</span>
-                    <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${idTitular}', event)" style="padding:4px 10px; font-size:0.65rem; height:24px; min-height:24px; border-radius:8px; gap:4px; box-shadow:none;">
-                        <i class="ph-bold ph-lightning"></i> Entrenar (+1 OVR · 2 SP)
-                    </button>
+                <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px; flex-wrap:wrap;">
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:50%;">
+                        <i class="ph-bold ph-user" style="color:var(--accent-color);"></i> <b>${nomTitular}</b> (OVR ${ovrTitular})
+                    </span>
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${idTitular}', event)" style="padding:4px 10px; font-size:0.65rem; height:26px; min-height:26px; border-radius:8px; gap:4px; box-shadow:none;">
+                            <i class="ph-bold ph-lightning"></i> Entrenar (+1 OVR · 2 SP)
+                        </button>
+                        <button type="button" class="btn-3d secondary ${isCap ? 'active-cap' : ''}" onclick="designarCapitanOnce(${slotActivoOnce}, event)" style="padding:4px 10px; font-size:0.75rem; font-weight:900; height:26px; min-height:26px; border-radius:8px; box-shadow:none; ${isCap ? 'border-color:#ffd700 !important; color:#0b1325 !important; background:linear-gradient(135deg, #ffd700 0%, #ff9100 100%) !important; box-shadow:0 0 10px rgba(255,215,0,0.6) !important;' : ''}" title="${isCap ? 'Quitar capitanía' : 'Nombrar Capitán (C)'}">
+                            C
+                        </button>
+                        <button type="button" class="btn-3d secondary danger" onclick="quitarJugadorDeOnce(${slotActivoOnce}, event)" style="padding:4px 8px; font-size:0.65rem; height:26px; min-height:26px; border-radius:8px; box-shadow:none;" title="Quitar titular">
+                            <i class="ph-bold ph-trash"></i>
+                        </button>
+                    </div>
                 </div>`;
         } else if (slotActivoOnce !== null) {
             const posNom = f.posiciones[slotActivoOnce]?.pos || 'PUESTO';
@@ -9985,6 +10032,11 @@ window.abrirModalRankingCarrera = async function() {
             const nick = (pref.custom_nick || '').trim();
             if (!nick) return;
 
+            const exp = p.experiencia || dj.xpTotal || 0;
+            const nivelDt = calcularNivelIdx(exp);
+            // 🛡️ Filtro de nivel mínimo: solo DTs con plantel completo (Nivel 6+)
+            if (nivelDt < 6) return;
+
             const copas = dj.copasGanadas || [];
             let nac = 0, cont = 0, clubes = 0, mundial = 0;
 
@@ -9996,13 +10048,56 @@ window.abrirModalRankingCarrera = async function() {
             });
 
             const totalCopas = copas.length;
-            const ovr = NIVELES[calcularNivelIdx(p.experiencia || 0)]?.ovr || 60;
+
+            // ⚽ OVR REAL DEL ONCE INICIAL DEL RIVAL
+            let ovrOnce = 0;
+            const onceR = dj.onceInicial;
+            const mejoras = dj.mejorasJugadores || {};
+            let idsTitulares = [];
+
+            if (onceR && typeof onceR === 'object') {
+                idsTitulares = Object.keys(onceR).filter(k => k !== 'DT' && onceR[k]).map(k => onceR[k]);
+            }
+
+            if (idsTitulares.length >= 11) {
+                let sumaOvr = 0;
+                idsTitulares.forEach(id => {
+                    const aLimpio = id.replace(/\.png$/i, '.webp');
+                    const extra = mejoras[aLimpio] || 0;
+                    const item = AVATARES_LISTA.find(a => a.id === aLimpio);
+                    const nivelReq = item ? item.nivel : 0;
+                    const baseOvr = NIVELES[nivelReq]?.ovr || 50;
+                    sumaOvr += Math.min(99, baseOvr + extra);
+                });
+                ovrOnce = Math.round(sumaOvr / idsTitulares.length);
+                if (dj.onceCapitan) ovrOnce += 2;
+                if (onceR['DT']) ovrOnce += 1;
+                ovrOnce = Math.min(99, ovrOnce);
+            } else {
+                // Si aún no ordenó su formación en la pizarra, se computa con sus 11 mejores desbloqueados
+                const poolDesbloqueados = AVATARES_LISTA.filter(a => nivelDt >= a.nivel).sort((a, b) => b.nivel - a.nivel);
+                const mejores11 = poolDesbloqueados.slice(0, 11);
+                if (mejores11.length >= 11) {
+                    let sumaOvr = 0;
+                    mejores11.forEach(item => {
+                        const extra = mejoras[item.id] || 0;
+                        const baseOvr = NIVELES[item.nivel]?.ovr || 50;
+                        sumaOvr += Math.min(99, baseOvr + extra);
+                    });
+                    ovrOnce = Math.round(sumaOvr / 11);
+                    if (dj.onceCapitan) ovrOnce += 2;
+                    if (onceR && onceR['DT']) ovrOnce += 1;
+                    ovrOnce = Math.min(99, ovrOnce);
+                } else {
+                    ovrOnce = Math.min(99, NIVELES[nivelDt]?.ovr || 60);
+                }
+            }
 
             rankingCampeones.push({
                 nombre: nick,
                 avatar: pref.avatar_hair || '1.webp',
                 escudo: dj.onceEscudo || pref.avatar_logo || 'ev',
-                ovr: ovr,
+                ovr: ovrOnce,
                 nac: nac,
                 cont: cont,
                 clubes: clubes,
@@ -10011,12 +10106,13 @@ window.abrirModalRankingCarrera = async function() {
             });
         });
 
-        // Asegurar que el usuario actual figure con sus datos en vivo
+        // Asegurar que el usuario actual figure con su Once Inicial en vivo si alcanza el nivel mínimo
         const misCopas = userStats.copasGanadas || [];
         const miNombreReal = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos')).trim();
+        const miNivelActual = (userStats && userStats.nivelActual !== undefined) ? userStats.nivelActual : calcularNivelIdx(userStats.xpTotal || 0);
         const yaEstaEnLista = rankingCampeones.find(r => r.nombre.toLowerCase() === miNombre);
 
-        if (!yaEstaEnLista && miNombreReal) {
+        if (!yaEstaEnLista && miNombreReal && miNivelActual >= 6) {
             let nac = 0, cont = 0, clubes = 0, mundial = 0;
             misCopas.forEach(c => {
                 if (c.tier === 'nacional') nac++;
@@ -10024,11 +10120,19 @@ window.abrirModalRankingCarrera = async function() {
                 else if (c.tier === 'mundial_clubes') clubes++;
                 else if (c.tier === 'mundial') mundial++;
             });
+
+            let miOvrEquipo = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
+            if (miOvrEquipo === 0) {
+                miOvrEquipo = Math.min(99, NIVELES[miNivelActual]?.ovr || 60);
+            } else {
+                miOvrEquipo = Math.min(99, miOvrEquipo);
+            }
+
             rankingCampeones.push({
                 nombre: miNombreReal,
                 avatar: getPref('ev_avatar_hair', '1.webp'),
                 escudo: userStats.onceEscudo || getPref('ev_avatar_logo', 'ev'),
-                ovr: NIVELES[calcularNivelIdx(userStats.xpTotal)]?.ovr || 60,
+                ovr: miOvrEquipo,
                 nac: nac,
                 cont: cont,
                 clubes: clubes,
@@ -10202,6 +10306,11 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
         }
     } catch (e) {
         console.warn("Aviso al preparar duelo:", e);
+    }
+
+    if (datosRival.nivelActual < 6) {
+        showToast(`${nombreRival} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 6) 🔒`, "ph-lock-key", "warning");
+        return;
     }
 
     window.datosUltimoRivalInspeccionado = datosRival;
