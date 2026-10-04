@@ -2977,12 +2977,72 @@ if(!open){g.classList.add('active');userStats.triviasVistas++;const cardTitle=el
 document.addEventListener('click',()=>document.querySelectorAll('.trivia-balloon').forEach(g=>g.classList.remove('active')));
 function mostrarSkeletons(){document.querySelector('.grid').innerHTML=Array(6).fill(0).map(()=>`<div class="loading-card"><div class="loading-card-img skeleton"></div><div class="loading-card-body"><div class="skeleton loading-card-title"></div><div class="skeleton loading-card-sub"></div><div class="skeleton loading-card-btn"></div></div></div>`).join('');}
 
+const MAPA_PAIS_A_CAT = {
+    'argentina': 'arg',
+    'brasil': 'bra',
+    'colombia': 'col',
+    'españa': 'esp', 'espana': 'esp',
+    'inglaterra': 'eng',
+    'italia': 'ita',
+    'chile': 'chi',
+    'francia': 'fra',
+    'alemania': 'ger',
+    'portugal': 'por',
+    'países bajos': 'ned', 'paises bajos': 'ned',
+    'méxico': 'mex', 'mexico': 'mex'
+};
+
+function resolverUrlFotoClub(club, pais, fotoOriginal) {
+    if (club && typeof BANDERAS_LISTA !== 'undefined' && typeof ESCUDOS_MAP !== 'undefined') {
+        const limpiar = (txt) => (txt || '')
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]/g, "")
+            .trim();
+
+        const cLimpio = limpiar(club);
+        const pLimpio = (pais || '').toLowerCase().trim();
+        const catPais = MAPA_PAIS_A_CAT[pLimpio] || '';
+
+        // 1. Filtrar preferentemente los clubes del país de la tarjeta
+        const poolClubes = catPais
+            ? BANDERAS_LISTA.filter(b => b.cat === catPais)
+            : BANDERAS_LISTA.filter(b => b.cat !== 'paises');
+
+        // 2. Coincidencia EXACTA dentro de su propio país
+        let item = poolClubes.find(b => limpiar(b.label) === cLimpio);
+
+        // 3. Si no hay exacta, coincidencia parcial dentro del mismo país
+        if (!item) {
+            item = poolClubes.find(b => {
+                const bLimpio = limpiar(b.label);
+                return bLimpio.includes(cLimpio) || cLimpio.includes(bLimpio);
+            });
+        }
+
+        // 4. Fallback global únicamente si no coincidió en el país
+        if (!item) {
+            const todosClubes = BANDERAS_LISTA.filter(b => b.cat !== 'paises');
+            item = todosClubes.find(b => limpiar(b.label) === cLimpio);
+        }
+
+        if (item && ESCUDOS_MAP[item.id]) {
+            return ESCUDOS_MAP[item.id];
+        }
+    }
+    return fotoOriginal || '';
+}
+
 function renderizarTarjetas(lista){
 const gr=document.querySelector('.grid');gr.innerHTML='';
 if(!lista.length){gr.innerHTML=`<div class="empty-state"><i class="ph-duotone ph-magnifying-glass empty-state-icon"></i><h3>Sin resultados</h3><p>No se encontraron estadios que coincidan.</p></div>`;return;}
 lista.forEach((fila,idx)=>{
 const estadio=bscarPropiedad(fila,'Estadio'),club=bscarPropiedad(fila,'Club');if(!estadio||!club)return;
-const urlFoto=bscarPropiedad(fila,'Foto')?.trim()||'',pais=bscarPropiedad(fila,'País')?.trim()||'Argentina',fond=obtenerFondoClub(club,pais),linkVideo=bscarPropiedad(fila,'Link del Video')?.trim()||'#',latR=bscarPropiedad(fila,'Latitud')?.toString().trim()||'',lngR=bscarPropiedad(fila,'Longitud')?.toString().trim()||'',dato=bscarPropiedad(fila,'Dato Curioso');
+const fotoDb=bscarPropiedad(fila,'Foto')?.trim()||'';
+const pais=bscarPropiedad(fila,'País')?.trim()||'Argentina';
+const urlFoto=resolverUrlFotoClub(club, pais, fotoDb);
+const fond=obtenerFondoClub(club,pais),linkVideo=bscarPropiedad(fila,'Link del Video')?.trim()||'#',latR=bscarPropiedad(fila,'Latitud')?.toString().trim()||'',lngR=bscarPropiedad(fila,'Longitud')?.toString().trim()||'',dato=bscarPropiedad(fila,'Dato Curioso');
 const datoL=(dato||'¡Este estadio esconde grandes historias!').replace(/'/g,"\u2019").replace(/"/g,"\u201C");
 const datoSupa = promediosSupabase[estadio];
         let prom = parseFloat(bscarPropiedad(fila, 'Promedio')) || 0;
@@ -3046,7 +3106,16 @@ async function indexarCatalogoMasivo() {
 
         if (error) throw error;
 
-        catalogoGlobal = data.map(fila => ({
+        // 🛡️ Filtro anti-duplicados: conserva solo un registro único por Estadio + Club
+        const estadiosVistos = new Set();
+        const filasUnicas = (data || []).filter(fila => {
+            const clave = `${(fila.estadio || '').trim().toLowerCase()}_${(fila.club || '').trim().toLowerCase()}`;
+            if (!clave || clave === '_' || estadiosVistos.has(clave)) return false;
+            estadiosVistos.add(clave);
+            return true;
+        });
+
+        catalogoGlobal = filasUnicas.map(fila => ({
             'Estadio': fila.estadio,
             'Club': fila.club,
             'País': fila.pais,
@@ -8668,7 +8737,7 @@ function prepararVistaPartidoCopa() {
     document.querySelector('.sim-match-layout')?.classList.remove('campeon-view');
     document.getElementById('sim-tournament-title').textContent = torneoEstado.config.nombre.toUpperCase();
 
-    // 🏟️ Ambientación arquitectónica de la arena según la jerarquía del torneo
+    // 🏟️️ Ambientación arquitectónica de la arena según la jerarquía del torneo
     const arenaEl = document.querySelector('.sim-stadium-arena');
     if (arenaEl) {
         arenaEl.className = `sim-stadium-arena tier-${esDesafio ? 'continental' : (torneoEstado.tier || 'nacional')}`;
@@ -8688,6 +8757,29 @@ function prepararVistaPartidoCopa() {
     document.getElementById('sim-score-user').textContent = '0';
     document.getElementById('sim-score-rival').textContent = '0';
     document.getElementById('sim-match-clock').textContent = 'PREVIA';
+
+    // 📊 Reinicio de estadísticas en vivo
+    const posUserEl = document.getElementById('sim-stat-pos-user');
+    const posRivalEl = document.getElementById('sim-stat-pos-rival');
+    const fillUserEl = document.getElementById('sim-pos-fill-user');
+    const fillRivalEl = document.getElementById('sim-pos-fill-rival');
+    if (posUserEl) posUserEl.textContent = '50%';
+    if (posRivalEl) posRivalEl.textContent = '50%';
+    if (fillUserEl) fillUserEl.style.width = '50%';
+    if (fillRivalEl) fillRivalEl.style.width = '50%';
+
+    const tirosU = document.getElementById('sim-stat-tiros-user');
+    const tirosR = document.getElementById('sim-stat-tiros-rival');
+    const cornU = document.getElementById('sim-stat-corners-user');
+    const cornR = document.getElementById('sim-stat-corners-rival');
+    const faltU = document.getElementById('sim-stat-faltas-user');
+    const faltR = document.getElementById('sim-stat-faltas-rival');
+    if (tirosU) tirosU.textContent = '0 (0)';
+    if (tirosR) tirosR.textContent = '0 (0)';
+    if (cornU) cornU.textContent = '0';
+    if (cornR) cornR.textContent = '0';
+    if (faltU) faltU.textContent = '0';
+    if (faltR) faltR.textContent = '0';
 
     // ⚽ Reinicio del campo vertical 2D y jugadores
     const ball = document.getElementById('sim-pitch-ball');
@@ -8713,21 +8805,29 @@ function prepararVistaPartidoCopa() {
     timeline.innerHTML = `
         <div class="sim-event-placeholder">
             <i class="ph-bold ph-whistle"></i>
-            <span>Todo listo en la cancha. Tocá <b>Rodar la Pelota</b> para disputar el pase a la siguiente fase.</span>
+            <span>Todo listo en el campo. Tocá <b>Iniciar Partido</b> para disputar los 90 minutos de juego.</span>
         </div>`;
 
     const btn = document.getElementById('sim-btn-play');
     btn.className = 'btn-3d primary sim-main-btn';
     btn.disabled = false;
-    btn.innerHTML = `<span>Rodar la Pelota</span> <i class="ph-bold ph-play"></i>`;
+    btn.innerHTML = `<span>Iniciar Partido</span> <i class="ph-bold ph-play"></i>`;
     btn.onclick = iniciarSimulacionEnVivo;
 }
 
 let simPreviaTimer = null;
+let simHalftimeTimer = null;
+let simJugadaTimer = null;
+let simRafId = null;
 
 window.cerrarModalSimuladorPartido = function() {
+    if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
     if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
     if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+    if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
+    if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
+    // Devolvemos el control de las animaciones al CSS
+    document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = ''; });
     const m = document.getElementById('simulador-partido-modal');
     if (m) m.style.display = 'none';
     torneoEstado = null;
@@ -8736,18 +8836,28 @@ window.cerrarModalSimuladorPartido = function() {
     }
 };
 
+// ========================================================
+// ⚡ MOTOR DE FÚTBOL CONTINUO (física + IA por jugador)
+//  - Loop a 60fps con requestAnimationFrame (no más "un paso por minuto")
+//  - Cada jugador se mueve con velocidad/aceleración propia hacia un objetivo
+//  - El balón viaja de verdad (pases, tiros, rebotes), nunca se teletransporta
+//  - Presión, marcas, desmarques, tackles, faltas, penales, laterales, córners
+// ========================================================
 window.iniciarSimulacionEnVivo = function() {
     if (!torneoEstado || torneoEstado.partidoEnCurso) return;
     torneoEstado.partidoEnCurso = true;
 
+    if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
     if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
     if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+    if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
+    if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
 
     const btn = document.getElementById('sim-btn-play');
-    btn.disabled = true;
+    if (btn) btn.disabled = true;
 
     const timeline = document.getElementById('sim-events-timeline');
-    timeline.innerHTML = '';
+    if (timeline) timeline.innerHTML = '';
 
     const clock = document.getElementById('sim-match-clock');
     const scoreUserEl = document.getElementById('sim-score-user');
@@ -8757,102 +8867,112 @@ window.iniciarSimulacionEnVivo = function() {
     const goalTop = document.getElementById('sim-goal-top');
     const goalBottom = document.getElementById('sim-goal-bottom');
 
+    const posUserEl = document.getElementById('sim-stat-pos-user');
+    const posRivalEl = document.getElementById('sim-stat-pos-rival');
+    const fillUserEl = document.getElementById('sim-pos-fill-user');
+    const fillRivalEl = document.getElementById('sim-pos-fill-rival');
+    const tirosUEl = document.getElementById('sim-stat-tiros-user');
+    const tirosREl = document.getElementById('sim-stat-tiros-rival');
+    const cornUEl = document.getElementById('sim-stat-corners-user');
+    const cornREl = document.getElementById('sim-stat-corners-rival');
+    const faltUEl = document.getElementById('sim-stat-faltas-user');
+    const faltREl = document.getElementById('sim-stat-faltas-rival');
+
+    const canvasSVG = document.getElementById('sim-pitch-canvas');
+    if (canvasSVG) canvasSVG.innerHTML = '';
+    if (ballEl) { ballEl.style.transition = 'none'; ballEl.className = 'sim-pitch-ball'; }
+
+    // ================= CONFIGURACIÓN (tocá acá para ajustar el "feeling") =================
+    const CFG = {
+        msPorMinuto: 480,        // duración real de 1 minuto de juego (más alto = partido más largo)
+        velTrote: 15,            // unidades de cancha por segundo (la cancha mide 100 de alto)
+        velSprint: 27,
+        velPortero: 18,
+        velPase: 110,
+        velTiro: 115,
+        aceleracion: 9,          // qué tan rápido arrancan/frenan los jugadores
+        pensarMin: 0.12,         // tiempo que el poseedor "piensa" antes de actuar
+        pensarMax: 0.28,
+        radioContacto: 3.0,      // distancia a la que un rival disputa la pelota
+        tasaRobo: 0.7,           // chance/seg de perder la pelota en contacto
+        probFalta: 0.32,         // % de disputas que terminan en falta
+        xMin: 3, xMax: 97, yMin: 1.5, yMax: 98.5
+    };
+
+    // ================= 1. DATOS DEL PARTIDO =================
     const once = obtenerOnceInicial();
     const capitanId = obtenerCapitanOnce();
     const ovrUsuario = Math.min(99, calcularOvrEquipoOnce());
     const rival = torneoEstado.rivales[torneoEstado.rondaIdx];
     const ovrRival = rival.ovr;
+    const fActual = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
 
-    // Lista de titulares de campo para adjudicar goles
-    const nombresTitulares = Object.keys(once)
-        .filter(k => k !== 'DT' && once[k])
-        .map(k => obtenerNombreAvatar(once[k]));
-    const nombreCapitan = capitanId ? obtenerNombreAvatar(capitanId) : (nombresTitulares[0] || 'Tu delantero');
+    const userDefensas = [];
+    const userVolantes = [];
+    const userDelanteros = [];
+    let userArquero = 'El Arquero';
 
-    // Probabilidad de goles ponderada por OVR
-    const difOvr = ovrUsuario - ovrRival;
-    const probUser = Math.max(0.2, Math.min(0.8, 0.5 + (difOvr * 0.035)));
-
-    let golesUser = 0;
-    let golesRival = 0;
-
-    // ⏱️ GENERADOR DE 5 A 12 JUGADAS (PERMITE GOLEADAS Y PARTIDAZOS 4-3 O 5-4)
-    const cantEventos = Math.floor(Math.random() * 8) + 5;
-    const minutos = [];
-    const cant1T = Math.ceil(cantEventos / 2);
-    
-    let intentosSeguridad = 0;
-    while (minutos.length < cant1T && intentosSeguridad < 180) {
-        const m = Math.floor(Math.random() * 42) + 3;
-        if (!minutos.some(x => Math.abs(x - m) < 4)) minutos.push(m);
-        intentosSeguridad++;
-    }
-    while (minutos.length < cantEventos && intentosSeguridad < 350) {
-        const m = Math.floor(Math.random() * 46) + 48;
-        if (!minutos.some(x => Math.abs(x - m) < 4)) minutos.push(m);
-        intentosSeguridad++;
-    }
-    minutos.sort((a, b) => a - b);
-
-    // 🎙️ REPERTORIO DE RELATOS DE FÚTBOL REAL
-    const relatosGolUser = [
-        autor => `¡GOLAZO! Bombazo inatajable al ángulo de <b>${autor}</b>.`,
-        autor => `¡GOL! Cabezazo letal de <b>${autor}</b> anticipando en el primer palo.`,
-        autor => `¡GOL! Exquisita definición de <b>${autor}</b> picándola sobre el arquero.`,
-        autor => `¡GOL! Mano a mano implacable de <b>${autor}</b> cruzándola contra el poste.`,
-        autor => `¡GOL! Violento remate rasante de <b>${autor}</b> tras una gran pared colectiva.`
-    ];
-    const relatosAtaqueUser = [
-        autor => `¡TRAVESAÑO! Tremendo misil de <b>${autor}</b> que hace vibrar el arco rival.`,
-        autor => `El arquero rival vuela contra su palo y desvía al córner el tiro de <b>${autor}</b>.`,
-        autor => `Mano a mano clarísimo de <b>${autor}</b> que tapa providencialmente el arquero.`,
-        autor => `Tiro libre envenenado de <b>${autor}</b> que se va rozando la escuadra.`
-    ];
-    const relatosGolRival = [
-        () => `Gol de <b>${rival.nombre}</b> definiendo fuerte al primer palo tras un desborde.`,
-        () => `Golazo de <b>${rival.nombre}</b> de media distancia clavándola al ángulo.`,
-        () => `Gol de <b>${rival.nombre}</b> capitalizando un rebote en el área chica.`,
-        () => `Gol de <b>${rival.nombre}</b> con una contra letal mano a mano.`
-    ];
-    const relatosAtaqueRival = [
-        () => `¡SALVADA MONUMENTAL! Tu arquero vuela y desvía al córner un bombazo de <b>${rival.nombre}</b>.`,
-        () => `El delantero de <b>${rival.nombre}</b> estrella un tiro en el poste y se salva tu arco.`,
-        () => `Tu arquero salva con los pies sobre la línea ante la entrada de <b>${rival.nombre}</b>.`,
-        () => `Cabezazo peligroso de <b>${rival.nombre}</b> que pasa a centímetros del travesaño.`
-    ];
-
-    const eventos = [];
-    minutos.forEach(min => {
-        const esParaUsuario = Math.random() < probUser;
-        const esGol = Math.random() < 0.48;
-        const autor = Math.random() < 0.45 ? nombreCapitan : (nombresTitulares[Math.floor(Math.random() * nombresTitulares.length)] || 'Tu delantero');
-
-        if (esParaUsuario) {
-            if (esGol) {
-                golesUser++;
-                const relFn = relatosGolUser[Math.floor(Math.random() * relatosGolUser.length)];
-                eventos.push({ min: min, tipo: 'gol_user', texto: relFn(autor) });
-            } else {
-                const relFn = relatosAtaqueUser[Math.floor(Math.random() * relatosAtaqueUser.length)];
-                eventos.push({ min: min, tipo: 'ataque_user', texto: relFn(autor) });
-            }
-        } else {
-            const autorRival = (rival.titulares && rival.titulares.length)
-                ? rival.titulares[Math.floor(Math.random() * rival.titulares.length)]
-                : rival.nombre;
-
-            if (esGol) {
-                golesRival++;
-                const relFn = relatosGolRival[Math.floor(Math.random() * relatosGolRival.length)];
-                eventos.push({ min: min, tipo: 'gol_rival', texto: relFn(autorRival) });
-            } else {
-                const relFn = relatosAtaqueRival[Math.floor(Math.random() * relatosAtaqueRival.length)];
-                eventos.push({ min: min, tipo: 'ataque_rival', texto: relFn(autorRival) });
-            }
-        }
+    fActual.posiciones.forEach((item, idx) => {
+        const idAvatar = once[idx];
+        if (!idAvatar) return;
+        const nombre = obtenerNombreAvatar(idAvatar);
+        if (item.pos === 'POR') userArquero = nombre;
+        else if (['DFC', 'LD', 'LI'].includes(item.pos)) userDefensas.push(nombre);
+        else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(item.pos)) userVolantes.push(nombre);
+        else userDelanteros.push(nombre);
     });
+    if (!userDefensas.length) userDefensas.push('La Defensa');
+    if (!userVolantes.length) userVolantes.push('El Mediocampo');
+    if (!userDelanteros.length) userDelanteros.push('Tu Delantero');
 
-    // 📋 COORDENADAS BASE DE FORMACIÓN (TOP %, LEFT %)
+    const nombreCapitan = capitanId ? obtenerNombreAvatar(capitanId) : userDelanteros[0];
+    const tit = (rival.titulares && rival.titulares.length) ? rival.titulares : [];
+    const rivalDelanteros = tit.length ? tit.slice(0, 4) : [rival.nombre];
+    const rivalVolantes = tit.length > 4 ? tit.slice(4, 8) : ['El Mediocampo Rival'];
+    const rivalDefensas = tit.length > 8 ? tit.slice(8, 12) : ['La Defensa Rival'];
+    const rivalArquero = tit.length > 12 ? tit[12] : 'El Arquero Rival';
+
+    const NOMBRES = {
+        user:  { por: [userArquero],  def: userDefensas,  med: userVolantes,  del: userDelanteros },
+        rival: { por: [rivalArquero], def: rivalDefensas, med: rivalVolantes, del: rivalDelanteros }
+    };
+
+    const difOvr = ovrUsuario - ovrRival;
+    const basePosesion = Math.max(38, Math.min(68, Math.round(50 + (difOvr * 0.9))));
+    const probExitoUser = Math.max(0.28, Math.min(0.72, 0.50 + (difOvr * 0.035)));
+
+    const statsPartido = {
+        tirosTotalesUser: 0, tirosArcoUser: 0, tirosTotalesRival: 0, tirosArcoRival: 0,
+        cornersUser: 0, cornersRival: 0, faltasUser: 0, faltasRival: 0, posesionUser: basePosesion
+    };
+
+    const actualizarHudStats = () => {
+        if (posUserEl) posUserEl.textContent = `${statsPartido.posesionUser}%`;
+        if (posRivalEl) posRivalEl.textContent = `${100 - statsPartido.posesionUser}%`;
+        if (fillUserEl) fillUserEl.style.width = `${statsPartido.posesionUser}%`;
+        if (fillRivalEl) fillRivalEl.style.width = `${100 - statsPartido.posesionUser}%`;
+        if (tirosUEl) tirosUEl.textContent = `${statsPartido.tirosTotalesUser} (${statsPartido.tirosArcoUser})`;
+        if (tirosREl) tirosREl.textContent = `${statsPartido.tirosTotalesRival} (${statsPartido.tirosArcoRival})`;
+        if (cornUEl) cornUEl.textContent = `${statsPartido.cornersUser}`;
+        if (cornREl) cornREl.textContent = `${statsPartido.cornersRival}`;
+        if (faltUEl) faltUEl.textContent = `${statsPartido.faltasUser}`;
+        if (faltREl) faltREl.textContent = `${statsPartido.faltasRival}`;
+    };
+
+    // ================= 2. UTILIDADES =================
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    const dist = (ay, ax, by, bx) => Math.hypot(ay - by, ax - bx);
+    const dirDe = (eq) => eq === 'user' ? -1 : 1;           // user ataca hacia arriba (y decrece)
+    const rivalDe = (eq) => eq === 'user' ? 'rival' : 'user';
+    const golY = (eq) => eq === 'user' ? 0 : 100;            // arco al que ATACA eq
+    const fuerza = (eq) => eq === 'user' ? probExitoUser : 1 - probExitoUser;
+    // "profundidad": 0 = su propio arco, 100 = arco rival (unifica la lógica de ambos equipos)
+    const profDe = (eq, y) => eq === 'rival' ? y : 100 - y;
+    const yDe = (eq, prof) => eq === 'rival' ? prof : 100 - prof;
+
+    // ================= 3. JUGADORES =================
     const POS_BASE = {
         'dot-r-por': [7, 50],
         'dot-r-def1': [18, 18], 'dot-r-def2': [19, 38], 'dot-r-def3': [19, 62], 'dot-r-def4': [18, 82],
@@ -8864,9 +8984,1024 @@ window.iniciarSimulacionEnVivo = function() {
         'dot-u-por': [93, 50]
     };
 
+    const jugadores = [];
+    const porId = {};
+    const equipos = { user: [], rival: [] };
+
+    for (const id in POS_BASE) {
+        const eq = id.startsWith('dot-u-') ? 'user' : 'rival';
+        const linea = id.endsWith('por') ? 'por' : id.includes('-def') ? 'def' : id.includes('-med') ? 'med' : 'del';
+        const idx = linea === 'por' ? 0 : parseInt(id.slice(-1), 10) - 1;
+        const lista = NOMBRES[eq][linea];
+        const b = POS_BASE[id];
+        const el = document.getElementById(id);
+        if (el) el.style.transition = 'none';   // el motor controla el movimiento cuadro a cuadro
+        const j = {
+            id, eq, linea, el,
+            nombre: lista[idx % lista.length],
+            baseY: b[0], baseX: b[1],
+            y: b[0], x: b[1], vy: 0, vx: 0,
+            tY: b[0], tX: b[1], vmax: CFG.velTrote,
+            fase: Math.random() * 6.28,
+            factorVel: 0.93 + Math.random() * 0.14,
+            pensar: 0, bloq: 0
+        };
+        jugadores.push(j);
+        porId[id] = j;
+        equipos[eq].push(j);
+    }
+
+    const porteroDe = (eq) => porId[eq === 'user' ? 'dot-u-por' : 'dot-r-por'];
+    const baseMapa = () => { const m = {}; jugadores.forEach(j => { m[j.id] = [j.baseY, j.baseX]; }); return m; };
+    const masCercano = (lista, y, x) => {
+        let mejor = null, md = Infinity;
+        for (const j of lista) { const d = dist(j.y, j.x, y, x); if (d < md) { md = d; mejor = j; } }
+        return mejor;
+    };
+    const rivalMasCercano = (j) => {
+        let r = null, d = 999;
+        for (const q of equipos[rivalDe(j.eq)]) {
+            if (q.linea === 'por') continue;
+            const dd = dist(j.y, j.x, q.y, q.x);
+            if (dd < d) { d = dd; r = q; }
+        }
+        return { r, d };
+    };
+    const distRivalesA = (eq, y, x) => {
+        let d = 999;
+        for (const q of equipos[rivalDe(eq)]) {
+            if (q.linea === 'por') continue;
+            d = Math.min(d, dist(q.y, q.x, y, x));
+        }
+        return d;
+    };
+    const puntoEnSegmento = (ay, ax, by, bx, py, px) => {
+        const vy = by - ay, vx = bx - ax;
+        const l2 = vy * vy + vx * vx || 1;
+        const t = clamp(((py - ay) * vy + (px - ax) * vx) / l2, 0, 1);
+        return { y: ay + vy * t, x: ax + vx * t, t };
+    };
+    const rematadorPrincipal = (eq) => {
+        if (eq === 'user') {
+            const cap = equipos.user.find(j => j.nombre === nombreCapitan && j.linea !== 'por');
+            if (cap) return cap;
+        }
+        return porId[eq === 'user' ? 'dot-u-del1' : 'dot-r-del1'];
+    };
+
+    // ================= 4. ESTADO, RELOJ Y AGENDA =================
+    let tSim = 0;                       // tiempo real acumulado de simulación (seg)
+    const agenda = [];
+    const programar = (seg, fn) => agenda.push({ t: tSim + seg, fn });
+    const tickAgenda = () => {
+        const vencidos = agenda.filter(a => a.t <= tSim).sort((a, b) => a.t - b.t);
+        if (!vencidos.length) return;
+        vencidos.forEach(a => agenda.splice(agenda.indexOf(a), 1));
+        vencidos.forEach(a => a.fn());
+    };
+
+    let estado = 'previa';              // previa | juego | repos | entretiempo | fin
+    let relojPausado = true;
+    let reposMap = null;                // objetivos forzados durante pelota parada
+    let gameMin = 1;
+    let primerTiempoTerminado = false;
+    const tiempoDescuento1T = Math.floor(Math.random() * 2) + 1;
+    const tiempoDescuento2T = Math.floor(Math.random() * 3) + 3;
+    let golesUser = 0, golesRival = 0;
+    const tPos = { user: basePosesion / 100 * 6, rival: (100 - basePosesion) / 100 * 6 };
+    let tagId = 0;
+    let hudAcum = 0;
+
+    const balon = {
+        y: 50, x: 50, vy: 0, vx: 0,
+        modo: 'muerto',                 // conducido | vuelo | suelto | muerto
+        dueno: null, eq: 'user', ultimo: 'user',
+        tipo: null, oy: 0, ox: 0, dy: 50, dx: 50, dur: 1, t: 0,
+        receptor: null, interceptor: null, preferido: null,
+        alLlegar: null, forzarPase: false, keeperObj: null, pasadorPrevio: null
+    };
+
+    const minTxt = () => {
+        const m = Math.floor(gameMin);
+        if (!primerTiempoTerminado && m > 45) return `45+${m - 45}`;
+        if (m > 90) return `90+${m - 90}`;
+        return `${m}`;
+    };
+    const narrar = (tipo, texto) => {
+        if (!timeline) return;
+        const row = document.createElement('div');
+        row.className = `sim-event-row ${tipo}`;
+        row.innerHTML = `<span class="sim-ev-min">${minTxt()}'</span> <span class="sim-ev-text">${texto}</span>`;
+        timeline.appendChild(row);
+        timeline.scrollTop = timeline.scrollHeight;
+    };
+    const mostrarTag = (texto, clase, top, left, dur = 1.2) => {
+        if (!tagEl) return;
+        tagEl.textContent = texto;
+        tagEl.className = `sim-pitch-tag visible ${clase}`;
+        tagEl.style.left = `${left}%`;
+        tagEl.style.top = `${top}%`;
+        const mi = ++tagId;
+        programar(dur, () => { if (mi === tagId) tagEl.classList.remove('visible'); });
+    };
+
+    // ================= 5. BALÓN: POSESIÓN, VUELO, SUELTO =================
+    const darPosesion = (j) => {
+        balon.modo = 'conducido';
+        balon.dueno = j;
+        balon.eq = j.eq;
+        balon.ultimo = j.eq;
+        balon.vy = 0; balon.vx = 0;
+        balon.receptor = null; balon.interceptor = null; balon.preferido = null;
+        balon.keeperObj = null; balon.alLlegar = null;
+        j.pensar = rnd(CFG.pensarMin, CFG.pensarMax);
+        if (ballEl) ballEl.className = 'sim-pitch-ball';
+    };
+
+    const lanzarBalon = (tipo, dy, dx, vel, eq, opts = {}) => {
+        balon.modo = 'vuelo';
+        balon.tipo = tipo;
+        balon.oy = balon.y; balon.ox = balon.x;
+        balon.dy = dy; balon.dx = dx;
+        balon.dur = Math.max(0.05, dist(balon.y, balon.x, dy, dx) / vel);
+        balon.t = 0;
+        balon.dueno = null;
+        balon.eq = eq;
+        balon.ultimo = eq;
+        balon.receptor = opts.receptor || null;
+        balon.interceptor = opts.interceptor || null;
+        balon.alLlegar = opts.alLlegar || null;
+        balon.preferido = null;
+        if (tipo === 'tiro' && ballEl) ballEl.classList.add('shooting');
+    };
+
+    const llegadaSuelta = () => {
+        balon.modo = 'suelto';
+        balon.vy = 0; balon.vx = 0;
+    };
+
+    const gestionarSuelto = (dt) => {
+        balon.x += balon.vx * dt;
+        balon.y += balon.vy * dt;
+        const fr = Math.exp(-2.6 * dt);
+        balon.vx *= fr; balon.vy *= fr;
+        const vel = Math.hypot(balon.vy, balon.vx);
+        if (vel > 45) return;
+        let mejor = null, md = 99;
+        for (const j of jugadores) {
+            if (j.bloq > tSim) continue;
+            const d = dist(j.y, j.x, balon.y, balon.x) - (j === balon.preferido ? 1.4 : 0) + Math.random() * 0.3;
+            if (d < md) { md = d; mejor = j; }
+        }
+        if (mejor && md < 2.3) darPosesion(mejor);
+    };
+
+    // ================= 6. ACCIONES: PASE, TIRO, ATAJADA, GOL =================
+    const hacerPase = (o, c, largo) => {
+        const eq = o.eq, f = fuerza(eq);
+        const d = dist(o.y, o.x, c.y, c.x);
+        const vel = largo ? CFG.velPase * 1.1 : CFG.velPase;
+        const tVuelo = d / vel;
+        let dy = clamp(c.y + c.vy * tVuelo * 0.8, 4, 96);
+        let dx = clamp(c.x + c.vx * tVuelo * 0.8, 5, 95);
+        const pres = rivalMasCercano(o).d;
+        const pPreciso = clamp(0.95 - d * 0.0045 - (pres < 5 ? 0.07 : 0) + (f - 0.5) * 0.3, 0.55, 0.98);
+
+        // ¿Algún rival puede cortar la línea de pase?
+        let interceptor = null, mejorD = 99, py = 0, px = 0;
+        for (const r of equipos[rivalDe(eq)]) {
+            if (r.linea === 'por') continue;
+            const q = puntoEnSegmento(o.y, o.x, dy, dx, r.y, r.x);
+            if (q.t < 0.2) continue;
+            const dd = dist(r.y, r.x, q.y, q.x);
+            if (dd < mejorD) { mejorD = dd; interceptor = r; py = q.y; px = q.x; }
+        }
+        const pInt = mejorD < 4.5 ? (1 - mejorD / 4.5) * (0.32 + (0.5 - f) * 0.6) : 0;
+        let receptor = c;
+
+        if (interceptor && Math.random() < pInt) {
+            dy = py; dx = px; receptor = null;
+        } else {
+            interceptor = null;
+            if (Math.random() > pPreciso) {            // pase impreciso: se pasa de largo
+                const k = d || 1;
+                dy += ((dy - o.y) / k) * rnd(4, 10) + rnd(-4, 4);
+                dx += rnd(-10, 10);
+            }
+        }
+        balon.pasadorPrevio = { de: o, a: c, t: tSim };
+        lanzarBalon('pase', dy, dx, vel, eq, { receptor, interceptor, alLlegar: llegadaPase });
+    };
+
+    const llegadaPase = () => {
+        const r = balon.interceptor || balon.receptor;
+        llegadaSuelta();
+        if (r && dist(r.y, r.x, balon.y, balon.x) < 4) darPosesion(r);
+        else balon.preferido = r;
+    };
+
+    const marcarGol = (j) => {
+        const esUser = j.eq === 'user';
+        const pv = balon.pasadorPrevio;
+        const asist = (pv && pv.a === j && pv.de !== j && tSim - pv.t < 3.5) ? pv.de : null;
+        balon.modo = 'muerto'; balon.dueno = null; balon.keeperObj = null;
+        if (ballEl) ballEl.className = 'sim-pitch-ball in-net';
+        relojPausado = true;
+
+        if (esUser) {
+            golesUser++;
+            if (scoreUserEl) {
+                scoreUserEl.textContent = golesUser;
+                scoreUserEl.classList.add('animate-bounce');
+                programar(0.4, () => scoreUserEl.classList.remove('animate-bounce'));
+            }
+            goalTop?.classList.add('goal-hit-user');
+            mostrarTag('¡GOL!', 'user-tag', 16, balon.x, 2.0);
+            narrar('gol_user', asist
+                ? `¡GOLAZO! Pase de <b>${asist.nombre}</b> y definición de <b>${j.nombre}</b>.`
+                : `¡GOLAZO de <b>${j.nombre}</b>! Se la sacó a todos de encima y la mandó adentro.`);
+        } else {
+            golesRival++;
+            if (scoreRivalEl) {
+                scoreRivalEl.textContent = golesRival;
+                scoreRivalEl.classList.add('animate-bounce');
+                programar(0.4, () => scoreRivalEl.classList.remove('animate-bounce'));
+            }
+            goalBottom?.classList.add('goal-hit-rival');
+            mostrarTag('GOL RIVAL', 'rival-tag', 84, balon.x, 2.0);
+            narrar('gol_rival', asist
+                ? `Gol de <b>${rival.nombre}</b>: pase de <b>${asist.nombre}</b> y remate de <b>${j.nombre}</b>.`
+                : `Gol de <b>${rival.nombre}</b>: <b>${j.nombre}</b> define con categoría.`);
+        }
+
+        // El goleador corre a festejar mientras el resto vuelve a su posición
+        const mapa = baseMapa();
+        mapa[j.id] = [esUser ? 10 : 90, balon.x < 50 ? 10 : 90];
+        entrarRepos(mapa, 2.2, () => {
+            goalTop?.classList.remove('goal-hit-user');
+            goalBottom?.classList.remove('goal-hit-rival');
+            if (ballEl) ballEl.className = 'sim-pitch-ball';
+            ejecutarSaqueCentro(!esUser, false);
+        });
+    };
+
+    const resolverAtajada = (tirador, portero) => {
+        const gy = golY(tirador.eq), sent = gy === 0 ? 1 : -1, rv = portero.eq;
+        const r = Math.random();
+        mostrarTag('¡ATAJADA!', 'neutral-tag', gy === 0 ? 14 : 86, balon.x, 1.1);
+        if (r < 0.45) {
+            narrar('atajada', `¡Atajadón de <b>${portero.nombre}</b>! Le saca el remate a <b>${tirador.nombre}</b> y lo manda al córner.`);
+            balon.ultimo = rv;
+            lanzarBalon('despeje', gy === 0 ? -2 : 102, 50 + (balon.x < 50 ? -1 : 1) * rnd(9, 15), 55, rv, { alLlegar: llegadaSuelta });
+        } else if (r < 0.78) {
+            narrar('atajada', `<b>${portero.nombre}</b> se queda con el remate de <b>${tirador.nombre}</b>. Seguro bajo los tres palos.`);
+            darPosesion(portero);
+            portero.pensar = rnd(0.7, 1.1);
+        } else {
+            narrar('atajada', `Remate de <b>${tirador.nombre}</b> y <b>${portero.nombre}</b> la rechaza al medio del área. ¡Peligro!`);
+            balon.ultimo = rv;
+            balon.modo = 'suelto';
+            balon.vy = sent * rnd(25, 40);
+            balon.vx = rnd(-20, 20);
+        }
+    };
+
+    const resolverTiro = (res, j, portero, o) => {
+        balon.keeperObj = null;
+        if (ballEl) ballEl.classList.remove('shooting');
+        const gy = golY(j.eq), sent = gy === 0 ? 1 : -1;
+        const acc = o.tipo === 'cabezazo' ? 'cabezazo' : o.tipo === 'tiro_libre' ? 'tiro libre' : o.tipo === 'penal' ? 'penal' : 'remate';
+        if (res === 'gol') {
+            marcarGol(j);
+        } else if (res === 'atajada') {
+            resolverAtajada(j, portero);
+        } else if (res === 'palo') {
+            mostrarTag('¡PALO!', 'neutral-tag', gy === 0 ? 12 : 88, balon.x, 1.1);
+            narrar('atajada', `¡Al palo! El ${acc} de <b>${j.nombre}</b> se estrella en el poste.`);
+            balon.ultimo = portero.eq;
+            balon.modo = 'suelto';
+            balon.vy = sent * rnd(35, 55);
+            balon.vx = rnd(-25, 25);
+        } else {
+            narrar('tiro', `${acc.charAt(0).toUpperCase() + acc.slice(1)} de <b>${j.nombre}</b> que se va desviado.`);
+            llegadaSuelta();
+        }
+    };
+
+    const tirar = (j, o = {}) => {
+        const eq = j.eq, rv = rivalDe(eq), gy = golY(eq), f = fuerza(eq);
+        const sent = gy === 0 ? 1 : -1;
+        const dArco = Math.abs(j.y - gy);
+        const pres = distRivalesA(eq, j.y, j.x);
+        let pGol = o.pGol !== undefined ? o.pGol : clamp(0.56 - dArco * 0.010, 0.08, 0.42);
+        pGol *= (0.65 + f * 0.7);
+        if (!o.sinPresion) pGol -= clamp((7 - pres) * 0.012, 0, 0.07);
+        pGol = clamp(pGol, 0.03, 0.9);
+        const pArco = o.pArco !== undefined ? o.pArco : 0.36;
+        const portero = porteroDe(rv);
+        const yPor = gy + sent * 6.5;
+        const r = Math.random();
+        let res, dx, dy, kx, ky = yPor;
+
+        if (r < pGol) {
+            res = 'gol';
+            dx = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(3, 5.5);
+            dy = gy === 0 ? -1.5 : 101.5;
+            kx = 50 + (dx - 50) * 0.55;               // el arquero llega tarde
+        } else if (r < pGol + pArco) {
+            res = 'atajada';
+            dx = 50 + rnd(-6, 6); dy = yPor; kx = dx;
+        } else if (Math.random() < 0.16) {
+            res = 'palo';
+            dx = Math.random() < 0.5 ? 44.5 : 55.5;
+            dy = gy + sent * 2.5;
+            kx = 50 + (50 - dx) * 0.5;
+        } else {
+            res = 'afuera';
+            dx = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(8.5, 17);
+            dy = gy === 0 ? -2.5 : 102.5;
+            kx = 50 + (dx - 50) * 0.3;
+        }
+
+        if (eq === 'user') statsPartido.tirosTotalesUser++; else statsPartido.tirosTotalesRival++;
+        if (res === 'gol' || res === 'atajada') {
+            if (eq === 'user') statsPartido.tirosArcoUser++; else statsPartido.tirosArcoRival++;
+        }
+        actualizarHudStats();
+
+        lanzarBalon('tiro', dy, dx, o.vel || CFG.velTiro, eq, { alLlegar: () => resolverTiro(res, j, portero, o) });
+        balon.keeperObj = { j: portero, y: ky, x: kx };
+    };
+
+    // ================= 7. IA DEL POSEEDOR =================
+    const pasar = (o, opts = {}) => {
+        const eq = o.eq, dir = dirDe(eq);
+        const cand = [];
+        for (const c of equipos[eq]) {
+            if (c === o) continue;
+            if (c.linea === 'por' && o.linea !== 'def') continue;
+            const d = dist(o.y, o.x, c.y, c.x);
+            const maxD = (o.linea === 'por' || opts.largoOk) ? 62 : 40;
+            if (d < 6 || d > maxD) continue;
+            const adv = (c.y - o.y) * dir;
+            const libre = Math.min(14, distRivalesA(eq, c.y, c.x));
+            let linea = 12;
+            for (const r of equipos[rivalDe(eq)]) {
+                if (r.linea === 'por') continue;
+                const q = puntoEnSegmento(o.y, o.x, c.y, c.x, r.y, r.x);
+                linea = Math.min(linea, dist(r.y, r.x, q.y, q.x));
+            }
+            let s = adv * (opts.seguro ? 0.15 : 1.3) + libre * 0.8 + linea * 0.9 - d * 0.1 + rnd(0, 6);
+            if (adv < 0 && !opts.seguro) s += adv * 0.6;      // el pase hacia atrás solo si no hay otra
+            if (c.linea === 'por') s -= 14;
+            cand.push({ c, s, d });
+        }
+        if (!cand.length) { o.pensar = 0.3; return; }
+        cand.sort((a, b) => b.s - a.s);
+        hacerPase(o, cand[0].c, cand[0].d > 34);
+    };
+
+    const decidir = (o) => {
+        const eq = o.eq, gy = golY(eq);
+        const dArco = Math.abs(o.y - gy);
+        const pres = rivalMasCercano(o).d;
+        if (balon.forzarPase) { balon.forzarPase = false; pasar(o, { seguro: true }); return; }
+        if (o.linea === 'por') { pasar(o, { largoOk: true }); return; }
+        if (dArco < 34 && Math.abs(o.x - 50) < 32) {
+            let p = dArco < 18 ? 0.65 : dArco < 26 ? 0.5 : 0.32;
+            if (pres < 5) p += 0.12;
+            if (Math.random() < p) { tirar(o); return; }
+        }
+        if (pres > 3.8 && Math.random() < 0.6) { o.pensar = rnd(0.25, 0.5); return; } // sigue conduciendo
+        pasar(o);
+    };
+
+    const disputarBalon = (o, r, dt) => {
+        const f = fuerza(o.eq);
+        const tasa = CFG.tasaRobo * (1 + (0.5 - f) * 1.6);
+        if (Math.random() >= 1 - Math.exp(-tasa * dt)) return;
+        if (Math.random() < CFG.probFalta) { hacerFalta(r, o); return; }
+        r.pensar = rnd(CFG.pensarMin, CFG.pensarMax);
+        o.bloq = tSim + 0.6;
+        if (Math.random() < 0.55) {
+            darPosesion(r);
+        } else {
+            balon.modo = 'suelto'; balon.dueno = null; balon.preferido = r;
+            balon.ultimo = r.eq;
+            balon.vy = rnd(-15, 15); balon.vx = rnd(-15, 15);
+        }
+    };
+
+    // ================= 8. PELOTA PARADA =================
+    const entrarRepos = (mapa, seg, alFinal) => {
+        estado = 'repos';
+        reposMap = mapa;
+        balon.modo = 'muerto';
+        balon.dueno = null;
+        programar(seg, () => { reposMap = null; estado = 'juego'; if (alFinal) alFinal(); });
+    };
+
+    const colocarBalon = (y, x, eq) => {
+        balon.y = y; balon.x = x; balon.vy = 0; balon.vx = 0;
+        balon.eq = eq; balon.ultimo = eq; balon.keeperObj = null;
+        if (ballEl) ballEl.className = 'sim-pitch-ball';
+    };
+
+    const ejecutarSaqueCentro = (sacaUser, esReanudacion) => {
+        const eq = sacaUser ? 'user' : 'rival';
+        relojPausado = true;
+        const taker = porId[sacaUser ? 'dot-u-del2' : 'dot-r-del2'];
+        const otro = porId[sacaUser ? 'dot-r-del2' : 'dot-u-del2'];
+        const mapa = baseMapa();
+        mapa[taker.id] = [50 + (sacaUser ? 0.8 : -0.8), 50];
+        mapa[otro.id] = [sacaUser ? 42 : 58, 50];
+        colocarBalon(50, 50, eq);
+        mostrarTag(esReanudacion ? 'INICIA EL 2T' : (sacaUser ? 'SACA TU ONCE' : 'SACA EL RIVAL'),
+            sacaUser ? 'user-tag' : 'rival-tag', sacaUser ? 56 : 44, 50, 1.5);
+        entrarRepos(mapa, 1.6, () => {
+            relojPausado = false;
+            darPosesion(taker);
+            balon.forzarPase = true;
+            taker.pensar = 0.2;
+        });
+    };
+
+    const ejecutarSaqueBanda = (eq, y, x) => {
+        const taker = masCercano(equipos[eq].filter(j => j.linea !== 'por'), y, x);
+        colocarBalon(y, x, eq);
+        mostrarTag('LATERAL', eq === 'user' ? 'user-tag' : 'rival-tag', clamp(y - 7, 6, 90), x, 1.0);
+        entrarRepos({ [taker.id]: [y, x < 50 ? x + 0.8 : x - 0.8] }, 1.0, () => {
+            darPosesion(taker); balon.forzarPase = true; taker.pensar = 0.15;
+        });
+    };
+
+    const ejecutarSaqueArco = (eq) => {
+        const gk = porteroDe(eq);
+        const yGK = eq === 'user' ? 94 : 6;
+        colocarBalon(yGK, 50, eq);
+        entrarRepos({ [gk.id]: [yGK, 50] }, 1.1, () => { darPosesion(gk); gk.pensar = rnd(0.3, 0.6); });
+    };
+
+    const ejecutarReanudacionRapida = (eq, y, x) => {
+        const taker = masCercano(equipos[eq].filter(j => j.linea !== 'por'), y, x);
+        colocarBalon(y, x, eq);
+        entrarRepos({ [taker.id]: [y, x] }, 0.9, () => {
+            darPosesion(taker); balon.forzarPase = true; taker.pensar = 0.15;
+        });
+    };
+
+    // Reparte a atacantes y defensores dentro del área (córners y tiros libres lejanos)
+    const ORDEN_LINEA = { del: 0, med: 1, def: 2 };
+    const armarArea = (eq, mapa, excluir) => {
+        const rv = rivalDe(eq), gy = golY(eq);
+        const enArea = (prof, x) => [gy === 0 ? prof : 100 - prof, x];
+        const atk = equipos[eq].filter(j => j.linea !== 'por' && j !== excluir)
+            .sort((a, b) => ORDEN_LINEA[a.linea] - ORDEN_LINEA[b.linea]).slice(0, 5);
+        const dfn = equipos[rv].filter(j => j.linea !== 'por')
+            .sort((a, b) => ORDEN_LINEA[b.linea] - ORDEN_LINEA[a.linea]).slice(0, 6);
+        const posA = [[9, 44], [11, 51], [8, 57], [15, 38], [16, 62]];
+        const posD = [[7, 46], [7, 54], [10, 41], [10, 59], [13, 50], [5, 38]];
+        atk.forEach((j, i) => { mapa[j.id] = enArea(posA[i][0], posA[i][1]); });
+        dfn.forEach((j, i) => { mapa[j.id] = enArea(posD[i][0], posD[i][1]); });
+        mapa[porteroDe(rv).id] = enArea(3.5, 50);
+        return atk;
+    };
+
+    const lanzarCentro = (taker, cands) => {
+        const eq = taker.eq, rv = rivalDe(eq), f = fuerza(eq);
+        const pesos = cands.map(c => c.linea === 'del' ? 3 : c.linea === 'med' ? 2 : 1);
+        let tot = pesos.reduce((a, b) => a + b, 0), r = Math.random() * tot, cab = cands[0] || taker;
+        for (let i = 0; i < cands.length; i++) { r -= pesos[i]; if (r <= 0) { cab = cands[i]; break; } }
+        balon.pasadorPrevio = { de: taker, a: cab, t: tSim };
+        lanzarBalon('centro', cab.y, cab.x, 62, eq, {
+            receptor: cab,
+            alLlegar: () => {
+                const pDespeje = clamp(0.40 - (f - 0.5) * 0.5, 0.2, 0.55);
+                if (Math.random() < pDespeje) {
+                    const def = masCercano(equipos[rv].filter(j => j.linea !== 'por'), balon.y, balon.x);
+                    const sent = golY(eq) === 0 ? 1 : -1;
+                    narrar('corner', `<b>${def.nombre}</b> se eleva más alto que todos y despeja el centro.`);
+                    lanzarBalon('despeje', balon.y + sent * rnd(14, 22), clamp(50 + rnd(-30, 30), 10, 90), 55, rv, { alLlegar: llegadaSuelta });
+                } else {
+                    tirar(cab, { tipo: 'cabezazo', pGol: 0.11, pArco: 0.30, sinPresion: true, vel: 90 });
+                }
+            }
+        });
+    };
+
+    const ejecutarCorner = (eq, izq) => {
+        const gy = golY(eq);
+        const cx = izq ? 4 : 96, cy = gy === 0 ? 2.5 : 97.5;
+        if (eq === 'user') statsPartido.cornersUser++; else statsPartido.cornersRival++;
+        actualizarHudStats();
+        colocarBalon(cy, cx, eq);
+        const taker = masCercano(equipos[eq].filter(j => j.linea === 'med' || j.linea === 'del'), cy, cx);
+        const mapa = {};
+        const atk = armarArea(eq, mapa, taker);
+        mapa[taker.id] = [cy + (gy === 0 ? 0.5 : -0.5), cx + (izq ? 1 : -1)];
+        mostrarTag(eq === 'user' ? 'CÓRNER' : 'CÓRNER RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', gy === 0 ? 12 : 88, cx, 1.6);
+        narrar('corner', eq === 'user'
+            ? `Córner para tu equipo. Va a ejecutarlo <b>${taker.nombre}</b>.`
+            : `Tiro de esquina para <b>${rival.nombre}</b>. Cuidado en el área.`);
+        entrarRepos(mapa, 2.0, () => { darPosesion(taker); lanzarCentro(taker, atk); });
+    };
+
+    const ejecutarPenal = (eq) => {
+        const rv = rivalDe(eq), gy = golY(eq), sent = gy === 0 ? 1 : -1;
+        const yP = gy === 0 ? 11 : 89;
+        const tirador = rematadorPrincipal(eq);
+        colocarBalon(yP, 50, eq);
+        const mapa = {};
+        const otros = [...equipos[eq], ...equipos[rv]].filter(j => j !== tirador && j.linea !== 'por');
+        otros.forEach((j, i) => {
+            mapa[j.id] = [gy === 0 ? 26 + (i % 2) * 3 : 74 - (i % 2) * 3, 12 + i * (76 / (otros.length - 1))];
+        });
+        mapa[porteroDe(rv).id] = [gy === 0 ? 3.5 : 96.5, 50];
+        mapa[tirador.id] = [yP + sent * 5, 50];
+        mostrarTag('¡PENAL!', eq === 'user' ? 'user-tag' : 'rival-tag', gy === 0 ? 20 : 80, 50, 2.0);
+        narrar('falta', `¡PENAL! <b>${tirador.nombre}</b> se prepara para patear desde los doce pasos.`);
+        entrarRepos(mapa, 2.3, () => tirar(tirador, { tipo: 'penal', pGol: 0.74, pArco: 0.17, sinPresion: true, vel: 120 }));
+    };
+
+    const ejecutarTiroLibre = (eq, y, x, dGol) => {
+        const rv = rivalDe(eq), gy = golY(eq), dirA = dirDe(eq);
+        const tirador = rematadorPrincipal(eq);
+        colocarBalon(y, x, eq);
+        const mapa = {};
+        const centro = dGol > 24 && Math.random() < 0.55;
+        let cands = [];
+        if (centro) {
+            cands = armarArea(eq, mapa, tirador);
+        } else {
+            const muro = equipos[rv].filter(j => j.linea !== 'por')
+                .sort((a, b) => dist(a.y, a.x, y, x) - dist(b.y, b.x, y, x)).slice(0, 4);
+            muro.forEach((j, k) => { mapa[j.id] = [y + dirA * 9, clamp(x + (50 - x) * 0.2 + (k - 1.5) * 2.4, 8, 92)]; });
+            mapa[porteroDe(rv).id] = [gy === 0 ? 4 : 96, 50 + (x < 50 ? 3 : -3)];
+        }
+        mapa[tirador.id] = [y - dirA * 2.5, x - 2];
+        mostrarTag(eq === 'user' ? 'TIRO LIBRE' : 'TIRO LIBRE RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', clamp(y - dirA * 8, 6, 94), x, 1.8);
+        entrarRepos(mapa, 1.9, () => {
+            if (centro) { darPosesion(tirador); lanzarCentro(tirador, cands); }
+            else tirar(tirador, { tipo: 'tiro_libre', pGol: 0.075, pArco: 0.30, sinPresion: true });
+        });
+    };
+
+    const hacerFalta = (inf, vic) => {
+        const eq = vic.eq, gy = golY(eq);
+        const dGol = Math.abs(vic.y - gy);
+        const y = vic.y, x = vic.x;
+        if (inf.eq === 'user') statsPartido.faltasUser++; else statsPartido.faltasRival++;
+        actualizarHudStats();
+        balon.modo = 'muerto'; balon.dueno = null;
+        const area = dGol < 16 && Math.abs(x - 50) < 21;
+        if (area) {
+            narrar('falta', `¡Derribó <b>${inf.nombre}</b> a <b>${vic.nombre}</b> dentro del área! El árbitro no duda.`);
+            ejecutarPenal(eq);
+        } else if (dGol < 33) {
+            narrar('falta', `Falta de <b>${inf.nombre}</b> sobre <b>${vic.nombre}</b> al borde del área. Tiro libre peligroso.`);
+            ejecutarTiroLibre(eq, y, x, dGol);
+        } else {
+            mostrarTag('FALTA', 'neutral-tag', clamp(y - 6, 6, 94), x, 1.0);
+            narrar('falta', `Falta táctica de <b>${inf.nombre}</b> sobre <b>${vic.nombre}</b> para frenar la transición.`);
+            ejecutarReanudacionRapida(eq, y, x);
+        }
+    };
+
+    const comprobarFuera = () => {
+        if (balon.modo !== 'suelto') return;
+        const { x, y } = balon;
+        if (y < CFG.yMin || y > CFG.yMax) {
+            const defiende = y < 50 ? 'rival' : 'user';
+            if (balon.ultimo === defiende) ejecutarCorner(rivalDe(defiende), x < 50);
+            else ejecutarSaqueArco(defiende);
+        } else if (x < CFG.xMin || x > CFG.xMax) {
+            ejecutarSaqueBanda(rivalDe(balon.ultimo), clamp(y, 6, 94), x < 50 ? 3 : 97);
+        }
+    };
+
+    // ================= 9. MOVIMIENTO DE JUGADORES =================
+    const K_LINEA = { por: 0, def: 0.30, med: 0.45, del: 0.55 };
+    const EMP_ATK = { por: 0, def: 6, med: 9, del: 10 };
+    const EMP_DEF = { por: 0, def: -1, med: -3, del: -2 };
+    const LIM = { def: [9, 64], med: [22, 78], del: [34, 93] };
+    let roles = {};
+
+    const calcularRoles = () => {
+        roles = {};
+        if (estado !== 'juego') return;
+        if (balon.modo === 'suelto') {
+            for (const eq of ['user', 'rival']) {
+                const ord = equipos[eq].filter(j => j.linea !== 'por')
+                    .sort((a, b) => dist(a.y, a.x, balon.y, balon.x) - dist(b.y, b.x, balon.y, balon.x));
+                roles[ord[0].id] = 'persigue';
+                if (dist(ord[1].y, ord[1].x, balon.y, balon.x) < 18) roles[ord[1].id] = 'persigue';
+            }
+        } else if (balon.modo === 'conducido' || balon.modo === 'vuelo') {
+            const def = rivalDe(balon.eq);
+            const fy = balon.modo === 'vuelo' ? balon.dy : balon.y;
+            const fx = balon.modo === 'vuelo' ? balon.dx : balon.x;
+            const ord = equipos[def].filter(j => j.linea !== 'por')
+                .sort((a, b) => dist(a.y, a.x, fy, fx) - dist(b.y, b.x, fy, fx));
+            roles[ord[0].id] = 'presion1';
+            if (dist(ord[1].y, ord[1].x, fy, fx) < 34) roles[ord[1].id] = 'presion2';
+        }
+    };
+
+    const calcularObjetivo = (j) => {
+        const eq = j.eq, d = dirDe(eq);
+        const factor = j.factorVel;
+
+        if (reposMap && reposMap[j.id]) {
+            j.tY = reposMap[j.id][0]; j.tX = reposMap[j.id][1];
+            j.vmax = CFG.velSprint * 0.75 * factor;
+            return;
+        }
+        // Poseedor: conduce hacia el arco rival esquivando al marcador
+        if (balon.modo === 'conducido' && balon.dueno === j) {
+            if (j.linea === 'por') { j.tY = j.baseY; j.tX = 50; j.vmax = CFG.velTrote; return; }
+            const { r, d: dr } = rivalMasCercano(j);
+            let tx = j.x + (50 - j.x) * 0.25;
+            if (r && dr < 9) tx += (j.x >= r.x ? 1 : -1) * 8;
+            j.tY = clamp(j.y + d * 14, 12, 88);
+            j.tX = clamp(tx, 6, 94);
+            j.vmax = CFG.velTrote * 0.92 * factor;
+            return;
+        }
+        if (balon.modo === 'vuelo') {
+            if (balon.receptor === j || balon.interceptor === j) {
+                j.tY = balon.dy; j.tX = balon.dx; j.vmax = CFG.velSprint * factor; return;
+            }
+            if (balon.keeperObj && balon.keeperObj.j === j) {
+                j.tY = balon.keeperObj.y; j.tX = balon.keeperObj.x; j.vmax = CFG.velPortero * 1.6; return;
+            }
+        }
+        const rol = roles[j.id];
+        if (rol === 'persigue') {
+            j.tY = clamp(balon.y + balon.vy * 0.25, 3, 97);
+            j.tX = clamp(balon.x + balon.vx * 0.25, 4, 96);
+            j.vmax = CFG.velSprint * factor;
+            return;
+        }
+        if (rol === 'presion1' || rol === 'presion2') {
+            const fy = balon.modo === 'vuelo' ? balon.dy : balon.y;
+            const fx = balon.modo === 'vuelo' ? balon.dx : balon.x;
+            if (rol === 'presion1') {
+                // contención: se frena a ~4.5 u del poseedor, del lado de su propio arco
+                const dd = dist(j.y, j.x, fy, fx) || 1;
+                const stand = balon.modo === 'vuelo' ? 0 : 4.5;
+                j.tY = clamp(fy - d * stand, 3, 97);
+                j.tX = clamp(fx + (50 - fx) * 0.08, 4, 96);
+                if (dd < 0) j.tY = fy;
+            } else {   // cobertura: se para detrás del presionador, del lado de su arco
+                j.tY = clamp(fy - d * 7, 3, 97); j.tX = clamp(fx + (50 - fx) * 0.2, 4, 96);
+            }
+            j.vmax = (dist(j.y, j.x, fy, fx) < 30 ? CFG.velSprint : CFG.velTrote * 1.25) * factor;
+            return;
+        }
+
+        // Posicionamiento colectivo: el bloque se comprime y se desplaza con el balón
+        const atacando = balon.eq === eq && balon.modo !== 'suelto';
+        const bd = profDe(eq, balon.y);
+        if (j.linea === 'por') {
+            j.tY = yDe(eq, 6 + Math.max(0, bd - 55) * 0.22);
+            j.tX = 50 + (balon.x - 50) * (bd < 35 ? 0.22 : 0.1);
+            j.vmax = CFG.velPortero * factor;
+            return;
+        }
+        let prof = profDe(eq, j.baseY);
+        prof += (bd - 50) * K_LINEA[j.linea];
+        prof += atacando ? EMP_ATK[j.linea] : EMP_DEF[j.linea];
+        prof += Math.sin(tSim * 1.3 + j.fase) * 1.4;                 // "vida": nadie queda clavado
+        if (atacando && j.linea === 'del') prof = Math.max(prof, bd + 12);   // desmarque en profundidad
+        else if (atacando && j.linea === 'med') prof = Math.max(prof, bd + 2);
+        prof = clamp(prof, LIM[j.linea][0], LIM[j.linea][1]);
+        const tx = 50 + (j.baseX - 50) * (atacando ? 1.12 : 0.88)
+            + (balon.x - 50) * (j.linea === 'def' ? 0.22 : 0.3)
+            + Math.cos(tSim * 1.1 + j.fase) * 1.6;
+        j.tY = yDe(eq, prof);
+        j.tX = clamp(tx, 8, 92);
+        j.vmax = CFG.velTrote * factor;
+    };
+
+    const moverJugador = (j, dt) => {
+        const ey = j.tY - j.y, ex = j.tX - j.x;
+        const d = Math.hypot(ey, ex);
+        let dvy = 0, dvx = 0;
+        if (d > 0.15) {
+            const vmax = d > 12 ? j.vmax * 1.2 : j.vmax;   // si está lejos de su puesto, acelera
+            const v = Math.min(vmax, d * 5);
+            dvy = ey / d * v; dvx = ex / d * v;
+        }
+        const a = Math.min(1, CFG.aceleracion * dt);
+        j.vy += (dvy - j.vy) * a;
+        j.vx += (dvx - j.vx) * a;
+        j.y = clamp(j.y + j.vy * dt, 2, 98);
+        j.x = clamp(j.x + j.vx * dt, 3, 97);
+    };
+
+    const separarJugadores = () => {
+        for (let i = 0; i < jugadores.length; i++) {
+            for (let k = i + 1; k < jugadores.length; k++) {
+                const a = jugadores[i], b = jugadores[k];
+                const dy = b.y - a.y, dx = b.x - a.x;
+                const d2 = dy * dy + dx * dx;
+                if (d2 > 4.84 || d2 === 0) continue;
+                const d = Math.sqrt(d2), push = (2.2 - d) * 0.5;
+                const ny = dy / d, nx = dx / d;
+                a.y -= ny * push; a.x -= nx * push;
+                b.y += ny * push; b.x += nx * push;
+            }
+        }
+    };
+
+    const actualizarBalon = (dt) => {
+        if (balon.modo === 'conducido' && balon.dueno) {
+            const o = balon.dueno;
+            const sp = Math.hypot(o.vy, o.vx);
+            let fy, fx;
+            if (sp > 3) { fy = o.vy / sp; fx = o.vx / sp; } else { fy = dirDe(o.eq); fx = 0; }
+            const a = Math.min(1, 22 * dt);
+            balon.y += (o.y + fy * 1.3 - balon.y) * a;
+            balon.x += (o.x + fx * 1.3 - balon.x) * a;
+        } else if (balon.modo === 'vuelo') {
+            balon.t += dt;
+            const p = Math.min(1, balon.t / balon.dur);
+            const e = balon.tipo === 'tiro' ? p : p * (1.25 - 0.25 * p);   // los pases frenan al final
+            balon.y = balon.oy + (balon.dy - balon.oy) * e;
+            balon.x = balon.ox + (balon.dx - balon.ox) * e;
+            if (p >= 1) {
+                const fn = balon.alLlegar || llegadaSuelta;
+                balon.alLlegar = null;
+                fn();
+            }
+        } else if (balon.modo === 'suelto') {
+            gestionarSuelto(dt);
+        }
+    };
+
+    const render = () => {
+        for (const j of jugadores) {
+            if (!j.el) continue;
+            j.el.style.top = `${j.y.toFixed(2)}%`;
+            j.el.style.left = `${j.x.toFixed(2)}%`;
+        }
+        if (ballEl) {
+            ballEl.style.top = `${balon.y.toFixed(2)}%`;
+            ballEl.style.left = `${balon.x.toFixed(2)}%`;
+        }
+    };
+
+    // ================= 10. RELOJ Y LOOP PRINCIPAL =================
+    const cierreSeguro = () => estado === 'juego' && !(balon.modo === 'vuelo' && balon.tipo === 'tiro');
+
+    const tickReloj = (dt) => {
+        if (relojPausado || estado === 'previa' || estado === 'entretiempo' || estado === 'fin') return;
+        gameMin += dt / (CFG.msPorMinuto / 1000);
+        const m = Math.floor(gameMin);
+
+        if (!primerTiempoTerminado && m > 45 + tiempoDescuento1T && cierreSeguro()) {
+            primerTiempoTerminado = true;
+            estado = 'entretiempo';
+            relojPausado = true;
+            reposMap = baseMapa();
+            balon.modo = 'muerto'; balon.dueno = null;
+            if (clock) clock.textContent = `45'+${tiempoDescuento1T} · ET`;
+            const rowET = document.createElement('div');
+            rowET.className = 'sim-event-row entretiempo';
+            rowET.innerHTML = `<span><i class="ph-bold ph-whistle"></i> FIN DEL PRIMER TIEMPO (${golesUser} - ${golesRival})</span>`;
+            if (timeline) { timeline.appendChild(rowET); timeline.scrollTop = timeline.scrollHeight; }
+            programar(2.4, () => {
+                reposMap = null;
+                gameMin = 46;
+                if (clock) clock.textContent = `46' (2T)`;
+                ejecutarSaqueCentro(false, true);
+            });
+            return;
+        }
+
+        if (primerTiempoTerminado && m > 90 + tiempoDescuento2T && cierreSeguro()) {
+            estado = 'fin';
+            if (clock) clock.textContent = `90'+${tiempoDescuento2T}' · FIN`;
+            finalizarPartidoCopa(golesUser, golesRival);
+            return;
+        }
+
+        if (clock) {
+            if (!primerTiempoTerminado && m > 45) clock.textContent = `45'+${m - 45}'`;
+            else if (m > 90) clock.textContent = `90'+${m - 90}'`;
+            else clock.textContent = `MIN ${m}'`;
+        }
+    };
+
+    let ultimoT = 0;
+    const frame = (now) => {
+        if (estado === 'fin') return;
+        const dt = Math.min(0.05, Math.max(0.001, (now - ultimoT) / 1000));
+        ultimoT = now;
+        tSim += dt;
+
+        tickAgenda();
+        if (estado === 'fin') return;
+        tickReloj(dt);
+        if (estado === 'fin') return;
+
+        // posesión real: tiempo que cada equipo tiene el control
+        if (balon.modo === 'conducido' || (balon.modo === 'vuelo' && balon.tipo === 'pase')) tPos[balon.eq] += dt;
+
+        calcularRoles();
+        for (const j of jugadores) calcularObjetivo(j);
+        for (const j of jugadores) moverJugador(j, dt);
+        separarJugadores();
+        actualizarBalon(dt);
+
+        if (estado === 'juego') {
+            comprobarFuera();
+            if (estado === 'juego' && balon.modo === 'conducido' && balon.dueno) {
+                const o = balon.dueno;
+                let pres = 99;
+                if (o.linea !== 'por') {
+                    const { r, d } = rivalMasCercano(o);
+                    pres = d;
+                    if (r && d < CFG.radioContacto) disputarBalon(o, r, dt);
+                }
+                if (estado === 'juego' && balon.modo === 'conducido' && balon.dueno === o) {
+                    o.pensar -= dt * (pres < 8 ? 1.6 : 1);
+                    if (o.pensar <= 0) decidir(o);
+                }
+            }
+        }
+
+        hudAcum += dt;
+        if (hudAcum > 0.5) {
+            hudAcum = 0;
+            statsPartido.posesionUser = clamp(Math.round(100 * tPos.user / (tPos.user + tPos.rival)), 25, 75);
+            actualizarHudStats();
+        }
+
+        render();
+        simRafId = requestAnimationFrame(frame);
+    };
+
+    // ================= 11. CUENTA REGRESIVA E INICIO =================
+    let segundosPrevia = 3;
+    if (clock) clock.textContent = '3s';
+    if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+    if (tagEl) {
+        tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
+        tagEl.className = 'sim-pitch-tag visible neutral-tag';
+        tagEl.style.left = '50%';
+        tagEl.style.top = '50%';
+    }
+    render();
+
+    simPreviaTimer = setInterval(() => {
+        segundosPrevia--;
+        if (segundosPrevia > 0) {
+            if (clock) clock.textContent = `${segundosPrevia}s`;
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+            if (tagEl) tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
+        } else {
+            clearInterval(simPreviaTimer);
+            simPreviaTimer = null;
+            if (tagEl) tagEl.classList.remove('visible');
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> En juego (90 minutos)...`;
+            actualizarHudStats();
+            if (clock) clock.textContent = `MIN 1'`;
+
+            ejecutarSaqueCentro(true, false);
+            ultimoT = performance.now();
+            simRafId = requestAnimationFrame(frame);
+        }
+    }, 1000);
+};
+
+// ========================================================
+// ⚡ MOTOR TÁCTICO CORRELATIVO DE FÚTBOL REAL (SIN TELETRANSPORTES)
+// ========================================================
+window.iniciarSimulacionEnVivo = function() {
+    if (!torneoEstado || torneoEstado.partidoEnCurso) return;
+    torneoEstado.partidoEnCurso = true;
+
+    if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
+    if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+    if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
+    if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
+
+    const btn = document.getElementById('sim-btn-play');
+    if (btn) btn.disabled = true;
+
+    const timeline = document.getElementById('sim-events-timeline');
+    if (timeline) timeline.innerHTML = '';
+
+    const clock = document.getElementById('sim-match-clock');
+    const scoreUserEl = document.getElementById('sim-score-user');
+    const scoreRivalEl = document.getElementById('sim-score-rival');
+    const ballEl = document.getElementById('sim-pitch-ball');
+    const tagEl = document.getElementById('sim-pitch-tag');
+    const goalTop = document.getElementById('sim-goal-top');
+    const goalBottom = document.getElementById('sim-goal-bottom');
+
+    const posUserEl = document.getElementById('sim-stat-pos-user');
+    const posRivalEl = document.getElementById('sim-stat-pos-rival');
+    const fillUserEl = document.getElementById('sim-pos-fill-user');
+    const fillRivalEl = document.getElementById('sim-pos-fill-rival');
+    const tirosUEl = document.getElementById('sim-stat-tiros-user');
+    const tirosREl = document.getElementById('sim-stat-tiros-rival');
+    const cornUEl = document.getElementById('sim-stat-corners-user');
+    const cornREl = document.getElementById('sim-stat-corners-rival');
+    const faltUEl = document.getElementById('sim-stat-faltas-user');
+    const faltREl = document.getElementById('sim-stat-faltas-rival');
+
+    const canvasSVG = document.getElementById('sim-pitch-canvas');
+    if (canvasSVG) canvasSVG.innerHTML = '';
+
+    // 1. CLASIFICACIÓN TÁCTICA POR PUESTOS REALES
+    const once = obtenerOnceInicial();
+    const capitanId = obtenerCapitanOnce();
+    const ovrUsuario = Math.min(99, calcularOvrEquipoOnce());
+    const rival = torneoEstado.rivales[torneoEstado.rondaIdx];
+    const ovrRival = rival.ovr;
+    const fActual = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+
+    const userDefensas = [];
+    const userVolantes = [];
+    const userDelanteros = [];
+    let userArquero = 'El Arquero';
+
+    fActual.posiciones.forEach((item, idx) => {
+        const idAvatar = once[idx];
+        if (!idAvatar) return;
+        const nombre = obtenerNombreAvatar(idAvatar);
+        if (item.pos === 'POR') {
+            userArquero = nombre;
+        } else if (['DFC', 'LD', 'LI'].includes(item.pos)) {
+            userDefensas.push(nombre);
+        } else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(item.pos)) {
+            userVolantes.push(nombre);
+        } else {
+            userDelanteros.push(nombre);
+        }
+    });
+
+    if (!userDefensas.length) userDefensas.push('La Defensa');
+    if (!userVolantes.length) userVolantes.push('El Mediocampo');
+    if (!userDelanteros.length) userDelanteros.push('Tu Delantero');
+
+    const nombreCapitan = capitanId ? obtenerNombreAvatar(capitanId) : userDelanteros[0];
+    const rivalDelanteros = (rival.titulares && rival.titulares.length) ? rival.titulares.slice(0, 4) : [rival.nombre];
+    const rivalVolantes = (rival.titulares && rival.titulares.length > 4) ? rival.titulares.slice(4, 8) : ['El Mediocampo Rival'];
+
+    // 2. PROBABILIDADES BASADAS EN OVR
+    const difOvr = ovrUsuario - ovrRival;
+    let basePosesion = Math.max(38, Math.min(68, Math.round(50 + (difOvr * 0.9))));
+    const probExitoUser = Math.max(0.28, Math.min(0.72, 0.50 + (difOvr * 0.035)));
+
+    const statsPartido = {
+        tirosTotalesUser: 0,
+        tirosArcoUser: 0,
+        tirosTotalesRival: 0,
+        tirosArcoRival: 0,
+        cornersUser: 0,
+        cornersRival: 0,
+        faltasUser: 0,
+        faltasRival: 0,
+        posesionUser: basePosesion
+    };
+
+    const actualizarHudStats = () => {
+        if (posUserEl) posUserEl.textContent = `${statsPartido.posesionUser}%`;
+        if (posRivalEl) posRivalEl.textContent = `${100 - statsPartido.posesionUser}%`;
+        if (fillUserEl) fillUserEl.style.width = `${statsPartido.posesionUser}%`;
+        if (fillRivalEl) fillRivalEl.style.width = `${100 - statsPartido.posesionUser}%`;
+        if (tirosUEl) tirosUEl.textContent = `${statsPartido.tirosTotalesUser} (${statsPartido.tirosArcoUser})`;
+        if (tirosREl) tirosREl.textContent = `${statsPartido.tirosTotalesRival} (${statsPartido.tirosArcoRival})`;
+        if (cornUEl) cornUEl.textContent = `${statsPartido.cornersUser}`;
+        if (cornREl) cornREl.textContent = `${statsPartido.cornersRival}`;
+        if (faltUEl) faltUEl.textContent = `${statsPartido.faltasUser}`;
+        if (faltREl) faltREl.textContent = `${statsPartido.faltasRival}`;
+    };
+
+    // 3. COORDENADAS BASE DE FORMACIÓN
+    const POS_BASE = {
+        'dot-r-por': [7, 50],
+        'dot-r-def1': [18, 18], 'dot-r-def2': [19, 38], 'dot-r-def3': [19, 62], 'dot-r-def4': [18, 82],
+        'dot-r-med1': [32, 28], 'dot-r-med2': [33, 50], 'dot-r-med3': [32, 72],
+        'dot-r-del1': [44, 24], 'dot-r-del2': [43, 50], 'dot-r-del3': [44, 76],
+        'dot-u-del1': [56, 24], 'dot-u-del2': [57, 50], 'dot-u-del3': [56, 76],
+        'dot-u-med1': [68, 28], 'dot-u-med2': [67, 50], 'dot-u-med3': [68, 72],
+        'dot-u-def1': [81, 18], 'dot-u-def2': [80, 38], 'dot-u-def3': [80, 62], 'dot-u-def4': [81, 82],
+        'dot-u-por': [93, 50]
+    };
+
+    const POS_ACTUAL = {};
+    for (let id in POS_BASE) {
+        POS_ACTUAL[id] = [POS_BASE[id][0], POS_BASE[id][1]];
+    }
+
     const moverDot = (id, topNum, leftNum) => {
         const d = document.getElementById(id);
         if (d) {
+            POS_ACTUAL[id] = [topNum, leftNum];
             d.style.top = `${topNum}%`;
             d.style.left = `${leftNum}%`;
         }
@@ -8878,279 +10013,597 @@ window.iniciarSimulacionEnVivo = function() {
         }
     };
 
-    resetearDots();
-
-    // 🏃‍♂️ MOTOR TÁCTICO FLUIDO DE LOS 22 JUGADORES (SIN CRUCES LATERALES NI DESFASES)
-    const moverPelota2DVertical = (evTipo) => {
+    const ponerBalonEnJugador = (idJugador) => {
         if (!ballEl) return;
-        goalTop?.classList.remove('goal-hit-user', 'goal-hit-rival');
-        goalBottom?.classList.remove('goal-hit-user', 'goal-hit-rival');
-        if (tagEl) tagEl.className = 'sim-pitch-tag';
+        const coords = POS_ACTUAL[idJugador] || [50, 50];
+        ballEl.style.top = `${coords[0]}%`;
+        ballEl.style.left = `${coords[1]}%`;
+    };
 
-        const esUsuario = evTipo.includes('user');
-        const esGol = evTipo.includes('gol');
-        const banda = Math.random() < 0.5 ? 'izq' : 'der';
-        const patron = Math.floor(Math.random() * 10);
-        const noise = () => (Math.random() - 0.5) * 2;
+    // 4. MÁQUINA DE ESTADOS Y SECUENCIA DE FÚTBOL
+    let minutoActual = 1;
+    let primerTiempoTerminado = false;
+    let entretiempoEnCurso = false;
+    let jugadaAnimando = false;
+    let saqueEnCurso = true;
+    let tiempoDescuento1T = Math.floor(Math.random() * 2) + 1;
+    let tiempoDescuento2T = Math.floor(Math.random() * 3) + 3;
+    let golesUser = 0;
+    let golesRival = 0;
+
+    let equipoPosesion = 'user'; // 'user' (ataca hacia arriba) | 'rival' (ataca hacia abajo)
+    let zonaPosesion = 1;        // 0: Salida defensa, 1: Mediocampo, 2: Tres cuartos, 3: Área / Definición
+    let nodoBalonActual = 'dot-u-del2';
+    let accionPendiente = null;  // 'corner_user' | 'corner_rival' | null
+
+    const agregarEventoRelato = (tipo, min, texto) => {
+        if (!timeline) return;
+        const row = document.createElement('div');
+        row.className = `sim-event-row ${tipo}`;
+        row.innerHTML = `<span class="sim-ev-min">${min}'</span> <span class="sim-ev-text">${texto}</span>`;
+        timeline.appendChild(row);
+        timeline.scrollTop = timeline.scrollHeight;
+    };
+
+    // ⚽ SAQUE DE CENTRO REGLAMENTARIO (1T, 2T Y TRAS GOL)
+    const ejecutarSaqueCentro = (sacaUser, esReanudacion = false) => {
+        saqueEnCurso = true;
+        resetearDots();
+
+        const lanzador = sacaUser ? 'dot-u-del2' : 'dot-r-del2';
+        const receptor = sacaUser ? 'dot-u-med2' : 'dot-r-med2';
 
         ballEl.className = 'sim-pitch-ball';
+        ballEl.style.left = '50%';
+        ballEl.style.top = '50%';
+        moverDot(lanzador, 50, 50);
 
-        let p1 = { x: 50, y: 50 }, p2 = { x: 50, y: 30 }, p3 = { x: 50, y: 1 };
+        const otroDel = sacaUser ? 'dot-r-del2' : 'dot-u-del2';
+        moverDot(otroDel, sacaUser ? 42 : 58, 50);
 
-        // ══════════════════════════════════════════════════════════
-        // ATACA TU EQUIPO (HACIA ARRIBA)
-        // ══════════════════════════════════════════════════════════
-        if (esUsuario) {
-            const esIzq = banda === 'izq';
+        if (tagEl) {
+            tagEl.textContent = esReanudacion ? 'INICIA EL 2T' : (sacaUser ? 'SACA TU ONCE' : 'SACA EL RIVAL');
+            tagEl.className = `sim-pitch-tag visible ${sacaUser ? 'user-tag' : 'rival-tag'}`;
+            tagEl.style.left = '50%';
+            tagEl.style.top = sacaUser ? '56%' : '44%';
+        }
 
-            // FASE 1 (0 ms): Salida / Construcción
-            if (patron === 1 || patron === 5) {
-                // Por banda
-                p1 = { x: esIzq ? 26 : 74, y: 52 };
-                p2 = { x: esIzq ? 16 : 84, y: 22 };
-                p3 = { x: esIzq ? 56 : 44, y: esGol ? 1 : 5 };
-            } else if (patron === 2) {
-                // Media distancia
-                p1 = { x: 50, y: 56 };
-                p2 = { x: esIzq ? 45 : 55, y: 36 };
-                p3 = { x: esIzq ? 43 : 57, y: esGol ? 1 : 5 };
-            } else if (patron === 6) {
-                // Córner
-                p1 = { x: esIzq ? 4 : 96, y: 3 };
-                p2 = { x: 50, y: 14 };
-                p3 = { x: esIzq ? 46 : 54, y: esGol ? 1 : 4 };
-            } else if (patron === 7) {
-                // Tiro libre
-                p1 = { x: 50, y: 32 };
-                p2 = { x: 50, y: 32 };
-                p3 = { x: esIzq ? 42 : 58, y: esGol ? 1 : 5 };
-            } else {
-                // Frontal / Pared / Contra / Carambola / Presión
-                p1 = { x: 50, y: 54 };
-                p2 = { x: esIzq ? 44 : 56, y: 26 };
-                p3 = { x: esIzq ? 46 : 54, y: esGol ? 1 : 4 };
+        setTimeout(() => {
+            if (tagEl) tagEl.classList.remove('visible');
+            moverDot(lanzador, POS_BASE[lanzador][0], POS_BASE[lanzador][1]);
+            moverDot(otroDel, POS_BASE[otroDel][0], POS_BASE[otroDel][1]);
+
+            equipoPosesion = sacaUser ? 'user' : 'rival';
+            zonaPosesion = 1;
+            nodoBalonActual = receptor;
+            ponerBalonEnJugador(receptor);
+            saqueEnCurso = false;
+        }, 900);
+    };
+
+    // ⚽ CÓRNER LEGÍTIMO (SOLO SI HUBO DESVÍO PREVIO DEL ARQUERO/DEFENSA)
+    const animarCornerReal = (esUser) => {
+        jugadaAnimando = true;
+        const esIzq = Math.random() < 0.5;
+
+        if (esUser) {
+            statsPartido.cornersUser++;
+            actualizarHudStats();
+
+            const cX = esIzq ? 6 : 94;
+            const cY = 2;
+            const tirador = esIzq ? 'dot-u-del1' : 'dot-u-del3';
+            const cabeceador = 'dot-u-del2';
+
+            moverDot(tirador, cY + 1, cX);
+            ballEl.style.left = `${cX}%`;
+            ballEl.style.top = `${cY}%`;
+
+            moverDot(cabeceador, 14, 50);
+            moverDot('dot-u-med2', 15, esIzq ? 44 : 56);
+            moverDot('dot-r-por', 7, 50);
+            moverDot('dot-r-def2', 13, 48);
+            moverDot('dot-r-def3', 13, 52);
+
+            if (tagEl) {
+                tagEl.textContent = 'CÓRNER';
+                tagEl.className = 'sim-pitch-tag visible user-tag';
+                tagEl.style.left = `${cX}%`;
+                tagEl.style.top = '12%';
             }
 
-            ballEl.style.left = `${p1.x}%`;
-            ballEl.style.top = `${p1.y}%`;
-
-            // Movimiento táctico en bloque respetando carriles
-            moverDot('dot-u-por', 88, 50);
-            moverDot('dot-u-def1', 68 + noise(), 18 + noise());
-            moverDot('dot-u-def2', 70 + noise(), 38 + noise());
-            moverDot('dot-u-def3', 70 + noise(), 62 + noise());
-            moverDot('dot-u-def4', 68 + noise(), 82 + noise());
-
-            moverDot('dot-u-med1', 52 + noise(), 28 + (esIzq ? -4 : 0));
-            moverDot('dot-u-med2', 48 + noise(), 50 + (esIzq ? -4 : 4));
-            moverDot('dot-u-med3', 52 + noise(), 72 + (esIzq ? 0 : 4));
-
-            moverDot('dot-u-del1', (esIzq ? 32 : 40) + noise(), 22 + (esIzq ? -4 : 2));
-            moverDot('dot-u-del2', 34 + noise(), 50 + (esIzq ? -3 : 3));
-            moverDot('dot-u-del3', (esIzq ? 40 : 32) + noise(), 78 + (esIzq ? -2 : 4));
-
-            // Repliegue rival en su mitad de cancha
-            moverDot('dot-r-por', 8, 50);
-            moverDot('dot-r-def1', 14 + noise(), 22);
-            moverDot('dot-r-def2', 15 + noise(), 40);
-            moverDot('dot-r-def3', 15 + noise(), 60);
-            moverDot('dot-r-def4', 14 + noise(), 78);
-            moverDot('dot-r-med1', 25 + noise(), 30);
-            moverDot('dot-r-med2', 24 + noise(), 50);
-            moverDot('dot-r-med3', 25 + noise(), 70);
-
-            // FASE 2 (700 ms): Pase al área y desmarques
             setTimeout(() => {
-                ballEl.style.left = `${p2.x}%`;
-                ballEl.style.top = `${p2.y}%`;
+                ponerBalonEnJugador(cabeceador);
+                statsPartido.tirosTotalesUser++;
+                actualizarHudStats();
 
-                moverDot(esIzq ? 'dot-u-del1' : 'dot-u-del3', 20, esIzq ? 30 : 70);
-                moverDot('dot-u-del2', 18, 50);
-                moverDot('dot-r-por', 10, esIzq ? 46 : 54); // Arquero rival da 2 pasos adelante
-
-                // FASE 3 (1400 ms): Remate y definición
                 setTimeout(() => {
+                    const tX = esIzq ? 46 : 54;
                     ballEl.classList.add('shooting');
-                    ballEl.style.left = `${p3.x}%`;
-                    ballEl.style.top = `${p3.y}%`;
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = '3%';
+                    moverDot('dot-r-por', 8, tX);
+
+                    const asist = userVolantes[Math.floor(Math.random() * userVolantes.length)];
+                    const cabeceadorNom = userDelanteros[Math.floor(Math.random() * userDelanteros.length)];
+                    agregarEventoRelato('corner', minutoActual, `Córner ejecutado por <b>${asist}</b> y cabezazo de <b>${cabeceadorNom}</b> que pasa cerca del palo.`);
+
+                    setTimeout(() => {
+                        ballEl.className = 'sim-pitch-ball';
+                        if (tagEl) tagEl.classList.remove('visible');
+                        resetearDots();
+                        equipoPosesion = 'rival';
+                        zonaPosesion = 0;
+                        nodoBalonActual = 'dot-r-por';
+                        ponerBalonEnJugador('dot-r-por');
+                        jugadaAnimando = false;
+                    }, 1400);
+                }, 750);
+            }, 750);
+
+        } else {
+            statsPartido.cornersRival++;
+            actualizarHudStats();
+
+            const cX = esIzq ? 6 : 94;
+            const cY = 98;
+            const tiradorR = esIzq ? 'dot-r-del1' : 'dot-r-del3';
+            const cabeceadorR = 'dot-r-del2';
+
+            moverDot(tiradorR, cY - 1, cX);
+            ballEl.style.left = `${cX}%`;
+            ballEl.style.top = `${cY}%`;
+
+            moverDot(cabeceadorR, 86, 50);
+            moverDot('dot-r-med2', 85, esIzq ? 44 : 56);
+            moverDot('dot-u-por', 93, 50);
+            moverDot('dot-u-def2', 87, 48);
+            moverDot('dot-u-def3', 87, 52);
+
+            if (tagEl) {
+                tagEl.textContent = 'CÓRNER RIVAL';
+                tagEl.className = 'sim-pitch-tag visible rival-tag';
+                tagEl.style.left = `${cX}%`;
+                tagEl.style.top = '88%';
+            }
+
+            setTimeout(() => {
+                ponerBalonEnJugador(cabeceadorR);
+                statsPartido.tirosTotalesRival++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    const tX = esIzq ? 46 : 54;
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = '97%';
+                    moverDot('dot-u-por', 92, tX);
+
+                    const goleadorR = rivalDelanteros[Math.floor(Math.random() * rivalDelanteros.length)];
+                    agregarEventoRelato('corner', minutoActual, `Tiro de esquina peligroso de <b>${rival.nombre}</b>: cabezazo de <b>${goleadorR}</b> que tu defensa despeja con esfuerzo.`);
+
+                    setTimeout(() => {
+                        ballEl.className = 'sim-pitch-ball';
+                        if (tagEl) tagEl.classList.remove('visible');
+                        resetearDots();
+                        equipoPosesion = 'user';
+                        zonaPosesion = 0;
+                        nodoBalonActual = 'dot-u-por';
+                        ponerBalonEnJugador('dot-u-por');
+                        jugadaAnimando = false;
+                    }, 1400);
+                }, 750);
+            }, 750);
+        }
+    };
+
+    // ⚡ TIRO LIBRE PELIGROSO (SOLO SI SE RECIBE FALTA EN TRES CUARTOS)
+    const animarTiroLibreReal = (esUser) => {
+        jugadaAnimando = true;
+        const esIzq = Math.random() < 0.5;
+
+        if (esUser) {
+            statsPartido.faltasRival++;
+            actualizarHudStats();
+
+            const bX = 50, bY = 30;
+            moverDot('dot-u-del2', bY + 4, bX);
+            ballEl.style.left = `${bX}%`;
+            ballEl.style.top = `${bY}%`;
+
+            moverDot('dot-r-def1', 20, 42);
+            moverDot('dot-r-def2', 20, 47);
+            moverDot('dot-r-def3', 20, 53);
+            moverDot('dot-r-def4', 20, 58);
+            moverDot('dot-r-por', 8, esIzq ? 40 : 60);
+
+            if (tagEl) {
+                tagEl.textContent = 'TIRO LIBRE';
+                tagEl.className = 'sim-pitch-tag visible user-tag';
+                tagEl.style.left = `${bX}%`;
+                tagEl.style.top = `${bY - 8}%`;
+            }
+
+            const ejecutor = userDelanteros[0] || nombreCapitan;
+            agregarEventoRelato('falta', minutoActual, `Infracción sobre <b>${userVolantes[0]}</b> al encarar hacia el arco. Tiro libre peligroso para tu equipo ejecutado por <b>${ejecutor}</b>.`);
+
+            setTimeout(() => {
+                const tX = esIzq ? 45 : 55;
+                ballEl.classList.add('shooting');
+                ballEl.style.left = `${tX}%`;
+                ballEl.style.top = '3%';
+                moverDot('dot-r-por', 8, tX);
+                statsPartido.tirosTotalesUser++;
+                statsPartido.tirosArcoUser++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    ballEl.className = 'sim-pitch-ball';
+                    if (tagEl) tagEl.classList.remove('visible');
+                    resetearDots();
+                    equipoPosesion = 'rival';
+                    zonaPosesion = 0;
+                    nodoBalonActual = 'dot-r-por';
+                    ponerBalonEnJugador('dot-r-por');
+                    jugadaAnimando = false;
+                }, 1400);
+            }, 800);
+
+        } else {
+            statsPartido.faltasUser++;
+            actualizarHudStats();
+
+            const bX = 50, bY = 70;
+            moverDot('dot-r-del2', bY - 4, bX);
+            ballEl.style.left = `${bX}%`;
+            ballEl.style.top = `${bY}%`;
+
+            moverDot('dot-u-def1', 80, 42);
+            moverDot('dot-u-def2', 80, 47);
+            moverDot('dot-u-def3', 80, 53);
+            moverDot('dot-u-def4', 80, 58);
+            moverDot('dot-u-por', 92, esIzq ? 40 : 60);
+
+            if (tagEl) {
+                tagEl.textContent = 'TIRO LIBRE RIVAL';
+                tagEl.className = 'sim-pitch-tag visible rival-tag';
+                tagEl.style.left = `${bX}%`;
+                tagEl.style.top = `${bY + 8}%`;
+            }
+
+            const pateadorR = rivalDelanteros[0];
+            agregarEventoRelato('falta', minutoActual, `Falta en la medialuna cometida por <b>${userDefensas[0]}</b>. Tiro libre directo de <b>${pateadorR}</b>.`);
+
+            setTimeout(() => {
+                const tX = esIzq ? 45 : 55;
+                ballEl.classList.add('shooting');
+                ballEl.style.left = `${tX}%`;
+                ballEl.style.top = '97%';
+                moverDot('dot-u-por', 92, tX);
+                statsPartido.tirosTotalesRival++;
+                statsPartido.tirosArcoRival++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    ballEl.className = 'sim-pitch-ball';
+                    if (tagEl) tagEl.classList.remove('visible');
+                    resetearDots();
+                    equipoPosesion = 'user';
+                    zonaPosesion = 0;
+                    nodoBalonActual = 'dot-u-por';
+                    ponerBalonEnJugador('dot-u-por');
+                    jugadaAnimando = false;
+                }, 1400);
+            }, 800);
+        }
+    };
+
+    // 🛑 FALTA TÁCTICA EN EL MEDIOCAMPO (REANUDACIÓN EN CORTO EN ESE MISMO LUGAR)
+    const animarFaltaTacticaMedio = (esUser) => {
+        jugadaAnimando = true;
+        if (esUser) statsPartido.faltasRival++;
+        else statsPartido.faltasUser++;
+        actualizarHudStats();
+
+        if (tagEl) {
+            tagEl.textContent = 'FALTA TÁCTICA';
+            tagEl.className = 'sim-pitch-tag visible neutral-tag';
+            tagEl.style.left = '50%';
+            tagEl.style.top = '50%';
+        }
+
+        const recibidor = esUser ? userVolantes[0] : rivalVolantes[0];
+        const infractor = esUser ? rivalVolantes[0] : userVolantes[0];
+        agregarEventoRelato('falta', minutoActual, `Falta táctica en mitad de cancha de <b>${infractor}</b> sobre <b>${recibidor}</b> para frenar la transición.`);
+
+        setTimeout(() => {
+            if (tagEl) tagEl.classList.remove('visible');
+            // Reanudación inmediata en corto en el círculo central
+            const nodoMedio = esUser ? 'dot-u-med2' : 'dot-r-med2';
+            nodoBalonActual = nodoMedio;
+            ponerBalonEnJugador(nodoMedio);
+            jugadaAnimando = false;
+        }, 1200);
+    };
+
+    // 🥅 DEFINICIÓN EN EL ÁREA: ASISTENCIA Y REMATE
+    const animarAtaqueDefinicion = (esUser) => {
+        jugadaAnimando = true;
+        const esIzq = Math.random() < 0.5;
+        const esGol = esUser ? (Math.random() < (probExitoUser * 0.72)) : (Math.random() < ((1 - probExitoUser) * 0.72));
+
+        if (esUser) {
+            const asistidor = esIzq ? 'dot-u-med1' : 'dot-u-med3';
+            const definidor = 'dot-u-del2';
+
+            moverDot(asistidor, 44, esIzq ? 32 : 68);
+            moverDot(definidor, 26, 50);
+            moverDot('dot-u-por', 82, 50);
+            moverDot('dot-r-por', 8, 50);
+            moverDot('dot-r-def2', 17, 44);
+            moverDot('dot-r-def3', 17, 56);
+            ponerBalonEnJugador(asistidor);
+
+            setTimeout(() => {
+                moverDot(definidor, 18, 50);
+                ponerBalonEnJugador(definidor);
+
+                setTimeout(() => {
+                    const tX = esIzq ? 45 : 55;
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = esGol ? '1%' : '5%';
+
+                    statsPartido.tirosTotalesUser++;
+                    statsPartido.tirosArcoUser++;
+                    actualizarHudStats();
+
+                    const goleadorNom = Math.random() < 0.4 ? nombreCapitan : userDelanteros[Math.floor(Math.random() * userDelanteros.length)];
+                    const asistNom = userVolantes[Math.floor(Math.random() * userVolantes.length)];
 
                     if (esGol) {
-                        // El arquero rival se tira a contrapié (permaneciendo en su área chica)
-                        moverDot('dot-r-por', 8, p3.x > 50 ? 42 : 58);
-
+                        golesUser++;
+                        moverDot('dot-r-por', 8, tX > 50 ? 42 : 58);
                         setTimeout(() => {
                             ballEl.className = 'sim-pitch-ball in-net';
                             goalTop?.classList.add('goal-hit-user');
-                            scoreUserEl.textContent = parseInt(scoreUserEl.textContent) + 1;
-                            scoreUserEl.classList.add('animate-bounce');
-                            setTimeout(() => scoreUserEl.classList.remove('animate-bounce'), 400);
-
+                            if (scoreUserEl) {
+                                scoreUserEl.textContent = golesUser;
+                                scoreUserEl.classList.add('animate-bounce');
+                                setTimeout(() => scoreUserEl.classList.remove('animate-bounce'), 400);
+                            }
                             if (tagEl) {
                                 tagEl.textContent = '¡GOL!';
                                 tagEl.className = 'sim-pitch-tag visible user-tag';
-                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.left = `${tX}%`;
                                 tagEl.style.top = '16%';
                             }
+                            agregarEventoRelato('gol_user', minutoActual, `¡GOLAZO! Asistencia milimétrica de <b>${asistNom}</b> y definición cruzada de <b>${goleadorNom}</b>.`);
+
+                            setTimeout(() => {
+                                goalTop?.classList.remove('goal-hit-user');
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Tras el gol saca el rival desde el círculo central
+                                ejecutarSaqueCentro(false, false);
+                            }, 1800);
                         }, 400);
                     } else {
-                        // El arquero rival vuela hacia el balón (dentro del área chica)
-                        moverDot('dot-r-por', 7, p3.x);
-
+                        moverDot('dot-r-por', 7, tX);
                         setTimeout(() => {
                             ballEl.classList.remove('shooting');
-                            const esPoste = Math.random() < 0.5;
-                            if (esPoste) {
-                                ballEl.style.top = '22%';
-                                ballEl.style.left = `${p3.x + (esIzq ? 6 : -6)}%`;
-                            } else {
-                                ballEl.style.top = '7%';
-                                ballEl.style.left = esIzq ? '14%' : '86%';
-                            }
-
                             if (tagEl) {
-                                tagEl.textContent = esPoste ? '¡TRAVESAÑO!' : '¡SALVADA!';
+                                tagEl.textContent = '¡ATAJADA!';
                                 tagEl.className = 'sim-pitch-tag visible neutral-tag';
-                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.left = `${tX}%`;
                                 tagEl.style.top = '16%';
                             }
+                            agregarEventoRelato('atajada', minutoActual, `¡Atajadón! Disparo de <b>${goleadorNom}</b> que el arquero rival desvía al tiro de esquina.`);
+
+                            setTimeout(() => {
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Desvío por línea de fondo: CÓRNER INMEDIATO
+                                accionPendiente = 'corner_user';
+                            }, 1000);
                         }, 400);
                     }
                 }, 700);
             }, 700);
 
-        // ══════════════════════════════════════════════════════════
-        // ATACA EL RIVAL (HACIA ABAJO)
-        // ══════════════════════════════════════════════════════════
         } else {
-            const esIzq = banda === 'izq';
+            const asistidorR = esIzq ? 'dot-r-med1' : 'dot-r-med3';
+            const definidorR = 'dot-r-del2';
 
-            if (patron === 1 || patron === 5) {
-                p1 = { x: esIzq ? 26 : 74, y: 48 };
-                p2 = { x: esIzq ? 16 : 84, y: 78 };
-                p3 = { x: esIzq ? 56 : 44, y: esGol ? 99 : 95 };
-            } else if (patron === 2) {
-                p1 = { x: 50, y: 44 };
-                p2 = { x: esIzq ? 45 : 55, y: 64 };
-                p3 = { x: esIzq ? 43 : 57, y: esGol ? 99 : 95 };
-            } else if (patron === 6) {
-                p1 = { x: esIzq ? 4 : 96, y: 97 };
-                p2 = { x: 50, y: 86 };
-                p3 = { x: esIzq ? 46 : 54, y: esGol ? 99 : 96 };
-            } else if (patron === 7) {
-                p1 = { x: 50, y: 68 };
-                p2 = { x: 50, y: 68 };
-                p3 = { x: esIzq ? 42 : 58, y: esGol ? 99 : 95 };
-            } else {
-                p1 = { x: 50, y: 46 };
-                p2 = { x: esIzq ? 44 : 56, y: 74 };
-                p3 = { x: esIzq ? 46 : 54, y: esGol ? 99 : 96 };
-            }
-
-            ballEl.style.left = `${p1.x}%`;
-            ballEl.style.top = `${p1.y}%`;
-
-            // Movimiento táctico del rival hacia adelante
-            moverDot('dot-r-por', 12, 50);
-            moverDot('dot-r-def1', 32 + noise(), 18 + noise());
-            moverDot('dot-r-def2', 30 + noise(), 38 + noise());
-            moverDot('dot-r-def3', 30 + noise(), 62 + noise());
-            moverDot('dot-r-def4', 32 + noise(), 82 + noise());
-
-            moverDot('dot-r-med1', 48 + noise(), 28 + (esIzq ? -4 : 0));
-            moverDot('dot-r-med2', 52 + noise(), 50 + (esIzq ? -4 : 4));
-            moverDot('dot-r-med3', 48 + noise(), 72 + (esIzq ? 0 : 4));
-
-            moverDot('dot-r-del1', (esIzq ? 68 : 60) + noise(), 22 + (esIzq ? -4 : 2));
-            moverDot('dot-r-del2', 66 + noise(), 50 + (esIzq ? -3 : 3));
-            moverDot('dot-r-del3', (esIzq ? 60 : 68) + noise(), 78 + (esIzq ? -2 : 4));
-
-            // Repliegue de tu equipo en su mitad de cancha
+            moverDot(asistidorR, 56, esIzq ? 32 : 68);
+            moverDot(definidorR, 74, 50);
             moverDot('dot-u-por', 92, 50);
-            moverDot('dot-u-def1', 86 + noise(), 22);
-            moverDot('dot-u-def2', 85 + noise(), 40);
-            moverDot('dot-u-def3', 85 + noise(), 60);
-            moverDot('dot-u-def4', 86 + noise(), 78);
-            moverDot('dot-u-med1', 75 + noise(), 30);
-            moverDot('dot-u-med2', 76 + noise(), 50);
-            moverDot('dot-u-med3', 75 + noise(), 70);
+            moverDot('dot-u-def2', 83, 44);
+            moverDot('dot-u-def3', 83, 56);
+            ponerBalonEnJugador(asistidorR);
 
-            // FASE 2 (700 ms): Pase rival al área de tu equipo
             setTimeout(() => {
-                ballEl.style.left = `${p2.x}%`;
-                ballEl.style.top = `${p2.y}%`;
+                moverDot(definidorR, 82, 50);
+                ponerBalonEnJugador(definidorR);
 
-                moverDot(esIzq ? 'dot-r-del1' : 'dot-r-del3', 80, esIzq ? 30 : 70);
-                moverDot('dot-r-del2', 82, 50);
-                moverDot('dot-u-por', 90, esIzq ? 46 : 54); // Tu arquero achica en su área chica
-
-                // FASE 3 (1400 ms): Remate rival y definición
                 setTimeout(() => {
+                    const tX = esIzq ? 45 : 55;
                     ballEl.classList.add('shooting');
-                    ballEl.style.left = `${p3.x}%`;
-                    ballEl.style.top = `${p3.y}%`;
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = esGol ? '99%' : '95%';
+
+                    statsPartido.tirosTotalesRival++;
+                    statsPartido.tirosArcoRival++;
+                    actualizarHudStats();
+
+                    const goleadorR = rivalDelanteros[Math.floor(Math.random() * rivalDelanteros.length)];
+                    const asistR = rivalVolantes[Math.floor(Math.random() * rivalVolantes.length)];
 
                     if (esGol) {
-                        // Tu arquero se tira a contrapié (en su propia área)
-                        moverDot('dot-u-por', 92, p3.x > 50 ? 42 : 58);
-
+                        golesRival++;
+                        moverDot('dot-u-por', 92, tX > 50 ? 42 : 58);
                         setTimeout(() => {
                             ballEl.className = 'sim-pitch-ball in-net';
                             goalBottom?.classList.add('goal-hit-rival');
-                            scoreRivalEl.textContent = parseInt(scoreRivalEl.textContent) + 1;
-                            scoreRivalEl.classList.add('animate-bounce');
-                            setTimeout(() => scoreRivalEl.classList.remove('animate-bounce'), 400);
-
+                            if (scoreRivalEl) {
+                                scoreRivalEl.textContent = golesRival;
+                                scoreRivalEl.classList.add('animate-bounce');
+                                setTimeout(() => scoreRivalEl.classList.remove('animate-bounce'), 400);
+                            }
                             if (tagEl) {
                                 tagEl.textContent = 'GOL RIVAL';
                                 tagEl.className = 'sim-pitch-tag visible rival-tag';
-                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.left = `${tX}%`;
                                 tagEl.style.top = '84%';
                             }
+                            agregarEventoRelato('gol_rival', minutoActual, `Gol de <b>${rival.nombre}</b>: pase al vacío de <b>${asistR}</b> y remate de <b>${goleadorR}</b>.`);
+
+                            setTimeout(() => {
+                                goalBottom?.classList.remove('goal-hit-rival');
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Tras el gol saca Tu Once desde el círculo central
+                                ejecutarSaqueCentro(true, false);
+                            }, 1800);
                         }, 400);
                     } else {
-                        // Tu arquero vuela hacia el balón (dentro de su área chica)
-                        moverDot('dot-u-por', 93, p3.x);
-
+                        moverDot('dot-u-por', 93, tX);
                         setTimeout(() => {
                             ballEl.classList.remove('shooting');
-                            const esPoste = Math.random() < 0.5;
-                            if (esPoste) {
-                                ballEl.style.top = '78%';
-                                ballEl.style.left = `${p3.x + (esIzq ? 6 : -6)}%`;
-                            } else {
-                                ballEl.style.top = '93%';
-                                ballEl.style.left = esIzq ? '14%' : '86%';
-                            }
-
                             if (tagEl) {
-                                tagEl.textContent = esPoste ? '¡TRAVESAÑO!' : '¡SALVADA!';
+                                tagEl.textContent = '¡SALVADA!';
                                 tagEl.className = 'sim-pitch-tag visible neutral-tag';
-                                tagEl.style.left = `${p3.x}%`;
+                                tagEl.style.left = `${tX}%`;
                                 tagEl.style.top = '80%';
                             }
+                            agregarEventoRelato('atajada', minutoActual, `¡Sensacional <b>${userArquero}</b>! Vuela sobre el palo y manda el remate de <b>${goleadorR}</b> al tiro de esquina.`);
+
+                            setTimeout(() => {
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Desvío por línea de fondo: CÓRNER INMEDIATO
+                                accionPendiente = 'corner_rival';
+                            }, 1000);
                         }, 400);
                     }
                 }, 700);
             }, 700);
         }
-
-        // FASE 4 (2250 ms): Repliegue orgánico a posiciones de formación base
-        setTimeout(() => {
-            resetearDots();
-            ballEl.className = 'sim-pitch-ball';
-            ballEl.style.left = '50%';
-            ballEl.style.top = '50%';
-            if (tagEl) tagEl.classList.remove('visible');
-            goalTop?.classList.remove('goal-hit-user', 'goal-hit-rival');
-            goalBottom?.classList.remove('goal-hit-user', 'goal-hit-rival');
-        }, 2250);
     };
 
-    // ⏱️ CUENTA REGRESIVA PREVIA DE 3 SEGUNDOS (3... 2... 1...)
+    // 🌊 CIRCULACIÓN CORRELATIVA Y PROGRESIÓN LÓGICA
+    const avanzarCirculacionTactico = () => {
+        if (!ballEl || saqueEnCurso || jugadaAnimando) return;
+
+        // 1. Córner pendiente nacido de la atajada anterior
+        if (accionPendiente === 'corner_user') {
+            accionPendiente = null;
+            animarCornerReal(true);
+            return;
+        }
+        if (accionPendiente === 'corner_rival') {
+            accionPendiente = null;
+            animarCornerReal(false);
+            return;
+        }
+
+        const esUser = (equipoPosesion === 'user');
+        const chanceAvanzar = esUser ? probExitoUser : (1 - probExitoUser);
+        const dado = Math.random();
+
+        if (dado < (chanceAvanzar * 0.46)) {
+            zonaPosesion++; // Avanza de fase hacia el arco rival
+        } else if (dado > 0.82) {
+            // ¡Intercepción en la zona física actual (sin saltos)!
+            equipoPosesion = esUser ? 'rival' : 'user';
+            zonaPosesion = (3 - zonaPosesion);
+        }
+
+        zonaPosesion = Math.max(0, Math.min(3, zonaPosesion));
+
+        // 2. Llegada a zona de definición
+        if (zonaPosesion === 3) {
+            animarAtaqueDefinicion(esUser);
+            return;
+        }
+
+        // Falta al encarar en tres cuartos (Tiro libre peligroso)
+        if (zonaPosesion === 2 && Math.random() < 0.16) {
+            animarTiroLibreReal(esUser);
+            return;
+        }
+
+        // Falta táctica de corte en mitad de cancha
+        if (zonaPosesion === 1 && Math.random() < 0.08) {
+            animarFaltaTacticaMedio(esUser);
+            return;
+        }
+
+        // 3. Toque entre futbolistas de la zona
+        let opciones = [];
+        if (esUser) {
+            if (zonaPosesion === 0) opciones = ['dot-u-por', 'dot-u-def1', 'dot-u-def2', 'dot-u-def3', 'dot-u-def4'];
+            else if (zonaPosesion === 1) opciones = ['dot-u-med1', 'dot-u-med2', 'dot-u-med3'];
+            else opciones = ['dot-u-del1', 'dot-u-del2', 'dot-u-del3'];
+        } else {
+            if (zonaPosesion === 0) opciones = ['dot-r-por', 'dot-r-def1', 'dot-r-def2', 'dot-r-def3', 'dot-r-def4'];
+            else if (zonaPosesion === 1) opciones = ['dot-r-med1', 'dot-r-med2', 'dot-r-med3'];
+            else opciones = ['dot-r-del1', 'dot-r-del2', 'dot-r-del3'];
+        }
+
+        nodoBalonActual = opciones[Math.floor(Math.random() * opciones.length)];
+        ponerBalonEnJugador(nodoBalonActual);
+
+        // 4. Bloques dinámicos: subida de defensas y presión de delanteros
+        const bY = POS_ACTUAL[nodoBalonActual][0];
+        const bX = POS_ACTUAL[nodoBalonActual][1];
+        const pIzq = bX < 44;
+        const pDer = bX > 56;
+
+        for (let id in POS_BASE) {
+            if (id === nodoBalonActual) continue;
+
+            const base = POS_BASE[id];
+            let targetY = base[0];
+            let targetX = base[1];
+            const esUserDot = id.startsWith('dot-u-');
+
+            if (pIzq) targetX += (esUserDot ? -4 : -5);
+            else if (pDer) targetX += (esUserDot ? 4 : 5);
+
+            if (equipoPosesion === 'user') {
+                if (bY < 50) {
+                    // Tu equipo ataca arriba: tu defensa sube a mitad de cancha
+                    targetY += (esUserDot ? (id.includes('def') ? -20 : id.includes('med') ? -14 : -6) : (id.includes('del') ? -4 : -8));
+                } else {
+                    // Tu equipo sale desde abajo: ¡LOS DELANTEROS RIVALES PRESIONAN ARRIBA!
+                    targetY += (esUserDot ? 2 : (id.includes('del') ? 22 : id.includes('med') ? 14 : 6));
+                }
+            } else {
+                if (bY > 50) {
+                    // Rival ataca abajo: tu defensa se repliega
+                    targetY += (!esUserDot ? (id.includes('def') ? 20 : id.includes('med') ? 14 : 6) : (id.includes('del') ? 4 : 8));
+                } else {
+                    // Rival sale desde abajo: ¡TUS DELANTEROS PRESIONAN EN SU ÁREA!
+                    targetY += (!esUserDot ? -2 : (id.includes('del') ? -22 : id.includes('med') ? -14 : -6));
+                }
+            }
+
+            const microX = (Math.random() - 0.5) * 1.5;
+            const microY = (Math.random() - 0.5) * 1.5;
+            moverDot(id, Math.max(6, Math.min(94, targetY + microY)), Math.max(12, Math.min(88, targetX + microX)));
+        }
+    };
+
+    // ⏱️ CUENTA REGRESIVA PREVIA (3... 2... 1...)
     let segundosPrevia = 3;
-    clock.textContent = '3s';
-    btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
-    
+    if (clock) clock.textContent = '3s';
+    if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+
     if (tagEl) {
         tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
         tagEl.className = 'sim-pitch-tag visible neutral-tag';
@@ -9161,46 +10614,868 @@ window.iniciarSimulacionEnVivo = function() {
     simPreviaTimer = setInterval(() => {
         segundosPrevia--;
         if (segundosPrevia > 0) {
-            clock.textContent = `${segundosPrevia}s`;
-            btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+            if (clock) clock.textContent = `${segundosPrevia}s`;
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
             if (tagEl) tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
         } else {
             clearInterval(simPreviaTimer);
             simPreviaTimer = null;
             if (tagEl) tagEl.classList.remove('visible');
-            btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> Jugando el partido...`;
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> En juego (90 minutos)...`;
 
-            // 🚀 ARRANQUE INSTANTÁNEO AL LLEGAR A CERO (CERO ESPERA / CERO LAG)
-            let step = 0;
-            const ejecutarPasoSimulacion = () => {
-                if (step < eventos.length) {
-                    const ev = eventos[step];
-                    clock.textContent = `MIN ${ev.min}'`;
+            actualizarHudStats();
 
-                    // ⚽ Comienza el movimiento y desarrollo de la jugada en la cancha
-                    moverPelota2DVertical(ev.tipo);
+            // ⚽ 1ER TIEMPO: SACA TU ONCE DESDE EL MEDIO
+            ejecutarSaqueCentro(true, false);
 
-                    // 🎙️ El relato aparece sincronizado con la definición en el arco
-                    setTimeout(() => {
-                        const itemEl = document.createElement('div');
-                        itemEl.className = `sim-event-row ${ev.tipo}`;
-                        itemEl.innerHTML = `<span class="sim-ev-min">${ev.min}'</span> <span class="sim-ev-text">${ev.texto}</span>`;
-                        timeline.appendChild(itemEl);
+            const ejecutarTickReloj = () => {
+                if (entretiempoEnCurso || jugadaAnimando || saqueEnCurso) return;
+
+                // 🔔 ENTRETIEMPO (45' + descuento)
+                if (!primerTiempoTerminado && minutoActual > (45 + tiempoDescuento1T)) {
+                    primerTiempoTerminado = true;
+                    entretiempoEnCurso = true;
+                    if (clock) clock.textContent = `45'+${tiempoDescuento1T} · ET`;
+
+                    const rowET = document.createElement('div');
+                    rowET.className = 'sim-event-row entretiempo';
+                    rowET.innerHTML = `<span><i class="ph-bold ph-whistle"></i> FIN DEL PRIMER TIEMPO (${scoreUserEl ? scoreUserEl.textContent : 0} - ${scoreRivalEl ? scoreRivalEl.textContent : 0})</span>`;
+                    if (timeline) {
+                        timeline.appendChild(rowET);
                         timeline.scrollTop = timeline.scrollHeight;
-                    }, 1800);
+                    }
 
-                    step++;
-                } else {
+                    simHalftimeTimer = setTimeout(() => {
+                        minutoActual = 46;
+                        entretiempoEnCurso = false;
+                        if (clock) clock.textContent = `46' (2T)`;
+
+                        // ⚽ 2DO TIEMPO: SACA EL RIVAL DESDE EL MEDIO
+                        ejecutarSaqueCentro(false, true);
+                    }, 2400);
+                    return;
+                }
+
+                // 🏁 FINAL DEL PARTIDO (90' + descuento)
+                if (minutoActual > (90 + tiempoDescuento2T)) {
                     clearInterval(simIntervalo);
                     simIntervalo = null;
-                    clock.textContent = 'FINAL 90\'';
+                    if (clock) clock.textContent = `90'+${tiempoDescuento2T}' · FIN`;
                     finalizarPartidoCopa(golesUser, golesRival);
+                    return;
                 }
+
+                // Reloj en vivo
+                if (clock) {
+                    if (!primerTiempoTerminado && minutoActual > 45) {
+                        clock.textContent = `45'+${minutoActual - 45}'`;
+                    } else if (minutoActual > 90) {
+                        clock.textContent = `90'+${minutoActual - 90}'`;
+                    } else {
+                        clock.textContent = `MIN ${minutoActual}'`;
+                    }
+                }
+
+                // Fluctuación de posesión
+                if (minutoActual % 4 === 0) {
+                    const osc = Math.floor((Math.random() - 0.5) * 3);
+                    statsPartido.posesionUser = Math.max(30, Math.min(70, statsPartido.posesionUser + osc));
+                    actualizarHudStats();
+                }
+
+                // Avance táctico correlativo
+                avanzarCirculacionTactico();
+
+                minutoActual++;
             };
 
-            // Ejecuta la primera situación de juego en el milisegundo exacto en que termina el 1...
-            ejecutarPasoSimulacion();
-            simIntervalo = setInterval(ejecutarPasoSimulacion, 2750);
+            // Ritmo televisivo pausado de 380ms por minuto
+            simIntervalo = setInterval(ejecutarTickReloj, 380);
+        }
+    }, 1000);
+};
+
+// ========================================================
+// ⚡ MOTOR TÁCTICO CORRELATIVO DE FÚTBOL REAL (SIN TELETRANSPORTES)
+// ========================================================
+window.iniciarSimulacionEnVivo = function() {
+    if (!torneoEstado || torneoEstado.partidoEnCurso) return;
+    torneoEstado.partidoEnCurso = true;
+
+    if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
+    if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+    if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
+    if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
+
+    const btn = document.getElementById('sim-btn-play');
+    if (btn) btn.disabled = true;
+
+    const timeline = document.getElementById('sim-events-timeline');
+    if (timeline) timeline.innerHTML = '';
+
+    const clock = document.getElementById('sim-match-clock');
+    const scoreUserEl = document.getElementById('sim-score-user');
+    const scoreRivalEl = document.getElementById('sim-score-rival');
+    const ballEl = document.getElementById('sim-pitch-ball');
+    const tagEl = document.getElementById('sim-pitch-tag');
+    const goalTop = document.getElementById('sim-goal-top');
+    const goalBottom = document.getElementById('sim-goal-bottom');
+
+    const posUserEl = document.getElementById('sim-stat-pos-user');
+    const posRivalEl = document.getElementById('sim-stat-pos-rival');
+    const fillUserEl = document.getElementById('sim-pos-fill-user');
+    const fillRivalEl = document.getElementById('sim-pos-fill-rival');
+    const tirosUEl = document.getElementById('sim-stat-tiros-user');
+    const tirosREl = document.getElementById('sim-stat-tiros-rival');
+    const cornUEl = document.getElementById('sim-stat-corners-user');
+    const cornREl = document.getElementById('sim-stat-corners-rival');
+    const faltUEl = document.getElementById('sim-stat-faltas-user');
+    const faltREl = document.getElementById('sim-stat-faltas-rival');
+
+    const canvasSVG = document.getElementById('sim-pitch-canvas');
+    if (canvasSVG) canvasSVG.innerHTML = '';
+
+    // 1. CLASIFICACIÓN TÁCTICA POR PUESTOS REALES
+    const once = obtenerOnceInicial();
+    const capitanId = obtenerCapitanOnce();
+    const ovrUsuario = Math.min(99, calcularOvrEquipoOnce());
+    const rival = torneoEstado.rivales[torneoEstado.rondaIdx];
+    const ovrRival = rival.ovr;
+    const fActual = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+
+    const userDefensas = [];
+    const userVolantes = [];
+    const userDelanteros = [];
+    let userArquero = 'El Arquero';
+
+    fActual.posiciones.forEach((item, idx) => {
+        const idAvatar = once[idx];
+        if (!idAvatar) return;
+        const nombre = obtenerNombreAvatar(idAvatar);
+        if (item.pos === 'POR') {
+            userArquero = nombre;
+        } else if (['DFC', 'LD', 'LI'].includes(item.pos)) {
+            userDefensas.push(nombre);
+        } else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(item.pos)) {
+            userVolantes.push(nombre);
+        } else {
+            userDelanteros.push(nombre);
+        }
+    });
+
+    if (!userDefensas.length) userDefensas.push('La Defensa');
+    if (!userVolantes.length) userVolantes.push('El Mediocampo');
+    if (!userDelanteros.length) userDelanteros.push('Tu Delantero');
+
+    const nombreCapitan = capitanId ? obtenerNombreAvatar(capitanId) : userDelanteros[0];
+    const rivalDelanteros = (rival.titulares && rival.titulares.length) ? rival.titulares.slice(0, 4) : [rival.nombre];
+    const rivalVolantes = (rival.titulares && rival.titulares.length > 4) ? rival.titulares.slice(4, 8) : ['El Mediocampo Rival'];
+
+    // 2. PROBABILIDADES BASADAS EN OVR
+    const difOvr = ovrUsuario - ovrRival;
+    let basePosesion = Math.max(38, Math.min(68, Math.round(50 + (difOvr * 0.9))));
+    const probExitoUser = Math.max(0.28, Math.min(0.72, 0.50 + (difOvr * 0.035)));
+
+    const statsPartido = {
+        tirosTotalesUser: 0,
+        tirosArcoUser: 0,
+        tirosTotalesRival: 0,
+        tirosArcoRival: 0,
+        cornersUser: 0,
+        cornersRival: 0,
+        faltasUser: 0,
+        faltasRival: 0,
+        posesionUser: basePosesion
+    };
+
+    const actualizarHudStats = () => {
+        if (posUserEl) posUserEl.textContent = `${statsPartido.posesionUser}%`;
+        if (posRivalEl) posRivalEl.textContent = `${100 - statsPartido.posesionUser}%`;
+        if (fillUserEl) fillUserEl.style.width = `${statsPartido.posesionUser}%`;
+        if (fillRivalEl) fillRivalEl.style.width = `${100 - statsPartido.posesionUser}%`;
+        if (tirosUEl) tirosUEl.textContent = `${statsPartido.tirosTotalesUser} (${statsPartido.tirosArcoUser})`;
+        if (tirosREl) tirosREl.textContent = `${statsPartido.tirosTotalesRival} (${statsPartido.tirosArcoRival})`;
+        if (cornUEl) cornUEl.textContent = `${statsPartido.cornersUser}`;
+        if (cornREl) cornREl.textContent = `${statsPartido.cornersRival}`;
+        if (faltUEl) faltUEl.textContent = `${statsPartido.faltasUser}`;
+        if (faltREl) faltREl.textContent = `${statsPartido.faltasRival}`;
+    };
+
+    // 3. COORDENADAS BASE DE FORMACIÓN
+    const POS_BASE = {
+        'dot-r-por': [7, 50],
+        'dot-r-def1': [18, 18], 'dot-r-def2': [19, 38], 'dot-r-def3': [19, 62], 'dot-r-def4': [18, 82],
+        'dot-r-med1': [32, 28], 'dot-r-med2': [33, 50], 'dot-r-med3': [32, 72],
+        'dot-r-del1': [44, 24], 'dot-r-del2': [43, 50], 'dot-r-del3': [44, 76],
+        'dot-u-del1': [56, 24], 'dot-u-del2': [57, 50], 'dot-u-del3': [56, 76],
+        'dot-u-med1': [68, 28], 'dot-u-med2': [67, 50], 'dot-u-med3': [68, 72],
+        'dot-u-def1': [81, 18], 'dot-u-def2': [80, 38], 'dot-u-def3': [80, 62], 'dot-u-def4': [81, 82],
+        'dot-u-por': [93, 50]
+    };
+
+    const POS_ACTUAL = {};
+    for (let id in POS_BASE) {
+        POS_ACTUAL[id] = [POS_BASE[id][0], POS_BASE[id][1]];
+    }
+
+    const moverDot = (id, topNum, leftNum) => {
+        const d = document.getElementById(id);
+        if (d) {
+            POS_ACTUAL[id] = [topNum, leftNum];
+            d.style.top = `${topNum}%`;
+            d.style.left = `${leftNum}%`;
+        }
+    };
+
+    const resetearDots = () => {
+        for (let id in POS_BASE) {
+            moverDot(id, POS_BASE[id][0], POS_BASE[id][1]);
+        }
+    };
+
+    const ponerBalonEnJugador = (idJugador) => {
+        if (!ballEl) return;
+        const coords = POS_ACTUAL[idJugador] || [50, 50];
+        ballEl.style.top = `${coords[0]}%`;
+        ballEl.style.left = `${coords[1]}%`;
+    };
+
+    // 4. MÁQUINA DE ESTADOS Y SECUENCIA DE FÚTBOL
+    let minutoActual = 1;
+    let primerTiempoTerminado = false;
+    let entretiempoEnCurso = false;
+    let jugadaAnimando = false;
+    let saqueEnCurso = true;
+    let tiempoDescuento1T = Math.floor(Math.random() * 2) + 1;
+    let tiempoDescuento2T = Math.floor(Math.random() * 3) + 3;
+    let golesUser = 0;
+    let golesRival = 0;
+
+    let equipoPosesion = 'user'; // 'user' (ataca arriba) | 'rival' (ataca abajo)
+    let zonaPosesion = 1;        // 0: Salida defensa, 1: Mediocampo, 2: Tres cuartos, 3: Área / Definición
+    let nodoBalonActual = 'dot-u-del2';
+    let accionPendiente = null;  // 'corner_user' | 'corner_rival' | null
+
+    const agregarEventoRelato = (tipo, min, texto) => {
+        if (!timeline) return;
+        const row = document.createElement('div');
+        row.className = `sim-event-row ${tipo}`;
+        row.innerHTML = `<span class="sim-ev-min">${min}'</span> <span class="sim-ev-text">${texto}</span>`;
+        timeline.appendChild(row);
+        timeline.scrollTop = timeline.scrollHeight;
+    };
+
+    // ⚽ SAQUE DE CENTRO REGLAMENTARIO
+    const ejecutarSaqueCentro = (sacaUser, esReanudacion = false) => {
+        saqueEnCurso = true;
+        resetearDots();
+
+        const lanzador = sacaUser ? 'dot-u-del2' : 'dot-r-del2';
+        const receptor = sacaUser ? 'dot-u-med2' : 'dot-r-med2';
+
+        ballEl.className = 'sim-pitch-ball';
+        ballEl.style.left = '50%';
+        ballEl.style.top = '50%';
+        moverDot(lanzador, 50, 50);
+
+        const otroDel = sacaUser ? 'dot-r-del2' : 'dot-u-del2';
+        moverDot(otroDel, sacaUser ? 42 : 58, 50);
+
+        if (tagEl) {
+            tagEl.textContent = esReanudacion ? 'INICIA EL 2T' : (sacaUser ? 'SACA TU ONCE' : 'SACA EL RIVAL');
+            tagEl.className = `sim-pitch-tag visible ${sacaUser ? 'user-tag' : 'rival-tag'}`;
+            tagEl.style.left = '50%';
+            tagEl.style.top = sacaUser ? '56%' : '44%';
+        }
+
+        setTimeout(() => {
+            if (tagEl) tagEl.classList.remove('visible');
+            moverDot(lanzador, POS_BASE[lanzador][0], POS_BASE[lanzador][1]);
+            moverDot(otroDel, POS_BASE[otroDel][0], POS_BASE[otroDel][1]);
+
+            equipoPosesion = sacaUser ? 'user' : 'rival';
+            zonaPosesion = 1;
+            nodoBalonActual = receptor;
+            ponerBalonEnJugador(receptor);
+            saqueEnCurso = false;
+        }, 900);
+    };
+
+    // ⚽ CÓRNER LEGÍTIMO (SOLO SI HUBO DESVÍO PREVIO DEL ARQUERO/DEFENSA)
+    const animarCornerReal = (esUser) => {
+        jugadaAnimando = true;
+        const esIzq = Math.random() < 0.5;
+
+        if (esUser) {
+            statsPartido.cornersUser++;
+            actualizarHudStats();
+
+            const cX = esIzq ? 6 : 94;
+            const cY = 2;
+            const tirador = esIzq ? 'dot-u-del1' : 'dot-u-del3';
+            const cabeceador = 'dot-u-del2';
+
+            moverDot(tirador, cY + 1, cX);
+            ballEl.style.left = `${cX}%`;
+            ballEl.style.top = `${cY}%`;
+
+            moverDot(cabeceador, 14, 50);
+            moverDot('dot-u-med2', 15, esIzq ? 44 : 56);
+            moverDot('dot-r-por', 7, 50);
+            moverDot('dot-r-def2', 13, 48);
+            moverDot('dot-r-def3', 13, 52);
+
+            if (tagEl) {
+                tagEl.textContent = 'CÓRNER';
+                tagEl.className = 'sim-pitch-tag visible user-tag';
+                tagEl.style.left = `${cX}%`;
+                tagEl.style.top = '12%';
+            }
+
+            setTimeout(() => {
+                ponerBalonEnJugador(cabeceador);
+                statsPartido.tirosTotalesUser++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    const tX = esIzq ? 46 : 54;
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = '3%';
+                    moverDot('dot-r-por', 8, tX);
+
+                    const asist = userVolantes[Math.floor(Math.random() * userVolantes.length)];
+                    const cabeceadorNom = userDelanteros[Math.floor(Math.random() * userDelanteros.length)];
+                    agregarEventoRelato('corner', minutoActual, `Córner ejecutado por <b>${asist}</b> y cabezazo de <b>${cabeceadorNom}</b> que pasa cerca del palo.`);
+
+                    setTimeout(() => {
+                        ballEl.className = 'sim-pitch-ball';
+                        if (tagEl) tagEl.classList.remove('visible');
+                        resetearDots();
+                        equipoPosesion = 'rival';
+                        zonaPosesion = 0;
+                        nodoBalonActual = 'dot-r-por';
+                        ponerBalonEnJugador('dot-r-por');
+                        jugadaAnimando = false;
+                    }, 1400);
+                }, 750);
+            }, 750);
+
+        } else {
+            statsPartido.cornersRival++;
+            actualizarHudStats();
+
+            const cX = esIzq ? 6 : 94;
+            const cY = 98;
+            const tiradorR = esIzq ? 'dot-r-del1' : 'dot-r-del3';
+            const cabeceadorR = 'dot-r-del2';
+
+            moverDot(tiradorR, cY - 1, cX);
+            ballEl.style.left = `${cX}%`;
+            ballEl.style.top = `${cY}%`;
+
+            moverDot(cabeceadorR, 86, 50);
+            moverDot('dot-r-med2', 85, esIzq ? 44 : 56);
+            moverDot('dot-u-por', 93, 50);
+            moverDot('dot-u-def2', 87, 48);
+            moverDot('dot-u-def3', 87, 52);
+
+            if (tagEl) {
+                tagEl.textContent = 'CÓRNER RIVAL';
+                tagEl.className = 'sim-pitch-tag visible rival-tag';
+                tagEl.style.left = `${cX}%`;
+                tagEl.style.top = '88%';
+            }
+
+            setTimeout(() => {
+                ponerBalonEnJugador(cabeceadorR);
+                statsPartido.tirosTotalesRival++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    const tX = esIzq ? 46 : 54;
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = '97%';
+                    moverDot('dot-u-por', 92, tX);
+
+                    const goleadorR = rivalDelanteros[Math.floor(Math.random() * rivalDelanteros.length)];
+                    agregarEventoRelato('corner', minutoActual, `Tiro de esquina peligroso de <b>${rival.nombre}</b>: cabezazo de <b>${goleadorR}</b> que tu defensa despeja con esfuerzo.`);
+
+                    setTimeout(() => {
+                        ballEl.className = 'sim-pitch-ball';
+                        if (tagEl) tagEl.classList.remove('visible');
+                        resetearDots();
+                        equipoPosesion = 'user';
+                        zonaPosesion = 0;
+                        nodoBalonActual = 'dot-u-por';
+                        ponerBalonEnJugador('dot-u-por');
+                        jugadaAnimando = false;
+                    }, 1400);
+                }, 750);
+            }, 750);
+        }
+    };
+
+    // ⚡ TIRO LIBRE AL BORDE DEL ÁREA (SOLO TRAS FALTA RECIBIDA EN TRES CUARTOS)
+    const animarTiroLibreReal = (esUser) => {
+        jugadaAnimando = true;
+        const esIzq = Math.random() < 0.5;
+
+        if (esUser) {
+            statsPartido.faltasRival++;
+            actualizarHudStats();
+
+            const bX = 50, bY = 30;
+            moverDot('dot-u-del2', bY + 4, bX);
+            ballEl.style.left = `${bX}%`;
+            ballEl.style.top = `${bY}%`;
+
+            moverDot('dot-r-def1', 20, 42);
+            moverDot('dot-r-def2', 20, 47);
+            moverDot('dot-r-def3', 20, 53);
+            moverDot('dot-r-def4', 20, 58);
+            moverDot('dot-r-por', 8, esIzq ? 40 : 60);
+
+            if (tagEl) {
+                tagEl.textContent = 'TIRO LIBRE';
+                tagEl.className = 'sim-pitch-tag visible user-tag';
+                tagEl.style.left = `${bX}%`;
+                tagEl.style.top = `${bY - 8}%`;
+            }
+
+            const ejecutor = userDelanteros[0] || nombreCapitan;
+            agregarEventoRelato('falta', minutoActual, `Infracción sobre <b>${userVolantes[0]}</b> al encarar hacia el arco. Tiro libre peligroso para tu equipo ejecutado por <b>${ejecutor}</b>.`);
+
+            setTimeout(() => {
+                const tX = esIzq ? 45 : 55;
+                ballEl.classList.add('shooting');
+                ballEl.style.left = `${tX}%`;
+                ballEl.style.top = '3%';
+                moverDot('dot-r-por', 8, tX);
+                statsPartido.tirosTotalesUser++;
+                statsPartido.tirosArcoUser++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    ballEl.className = 'sim-pitch-ball';
+                    if (tagEl) tagEl.classList.remove('visible');
+                    resetearDots();
+                    equipoPosesion = 'rival';
+                    zonaPosesion = 0;
+                    nodoBalonActual = 'dot-r-por';
+                    ponerBalonEnJugador('dot-r-por');
+                    jugadaAnimando = false;
+                }, 1400);
+            }, 800);
+
+        } else {
+            statsPartido.faltasUser++;
+            actualizarHudStats();
+
+            const bX = 50, bY = 70;
+            moverDot('dot-r-del2', bY - 4, bX);
+            ballEl.style.left = `${bX}%`;
+            ballEl.style.top = `${bY}%`;
+
+            moverDot('dot-u-def1', 80, 42);
+            moverDot('dot-u-def2', 80, 47);
+            moverDot('dot-u-def3', 80, 53);
+            moverDot('dot-u-def4', 80, 58);
+            moverDot('dot-u-por', 92, esIzq ? 40 : 60);
+
+            if (tagEl) {
+                tagEl.textContent = 'TIRO LIBRE RIVAL';
+                tagEl.className = 'sim-pitch-tag visible rival-tag';
+                tagEl.style.left = `${bX}%`;
+                tagEl.style.top = `${bY + 8}%`;
+            }
+
+            const pateadorR = rivalDelanteros[0];
+            agregarEventoRelato('falta', minutoActual, `Falta en la medialuna cometida por <b>${userDefensas[0]}</b>. Tiro libre directo de <b>${pateadorR}</b>.`);
+
+            setTimeout(() => {
+                const tX = esIzq ? 45 : 55;
+                ballEl.classList.add('shooting');
+                ballEl.style.left = `${tX}%`;
+                ballEl.style.top = '97%';
+                moverDot('dot-u-por', 92, tX);
+                statsPartido.tirosTotalesRival++;
+                statsPartido.tirosArcoRival++;
+                actualizarHudStats();
+
+                setTimeout(() => {
+                    ballEl.className = 'sim-pitch-ball';
+                    if (tagEl) tagEl.classList.remove('visible');
+                    resetearDots();
+                    equipoPosesion = 'user';
+                    zonaPosesion = 0;
+                    nodoBalonActual = 'dot-u-por';
+                    ponerBalonEnJugador('dot-u-por');
+                    jugadaAnimando = false;
+                }, 1400);
+            }, 800);
+        }
+    };
+
+    // 🥅 DEFINICIÓN EN EL ÁREA: ASISTENCIA Y REMATE
+    const animarAtaqueDefinicion = (esUser) => {
+        jugadaAnimando = true;
+        const esIzq = Math.random() < 0.5;
+        const esGol = esUser ? (Math.random() < (probExitoUser * 0.72)) : (Math.random() < ((1 - probExitoUser) * 0.72));
+
+        if (esUser) {
+            const asistidor = esIzq ? 'dot-u-med1' : 'dot-u-med3';
+            const definidor = 'dot-u-del2';
+
+            moverDot(asistidor, 44, esIzq ? 32 : 68);
+            moverDot(definidor, 26, 50);
+            moverDot('dot-u-por', 82, 50);
+            moverDot('dot-r-por', 8, 50);
+            moverDot('dot-r-def2', 17, 44);
+            moverDot('dot-r-def3', 17, 56);
+            ponerBalonEnJugador(asistidor);
+
+            setTimeout(() => {
+                moverDot(definidor, 18, 50);
+                ponerBalonEnJugador(definidor);
+
+                setTimeout(() => {
+                    const tX = esIzq ? 45 : 55;
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = esGol ? '1%' : '5%';
+
+                    statsPartido.tirosTotalesUser++;
+                    statsPartido.tirosArcoUser++;
+                    actualizarHudStats();
+
+                    const goleadorNom = Math.random() < 0.4 ? nombreCapitan : userDelanteros[Math.floor(Math.random() * userDelanteros.length)];
+                    const asistNom = userVolantes[Math.floor(Math.random() * userVolantes.length)];
+
+                    if (esGol) {
+                        golesUser++;
+                        moverDot('dot-r-por', 8, tX > 50 ? 42 : 58);
+                        setTimeout(() => {
+                            ballEl.className = 'sim-pitch-ball in-net';
+                            goalTop?.classList.add('goal-hit-user');
+                            if (scoreUserEl) {
+                                scoreUserEl.textContent = golesUser;
+                                scoreUserEl.classList.add('animate-bounce');
+                                setTimeout(() => scoreUserEl.classList.remove('animate-bounce'), 400);
+                            }
+                            if (tagEl) {
+                                tagEl.textContent = '¡GOL!';
+                                tagEl.className = 'sim-pitch-tag visible user-tag';
+                                tagEl.style.left = `${tX}%`;
+                                tagEl.style.top = '16%';
+                            }
+                            agregarEventoRelato('gol_user', minutoActual, `¡GOLAZO! Asistencia milimétrica de <b>${asistNom}</b> y definición cruzada de <b>${goleadorNom}</b>.`);
+
+                            setTimeout(() => {
+                                goalTop?.classList.remove('goal-hit-user');
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Tras el gol saca el rival desde el círculo central
+                                ejecutarSaqueCentro(false, false);
+                            }, 1800);
+                        }, 400);
+                    } else {
+                        moverDot('dot-r-por', 7, tX);
+                        setTimeout(() => {
+                            ballEl.classList.remove('shooting');
+                            if (tagEl) {
+                                tagEl.textContent = '¡ATAJADA!';
+                                tagEl.className = 'sim-pitch-tag visible neutral-tag';
+                                tagEl.style.left = `${tX}%`;
+                                tagEl.style.top = '16%';
+                            }
+                            agregarEventoRelato('atajada', minutoActual, `¡Atajadón! Disparo de <b>${goleadorNom}</b> que el arquero rival desvía al tiro de esquina.`);
+
+                            setTimeout(() => {
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Desvío por línea de fondo: CÓRNER INMEDIATO
+                                accionPendiente = 'corner_user';
+                            }, 1000);
+                        }, 400);
+                    }
+                }, 700);
+            }, 700);
+
+        } else {
+            const asistidorR = esIzq ? 'dot-r-med1' : 'dot-r-med3';
+            const definidorR = 'dot-r-del2';
+
+            moverDot(asistidorR, 56, esIzq ? 32 : 68);
+            moverDot(definidorR, 74, 50);
+            moverDot('dot-u-por', 92, 50);
+            moverDot('dot-u-def2', 83, 44);
+            moverDot('dot-u-def3', 83, 56);
+            ponerBalonEnJugador(asistidorR);
+
+            setTimeout(() => {
+                moverDot(definidorR, 82, 50);
+                ponerBalonEnJugador(definidorR);
+
+                setTimeout(() => {
+                    const tX = esIzq ? 45 : 55;
+                    ballEl.classList.add('shooting');
+                    ballEl.style.left = `${tX}%`;
+                    ballEl.style.top = esGol ? '99%' : '95%';
+
+                    statsPartido.tirosTotalesRival++;
+                    statsPartido.tirosArcoRival++;
+                    actualizarHudStats();
+
+                    const goleadorR = rivalDelanteros[Math.floor(Math.random() * rivalDelanteros.length)];
+                    const asistR = rivalVolantes[Math.floor(Math.random() * rivalVolantes.length)];
+
+                    if (esGol) {
+                        golesRival++;
+                        moverDot('dot-u-por', 92, tX > 50 ? 42 : 58);
+                        setTimeout(() => {
+                            ballEl.className = 'sim-pitch-ball in-net';
+                            goalBottom?.classList.add('goal-hit-rival');
+                            if (scoreRivalEl) {
+                                scoreRivalEl.textContent = golesRival;
+                                scoreRivalEl.classList.add('animate-bounce');
+                                setTimeout(() => scoreRivalEl.classList.remove('animate-bounce'), 400);
+                            }
+                            if (tagEl) {
+                                tagEl.textContent = 'GOL RIVAL';
+                                tagEl.className = 'sim-pitch-tag visible rival-tag';
+                                tagEl.style.left = `${tX}%`;
+                                tagEl.style.top = '84%';
+                            }
+                            agregarEventoRelato('gol_rival', minutoActual, `Gol de <b>${rival.nombre}</b>: pase al vacío de <b>${asistR}</b> y remate de <b>${goleadorR}</b>.`);
+
+                            setTimeout(() => {
+                                goalBottom?.classList.remove('goal-hit-rival');
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Tras el gol saca Tu Once desde el círculo central
+                                ejecutarSaqueCentro(true, false);
+                            }, 1800);
+                        }, 400);
+                    } else {
+                        moverDot('dot-u-por', 93, tX);
+                        setTimeout(() => {
+                            ballEl.classList.remove('shooting');
+                            if (tagEl) {
+                                tagEl.textContent = '¡SALVADA!';
+                                tagEl.className = 'sim-pitch-tag visible neutral-tag';
+                                tagEl.style.left = `${tX}%`;
+                                tagEl.style.top = '80%';
+                            }
+                            agregarEventoRelato('atajada', minutoActual, `¡Sensacional <b>${userArquero}</b>! Vuela sobre el palo y manda el remate de <b>${goleadorR}</b> al tiro de esquina.`);
+
+                            setTimeout(() => {
+                                ballEl.className = 'sim-pitch-ball';
+                                if (tagEl) tagEl.classList.remove('visible');
+                                jugadaAnimando = false;
+                                // Desvío por línea de fondo: CÓRNER INMEDIATO
+                                accionPendiente = 'corner_rival';
+                            }, 1000);
+                        }, 400);
+                    }
+                }, 700);
+            }, 700);
+        }
+    };
+
+    // 🌊 CIRCULACIÓN CORRELATIVA Y PROGRESIÓN LÓGICA
+    const avanzarCirculacionTactico = () => {
+        if (!ballEl || saqueEnCurso || jugadaAnimando) return;
+
+        // 1. Córner pendiente nacido de la atajada anterior
+        if (accionPendiente === 'corner_user') {
+            accionPendiente = null;
+            animarCornerReal(true);
+            return;
+        }
+        if (accionPendiente === 'corner_rival') {
+            accionPendiente = null;
+            animarCornerReal(false);
+            return;
+        }
+
+        const esUser = (equipoPosesion === 'user');
+        const chanceAvanzar = esUser ? probExitoUser : (1 - probExitoUser);
+        const dado = Math.random();
+
+        if (dado < (chanceAvanzar * 0.46)) {
+            zonaPosesion++; // Avanza a la siguiente zona
+        } else if (dado > 0.80) {
+            // Robo/intercepción en la zona física actual (sin saltos)
+            equipoPosesion = esUser ? 'rival' : 'user';
+            zonaPosesion = (3 - zonaPosesion);
+        }
+
+        zonaPosesion = Math.max(0, Math.min(3, zonaPosesion));
+
+        // 2. Llegada a zona de definición o falta al encarar
+        if (zonaPosesion === 3) {
+            animarAtaqueDefinicion(esUser);
+            return;
+        }
+
+        if (zonaPosesion === 2 && Math.random() < 0.16) {
+            animarTiroLibreReal(esUser);
+            return;
+        }
+
+        // 3. Toque entre futbolistas de la zona
+        let opciones = [];
+        if (esUser) {
+            if (zonaPosesion === 0) opciones = ['dot-u-por', 'dot-u-def1', 'dot-u-def2', 'dot-u-def3', 'dot-u-def4'];
+            else if (zonaPosesion === 1) opciones = ['dot-u-med1', 'dot-u-med2', 'dot-u-med3'];
+            else opciones = ['dot-u-del1', 'dot-u-del2', 'dot-u-del3'];
+        } else {
+            if (zonaPosesion === 0) opciones = ['dot-r-por', 'dot-r-def1', 'dot-r-def2', 'dot-r-def3', 'dot-r-def4'];
+            else if (zonaPosesion === 1) opciones = ['dot-r-med1', 'dot-r-med2', 'dot-r-med3'];
+            else opciones = ['dot-r-del1', 'dot-r-del2', 'dot-r-del3'];
+        }
+
+        nodoBalonActual = opciones[Math.floor(Math.random() * opciones.length)];
+        ponerBalonEnJugador(nodoBalonActual);
+
+        // 4. Bloques dinámicos: subida de defensas y presión de delanteros
+        const bY = POS_ACTUAL[nodoBalonActual][0];
+        const bX = POS_ACTUAL[nodoBalonActual][1];
+        const pIzq = bX < 44;
+        const pDer = bX > 56;
+
+        for (let id in POS_BASE) {
+            if (id === nodoBalonActual) continue;
+
+            const base = POS_BASE[id];
+            let targetY = base[0];
+            let targetX = base[1];
+            const esUserDot = id.startsWith('dot-u-');
+
+            if (pIzq) targetX += (esUserDot ? -4 : -5);
+            else if (pDer) targetX += (esUserDot ? 4 : 5);
+
+            if (equipoPosesion === 'user') {
+                if (bY < 50) {
+                    // Tu equipo ataca arriba: tu defensa sube a mitad de cancha
+                    targetY += (esUserDot ? (id.includes('def') ? -20 : id.includes('med') ? -14 : -6) : (id.includes('del') ? -4 : -8));
+                } else {
+                    // Tu equipo sale desde abajo: ¡LOS DELANTEROS RIVALES PRESIONAN ARRIBA!
+                    targetY += (esUserDot ? 2 : (id.includes('del') ? 22 : id.includes('med') ? 14 : 6));
+                }
+            } else {
+                if (bY > 50) {
+                    // Rival ataca abajo: tu defensa se repliega
+                    targetY += (!esUserDot ? (id.includes('def') ? 20 : id.includes('med') ? 14 : 6) : (id.includes('del') ? 4 : 8));
+                } else {
+                    // Rival sale desde abajo: ¡TUS DELANTEROS PRESIONAN EN SU ÁREA!
+                    targetY += (!esUserDot ? -2 : (id.includes('del') ? -22 : id.includes('med') ? -14 : -6));
+                }
+            }
+
+            const microX = (Math.random() - 0.5) * 1.5;
+            const microY = (Math.random() - 0.5) * 1.5;
+            moverDot(id, Math.max(6, Math.min(94, targetY + microY)), Math.max(12, Math.min(88, targetX + microX)));
+        }
+    };
+
+    // ⏱️ CUENTA REGRESIVA PREVIA (3... 2... 1...)
+    let segundosPrevia = 3;
+    if (clock) clock.textContent = '3s';
+    if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+
+    if (tagEl) {
+        tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
+        tagEl.className = 'sim-pitch-tag visible neutral-tag';
+        tagEl.style.left = '50%';
+        tagEl.style.top = '50%';
+    }
+
+    simPreviaTimer = setInterval(() => {
+        segundosPrevia--;
+        if (segundosPrevia > 0) {
+            if (clock) clock.textContent = `${segundosPrevia}s`;
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
+            if (tagEl) tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
+        } else {
+            clearInterval(simPreviaTimer);
+            simPreviaTimer = null;
+            if (tagEl) tagEl.classList.remove('visible');
+            if (btn) btn.innerHTML = `<i class="ph-bold ph-circle-notch animate-spin"></i> En juego (90 minutos)...`;
+
+            actualizarHudStats();
+
+            // ⚽ 1ER TIEMPO: SACA TU ONCE DESDE EL MEDIO
+            ejecutarSaqueCentro(true, false);
+
+            const ejecutarTickReloj = () => {
+                if (entretiempoEnCurso || jugadaAnimando || saqueEnCurso) return;
+
+                // 🔔 ENTRETIEMPO (45' + descuento)
+                if (!primerTiempoTerminado && minutoActual > (45 + tiempoDescuento1T)) {
+                    primerTiempoTerminado = true;
+                    entretiempoEnCurso = true;
+                    if (clock) clock.textContent = `45'+${tiempoDescuento1T} · ET`;
+
+                    const rowET = document.createElement('div');
+                    rowET.className = 'sim-event-row entretiempo';
+                    rowET.innerHTML = `<span><i class="ph-bold ph-whistle"></i> FIN DEL PRIMER TIEMPO (${scoreUserEl ? scoreUserEl.textContent : 0} - ${scoreRivalEl ? scoreRivalEl.textContent : 0})</span>`;
+                    if (timeline) {
+                        timeline.appendChild(rowET);
+                        timeline.scrollTop = timeline.scrollHeight;
+                    }
+
+                    simHalftimeTimer = setTimeout(() => {
+                        minutoActual = 46;
+                        entretiempoEnCurso = false;
+                        if (clock) clock.textContent = `46' (2T)`;
+
+                        // ⚽ 2DO TIEMPO: SACA EL RIVAL DESDE EL MEDIO
+                        ejecutarSaqueCentro(false, true);
+                    }, 2400);
+                    return;
+                }
+
+                // 🏁 FINAL DEL PARTIDO (90' + descuento)
+                if (minutoActual > (90 + tiempoDescuento2T)) {
+                    clearInterval(simIntervalo);
+                    simIntervalo = null;
+                    if (clock) clock.textContent = `90'+${tiempoDescuento2T}' · FIN`;
+                    finalizarPartidoCopa(golesUser, golesRival);
+                    return;
+                }
+
+                // Reloj en vivo
+                if (clock) {
+                    if (!primerTiempoTerminado && minutoActual > 45) {
+                        clock.textContent = `45'+${minutoActual - 45}'`;
+                    } else if (minutoActual > 90) {
+                        clock.textContent = `90'+${minutoActual - 90}'`;
+                    } else {
+                        clock.textContent = `MIN ${minutoActual}'`;
+                    }
+                }
+
+                // Fluctuación de posesión
+                if (minutoActual % 4 === 0) {
+                    const osc = Math.floor((Math.random() - 0.5) * 3);
+                    statsPartido.posesionUser = Math.max(30, Math.min(70, statsPartido.posesionUser + osc));
+                    actualizarHudStats();
+                }
+
+                // Avance táctico correlativo
+                avanzarCirculacionTactico();
+
+                minutoActual++;
+            };
+
+            // Ritmo televisivo pausado de 360ms por minuto
+            simIntervalo = setInterval(ejecutarTickReloj, 360);
         }
     }, 1000);
 };

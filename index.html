@@ -1180,6 +1180,37 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                     </div>
                 </div>
 
+                <!-- 📊 ESTADÍSTICAS DEL PARTIDO EN VIVO (POSESIÓN, TIROS, CÓRNERS Y FALTAS) -->
+                <div class="sim-stats-live-bar" id="sim-stats-live-bar">
+                    <div class="sim-possession-row">
+                        <span class="sim-pos-num user" id="sim-stat-pos-user">50%</span>
+                        <div class="sim-pos-bar-track">
+                            <div class="sim-pos-bar-fill-user" id="sim-pos-fill-user" style="width: 50%;"></div>
+                            <div class="sim-pos-bar-fill-rival" id="sim-pos-fill-rival" style="width: 50%;"></div>
+                        </div>
+                        <span class="sim-pos-num rival" id="sim-stat-pos-rival">50%</span>
+                    </div>
+                    <div class="sim-mini-metrics-row">
+                        <div class="sim-metric-item">
+                            <span class="metric-val user" id="sim-stat-tiros-user">0 (0)</span>
+                            <span class="metric-lbl">Tiros (Arco)</span>
+                            <span class="metric-val rival" id="sim-stat-tiros-rival">0 (0)</span>
+                        </div>
+                        <div class="sim-metric-sep">·</div>
+                        <div class="sim-metric-item">
+                            <span class="metric-val user" id="sim-stat-corners-user">0</span>
+                            <span class="metric-lbl">Córners</span>
+                            <span class="metric-val rival" id="sim-stat-corners-rival">0</span>
+                        </div>
+                        <div class="sim-metric-sep">·</div>
+                        <div class="sim-metric-item">
+                            <span class="metric-val user" id="sim-stat-faltas-user">0</span>
+                            <span class="metric-lbl">Faltas</span>
+                            <span class="metric-val rival" id="sim-stat-faltas-rival">0</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="sim-events-wrapper">
                     <div class="sim-events-scroll" id="sim-events-timeline">
                         <div class="sim-event-placeholder">
@@ -1215,6 +1246,9 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 
                     <!-- CAMPO DE JUEGO (CAL LÍMPIDA + VALLAS LED) -->
                     <div class="sim-pitch-2d-vertical" id="sim-pitch-2d">
+                        <!-- ⚡ LIENZO TÁCTICO VECTORIAL PARA ESTELAS DE PASES Y TIROS -->
+                        <svg class="sim-pitch-tactical-canvas" id="sim-pitch-canvas" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+
                         <!-- ARCO SUPERIOR (RIVAL) -->
                         <div class="sim-pitch-goal top" id="sim-goal-top">
                             <div class="sim-goal-post left"></div>
