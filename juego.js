@@ -8737,10 +8737,10 @@ function prepararVistaPartidoCopa() {
     document.querySelector('.sim-match-layout')?.classList.remove('campeon-view');
     document.getElementById('sim-tournament-title').textContent = torneoEstado.config.nombre.toUpperCase();
 
-    // 🏟️️ Ambientación arquitectónica de la arena según la jerarquía del torneo
+    // 🏟 Ambientación arquitectónica de la arena horizontal
     const arenaEl = document.querySelector('.sim-stadium-arena');
     if (arenaEl) {
-        arenaEl.className = `sim-stadium-arena tier-${esDesafio ? 'continental' : (torneoEstado.tier || 'nacional')}`;
+        arenaEl.className = `sim-stadium-arena horizontal tier-${esDesafio ? 'continental' : (torneoEstado.tier || 'nacional')}`;
     }
 
     // Equipo Usuario
@@ -8781,7 +8781,7 @@ function prepararVistaPartidoCopa() {
     if (faltU) faltU.textContent = '0';
     if (faltR) faltR.textContent = '0';
 
-    // ⚽ Reinicio del campo vertical 2D y jugadores
+    // ⚽ Reinicio del campo horizontal 2D y jugadores
     const ball = document.getElementById('sim-pitch-ball');
     if (ball) {
         ball.style.left = '50%';
@@ -8792,10 +8792,10 @@ function prepararVistaPartidoCopa() {
     if (tag) tag.className = 'sim-pitch-tag';
     const playersBox = document.getElementById('sim-pitch-players');
     if (playersBox) playersBox.className = 'sim-pitch-players';
-    document.getElementById('sim-goal-top')?.classList.remove('goal-hit-user', 'goal-hit-rival');
-    document.getElementById('sim-goal-bottom')?.classList.remove('goal-hit-user', 'goal-hit-rival');
+    document.getElementById('sim-goal-left')?.classList.remove('goal-hit-user', 'goal-hit-rival');
+    document.getElementById('sim-goal-right')?.classList.remove('goal-hit-user', 'goal-hit-rival');
 
-    // Nombres en extremos de la cancha
+    // Nombres en extremos de la cancha (Izquierda: Tu Once | Derecha: Rival)
     const bUser = document.getElementById('sim-pitch-badge-user');
     const bRival = document.getElementById('sim-pitch-badge-rival');
     if (bUser) bUser.textContent = nombreUsuario;
@@ -8826,7 +8826,6 @@ window.cerrarModalSimuladorPartido = function() {
     if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
     if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
     if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
-    // Devolvemos el control de las animaciones al CSS
     document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = ''; });
     const m = document.getElementById('simulador-partido-modal');
     if (m) m.style.display = 'none';
@@ -8837,11 +8836,7 @@ window.cerrarModalSimuladorPartido = function() {
 };
 
 // ========================================================
-// ⚡ MOTOR DE FÚTBOL CONTINUO (física + IA por jugador)
-//  - Loop a 60fps con requestAnimationFrame (no más "un paso por minuto")
-//  - Cada jugador se mueve con velocidad/aceleración propia hacia un objetivo
-//  - El balón viaja de verdad (pases, tiros, rebotes), nunca se teletransporta
-//  - Presión, marcas, desmarques, tackles, faltas, penales, laterales, córners
+// ⚡ MOTOR DE FÚTBOL CONTINUO HORIZONTAL (TRANSMISIÓN DE TV)
 // ========================================================
 window.iniciarSimulacionEnVivo = function() {
     if (!torneoEstado || torneoEstado.partidoEnCurso) return;
@@ -8864,8 +8859,8 @@ window.iniciarSimulacionEnVivo = function() {
     const scoreRivalEl = document.getElementById('sim-score-rival');
     const ballEl = document.getElementById('sim-pitch-ball');
     const tagEl = document.getElementById('sim-pitch-tag');
-    const goalTop = document.getElementById('sim-goal-top');
-    const goalBottom = document.getElementById('sim-goal-bottom');
+    const goalLeft = document.getElementById('sim-goal-left');
+    const goalRight = document.getElementById('sim-goal-right');
 
     const posUserEl = document.getElementById('sim-stat-pos-user');
     const posRivalEl = document.getElementById('sim-stat-pos-rival');
@@ -8882,21 +8877,22 @@ window.iniciarSimulacionEnVivo = function() {
     if (canvasSVG) canvasSVG.innerHTML = '';
     if (ballEl) { ballEl.style.transition = 'none'; ballEl.className = 'sim-pitch-ball'; }
 
-    // ================= CONFIGURACIÓN (tocá acá para ajustar el "feeling") =================
+    // ================= CONFIGURACIÓN FÍSICA HORIZONTAL =================
     const CFG = {
-        msPorMinuto: 480,        // duración real de 1 minuto de juego (más alto = partido más largo)
-        velTrote: 15,            // unidades de cancha por segundo (la cancha mide 100 de alto)
-        velSprint: 27,
-        velPortero: 18,
+        msPorMinuto: 480,
+        velTrote: 18,
+        velSprint: 29,
+        velPortero: 20,
         velPase: 110,
-        velTiro: 115,
-        aceleracion: 9,          // qué tan rápido arrancan/frenan los jugadores
-        pensarMin: 0.12,         // tiempo que el poseedor "piensa" antes de actuar
+        velTiro: 120,
+        aceleracion: 9,
+        pensarMin: 0.12,
         pensarMax: 0.28,
-        radioContacto: 3.0,      // distancia a la que un rival disputa la pelota
-        tasaRobo: 0.7,           // chance/seg de perder la pelota en contacto
-        probFalta: 0.32,         // % de disputas que terminan en falta
-        xMin: 3, xMax: 97, yMin: 1.5, yMax: 98.5
+        radioContacto: 3.0,
+        tasaRobo: 0.7,
+        probFalta: 0.32,
+        xMin: 1.5, xMax: 98.5,   // Líneas de fondo / arcos en los extremos izquierdo y derecho
+        yMin: 3, yMax: 97        // Líneas laterales / bandas arriba y abajo
     };
 
     // ================= 1. DATOS DEL PARTIDO =================
@@ -8962,26 +8958,25 @@ window.iniciarSimulacionEnVivo = function() {
     // ================= 2. UTILIDADES =================
     const rnd = (a, b) => a + Math.random() * (b - a);
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
     const dist = (ay, ax, by, bx) => Math.hypot(ay - by, ax - bx);
-    const dirDe = (eq) => eq === 'user' ? -1 : 1;           // user ataca hacia arriba (y decrece)
+    const dirDe = (eq) => eq === 'user' ? 1 : -1;             // User ataca hacia la derecha (+X), Rival hacia la izquierda (-X)
     const rivalDe = (eq) => eq === 'user' ? 'rival' : 'user';
-    const golY = (eq) => eq === 'user' ? 0 : 100;            // arco al que ATACA eq
+    const golX = (eq) => eq === 'user' ? 100 : 0;            // Arco al que ataca eq (User: 100, Rival: 0)
     const fuerza = (eq) => eq === 'user' ? probExitoUser : 1 - probExitoUser;
-    // "profundidad": 0 = su propio arco, 100 = arco rival (unifica la lógica de ambos equipos)
-    const profDe = (eq, y) => eq === 'rival' ? y : 100 - y;
-    const yDe = (eq, prof) => eq === 'rival' ? prof : 100 - prof;
+    const profDe = (eq, x) => eq === 'user' ? x : 100 - x;    // 0 = arco propio, 100 = arco rival
+    const xDe = (eq, prof) => eq === 'user' ? prof : 100 - prof;
 
-    // ================= 3. JUGADORES =================
+    // ================= 3. JUGADORES (COORDENADAS BASE HORIZONTALES [top %, left %]) =================
     const POS_BASE = {
-        'dot-r-por': [7, 50],
-        'dot-r-def1': [18, 18], 'dot-r-def2': [19, 38], 'dot-r-def3': [19, 62], 'dot-r-def4': [18, 82],
-        'dot-r-med1': [32, 28], 'dot-r-med2': [33, 50], 'dot-r-med3': [32, 72],
-        'dot-r-del1': [44, 24], 'dot-r-del2': [43, 50], 'dot-r-del3': [44, 76],
-        'dot-u-del1': [56, 24], 'dot-u-del2': [57, 50], 'dot-u-del3': [56, 76],
-        'dot-u-med1': [68, 28], 'dot-u-med2': [67, 50], 'dot-u-med3': [68, 72],
-        'dot-u-def1': [81, 18], 'dot-u-def2': [80, 38], 'dot-u-def3': [80, 62], 'dot-u-def4': [81, 82],
-        'dot-u-por': [93, 50]
+        'dot-u-por': [50, 6],
+        'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+        'dot-u-med1': [26, 32], 'dot-u-med2': [50, 30], 'dot-u-med3': [74, 32],
+        'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43], 'dot-u-del3': [78, 44],
+
+        'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57], 'dot-r-del3': [78, 56],
+        'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
+        'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+        'dot-r-por': [50, 94]
     };
 
     const jugadores = [];
@@ -8995,7 +8990,7 @@ window.iniciarSimulacionEnVivo = function() {
         const lista = NOMBRES[eq][linea];
         const b = POS_BASE[id];
         const el = document.getElementById(id);
-        if (el) el.style.transition = 'none';   // el motor controla el movimiento cuadro a cuadro
+        if (el) el.style.transition = 'none';
         const j = {
             id, eq, linea, el,
             nombre: lista[idx % lista.length],
@@ -9046,11 +9041,11 @@ window.iniciarSimulacionEnVivo = function() {
             const cap = equipos.user.find(j => j.nombre === nombreCapitan && j.linea !== 'por');
             if (cap) return cap;
         }
-        return porId[eq === 'user' ? 'dot-u-del1' : 'dot-r-del1'];
+        return porId[eq === 'user' ? 'dot-u-del2' : 'dot-r-del2'];
     };
 
     // ================= 4. ESTADO, RELOJ Y AGENDA =================
-    let tSim = 0;                       // tiempo real acumulado de simulación (seg)
+    let tSim = 0;
     const agenda = [];
     const programar = (seg, fn) => agenda.push({ t: tSim + seg, fn });
     const tickAgenda = () => {
@@ -9060,9 +9055,9 @@ window.iniciarSimulacionEnVivo = function() {
         vencidos.forEach(a => a.fn());
     };
 
-    let estado = 'previa';              // previa | juego | repos | entretiempo | fin
+    let estado = 'previa';
     let relojPausado = true;
-    let reposMap = null;                // objetivos forzados durante pelota parada
+    let reposMap = null;
     let gameMin = 1;
     let primerTiempoTerminado = false;
     const tiempoDescuento1T = Math.floor(Math.random() * 2) + 1;
@@ -9074,7 +9069,7 @@ window.iniciarSimulacionEnVivo = function() {
 
     const balon = {
         y: 50, x: 50, vy: 0, vx: 0,
-        modo: 'muerto',                 // conducido | vuelo | suelto | muerto
+        modo: 'muerto',
         dueno: null, eq: 'user', ultimo: 'user',
         tipo: null, oy: 0, ox: 0, dy: 50, dx: 50, dur: 1, t: 0,
         receptor: null, interceptor: null, preferido: null,
@@ -9162,12 +9157,11 @@ window.iniciarSimulacionEnVivo = function() {
         const d = dist(o.y, o.x, c.y, c.x);
         const vel = largo ? CFG.velPase * 1.1 : CFG.velPase;
         const tVuelo = d / vel;
-        let dy = clamp(c.y + c.vy * tVuelo * 0.8, 4, 96);
-        let dx = clamp(c.x + c.vx * tVuelo * 0.8, 5, 95);
+        let dy = clamp(c.y + c.vy * tVuelo * 0.8, 5, 95);
+        let dx = clamp(c.x + c.vx * tVuelo * 0.8, 4, 96);
         const pres = rivalMasCercano(o).d;
         const pPreciso = clamp(0.95 - d * 0.0045 - (pres < 5 ? 0.07 : 0) + (f - 0.5) * 0.3, 0.55, 0.98);
 
-        // ¿Algún rival puede cortar la línea de pase?
         let interceptor = null, mejorD = 99, py = 0, px = 0;
         for (const r of equipos[rivalDe(eq)]) {
             if (r.linea === 'por') continue;
@@ -9183,10 +9177,10 @@ window.iniciarSimulacionEnVivo = function() {
             dy = py; dx = px; receptor = null;
         } else {
             interceptor = null;
-            if (Math.random() > pPreciso) {            // pase impreciso: se pasa de largo
+            if (Math.random() > pPreciso) {
                 const k = d || 1;
-                dy += ((dy - o.y) / k) * rnd(4, 10) + rnd(-4, 4);
-                dx += rnd(-10, 10);
+                dx += ((dx - o.x) / k) * rnd(4, 10) + rnd(-4, 4);
+                dy += rnd(-10, 10);
             }
         }
         balon.pasadorPrevio = { de: o, a: c, t: tSim };
@@ -9215,8 +9209,8 @@ window.iniciarSimulacionEnVivo = function() {
                 scoreUserEl.classList.add('animate-bounce');
                 programar(0.4, () => scoreUserEl.classList.remove('animate-bounce'));
             }
-            goalTop?.classList.add('goal-hit-user');
-            mostrarTag('¡GOL!', 'user-tag', 16, balon.x, 2.0);
+            goalRight?.classList.add('goal-hit-user');
+            mostrarTag('¡GOL!', 'user-tag', balon.y, 84, 2.0);
             narrar('gol_user', asist
                 ? `¡GOLAZO! Pase de <b>${asist.nombre}</b> y definición de <b>${j.nombre}</b>.`
                 : `¡GOLAZO de <b>${j.nombre}</b>! Se la sacó a todos de encima y la mandó adentro.`);
@@ -9227,32 +9221,31 @@ window.iniciarSimulacionEnVivo = function() {
                 scoreRivalEl.classList.add('animate-bounce');
                 programar(0.4, () => scoreRivalEl.classList.remove('animate-bounce'));
             }
-            goalBottom?.classList.add('goal-hit-rival');
-            mostrarTag('GOL RIVAL', 'rival-tag', 84, balon.x, 2.0);
+            goalLeft?.classList.add('goal-hit-rival');
+            mostrarTag('GOL RIVAL', 'rival-tag', balon.y, 16, 2.0);
             narrar('gol_rival', asist
                 ? `Gol de <b>${rival.nombre}</b>: pase de <b>${asist.nombre}</b> y remate de <b>${j.nombre}</b>.`
                 : `Gol de <b>${rival.nombre}</b>: <b>${j.nombre}</b> define con categoría.`);
         }
 
-        // El goleador corre a festejar mientras el resto vuelve a su posición
         const mapa = baseMapa();
-        mapa[j.id] = [esUser ? 10 : 90, balon.x < 50 ? 10 : 90];
+        mapa[j.id] = [balon.y < 50 ? 15 : 85, esUser ? 90 : 10];
         entrarRepos(mapa, 2.2, () => {
-            goalTop?.classList.remove('goal-hit-user');
-            goalBottom?.classList.remove('goal-hit-rival');
+            goalRight?.classList.remove('goal-hit-user');
+            goalLeft?.classList.remove('goal-hit-rival');
             if (ballEl) ballEl.className = 'sim-pitch-ball';
             ejecutarSaqueCentro(!esUser, false);
         });
     };
 
     const resolverAtajada = (tirador, portero) => {
-        const gy = golY(tirador.eq), sent = gy === 0 ? 1 : -1, rv = portero.eq;
+        const gx = golX(tirador.eq), sent = gx === 100 ? -1 : 1, rv = portero.eq;
         const r = Math.random();
-        mostrarTag('¡ATAJADA!', 'neutral-tag', gy === 0 ? 14 : 86, balon.x, 1.1);
+        mostrarTag('¡ATAJADA!', 'neutral-tag', balon.y, gx === 100 ? 86 : 14, 1.1);
         if (r < 0.45) {
             narrar('atajada', `¡Atajadón de <b>${portero.nombre}</b>! Le saca el remate a <b>${tirador.nombre}</b> y lo manda al córner.`);
             balon.ultimo = rv;
-            lanzarBalon('despeje', gy === 0 ? -2 : 102, 50 + (balon.x < 50 ? -1 : 1) * rnd(9, 15), 55, rv, { alLlegar: llegadaSuelta });
+            lanzarBalon('despeje', 50 + (balon.y < 50 ? -1 : 1) * rnd(9, 15), gx === 100 ? 102 : -2, 55, rv, { alLlegar: llegadaSuelta });
         } else if (r < 0.78) {
             narrar('atajada', `<b>${portero.nombre}</b> se queda con el remate de <b>${tirador.nombre}</b>. Seguro bajo los tres palos.`);
             darPosesion(portero);
@@ -9261,27 +9254,27 @@ window.iniciarSimulacionEnVivo = function() {
             narrar('atajada', `Remate de <b>${tirador.nombre}</b> y <b>${portero.nombre}</b> la rechaza al medio del área. ¡Peligro!`);
             balon.ultimo = rv;
             balon.modo = 'suelto';
-            balon.vy = sent * rnd(25, 40);
-            balon.vx = rnd(-20, 20);
+            balon.vx = sent * rnd(25, 40);
+            balon.vy = rnd(-20, 20);
         }
     };
 
     const resolverTiro = (res, j, portero, o) => {
         balon.keeperObj = null;
         if (ballEl) ballEl.classList.remove('shooting');
-        const gy = golY(j.eq), sent = gy === 0 ? 1 : -1;
+        const gx = golX(j.eq), sent = gx === 100 ? -1 : 1;
         const acc = o.tipo === 'cabezazo' ? 'cabezazo' : o.tipo === 'tiro_libre' ? 'tiro libre' : o.tipo === 'penal' ? 'penal' : 'remate';
         if (res === 'gol') {
             marcarGol(j);
         } else if (res === 'atajada') {
             resolverAtajada(j, portero);
         } else if (res === 'palo') {
-            mostrarTag('¡PALO!', 'neutral-tag', gy === 0 ? 12 : 88, balon.x, 1.1);
+            mostrarTag('¡PALO!', 'neutral-tag', balon.y, gx === 100 ? 88 : 12, 1.1);
             narrar('atajada', `¡Al palo! El ${acc} de <b>${j.nombre}</b> se estrella en el poste.`);
             balon.ultimo = portero.eq;
             balon.modo = 'suelto';
-            balon.vy = sent * rnd(35, 55);
-            balon.vx = rnd(-25, 25);
+            balon.vx = sent * rnd(35, 55);
+            balon.vy = rnd(-25, 25);
         } else {
             narrar('tiro', `${acc.charAt(0).toUpperCase() + acc.slice(1)} de <b>${j.nombre}</b> que se va desviado.`);
             llegadaSuelta();
@@ -9289,9 +9282,9 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     const tirar = (j, o = {}) => {
-        const eq = j.eq, rv = rivalDe(eq), gy = golY(eq), f = fuerza(eq);
-        const sent = gy === 0 ? 1 : -1;
-        const dArco = Math.abs(j.y - gy);
+        const eq = j.eq, rv = rivalDe(eq), gx = golX(eq), f = fuerza(eq);
+        const sent = gx === 100 ? -1 : 1;
+        const dArco = Math.abs(j.x - gx);
         const pres = distRivalesA(eq, j.y, j.x);
         let pGol = o.pGol !== undefined ? o.pGol : clamp(0.56 - dArco * 0.010, 0.08, 0.42);
         pGol *= (0.65 + f * 0.7);
@@ -9299,28 +9292,28 @@ window.iniciarSimulacionEnVivo = function() {
         pGol = clamp(pGol, 0.03, 0.9);
         const pArco = o.pArco !== undefined ? o.pArco : 0.36;
         const portero = porteroDe(rv);
-        const yPor = gy + sent * 6.5;
+        const xPor = gx + sent * 6.5;
         const r = Math.random();
-        let res, dx, dy, kx, ky = yPor;
+        let res, dx, dy, ky, kx = xPor;
 
         if (r < pGol) {
             res = 'gol';
-            dx = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(3, 5.5);
-            dy = gy === 0 ? -1.5 : 101.5;
-            kx = 50 + (dx - 50) * 0.55;               // el arquero llega tarde
+            dy = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(3, 5.5);
+            dx = gx === 100 ? 101.5 : -1.5;
+            ky = 50 + (dy - 50) * 0.55;
         } else if (r < pGol + pArco) {
             res = 'atajada';
-            dx = 50 + rnd(-6, 6); dy = yPor; kx = dx;
+            dy = 50 + rnd(-6, 6); dx = xPor; ky = dy;
         } else if (Math.random() < 0.16) {
             res = 'palo';
-            dx = Math.random() < 0.5 ? 44.5 : 55.5;
-            dy = gy + sent * 2.5;
-            kx = 50 + (50 - dx) * 0.5;
+            dy = Math.random() < 0.5 ? 44.5 : 55.5;
+            dx = gx + sent * 2.5;
+            ky = 50 + (50 - dy) * 0.5;
         } else {
             res = 'afuera';
-            dx = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(8.5, 17);
-            dy = gy === 0 ? -2.5 : 102.5;
-            kx = 50 + (dx - 50) * 0.3;
+            dy = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(8.5, 17);
+            dx = gx === 100 ? 102.5 : -2.5;
+            ky = 50 + (dy - 50) * 0.3;
         }
 
         if (eq === 'user') statsPartido.tirosTotalesUser++; else statsPartido.tirosTotalesRival++;
@@ -9343,7 +9336,7 @@ window.iniciarSimulacionEnVivo = function() {
             const d = dist(o.y, o.x, c.y, c.x);
             const maxD = (o.linea === 'por' || opts.largoOk) ? 62 : 40;
             if (d < 6 || d > maxD) continue;
-            const adv = (c.y - o.y) * dir;
+            const adv = (c.x - o.x) * dir;
             const libre = Math.min(14, distRivalesA(eq, c.y, c.x));
             let linea = 12;
             for (const r of equipos[rivalDe(eq)]) {
@@ -9352,7 +9345,7 @@ window.iniciarSimulacionEnVivo = function() {
                 linea = Math.min(linea, dist(r.y, r.x, q.y, q.x));
             }
             let s = adv * (opts.seguro ? 0.15 : 1.3) + libre * 0.8 + linea * 0.9 - d * 0.1 + rnd(0, 6);
-            if (adv < 0 && !opts.seguro) s += adv * 0.6;      // el pase hacia atrás solo si no hay otra
+            if (adv < 0 && !opts.seguro) s += adv * 0.6;
             if (c.linea === 'por') s -= 14;
             cand.push({ c, s, d });
         }
@@ -9362,17 +9355,17 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     const decidir = (o) => {
-        const eq = o.eq, gy = golY(eq);
-        const dArco = Math.abs(o.y - gy);
+        const eq = o.eq, gx = golX(eq);
+        const dArco = Math.abs(o.x - gx);
         const pres = rivalMasCercano(o).d;
         if (balon.forzarPase) { balon.forzarPase = false; pasar(o, { seguro: true }); return; }
         if (o.linea === 'por') { pasar(o, { largoOk: true }); return; }
-        if (dArco < 34 && Math.abs(o.x - 50) < 32) {
+        if (dArco < 34 && Math.abs(o.y - 50) < 32) {
             let p = dArco < 18 ? 0.65 : dArco < 26 ? 0.5 : 0.32;
             if (pres < 5) p += 0.12;
             if (Math.random() < p) { tirar(o); return; }
         }
-        if (pres > 3.8 && Math.random() < 0.6) { o.pensar = rnd(0.25, 0.5); return; } // sigue conduciendo
+        if (pres > 3.8 && Math.random() < 0.6) { o.pensar = rnd(0.25, 0.5); return; }
         pasar(o);
     };
 
@@ -9413,11 +9406,11 @@ window.iniciarSimulacionEnVivo = function() {
         const taker = porId[sacaUser ? 'dot-u-del2' : 'dot-r-del2'];
         const otro = porId[sacaUser ? 'dot-r-del2' : 'dot-u-del2'];
         const mapa = baseMapa();
-        mapa[taker.id] = [50 + (sacaUser ? 0.8 : -0.8), 50];
-        mapa[otro.id] = [sacaUser ? 42 : 58, 50];
+        mapa[taker.id] = [50, 50 + (sacaUser ? -0.8 : 0.8)];
+        mapa[otro.id] = [50, sacaUser ? 58 : 42];
         colocarBalon(50, 50, eq);
         mostrarTag(esReanudacion ? 'INICIA EL 2T' : (sacaUser ? 'SACA TU ONCE' : 'SACA EL RIVAL'),
-            sacaUser ? 'user-tag' : 'rival-tag', sacaUser ? 56 : 44, 50, 1.5);
+            sacaUser ? 'user-tag' : 'rival-tag', 36, 50, 1.5);
         entrarRepos(mapa, 1.6, () => {
             relojPausado = false;
             darPosesion(taker);
@@ -9429,17 +9422,17 @@ window.iniciarSimulacionEnVivo = function() {
     const ejecutarSaqueBanda = (eq, y, x) => {
         const taker = masCercano(equipos[eq].filter(j => j.linea !== 'por'), y, x);
         colocarBalon(y, x, eq);
-        mostrarTag('LATERAL', eq === 'user' ? 'user-tag' : 'rival-tag', clamp(y - 7, 6, 90), x, 1.0);
-        entrarRepos({ [taker.id]: [y, x < 50 ? x + 0.8 : x - 0.8] }, 1.0, () => {
+        mostrarTag('LATERAL', eq === 'user' ? 'user-tag' : 'rival-tag', y < 50 ? y + 8 : y - 8, x, 1.0);
+        entrarRepos({ [taker.id]: [y < 50 ? y + 0.8 : y - 0.8, x] }, 1.0, () => {
             darPosesion(taker); balon.forzarPase = true; taker.pensar = 0.15;
         });
     };
 
     const ejecutarSaqueArco = (eq) => {
         const gk = porteroDe(eq);
-        const yGK = eq === 'user' ? 94 : 6;
-        colocarBalon(yGK, 50, eq);
-        entrarRepos({ [gk.id]: [yGK, 50] }, 1.1, () => { darPosesion(gk); gk.pensar = rnd(0.3, 0.6); });
+        const xGK = eq === 'user' ? 6 : 94;
+        colocarBalon(50, xGK, eq);
+        entrarRepos({ [gk.id]: [50, xGK] }, 1.1, () => { darPosesion(gk); gk.pensar = rnd(0.3, 0.6); });
     };
 
     const ejecutarReanudacionRapida = (eq, y, x) => {
@@ -9450,11 +9443,10 @@ window.iniciarSimulacionEnVivo = function() {
         });
     };
 
-    // Reparte a atacantes y defensores dentro del área (córners y tiros libres lejanos)
     const ORDEN_LINEA = { del: 0, med: 1, def: 2 };
     const armarArea = (eq, mapa, excluir) => {
-        const rv = rivalDe(eq), gy = golY(eq);
-        const enArea = (prof, x) => [gy === 0 ? prof : 100 - prof, x];
+        const rv = rivalDe(eq), gx = golX(eq);
+        const enArea = (prof, y) => [y, gx === 100 ? 100 - prof : prof];
         const atk = equipos[eq].filter(j => j.linea !== 'por' && j !== excluir)
             .sort((a, b) => ORDEN_LINEA[a.linea] - ORDEN_LINEA[b.linea]).slice(0, 5);
         const dfn = equipos[rv].filter(j => j.linea !== 'por')
@@ -9479,9 +9471,9 @@ window.iniciarSimulacionEnVivo = function() {
                 const pDespeje = clamp(0.40 - (f - 0.5) * 0.5, 0.2, 0.55);
                 if (Math.random() < pDespeje) {
                     const def = masCercano(equipos[rv].filter(j => j.linea !== 'por'), balon.y, balon.x);
-                    const sent = golY(eq) === 0 ? 1 : -1;
+                    const sent = golX(eq) === 100 ? -1 : 1;
                     narrar('corner', `<b>${def.nombre}</b> se eleva más alto que todos y despeja el centro.`);
-                    lanzarBalon('despeje', balon.y + sent * rnd(14, 22), clamp(50 + rnd(-30, 30), 10, 90), 55, rv, { alLlegar: llegadaSuelta });
+                    lanzarBalon('despeje', clamp(50 + rnd(-30, 30), 10, 90), balon.x + sent * rnd(14, 22), 55, rv, { alLlegar: llegadaSuelta });
                 } else {
                     tirar(cab, { tipo: 'cabezazo', pGol: 0.11, pArco: 0.30, sinPresion: true, vel: 90 });
                 }
@@ -9489,17 +9481,17 @@ window.iniciarSimulacionEnVivo = function() {
         });
     };
 
-    const ejecutarCorner = (eq, izq) => {
-        const gy = golY(eq);
-        const cx = izq ? 4 : 96, cy = gy === 0 ? 2.5 : 97.5;
+    const ejecutarCorner = (eq, arriba) => {
+        const gx = golX(eq);
+        const cy = arriba ? 4 : 96, cx = gx === 100 ? 97.5 : 2.5;
         if (eq === 'user') statsPartido.cornersUser++; else statsPartido.cornersRival++;
         actualizarHudStats();
         colocarBalon(cy, cx, eq);
         const taker = masCercano(equipos[eq].filter(j => j.linea === 'med' || j.linea === 'del'), cy, cx);
         const mapa = {};
         const atk = armarArea(eq, mapa, taker);
-        mapa[taker.id] = [cy + (gy === 0 ? 0.5 : -0.5), cx + (izq ? 1 : -1)];
-        mostrarTag(eq === 'user' ? 'CÓRNER' : 'CÓRNER RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', gy === 0 ? 12 : 88, cx, 1.6);
+        mapa[taker.id] = [cy + (arriba ? 1 : -1), cx + (gx === 100 ? -0.5 : 0.5)];
+        mostrarTag(eq === 'user' ? 'CÓRNER' : 'CÓRNER RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', cy, gx === 100 ? 86 : 14, 1.6);
         narrar('corner', eq === 'user'
             ? `Córner para tu equipo. Va a ejecutarlo <b>${taker.nombre}</b>.`
             : `Tiro de esquina para <b>${rival.nombre}</b>. Cuidado en el área.`);
@@ -9507,24 +9499,24 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     const ejecutarPenal = (eq) => {
-        const rv = rivalDe(eq), gy = golY(eq), sent = gy === 0 ? 1 : -1;
-        const yP = gy === 0 ? 11 : 89;
+        const rv = rivalDe(eq), gx = golX(eq), sent = gx === 100 ? -1 : 1;
+        const xP = gx === 100 ? 89 : 11;
         const tirador = rematadorPrincipal(eq);
-        colocarBalon(yP, 50, eq);
+        colocarBalon(50, xP, eq);
         const mapa = {};
         const otros = [...equipos[eq], ...equipos[rv]].filter(j => j !== tirador && j.linea !== 'por');
         otros.forEach((j, i) => {
-            mapa[j.id] = [gy === 0 ? 26 + (i % 2) * 3 : 74 - (i % 2) * 3, 12 + i * (76 / (otros.length - 1))];
+            mapa[j.id] = [12 + i * (76 / (otros.length - 1)), gx === 100 ? 74 - (i % 2) * 3 : 26 + (i % 2) * 3];
         });
-        mapa[porteroDe(rv).id] = [gy === 0 ? 3.5 : 96.5, 50];
-        mapa[tirador.id] = [yP + sent * 5, 50];
-        mostrarTag('¡PENAL!', eq === 'user' ? 'user-tag' : 'rival-tag', gy === 0 ? 20 : 80, 50, 2.0);
+        mapa[porteroDe(rv).id] = [50, gx === 100 ? 96.5 : 3.5];
+        mapa[tirador.id] = [50, xP + sent * 5];
+        mostrarTag('¡PENAL!', eq === 'user' ? 'user-tag' : 'rival-tag', 50, gx === 100 ? 80 : 20, 2.0);
         narrar('falta', `¡PENAL! <b>${tirador.nombre}</b> se prepara para patear desde los doce pasos.`);
         entrarRepos(mapa, 2.3, () => tirar(tirador, { tipo: 'penal', pGol: 0.74, pArco: 0.17, sinPresion: true, vel: 120 }));
     };
 
     const ejecutarTiroLibre = (eq, y, x, dGol) => {
-        const rv = rivalDe(eq), gy = golY(eq), dirA = dirDe(eq);
+        const rv = rivalDe(eq), gx = golX(eq), dirA = dirDe(eq);
         const tirador = rematadorPrincipal(eq);
         colocarBalon(y, x, eq);
         const mapa = {};
@@ -9535,11 +9527,11 @@ window.iniciarSimulacionEnVivo = function() {
         } else {
             const muro = equipos[rv].filter(j => j.linea !== 'por')
                 .sort((a, b) => dist(a.y, a.x, y, x) - dist(b.y, b.x, y, x)).slice(0, 4);
-            muro.forEach((j, k) => { mapa[j.id] = [y + dirA * 9, clamp(x + (50 - x) * 0.2 + (k - 1.5) * 2.4, 8, 92)]; });
-            mapa[porteroDe(rv).id] = [gy === 0 ? 4 : 96, 50 + (x < 50 ? 3 : -3)];
+            muro.forEach((j, k) => { mapa[j.id] = [clamp(y + (50 - y) * 0.2 + (k - 1.5) * 2.4, 8, 92), x + dirA * 9]; });
+            mapa[porteroDe(rv).id] = [50 + (y < 50 ? 3 : -3), gx === 100 ? 96 : 4];
         }
-        mapa[tirador.id] = [y - dirA * 2.5, x - 2];
-        mostrarTag(eq === 'user' ? 'TIRO LIBRE' : 'TIRO LIBRE RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', clamp(y - dirA * 8, 6, 94), x, 1.8);
+        mapa[tirador.id] = [y - 2, x - dirA * 2.5];
+        mostrarTag(eq === 'user' ? 'TIRO LIBRE' : 'TIRO LIBRE RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', clamp(y - 8, 6, 94), x, 1.8);
         entrarRepos(mapa, 1.9, () => {
             if (centro) { darPosesion(tirador); lanzarCentro(tirador, cands); }
             else tirar(tirador, { tipo: 'tiro_libre', pGol: 0.075, pArco: 0.30, sinPresion: true });
@@ -9547,13 +9539,13 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     const hacerFalta = (inf, vic) => {
-        const eq = vic.eq, gy = golY(eq);
-        const dGol = Math.abs(vic.y - gy);
+        const eq = vic.eq, gx = golX(eq);
+        const dGol = Math.abs(vic.x - gx);
         const y = vic.y, x = vic.x;
         if (inf.eq === 'user') statsPartido.faltasUser++; else statsPartido.faltasRival++;
         actualizarHudStats();
         balon.modo = 'muerto'; balon.dueno = null;
-        const area = dGol < 16 && Math.abs(x - 50) < 21;
+        const area = dGol < 16 && Math.abs(y - 50) < 21;
         if (area) {
             narrar('falta', `¡Derribó <b>${inf.nombre}</b> a <b>${vic.nombre}</b> dentro del área! El árbitro no duda.`);
             ejecutarPenal(eq);
@@ -9570,12 +9562,12 @@ window.iniciarSimulacionEnVivo = function() {
     const comprobarFuera = () => {
         if (balon.modo !== 'suelto') return;
         const { x, y } = balon;
-        if (y < CFG.yMin || y > CFG.yMax) {
-            const defiende = y < 50 ? 'rival' : 'user';
-            if (balon.ultimo === defiende) ejecutarCorner(rivalDe(defiende), x < 50);
+        if (x < CFG.xMin || x > CFG.xMax) {
+            const defiende = x < 50 ? 'user' : 'rival';
+            if (balon.ultimo === defiende) ejecutarCorner(rivalDe(defiende), y < 50);
             else ejecutarSaqueArco(defiende);
-        } else if (x < CFG.xMin || x > CFG.xMax) {
-            ejecutarSaqueBanda(rivalDe(balon.ultimo), clamp(y, 6, 94), x < 50 ? 3 : 97);
+        } else if (y < CFG.yMin || y > CFG.yMax) {
+            ejecutarSaqueBanda(rivalDe(balon.ultimo), y < 50 ? 3 : 97, clamp(x, 6, 94));
         }
     };
 
@@ -9616,14 +9608,13 @@ window.iniciarSimulacionEnVivo = function() {
             j.vmax = CFG.velSprint * 0.75 * factor;
             return;
         }
-        // Poseedor: conduce hacia el arco rival esquivando al marcador
         if (balon.modo === 'conducido' && balon.dueno === j) {
-            if (j.linea === 'por') { j.tY = j.baseY; j.tX = 50; j.vmax = CFG.velTrote; return; }
+            if (j.linea === 'por') { j.tX = j.baseX; j.tY = 50; j.vmax = CFG.velTrote; return; }
             const { r, d: dr } = rivalMasCercano(j);
-            let tx = j.x + (50 - j.x) * 0.25;
-            if (r && dr < 9) tx += (j.x >= r.x ? 1 : -1) * 8;
-            j.tY = clamp(j.y + d * 14, 12, 88);
-            j.tX = clamp(tx, 6, 94);
+            let ty = j.y + (50 - j.y) * 0.25;
+            if (r && dr < 9) ty += (j.y >= r.y ? 1 : -1) * 8;
+            j.tX = clamp(j.x + d * 14, 12, 88);
+            j.tY = clamp(ty, 6, 94);
             j.vmax = CFG.velTrote * 0.92 * factor;
             return;
         }
@@ -9637,8 +9628,8 @@ window.iniciarSimulacionEnVivo = function() {
         }
         const rol = roles[j.id];
         if (rol === 'persigue') {
-            j.tY = clamp(balon.y + balon.vy * 0.25, 3, 97);
-            j.tX = clamp(balon.x + balon.vx * 0.25, 4, 96);
+            j.tY = clamp(balon.y + balon.vy * 0.25, 4, 96);
+            j.tX = clamp(balon.x + balon.vx * 0.25, 3, 97);
             j.vmax = CFG.velSprint * factor;
             return;
         }
@@ -9646,40 +9637,37 @@ window.iniciarSimulacionEnVivo = function() {
             const fy = balon.modo === 'vuelo' ? balon.dy : balon.y;
             const fx = balon.modo === 'vuelo' ? balon.dx : balon.x;
             if (rol === 'presion1') {
-                // contención: se frena a ~4.5 u del poseedor, del lado de su propio arco
-                const dd = dist(j.y, j.x, fy, fx) || 1;
                 const stand = balon.modo === 'vuelo' ? 0 : 4.5;
-                j.tY = clamp(fy - d * stand, 3, 97);
-                j.tX = clamp(fx + (50 - fx) * 0.08, 4, 96);
-                if (dd < 0) j.tY = fy;
-            } else {   // cobertura: se para detrás del presionador, del lado de su arco
-                j.tY = clamp(fy - d * 7, 3, 97); j.tX = clamp(fx + (50 - fx) * 0.2, 4, 96);
+                j.tX = clamp(fx - d * stand, 3, 97);
+                j.tY = clamp(fy + (50 - fy) * 0.08, 4, 96);
+            } else {
+                j.tX = clamp(fx - d * 7, 3, 97); j.tY = clamp(fy + (50 - fy) * 0.2, 4, 96);
             }
             j.vmax = (dist(j.y, j.x, fy, fx) < 30 ? CFG.velSprint : CFG.velTrote * 1.25) * factor;
             return;
         }
 
-        // Posicionamiento colectivo: el bloque se comprime y se desplaza con el balón
+        // Posicionamiento colectivo horizontal (avance X, basculación Y)
         const atacando = balon.eq === eq && balon.modo !== 'suelto';
-        const bd = profDe(eq, balon.y);
+        const bd = profDe(eq, balon.x);
         if (j.linea === 'por') {
-            j.tY = yDe(eq, 6 + Math.max(0, bd - 55) * 0.22);
-            j.tX = 50 + (balon.x - 50) * (bd < 35 ? 0.22 : 0.1);
+            j.tX = xDe(eq, 6 + Math.max(0, bd - 55) * 0.22);
+            j.tY = 50 + (balon.y - 50) * (bd < 35 ? 0.22 : 0.1);
             j.vmax = CFG.velPortero * factor;
             return;
         }
-        let prof = profDe(eq, j.baseY);
+        let prof = profDe(eq, j.baseX);
         prof += (bd - 50) * K_LINEA[j.linea];
         prof += atacando ? EMP_ATK[j.linea] : EMP_DEF[j.linea];
-        prof += Math.sin(tSim * 1.3 + j.fase) * 1.4;                 // "vida": nadie queda clavado
-        if (atacando && j.linea === 'del') prof = Math.max(prof, bd + 12);   // desmarque en profundidad
+        prof += Math.sin(tSim * 1.3 + j.fase) * 1.4;
+        if (atacando && j.linea === 'del') prof = Math.max(prof, bd + 12);
         else if (atacando && j.linea === 'med') prof = Math.max(prof, bd + 2);
         prof = clamp(prof, LIM[j.linea][0], LIM[j.linea][1]);
-        const tx = 50 + (j.baseX - 50) * (atacando ? 1.12 : 0.88)
-            + (balon.x - 50) * (j.linea === 'def' ? 0.22 : 0.3)
+        const ty = 50 + (j.baseY - 50) * (atacando ? 1.12 : 0.88)
+            + (balon.y - 50) * (j.linea === 'def' ? 0.22 : 0.3)
             + Math.cos(tSim * 1.1 + j.fase) * 1.6;
-        j.tY = yDe(eq, prof);
-        j.tX = clamp(tx, 8, 92);
+        j.tX = xDe(eq, prof);
+        j.tY = clamp(ty, 8, 92);
         j.vmax = CFG.velTrote * factor;
     };
 
@@ -9688,15 +9676,15 @@ window.iniciarSimulacionEnVivo = function() {
         const d = Math.hypot(ey, ex);
         let dvy = 0, dvx = 0;
         if (d > 0.15) {
-            const vmax = d > 12 ? j.vmax * 1.2 : j.vmax;   // si está lejos de su puesto, acelera
+            const vmax = d > 12 ? j.vmax * 1.2 : j.vmax;
             const v = Math.min(vmax, d * 5);
             dvy = ey / d * v; dvx = ex / d * v;
         }
         const a = Math.min(1, CFG.aceleracion * dt);
         j.vy += (dvy - j.vy) * a;
         j.vx += (dvx - j.vx) * a;
-        j.y = clamp(j.y + j.vy * dt, 2, 98);
-        j.x = clamp(j.x + j.vx * dt, 3, 97);
+        j.y = clamp(j.y + j.vy * dt, 4, 96);
+        j.x = clamp(j.x + j.vx * dt, 2, 98);
     };
 
     const separarJugadores = () => {
@@ -9719,14 +9707,14 @@ window.iniciarSimulacionEnVivo = function() {
             const o = balon.dueno;
             const sp = Math.hypot(o.vy, o.vx);
             let fy, fx;
-            if (sp > 3) { fy = o.vy / sp; fx = o.vx / sp; } else { fy = dirDe(o.eq); fx = 0; }
+            if (sp > 3) { fy = o.vy / sp; fx = o.vx / sp; } else { fy = 0; fx = dirDe(o.eq); }
             const a = Math.min(1, 22 * dt);
             balon.y += (o.y + fy * 1.3 - balon.y) * a;
             balon.x += (o.x + fx * 1.3 - balon.x) * a;
         } else if (balon.modo === 'vuelo') {
             balon.t += dt;
             const p = Math.min(1, balon.t / balon.dur);
-            const e = balon.tipo === 'tiro' ? p : p * (1.25 - 0.25 * p);   // los pases frenan al final
+            const e = balon.tipo === 'tiro' ? p : p * (1.25 - 0.25 * p);
             balon.y = balon.oy + (balon.dy - balon.oy) * e;
             balon.x = balon.ox + (balon.dx - balon.ox) * e;
             if (p >= 1) {
@@ -9805,7 +9793,6 @@ window.iniciarSimulacionEnVivo = function() {
         tickReloj(dt);
         if (estado === 'fin') return;
 
-        // posesión real: tiempo que cada equipo tiene el control
         if (balon.modo === 'conducido' || (balon.modo === 'vuelo' && balon.tipo === 'pase')) tPos[balon.eq] += dt;
 
         calcularRoles();
@@ -9850,7 +9837,7 @@ window.iniciarSimulacionEnVivo = function() {
         tagEl.textContent = `COMIENZA EN ${segundosPrevia}...`;
         tagEl.className = 'sim-pitch-tag visible neutral-tag';
         tagEl.style.left = '50%';
-        tagEl.style.top = '50%';
+        tagEl.style.top = '36%';
     }
     render();
 
@@ -9874,10 +9861,6 @@ window.iniciarSimulacionEnVivo = function() {
         }
     }, 1000);
 };
-
-// ========================================================
-// ⚡ MOTOR TÁCTICO CORRELATIVO DE FÚTBOL REAL (SIN TELETRANSPORTES)
-// ========================================================
 
 // 🏆 SISTEMA MULTICAPA DE CELEBRACIÓN DE CAMPEÓN (60/120 FPS)
 function dispararFestejoCampeon(targetModal = null) {

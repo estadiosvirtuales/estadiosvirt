@@ -1221,9 +1221,9 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 </div>
             </div>
 
-            <!-- COLUMNA DERECHA: ARENA DEL ESTADIO NOCTURNO -->
+            <!-- COLUMNA DERECHA: ARENA DEL ESTADIO HORIZONTAL (TRANSMISIÓN TV) -->
             <div class="sim-right-column">
-                <div class="sim-stadium-arena">
+                <div class="sim-stadium-arena horizontal">
                     <!-- FOCOS VOLUMÉTRICOS EXTERIORES -->
                     <div class="sim-floodlight top-left"></div>
                     <div class="sim-floodlight top-right"></div>
@@ -1240,20 +1240,20 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                     <div class="sim-corner-stand bottom-left"></div>
                     <div class="sim-corner-stand bottom-right"></div>
 
-                    <!-- NOMBRES DE EQUIPOS UBICADOS EN LAS TRIBUNAS (CAMPO 100% LIBRE) -->
-                    <span class="sim-pitch-team-badge top" id="sim-pitch-badge-rival">Rival</span>
-                    <span class="sim-pitch-team-badge bottom" id="sim-pitch-badge-user">Tu Once</span>
+                    <!-- NOMBRES DE EQUIPOS EN TRIBUNAS LATERALES (IZQUIERDA: TU ONCE | DERECHA: RIVAL) -->
+                    <span class="sim-pitch-team-badge left" id="sim-pitch-badge-user">Tu Once</span>
+                    <span class="sim-pitch-team-badge right" id="sim-pitch-badge-rival">Rival</span>
 
-                    <!-- CAMPO DE JUEGO (CAL LÍMPIDA + VALLAS LED) -->
-                    <div class="sim-pitch-2d-vertical" id="sim-pitch-2d">
-                        <!-- ⚡ LIENZO TÁCTICO VECTORIAL PARA ESTELAS DE PASES Y TIROS -->
+                    <!-- CAMPO DE JUEGO HORIZONTAL -->
+                    <div class="sim-pitch-2d-horizontal" id="sim-pitch-2d">
+                        <!-- ⚡ LIENZO TÁCTICO VECTORIAL -->
                         <svg class="sim-pitch-tactical-canvas" id="sim-pitch-canvas" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
 
-                        <!-- ARCO SUPERIOR (RIVAL) -->
-                        <div class="sim-pitch-goal top" id="sim-goal-top">
-                            <div class="sim-goal-post left"></div>
+                        <!-- ARCO IZQUIERDO (TU EQUIPO) -->
+                        <div class="sim-pitch-goal left" id="sim-goal-left">
+                            <div class="sim-goal-post top"></div>
                             <div class="sim-goal-netting"></div>
-                            <div class="sim-goal-post right"></div>
+                            <div class="sim-goal-post bottom"></div>
                         </div>
 
                         <!-- LÍNEAS TÁCTICAS Y CÓRNERS -->
@@ -1262,49 +1262,49 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                             <div class="sim-pitch-corner-arc top-right"></div>
                             <div class="sim-pitch-corner-arc bottom-left"></div>
                             <div class="sim-pitch-corner-arc bottom-right"></div>
-                            <div class="sim-pitch-line-center"></div>
+                            <div class="sim-pitch-line-center-vert"></div>
                             <div class="sim-pitch-circle-center"></div>
-                            <div class="sim-pitch-box-top"></div>
-                            <div class="sim-pitch-box-bottom"></div>
+                            <div class="sim-pitch-box-left"></div>
+                            <div class="sim-pitch-box-right"></div>
                         </div>
 
-                        <!-- 👥 FICHAS TÁCTICAS 11 VS 11 (CON IDENTIFICADORES DE POSICIÓN) -->
+                        <!-- 👥 FICHAS TÁCTICAS 11 VS 11 (IZQUIERDA: USER -> ATACA A DERECHA | DERECHA: RIVAL -> ATACA A IZQUIERDA) -->
                         <div class="sim-pitch-players" id="sim-pitch-players">
-                            <!-- EQUIPO RIVAL (ARRIBA - ATACA HACIA ABAJO) -->
-                            <div class="sim-dot rival por" id="dot-r-por" style="top:7%; left:50%;"></div>
-                            <div class="sim-dot rival def" id="dot-r-def1" style="top:18%; left:18%;"></div>
-                            <div class="sim-dot rival def" id="dot-r-def2" style="top:19%; left:38%;"></div>
-                            <div class="sim-dot rival def" id="dot-r-def3" style="top:19%; left:62%;"></div>
-                            <div class="sim-dot rival def" id="dot-r-def4" style="top:18%; left:82%;"></div>
-                            <div class="sim-dot rival med" id="dot-r-med1" style="top:32%; left:28%;"></div>
-                            <div class="sim-dot rival med" id="dot-r-med2" style="top:33%; left:50%;"></div>
-                            <div class="sim-dot rival med" id="dot-r-med3" style="top:32%; left:72%;"></div>
-                            <div class="sim-dot rival del" id="dot-r-del1" style="top:44%; left:24%;"></div>
-                            <div class="sim-dot rival del" id="dot-r-del2" style="top:43%; left:50%;"></div>
-                            <div class="sim-dot rival del" id="dot-r-del3" style="top:44%; left:76%;"></div>
+                            <!-- TU ONCE (IZQUIERDA) -->
+                            <div class="sim-dot user por" id="dot-u-por" style="top:50%; left:6%;"></div>
+                            <div class="sim-dot user def" id="dot-u-def1" style="top:18%; left:18%;"></div>
+                            <div class="sim-dot user def" id="dot-u-def2" style="top:38%; left:17%;"></div>
+                            <div class="sim-dot user def" id="dot-u-def3" style="top:62%; left:17%;"></div>
+                            <div class="sim-dot user def" id="dot-u-def4" style="top:82%; left:18%;"></div>
+                            <div class="sim-dot user med" id="dot-u-med1" style="top:26%; left:32%;"></div>
+                            <div class="sim-dot user med" id="dot-u-med2" style="top:50%; left:30%;"></div>
+                            <div class="sim-dot user med" id="dot-u-med3" style="top:74%; left:32%;"></div>
+                            <div class="sim-dot user del" id="dot-u-del1" style="top:22%; left:44%;"></div>
+                            <div class="sim-dot user del" id="dot-u-del2" style="top:50%; left:43%;"></div>
+                            <div class="sim-dot user del" id="dot-u-del3" style="top:78%; left:44%;"></div>
 
-                            <!-- TU ONCE (ABAJO - ATACA HACIA ARRIBA) -->
-                            <div class="sim-dot user del" id="dot-u-del1" style="top:56%; left:24%;"></div>
-                            <div class="sim-dot user del" id="dot-u-del2" style="top:57%; left:50%;"></div>
-                            <div class="sim-dot user del" id="dot-u-del3" style="top:56%; left:76%;"></div>
-                            <div class="sim-dot user med" id="dot-u-med1" style="top:68%; left:28%;"></div>
-                            <div class="sim-dot user med" id="dot-u-med2" style="top:67%; left:50%;"></div>
-                            <div class="sim-dot user med" id="dot-u-med3" style="top:68%; left:72%;"></div>
-                            <div class="sim-dot user def" id="dot-u-def1" style="top:81%; left:18%;"></div>
-                            <div class="sim-dot user def" id="dot-u-def2" style="top:80%; left:38%;"></div>
-                            <div class="sim-dot user def" id="dot-u-def3" style="top:80%; left:62%;"></div>
-                            <div class="sim-dot user def" id="dot-u-def4" style="top:81%; left:82%;"></div>
-                            <div class="sim-dot user por" id="dot-u-por" style="top:93%; left:50%;"></div>
+                            <!-- EQUIPO RIVAL (DERECHA) -->
+                            <div class="sim-dot rival del" id="dot-r-del1" style="top:22%; left:56%;"></div>
+                            <div class="sim-dot rival del" id="dot-r-del2" style="top:50%; left:57%;"></div>
+                            <div class="sim-dot rival del" id="dot-r-del3" style="top:78%; left:56%;"></div>
+                            <div class="sim-dot rival med" id="dot-r-med1" style="top:26%; left:68%;"></div>
+                            <div class="sim-dot rival med" id="dot-r-med2" style="top:50%; left:70%;"></div>
+                            <div class="sim-dot rival med" id="dot-r-med3" style="top:74%; left:68%;"></div>
+                            <div class="sim-dot rival def" id="dot-r-def1" style="top:18%; left:82%;"></div>
+                            <div class="sim-dot rival def" id="dot-r-def2" style="top:38%; left:83%;"></div>
+                            <div class="sim-dot rival def" id="dot-r-def3" style="top:62%; left:83%;"></div>
+                            <div class="sim-dot rival def" id="dot-r-def4" style="top:82%; left:82%;"></div>
+                            <div class="sim-dot rival por" id="dot-r-por" style="top:50%; left:94%;"></div>
                         </div>
 
                         <div class="sim-pitch-ball" id="sim-pitch-ball">⚽</div>
                         <div class="sim-pitch-tag" id="sim-pitch-tag"></div>
 
-                        <!-- ARCO INFERIOR (TU EQUIPO) -->
-                        <div class="sim-pitch-goal bottom" id="sim-goal-bottom">
-                            <div class="sim-goal-post left"></div>
+                        <!-- ARCO DERECHO (RIVAL) -->
+                        <div class="sim-pitch-goal right" id="sim-goal-right">
+                            <div class="sim-goal-post top"></div>
                             <div class="sim-goal-netting"></div>
-                            <div class="sim-goal-post right"></div>
+                            <div class="sim-goal-post bottom"></div>
                         </div>
                     </div>
                 </div>
