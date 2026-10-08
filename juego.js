@@ -2884,7 +2884,13 @@ document.getElementById('map-modal').style.display='flex';const pLat=parseFloat(
 setTimeout(()=>{if(previewMapInstance)previewMapInstance.remove();previewMapInstance=L.map('modal-map-container',{attributionControl:false}).setView([pLat,pLng],5);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(previewMapInstance);L.circleMarker([pLat,pLng],{radius:9,color:'var(--accent-color)',fillColor:'var(--card-bg)',fillOpacity:1,weight:3}).addTo(previewMapInstance).bindPopup(`<b>${estadio}</b><br>${pais}`).openPopup();previewMapInstance.invalidateSize();},250);
 }
 function cerrarModalMapa(){document.getElementById('map-modal').style.display='none';if(previewMapInstance){previewMapInstance.remove();previewMapInstance=null;}}
-function cerrarModalPerfil(){document.getElementById('profile-modal').style.display='none';}
+function cerrarModalPerfil(){
+    document.getElementById('profile-modal').style.display='none';
+    if (window.navOrigenCarrera && typeof abrirModalModoCarrera === 'function') {
+        window.navOrigenCarrera = false;
+        abrirModalModoCarrera();
+    }
+}
 // (cerrarModalOrden migrado a orden.js)
 function cerrarModalRanking(){
     document.getElementById('ranking-modal').style.display='none';
@@ -6705,8 +6711,8 @@ document.getElementById('profile-modal-body').innerHTML=`
                 </div>
                 <div class="palmares-cups-row">
                     <div class="palmares-cup-item ${(userStats.copasGanadas || []).some(c => c.tier === 'nacional') ? 'unlocked' : 'locked'}">
-                        <img src="medalla-bronce.webp" alt="Copa Nacional" class="palmares-cup-img">
-                        <strong>Copa Nacional</strong>
+                        <img src="medalla-bronce.webp" alt="Copa Desafío" class="palmares-cup-img">
+                        <strong>Copa Desafío</strong>
                         <span>${(userStats.copasGanadas || []).some(c => c.tier === 'nacional') ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
                     </div>
                     <div class="palmares-cup-item ${(userStats.copasGanadas || []).some(c => c.tier === 'continental') ? 'unlocked' : 'locked'}">
@@ -6765,6 +6771,7 @@ renderizarGridLogros();
 }
 
 function cerrarSesion() {
+    window.navOrigenCarrera = false;
     localStorage.removeItem('ev_user_logged');
     localStorage.removeItem('ev_codigo_liga_amigos'); // 🛡️ ESCUDO: Borramos el acceso a la liga para proteger la privacidad
     
@@ -6884,7 +6891,7 @@ if (typeof AVATARES_LISTA !== 'undefined') {
     });
 }
 
-logros.push({id:'copa_nacional',icon:'<img src="medalla-bronce.webp" class="logro-img-icon" alt="Copa Nacional">',name:'Gloria Nacional',rarity:'rare',req:'Levantá la Copa Nacional',unlocked:tieneNac,pct:tieneNac?100:0,pctLabel:tieneNac?'1/1':'0/1'});
+logros.push({id:'copa_nacional',icon:'<img src="medalla-bronce.webp" class="logro-img-icon" alt="Copa Desafío">',name:'Gran Desafío',rarity:'rare',req:'Levantá la Copa Desafío',unlocked:tieneNac,pct:tieneNac?100:0,pctLabel:tieneNac?'1/1':'0/1'});
 logros.push({id:'copa_continental',icon:'<img src="medalla-plata.webp" class="logro-img-icon" alt="Copa Continental">',name:'Rey de América',rarity:'epic',req:'Levantá la Copa Continental',unlocked:tieneCont,pct:tieneCont?100:0,pctLabel:tieneCont?'1/1':'0/1'});
 logros.push({id:'copa_mundial_clubes',icon:'<img src="medalla-oro.webp" class="logro-img-icon" alt="Mundial de Clubes">',name:'Rey de Clubes',rarity:'epic',req:'Levantá el Mundial de Clubes',unlocked:tieneClubes,pct:tieneClubes?100:0,pctLabel:tieneClubes?'1/1':'0/1'});
 logros.push({id:'copa_mundial',icon:'<img src="estrella.webp" class="logro-img-icon" alt="Copa del Mundo">',name:'Campeón del Mundo',rarity:'epic',req:'Levantá la Copa del Mundo',unlocked:tieneMundial,pct:tieneMundial?100:0,pctLabel:tieneMundial?'1/1':'0/1'});
@@ -8412,7 +8419,7 @@ window.clickBotonTorneoOnce = function() {
         return;
     }
 
-    cerrarModalOnceInicial();
+    cerrarModalOnceInicial(false);
     abrirModalTorneoCopas();
 };
 
@@ -8431,13 +8438,40 @@ window.abrirModalTorneoCopas = function() {
     const ganoClubes = copas.some(c => c.tier === 'mundial_clubes');
     const ganoMundial = copas.some(c => c.tier === 'mundial');
 
+    // 💾 Verificamos si hay un torneo guardado en curso
+    const guardadoRaw = localStorage.getItem('ev_torneo_guardado_' + getUserId());
+    let torneoGuardado = null;
+    try { torneoGuardado = guardadoRaw ? JSON.parse(guardadoRaw) : null; } catch(e) {}
+
     // 🥉 TIER 1: Copa Nacional
     const cardNac = document.querySelector('.torneo-tier-card[onclick*="nacional"]');
     if (cardNac) {
         const st = cardNac.querySelector('.tier-status');
-        if (ganoNac && st) {
-            st.className = 'tier-status ready won';
-            st.innerHTML = `👑 Campeón`;
+        const btn = cardNac.querySelector('.tier-action-btn');
+        if (torneoGuardado && torneoGuardado.tier === 'nacional' && !torneoGuardado.esDesafioAsincronico && torneoGuardado.rondaIdx < 4) {
+            const faseTxt = RONDAS_NOMBRES[torneoGuardado.rondaIdx] || 'En curso';
+            if (st) {
+                st.className = 'tier-status ready';
+                st.innerHTML = `<i class="ph-bold ph-hourglass-medium"></i> En curso (${faseTxt})`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn animate-pulse';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Continuar (${faseTxt})</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else {
+            if (ganoNac && st) {
+                st.className = 'tier-status ready won';
+                st.innerHTML = `👑 Campeón`;
+            } else if (st) {
+                st.className = 'tier-status ready';
+                st.innerHTML = `<i class="ph-bold ph-check"></i> Disponible`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Disputar Copa</span> <i class="ph-bold ph-play"></i>`;
+            }
         }
     }
 
@@ -8449,7 +8483,18 @@ window.abrirModalTorneoCopas = function() {
         cardCont.classList.toggle('tier-locked', !okCont);
         const st = cardCont.querySelector('.tier-status');
         const btn = cardCont.querySelector('.tier-action-btn');
-        if (okCont) {
+        if (torneoGuardado && torneoGuardado.tier === 'continental' && !torneoGuardado.esDesafioAsincronico && torneoGuardado.rondaIdx < 4) {
+            const faseTxt = RONDAS_NOMBRES[torneoGuardado.rondaIdx] || 'En curso';
+            if (st) {
+                st.className = 'tier-status ready';
+                st.innerHTML = `<i class="ph-bold ph-hourglass-medium"></i> En curso (${faseTxt})`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn animate-pulse';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Continuar</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else if (okCont) {
             if (st) {
                 st.className = `tier-status ready ${ganoCont ? 'won' : ''}`;
                 st.innerHTML = ganoCont ? `👑 Campeón` : `<i class="ph-bold ph-check"></i> Disponible`;
@@ -8480,7 +8525,18 @@ window.abrirModalTorneoCopas = function() {
         cardClubes.classList.toggle('tier-locked', !okClubes);
         const st = cardClubes.querySelector('.tier-status');
         const btn = cardClubes.querySelector('.tier-action-btn');
-        if (okClubes) {
+        if (torneoGuardado && torneoGuardado.tier === 'mundial_clubes' && !torneoGuardado.esDesafioAsincronico && torneoGuardado.rondaIdx < 4) {
+            const faseTxt = RONDAS_NOMBRES[torneoGuardado.rondaIdx] || 'En curso';
+            if (st) {
+                st.className = 'tier-status ready';
+                st.innerHTML = `<i class="ph-bold ph-hourglass-medium"></i> En curso (${faseTxt})`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn animate-pulse';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Continuar (${faseTxt})</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else if (okClubes) {
             if (st) {
                 st.className = `tier-status ready ${ganoClubes ? 'won' : ''}`;
                 st.innerHTML = ganoClubes ? `👑 Campeón` : `<i class="ph-bold ph-check"></i> Disponible`;
@@ -8511,7 +8567,18 @@ window.abrirModalTorneoCopas = function() {
         cardMundial.classList.toggle('tier-locked', !okMundial);
         const st = cardMundial.querySelector('.tier-status');
         const btn = cardMundial.querySelector('.tier-action-btn');
-        if (okMundial) {
+        if (torneoGuardado && torneoGuardado.tier === 'mundial' && !torneoGuardado.esDesafioAsincronico && torneoGuardado.rondaIdx < 4) {
+            const faseTxt = RONDAS_NOMBRES[torneoGuardado.rondaIdx] || 'En curso';
+            if (st) {
+                st.className = 'tier-status ready';
+                st.innerHTML = `<i class="ph-bold ph-hourglass-medium"></i> En curso (${faseTxt})`;
+            }
+            if (btn) {
+                btn.className = 'btn-3d primary tier-action-btn animate-pulse';
+                btn.disabled = false;
+                btn.innerHTML = `<span>Continuar (${faseTxt})</span> <i class="ph-bold ph-play"></i>`;
+            }
+        } else if (okMundial) {
             if (st) {
                 st.className = `tier-status ready ${ganoMundial ? 'won' : ''}`;
                 st.innerHTML = ganoMundial ? `👑 Campeón` : `<i class="ph-bold ph-check"></i> Disponible`;
@@ -8537,9 +8604,12 @@ window.abrirModalTorneoCopas = function() {
     modal.style.display = 'flex';
 };
 
-window.cerrarModalTorneoCopas = function() {
+window.cerrarModalTorneoCopas = function(volverACarrera = true) {
     const modal = document.getElementById('torneo-copas-modal');
     if (modal) modal.style.display = 'none';
+    if (volverACarrera && typeof abrirModalModoCarrera === 'function') {
+        abrirModalModoCarrera();
+    }
 };
 
 // ========================================================
@@ -8575,6 +8645,9 @@ const EQUIPOS_OVR = {
     'arg_talleres': 74, 'arg_estudiantes': 74, 'arg_independiente': 73, 'arg_sanlorenzo': 73,
     'arg_huracan': 73, 'arg_rosario': 73, 'arg_lanus': 73, 'arg_argentinos': 73,
     'arg_godoycruz': 72, 'arg_defensa': 72, 'arg_belgrano': 72, 'arg_newells': 72,
+    'arg_gimnasia': 72, 'arg_banfield': 72, 'arg_atleticotucuman': 72, 'arg_centralcordoba': 71,
+    'arg_barracas': 71, 'arg_sarmiento': 70, 'arg_riestra': 70, 'arg_indrivadavia': 71,
+    'arg_aldosivi': 69, 'arg_sanmartinsj': 68,
     'col_millonarios': 72, 'col_nacional': 73, 'col_america': 72, 'col_junior': 72,
     'col_santafe': 71, 'col_tolima': 71, 'col_cali': 70, 'col_medellin': 71,
     'chi_colocolo': 73, 'chi_uchile': 72, 'chi_ucatolica': 72, 'chi_coquimbo': 70,
@@ -8602,7 +8675,7 @@ const EQUIPOS_OVR = {
 
 const TORNEOS_CONFIG = {
     'nacional': {
-        nombre: 'Copa Nacional',
+        nombre: 'Copa Desafío',
         premioSP: 10,
         clubesIds: [
             'arg_acassuso', 'arg_agropecuario', 'arg_allboys', 'arg_almagro', 'arg_almirantebrown',
@@ -8663,7 +8736,7 @@ window.seleccionarCopaParaJugar = function(tierKey) {
     const copas = userStats.copasGanadas || [];
 
     if (tierKey === 'continental' && ovrEquipo < 70 && !copas.some(c => c.tier === 'nacional')) {
-        showToast("Tu equipo necesita al menos 70 OVR o ganar la Copa Nacional para clasificar 🔒", "ph-lock-key", "warning");
+        showToast("Tu equipo necesita al menos 70 OVR o ganar la Copa Desafío para clasificar 🔒", "ph-lock-key", "warning");
         return;
     }
     if (tierKey === 'mundial_clubes' && ovrEquipo < 80 && !copas.some(c => c.tier === 'continental')) {
@@ -8675,14 +8748,28 @@ window.seleccionarCopaParaJugar = function(tierKey) {
         return;
     }
 
-    cerrarModalTorneoCopas();
-    cerrarModalOnceInicial();
+    cerrarModalTorneoCopas(false);
+    cerrarModalOnceInicial(false);
     iniciarTorneoDeCopas(tierKey);
 };
 
 function iniciarTorneoDeCopas(tierKey) {
     const cfg = TORNEOS_CONFIG[tierKey] || TORNEOS_CONFIG['nacional'];
     
+    // 💾 Si existe una partida guardada de esta misma copa, la reanudamos
+    const guardadoRaw = localStorage.getItem('ev_torneo_guardado_' + getUserId());
+    let guardado = null;
+    try { guardado = guardadoRaw ? JSON.parse(guardadoRaw) : null; } catch(e) {}
+
+    if (guardado && guardado.tier === tierKey && !guardado.esDesafioAsincronico && guardado.rondaIdx < 4) {
+        torneoEstado = guardado;
+        torneoEstado.partidoEnCurso = false;
+        prepararVistaPartidoCopa();
+        document.getElementById('simulador-partido-modal').style.display = 'flex';
+        showToast(`¡Retomando ${torneoEstado.config.nombre} en ${RONDAS_NOMBRES[torneoEstado.rondaIdx]}! 🏆`, "ph-play", "info");
+        return;
+    }
+
     let pool = BANDERAS_LISTA.filter(b => cfg.clubesIds.includes(b.id));
     if (pool.length < 4) pool = BANDERAS_LISTA.filter(b => b.id !== 'ev');
 
@@ -8712,6 +8799,9 @@ function iniciarTorneoDeCopas(tierKey) {
         partidoEnCurso: false,
         recorridoPartidos: [] // 📜 Guarda cada cruce con marcador y rival
     };
+
+    // Guardamos el estado inicial de la copa
+    localStorage.setItem('ev_torneo_guardado_' + getUserId(), JSON.stringify(torneoEstado));
 
     prepararVistaPartidoCopa();
     document.getElementById('simulador-partido-modal').style.display = 'flex';
@@ -8819,6 +8909,36 @@ let simPreviaTimer = null;
 let simHalftimeTimer = null;
 let simJugadaTimer = null;
 let simRafId = null;
+let simVelocidadMult = 1;
+
+// ⚡ BOTÓN 2X: Acelera todo el reloj, física y movimientos al doble
+window.toggleVelocidadSimulacion = function() {
+    simVelocidadMult = (simVelocidadMult === 1) ? 2 : 1;
+    const btnSpeed = document.getElementById('sim-btn-speed');
+    const txt = document.getElementById('sim-speed-text');
+    if (btnSpeed) {
+        if (simVelocidadMult === 2) {
+            btnSpeed.classList.add('active-2x');
+            if (txt) txt.textContent = '2x Activo';
+            showToast("Velocidad 2x activada ⚡", "ph-fast-forward", "info");
+        } else {
+            btnSpeed.classList.remove('active-2x');
+            if (txt) txt.textContent = '2x';
+            showToast("Velocidad normal (1x)", "ph-play", "info");
+        }
+    }
+};
+
+// ⚡ BOTÓN SALTAR: Fallback por si lo presionan antes de arrancar la previa
+window.saltarSimulacionCompleta = function() {
+    if (!torneoEstado) return;
+    if (!torneoEstado.partidoEnCurso) {
+        iniciarSimulacionEnVivo();
+        if (typeof window.saltarSimulacionCompleta === 'function') {
+            window.saltarSimulacionCompleta();
+        }
+    }
+};
 
 window.cerrarModalSimuladorPartido = function() {
     if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
@@ -8826,12 +8946,34 @@ window.cerrarModalSimuladorPartido = function() {
     if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
     if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
     if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
+    
+    simVelocidadMult = 1;
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'none';
+    const btnSpeed = document.getElementById('sim-btn-speed');
+    if (btnSpeed) {
+        btnSpeed.classList.remove('active-2x');
+        const txt = document.getElementById('sim-speed-text');
+        if (txt) txt.textContent = '2x';
+    }
+
     document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = ''; });
     const m = document.getElementById('simulador-partido-modal');
     if (m) m.style.display = 'none';
+
+    // 💾 Solo guardamos si la copa sigue en disputa (no se terminó ni quedaste eliminado)
+    if (torneoEstado && !torneoEstado.esDesafioAsincronico && !torneoEstado.terminado && torneoEstado.rondaIdx < 4) {
+        torneoEstado.partidoEnCurso = false;
+        localStorage.setItem('ev_torneo_guardado_' + getUserId(), JSON.stringify(torneoEstado));
+    }
+
     torneoEstado = null;
     if (typeof verificarSobreBienvenidaPostPartida === 'function') {
         verificarSobreBienvenidaPostPartida();
+    }
+
+    if (volverACarrera && typeof abrirModalModoCarrera === 'function') {
+        abrirModalModoCarrera();
     }
 };
 
@@ -8850,6 +8992,10 @@ window.iniciarSimulacionEnVivo = function() {
 
     const btn = document.getElementById('sim-btn-play');
     if (btn) btn.disabled = true;
+
+    // Mostramos la barra de controles rápidos (2x y Simular Todo)
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'flex';
 
     const timeline = document.getElementById('sim-events-timeline');
     if (timeline) timeline.innerHTML = '';
@@ -8891,8 +9037,8 @@ window.iniciarSimulacionEnVivo = function() {
         radioContacto: 3.0,
         tasaRobo: 0.7,
         probFalta: 0.32,
-        xMin: 1.5, xMax: 98.5,   // Líneas de fondo / arcos en los extremos izquierdo y derecho
-        yMin: 3, yMax: 97        // Líneas laterales / bandas arriba y abajo
+        xMin: 1.5, xMax: 98.5,
+        yMin: 3, yMax: 97
     };
 
     // ================= 1. DATOS DEL PARTIDO =================
@@ -8959,14 +9105,14 @@ window.iniciarSimulacionEnVivo = function() {
     const rnd = (a, b) => a + Math.random() * (b - a);
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const dist = (ay, ax, by, bx) => Math.hypot(ay - by, ax - bx);
-    const dirDe = (eq) => eq === 'user' ? 1 : -1;             // User ataca hacia la derecha (+X), Rival hacia la izquierda (-X)
+    const dirDe = (eq) => eq === 'user' ? 1 : -1;
     const rivalDe = (eq) => eq === 'user' ? 'rival' : 'user';
-    const golX = (eq) => eq === 'user' ? 100 : 0;            // Arco al que ataca eq (User: 100, Rival: 0)
+    const golX = (eq) => eq === 'user' ? 100 : 0;
     const fuerza = (eq) => eq === 'user' ? probExitoUser : 1 - probExitoUser;
-    const profDe = (eq, x) => eq === 'user' ? x : 100 - x;    // 0 = arco propio, 100 = arco rival
+    const profDe = (eq, x) => eq === 'user' ? x : 100 - x;
     const xDe = (eq, prof) => eq === 'user' ? prof : 100 - prof;
 
-    // ================= 3. JUGADORES (COORDENADAS BASE HORIZONTALES [top %, left %]) =================
+    // ================= 3. JUGADORES =================
     const POS_BASE = {
         'dot-u-por': [50, 6],
         'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
@@ -9084,11 +9230,16 @@ window.iniciarSimulacionEnVivo = function() {
     };
     const narrar = (tipo, texto) => {
         if (!timeline) return;
+        const placeholder = timeline.querySelector('.sim-event-placeholder');
+        if (placeholder) placeholder.remove();
         const row = document.createElement('div');
         row.className = `sim-event-row ${tipo}`;
         row.innerHTML = `<span class="sim-ev-min">${minTxt()}'</span> <span class="sim-ev-text">${texto}</span>`;
         timeline.appendChild(row);
-        timeline.scrollTop = timeline.scrollHeight;
+        // Mantiene solo los últimos 2 relatos en vivo: los que pasaron se van y no hay scrollbar
+        while (timeline.children.length > 2) {
+            timeline.removeChild(timeline.firstChild);
+        }
     };
     const mostrarTag = (texto, clase, top, left, dur = 1.2) => {
         if (!tagEl) return;
@@ -9100,7 +9251,7 @@ window.iniciarSimulacionEnVivo = function() {
         programar(dur, () => { if (mi === tagId) tagEl.classList.remove('visible'); });
     };
 
-    // ================= 5. BALÓN: POSESIÓN, VUELO, SUELTO =================
+    // ================= 5. BALÓN =================
     const darPosesion = (j) => {
         balon.modo = 'conducido';
         balon.dueno = j;
@@ -9151,7 +9302,7 @@ window.iniciarSimulacionEnVivo = function() {
         if (mejor && md < 2.3) darPosesion(mejor);
     };
 
-    // ================= 6. ACCIONES: PASE, TIRO, ATAJADA, GOL =================
+    // ================= 6. ACCIONES =================
     const hacerPase = (o, c, largo) => {
         const eq = o.eq, f = fuerza(eq);
         const d = dist(o.y, o.x, c.y, c.x);
@@ -9571,7 +9722,7 @@ window.iniciarSimulacionEnVivo = function() {
         }
     };
 
-    // ================= 9. MOVIMIENTO DE JUGADORES =================
+    // ================= 9. MOVIMIENTO =================
     const K_LINEA = { por: 0, def: 0.30, med: 0.45, del: 0.55 };
     const EMP_ATK = { por: 0, def: 6, med: 9, del: 10 };
     const EMP_DEF = { por: 0, def: -1, med: -3, del: -2 };
@@ -9647,7 +9798,6 @@ window.iniciarSimulacionEnVivo = function() {
             return;
         }
 
-        // Posicionamiento colectivo horizontal (avance X, basculación Y)
         const atacando = balon.eq === eq && balon.modo !== 'suelto';
         const bd = profDe(eq, balon.x);
         if (j.linea === 'por') {
@@ -9739,7 +9889,52 @@ window.iniciarSimulacionEnVivo = function() {
         }
     };
 
-    // ================= 10. RELOJ Y LOOP PRINCIPAL =================
+    // ================= 10. SIMULACIÓN INSTANTÁNEA (SALTAR PARTIDO) =================
+    window.saltarSimulacionCompleta = function() {
+        if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
+        if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
+        if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
+        if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
+        if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
+
+        estado = 'fin';
+        relojPausado = true;
+
+        // Calculamos los goles según tiempo restante y diferencia de OVR
+        const propRestante = Math.max(0, (90 - gameMin) / 90);
+        const diff = (ovrUsuario - ovrRival) / 10;
+        const probGolExtraUser = Math.max(0, 1.4 + diff * 0.4 + (Math.random() - 0.5) * 1.8) * propRestante;
+        const probGolExtraRival = Math.max(0, 1.1 - diff * 0.4 + (Math.random() - 0.5) * 1.8) * propRestante;
+
+        golesUser += Math.round(probGolExtraUser);
+        golesRival += Math.round(probGolExtraRival);
+
+        if (scoreUserEl) scoreUserEl.textContent = golesUser;
+        if (scoreRivalEl) scoreRivalEl.textContent = golesRival;
+        if (clock) clock.textContent = "90' · FIN";
+        if (tagEl) tagEl.classList.remove('visible');
+
+        statsPartido.tirosTotalesUser = Math.max(golesUser + Math.floor(Math.random() * 4 + 3), golesUser);
+        statsPartido.tirosArcoUser = golesUser + Math.floor(Math.random() * 2 + 1);
+        statsPartido.tirosTotalesRival = Math.max(golesRival + Math.floor(Math.random() * 4 + 2), golesRival);
+        statsPartido.tirosArcoRival = golesRival + Math.floor(Math.random() * 2);
+        actualizarHudStats();
+
+        const qControls = document.getElementById('sim-quick-controls');
+        if (qControls) qControls.style.display = 'none';
+
+        const row = document.createElement('div');
+        row.className = 'sim-event-row sim-event-simulado';
+        row.innerHTML = `<span class="sim-ev-min">90'</span> <span class="sim-ev-text">⚡ <b>Partido simulado al instante:</b> Resultado final ${golesUser} - ${golesRival}</span>`;
+        if (timeline) {
+            timeline.appendChild(row);
+            timeline.scrollTop = timeline.scrollHeight;
+        }
+
+        finalizarPartidoCopa(golesUser, golesRival);
+    };
+
+    // ================= 11. RELOJ Y LOOP PRINCIPAL =================
     const cierreSeguro = () => estado === 'juego' && !(balon.modo === 'vuelo' && balon.tipo === 'tiro');
 
     const tickReloj = (dt) => {
@@ -9758,7 +9953,7 @@ window.iniciarSimulacionEnVivo = function() {
             rowET.className = 'sim-event-row entretiempo';
             rowET.innerHTML = `<span><i class="ph-bold ph-whistle"></i> FIN DEL PRIMER TIEMPO (${golesUser} - ${golesRival})</span>`;
             if (timeline) { timeline.appendChild(rowET); timeline.scrollTop = timeline.scrollHeight; }
-            programar(2.4, () => {
+            programar(2.4 / simVelocidadMult, () => {
                 reposMap = null;
                 gameMin = 46;
                 if (clock) clock.textContent = `46' (2T)`;
@@ -9770,6 +9965,8 @@ window.iniciarSimulacionEnVivo = function() {
         if (primerTiempoTerminado && m > 90 + tiempoDescuento2T && cierreSeguro()) {
             estado = 'fin';
             if (clock) clock.textContent = `90'+${tiempoDescuento2T}' · FIN`;
+            const qControls = document.getElementById('sim-quick-controls');
+            if (qControls) qControls.style.display = 'none';
             finalizarPartidoCopa(golesUser, golesRival);
             return;
         }
@@ -9784,7 +9981,7 @@ window.iniciarSimulacionEnVivo = function() {
     let ultimoT = 0;
     const frame = (now) => {
         if (estado === 'fin') return;
-        const dt = Math.min(0.05, Math.max(0.001, (now - ultimoT) / 1000));
+        const dt = Math.min(0.05, Math.max(0.001, (now - ultimoT) / 1000)) * simVelocidadMult;
         ultimoT = now;
         tSim += dt;
 
@@ -9829,7 +10026,7 @@ window.iniciarSimulacionEnVivo = function() {
         simRafId = requestAnimationFrame(frame);
     };
 
-    // ================= 11. CUENTA REGRESIVA E INICIO =================
+    // ================= 12. CUENTA REGRESIVA E INICIO =================
     let segundosPrevia = 3;
     if (clock) clock.textContent = '3s';
     if (btn) btn.innerHTML = `<i class="ph-bold ph-timer animate-pulse"></i> El partido comienza en <b>${segundosPrevia}</b>...`;
@@ -9911,10 +10108,16 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     const btn = document.getElementById('sim-btn-play');
     torneoEstado.partidoEnCurso = false;
 
+    // 🏟️ RAMA 1: PARTIDO DE TEMPORADA DE LIGA (HAY EMPATE EN 90')
+    if (torneoEstado.esLiga) {
+        procesarFinDePartidoLiga(golesUser, golesRival);
+        return;
+    }
+
+    // 🏆 RAMA 2: PARTIDO DE COPA O DESAFÍO (ELIMINACIÓN DIRECTA)
     let ganoUsuario = golesUser > golesRival;
     let penalesTexto = '';
 
-    // En caso de empate en los 90 minutos, definición por penales
     if (golesUser === golesRival) {
         const penUser = 4 + Math.round(Math.random());
         const penRival = penUser === 5 ? (Math.random() < 0.5 ? 4 : 3) : 5;
@@ -9928,7 +10131,6 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         timeline.scrollTop = timeline.scrollHeight;
     }
 
-    // 📝 Registramos este cruce en el historial del torneo
     const rivalActual = torneoEstado.rivales[torneoEstado.rondaIdx];
     torneoEstado.recorridoPartidos.push({
         fase: RONDAS_NOMBRES[torneoEstado.rondaIdx],
@@ -9941,7 +10143,6 @@ function finalizarPartidoCopa(golesUser, golesRival) {
 
     if (ganoUsuario) {
         if (torneoEstado.esDesafioAsincronico) {
-            // ⚔️ VICTORIA EN DESAFÍO DE COMUNIDAD
             const premio = torneoEstado.config.premioSP || 2;
             userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
             guardarStats();
@@ -9967,7 +10168,9 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         } else {
             const esFinal = torneoEstado.rondaIdx === 3;
             if (esFinal) {
-                // ¡CAMPEÓN DE LA COPA!
+                torneoEstado.terminado = true;
+                localStorage.removeItem('ev_torneo_guardado_' + getUserId());
+
                 const premio = torneoEstado.config.premioSP;
                 userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
                 if (!userStats.copasGanadas) userStats.copasGanadas = [];
@@ -10027,6 +10230,9 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                 dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
             } else {
                 torneoEstado.rondaIdx++;
+                if (!torneoEstado.esDesafioAsincronico) {
+                    localStorage.setItem('ev_torneo_guardado_' + getUserId(), JSON.stringify(torneoEstado));
+                }
                 const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
                 btn.className = 'btn-3d primary sim-main-btn';
                 btn.disabled = false;
@@ -10038,6 +10244,11 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             }
         }
     } else {
+        torneoEstado.terminado = true;
+        if (!torneoEstado.esDesafioAsincronico) {
+            localStorage.removeItem('ev_torneo_guardado_' + getUserId());
+        }
+
         if (torneoEstado.esDesafioAsincronico) {
             btn.className = 'btn-3d secondary sim-main-btn danger';
             btn.disabled = false;
@@ -10090,11 +10301,14 @@ window.abrirModalOnceInicial = function() {
     renderizarOnceInicial();
 };
 
-window.cerrarModalOnceInicial = function() {
+window.cerrarModalOnceInicial = function(volverACarrera = true) {
     const modal = document.getElementById('once-inicial-modal');
     if (modal) modal.style.display = 'none';
     slotActivoOnce = null;
     guardarStats();
+    if (volverACarrera && typeof abrirModalModoCarrera === 'function') {
+        abrirModalModoCarrera();
+    }
 };
 
 window.cambiarFormacionOnce = function(fKey) {
@@ -10647,12 +10861,39 @@ window.clickJugarCopaDesdeCarrera = function() {
     abrirModalTorneoCopas();
 };
 
+window.clickJugarLigaDesdeCarrera = function() {
+    const once = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) ? FORMACIONES_TACTICAS[formacionOnceActual] : { posiciones: Array(11).fill(0) };
+    let count = 0;
+    for (let i = 0; i < f.posiciones.length; i++) {
+        if (once[i]) count++;
+    }
+
+    if (count < 11) {
+        const faltan = 11 - count;
+        showToast(`Completá los 11 titulares para disputar la Liga (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
+
+    cerrarModalModoCarrera();
+    abrirModalTemporadaLiga();
+};
+
+window.abrirPalmaresDesdeCarrera = function() {
+    window.navOrigenCarrera = true;
+    cerrarModalModoCarrera();
+    abrirModalPerfil();
+};
+
 // ========================================================
 // 👑 RANKING DE CLUBES Y SALÓN DE CAMPEONES (MODO CARRERA)
 // ========================================================
-window.cerrarModalRankingCarrera = function() {
+window.cerrarModalRankingCarrera = function(volverACarrera = true) {
     const modal = document.getElementById('ranking-carrera-modal');
     if (modal) modal.style.display = 'none';
+    if (volverACarrera && typeof abrirModalModoCarrera === 'function') {
+        abrirModalModoCarrera();
+    }
 };
 
 window.abrirModalRankingCarrera = async function() {
@@ -10834,7 +11075,7 @@ window.abrirModalRankingCarrera = async function() {
                     </div>
 
                     <div class="carrera-rank-cups-breakdown">
-                        <span class="cup-pill nac" title="Copa Nacional"><img src="medalla-bronce.webp"> ${item.nac}</span>
+                        <span class="cup-pill nac" title="Copa Desafío"><img src="medalla-bronce.webp"> ${item.nac}</span>
                         <span class="cup-pill cont" title="Copa Continental"><img src="medalla-plata.webp"> ${item.cont}</span>
                         <span class="cup-pill club" title="Mundial de Clubes"><img src="medalla-oro.webp"> ${item.clubes}</span>
                         <span class="cup-pill mund" title="Copa del Mundo"><img src="estrella.webp"> ${item.mundial}</span>
@@ -10915,7 +11156,7 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
         return;
     }
 
-    cerrarModalRankingCarrera();
+    cerrarModalRankingCarrera(false);
 
     let datosRival = {
         custom_nick: nombreRival,
@@ -10973,4 +11214,1176 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
 
     window.datosUltimoRivalInspeccionado = datosRival;
     iniciarDesafioOnceRivalDirecto();
+};
+// ========================================================
+// 🏆 MOTOR DEL MODO TEMPORADA DE LIGA LARGA
+// ========================================================
+const LIGAS_TEMPORADA_CATALOGO = {
+    'arg_primera': {
+        nombre: 'Primera División Argentina',
+        bandera: 'ar',
+        clubes: [
+            'arg_boca', 'arg_river', 'arg_independiente', 'arg_racing', 'arg_sanlorenzo',
+            'arg_huracan', 'arg_riestra', 'arg_barracas', 'arg_talleres', 'arg_belgrano',
+            'arg_instituto', 'arg_estudiantesrc', 'arg_platense', 'arg_indrivadavia', 'arg_estudiantes',
+            'arg_gimnasia', 'arg_gimnasiamza', 'arg_tigre', 'arg_velez', 'arg_argentinos',
+            'arg_newells', 'arg_sarmiento', 'arg_union', 'arg_rosario', 'arg_lanus',
+            'arg_banfield', 'arg_centralcordoba', 'arg_atleticotucuman', 'arg_defensa', 'arg_aldosivi'
+        ]
+    },
+    'eng_premier': {
+        nombre: 'Premier League',
+        bandera: 'gb-eng',
+        clubes: [
+            'eng_arsenal', 'eng_mancity', 'eng_liverpool', 'eng_chelsea', 'eng_astonvilla',
+            'eng_tottenham', 'eng_newcastle', 'eng_manunited', 'eng_brighton', 'eng_nottingham',
+            'eng_bournemouth', 'eng_brentford', 'eng_fulham', 'eng_crystalpalace', 'eng_everton',
+            'eng_ipswich', 'eng_leeds', 'eng_sunderland', 'eng_coventry', 'eng_hull'
+        ]
+    },
+    'esp_laliga': {
+        nombre: 'La Liga EA Sports',
+        bandera: 'es',
+        clubes: [
+            'esp_realmadrid', 'esp_barcelona', 'esp_atletico', 'esp_athletic', 'esp_betis',
+            'esp_realsociedad', 'esp_sevilla', 'esp_villarreal', 'esp_valencia', 'esp_osasuna',
+            'esp_celta', 'esp_alaves', 'esp_getafe', 'esp_mallorca', 'esp_laspalmas',
+            'esp_rayo', 'esp_girona', 'esp_leganes', 'esp_valladolid', 'esp_espanyol'
+        ]
+    },
+    'ita_seriea': {
+        nombre: 'Serie A Italiana',
+        bandera: 'it',
+        clubes: [
+            'ita_juventus', 'ita_inter', 'ita_milan', 'ita_roma', 'ita_lazio',
+            'ita_napoli', 'ita_fiorentina', 'ita_atalanta', 'ita_bologna', 'ita_torino',
+            'ita_udinese', 'ita_genoa', 'ita_verona', 'ita_empoli', 'ita_lecce',
+            'ita_monza', 'ita_cagliari', 'ita_parma', 'ita_como', 'ita_venezia'
+        ]
+    },
+    'bra_brasileirao': {
+        nombre: 'Brasileirão Serie A',
+        bandera: 'br',
+        clubes: [
+            'bra_flamengo', 'bra_palmeiras', 'bra_botafogo', 'bra_atleticomg', 'bra_saopaulo',
+            'bra_fluminense', 'bra_internacional', 'bra_gremio', 'bra_cruzeiro', 'bra_corinthians',
+            'bra_bahia', 'bra_vasco', 'bra_athleticopr', 'bra_bragantino', 'bra_coritiba',
+            'bra_chapecoense', 'bra_mirassol', 'bra_vitoria', 'bra_remo', 'bra_santos'
+        ]
+    },
+    'col_primera': {
+        nombre: 'Liga BetPlay Colombia',
+        bandera: 'co',
+        clubes: [
+            'col_nacional', 'col_millonarios', 'col_america', 'col_junior', 'col_santafe',
+            'col_tolima', 'col_cali', 'col_medellin', 'col_bucaramanga', 'col_oncecaldas',
+            'col_pasto', 'col_pereira', 'col_aguilas', 'col_alianza', 'col_fortaleza',
+            'col_jaguares', 'col_cucuta', 'col_llaneros', 'col_chico', 'col_interpalmira'
+        ]
+    },
+    'chi_primera': {
+        nombre: 'Primera División de Chile',
+        bandera: 'cl',
+        clubes: [
+            'chi_colocolo', 'chi_uchile', 'chi_ucatolica', 'chi_coquimbo', 'chi_everton',
+            'chi_huachipato', 'chi_palestino', 'chi_nublense', 'chi_ohiggins', 'chi_audax',
+            'chi_cobresal', 'chi_calera', 'chi_laserena', 'chi_dconcepcion', 'chi_limache', 'chi_uconcepcion'
+        ]
+    },
+    'ger_bundesliga': {
+        nombre: 'Bundesliga Alemana',
+        bandera: 'de',
+        clubes: [
+            'ger_bayern', 'ger_dortmund', 'ger_leverkusen', 'ger_leipzig', 'ger_stuttgart',
+            'ger_frankfurt', 'ger_freiburg', 'ger_hoffenheim', 'ger_bremen', 'ger_monchengladbach',
+            'ger_mainz', 'ger_augsburg', 'ger_unionberlin', 'ger_koln', 'ger_hamburg',
+            'ger_schalke', 'ger_paderborn', 'ger_elversberg'
+        ]
+    },
+    'fra_ligue1': {
+        nombre: 'Ligue 1 de Francia',
+        bandera: 'fr',
+        clubes: [
+            'fra_psg', 'fra_marseille', 'fra_lyon', 'fra_lille', 'fra_monaco',
+            'fra_lens', 'fra_nice', 'fra_rennes', 'fra_strasbourg', 'fra_toulouse',
+            'fra_lehavre', 'fra_angers', 'fra_auxerre', 'fra_brest', 'fra_lorient',
+            'fra_lemans', 'fra_parisfc', 'fra_troyes'
+        ]
+    },
+    'mex_ligamx': {
+        nombre: 'Liga MX',
+        bandera: 'mx',
+        clubes: [
+            'mex_america', 'mex_monterrey', 'mex_tigres', 'mex_cruzazul', 'mex_chivas',
+            'mex_toluca', 'mex_pumas', 'mex_pachuca', 'mex_leon', 'mex_santos',
+            'mex_atlas', 'mex_sanluis', 'mex_tijuana', 'mex_necaxa', 'mex_puebla',
+            'mex_juarez', 'mex_queretaro', 'mex_atlante'
+        ]
+    }
+};
+
+window.cerrarModalTemporadaLiga = function(volverACarrera = true) {
+    const modal = document.getElementById('liga-temporada-modal');
+    if (modal) modal.style.display = 'none';
+    if (volverACarrera && typeof abrirModalModoCarrera === 'function') {
+        abrirModalModoCarrera();
+    }
+};
+
+window.abrirModalTemporadaLiga = function() {
+    const modal = document.getElementById('liga-temporada-modal');
+    if (!modal) {
+        console.error("El elemento #liga-temporada-modal no fue encontrado en index.html.");
+        return;
+    }
+    modal.style.display = 'flex';
+
+    const id = getUserId();
+    const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + id);
+    let ligaActiva = null;
+    try { ligaActiva = guardadaRaw ? JSON.parse(guardadaRaw) : null; } catch(e) {}
+
+    if (ligaActiva && ligaActiva.tabla && ligaActiva.fixture) {
+        renderizarHubLigaTemporada(ligaActiva);
+    } else {
+        renderizarSelectorLigasDisponibles();
+    }
+};
+
+function renderizarSelectorLigasDisponibles() {
+    const body = document.getElementById('liga-temporada-modal-body');
+    if (!body) return;
+
+    const modalBox = document.querySelector('.liga-temporada-box');
+    if (modalBox) modalBox.classList.add('is-selector');
+
+    let cardsHTML = '';
+    for (const key in LIGAS_TEMPORADA_CATALOGO) {
+        const item = LIGAS_TEMPORADA_CATALOGO[key];
+        const flagUrl = `https://flagcdn.com/w80/${item.bandera}.png`;
+        const cantClubes = item.clubes.length;
+        const totalFechas = (cantClubes % 2 === 0) ? (cantClubes - 1) : cantClubes;
+
+        const miniClubes = item.clubes.slice(0, 4).map(cId => {
+            const url = (typeof obtenerUrlEscudo === 'function') ? obtenerUrlEscudo(cId) : '';
+            return `<img src="${url}" class="lt-card-mini-shield" alt="${cId}" onerror="this.style.display='none'">`;
+        }).join('');
+
+        cardsHTML += `
+            <div class="lt-league-card" onclick="iniciarTemporadaLiga('${key}')">
+                <div class="lt-league-card-top">
+                    <img src="${flagUrl}" alt="${item.nombre}" class="lt-league-flag">
+                    <div class="lt-league-text">
+                        <strong>${item.nombre}</strong>
+                        <span>${cantClubes} Clubes · ${totalFechas} Fechas</span>
+                    </div>
+                </div>
+                <div class="lt-league-card-bottom">
+                    <div class="lt-mini-shields-row">${miniClubes}</div>
+                    <span class="lt-league-action-tag">Competir <i class="ph-bold ph-caret-right"></i></span>
+                </div>
+            </div>
+        `;
+    }
+
+    body.innerHTML = `
+        <div class="lt-header lt-selector-header">
+            <img src="catalogo.webp" alt="Ligas" class="lt-header-img">
+            <div class="lt-header-info">
+                <h2>Elegí tu Liga</h2>
+                <p>Tu Once Inicial competirá en la liga oficial disputando el fixture fecha a fecha.</p>
+            </div>
+        </div>
+        <div class="lt-leagues-grid">
+            ${cardsHTML}
+        </div>
+    `;
+}
+
+function generarFixtureRoundRobin(equipos) {
+    let teams = [...equipos];
+
+    // 1. Barajamos a los rivales para que el orden inicial nunca sea el mismo
+    for (let i = teams.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [teams[i], teams[j]] = [teams[j], teams[i]];
+    }
+
+    if (teams.length % 2 !== 0) teams.push('descanso');
+    const n = teams.length;
+    const fechas = [];
+
+    // 2. Construcción matemática de rondas todos contra todos
+    for (let r = 0; r < n - 1; r++) {
+        const partidos = [];
+        for (let i = 0; i < n / 2; i++) {
+            const t1 = teams[i];
+            const t2 = teams[n - 1 - i];
+            if (t1 !== 'descanso' && t2 !== 'descanso') {
+                partidos.push(r % 2 === 0 ? { local: t1, visitante: t2 } : { local: t2, visitante: t1 });
+            }
+        }
+        fechas.push(partidos);
+        teams.splice(1, 0, teams.pop());
+    }
+
+    // 3. Mezclamos el orden de las jornadas para que cada temporada tenga un calendario único
+    for (let i = fechas.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [fechas[i], fechas[j]] = [fechas[j], fechas[i]];
+    }
+
+    // 4. Garantizamos que en la Fecha 1 juegues siempre un partido (la fecha libre se traslada a cualquier jornada posterior)
+    const tienePartidoFecha1 = fechas[0].some(p => p.local === 'user_team' || p.visitante === 'user_team');
+    if (!tienePartidoFecha1) {
+        const idxConPartido = fechas.findIndex((f, idx) => idx > 0 && f.some(p => p.local === 'user_team' || p.visitante === 'user_team'));
+        if (idxConPartido !== -1) {
+            [fechas[0], fechas[idxConPartido]] = [fechas[idxConPartido], fechas[0]];
+        }
+    }
+
+    return fechas;
+}
+
+window.iniciarTemporadaLiga = function(ligaKey) {
+    const cfg = LIGAS_TEMPORADA_CATALOGO[ligaKey];
+    if (!cfg) return;
+
+    const id = getUserId();
+    const u = obtenerUsuarioLogueado();
+    const nombreUsuario = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Tu Once');
+    const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + id) || getPref('ev_avatar_logo', 'ev');
+    const ovrUser = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 75;
+
+    // Tomamos los clubes de la liga
+    let listaClubes = [...cfg.clubes];
+    let userTeamId = 'user_team';
+
+    // Construimos la tabla de posiciones inicial
+    const tabla = [];
+    tabla.push({
+        id: userTeamId,
+        nombre: nombreUsuario,
+        escudo: escudoUsuario,
+        ovr: ovrUser,
+        esUsuario: true,
+        pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, dif: 0, pts: 0
+    });
+
+    // Se conservan todos los clubes de la liga sin eliminar a ninguno
+    listaClubes.forEach(cId => {
+        const itemBandera = (typeof BANDERAS_LISTA !== 'undefined') ? BANDERAS_LISTA.find(b => b.id === cId) : null;
+        const nombreClub = itemBandera ? itemBandera.label : cId;
+        const ovrClub = EQUIPOS_OVR[cId] || 70;
+        tabla.push({
+            id: cId,
+            nombre: nombreClub,
+            escudo: cId,
+            ovr: ovrClub,
+            esUsuario: false,
+            pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, dif: 0, pts: 0
+        });
+    });
+
+    const listaEquiposFixture = [userTeamId, ...listaClubes];
+    const fixture = generarFixtureRoundRobin(listaEquiposFixture);
+
+    const nuevaLiga = {
+        key: ligaKey,
+        nombre: cfg.nombre,
+        bandera: cfg.bandera,
+        totalFechas: fixture.length,
+        fechaActual: 1,
+        tabla: tabla,
+        fixture: fixture
+    };
+
+    localStorage.setItem('ev_liga_guardada_' + id, JSON.stringify(nuevaLiga));
+    renderizarHubLigaTemporada(nuevaLiga);
+    showToast(`¡Temporada iniciada en ${cfg.nombre}! ⚽`, "ph-check-circle", "success");
+};
+
+// ========================================================
+// ⚽ SEGUIMIENTO DE GOLEADORES Y ASISTIDORES DEL ONCE
+// ========================================================
+function registrarGolesYAsistenciasOnce(liga, cantGoles) {
+    if (cantGoles <= 0) return;
+    if (!liga.golesOnce) liga.golesOnce = {};
+    if (!liga.asistenciasOnce) liga.asistenciasOnce = {};
+
+    const once = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual])
+        ? FORMACIONES_TACTICAS[formacionOnceActual]
+        : { posiciones: Array(11).fill(0) };
+
+    const titulares = [];
+    f.posiciones.forEach((posObj, idx) => {
+        const idAvatar = once[idx];
+        if (idAvatar) titulares.push({ id: idAvatar, pos: posObj.pos });
+    });
+    if (!titulares.length) return;
+
+    const pesosGol = { DC: 4.5, EI: 3.5, ED: 3.5, SD: 3.2, MCO: 2.5, MC: 1.5, MI: 1.5, MD: 1.5, MCD: 0.8, DFC: 0.5, LI: 0.6, LD: 0.6, POR: 0.05 };
+    const pesosAsist = { MCO: 4.2, MC: 3.2, MI: 3.0, MD: 3.0, EI: 2.6, ED: 2.6, SD: 2.4, LI: 1.8, LD: 1.8, DC: 1.6, MCD: 1.2, DFC: 0.5, POR: 0.1 };
+
+    for (let g = 0; g < cantGoles; g++) {
+        let poolG = [];
+        titulares.forEach(t => {
+            const p = pesosGol[t.pos] || 1;
+            for (let k = 0; k < Math.round(p * 10); k++) poolG.push(t.id);
+        });
+        const goleador = poolG[Math.floor(Math.random() * poolG.length)] || titulares[0].id;
+        liga.golesOnce[goleador] = (liga.golesOnce[goleador] || 0) + 1;
+
+        if (Math.random() < 0.82 && titulares.length > 1) {
+            let poolA = [];
+            titulares.forEach(t => {
+                if (t.id !== goleador) {
+                    const p = pesosAsist[t.pos] || 1;
+                    for (let k = 0; k < Math.round(p * 10); k++) poolA.push(t.id);
+                }
+            });
+            if (poolA.length) {
+                const asistidor = poolA[Math.floor(Math.random() * poolA.length)];
+                liga.asistenciasOnce[asistidor] = (liga.asistenciasOnce[asistidor] || 0) + 1;
+            }
+        }
+    }
+}
+
+function obtenerLideresOnce(liga) {
+    let topGol = { id: null, cant: 0 };
+    let topAsist = { id: null, cant: 0 };
+
+    if (liga.golesOnce) {
+        for (const id in liga.golesOnce) {
+            if (liga.golesOnce[id] > topGol.cant) {
+                topGol = { id, cant: liga.golesOnce[id] };
+            }
+        }
+    }
+    if (liga.asistenciasOnce) {
+        for (const id in liga.asistenciasOnce) {
+            if (liga.asistenciasOnce[id] > topAsist.cant) {
+                topAsist = { id, cant: liga.asistenciasOnce[id] };
+            }
+        }
+    }
+    return { topGol, topAsist };
+}
+
+function renderizarHubLigaTemporada(liga) {
+    const body = document.getElementById('liga-temporada-modal-body');
+    if (!body) return;
+
+    const modalBox = document.querySelector('.liga-temporada-box');
+    if (modalBox) modalBox.classList.remove('is-selector');
+
+    const fechaIdx = liga.fechaActual - 1;
+    const esFinalizado = liga.fechaActual > liga.totalFechas;
+
+    // Ordenar tabla: Pts > DIF > GF > OVR
+    liga.tabla.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.dif !== a.dif) return b.dif - a.dif;
+        if (b.gf !== a.gf) return b.gf - a.gf;
+        return b.ovr - a.ovr;
+    });
+
+    let bannerPartidoHTML = '';
+    if (!esFinalizado && liga.fixture[fechaIdx]) {
+        const cruceUsuario = liga.fixture[fechaIdx].find(p => p.local === 'user_team' || p.visitante === 'user_team');
+        if (cruceUsuario) {
+            const esLocal = cruceUsuario.local === 'user_team';
+            const rivalId = esLocal ? cruceUsuario.visitante : cruceUsuario.local;
+            const rivalData = liga.tabla.find(t => t.id === rivalId) || { nombre: 'Rival', escudo: rivalId, ovr: 70 };
+            const userData = liga.tabla.find(t => t.esUsuario);
+
+            const eqLocal = esLocal ? userData : rivalData;
+            const eqVis = esLocal ? rivalData : userData;
+
+            bannerPartidoHTML = `
+                <div class="lt-match-banner">
+                    <div class="lt-match-top-row">
+                        <span class="lt-fecha-pill"><i class="ph-bold ph-calendar-blank"></i> FECHA ${liga.fechaActual} DE ${liga.totalFechas}</span>
+                        <span class="lt-match-status-tag">PRÓXIMO PARTIDO</span>
+                    </div>
+
+                    <div class="lt-match-clash">
+                        <div class="lt-match-team">
+                            <div class="lt-team-shield-box ${eqLocal.esUsuario ? 'local' : 'rival'}">
+                                <img src="${obtenerUrlEscudo(eqLocal.escudo)}" class="sim-team-shield" alt="${eqLocal.nombre}">
+                            </div>
+                            <div class="lt-match-team-text">
+                                <strong>${eqLocal.nombre}</strong>
+                                <span>${eqLocal.esUsuario ? 'TU EQUIPO' : 'LOCAL'} · OVR ${eqLocal.ovr}</span>
+                            </div>
+                        </div>
+
+                        <div class="lt-match-vs-badge">VS</div>
+
+                        <div class="lt-match-team">
+                            <div class="lt-team-shield-box ${eqVis.esUsuario ? 'local' : 'rival'}">
+                                <img src="${obtenerUrlEscudo(eqVis.escudo)}" class="sim-team-shield" alt="${eqVis.nombre}">
+                            </div>
+                            <div class="lt-match-team-text">
+                                <strong>${eqVis.nombre}</strong>
+                                <span>${eqVis.esUsuario ? 'TU EQUIPO' : 'VISITANTE'} · OVR ${eqVis.ovr}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lt-match-actions-bar">
+                        <button type="button" class="lt-btn-play-match" onclick="jugarPartidoFechaLiga()">
+                            <i class="ph-bold ph-play"></i> JUGAR FECHA
+                        </button>
+                        <button type="button" class="lt-btn-sim-all" onclick="simularTemporadaCompleta()" title="Simular las fechas restantes automáticamente">
+                            <i class="ph-bold ph-lightning"></i> Simular Todo
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            bannerPartidoHTML = `
+                <div class="lt-match-banner" style="text-align:center; padding:16px;">
+                    <div class="lt-match-top-row">
+                        <span class="lt-fecha-pill"><i class="ph-bold ph-calendar-blank"></i> FECHA ${liga.fechaActual} DE ${liga.totalFechas}</span>
+                        <span class="lt-match-status-tag">FECHA LIBRE</span>
+                    </div>
+                    <p style="font-size:0.85rem; color:#fef08a; margin:10px 0 12px; font-weight:800;">Tu Once tiene fecha libre esta jornada.</p>
+                    <button type="button" class="lt-btn-play-match" onclick="avanzarFechaLibreLiga()" style="margin:0 auto; width:100%; max-width:240px;">
+                        <span>Simular Fecha</span> <i class="ph-bold ph-fast-forward"></i>
+                    </button>
+                </div>
+            `;
+        }
+    } else if (esFinalizado) {
+        const campeon = liga.tabla[0];
+        const posUser = liga.tabla.findIndex(t => t.esUsuario) + 1;
+        const esUserCamp = campeon.esUsuario;
+
+        if (!liga.recompensaReclamada) {
+            bannerPartidoHTML = `
+                <div class="lt-champ-banner animate-fade-up">
+                    <h3><i class="ph-fill ph-gift"></i> ¡TEMPORADA FINALIZADA!</h3>
+                    <p style="font-size:0.85rem; color:#fef08a; margin:0;">Tu equipo cerró la liga en el puesto #${posUser}. ¡Reclamá tu botín!</p>
+                    <button type="button" class="btn-3d primary lt-btn-abrir-cofre-hub" onclick="mostrarCofreTemporada(JSON.parse(localStorage.getItem('ev_liga_guardada_' + getUserId())))">
+                        <i class="ph-bold ph-treasure-chest"></i> ABRIR COFRE DE TEMPORADA
+                    </button>
+                </div>
+            `;
+        } else if (esUserCamp) {
+            bannerPartidoHTML = `
+                <div class="lt-champ-banner animate-fade-up">
+                    <h3><i class="ph-fill ph-crown"></i> ¡CAMPEÓN DE ${liga.nombre.toUpperCase()}!</h3>
+                    <p style="font-size:0.85rem; color:#fef08a; margin:0;">¡Tu Once Inicial dominó la temporada y levantó el trofeo!</p>
+                    <div class="lt-champ-sp-reward">
+                        <i class="ph-bold ph-trophy"></i> Botín de Campeón Reclamado (+15 SP)
+                    </div>
+                </div>
+            `;
+        } else {
+            bannerPartidoHTML = `
+                <div class="lt-match-banner" style="justify-content:center; text-align:center; padding:18px;">
+                    <div>
+                        <h3 style="font-size:1.25rem; font-weight:900; color:#ffd700; margin:0 0 4px 0;">
+                            🏆 CAMPEÓN: ${campeon.nombre}
+                        </h3>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin:0;">
+                            Tu equipo finalizó en la posición #${posUser}. Botín de temporada reclamado.
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // 🌟 Sección de Líderes Individuales del Once Inicial
+    const { topGol, topAsist } = obtenerLideresOnce(liga);
+    let widgetsLideresHTML = '';
+    if (topGol.id || topAsist.id) {
+        widgetsLideresHTML = `
+            <div class="lt-leaders-grid">
+                <div class="lt-leader-card goleador">
+                    <div class="lt-leader-avatar-wrap">
+                        ${topGol.id ? `<img src="${topGol.id}" alt="Goleador" class="lt-leader-avatar-img">` : '<i class="ph-bold ph-soccer-ball"></i>'}
+                    </div>
+                    <div class="lt-leader-info">
+                        <span class="lt-leader-tag"><i class="ph-bold ph-soccer-ball"></i> Máximo Goleador</span>
+                        <strong class="lt-leader-name">${topGol.id ? obtenerNombreAvatar(topGol.id) : 'Sin goles aún'}</strong>
+                        <span class="lt-leader-stat"><b>${topGol.cant}</b> ${topGol.cant === 1 ? 'Gol' : 'Goles'} anotados</span>
+                    </div>
+                </div>
+
+                <div class="lt-leader-card asistidor">
+                    <div class="lt-leader-avatar-wrap">
+                        ${topAsist.id ? `<img src="${topAsist.id}" alt="Asistidor" class="lt-leader-avatar-img">` : '<i class="ph-bold ph-sneaker-move"></i>'}
+                    </div>
+                    <div class="lt-leader-info">
+                        <span class="lt-leader-tag"><i class="ph-bold ph-sneaker-move"></i> Máximo Asistidor</span>
+                        <strong class="lt-leader-name">${topAsist.id ? obtenerNombreAvatar(topAsist.id) : 'Sin asistencias'}</strong>
+                        <span class="lt-leader-stat"><b>${topAsist.cant}</b> ${topAsist.cant === 1 ? 'Asistencia' : 'Asistencias'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Armar filas de la tabla
+    let filasTablaHTML = '';
+    liga.tabla.forEach((t, i) => {
+        const pos = i + 1;
+        let posClase = '';
+        if (pos === 1) posClase = 'champ';
+        else if (pos <= 4) posClase = 'cup';
+
+        filasTablaHTML += `
+            <tr class="${t.esUsuario ? 'user-row' : ''}">
+                <td><span class="lt-pos-badge ${posClase}">${pos}</span></td>
+                <td>
+                    <div class="lt-club-col">
+                        <img src="${obtenerUrlEscudo(t.escudo)}" alt="${t.nombre}">
+                        <span>${t.nombre}</span>
+                    </div>
+                </td>
+                <td>${t.pj}</td>
+                <td>${t.pg}</td>
+                <td>${t.pe}</td>
+                <td>${t.pp}</td>
+                <td>${t.gf}</td>
+                <td>${t.gc}</td>
+                <td>${t.dif > 0 ? '+' + t.dif : t.dif}</td>
+                <td style="color:${t.esUsuario ? '#00ff77' : '#ffffff'}; font-size:0.92rem;">${t.pts}</td>
+            </tr>
+        `;
+    });
+
+    const flagUrl = `https://flagcdn.com/w80/${liga.bandera}.png`;
+
+    body.innerHTML = `
+        <div class="lt-header">
+            <div class="lt-header-info-row">
+                <img src="${flagUrl}" alt="${liga.nombre}" class="lt-header-img">
+                <div class="lt-header-info">
+                    <h2>${liga.nombre}</h2>
+                    <p>Fecha <b style="color:#38bdf8;">${Math.min(liga.fechaActual, liga.totalFechas)} de ${liga.totalFechas}</b> · Todos contra todos</p>
+                </div>
+            </div>
+            <button type="button" class="lt-btn-reiniciar-header" onclick="abandonarLigaTemporada()" title="Reiniciar temporada o elegir otra liga">
+                <i class="ph-bold ph-arrows-clockwise"></i> <span>Reiniciar</span>
+            </button>
+        </div>
+
+        ${bannerPartidoHTML}
+        ${widgetsLideresHTML}
+
+        <div class="lt-table-container">
+            <table class="lt-table">
+                <thead>
+                    <tr>
+                        <th style="width:36px;">POS</th>
+                        <th style="text-align:left; padding-left:14px;">CLUB</th>
+                        <th>PJ</th>
+                        <th>G</th>
+                        <th>E</th>
+                        <th>P</th>
+                        <th>GF</th>
+                        <th>GC</th>
+                        <th>DIF</th>
+                        <th>PTS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${filasTablaHTML}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="lt-footer-actions" style="justify-content: flex-end;">
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">
+                Zona de Copas (1º a 4º)
+            </span>
+        </div>
+    `;
+}
+
+window.jugarPartidoFechaLiga = function() {
+    const id = getUserId();
+    const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + id);
+    if (!guardadaRaw) return;
+    const liga = JSON.parse(guardadaRaw);
+
+    const fechaIdx = liga.fechaActual - 1;
+    const cruce = liga.fixture[fechaIdx].find(p => p.local === 'user_team' || p.visitante === 'user_team');
+    if (!cruce) return;
+
+    const esLocal = cruce.local === 'user_team';
+    const rivalId = esLocal ? cruce.visitante : cruce.local;
+    const rivalData = liga.tabla.find(t => t.id === rivalId) || { nombre: 'Rival', escudo: rivalId, ovr: 70 };
+
+    cerrarModalTemporadaLiga(false);
+
+    torneoEstado = {
+        tier: 'liga_temporada',
+        config: {
+            nombre: `${liga.nombre} · Fecha ${liga.fechaActual}`,
+            premioSP: 2
+        },
+        rondaIdx: 0,
+        esLiga: true,
+        rivales: [{
+            id: rivalData.escudo,
+            nombre: rivalData.nombre,
+            ovr: rivalData.ovr
+        }],
+        partidoEnCurso: false,
+        recorridoPartidos: []
+    };
+
+    prepararVistaPartidoCopa();
+    const stageTitle = document.getElementById('sim-stage-title');
+    if (stageTitle) stageTitle.textContent = `FECHA ${liga.fechaActual} DE ${liga.totalFechas}`;
+
+    document.getElementById('simulador-partido-modal').style.display = 'flex';
+};
+
+function procesarFinDePartidoLiga(golesUser, golesRival) {
+    const id = getUserId();
+    const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + id);
+    if (!guardadaRaw) return;
+    const liga = JSON.parse(guardadaRaw);
+
+    const fechaIdx = liga.fechaActual - 1;
+    const partidosDeFecha = liga.fixture[fechaIdx];
+    const cruceUsuario = partidosDeFecha.find(p => p.local === 'user_team' || p.visitante === 'user_team');
+    const esLocalUser = cruceUsuario.local === 'user_team';
+    const rivalId = esLocalUser ? cruceUsuario.visitante : cruceUsuario.local;
+
+    // 1. Actualizar al usuario y su rival
+    const filaUser = liga.tabla.find(t => t.esUsuario);
+    const filaRival = liga.tabla.find(t => t.id === rivalId);
+
+    filaUser.pj++;
+    filaRival.pj++;
+    filaUser.gf += golesUser;
+    filaUser.gc += golesRival;
+    filaUser.dif = filaUser.gf - filaUser.gc;
+    filaRival.gf += golesRival;
+    filaRival.gc += golesUser;
+    filaRival.dif = filaRival.gf - filaRival.gc;
+
+    // Registramos goleador y asistidor de los goles de la fecha
+    registrarGolesYAsistenciasOnce(liga, golesUser);
+
+    let resUserTexto = '';
+    if (golesUser > golesRival) {
+        filaUser.pg++;
+        filaUser.pts += 3;
+        filaRival.pp++;
+        resUserTexto = '¡Victoria! +3 Puntos';
+    } else if (golesUser < golesRival) {
+        filaUser.pp++;
+        filaRival.pg++;
+        filaRival.pts += 3;
+        resUserTexto = 'Derrota. Sin puntos esta fecha';
+    } else {
+        filaUser.pe++;
+        filaUser.pts += 1;
+        filaRival.pe++;
+        filaRival.pts += 1;
+        resUserTexto = '¡Empate! +1 Punto';
+    }
+
+    // 2. Simular automáticamente los otros partidos de la fecha
+    partidosDeFecha.forEach(p => {
+        if (p.local === 'user_team' || p.visitante === 'user_team') return;
+        const eqA = liga.tabla.find(t => t.id === p.local);
+        const eqB = liga.tabla.find(t => t.id === p.visitante);
+        if (!eqA || !eqB) return;
+
+        const diff = (eqA.ovr - eqB.ovr) / 10;
+        const gA = Math.max(0, Math.floor(1.3 + diff * 0.4 + (Math.random() - 0.5) * 2.2));
+        const gB = Math.max(0, Math.floor(1.0 - diff * 0.4 + (Math.random() - 0.5) * 2.2));
+
+        eqA.pj++;
+        eqB.pj++;
+        eqA.gf += gA;
+        eqA.gc += gB;
+        eqA.dif = eqA.gf - eqA.gc;
+        eqB.gf += gB;
+        eqB.gc += gA;
+        eqB.dif = eqB.gf - eqB.gc;
+
+        if (gA > gB) { eqA.pg++; eqA.pts += 3; eqB.pp++; }
+        else if (gA < gB) { eqB.pg++; eqB.pts += 3; eqA.pp++; }
+        else { eqA.pe++; eqA.pts += 1; eqB.pe++; eqB.pts += 1; }
+    });
+
+    // 3. Avanzar fecha y guardar
+    liga.fechaActual++;
+    const esFinTemporada = liga.fechaActual > liga.totalFechas;
+
+    if (esFinTemporada) {
+        liga.tabla.sort((a, b) => b.pts - a.pts || b.dif - a.dif || b.gf - a.gf);
+    }
+
+    localStorage.setItem('ev_liga_guardada_' + id, JSON.stringify(liga));
+
+    const btn = document.getElementById('sim-btn-play');
+    btn.className = 'btn-3d primary sim-main-btn';
+    btn.disabled = false;
+    if (esFinTemporada) {
+        btn.innerHTML = `<span>Temporada Finalizada · Reclamar Botín</span> <i class="ph-bold ph-gift"></i>`;
+        btn.onclick = () => {
+            cerrarModalSimuladorPartido(false);
+            mostrarCofreTemporada(liga);
+        };
+    } else {
+        btn.innerHTML = `<span>${resUserTexto} · Ver Tabla</span> <i class="ph-bold ph-arrow-right"></i>`;
+        btn.onclick = () => {
+            cerrarModalSimuladorPartido(false);
+            abrirModalTemporadaLiga();
+        };
+    }
+}
+
+// ⚡ SIMULAR TODAS LAS FECHAS RESTANTES DE LA TEMPORADA
+window.simularTemporadaCompleta = function() {
+    const id = getUserId();
+    const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + id);
+    if (!guardadaRaw) return;
+    const liga = JSON.parse(guardadaRaw);
+
+    if (liga.fechaActual > liga.totalFechas) {
+        showToast("Esta temporada ya fue completada.", "ph-info", "info");
+        return;
+    }
+
+    const ovrUser = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 75;
+    const filaUser = liga.tabla.find(t => t.esUsuario);
+    filaUser.ovr = ovrUser;
+
+    // Simulamos desde la fecha actual hasta la última
+    while (liga.fechaActual <= liga.totalFechas) {
+        const fechaIdx = liga.fechaActual - 1;
+        const partidosDeFecha = liga.fixture[fechaIdx];
+
+        partidosDeFecha.forEach(p => {
+            if (p.local === 'user_team' || p.visitante === 'user_team') {
+                const esLocal = p.local === 'user_team';
+                const rivalId = esLocal ? p.visitante : p.local;
+                const filaRival = liga.tabla.find(t => t.id === rivalId);
+                const ovrRival = filaRival ? filaRival.ovr : 70;
+
+                const diff = (ovrUser - ovrRival) / 10;
+                const gUser = Math.max(0, Math.floor(1.3 + diff * 0.45 + (Math.random() - 0.5) * 2.2));
+                const gRival = Math.max(0, Math.floor(1.0 - diff * 0.45 + (Math.random() - 0.5) * 2.2));
+
+                filaUser.pj++;
+                filaRival.pj++;
+                filaUser.gf += gUser;
+                filaUser.gc += gRival;
+                filaUser.dif = filaUser.gf - filaUser.gc;
+                filaRival.gf += gRival;
+                filaRival.gc += gUser;
+                filaRival.dif = filaRival.gf - filaRival.gc;
+
+                registrarGolesYAsistenciasOnce(liga, gUser);
+
+                if (gUser > gRival) {
+                    filaUser.pg++;
+                    filaUser.pts += 3;
+                    filaRival.pp++;
+                } else if (gUser < gRival) {
+                    filaUser.pp++;
+                    filaRival.pg++;
+                    filaRival.pts += 3;
+                } else {
+                    filaUser.pe++;
+                    filaUser.pts += 1;
+                    filaRival.pe++;
+                    filaRival.pts += 1;
+                }
+            } else {
+                const eqA = liga.tabla.find(t => t.id === p.local);
+                const eqB = liga.tabla.find(t => t.id === p.visitante);
+                if (!eqA || !eqB) return;
+
+                const diff = (eqA.ovr - eqB.ovr) / 10;
+                const gA = Math.max(0, Math.floor(1.3 + diff * 0.4 + (Math.random() - 0.5) * 2.2));
+                const gB = Math.max(0, Math.floor(1.0 - diff * 0.4 + (Math.random() - 0.5) * 2.2));
+
+                eqA.pj++;
+                eqB.pj++;
+                eqA.gf += gA;
+                eqA.gc += gB;
+                eqA.dif = eqA.gf - eqA.gc;
+                eqB.gf += gB;
+                eqB.gc += gA;
+                eqB.dif = eqB.gf - eqB.gc;
+
+                if (gA > gB) { eqA.pg++; eqA.pts += 3; eqB.pp++; }
+                else if (gA < gB) { eqB.pg++; eqB.pts += 3; eqA.pp++; }
+                else { eqA.pe++; eqA.pts += 1; eqB.pe++; eqB.pts += 1; }
+            }
+        });
+
+        liga.fechaActual++;
+    }
+
+    // Orden final de posiciones
+    liga.tabla.sort((a, b) => b.pts - a.pts || b.dif - a.dif || b.gf - a.gf);
+    localStorage.setItem('ev_liga_guardada_' + id, JSON.stringify(liga));
+
+    // Desplegamos el Cofre de Temporada para reclamar el premio según puesto
+    mostrarCofreTemporada(liga);
+};
+window.avanzarFechaLibreLiga = function() {
+    const id = getUserId();
+    const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + id);
+    if (!guardadaRaw) return;
+    const liga = JSON.parse(guardadaRaw);
+    const fechaIdx = liga.fechaActual - 1;
+    const partidosDeFecha = liga.fixture[fechaIdx];
+
+    partidosDeFecha.forEach(p => {
+        if (p.local === 'user_team' || p.visitante === 'user_team') return;
+        const eqA = liga.tabla.find(t => t.id === p.local);
+        const eqB = liga.tabla.find(t => t.id === p.visitante);
+        if (!eqA || !eqB) return;
+
+        const diff = (eqA.ovr - eqB.ovr) / 10;
+        const gA = Math.max(0, Math.floor(1.3 + diff * 0.4 + (Math.random() - 0.5) * 2.2));
+        const gB = Math.max(0, Math.floor(1.0 - diff * 0.4 + (Math.random() - 0.5) * 2.2));
+
+        eqA.pj++; eqB.pj++;
+        eqA.gf += gA; eqA.gc += gB; eqA.dif = eqA.gf - eqA.gc;
+        eqB.gf += gB; eqB.gc += gA; eqB.dif = eqB.gf - eqB.gc;
+
+        if (gA > gB) { eqA.pg++; eqA.pts += 3; eqB.pp++; }
+        else if (gA < gB) { eqB.pg++; eqB.pts += 3; eqA.pp++; }
+        else { eqA.pe++; eqA.pts += 1; eqB.pe++; eqB.pts += 1; }
+    });
+
+    liga.fechaActual++;
+    localStorage.setItem('ev_liga_guardada_' + id, JSON.stringify(liga));
+    renderizarHubLigaTemporada(liga);
+    showToast(`Fecha ${liga.fechaActual - 1} simulada. ¡Turno de la siguiente fecha!`, "ph-check-circle", "info");
+};
+window.abandonarLigaTemporada = function() {
+    if (!confirm("¿Seguro que querés abandonar o reiniciar esta temporada de liga? Se borrará el progreso de esta tabla.")) return;
+    const id = getUserId();
+    localStorage.removeItem('ev_liga_guardada_' + id);
+    renderizarSelectorLigasDisponibles();
+    showToast("Temporada reiniciada. Podés elegir una nueva liga.", "ph-trash", "info");
+};
+// ========================================================
+// 📦 MOTOR DEL COFRE DE BOTÍN DE TEMPORADA (RECOMPENSA BALANCEADA)
+// ========================================================
+let cofreTemporadaPendiente = null;
+
+function calcularBotinTemporada(posicion, filaUser) {
+    const esInvicto = filaUser && filaUser.pp === 0;
+    const esCampeon = posicion === 1;
+
+    let sp = 1;
+    let xp = 400;
+    let badge = '🛡️ PERMANENCIA ASEGURADA';
+    let titulo = `#${posicion}º PUESTO`;
+    let icono = '<img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp" class="cofre-escudo-img" alt="Permanencia">';
+    let btnText = 'RECLAMAR BOTÍN DE TEMPORADA';
+    let btnIcon = 'ph-gift';
+
+    if (esCampeon) {
+        sp = 15;
+        xp = 4000;
+        badge = esInvicto ? '👑 CAMPEÓN INVICTO' : '👑 CAMPEÓN DE LA LIGA';
+        titulo = esInvicto ? '#1 INVICTO HISTÓRICO' : '#1 CAMPEÓN';
+        icono = '<img src="trofeo.webp" class="cofre-trofeo-img" alt="Campeón">';
+        btnText = 'LEVANTAR COPA Y GUARDAR BOTÍN';
+        btnIcon = 'ph-trophy';
+    } else if (posicion === 2) {
+        sp = 10;
+        xp = 2500;
+        badge = '🥈 SUBCAMPEÓN';
+        titulo = '#2 CLASIFICADO CONTINENTAL';
+        icono = '<img src="medalla-plata.webp" class="cofre-medalla-img" alt="Subcampeón">';
+        btnText = 'RECLAMAR BOTÍN DE SUBCAMPEÓN';
+        btnIcon = 'ph-medal';
+    } else if (posicion === 3) {
+        sp = 7;
+        xp = 1800;
+        badge = '🥉 PODIO DE LIGA';
+        titulo = '#3 CLASIFICADO CONTINENTAL';
+        icono = '<img src="medalla-bronce.webp" class="cofre-medalla-img" alt="Tercer Puesto">';
+        btnText = 'RECLAMAR BOTÍN DE PODIO';
+        btnIcon = 'ph-medal';
+    } else if (posicion === 4) {
+        sp = 5;
+        xp = 1200;
+        badge = '🌟 ZONA DE COPAS';
+        titulo = '#4 CLASIFICADO A COPA';
+        icono = '<img src="estrella.webp" class="cofre-estrella-img" alt="Zona de Copas">';
+        btnText = 'RECLAMAR BOTÍN DE CLASIFICADO';
+        btnIcon = 'ph-star';
+    } else if (posicion <= 10) {
+        sp = 3;
+        xp = 800;
+        badge = '⚽ MITAD DE TABLA';
+        titulo = `#${posicion}º PUESTO`;
+        icono = '<img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp" class="cofre-escudo-img" alt="Mitad de Tabla">';
+    }
+
+    return { sp, xp, badge, titulo, icono, btnText, btnIcon, esCampeon, esInvicto };
+}
+
+window.mostrarCofreTemporada = function(liga) {
+    if (!liga || !liga.tabla) return;
+    cerrarModalTemporadaLiga(false);
+
+    const filaUser = liga.tabla.find(t => t.esUsuario);
+    const pos = liga.tabla.findIndex(t => t.esUsuario) + 1;
+    const botin = calcularBotinTemporada(pos, filaUser);
+
+    cofreTemporadaPendiente = {
+        ligaKey: liga.key,
+        ligaNombre: liga.nombre,
+        posicion: pos,
+        esCampeon: pos === 1,
+        sp: botin.sp,
+        xp: botin.xp
+    };
+
+    // 1. Reset de vistas del modal
+    const cerrado = document.getElementById('ev-cofre-cerrado');
+    const revelado = document.getElementById('ev-cofre-revelado');
+    if (cerrado) {
+        cerrado.classList.remove('ev-pack-abriendo');
+        cerrado.style.display = 'flex';
+    }
+    if (revelado) revelado.style.display = 'none';
+
+    const tituloLigaEl = document.getElementById('cofre-titulo-liga');
+    if (tituloLigaEl) tituloLigaEl.textContent = `COFRE DE ${liga.nombre.toUpperCase()}`;
+
+    // 2. Títulos y trofeo
+    document.getElementById('cofre-revelado-badge').textContent = botin.badge;
+    document.getElementById('cofre-revelado-puesto').textContent = botin.titulo;
+    document.getElementById('cofre-botin-icon').innerHTML = botin.icono;
+    document.getElementById('cofre-botin-club').textContent = filaUser ? filaUser.nombre : 'Tu Once';
+
+    // 3. Escudo y OVR del equipo
+    const escudoClub = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
+    const escudoImg = document.getElementById('cofre-club-escudo');
+    if (escudoImg) {
+        escudoImg.src = (typeof obtenerUrlEscudo === 'function') ? obtenerUrlEscudo(escudoClub) : '';
+    }
+    const ovrEquipo = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 75;
+    const ovrTag = document.getElementById('cofre-club-ovr');
+    if (ovrTag) ovrTag.textContent = `OVR ${ovrEquipo}`;
+
+    // 4. Protagonistas del Once (Capitán & DT) con resolución garantizada de avatar
+    const unaF = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    let capId = typeof obtenerCapitanOnce === 'function' ? obtenerCapitanOnce() : null;
+
+    // Respaldo inteligente: si no se asignó la 'C', toma el avatar de su carta o el primer titular disponible
+    if (!capId) {
+        capId = localStorage.getItem('ev_avatar_seleccionado_' + getUserId()) 
+             || getPref('ev_avatar_hair', '') 
+             || unaF[0] 
+             || '1.webp';
+    }
+
+    let dtId = unaF['DT'] || null;
+    if (!dtId) {
+        dtId = '45.webp'; // Respaldo técnico si aún no contrató DT
+    }
+
+    const capNombre = obtenerNombreAvatar(capId);
+    const dtNombre = unaF['DT'] ? obtenerNombreAvatar(dtId) : 'Director Técnico';
+
+    const protagContainer = document.getElementById('cofre-protagonistas-row');
+    if (protagContainer) {
+        protagContainer.innerHTML = `
+            <div class="cofre-protag-card">
+                <span class="cofre-protag-tag cap"><i class="ph-bold ph-crown"></i> CAPITÁN</span>
+                <div class="cofre-protag-info">
+                    <img src="${capId}" class="cofre-protag-avatar" alt="${capNombre}">
+                    <strong>${capNombre}</strong>
+                </div>
+            </div>
+            <div class="cofre-protag-card">
+                <span class="cofre-protag-tag dt"><i class="ph-bold ph-clipboard-text"></i> DT</span>
+                <div class="cofre-protag-info">
+                    <img src="${dtId}" class="cofre-protag-avatar" alt="${dtNombre}">
+                    <strong>${dtNombre}</strong>
+                </div>
+            </div>
+        `;
+    }
+
+    // 5. Storytelling: Hitos claros, tipografía ampliada e iconos reconocibles
+    const hitosContainer = document.getElementById('cofre-hitos-grid');
+    if (hitosContainer && filaUser) {
+        const maxPts = (filaUser.pj || 1) * 3;
+        const pctPts = Math.round(((filaUser.pts || 0) / maxPts) * 100);
+        const { topGol, topAsist } = typeof obtenerLideresOnce === 'function' ? obtenerLideresOnce(liga) : { topGol: {}, topAsist: {} };
+
+        let hito2HTML = '';
+        if (topGol && topGol.id && topGol.cant > 0) {
+            hito2HTML = `
+                <div class="cofre-hito-card">
+                    <div class="hito-header"><i class="ph-bold ph-soccer-ball"></i> GOLEADOR</div>
+                    <strong class="hito-val">${topGol.cant} Goles</strong>
+                    <span class="hito-sub">${obtenerNombreAvatar(topGol.id)}</span>
+                </div>
+            `;
+        } else {
+            hito2HTML = `
+                <div class="cofre-hito-card">
+                    <div class="hito-header"><i class="ph-bold ph-fire"></i> ATAQUE</div>
+                    <strong class="hito-val">${filaUser.gf} Goles</strong>
+                    <span class="hito-sub">DIF ${filaUser.dif > 0 ? '+' + filaUser.dif : filaUser.dif}</span>
+                </div>
+            `;
+        }
+
+        let hito3HTML = '';
+        if (filaUser.pp === 0) {
+            hito3HTML = `
+                <div class="cofre-hito-card highlight">
+                    <div class="hito-header"><i class="ph-bold ph-shield-check"></i> DEFENSA</div>
+                    <strong class="hito-val invicto">INVICTO</strong>
+                    <span class="hito-sub">${filaUser.gc} GC en ${filaUser.pj} PJ</span>
+                </div>
+            `;
+        } else if (topAsist && topAsist.id && topAsist.cant > 0) {
+            hito3HTML = `
+                <div class="cofre-hito-card">
+                    <div class="hito-header"><i class="ph-bold ph-sneaker-move"></i> ASISTIDOR</div>
+                    <strong class="hito-val">${topAsist.cant} Asist.</strong>
+                    <span class="hito-sub">${obtenerNombreAvatar(topAsist.id)}</span>
+                </div>
+            `;
+        } else {
+            hito3HTML = `
+                <div class="cofre-hito-card">
+                    <div class="hito-header"><i class="ph-bold ph-shield"></i> DEFENSA</div>
+                    <strong class="hito-val">${filaUser.gc} Goles Rec.</strong>
+                    <span class="hito-sub">En ${filaUser.pj} Partidos</span>
+                </div>
+            `;
+        }
+
+        hitosContainer.innerHTML = `
+            <div class="cofre-hito-card">
+                <div class="hito-header"><i class="ph-bold ph-chart-line-up"></i> CAMPAÑA</div>
+                <strong class="hito-val">${filaUser.pts} Pts (${pctPts}%)</strong>
+                <span class="hito-sub">${filaUser.pg}G · ${filaUser.pe}E · ${filaUser.pp}P</span>
+            </div>
+            ${hito2HTML}
+            ${hito3HTML}
+        `;
+    }
+
+    // 6. Botín de Recompensa: 2 cartas grandes y prestigiosas (SP & XP)
+    const lootContainer = document.getElementById('cofre-loot-row');
+    if (lootContainer) {
+        lootContainer.innerHTML = `
+            <div class="cofre-loot-card sp">
+                <div class="cofre-loot-icon-wrap"><i class="ph-bold ph-lightning"></i></div>
+                <div class="cofre-loot-info">
+                    <span class="loot-label">Habilidad Plantel</span>
+                    <strong>+${botin.sp} SP</strong>
+                </div>
+            </div>
+            <div class="cofre-loot-card xp">
+                <div class="cofre-loot-icon-wrap"><i class="ph-bold ph-sparkle"></i></div>
+                <div class="cofre-loot-info">
+                    <span class="loot-label">Experiencia DT</span>
+                    <strong>+${botin.xp.toLocaleString('es-AR')} XP</strong>
+                </div>
+            </div>
+        `;
+    }
+
+    // 7. Cinta dorada de vitrina
+    const ribbon = document.getElementById('cofre-vitrina-ribbon');
+    if (ribbon) {
+        ribbon.style.display = botin.esCampeon ? 'inline-flex' : 'none';
+    }
+
+    // 7. Botón de Reclamo
+    const claimTxt = document.getElementById('btn-cofre-claim-text');
+    if (claimTxt) claimTxt.textContent = botin.btnText;
+    const claimBtn = document.getElementById('btn-cofre-claim-btn');
+    if (claimBtn) {
+        const ico = claimBtn.querySelector('i');
+        if (ico) ico.className = `ph-bold ${botin.btnIcon}`;
+    }
+
+    const modal = document.getElementById('modal-cofre-temporada');
+    if (modal) modal.style.display = 'flex';
+};
+
+window.animarAperturaCofreTemporada = function() {
+    if (typeof reproducirSonidoApertura === 'function') reproducirSonidoApertura();
+    const cerrado = document.getElementById('ev-cofre-cerrado');
+    if (cerrado) cerrado.classList.add('ev-pack-abriendo');
+
+    setTimeout(() => {
+        if (cerrado) cerrado.style.display = 'none';
+        if (typeof dispararEfectoPackOpening === 'function') dispararEfectoPackOpening();
+        const revelado = document.getElementById('ev-cofre-revelado');
+        if (revelado) revelado.style.display = 'flex';
+    }, 1100);
+};
+
+window.reclamarRecompensaCofreTemporada = function() {
+    if (!cofreTemporadaPendiente) return;
+
+    const spGanado = cofreTemporadaPendiente.sp;
+    userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + spGanado;
+
+    if (cofreTemporadaPendiente.xp) {
+        agregarXP(cofreTemporadaPendiente.xp);
+    }
+
+    // Inscribir título en el palmarés si fue campeón
+    if (cofreTemporadaPendiente.esCampeon) {
+        if (!userStats.copasGanadas) userStats.copasGanadas = [];
+        const yaRegistrado = userStats.copasGanadas.some(c => c.tier === 'liga_' + cofreTemporadaPendiente.ligaKey);
+        if (!yaRegistrado) {
+            userStats.copasGanadas.push({
+                tier: 'liga_' + cofreTemporadaPendiente.ligaKey,
+                nombre: `Campeón de ${cofreTemporadaPendiente.ligaNombre}`,
+                fecha: new Date().toISOString()
+            });
+        }
+    }
+
+    guardarStats();
+
+    // Marcar recompensa reclamada en la liga activa
+    const id = getUserId();
+    const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + id);
+    if (guardadaRaw) {
+        try {
+            const ligaObj = JSON.parse(guardadaRaw);
+            ligaObj.recompensaReclamada = true;
+            localStorage.setItem('ev_liga_guardada_' + id, JSON.stringify(ligaObj));
+        } catch(e) {}
+    }
+
+    const modal = document.getElementById('modal-cofre-temporada');
+    if (modal) modal.style.display = 'none';
+
+    showToast(`¡Acreditaste +${spGanado} SP y +${cofreTemporadaPendiente.xp.toLocaleString('es-AR')} XP a tu club! ⚡🏆`, "ph-lightning", "success");
+
+    if (cofreTemporadaPendiente.esCampeon) {
+        if (typeof dispararFestejoCampeon === 'function') dispararFestejoCampeon();
+    }
+
+    cofreTemporadaPendiente = null;
+    abrirModalTemporadaLiga();
 };
