@@ -12071,7 +12071,7 @@ window.avanzarFechaLibreLiga = function() {
     showToast(`Fecha ${liga.fechaActual - 1} simulada. ¡Turno de la siguiente fecha!`, "ph-check-circle", "info");
 };
 window.abandonarLigaTemporada = function() {
-    if (!confirm("¿Seguro que querés abandonar o reiniciar esta temporada de liga? Se borrará el progreso de esta tabla.")) return;
+    if (!confirm("¿Seguro que querés abandonar o reiniciar esta liga? Se borrará el progreso de esta tabla.")) return;
     const id = getUserId();
     localStorage.removeItem('ev_liga_guardada_' + id);
     renderizarSelectorLigasDisponibles();
