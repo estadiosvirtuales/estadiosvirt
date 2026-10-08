@@ -23371,27 +23371,50 @@ html[data-theme="light"] .xp-bar-big-fill {
     transform: translate(-50%, -50%);
 }
 
-/* Áreas de arquero laterales (Izquierda y Derecha) */
+/* Áreas de arquero laterales (Proporciones reglamentarias) */
 .sim-pitch-box-left {
     position: absolute;
     top: 50%;
     left: 0;
-    width: 70px;
-    height: 160px;
-    border: 1.5px solid rgba(255, 255, 255, 0.22);
+    width: 16%;
+    height: 52%;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
     border-left: none;
     transform: translateY(-50%);
+    pointer-events: none;
 }
 
 .sim-pitch-box-right {
     position: absolute;
     top: 50%;
     right: 0;
-    width: 70px;
-    height: 160px;
-    border: 1.5px solid rgba(255, 255, 255, 0.22);
+    width: 16%;
+    height: 52%;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
     border-right: none;
     transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Área chica reglamentaria */
+.sim-pitch-box-left::after,
+.sim-pitch-box-right::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 36%;
+    height: 48%;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+.sim-pitch-box-left::after {
+    left: 0;
+    border-left: none;
+}
+.sim-pitch-box-right::after {
+    right: 0;
+    border-right: none;
 }
 
 /* 🥅 ARCOS EN LOS LATERALES (IZQUIERDA Y DERECHA) */
@@ -23965,10 +23988,10 @@ html[data-theme="light"] .xp-bar-big-fill {
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(0);
     box-sizing: border-box;
-    transition: top 0.72s cubic-bezier(0.25, 0.9, 0.35, 1), left 0.72s cubic-bezier(0.25, 0.9, 0.35, 1);
     will-change: top, left;
+    backface-visibility: hidden;
 }
 
 /* 🟢 Fichas de Tu Once (Verde Esmeralda Neón) */

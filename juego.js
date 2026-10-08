@@ -9858,13 +9858,13 @@ window.iniciarSimulacionEnVivo = function() {
             const sp = Math.hypot(o.vy, o.vx);
             let fy, fx;
             if (sp > 3) { fy = o.vy / sp; fx = o.vx / sp; } else { fy = 0; fx = dirDe(o.eq); }
-            const a = Math.min(1, 22 * dt);
-            balon.y += (o.y + fy * 1.3 - balon.y) * a;
-            balon.x += (o.x + fx * 1.3 - balon.x) * a;
+            const a = Math.min(1, 14 * dt);
+            balon.y += (o.y + fy * 1.2 - balon.y) * a;
+            balon.x += (o.x + fx * 1.2 - balon.x) * a;
         } else if (balon.modo === 'vuelo') {
             balon.t += dt;
             const p = Math.min(1, balon.t / balon.dur);
-            const e = balon.tipo === 'tiro' ? p : p * (1.25 - 0.25 * p);
+            const e = balon.tipo === 'tiro' ? p : (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
             balon.y = balon.oy + (balon.dy - balon.oy) * e;
             balon.x = balon.ox + (balon.dx - balon.ox) * e;
             if (p >= 1) {
