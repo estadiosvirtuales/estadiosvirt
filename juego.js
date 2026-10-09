@@ -8940,7 +8940,7 @@ window.saltarSimulacionCompleta = function() {
     }
 };
 
-window.cerrarModalSimuladorPartido = function() {
+window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
     if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
     if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
@@ -8957,7 +8957,7 @@ window.cerrarModalSimuladorPartido = function() {
         if (txt) txt.textContent = '2x';
     }
 
-    document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = ''; });
+    document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = 'none'; });
     const m = document.getElementById('simulador-partido-modal');
     if (m) m.style.display = 'none';
 

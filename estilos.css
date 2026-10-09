@@ -23141,6 +23141,9 @@ html[data-theme="light"] .xp-bar-big-fill {
     flex-shrink: 0;
     box-sizing: border-box;
     user-select: none;
+    transform: translateZ(0);
+    will-change: transform;
+    contain: paint;
 }
 
 /* 🔦 4 FOCOS EXTERIORES EN VÉRTICES */
@@ -23493,13 +23496,14 @@ html[data-theme="light"] .xp-bar-big-fill {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(0);
     font-size: 1.05rem;
     line-height: 1;
     z-index: 10;
     pointer-events: none;
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9));
-    transition: left 0.55s cubic-bezier(0.25, 0.9, 0.3, 1), top 0.55s cubic-bezier(0.25, 0.9, 0.3, 1), transform 0.25s ease;
+    transition: transform 0.2s ease;
+    will-change: top, left;
 }
 
 .sim-pitch-ball.shooting {
