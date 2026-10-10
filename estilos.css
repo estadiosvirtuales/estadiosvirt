@@ -23157,6 +23157,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 0 12px #ffffff, 0 0 20px rgba(0, 255, 119, 0.8);
     z-index: 12;
     pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .sim-floodlight::after {
@@ -23166,9 +23168,9 @@ html[data-theme="light"] .xp-bar-big-fill {
     height: 140px;
     border-radius: 50%;
     pointer-events: none;
-    opacity: 0.28;
-    filter: blur(14px);
-    mix-blend-mode: screen;
+    opacity: 0.30;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .sim-floodlight.top-left { top: 5px; left: 5px; }
@@ -23621,6 +23623,15 @@ html[data-theme="light"] .xp-bar-big-fill {
         margin: 0 auto !important;
         border-radius: 18px !important;
     }
+    .sim-floodlight {
+        width: 8px !important;
+        height: 8px !important;
+    }
+    .sim-floodlight::after {
+        width: 72px !important;
+        height: 72px !important;
+        opacity: 0.24 !important;
+    }
     .sim-pitch-2d-horizontal {
         width: 284px !important;
         height: 168px !important;
@@ -23859,8 +23870,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 0 16px #ffffff, 0 0 28px rgba(255, 215, 0, 0.9);
 }
 .sim-stadium-arena.tier-mundial .sim-floodlight::after {
-    filter: blur(16px);
     opacity: 0.35;
+    transform: translateZ(0);
 }
 .sim-stadium-arena.tier-mundial .sim-floodlight.top-left::after {
     background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 215, 0, 0.35) 45%, transparent 75%);
