@@ -9925,7 +9925,7 @@ window.iniciarSimulacionEnVivo = function() {
 
         const row = document.createElement('div');
         row.className = 'sim-event-row sim-event-simulado';
-        row.innerHTML = `<span class="sim-ev-min">90'</span> <span class="sim-ev-text">⚡ <b>Partido simulado al instante:</b> Resultado final ${golesUser} - ${golesRival}</span>`;
+        row.innerHTML = `<span class="sim-ev-min">90'</span> <span class="sim-ev-text">⚡ <b>Partido simulado:</b> Resultado final ${golesUser} - ${golesRival}</span>`;
         if (timeline) {
             timeline.appendChild(row);
             timeline.scrollTop = timeline.scrollHeight;
