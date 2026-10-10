@@ -12167,8 +12167,10 @@ window.mostrarCofreTemporada = function(liga) {
     if (tituloLigaEl) tituloLigaEl.textContent = `COFRE DE ${liga.nombre.toUpperCase()}`;
 
     // 2. Títulos y trofeo
-    document.getElementById('cofre-revelado-badge').textContent = botin.badge;
-    document.getElementById('cofre-revelado-puesto').textContent = botin.titulo;
+    const badgeEl = document.getElementById('cofre-revelado-badge');
+    if (badgeEl) badgeEl.textContent = botin.badge;
+    const puestoEl = document.getElementById('cofre-revelado-puesto');
+    if (puestoEl) puestoEl.textContent = botin.titulo;
     document.getElementById('cofre-botin-icon').innerHTML = botin.icono;
     document.getElementById('cofre-botin-club').textContent = filaUser ? filaUser.nombre : 'Tu Once';
 
@@ -12286,31 +12288,29 @@ window.mostrarCofreTemporada = function(liga) {
         `;
     }
 
-    // 6. Botín de Recompensa: 2 cartas grandes y prestigiosas (SP & XP)
+    // 6. Botín de Recompensa: 2 cartas de botín con íconos 3D de alta fidelidad
     const lootContainer = document.getElementById('cofre-loot-row');
     if (lootContainer) {
         lootContainer.innerHTML = `
             <div class="cofre-loot-card sp">
-                <div class="cofre-loot-icon-wrap"><i class="ph-bold ph-lightning"></i></div>
+                <div class="cofre-loot-icon-wrap">
+                    <img src="rayo.webp" class="cofre-loot-3d-img" alt="SP">
+                </div>
                 <div class="cofre-loot-info">
                     <span class="loot-label">Habilidad Plantel</span>
                     <strong>+${botin.sp} SP</strong>
                 </div>
             </div>
             <div class="cofre-loot-card xp">
-                <div class="cofre-loot-icon-wrap"><i class="ph-bold ph-sparkle"></i></div>
+                <div class="cofre-loot-icon-wrap">
+                    <img src="estrella.webp" class="cofre-loot-3d-img" alt="XP">
+                </div>
                 <div class="cofre-loot-info">
                     <span class="loot-label">Experiencia DT</span>
                     <strong>+${botin.xp.toLocaleString('es-AR')} XP</strong>
                 </div>
             </div>
         `;
-    }
-
-    // 7. Cinta dorada de vitrina
-    const ribbon = document.getElementById('cofre-vitrina-ribbon');
-    if (ribbon) {
-        ribbon.style.display = botin.esCampeon ? 'inline-flex' : 'none';
     }
 
     // 7. Botón de Reclamo

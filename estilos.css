@@ -25537,27 +25537,14 @@ html[data-theme="light"] .xp-bar-big-fill {
     border: 1.5px solid #00f2fe;
     border-top: 2px solid #a5f3fc;
     color: #00f2fe;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 1.5px;
-    padding: 5px 18px;
+    padding: 6px 20px;
     border-radius: 20px;
     text-transform: uppercase;
-    box-shadow: 0 0 18px rgba(0, 242, 254, 0.35);
-    margin-bottom: 6px;
-}
-
-.cofre-header-title {
-    font-size: 2.1rem !important;
-    font-weight: 900 !important;
-    letter-spacing: -0.5px !important;
-    text-transform: uppercase !important;
-    margin: 0 0 14px 0 !important;
-    line-height: 1.1 !important;
-    background: linear-gradient(180deg, #ffffff 0%, #ffd700 45%, #f59e0b 100%) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.65)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    margin-bottom: 12px;
 }
 
 /* 🎴 Tarjeta Principal de Consagración */
@@ -25572,7 +25559,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     border: 1.5px solid rgba(255, 215, 0, 0.55) !important;
     border-top: 2.5px solid #fde047 !important;
     border-radius: 24px;
-    padding: 22px 20px 20px;
+    padding: 16px 20px 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25583,24 +25570,24 @@ html[data-theme="light"] .xp-bar-big-fill {
     animation: bounceFun 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* 🏟️ Escenario y Trofeo Protagonista */
+/* 🏟️ Escenario y Trofeo Protagonista Imponente */
 .cofre-stage-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 140px;
-    margin-bottom: 8px;
+    height: 155px;
+    margin-bottom: 6px;
 }
 
 .cofre-stage-glow {
     position: absolute;
-    width: 150px;
-    height: 150px;
+    width: 190px;
+    height: 190px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.5) 0%, rgba(255, 160, 0, 0.18) 50%, transparent 72%);
-    filter: blur(24px);
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.55) 0%, rgba(255, 160, 0, 0.22) 50%, transparent 72%);
+    filter: blur(28px);
     pointer-events: none;
     z-index: 0;
 }
@@ -25608,20 +25595,19 @@ html[data-theme="light"] .xp-bar-big-fill {
 .cofre-botin-icon-wrap {
     position: relative;
     z-index: 2;
-    width: 130px;
-    height: 130px;
+    width: 140px;
+    height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .cofre-trofeo-img {
-    width: 125px !important;
-    height: 125px !important;
-    max-width: 125px !important;
-    max-height: 125px !important;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: contain !important;
-    filter: drop-shadow(0 0 24px rgba(255, 215, 0, 0.95)) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.85)) !important;
+    transform: scale(1.65) !important;
+    filter: drop-shadow(0 0 28px rgba(255, 215, 0, 0.95)) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.85)) !important;
     animation: rayoGlow 2.5s infinite alternate ease-in-out;
 }
 
@@ -25861,33 +25847,37 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .cofre-loot-icon-wrap {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    background: transparent !important;
+    border: none !important;
 }
 
-.cofre-loot-card.sp .cofre-loot-icon-wrap {
-    background: rgba(0, 255, 119, 0.18);
-    border: 1px solid rgba(0, 255, 119, 0.5);
-}
-.cofre-loot-card.sp i {
-    color: #00ff77;
-    font-size: 1.35rem;
-    filter: drop-shadow(0 0 8px #00ff77);
+.cofre-loot-3d-img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    transition: transform 0.25s ease;
 }
 
-.cofre-loot-card.xp .cofre-loot-icon-wrap {
-    background: rgba(56, 189, 248, 0.18);
-    border: 1px solid rgba(56, 189, 248, 0.5);
+.cofre-loot-card.sp .cofre-loot-3d-img {
+    filter: drop-shadow(0 0 10px rgba(0, 255, 119, 0.9)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
 }
-.cofre-loot-card.xp i {
-    color: #38bdf8;
-    font-size: 1.35rem;
-    filter: drop-shadow(0 0 8px #38bdf8);
+
+.cofre-loot-card.xp .cofre-loot-3d-img {
+    transform: scale(1.6) !important;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+.cofre-loot-card:hover .cofre-loot-3d-img {
+    transform: scale(1.12);
+}
+.cofre-loot-card.xp:hover .cofre-loot-3d-img {
+    transform: scale(1.75) !important;
 }
 
 .cofre-loot-info {
@@ -26000,21 +25990,24 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* 📱 ADAPTACIÓN CELULAR */
 @media (max-width: 600px) {
     .cofre-botin-card {
-        padding: 16px 14px !important;
+        padding: 14px 14px 16px !important;
     }
     .cofre-stage-wrapper {
-        height: 115px !important;
+        height: 135px !important;
+        margin-bottom: 4px !important;
+    }
+    .cofre-stage-glow {
+        width: 160px !important;
+        height: 160px !important;
     }
     .cofre-botin-icon-wrap {
-        width: 105px !important;
-        height: 105px !important;
+        width: 120px !important;
+        height: 120px !important;
     }
     .cofre-trofeo-img {
-        width: 100px !important;
-        height: 100px !important;
-    }
-    .cofre-header-title {
-        font-size: 1.6rem !important;
+        width: 100% !important;
+        height: 100% !important;
+        transform: scale(1.7) !important;
     }
     .cofre-botin-club {
         font-size: 1.15rem !important;
