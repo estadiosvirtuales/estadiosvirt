@@ -25602,10 +25602,10 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .cofre-pelota-img {
-    width: 105px !important;
-    height: 105px !important;
-    max-width: 105px !important;
-    max-height: 105px !important;
+    width: 135px !important;
+    height: 135px !important;
+    max-width: 135px !important;
+    max-height: 135px !important;
     object-fit: contain !important;
     filter: drop-shadow(0 0 20px rgba(0, 255, 119, 0.75)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.8)) !important;
     animation: rayoGlow 2.5s infinite alternate ease-in-out;
@@ -25798,7 +25798,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-bottom: 14px;
+    margin-top: 2px;
+    margin-bottom: 10px;
     width: 100%;
 }
 
@@ -26173,8 +26174,10 @@ html[data-theme="light"] .xp-bar-big-fill {
         transform: scale(1.7) !important;
     }
     .cofre-pelota-img {
-        width: 85px !important;
-        height: 85px !important;
+        width: 115px !important;
+        height: 115px !important;
+        max-width: 115px !important;
+        max-height: 115px !important;
     }
     .cofre-botin-club {
         font-size: 1.15rem !important;
