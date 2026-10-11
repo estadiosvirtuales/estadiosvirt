@@ -10059,49 +10059,12 @@ window.iniciarSimulacionEnVivo = function() {
     }, 1000);
 };
 
-// 🏆 SISTEMA MULTICAPA DE CELEBRACIÓN DE CAMPEÓN (60/120 FPS)
+// 🏆 CELEBRACIÓN DE CAMPEÓN (SOLO LUCES Y DESTELLOS GAMING)
 function dispararFestejoCampeon(targetModal = null) {
-    // 1. Rayos volumétricos y destellos gaming
+    // Rayos volumétricos y destellos gaming
     if (typeof dispararEfectoLucesGaming === 'function') {
         dispararEfectoLucesGaming();
     }
-
-    // 2. Oleadas continuas de confeti tridimensional de campeón
-    const contenedor = targetModal || document.body;
-    const coloresCampeon = ['#ffd700', '#ffea00', '#ffffff', '#00ff77', '#69ff9c', '#f59e0b'];
-
-    const lanzarOleada = (cantidad) => {
-        for (let i = 0; i < cantidad; i++) {
-            const p = document.createElement('div');
-            p.className = 'confetti-piece';
-            const color = coloresCampeon[Math.floor(Math.random() * coloresCampeon.length)];
-            const esTiraLarga = Math.random() > 0.6;
-            const w = esTiraLarga ? (6 + Math.random() * 4) : (8 + Math.random() * 6);
-            const h = esTiraLarga ? (16 + Math.random() * 12) : (8 + Math.random() * 6);
-
-            p.style.cssText = `
-                position: absolute;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 15}%;
-                width: ${w}px;
-                height: ${h}px;
-                background: ${color};
-                box-shadow: 0 0 6px ${color};
-                animation-delay: ${Math.random() * 0.35}s;
-                animation-duration: ${1.3 + Math.random() * 1.2}s;
-                transform: rotate(${Math.random() * 360}deg);
-                pointer-events: none;
-                z-index: 99999;
-            `;
-            contenedor.appendChild(p);
-            setTimeout(() => p.remove(), 2600);
-        }
-    };
-
-    // 3 ráfagas escalonadas para llenar el aire sin saturar memoria
-    lanzarOleada(40);
-    setTimeout(() => lanzarOleada(35), 350);
-    setTimeout(() => lanzarOleada(30), 750);
 }
 function finalizarPartidoCopa(golesUser, golesRival) {
     const timeline = document.getElementById('sim-events-timeline');
@@ -11362,7 +11325,7 @@ function renderizarSelectorLigasDisponibles() {
         const item = LIGAS_TEMPORADA_CATALOGO[key];
         const flagUrl = `https://flagcdn.com/w80/${item.bandera}.png`;
         const cantClubes = item.clubes.length;
-        const totalFechas = (cantClubes % 2 === 0) ? (cantClubes - 1) : cantClubes;
+        const totalFechas = cantClubes;
 
         const miniClubes = item.clubes.slice(0, 4).map(cId => {
             const url = (typeof obtenerUrlEscudo === 'function') ? obtenerUrlEscudo(cId) : '';
