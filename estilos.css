@@ -25601,6 +25601,24 @@ html[data-theme="light"] .xp-bar-big-fill {
     flex-shrink: 0;
 }
 
+.cofre-pelota-img {
+    width: 105px !important;
+    height: 105px !important;
+    max-width: 105px !important;
+    max-height: 105px !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 119, 0.75)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.8)) !important;
+    animation: rayoGlow 2.5s infinite alternate ease-in-out;
+}
+
+.cofre-header-pill.descenso {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(20, 10, 14, 0.95) 100%) !important;
+    border-color: #ef4444 !important;
+    border-top: 2px solid #fca5a5 !important;
+    color: #fca5a5 !important;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4) !important;
+}
+
 /* 🎴 Tarjeta Principal de Consagración */
 .cofre-botin-card {
     position: relative;
@@ -26062,6 +26080,10 @@ html[data-theme="light"] .xp-bar-big-fill {
         width: 100% !important;
         height: 100% !important;
         transform: scale(1.7) !important;
+    }
+    .cofre-pelota-img {
+        width: 85px !important;
+        height: 85px !important;
     }
     .cofre-botin-club {
         font-size: 1.15rem !important;

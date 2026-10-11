@@ -12050,15 +12050,16 @@ window.abandonarLigaTemporada = function() {
 // ========================================================
 let cofreTemporadaPendiente = null;
 
-function calcularBotinTemporada(posicion, filaUser) {
+function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20) {
     const esInvicto = filaUser && filaUser.pp === 0;
     const esCampeon = posicion === 1;
+    const esDescenso = posicion >= (totalEquipos - 1);
 
     let sp = 1;
     let xp = 400;
     let badge = '🛡️ PERMANENCIA ASEGURADA';
     let titulo = `#${posicion}º PUESTO`;
-    let icono = '<img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp" class="cofre-escudo-img" alt="Permanencia">';
+    let icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Pelota">';
     let btnText = 'RECLAMAR BOTÍN DE TEMPORADA';
     let btnIcon = 'ph-gift';
 
@@ -12096,15 +12097,28 @@ function calcularBotinTemporada(posicion, filaUser) {
         icono = '<img src="estrella.webp" class="cofre-estrella-img" alt="Zona de Copas">';
         btnText = 'RECLAMAR BOTÍN DE CLASIFICADO';
         btnIcon = 'ph-star';
+    } else if (esDescenso) {
+        sp = 1;
+        xp = 350;
+        badge = '🔻 ZONA DE DESCENSO';
+        titulo = `#${posicion}º PUESTO`;
+        icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Zona de Descenso">';
+        btnText = 'FINALIZAR TEMPORADA';
     } else if (posicion <= 10) {
         sp = 3;
         xp = 800;
         badge = '⚽ MITAD DE TABLA';
         titulo = `#${posicion}º PUESTO`;
-        icono = '<img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp" class="cofre-escudo-img" alt="Mitad de Tabla">';
+        icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Mitad de Tabla">';
+    } else {
+        sp = 2;
+        xp = 500;
+        badge = '🛡️ PERMANENCIA ASEGURADA';
+        titulo = `#${posicion}º PUESTO`;
+        icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Permanencia">';
     }
 
-    return { sp, xp, badge, titulo, icono, btnText, btnIcon, esCampeon, esInvicto };
+    return { sp, xp, badge, titulo, icono, btnText, btnIcon, esCampeon, esInvicto, esDescenso };
 }
 
 window.mostrarCofreTemporada = function(liga) {
@@ -12113,7 +12127,8 @@ window.mostrarCofreTemporada = function(liga) {
 
     const filaUser = liga.tabla.find(t => t.esUsuario);
     const pos = liga.tabla.findIndex(t => t.esUsuario) + 1;
-    const botin = calcularBotinTemporada(pos, filaUser);
+    const totalEquipos = (liga.tabla && liga.tabla.length) ? liga.tabla.length : 20;
+    const botin = calcularBotinTemporada(pos, filaUser, totalEquipos);
 
     cofreTemporadaPendiente = {
         ligaKey: liga.key,
@@ -12138,11 +12153,29 @@ window.mostrarCofreTemporada = function(liga) {
 
     // 2. Títulos y trofeo
     const badgeEl = document.getElementById('cofre-revelado-badge');
-    if (badgeEl) badgeEl.innerHTML = botin.badge;
+    if (badgeEl) {
+        badgeEl.innerHTML = botin.badge;
+        if (botin.esDescenso) {
+            badgeEl.classList.add('descenso');
+        } else {
+            badgeEl.classList.remove('descenso');
+        }
+    }
     const puestoEl = document.getElementById('cofre-revelado-puesto');
     if (puestoEl) puestoEl.textContent = botin.titulo;
     document.getElementById('cofre-botin-icon').innerHTML = botin.icono;
     document.getElementById('cofre-botin-club').textContent = filaUser ? filaUser.nombre : 'Tu Once';
+
+    const glowEl = document.querySelector('.cofre-stage-glow');
+    if (glowEl) {
+        if (botin.esDescenso) {
+            glowEl.style.background = 'radial-gradient(circle, rgba(239, 68, 68, 0.55) 0%, rgba(185, 28, 28, 0.22) 50%, transparent 72%)';
+        } else if (botin.esCampeon) {
+            glowEl.style.background = 'radial-gradient(circle, rgba(255, 215, 0, 0.55) 0%, rgba(255, 160, 0, 0.22) 50%, transparent 72%)';
+        } else {
+            glowEl.style.background = 'radial-gradient(circle, rgba(0, 255, 119, 0.45) 0%, rgba(41, 121, 255, 0.20) 50%, transparent 72%)';
+        }
+    }
 
     // 3. Escudo del equipo
     const escudoClub = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
