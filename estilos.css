@@ -25648,9 +25648,88 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 16px;
     width: 100%;
     height: 155px;
     margin-bottom: 6px;
+}
+
+/* 🏷️ Placa de Posición Final junto al Ícono */
+.cofre-posicion-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(16, 26, 44, 0.94) 0%, rgba(8, 14, 25, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    border-top: 2px solid #38bdf8;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(56, 189, 248, 0.2);
+    z-index: 2;
+    line-height: 1.1;
+    min-width: 90px;
+    box-sizing: border-box;
+    animation: fadeSlideUp 0.3s ease;
+}
+
+.cofre-pos-num {
+    font-size: 1.65rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.cofre-pos-txt {
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.cofre-posicion-badge.champ {
+    border-top-color: #ffd700;
+    border-color: rgba(255, 215, 0, 0.45);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.35);
+}
+.cofre-posicion-badge.champ .cofre-pos-num { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+.cofre-posicion-badge.champ .cofre-pos-txt { color: #fde047; }
+
+.cofre-posicion-badge.cup {
+    border-top-color: #00ff77;
+    border-color: rgba(0, 255, 119, 0.45);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 119, 0.35);
+}
+.cofre-posicion-badge.cup .cofre-pos-num { color: #00ff77; text-shadow: 0 0 10px rgba(0, 255, 119, 0.6); }
+.cofre-posicion-badge.cup .cofre-pos-txt { color: #a7f3d0; }
+
+.cofre-posicion-badge.descenso {
+    border-top-color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.45);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(239, 68, 68, 0.35);
+}
+.cofre-posicion-badge.descenso .cofre-pos-num { color: #ef4444; text-shadow: 0 0 10px rgba(239, 68, 68, 0.6); }
+.cofre-posicion-badge.descenso .cofre-pos-txt { color: #fca5a5; }
+
+.cofre-posicion-badge.mid {
+    border-top-color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.45);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(56, 189, 248, 0.25);
+}
+.cofre-posicion-badge.mid .cofre-pos-num { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+.cofre-posicion-badge.mid .cofre-pos-txt { color: #bae6fd; }
+
+[data-theme="light"] .cofre-posicion-badge {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+}
+[data-theme="light"] .cofre-pos-num {
+    color: #0f172a !important;
+    text-shadow: none !important;
 }
 
 .cofre-stage-glow {
@@ -26067,6 +26146,18 @@ html[data-theme="light"] .xp-bar-big-fill {
     .cofre-stage-wrapper {
         height: 135px !important;
         margin-bottom: 4px !important;
+        gap: 12px !important;
+    }
+    .cofre-posicion-badge {
+        padding: 6px 12px !important;
+        border-radius: 12px !important;
+        min-width: 78px !important;
+    }
+    .cofre-pos-num {
+        font-size: 1.35rem !important;
+    }
+    .cofre-pos-txt {
+        font-size: 0.54rem !important;
     }
     .cofre-stage-glow {
         width: 160px !important;

@@ -12166,6 +12166,32 @@ window.mostrarCofreTemporada = function(liga) {
     document.getElementById('cofre-botin-icon').innerHTML = botin.icono;
     document.getElementById('cofre-botin-club').textContent = filaUser ? filaUser.nombre : 'Tu Once';
 
+    // 🎖️ Posición final ubicada junto al ícono del botín
+    const posBadge = document.getElementById('cofre-posicion-badge');
+    if (posBadge) {
+        let badgeCls = 'mid';
+        let lblTxt = 'PUESTO';
+        if (botin.esCampeon) {
+            badgeCls = 'champ';
+            lblTxt = 'CAMPEÓN';
+        } else if (pos === 2) {
+            badgeCls = 'cup';
+            lblTxt = 'SUBCAMPEÓN';
+        } else if (pos <= 4) {
+            badgeCls = 'cup';
+            lblTxt = 'ZONA COPAS';
+        } else if (botin.esDescenso) {
+            badgeCls = 'descenso';
+            lblTxt = 'DESCENSO';
+        }
+
+        posBadge.className = `cofre-posicion-badge ${badgeCls}`;
+        posBadge.innerHTML = `
+            <span class="cofre-pos-num">#${pos}</span>
+            <span class="cofre-pos-txt">${lblTxt}</span>
+        `;
+    }
+
     const glowEl = document.querySelector('.cofre-stage-glow');
     if (glowEl) {
         if (botin.esDescenso) {
