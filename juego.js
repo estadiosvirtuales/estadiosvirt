@@ -5793,6 +5793,11 @@ window.voltearCartaPick = function(elemento, avatarId) {
     }
 };
 
+window.cerrarSobreBienvenida = function() {
+    const modal = document.getElementById('modal-pack-bienvenida');
+    if (modal) modal.style.display = 'none';
+};
+
 // 💥 2. Animación al tocar "Abrir Sobre"
 function animarAperturaSobre() {
     reproducirSonidoApertura();
