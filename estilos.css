@@ -25576,7 +25576,7 @@ html[data-theme="light"] .xp-bar-big-fill {
 .cofre-header-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: linear-gradient(135deg, rgba(0, 242, 254, 0.22) 0%, rgba(10, 24, 42, 0.95) 100%);
     border: 1.5px solid #00f2fe;
     border-top: 2px solid #a5f3fc;
@@ -25589,6 +25589,16 @@ html[data-theme="light"] .xp-bar-big-fill {
     text-transform: uppercase;
     box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
     margin-bottom: 12px;
+}
+
+.cofre-badge-corona {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.85));
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 /* 🎴 Tarjeta Principal de Consagración */

@@ -12065,7 +12065,9 @@ function calcularBotinTemporada(posicion, filaUser) {
     if (esCampeon) {
         sp = 15;
         xp = 4000;
-        badge = esInvicto ? '👑 CAMPEÓN INVICTO' : '👑 CAMPEÓN DE LA LIGA';
+        badge = esInvicto 
+            ? '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN INVICTO' 
+            : '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN DE LA LIGA';
         titulo = esInvicto ? '#1 INVICTO HISTÓRICO' : '#1 CAMPEÓN';
         icono = '<img src="trofeo.webp" class="cofre-trofeo-img" alt="Campeón">';
         btnText = 'LEVANTAR COPA Y GUARDAR BOTÍN';
@@ -12136,21 +12138,18 @@ window.mostrarCofreTemporada = function(liga) {
 
     // 2. Títulos y trofeo
     const badgeEl = document.getElementById('cofre-revelado-badge');
-    if (badgeEl) badgeEl.textContent = botin.badge;
+    if (badgeEl) badgeEl.innerHTML = botin.badge;
     const puestoEl = document.getElementById('cofre-revelado-puesto');
     if (puestoEl) puestoEl.textContent = botin.titulo;
     document.getElementById('cofre-botin-icon').innerHTML = botin.icono;
     document.getElementById('cofre-botin-club').textContent = filaUser ? filaUser.nombre : 'Tu Once';
 
-    // 3. Escudo y OVR del equipo
+    // 3. Escudo del equipo
     const escudoClub = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
     const escudoImg = document.getElementById('cofre-club-escudo');
     if (escudoImg) {
         escudoImg.src = (typeof obtenerUrlEscudo === 'function') ? obtenerUrlEscudo(escudoClub) : '';
     }
-    const ovrEquipo = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 75;
-    const ovrTag = document.getElementById('cofre-club-ovr');
-    if (ovrTag) ovrTag.textContent = `OVR ${ovrEquipo}`;
 
     // 4. Protagonistas del Once (Capitán & DT) con resolución garantizada de avatar
     const unaF = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
