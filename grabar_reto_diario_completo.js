@@ -120,6 +120,12 @@ server.listen(PORT, async () => {
                 transform-origin: center center !important;
                 pointer-events: none !important;
             }
+            /* Ocultar popups de nivel/premios para que la tabla final de 5 estadios sea la protagonista */
+            #levelup-overlay, #reward-overlay, #modal-recompensa-avatar, #modal-pack-bienvenida {
+                display: none !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
             /* Overlay de stickers TikTok: UBICADO EN EL ESPACIO NEGRO ENTRE HUD Y VIDEO */
             #tiktok-hud-box {
                 position: fixed;
@@ -324,6 +330,12 @@ server.listen(PORT, async () => {
         await page.evaluate(() => {
             const mapBox = document.getElementById('guessr-floating-map-box');
             if (mapBox) mapBox.classList.remove('mapa-visible-tiktok');
+            const iframes = document.querySelectorAll('#modal-video-container iframe');
+            iframes.forEach(iframe => {
+                try {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                } catch(e) {}
+            });
         });
 
         // 8.5 segundos de vista aérea limpia del estadio
@@ -374,6 +386,21 @@ server.listen(PORT, async () => {
     // FASE FINAL: PANTALLA DE RESULTADOS Y COPIAR
     // ==========================================
     console.log("[Grabador] Reto diario completado. Mostrando podio final...");
+    await page.evaluate(() => {
+        const lvl = document.getElementById('levelup-overlay');
+        if (lvl) lvl.remove();
+        const rew = document.getElementById('reward-overlay');
+        if (rew) rew.remove();
+        const avatarRew = document.getElementById('modal-recompensa-avatar');
+        if (avatarRew) avatarRew.remove();
+        const pack = document.getElementById('modal-pack-bienvenida');
+        if (pack) pack.remove();
+        const card = document.getElementById('modal-card');
+        if (card) {
+            card.style.display = 'flex';
+            card.classList.add('resultado-final', 'resultado-final-layout');
+        }
+    });
     await updateTikTokHUD('👑 ¡23.650 PUNTOS! ¿SOS CAPAZ DE SUPERARME? 🏆', 'Rendimiento: 👑 GALÁCTICO ABSOLUTO 👑', 0, 'success');
     await new Promise(r => setTimeout(r, 2500));
 
