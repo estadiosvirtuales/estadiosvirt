@@ -3430,7 +3430,7 @@ body.video-abierto .hero-section {
 
     /* El botón de perfil de usuario en celular: se compacta naturalmente sin scale(), se acerca al botón de modo y nunca se corta */
     #hero-google-profile {
-        margin: 0 !important;
+        margin: 0 8px 0 0 !important;
         padding: 0 !important;
         flex-shrink: 0 !important;
         display: flex !important;
@@ -13829,7 +13829,7 @@ body.video-abierto .hero-section {
 
     /* El botón de perfil de usuario en celular: se compacta naturalmente sin scale(), se acerca al botón de modo y nunca se corta */
     #hero-google-profile {
-        margin: 0 !important;
+        margin: 0 8px 0 0 !important;
         padding: 0 !important;
         flex-shrink: 0 !important;
         display: flex !important;
