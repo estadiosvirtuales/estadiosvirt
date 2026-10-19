@@ -2969,23 +2969,23 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) translateZ(0);
-    font-size: 1.05rem;
+    font-size: 0.70rem;
     line-height: 1;
     z-index: 10;
     pointer-events: none;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
     transition: transform 0.2s ease;
     will-change: top, left;
 }
 
 .sim-pitch-ball.shooting {
-    transform: translate(-50%, -50%) scale(1.35);
-    filter: drop-shadow(0 0 14px #ffd700);
+    transform: translate(-50%, -50%) scale(1.22);
+    filter: drop-shadow(0 0 10px #ffd700);
 }
 
 .sim-pitch-ball.in-net {
-    transform: translate(-50%, -50%) scale(1.15);
-    filter: drop-shadow(0 0 10px #ffffff);
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: drop-shadow(0 0 8px #ffffff);
 }
 
 .sim-pitch-tag {
@@ -3604,6 +3604,9 @@
     .sim-dot {
         width: 8px;
         height: 8px;
+    }
+    .sim-pitch-ball {
+        font-size: 0.48rem !important;
     }
 }
 /* ========================================================

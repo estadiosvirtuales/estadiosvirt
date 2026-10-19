@@ -378,7 +378,7 @@ const AVATARES_LISTA = [
     { id: '20.webp', label: 'El Toro', nivel: 5 },
     { id: '21.webp', label: 'El Muro', nivel: 6 },
     { id: '22.webp', label: 'El Carnicero', nivel: 7 },
-    { id: '23.webp', label: 'El Colorado', nivel: 8 },
+    { id: '23.webp', label: 'Alexis', nivel: 8 },
     { id: '24.webp', label: 'El Guardián', nivel: 9 },
     { id: '51.webp', label: 'El Guajiro', nivel: 10 },
 
@@ -1128,27 +1128,98 @@ async function actualizarApodoEnTodoElSistema(nickViejo, nickNuevo) {
     }
 }
 
+// 📊 Estatus Real en la Comunidad: Compara la experiencia acumulada (XP) contra todos los jugadores en Supabase
+async function calcularEstatusComunidadReal(miXp, miOvr) {
+    if (typeof supabaseClient === 'undefined' || !supabaseClient) return;
+
+    try {
+        const xpActual = typeof miXp === 'number' ? miXp : (userStats.xpTotal || 0);
+
+        // Si tenemos caché fresco de los últimos 2 minutos con el mismo XP, actualizamos el badge si hace falta
+        if (window.estatusComunidadCache && 
+            (Date.now() - window.estatusComunidadCache.timestamp < 120000) &&
+            window.estatusComunidadCache.xp === xpActual) {
+            const badgeEl = document.getElementById('badge-ranking-comunidad');
+            if (badgeEl) {
+                badgeEl.textContent = `${window.estatusComunidadCache.texto} · OVR ${miOvr}`;
+            }
+            return;
+        }
+
+        // Consultas HEAD en paralelo para obtener conteos exactos con 0 bytes de transferencia
+        const [resTotal, resSuperiores] = await Promise.all([
+            supabaseClient
+                .from('perfiles')
+                .select('*', { count: 'exact', head: true }),
+            supabaseClient
+                .from('perfiles')
+                .select('*', { count: 'exact', head: true })
+                .gt('experiencia', xpActual)
+        ]);
+
+        const total = (resTotal && typeof resTotal.count === 'number' && resTotal.count > 0) ? resTotal.count : 0;
+        const superiores = (resSuperiores && typeof resSuperiores.count === 'number') ? resSuperiores.count : 0;
+
+        if (total === 0) return;
+
+        const u = typeof obtenerUsuarioLogueado === 'function' ? obtenerUsuarioLogueado() : null;
+        const registrado = u && u.id && u.id !== 'guest';
+        const totalBase = registrado ? total : (total + 1);
+        const puesto = superiores + 1;
+        const pct = Math.max(0.1, (puesto / totalBase) * 100);
+
+        let texto = "⚽ COMUNIDAD";
+        if (puesto === 1) {
+            texto = "👑 #1 COMUNIDAD";
+        } else if (puesto === 2) {
+            texto = "🥈 #2 COMUNIDAD";
+        } else if (puesto === 3) {
+            texto = "🥉 #3 COMUNIDAD";
+        } else if (puesto <= 10) {
+            texto = `⭐ #${puesto} COMUNIDAD`;
+        } else if (pct <= 1) {
+            texto = "👑 TOP 1% COMUNIDAD";
+        } else if (pct <= 5) {
+            texto = "🔥 TOP 5% COMUNIDAD";
+        } else if (pct <= 10) {
+            texto = "⭐ TOP 10% COMUNIDAD";
+        } else if (pct <= 25) {
+            texto = "🏆 TOP 25% COMUNIDAD";
+        } else if (pct <= 50) {
+            texto = "⚽ TOP 50% COMUNIDAD";
+        } else {
+            texto = xpActual >= 5000 ? "🚀 EN ASCENSO" : "🌱 PROMESA";
+        }
+
+        window.estatusComunidadCache = { 
+            puesto, 
+            total: totalBase, 
+            pct, 
+            texto, 
+            xp: xpActual, 
+            timestamp: Date.now() 
+        };
+
+        const badgeEl = document.getElementById('badge-ranking-comunidad');
+        if (badgeEl) {
+            badgeEl.textContent = `${texto} · OVR ${miOvr}`;
+        }
+    } catch (err) {
+        console.warn("Aviso al calcular estatus real en la comunidad:", err);
+    }
+}
+window.calcularEstatusComunidadReal = calcularEstatusComunidadReal;
+
 function abrirModalPerfil(){
 const u=obtenerUsuarioLogueado();
 const esGoogle = u && u.loginMethod === 'google';
 const nombreDefault = u ? u.name.split(' ')[0] : 'Invitado';
 const nivelIdx=calcularNivelIdx(userStats.xpTotal),nivel=NIVELES[nivelIdx],nivelSig=NIVELES[Math.min(nivelIdx+1,NIVELES.length-1)];
 
-// 📊 Cálculo dinámico de estatus según el nivel del jugador
-let textoRankingTop = "⚽ COMUNIDAD";
-if (nivelIdx >= 50) {
-    textoRankingTop = "TOP 0.1% COMUNIDAD";
-} else if (nivelIdx >= 35) {
-    textoRankingTop = "TOP 1% COMUNIDAD";
-} else if (nivelIdx >= 25) {
-    textoRankingTop = "TOP 5% COMUNIDAD";
-} else if (nivelIdx >= 15) {
-    textoRankingTop = "TOP 10% COMUNIDAD";
-} else if (nivelIdx >= 5) {
-    textoRankingTop = "TOP 25% COMUNIDAD";
-} else {
-    textoRankingTop = "🌱 PROMESA";
-}
+// 📊 Cálculo inicial de estatus (se actualiza en milisegundos con Supabase)
+let textoRankingTop = (window.estatusComunidadCache && window.estatusComunidadCache.texto)
+    ? window.estatusComunidadCache.texto
+    : (userStats.xpTotal >= 500000 ? "⭐ TOP COMUNIDAD" : (userStats.xpTotal >= 5000 ? "🚀 EN ASCENSO" : "🌱 PROMESA"));
 // 1. Nombre de rango puro (Sin duplicar "Lvl XX")
 const nombreRangoPuro = nivel.nombre.replace(/\s+Lvl\s+\d+/i, '').trim();
 
@@ -1412,7 +1483,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                         <div class="xp-compact-text">
                             <div class="xp-compact-meta">
                                 <span class="level-badge-inline ${nivel.cssClass}">Nivel ${nivelIdx}</span>
-                                <span class="badge-ranking">${textoRankingTop} · OVR ${nivel.ovr}</span>
+                                <span class="badge-ranking" id="badge-ranking-comunidad">${textoRankingTop} · OVR ${nivel.ovr}</span>
                             </div>
                             <h3 class="profile-level-title">${nombreRangoPuro}</h3>
                         </div>
@@ -1449,12 +1520,13 @@ document.getElementById('profile-modal-body').innerHTML=`
             <!-- 🏆 ACCESO DIRECTO AL SALÓN DE CAMPEONES -->
             <div class="geoguessr-dash-box palmares-profile-box" onclick="cerrarModalPerfil(); window.origenRankingCarrera = 'perfil'; abrirModalRankingCarrera();" style="cursor:pointer;" title="Ver Salón de Campeones">
                 <div class="dash-header-inline" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">
-                    <div class="dash-title-premium">
-                        <i class="ph-duotone ph-trophy" style="font-size:1.3rem; color:#fde047;"></i> Vitrina de Títulos
+                    <div class="dash-title-premium palmares-title-wrap">
+                        <i class="ph-duotone ph-trophy" style="font-size:1.3rem; color:#fde047; flex-shrink:0;"></i> <span class="palmares-title-text">Vitrina de Títulos</span>
                         ${miniTrophiesHTML}
                     </div>
                     <span class="palmares-counter-badge">
-                        ${copasCount} ${copasCount === 1 ? 'Título' : 'Títulos'} <i class="ph-bold ph-arrow-right"></i>
+                        <span class="palmares-counter-text">${copasCount} ${copasCount === 1 ? 'Título' : 'Títulos'}</span>
+                        <i class="ph-bold ph-arrow-right"></i>
                     </span>
                 </div>
             </div>
@@ -1495,6 +1567,7 @@ const selNum = document.getElementById('avatar-num-input'); if(selNum) selNum.va
 const selLogo = document.getElementById('avatar-logo-input'); if(selLogo) selLogo.value = savedLogo;
 renderizarGridLogros();
 if(typeof inicializarEfectoHolograficoCarta === 'function') inicializarEfectoHolograficoCarta();
+calcularEstatusComunidadReal(userStats.xpTotal, nivel.ovr);
 },50);
 }
 

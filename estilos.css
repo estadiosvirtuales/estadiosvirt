@@ -3391,22 +3391,28 @@ body.video-abierto .hero-section {
         white-space: nowrap !important;
     }
 
-    /* Arreglo de la Luna: Centrada en el espacio vacío entre el título y el perfil */
+    /* Botones de acción del header en celular: Sonido y Tema */
     .header-actions {
-        flex: 1 !important; 
+        flex: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 6px !important;
     }
-    .theme-toggle-btn, .theme-toggle, #theme-btn {
+    .theme-toggle-btn, .theme-toggle, #theme-btn, .sound-toggle-btn {
         transform: none !important; 
         width: 32px !important;
         height: 32px !important;
         min-width: 32px !important; 
+        max-width: 32px !important;
+        border-radius: 10px !important;
         flex-shrink: 0 !important;  
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        margin-left: auto !important;  
-        margin-right: -30px !important; 
+        font-size: 1.05rem !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
 
     /* El perfil se achica apenitas desde la derecha */
@@ -4342,9 +4348,42 @@ body.video-abierto .hero-section {
         grid-row: 7 !important;
         width: 100% !important;
         margin: 6px 0 0 0 !important;
-        padding: 12px 10px !important;
+        padding: 12px 14px !important;
         border-radius: 14px !important;
         box-sizing: border-box !important;
+    }
+    .palmares-profile-box .palmares-mini-strip {
+        display: none !important;
+    }
+    .palmares-profile-box .dash-header-inline {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+    }
+    .palmares-profile-box .palmares-title-wrap,
+    .palmares-profile-box .palmares-title-text {
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+    .palmares-profile-box .palmares-counter-text {
+        display: none !important;
+    }
+    .palmares-profile-box .palmares-counter-badge {
+        padding: 6px 9px !important;
+        border-radius: 50% !important;
+        min-width: 28px !important;
+        height: 28px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+    .palmares-profile-box .palmares-counter-badge i {
+        margin: 0 !important;
+        font-size: 0.85rem !important;
     }
 
     .right-dashboard-top-row > .geoguessr-dash-box:not(.xp-profile-section) .dash-header-inline {
@@ -13709,22 +13748,28 @@ body.video-abierto .hero-section {
         white-space: nowrap !important;
     }
 
-    /* Arreglo de la Luna: Centrada en el espacio vacío entre el título y el perfil */
+    /* Botones de acción del header en celular: Sonido y Tema */
     .header-actions {
-        flex: 1 !important; 
+        flex: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 6px !important;
     }
-    .theme-toggle-btn, .theme-toggle, #theme-btn {
+    .theme-toggle-btn, .theme-toggle, #theme-btn, .sound-toggle-btn {
         transform: none !important; 
         width: 32px !important;
         height: 32px !important;
         min-width: 32px !important; 
+        max-width: 32px !important;
+        border-radius: 10px !important;
         flex-shrink: 0 !important;  
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        margin-left: auto !important;  
-        margin-right: -30px !important; 
+        font-size: 1.05rem !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
 
     /* El perfil se achica apenitas desde la derecha */
@@ -15821,6 +15866,25 @@ body.video-abierto .hero-section {
         grid-column: 1 / span 2 !important;
         grid-row: 7 !important;
         margin: 6px 0 0 0 !important;
+    }
+    .palmares-profile-box .palmares-mini-strip {
+        display: none !important;
+    }
+    .palmares-profile-box .palmares-title-wrap,
+    .palmares-profile-box .palmares-title-text {
+        white-space: nowrap !important;
+    }
+    .palmares-profile-box .palmares-counter-text {
+        display: none !important;
+    }
+    .palmares-profile-box .palmares-counter-badge {
+        padding: 6px 9px !important;
+        border-radius: 50% !important;
+        min-width: 28px !important;
+        height: 28px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     /* 🏅 3. VITRINA DE LOGROS (JUNTO A TÍTULOS) */
     .logros-box-mobile {
