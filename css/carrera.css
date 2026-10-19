@@ -691,6 +691,59 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* 💎 PIPS DE QUÍMICA INDIVIDUAL (0 a 3 rombos estilo EA Sports FC) */
+.once-chem-pips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 2px;
+    margin-bottom: 1px;
+    z-index: 3;
+}
+
+.chem-pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    transform: rotate(45deg);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    transition: all 0.25s ease;
+}
+
+.chem-pip.active {
+    background: #00ff77;
+    border-color: #69ff9c;
+    box-shadow: 0 0 6px rgba(0, 255, 119, 0.85);
+}
+
+.once-res-badge.quimica.chem-perfect {
+    border-color: rgba(250, 204, 21, 0.85) !important;
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.22) 0%, rgba(10, 20, 30, 0.95) 100%) !important;
+    box-shadow: 0 4px 16px rgba(250, 204, 21, 0.35) !important;
+}
+.once-res-badge.quimica.chem-perfect i {
+    color: #facc15 !important;
+    filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.85)) !important;
+}
+.once-res-badge.quimica.chem-perfect .once-res-sub {
+    color: #fef08a !important;
+    font-weight: 900 !important;
+}
+.once-res-badge.quimica.chem-mid {
+    border-color: rgba(56, 189, 248, 0.6) !important;
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(10, 20, 30, 0.95) 100%) !important;
+}
+.once-res-badge.quimica.chem-mid i {
+    color: #38bdf8 !important;
+}
+
+.once-ovr-bonus-chip.chem-bonus {
+    background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+}
+
 .once-player-label {
     font-size: 0.55rem;
     font-weight: 800;
@@ -903,6 +956,16 @@
         font-size: 0.48rem !important;
         padding: 1px 5px !important;
         margin-top: -4px !important;
+    }
+
+    .once-chem-pips {
+        gap: 2px !important;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+    .chem-pip {
+        width: 4px !important;
+        height: 4px !important;
     }
 
     .once-player-label {

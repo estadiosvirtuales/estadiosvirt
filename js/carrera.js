@@ -253,6 +253,15 @@ function calcularOvrEquipoOnce() {
     let ovrFinal = Math.round(suma / count);
     if (typeof obtenerCapitanOnce === 'function' && obtenerCapitanOnce()) ovrFinal += 2;
     if (once['DT']) ovrFinal += 1;
+
+    // ⚡ Bono de Química Global Real (+1, +2 o +3 OVR)
+    if (typeof calcularYRenderizarQuimicaOnce === 'function') {
+        const chem = calcularYRenderizarQuimicaOnce(f, once);
+        if (chem && chem.bonoOvr) {
+            ovrFinal += chem.bonoOvr;
+        }
+    }
+
     return Math.min(99, ovrFinal);
 }
 
@@ -2513,9 +2522,6 @@ window.soltarTouchOnce = function(e) {
 function calcularYRenderizarQuimicaOnce(f, once) {
     if (!f || !f.posiciones) return { svgHTML: '', quimicaFinal: 0 };
     const posiciones = f.posiciones;
-    let linesSVG = '';
-    let quimicaPuntos = 0;
-
     const norm = id => (id || '').replace(/\.png$/i, '.webp').trim();
 
     // 🌎 1. DICCIONARIO COMPLETO DE NACIONALIDADES DE TODOS LOS AVATARES
@@ -2743,7 +2749,89 @@ function calcularYRenderizarQuimicaOnce(f, once) {
         '70.webp': ['velez', 'sanlorenzo', 'penarol', 'zaragoza']
     };
 
-    // 🔗 3. CÁLCULO DE LÍNEAS TÁCTICAS ENTRE TITULARES CERCANOS
+    // 🌎 3. CONTEO GLOBAL DE PRESENCIAS POR PAÍS Y POR CLUB (PLANTILLA + DT)
+    const dtId = norm(once['DT']);
+    const paisDt = dtId ? (PAISES_AVATARES[dtId] || 'GEN') : null;
+    const clubsDt = dtId ? (CLUBES_AVATARES[dtId] || []) : [];
+
+    const conteoPaises = {};
+    const conteoClubes = {};
+
+    // El DT aporta +1 a su país y a sus clubes
+    if (paisDt && paisDt !== 'GEN') {
+        conteoPaises[paisDt] = (conteoPaises[paisDt] || 0) + 1;
+    }
+    clubsDt.forEach(c => {
+        conteoClubes[c] = (conteoClubes[c] || 0) + 1;
+    });
+
+    // Conteo de cada titular en el campo
+    for (let i = 0; i < posiciones.length; i++) {
+        const idJug = norm(once[i]);
+        if (!idJug) continue;
+
+        const pais = PAISES_AVATARES[idJug] || 'GEN';
+        if (pais !== 'GEN') {
+            conteoPaises[pais] = (conteoPaises[pais] || 0) + 1;
+        }
+
+        const clubs = CLUBES_AVATARES[idJug] || [];
+        clubs.forEach(c => {
+            conteoClubes[c] = (conteoClubes[c] || 0) + 1;
+        });
+    }
+
+    // 💎 4. CÁLCULO DE QUÍMICA INDIVIDUAL (0 A 3 PUNTOS / ROMBOS POR FUTBOLISTA)
+    // Umbrales estilo EA Sports FC:
+    // Club: 2 -> 1 pt, 4 -> 2 pts, 7 -> 3 pts
+    // País: 2 -> 1 pt, 5 -> 2 pts, 8 -> 3 pts
+    const quimicaIndividual = {};
+    let quimicaTotal = 0;
+
+    for (let i = 0; i < posiciones.length; i++) {
+        const idJug = norm(once[i]);
+        if (!idJug) {
+            quimicaIndividual[i] = 0;
+            continue;
+        }
+
+        let ptsClub = 0;
+        const clubs = CLUBES_AVATARES[idJug] || [];
+        clubs.forEach(c => {
+            const count = conteoClubes[c] || 0;
+            let pts = 0;
+            if (count >= 7) pts = 3;
+            else if (count >= 4) pts = 2;
+            else if (count >= 2) pts = 1;
+            if (pts > ptsClub) ptsClub = pts;
+        });
+
+        let ptsPais = 0;
+        const pais = PAISES_AVATARES[idJug] || 'GEN';
+        if (pais !== 'GEN') {
+            const count = conteoPaises[pais] || 0;
+            if (count >= 8) ptsPais = 3;
+            else if (count >= 5) ptsPais = 2;
+            else if (count >= 2) ptsPais = 1;
+        }
+
+        // Cada titular puede sumar hasta 3 puntos como máximo
+        const chemJugador = Math.min(3, ptsClub + ptsPais);
+        quimicaIndividual[i] = chemJugador;
+        quimicaTotal += chemJugador;
+    }
+
+    // Tope final absoluto de 33 (11 titulares x 3 puntos)
+    const quimicaFinal = Math.min(33, quimicaTotal);
+
+    // ⚡ 5. BONO OVR REAL PARA SIMULACIÓN DE PARTIDOS
+    let bonoOvr = 0;
+    if (quimicaFinal >= 33) bonoOvr = 3;
+    else if (quimicaFinal >= 22) bonoOvr = 2;
+    else if (quimicaFinal >= 11) bonoOvr = 1;
+
+    // 🔗 6. LÍNEAS TÁCTICAS VISUALES ENTRE TITULARES CONTIGUOS
+    let linesSVG = '';
     for (let i = 0; i < posiciones.length; i++) {
         for (let j = i + 1; j < posiciones.length; j++) {
             const pA = posiciones[i];
@@ -2754,7 +2842,7 @@ function calcularYRenderizarQuimicaOnce(f, once) {
             const yB = parseFloat(pB.top);
 
             const dist = Math.hypot(xA - xB, yA - yB);
-            if (dist > 8 && dist < 36) {
+            if (dist > 8 && dist < 38) {
                 const idA = norm(once[i]);
                 const idB = norm(once[j]);
                 let isLinked = false;
@@ -2771,7 +2859,6 @@ function calcularYRenderizarQuimicaOnce(f, once) {
 
                     if (mismoPais || mismoClub || mismoJugador) {
                         isLinked = true;
-                        quimicaPuntos += (mismoPais && mismoClub) ? 4 : 3;
                     }
                 }
 
@@ -2780,31 +2867,8 @@ function calcularYRenderizarQuimicaOnce(f, once) {
         }
     }
 
-    // 👔 4. BONUS DE QUÍMICA POR DIRECTOR TÉCNICO (DT)
-    const dtId = norm(once['DT']);
-    if (dtId) {
-        const paisDt = PAISES_AVATARES[dtId] || 'GEN';
-        const clubsDt = CLUBES_AVATARES[dtId] || [];
-        let bonusDt = 0;
-
-        for (let i = 0; i < posiciones.length; i++) {
-            const idJug = norm(once[i]);
-            if (!idJug) continue;
-            const paisJug = PAISES_AVATARES[idJug] || 'GEN';
-            const clubsJug = CLUBES_AVATARES[idJug] || [];
-
-            if (paisDt !== 'GEN' && paisDt === paisJug) {
-                bonusDt += 1;
-            } else if (clubsDt.some(c => clubsJug.includes(c))) {
-                bonusDt += 1;
-            }
-        }
-        quimicaPuntos += Math.min(6, bonusDt);
-    }
-
-    const quimicaFinal = Math.min(33, quimicaPuntos);
     const svgHTML = `<svg class="chemistry-lines-svg">${linesSVG}</svg>`;
-    return { svgHTML, quimicaFinal };
+    return { svgHTML, quimicaFinal, quimicaIndividual, bonoOvr };
 }
 
 function renderizarOnceInicial() {
@@ -2858,18 +2922,18 @@ function renderizarOnceInicial() {
     const ovrEquipo = calcularOvrEquipoOnce();
     const ovrLineas = calcularOvrLineasOnce();
     const spDisponibles = userStats.puntosHabilidad || 0;
-    const { svgHTML: quimicaSVG, quimicaFinal } = calcularYRenderizarQuimicaOnce(f, once);
-    const bonoQuimica = quimicaFinal >= 18 ? 1 : 0;
+    const { svgHTML: quimicaSVG, quimicaFinal, quimicaIndividual, bonoOvr } = calcularYRenderizarQuimicaOnce(f, once);
+    const bonoQuimica = bonoOvr || 0;
 
     if (statsPill) {
         statsPill.innerHTML = `
             <div class="once-stats-hub">
                 <!-- 🛡️ OVR HERO CARD -->
-                <div class="once-ovr-card-hero" title="OVR Promedio de tu Once Titular (con bonus de química)">
+                <div class="once-ovr-card-hero" title="OVR Promedio de tu Once Titular (con bonus de química global)">
                     <span class="once-ovr-hero-label">OVR EQUIPO</span>
                     <div class="once-ovr-hero-val-wrap">
-                        <span class="once-ovr-hero-number">${ovrEquipo > 0 ? (ovrEquipo + bonoQuimica) : '--'}</span>
-                        ${bonoQuimica > 0 ? '<span class="once-ovr-bonus-chip" title="Bonus +1 por química">+1</span>' : ''}
+                        <span class="once-ovr-hero-number">${ovrEquipo > 0 ? ovrEquipo : '--'}</span>
+                        ${bonoQuimica > 0 ? `<span class="once-ovr-bonus-chip chem-bonus" title="Bono de química global: +${bonoQuimica} OVR">+${bonoQuimica}</span>` : ''}
                     </div>
                 </div>
 
@@ -2893,7 +2957,7 @@ function renderizarOnceInicial() {
 
                 <!-- 💎 QUÍMICA & PUNTOS SP -->
                 <div class="once-resources-hub">
-                    <div class="once-res-badge quimica ${quimicaFinal >= 18 ? 'chem-high' : ''}" title="Química de Equipo (Líneas verdes en el campo)">
+                    <div class="once-res-badge quimica ${quimicaFinal >= 33 ? 'chem-perfect' : (quimicaFinal >= 22 ? 'chem-high' : (quimicaFinal >= 11 ? 'chem-mid' : ''))}" title="Química de Equipo (Líneas tácticas y rombos por jugador)">
                         <i class="ph-bold ph-diamonds-four"></i>
                         <div class="once-res-text">
                             <span class="once-res-val">${quimicaFinal}<b>/33</b></span>
@@ -2920,12 +2984,13 @@ function renderizarOnceInicial() {
         `).join('');
     }
 
-    // 4. Renderizado de los 11 titulares en la cancha con OVR integrado
+    // 4. Renderizado de los 11 titulares en la cancha con OVR integrado y rombos de química
     let htmlNodos = f.posiciones.map((item, idx) => {
         const avatarId = once[idx];
         const isSlotActive = slotActivoOnce === idx;
         const isCaptain = avatarId && (avatarId === capitanAvatar);
         const ovrIndividual = avatarId ? obtenerOvrJugador(avatarId) : 0;
+        const chemVal = (quimicaIndividual && quimicaIndividual[idx]) ? quimicaIndividual[idx] : 0;
 
         const dragAttrs = avatarId ? `
             draggable="true"
@@ -2956,6 +3021,11 @@ function renderizarOnceInicial() {
                     <button type="button" class="once-slot-remove-btn" onclick="quitarJugadorDeOnce(${idx}, event)" ontouchstart="event.stopPropagation()" title="Quitar titular">✕</button>
                 </div>
                 <div class="once-pos-badge">${item.pos} · ${ovrIndividual}</div>
+                <div class="once-chem-pips" title="Química individual: ${chemVal}/3">
+                    <span class="chem-pip ${chemVal >= 1 ? 'active' : ''}"></span>
+                    <span class="chem-pip ${chemVal >= 2 ? 'active' : ''}"></span>
+                    <span class="chem-pip ${chemVal >= 3 ? 'active' : ''}"></span>
+                </div>
                 <div class="once-player-label">${obtenerNombreAvatar(avatarId)}</div>
             </div>`;
         } else {
@@ -2969,6 +3039,11 @@ function renderizarOnceInicial() {
                     <i class="ph-bold ph-plus"></i>
                 </div>
                 <div class="once-pos-badge empty">${item.pos}</div>
+                <div class="once-chem-pips" style="opacity:0.3;">
+                    <span class="chem-pip"></span>
+                    <span class="chem-pip"></span>
+                    <span class="chem-pip"></span>
+                </div>
                 <div class="once-player-label empty">Vacante</div>
             </div>`;
         }
