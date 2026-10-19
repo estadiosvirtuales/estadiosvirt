@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lan="es" data-theme="dark">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <!-- 🚀 Pre-conexión acelerada a YouTube para arranque instantáneo de videos -->
@@ -8,7 +8,41 @@
     <link rel="dns-prefetch" href="https://www.youtube.com">
     <link rel="dns-prefetch" href="https://www.google.com">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estadios Virtuales | El Mundo Desde el Aire</title>
+<title>Estadios Virtuales | Estadios de Fútbol del Mundo Desde el Aire y StadiumGuessr</title>
+<meta name="description" content="Explorá los mejores estadios de fútbol del mundo desde el aire en video HD. Recorridos aéreos, capacidades, historia, fotos y poné a prueba tus conocimientos en StadiumGuessr.">
+<meta name="keywords" content="estadios virtuales, estadiosvirtuales, estadios de futbol, estadios del mundo, canchas de futbol, stadiumguessr, estadios desde el aire, sobrevuelos estadios futbol">
+<link rel="canonical" href="https://www.estadiosvirtuales.com/">
+
+<!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Estadios Virtuales">
+<meta property="og:title" content="Estadios Virtuales | Estadios de Fútbol del Mundo Desde el Aire">
+<meta property="og:description" content="Explorá los mejores estadios de fútbol del mundo desde el aire en video HD. Recorridos aéreos, capacidades y el juego interactivo StadiumGuessr.">
+<meta property="og:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
+<meta property="og:url" content="https://www.estadiosvirtuales.com/">
+
+<!-- 🐦 TWITTER CARDS -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Estadios Virtuales | Estadios de Fútbol del Mundo Desde el Aire">
+<meta name="twitter:description" content="Explorá estadios de fútbol del mundo desde el aire en video HD y jugá a StadiumGuessr.">
+<meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
+
+<!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Estadios Virtuales",
+  "alternateName": ["EstadiosVirtuales", "Estadios Virtuales Fútbol", "StadiumGuessr"],
+  "url": "https://www.estadiosvirtuales.com/",
+  "description": "Explora los mejores estadios de fútbol del mundo desde el aire en video HD y juega al StadiumGuessr.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.estadiosvirtuales.com/?estadio={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 
 <!-- 🌐 FAVICON OFICIAL PARA GOOGLE Y NAVEGADORES -->
 <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
@@ -27,7 +61,11 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="estilos.css">
+<link rel="stylesheet" href="css/guessr.css">
+<link rel="stylesheet" href="css/perfil.css">
+<link rel="stylesheet" href="css/carrera.css">
 
 <!-- 🚀 PRECARGA DE ALTA PRIORIDAD (CERO ESPERA / CERO PARPADEO) -->
 <link rel="preload" as="image" href="estadios_virtuales1.webp" fetchpriority="high">
@@ -178,6 +216,9 @@
 </a>
 <div class="header-left-line"></div>
 <div class="header-actions">
+<button class="sound-toggle-btn" id="sound-toggle-btn" onclick="toggleSonidoEfectos()" title="Sonido: Silenciado (Clic para activar)" aria-label="Efectos de sonido">
+<i class="ph-duotone ph-speaker-slash" id="sound-icon"></i>
+</button>
 <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
 <i class="ph-duotone ph-moon" id="theme-icon"></i>
 </button>
@@ -312,6 +353,34 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <p>Novedades, desarrollo y evolución de la plataforma.</p>
 </div>
 <div class="privacy-modal-body">
+<div class="privacy-section-title">v1.3 — Celebraciones de Cancha, Pizarra Táctica y Mejoras Visuales</div>
+<p>Llegan los festejos de estadio a pantalla completa, ajustes en la cancha del Modo Carrera, nuevos escudos y una experiencia más cómoda en celulares.</p>
+
+<div class="privacy-section-title">🎉 Festejos y Premiaciones de Cancha</div>
+<ul>
+<li><strong>Papel Picado de Estadio:</strong> Nuevas celebraciones estilo final de copa con lluvia de papelitos, serpentinas y estrellas doradas al subir de nivel, reclamar botines y ganar partidas.</li>
+<li><strong>Consagración de Campeón:</strong> Festejo completo en pantalla al dar la vuelta olímpica y levantar trofeos en el Modo Carrera.</li>
+</ul>
+
+<div class="privacy-section-title">📋 Pizarra Táctica y Modo Carrera</div>
+<ul>
+<li><strong>Cancha Calibrada:</strong> Mejor posicionamiento del arquero y las áreas en las 5 tácticas para que los nombres de tus 11 jugadores se lean perfectos en cualquier celular.</li>
+<li><strong>Química del Once:</strong> Conexiones más limpias y claras entre jugadores para armar tu equipo titular con facilidad.</li>
+</ul>
+
+<div class="privacy-section-title">🛡️ Escudos y Sedes Mundialistas</div>
+<ul>
+<li><strong>Sedes del Mundial 2026:</strong> Las tarjetas de los estadios mundialistas ahora lucen los escudos oficiales de las federaciones de México, Estados Unidos y Canadá.</li>
+<li><strong>Clubes de la MLS:</strong> Incorporación de los escudos oficiales de todos los equipos del fútbol estadounidense en el catálogo y Modo Carrera.</li>
+</ul>
+
+<div class="privacy-section-title">📱 Ajustes de Interfaz y Celulares</div>
+<ul>
+<li><strong>Edición de Carta más Cómoda:</strong> Botones más compactos y prolijos debajo de tu carta de jugador para editarla o compartirla sin problemas en celulares angostos.</li>
+<li><strong>Pantalla de Inicio más Limpia:</strong> Acceso directo y despejado a tus partidos diarios y ligas.</li>
+<li><strong>StadiumGuessr en Móvil:</strong> El cartel de ronda ahora tiene una mejor ubicación para que no tape la parte superior del mapa.</li>
+</ul>
+
 <div class="privacy-section-title">v1.2 — Experiencia Competitiva y Ajustes Visuales</div>
 <p>Nueva actualización enfocada en la fluidez del multijugador, ayudas tácticas interactivas y mejoras de interfaz.</p>
 
@@ -399,6 +468,18 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <i class="ph-bold ph-magnifying-glass search-icon"></i>
 <input type="text" class="search-bar" id="global-search" placeholder="Buscá estadios, clubes o países...">
 </div>
+<!-- 🏷️ PASTILLAS DE FILTRO RÁPIDO -->
+<div class="search-quick-tags" id="search-quick-tags">
+    <button type="button" class="quick-tag-pill" onclick="aplicarFiltroRapido('populares')">
+        <i class="ph-bold ph-fire" style="color:#ff6b4a;"></i> <span>Más Populares</span>
+    </button>
+    <button type="button" class="quick-tag-pill" onclick="aplicarFiltroRapido('70k')">
+        <i class="ph-bold ph-users-three" style="color:var(--accent-color);"></i> <span>Capacidad +70k</span>
+    </button>
+    <button type="button" class="quick-tag-pill tag-random" onclick="aplicarFiltroRapido('aleatorio')">
+        <i class="ph-bold ph-shuffle" style="color:#38bdf8;"></i> <span>Vuelo Aleatorio</span>
+    </button>
+</div>
 <div class="game-modes">
 <button class="game-card btn-guessr" onclick="abrirModalGuessr()">
     <img src="mundo.webp" alt="StadiumGuessr" class="game-3d-icon">
@@ -440,10 +521,12 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <div class="shortcut-ambient-glow glow-reto"></div>
         <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.webp" alt="Reto Diario" class="reto-baul-img" onerror="this.src='https://estadiosvirtuales.github.io/estadiosvirt/escudos/baul.jpg';">
         <div class="reto-banner-text">
-            <span class="shortcut-kicker kicker-reto"><span class="live-dot-pulse dot-reto"></span> DIARIO</span>
             <strong>Reto Diario</strong>
-            <span class="reto-sub-desc">¡Premio de XP al #1 del día! 👑</span>
-            <span class="reto-sub-pill pill-reto">Premio al #1 👑</span>
+            <span class="reto-sub-desc">¡Completá el desafío de hoy!</span>
+            <div class="reto-timer-chip" id="reto-diario-timer">
+                <i class="ph-bold ph-hourglass-high"></i>
+                <span id="reto-timer-texto">--:--:--</span>
+            </div>
         </div>
     </button>
 
@@ -451,7 +534,6 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <div class="shortcut-ambient-glow glow-liga"></div>
         <img src="icono-liga.webp" alt="Liga Privada de Amigos" class="liga-banner-img">
         <div class="reto-banner-text">
-            <span class="shortcut-kicker kicker-liga"><span class="live-dot-pulse dot-liga"></span> EN VIVO</span>
             <strong>Ingresa a tu liga</strong>
             <span class="reto-sub-desc">Creá o unite a un torneo</span>
             <span class="reto-sub-pill pill-liga">Duelos 1v1 <img src="liga-icon-historial.webp" class="sub-pill-img" alt="Duelo"></span>
@@ -620,6 +702,21 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 </div>
 
+<!-- ESTADOS UNIDOS -->
+<div class="liga-country-group">
+<button class="liga-country-btn" onclick="toggleLigaCountryGroup(this)">
+<img src="https://flagcdn.com/w20/us.png" alt="USA" class="country-flag-icon">
+<span class="country-name">Estados Unidos</span>
+<i class="ph-bold ph-caret-down chevron"></i>
+</button>
+<div class="liga-country-leagues">
+<button class="tab" data-gid="450128934">
+    <span class="tab-dot"></span>
+    <span class="tab-name">MLS</span>
+</button>
+</div>
+</div>
+
 <!-- PAÍSES BAJOS -->
 <div class="liga-country-group">
 <button class="liga-country-btn" onclick="toggleLigaCountryGroup(this)">
@@ -676,11 +773,11 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <div id="modal-video-container" class="video-container"></div>
 <div id="game-ui">
 <div class="guessr-top-hud">
-    <div id="taunts-container" style="display: none; gap: 8px; justify-content: center; margin-bottom: 8px; width: 100%;">
-        <button onclick="mandarTaunt('🥶')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🥶</button>
-        <button onclick="mandarTaunt('🔥')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🔥</button>
-        <button onclick="mandarTaunt('👑')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">👑</button>
-        <button onclick="mandarTaunt('🤡')" class="btn-3d secondary" style="padding: 6px 12px; font-size: 1.15rem; box-shadow: none; flex: 1; border-radius: 10px;">🤡</button>
+    <div id="taunts-container" class="taunts-dock" style="display: none;">
+        <button type="button" onclick="mandarTaunt('🥶')" class="taunt-btn" title="¡Qué frío!">🥶</button>
+        <button type="button" onclick="mandarTaunt('🔥')" class="taunt-btn" title="¡On fire!">🔥</button>
+        <button type="button" onclick="mandarTaunt('👑')" class="taunt-btn" title="¡Soy el rey!">👑</button>
+        <button type="button" onclick="mandarTaunt('🤡')" class="taunt-btn" title="Payaso">🤡</button>
     </div>
     <div class="rounds-progress" id="rounds-progress"></div>
     <h3 id="game-title">0 PTS &nbsp;·&nbsp; RONDA 1 DE 5</h3>
@@ -839,23 +936,15 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                     <button onclick="clickJugarCopaDesdeCarrera()" class="guessr-option-btn btn-opt-capacidad">
                         <div class="guessr-option-icon"><img src="trofeo.webp" alt="Jugar Copas" style="width: 100%; height: 100%; object-fit: contain; transform: scale(1.45);"></div>
                         <div class="guessr-option-text">
-                            <strong style="color: #fbbf24;">Disputar Torneos</strong>
-                            <span id="carrera-hub-copas-desc">Competí en eliminación directa desde Copa Nacional a Mundial</span>
+                            <strong style="color: #fbbf24;">Jugar Copas</strong>
+                            <span id="carrera-hub-copas-desc">Competí en eliminación directa desde Copa Desafío a Mundial</span>
                         </div>
                     </button>
 
-                    <!-- 4. PALMARÉS / SALA DE TROFEOS -->
-                    <button onclick="abrirPalmaresDesdeCarrera()" class="guessr-option-btn btn-opt-ranking">
-                        <div class="guessr-option-icon"><img src="medalla-oro.webp" alt="Palmarés" style="width: 85%; height: 85%; object-fit: contain;"></div>
-                        <div class="guessr-option-text">
-                            <strong>Palmarés del Club</strong>
-                            <span id="carrera-hub-palmares-desc">Mirá los títulos conquistados y tu vitrina de trofeos</span>
-                        </div>
-                    </button>
 
                     <!-- 5. SALÓN DE CAMPEONES (RANKING DE CLUBES Y DUELOS) -->
                     <button onclick="cerrarModalModoCarrera(); abrirModalRankingCarrera();" class="guessr-option-btn btn-opt-campeones">
-                        <div class="guessr-option-icon"><img src="coronaoro.webp" alt="Salón de Campeones" style="width: 90%; height: 90%; object-fit: contain;"></div>
+                        <div class="guessr-option-icon"><img src="trofeo.webp" alt="Salón de Campeones" style="width: 90%; height: 90%; object-fit: contain;"></div>
                         <div class="guessr-option-text">
                             <strong style="color: #ffd700;">Salón de Campeones</strong>
                             <span>Ranking de títulos de la comunidad y desafíos a otros DTs</span>
@@ -957,6 +1046,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <button class="escudo-tab-btn" data-cat="ita" onclick="cambiarCategoriaEscudos('ita', this)">Italia</button>
                 <button class="escudo-tab-btn" data-cat="ned" onclick="cambiarCategoriaEscudos('ned', this)">Países Bajos</button>
                 <button class="escudo-tab-btn" data-cat="por" onclick="cambiarCategoriaEscudos('por', this)">Portugal</button>
+                <button class="escudo-tab-btn" data-cat="usa" onclick="cambiarCategoriaEscudos('usa', this)">EE.UU. / MLS</button>
             </div>
             <button type="button" class="escudos-scroll-arrow" onclick="desplazarTabsEscudos(140)" title="Desplazar a la derecha"><i class="ph-bold ph-caret-right"></i></button>
         </div>
@@ -1005,8 +1095,16 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/progreso.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/catalogo.js"></script>
+<script src="js/escudos.js"></script>
+<script src="js/perfil.js"></script>
+<script src="js/guessr.js"></script>
+<script src="js/carrera.js"></script>
 <script src="juego.js"></script>
-<script src="orden.js"></script>
+<script src="js/orden.js"></script>
 
 
 
@@ -1026,13 +1124,13 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <div class="once-top-actions-bar">
             <div class="pitch-formations-bar" id="once-formation-tabs"></div>
             <div class="once-quick-btns">
-                <button type="button" id="btn-torneo-once-trigger" class="btn-3d once-quick-btn btn-torneo-locked" onclick="clickBotonTorneoOnce()">
-                    <i class="ph-bold ph-lock-key" id="ico-torneo-btn"></i> <span id="lbl-torneo-btn">Copa (0/11)</span>
+                <button type="button" class="btn-3d once-quick-btn once-btn-micarta" onclick="cerrarModalOnceInicial(false); abrirModalPerfil();" title="Personalizar mi carta">
+                    <i class="ph-bold ph-identification-card"></i> <span>Mi Carta</span>
                 </button>
-                <button type="button" class="btn-3d primary once-quick-btn" onclick="autocompletarOnceInicial()">
-                    <i class="ph-bold ph-magic-wand"></i> Auto-completar
+                <button type="button" class="btn-3d once-quick-btn once-btn-auto" onclick="autocompletarOnceInicial()" title="Autocompletar con tus mejores jugadores">
+                    <i class="ph-bold ph-magic-wand"></i> <span>Auto</span>
                 </button>
-                <button type="button" class="btn-3d secondary once-quick-btn danger" onclick="limpiarOnceInicial()" title="Vaciar cancha">
+                <button type="button" class="btn-3d once-quick-btn once-btn-trash" onclick="limpiarOnceInicial()" title="Vaciar cancha">
                     <i class="ph-bold ph-trash"></i>
                 </button>
             </div>
@@ -1089,7 +1187,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <h3 class="tier-title">Copa Desafío</h3>
                 <p class="tier-desc">Torneo de ascenso y clubes de menor presupuesto (OVR 58 - 66).</p>
                 <div class="tier-reward-pill">
-                    <i class="ph-bold ph-trophy"></i> Trofeo + 10 SP
+                    <i class="ph-bold ph-trophy"></i> Trofeo + 6 SP
                 </div>
                 <button type="button" class="btn-3d primary tier-action-btn">
                     <span>Disputar Copa</span> <i class="ph-bold ph-play"></i>
@@ -1108,7 +1206,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <h3 class="tier-title">Copa Continental</h3>
                 <p class="tier-desc">Duelos contra clubes de 1ra división de América y Europa (OVR 72 - 80).</p>
                 <div class="tier-reward-pill">
-                    <i class="ph-bold ph-trophy"></i> Trofeo + 25 SP
+                    <i class="ph-bold ph-trophy"></i> Trofeo + 12 SP
                 </div>
                 <button type="button" class="btn-3d secondary tier-action-btn" disabled>
                     <i class="ph-bold ph-lock-key"></i> Bloqueado
@@ -1127,7 +1225,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <h3 class="tier-title">Mundial Clubes</h3>
                 <p class="tier-desc">Enfrentá a los gigantes de élite mundial (Real Madrid, City, Bayern, PSG) (OVR 83 - 88).</p>
                 <div class="tier-reward-pill">
-                    <i class="ph-bold ph-trophy"></i> Trofeo + 45 SP
+                    <i class="ph-bold ph-trophy"></i> Trofeo + 15 SP
                 </div>
                 <button type="button" class="btn-3d secondary tier-action-btn" disabled>
                     <i class="ph-bold ph-lock-key"></i> Bloqueado
@@ -1146,7 +1244,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <h3 class="tier-title">Copa del Mundo</h3>
                 <p class="tier-desc">La cumbre absoluta contra las selecciones nacionales del planeta (OVR 78 - 88).</p>
                 <div class="tier-reward-pill">
-                    <i class="ph-bold ph-crown"></i> Trofeo Mundial + 75 SP
+                    <i class="ph-bold ph-crown"></i> Trofeo Mundial + 20 SP
                 </div>
                 <button type="button" class="btn-3d secondary tier-action-btn" disabled>
                     <i class="ph-bold ph-lock-key"></i> Bloqueado
@@ -1426,7 +1524,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <!-- Botón de cobro estilo 3D Gamer Dorado -->
                 <div class="cofre-actions-wrap">
                     <button type="button" class="btn-3d primary btn-cofre-claim" id="btn-cofre-claim-btn" onclick="reclamarRecompensaCofreTemporada()">
-                        <span id="btn-cofre-claim-text">LEVANTAR COPA Y GUARDAR BOTÍN</span> <i class="ph-bold ph-trophy"></i>
+                        <span id="btn-cofre-claim-text">RECOGER RECOMPENSA</span> <i class="ph-bold ph-trophy"></i>
                     </button>
                 </div>
             </div>

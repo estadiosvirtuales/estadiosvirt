@@ -1,0 +1,993 @@
+/* ========================================================
+   🎴 ESTADIOS VIRTUALES - MÓDULO CSS: PACK OPENING 3D, RECOMPENSAS Y CARTA FUT
+   ======================================================== */
+   ✨ SISTEMA PACK OPENING & DESBLOQUEOS (CYBER GLASSMORPHISM)
+   ========================================================================== */
+
+.ev-pack-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 8, 18, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+/* 📦 CONTENEDORES PRINCIPALES */
+.ev-pack-container,
+.ev-reward-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    perspective: 1000px;
+}
+
+/* 🎴 SOBRE CERRADO 3D (CYBER VAULT CONTAINER) */
+.ev-pack-card {
+    position: relative;
+    width: 320px;
+    max-width: 92vw;
+    background: linear-gradient(180deg, rgba(16, 28, 48, 0.95) 0%, rgba(6, 12, 22, 0.98) 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.55);
+    border-top: 2px solid #ffe66d;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 26px 22px 22px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
+                0 0 40px rgba(0, 242, 254, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.ev-pack-card:hover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85),
+                0 0 50px rgba(255, 215, 0, 0.35);
+}
+
+/* 🌟 SPOTLIGHT HOLOGRÁFICO CENITAL */
+.ev-pack-glow {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.28) 0%, rgba(255, 215, 0, 0.15) 45%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(20px);
+}
+
+.ev-pack-badge {
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(135deg, #ffd700 0%, #ffae00 100%);
+    color: #070d18;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 12px rgba(255, 215, 0, 0.45);
+    border: 1px solid #fff5a5;
+    margin-bottom: 8px;
+}
+
+.ev-pack-emblem {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px 0 10px 0;
+}
+
+.ev-pack-vault-img {
+    width: 250px;
+    max-width: 95%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(0, 242, 254, 0.4));
+    animation: evFlotar 3s ease-in-out infinite;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.ev-pack-card:hover .ev-pack-vault-img {
+    transform: scale(1.04);
+    filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 35px rgba(255, 215, 0, 0.6));
+}
+
+.ev-pack-title {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 4px 0 4px 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.ev-pack-sub {
+    position: relative;
+    z-index: 2;
+    color: #94a3b8;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin: 0 0 18px 0;
+    max-width: 240px;
+}
+
+/* 🚀 BOTÓN 3D METÁLICO CON RESPLANDOR */
+.ev-btn-abrir-pack {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 210px;
+    padding: 10px 18px 11px;
+    background: linear-gradient(180deg, #ffe066 0%, #f59e0b 60%, #d97706 100%);
+    border: none;
+    border-top: 1.5px solid #fffbeb;
+    border-radius: 12px;
+    color: #0b1325;
+    font-size: 0.86rem;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 5px 16px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+}
+
+.ev-btn-abrir-pack:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(255, 215, 0, 0.6), inset 0 1px 0 #ffffff;
+    filter: brightness(1.08);
+}
+
+.ev-btn-abrir-pack:active {
+    transform: translateY(2px) scale(0.97);
+}
+
+/* 💥 ANIMACIÓN DE APERTURA */
+.ev-pack-abriendo {
+    animation: evVibrarSobre 1.2s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes evVibrarSobre {
+    10%, 90% { transform: translate3d(-3px, 0, 0) rotate(-1.5deg); }
+    20%, 80% { transform: translate3d(5px, 0, 0) rotate(2deg); }
+    30%, 50%, 70% { transform: translate3d(-7px, 0, 0) rotate(-3.5deg) scale(1.06); }
+    40%, 60% { transform: translate3d(7px, 0, 0) rotate(3.5deg) scale(1.12); filter: brightness(1.8) drop-shadow(0 0 35px #ffd700); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes evFlotar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+
+/* ==========================================================================
+   🃏 GRILLA DE REVELACIÓN (MINI CARTAS FUT COLECCIONABLES)
+   ========================================================================== */
+
+.ev-pack-reveal-box {
+    width: 100%;
+    max-width: 620px;
+    animation: evEntradaSuave 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-reveal-title {
+    color: #ffd700;
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 25px rgba(255, 215, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.ev-reveal-sub {
+    color: #94a3b8;
+    font-size: 0.88rem;
+    margin-bottom: 22px;
+}
+
+.ev-pack-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    width: 100%;
+}
+
+/* 🏆 CONTENEDOR 3D FLIP CARD (OPTIMIZADO A 60/120 FPS) */
+.ev-card-pick {
+    position: relative;
+    width: 100%;
+    height: 178px;
+    min-height: 178px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    perspective: 1100px;
+    user-select: none;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evSuspenseCardPick 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Escalonamiento secuencial en el sobre inicial para mayor emoción */
+.ev-card-pick:nth-child(1) { animation-delay: 0.04s; }
+.ev-card-pick:nth-child(2) { animation-delay: 0.10s; }
+.ev-card-pick:nth-child(3) { animation-delay: 0.16s; }
+.ev-card-pick:nth-child(4) { animation-delay: 0.22s; }
+.ev-card-pick:nth-child(5) { animation-delay: 0.28s; }
+.ev-card-pick:nth-child(6) { animation-delay: 0.34s; }
+
+@keyframes evSuspenseCardPick {
+    0% {
+        transform: translate3d(0, 32px, 0) scale(0);
+        opacity: 0;
+    }
+    65% {
+        transform: translate3d(0, -6px, 0) scale(1.06);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* 🔄 EJE DE ROTACIÓN 3D */
+.ev-card-pick-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.25, 1.1);
+}
+
+/* La carta gira solo con la clase fijada por el click */
+.ev-card-pick.is-flipped .ev-card-pick-inner {
+    transform: rotateY(180deg);
+}
+
+.ev-card-pick-front,
+.ev-card-pick-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 10px 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* 🃏 DORSO DE LA CARTA (ESTILO CYBER VAULT) */
+.ev-card-pick-back {
+    transform: rotateY(0deg) translateZ(1px);
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(0, 255, 119, 0.18) 0%, transparent 68%),
+        linear-gradient(150deg, #101c30 0%, #060b14 100%);
+    border: 1.5px solid rgba(0, 255, 119, 0.35);
+    border-top: 2px solid #00ff77;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    padding-bottom: 38px !important;
+}
+
+/* Hover sin alterar rotación: solo resalta el borde y sombra */
+.ev-card-pick:not(.is-flipped):hover .ev-card-pick-back {
+    border-color: #00ff77;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 255, 119, 0.45);
+}
+
+.ev-card-back-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 14px),
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 14px);
+    pointer-events: none;
+}
+
+/* Logo centrado en el espacio disponible */
+.ev-card-back-logo {
+    width: 135px;
+    height: 135px;
+    object-fit: contain;
+    margin: auto 0;
+    filter: drop-shadow(0 0 14px rgba(0, 255, 119, 0.6));
+    animation: evFlotar 3s ease-in-out infinite;
+    background: transparent !important;
+}
+
+/* Botón TOCÁ anclado fijamente al fondo sin moverse */
+.ev-card-back-text {
+    position: absolute !important;
+    bottom: 12px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: rgba(0, 255, 119, 0.16);
+    border: 1px solid rgba(0, 255, 119, 0.5);
+    color: #00ff77;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    text-shadow: 0 0 8px rgba(0, 255, 119, 0.5);
+    animation: timerPulse 1.6s infinite ease-in-out;
+    white-space: nowrap !important;
+    z-index: 5 !important;
+}
+
+/* 🌟 FRENTE DE LA CARTA (JUGADOR REVELADO) */
+.ev-card-pick-front {
+    transform: rotateY(180deg) translateZ(1px);
+    background: linear-gradient(150deg, #132238 0%, #080f1a 100%);
+    border: 1.5px solid rgba(255, 215, 0, 0.45);
+    border-top: 2px solid rgba(255, 230, 109, 0.85);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 215, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Hover sobre la carta ya dada vuelta: resalta el oro sin alterar el ángulo */
+.ev-card-pick.is-flipped:hover .ev-card-pick-front {
+    border-color: #ffd700;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.75), 0 0 28px rgba(255, 215, 0, 0.5);
+}
+
+/* Contenedor transparente y libre de sombras fijas durante el giro */
+.ev-card-pick:hover {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.ev-card-pick-badge {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.ev-card-pick-avatar-wrap {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    margin: 8px 0 10px;
+    border-radius: 50%;
+    padding: 1.5px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffae00 100%);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ev-card-pick-avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #091322;
+}
+
+.ev-card-pick-name {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ev-card-pick-btn {
+    width: 100%;
+    background: rgba(255, 215, 0, 0.12);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 5px 0;
+    border-radius: 8px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.ev-card-pick:hover .ev-card-pick-btn {
+    background: #ffd700;
+    color: #08111e;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+/* 🌟 POPUP RECOMPENSA DE NIVEL */
+.ev-reward-level-badge {
+    background: #00f2fe;
+    color: #040914;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+}
+
+.ev-reward-headline {
+    color: #ffd700;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.ev-reward-card {
+    width: 200px;
+    height: 270px;
+    background: transparent;
+    border: none;
+    margin-bottom: 24px;
+    perspective: 1100px;
+    cursor: pointer;
+    user-select: none;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evSuspenseCardPick 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.ev-reward-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.2, 0.85, 0.25, 1.1);
+}
+
+.ev-reward-card.is-flipped .ev-reward-card-inner {
+    transform: rotateY(180deg);
+}
+
+.ev-reward-card-front,
+.ev-reward-card-back {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* 🃏 DORSO DEL PREMIO POR NIVEL */
+.ev-reward-card-back {
+    transform: rotateY(0deg);
+    background: 
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.2) 0%, transparent 68%),
+        linear-gradient(150deg, #16253d 0%, #080f1b 100%);
+    border: 2px solid #ffd700;
+    border-top: 2.5px solid #fff5a5;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 215, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 14px 44px;
+}
+
+.ev-reward-card:not(.is-flipped):hover .ev-reward-card-back {
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.6);
+    transform: translateY(-3px) scale(1.02);
+}
+
+.reward-back-logo {
+    width: 120px !important;
+    height: 120px !important;
+    margin: auto 0 !important;
+}
+
+/* 🌟 FRENTE DEL PREMIO REVELADO */
+.ev-reward-card-front {
+    transform: rotateY(180deg);
+    background: linear-gradient(145deg, #111e38 0%, #080f1e 100%);
+    border: 2px solid #ffd700;
+    border-top: 2.5px solid #fff5a5;
+    box-shadow: 0 0 35px rgba(255, 215, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 14px;
+}
+
+.ev-reward-card.is-flipped:hover .ev-reward-card-front {
+    box-shadow: 0 0 45px rgba(255, 215, 0, 0.6);
+}
+
+.ev-reward-card-front img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #ffd700;
+    margin-bottom: 12px;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.3);
+}
+
+.ev-reward-name {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.ev-reward-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 260px;
+}
+
+.ev-btn-equipar {
+    padding: 12px;
+    background: linear-gradient(90deg, #ffd700, #ffae00);
+    border: none;
+    border-radius: 12px;
+    color: #0b1325;
+    font-size: 0.9rem;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.ev-btn-cerrar-premio {
+    padding: 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #a0aec0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@keyframes evCardReveal {
+    0% { transform: rotateY(90deg) scale(0.5); opacity: 0; }
+    100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes evEntradaSuave {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 📱 AJUSTES CELULAR */
+@media (max-width: 768px) {
+    .ev-pack-card {
+        width: 260px;
+        padding: 22px 18px 18px;
+    }
+    .ev-pack-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .ev-card-pick {
+        height: 160px;
+        min-height: 160px;
+    }
+    .ev-card-pick-avatar-wrap {
+        width: 62px;
+        height: 62px;
+        padding: 1.2px;
+        box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+    }
+    /* 📱 [CELULAR] TAMAÑO DEL LOGO EN EL DORSO */
+    .ev-card-back-logo {
+        width: 130px;
+        height: 130px;
+    }
+    /* 📱 [CELULAR] POSICIÓN DEL BOTÓN TOCÁ (NO SE MUEVE AL CAMBIAR EL LOGO) */
+    .ev-card-back-text {
+        bottom: 8px !important;
+        font-size: 0.62rem !important;
+        padding: 2px 10px !important;
+    }
+    /* 📱 [CELULAR] LOGO EN CARTA DE NIVEL */
+    .reward-back-logo {
+        width: 120px !important;
+        height: 120px !important;
+    }
+}
+
+/* ==========================================================================
+   ⚡ EFECTO GAMING: DESTELLO Y RAYOS DE LUZ EN PANTALLA COMPLETA
+   ========================================================================== */
+.ev-gaming-fx-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100060 !important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 1. Flash enceguecedor radial de apertura */
+.ev-fx-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95) 0%, rgba(255, 220, 100, 0.5) 38%, rgba(0, 255, 119, 0.3) 68%, transparent 100%);
+    animation: evFxFlashAnim 1.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+/* 2. Rayos de luz volumétricos optimizados para GPU (cero lag en móvil) */
+.ev-fx-rays {
+    position: absolute;
+    width: 170vmax;
+    height: 170vmax;
+    background: repeating-conic-gradient(
+        from 0deg,
+        rgba(255, 215, 0, 0.26) 0deg 10deg,
+        transparent 14deg 22deg,
+        rgba(0, 242, 254, 0.24) 22deg 32deg,
+        transparent 36deg 44deg
+    );
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evFxRaysSpin 3.2s cubic-bezier(0.15, 0.85, 0.25, 1) forwards;
+    -webkit-mask-image: radial-gradient(circle, black 30%, transparent 72%);
+    mask-image: radial-gradient(circle, black 30%, transparent 72%);
+}
+
+/* 3. Primer anillo de choque acelerado */
+.ev-fx-shockwave {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 20px rgba(0, 255, 119, 0.8);
+    transform: translateZ(0);
+    will-change: width, height, opacity;
+    animation: evFxShockwaveAnim 1.6s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
+}
+
+/* 4. Segundo anillo de choque retardado */
+.ev-fx-shockwave-2 {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 215, 0, 0.85);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+    transform: translateZ(0);
+    will-change: width, height, opacity;
+    animation: evFxShockwaveAnim 1.9s 0.15s cubic-bezier(0.15, 0.85, 0.35, 1.1) forwards;
+}
+
+/* 5. Estelas ligeras (con box-shadow ultraliviano en vez de drop-shadow) */
+.ev-fx-spark {
+    position: absolute;
+    width: 3.5px;
+    height: 85px;
+    background: linear-gradient(180deg, #ffffff, #ffd700, transparent);
+    border-radius: 4px;
+    box-shadow: 0 0 10px #00ff77;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evFxSparkFly 1.8s cubic-bezier(0.15, 0.9, 0.25, 1) forwards;
+    transform-origin: center bottom;
+}
+
+@keyframes evFxFlashAnim {
+    0% { opacity: 0; transform: scale(0.6); }
+    12% { opacity: 1; transform: scale(1); }
+    55% { opacity: 0.45; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+
+@keyframes evFxRaysSpin {
+    0% { transform: rotate(0deg) scale(0.2); opacity: 0; }
+    15% { opacity: 0.95; transform: rotate(35deg) scale(1); }
+    65% { opacity: 0.8; transform: rotate(140deg) scale(1.15); }
+    85% { opacity: 0.45; }
+    100% { transform: rotate(240deg) scale(1.35); opacity: 0; }
+}
+
+@keyframes evFxShockwaveAnim {
+    0% { width: 10px; height: 10px; opacity: 1; }
+    40% { opacity: 0.9; }
+    100% { width: 160vmax; height: 160vmax; opacity: 0; border-width: 1px; }
+}
+
+@keyframes evFxSparkFly {
+    0% { opacity: 1; transform: rotate(var(--angle)) translateY(0) scaleY(1); }
+    70% { opacity: 0.8; }
+    100% { opacity: 0; transform: rotate(var(--angle)) translateY(calc(-50vmax)) scaleY(2.5); }
+}
+
+/* ==========================================================================
+   🏟️ ILUMINACIÓN AMBIENTAL DE ESTADIO DESDE LAS 4 ESQUINAS (SOBRES Y CARTAS)
+   ========================================================================== */
+.ev-pack-lights-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100060 !important;
+    overflow: hidden;
+}
+
+/* Focos de luz volumétrica suave en las 4 esquinas (sin rayos cortantes) */
+.ev-corner-spot {
+    position: absolute;
+    width: 75vmax;
+    height: 75vmax;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0;
+    mix-blend-mode: screen;
+}
+
+.ev-corner-spot.top-left {
+    top: -30vmax;
+    left: -30vmax;
+    background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.45) 0%, rgba(0, 242, 254, 0.12) 45%, transparent 70%);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evCornerSpotAnim 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-corner-spot.top-right {
+    top: -30vmax;
+    right: -30vmax;
+    background: radial-gradient(circle at 65% 35%, rgba(255, 215, 0, 0.45) 0%, rgba(255, 215, 0, 0.12) 45%, transparent 70%);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evCornerSpotAnim 1.35s 0.04s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-corner-spot.bottom-left {
+    bottom: -30vmax;
+    left: -30vmax;
+    background: radial-gradient(circle at 35% 65%, rgba(0, 255, 119, 0.40) 0%, rgba(0, 255, 119, 0.12) 45%, transparent 70%);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evCornerSpotAnim 1.35s 0.06s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ev-corner-spot.bottom-right {
+    bottom: -30vmax;
+    right: -30vmax;
+    background: radial-gradient(circle at 65% 65%, rgba(255, 230, 109, 0.42) 0%, rgba(255, 230, 109, 0.12) 45%, transparent 70%);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    animation: evCornerSpotAnim 1.35s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Halo central de concentración sincronizado con el aterrizaje final (1.35s) */
+.ev-center-ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(0);
+    width: 85vmax;
+    height: 85vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 215, 0, 0.16) 28%, rgba(0, 242, 254, 0.08) 55%, transparent 75%);
+    filter: blur(55px);
+    opacity: 0;
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+    animation: evCenterGlowAnim 1.35s 0.03s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes evCornerSpotAnim {
+    0% { opacity: 0; transform: scale(0.65); }
+    18% { opacity: 0.95; transform: scale(1.05); }
+    65% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.15); }
+}
+
+@keyframes evCenterGlowAnim {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.55); }
+    22% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    70% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.22); }
+}
+
+.ev-card-pick-badge {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.ev-card-pick-avatar-wrap {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    margin: 8px 0 10px;
+    border-radius: 50%;
+    padding: 1.5px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffae00 100%);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ev-card-pick-avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #091322;
+}
+
+.ev-card-pick-name {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ev-card-pick-btn {
+    width: 100%;
+    background: rgba(255, 215, 0, 0.12);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: #ffd700;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    padding: 5px 0;
+    border-radius: 8px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+}
+
+.ev-card-pick:hover .ev-card-pick-btn {
+    background: #ffd700;
+    color: #08111e;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+
+
+/* ==========================================================================
+   ✨ LUCES DELICADAS DE CELEBRACIÓN (SUAVES, ELEGANTES Y FESTIVAS)
+   ========================================================================== */
+.ev-delicate-fx-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 100060 !important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 1. Halo dorado suave central que respira sutilmente */
+.ev-delicate-glow {
+    position: absolute;
+    width: 90vmin;
+    height: 90vmin;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.24) 0%, rgba(255, 180, 0, 0.08) 42%, rgba(0, 255, 119, 0.03) 65%, transparent 80%);
+    mix-blend-mode: screen;
+    animation: evDelicateGlowPulse 2.6s ease-out forwards;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+/* 2. Viñeta perimetral dorada muy tenue que enmarca la pantalla */
+.ev-delicate-vignette {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 70px rgba(255, 215, 0, 0.14), inset 0 0 140px rgba(0, 255, 119, 0.05);
+    animation: evDelicateVignetteFade 2.6s ease-out forwards;
+}
+
+/* 3. Destellos pequeños de estrellas que titilan finamente */
+.ev-delicate-sparkle {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background: #ffffff;
+    clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 0 18px rgba(255, 255, 255, 0.8);
+    transform: translateZ(0);
+    opacity: 0;
+    animation: evDelicateSparkleShimmer 1.8s ease-in-out forwards;
+}
+.ev-delicate-sparkle.s1 { animation-delay: 0.15s; }
+.ev-delicate-sparkle.s2 { animation-delay: 0.35s; transform: scale(0.85); }
+.ev-delicate-sparkle.s3 { animation-delay: 0.55s; transform: scale(0.75); }
+.ev-delicate-sparkle.s4 { animation-delay: 0.75s; transform: scale(0.9); }
+
+@keyframes evDelicateGlowPulse {
+    0% { opacity: 0; transform: scale(0.65); }
+    25% { opacity: 1; transform: scale(1.05); }
+    60% { opacity: 0.85; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.3); }
+}
+
+@keyframes evDelicateVignetteFade {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    70% { opacity: 0.75; }
+    100% { opacity: 0; }
+}
+
+@keyframes evDelicateSparkleShimmer {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    35% { opacity: 1; transform: scale(1.2) rotate(45deg); }
+    70% { opacity: 0.8; transform: scale(0.9) rotate(90deg); }
+    100% { opacity: 0; transform: scale(0) rotate(135deg); }
+}

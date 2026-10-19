@@ -1,0 +1,229 @@
+/* ========================================================
+   🎨 ESTADIOSVIRTUALES.COM - MÓDULO: BASE, VARIABLES Y HEADER
+   ======================================================== */
+
+:root{
+  color-scheme: dark;
+  --bg-color:#0e141b;--card-bg:#18212c;--surface-color:#1e2936;--surface-hover:#263445;
+  --text-main:#f0f4f8;--text-muted:#7a8fa6;--text-inverse:#000;
+  --accent-color:#00e676;--accent-hover:#69ff9c;--accent-dim:rgba(0,230,118,.12);--accent-glow:rgba(0,230,118,.35);
+  --danger-color:#ff4757;--border-subtle:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.15);
+  --glass-bg:rgba(20,32,46,.88);--modal-overlay:rgba(6,12,20,.92);
+  --shadow-soft:0 4px 20px rgba(0,0,0,.35);--shadow-strong:0 16px 50px rgba(0,0,0,.65);
+  --pitch-line:rgba(0,230,118,.055);
+  --xp-bronze:#cd7f32;--xp-silver:#9ca3af;--xp-gold:#eab308;--xp-legend:#a78bfa;
+  --scrollbar-track: #090e17;
+  --scrollbar-thumb: #1e293b;
+  --scrollbar-thumb-hover: #334155;
+  --scrollbar-thumb-active: #475569;
+}
+[data-theme="light"]{
+  color-scheme: light;
+  /* 🏟️ Paleta Match Day con tonalidad verde muy claro */
+  --bg-color: #e2e8e4;
+  --card-bg: #f0f7f3;
+  --surface-color: #e8f3ee;
+  --surface-hover: #dfede7;
+  --text-main: #04160a;
+  --text-muted: #2c4930;
+  --text-inverse: #ffffff;
+  
+  --accent-color: #00cc66;
+  --accent-hover: #009944;
+  --accent-dim: rgba(0, 204, 102, 0.12);
+  --accent-glow: rgba(0, 204, 102, 0.35);
+  --danger-color: #e11d48;
+  
+  --border-subtle: rgba(4, 22, 10, 0.12);
+  --border-strong: #cbd5e1;
+  --glass-bg: rgba(240, 247, 243, 0.95);
+  --modal-overlay: rgba(6, 12, 20, 0.5);
+  
+  --shadow-soft: 0 8px 24px rgba(4, 22, 10, 0.08);
+  --shadow-strong: 0 20px 45px rgba(4, 22, 10, 0.18);
+  
+  --pitch-line: rgba(0, 204, 102, 0.06);
+  --scrollbar-track: #dce5e0;
+  --scrollbar-thumb: #94a3b8;
+  --scrollbar-thumb-hover: #64748b;
+  --scrollbar-thumb-active: #475569;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent !important;
+}
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+html {
+    height: 100%;
+}
+html, body {
+    scroll-behavior: smooth;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    position: relative;
+}
+
+/* ========================================================
+   🌐 GLOBAL CUSTOM SCROLLBARS (DARK & LIGHT MODE)
+   ======================================================== */
+html, body, *, *::before, *::after {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 8px;
+    border: 2px solid var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+::-webkit-scrollbar-thumb:active {
+    background: var(--scrollbar-thumb-active);
+}
+::-webkit-scrollbar-corner {
+    background: var(--scrollbar-track);
+}
+
+/* Respuesta táctil instantánea y sin selección accidental de texto */
+button, .btn-3d, .card, .pitch-pos-node, .theme-dot, .logro-card-v2, .escudo-card-item {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Aceleración por GPU para modales y elementos flotantes */
+.modal-overlay, .fut-card, .trivia-balloon, #guessr-floating-map-box, #matchmaking-lobby {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    padding-bottom: 0 !important;
+    transition: background-color .35s ease, color .35s ease;
+}
+
+/* 🔒 BLOQUEO DE SCROLL EN EL FONDO CUANDO CUALQUIER MODAL ESTÁ ABIERTO */
+body:has(.modal-overlay[style*="display: flex"]),
+body:has(.modal-overlay[style*="display:flex"]),
+body:has(.modal-overlay.active),
+body:has(#privacy-modal-overlay[style*="display: flex"]),
+body:has(#privacy-modal-overlay[style*="display:flex"]),
+body:has(#privacy-modal-overlay.active),
+body:has(#login-modal-overlay.active),
+body:has(#levelup-overlay.active) {
+    overflow: hidden !important;
+    height: 100dvh !important;
+}
+main {
+    flex: 1 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: auto !important;
+}
+/* ========================================================
+   FONDO GLOBAL: GRILLA DE CANCHA + PLANISFERIO DE PUNTOS
+   ======================================================== */
+body::before {
+    content: ''; 
+    position: fixed; 
+    inset: 0;
+    background-image: repeating-linear-gradient(90deg, var(--pitch-line) 0, var(--pitch-line) 1px, transparent 1px, transparent 80px),
+                      repeating-linear-gradient(0deg, var(--pitch-line) 0, var(--pitch-line) 1px, transparent 1px, transparent 80px);
+    pointer-events: none; 
+    z-index: 0;
+}
+
+body::after {
+    content: ''; 
+    position: fixed; 
+    inset: 0;
+    /* 1. Puntos más grandes y densos para darle "cuerpo" al mapa */
+    background-image: radial-gradient(var(--accent-color) 1.8px, transparent 1.8px);
+    background-size: 12px 12px; 
+    
+    /* 2. El molde SVG del mundo */
+    -webkit-mask-image: url('../world_map.svg');
+    mask-image: url('../world_map.svg');
+    
+    /* 3. MAGIA: Ocupa el 100% del ancho. El 'auto' bloquea cualquier deformación.
+       El 'max(100vw, 900px)' evita que en el celular quede una franja minúscula. */
+    -webkit-mask-size: max(100vw, 900px) auto; 
+    mask-size: max(100vw, 900px) auto;
+    
+    /* 4. Centrado perfecto absoluto */
+    -webkit-mask-position: center center; 
+    mask-position: center center; 
+    -webkit-mask-repeat: no-repeat; 
+    mask-repeat: no-repeat;
+    
+    /* 5. Opacidad duplicada para que gane protagonismo */
+    opacity: 0.28; 
+    pointer-events: none; 
+    z-index: 0;
+}
+
+body > * { 
+    position: relative; 
+    z-index: 1; 
+}
+@keyframes bounceFun{0%{transform:scale(.8) translateY(10px);opacity:0}60%{transform:scale(1.08) translateY(-4px);opacity:1}100%{transform:scale(1) translateY(0)}}
+@keyframes pulseGlow{0%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 10px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes floatBall{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(180deg)}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes dropPanel{from{opacity:0;transform:translateY(-12px) scaleY(.94)}to{opacity:1;transform:translateY(0) scaleY(1)}}
+@keyframes levelUpPop{0%{transform:scale(0) rotate(-10deg);opacity:0}60%{transform:scale(1.2) rotate(3deg);opacity:1}80%{transform:scale(.95) rotate(-1deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(80px) rotate(720deg);opacity:0}}
+@keyframes scorePopIn{0%{transform:scale(.5) translateY(10px);opacity:0}70%{transform:scale(1.15) translateY(-3px);opacity:1}100%{transform:scale(1) translateY(0);opacity:1}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+@keyframes correctPulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.6)}70%{box-shadow:0 0 0 16px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.animate-bounce{animation:bounceFun .65s cubic-bezier(.175,.885,.32,1.275) forwards}
+.animate-fade-up{animation:fadeSlideUp .5s ease forwards}
+.animate-correct{animation:correctPulse .6s ease}
+.animate-wrong{animation:wrongShake .4s ease}
+.app-header{display:flex;justify-content: space-between;align-items:center;padding:14px 32px;background:var(--glass-bg);border-bottom:1px solid var(--border-subtle);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);box-shadow:0 1px 0 var(--border-subtle),0 4px 20px rgba(0,0,0,.3);transition:background .35s}
+.header-left-line{position:absolute;bottom:0;left:0;height:2px;width:100%;background:linear-gradient(90deg,transparent 0%,var(--accent-color) 30%,var(--accent-color) 70%,transparent 100%);opacity:.4}
+.app-brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.app-logo{width:44px;height:44px;border-radius:12px;border:2px solid var(--accent-color);object-fit:cover;box-shadow:0 0 12px var(--accent-glow);transition:transform .3s,box-shadow .3s}
+.app-brand:hover .app-logo{transform:rotate(-8deg) scale(1.05);box-shadow:0 0 20px var(--accent-glow)}
+.app-title-group{display:flex;flex-direction:column}
+.app-title{font-size:1.2rem;font-weight:800;color:var(--text-main);line-height:1.1;letter-spacing:-.5px}
+.app-subtitle{font-size:.7rem;color:var(--accent-color);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;display:flex;align-items:center;gap:5px}
+.app-subtitle::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent-color);box-shadow:0 0 6px var(--accent-color);animation:pulseGlow 2s infinite}
+.header-actions{display:flex;align-items:center;gap:14px}
+.theme-toggle-btn{width:42px;height:42px;border-radius:12px;background:var(--surface-color);border:1px solid var(--border-strong);color:var(--text-muted);font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease}
+.theme-toggle-btn:hover{transform:scale(1.1);color:var(--accent-color);border-color:var(--accent-color);background:var(--accent-dim);box-shadow:0 0 12px var(--accent-glow)}
+.header-level-badge{display:flex;align-items:center;gap:6px;background:var(--surface-color);border:1.5px solid var(--border-strong);border-radius:20px;padding:5px 12px;font-size:.78rem;font-weight:800;cursor:default;transition:all .25s}
+.header-level-badge:hover{border-color:var(--accent-color);background:var(--accent-dim)}
+.level-dot{width:10px;height:10px;border-radius:50%}
+.btn-3d{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font-weight:700;font-size:1rem;border-radius:14px;border:none;cursor:pointer;transition:all .12s ease;position:relative;overflow:hidden}
+.btn-3d::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,transparent 60%);pointer-events:none}
+.btn-3d:active{transform:translateY(3px) scale(.98)}
+.btn-3d.primary{background:var(--accent-color);color:#000;box-shadow:0 5px 0 #0a7a3a,0 8px 20px var(--accent-glow)}
+.btn-3d.primary:hover{background:var(--accent-hover);box-shadow:0 7px 0 #0a7a3a,0 12px 25px var(--accent-glow);transform:translateY(-2px)}
+.btn-3d.primary:active{box-shadow:0 2px 0 #0a7a3a,0 4px 10px var(--accent-glow);transform:translateY(3px)}
+.btn-3d.secondary{background:var(--surface-color);color:var(--text-main);border:2px solid var(--border-strong);box-shadow:0 4px 0 rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2)}
+.btn-3d.secondary:hover{border-color:var(--accent-color);color:var(--accent-color);background:var(--accent-dim);transform:translateY(-2px)}
+.btn-3d.secondary:active{box-shadow:1px 0 rgba(0,0,0,.3);transform:translateY(3px)}
