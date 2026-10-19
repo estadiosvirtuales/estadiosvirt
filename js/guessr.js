@@ -109,7 +109,7 @@ function abrirModalVideo(event,link,esJuego=false){
         }
         
         // 🚀 PARÁMETROS BLINDADOS PARA MÓVIL (Sin congelamientos a los 3 segundos)
-        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1";
+        const params = "autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=https://www.estadiosvirtuales.com";
         const qp = esJuego ? `?${params}&mute=1&controls=0` : `?${params}`;
         
        if(vid) {
