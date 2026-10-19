@@ -167,8 +167,76 @@
                 });
 
             } else if (tipo === 'gol') {
-                // Silenciado a pedido: evita notas de piano / órgano sintético aburrido
-                return;
+                // ⚽ Rugido orgánico de estadio / tribuna (ruido blanco filtrado + sub-bass de impacto)
+                const dur = 1.4;
+                const bufferSize = Math.floor(ctx.sampleRate * dur);
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                // Filtro paso-banda modelando la resonancia vocal de la hinchada
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(380, now);
+                filter.frequency.linearRampToValueAtTime(780, now + 0.18);
+                filter.frequency.exponentialRampToValueAtTime(520, now + dur);
+                filter.Q.setValueAtTime(1.8, now);
+
+                const noiseGain = ctx.createGain();
+                noiseGain.gain.setValueAtTime(0.01, now);
+                noiseGain.gain.linearRampToValueAtTime(0.32, now + 0.08);
+                noiseGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+                noise.connect(filter);
+                filter.connect(noiseGain);
+                noiseGain.connect(ctx.destination);
+                noise.start(now);
+
+                // Sub-impacto acústico del balón inflando la red
+                const subOsc = ctx.createOscillator();
+                const subGain = ctx.createGain();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(115, now);
+                subOsc.frequency.exponentialRampToValueAtTime(42, now + 0.16);
+
+                subGain.gain.setValueAtTime(0.28, now);
+                subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+
+                subOsc.connect(subGain);
+                subGain.connect(ctx.destination);
+                subOsc.start(now);
+                subOsc.stop(now + 0.20);
+
+            } else if (tipo === 'victoria') {
+                // 🏆 Fanfarria triunfal armónica (arpegio mayor brillante: Do5 -> Mi5 -> Sol5 -> Do6)
+                const notas = [
+                    { f: 523.25, t: 0.00, d: 0.16 },
+                    { f: 659.25, t: 0.12, d: 0.16 },
+                    { f: 783.99, t: 0.24, d: 0.20 },
+                    { f: 1046.50, t: 0.38, d: 0.55 },
+                    { f: 783.99, t: 0.38, d: 0.55 }
+                ];
+                notas.forEach(n => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    const startTime = now + n.t;
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(n.f, startTime);
+
+                    gain.gain.setValueAtTime(0.01, startTime);
+                    gain.gain.linearRampToValueAtTime(0.22, startTime + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + n.d);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(startTime);
+                    osc.stop(startTime + n.d + 0.02);
+                });
 
             } else if (tipo === 'reloj') {
                 // Latido / Tic-tac tenso de cuenta regresiva

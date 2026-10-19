@@ -1275,6 +1275,7 @@ window.iniciarSimulacionEnVivo = function() {
             if (typeof confetti === 'function') {
                 try { confetti({ particleCount: 35, spread: 75, origin: { y: 0.6 } }); } catch (e) {}
             }
+            if (typeof reproducirSonido === 'function') reproducirSonido('gol');
             mostrarTag('¡GOL!', 'user-tag', balon.y, 84, 2.0);
             narrar('gol_user', asist
                 ? `¡GOLAZO! Pase de <b>${asist.nombre}</b> y definición de <b>${j.nombre}</b>.`
@@ -2063,6 +2064,7 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     });
 
     if (ganoUsuario) {
+        if (typeof reproducirSonido === 'function') reproducirSonido('victoria');
         if (torneoEstado.esDesafioAsincronico) {
             const premio = torneoEstado.config.premioSP || 2;
             userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
