@@ -72,7 +72,7 @@ server.listen(PORT, async () => {
         '-i', '-',
         '-c:v', 'libx264',
         '-pix_fmt', 'yuv420p',
-        '-preset', 'fast',
+        '-preset', 'ultrafast',
         '-movflags', '+faststart',
         destDesktop
     ]);
@@ -101,7 +101,7 @@ server.listen(PORT, async () => {
         } catch(e) {}
     });
 
-    // Inyectar estilos para que el video sea el protagonista total (7-10s) y el mapa se oculte al inicio
+    // Inyectar estilos: stickers ubicados en el espacio negro entre los puntajes (top: 125px) y el video
     await page.evaluate(() => {
         const style = document.createElement('style');
         style.innerHTML = `
@@ -120,18 +120,18 @@ server.listen(PORT, async () => {
                 transform-origin: center center !important;
                 pointer-events: none !important;
             }
-            /* Overlay de stickers TikTok */
+            /* Overlay de stickers TikTok: UBICADO EN EL ESPACIO NEGRO ENTRE HUD Y VIDEO */
             #tiktok-hud-box {
                 position: fixed;
-                top: 20px;
+                top: 125px; /* Justo debajo de la barra de puntos (Y=64-112) y antes del video */
                 left: 50%;
                 transform: translateX(-50%);
                 z-index: 9999999;
-                width: 92%;
-                max-width: 390px;
+                width: 90%;
+                max-width: 380px;
                 display: flex;
                 flex-direction: column;
-                gap: 8px;
+                gap: 6px;
                 pointer-events: none;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             }
@@ -139,33 +139,43 @@ server.listen(PORT, async () => {
                 background: #fde047;
                 color: #000;
                 font-weight: 900;
-                font-size: 15px;
-                padding: 10px 16px;
-                border-radius: 14px;
+                font-size: 14.5px;
+                padding: 8px 14px;
+                border-radius: 12px;
                 border: 2px solid #000;
                 text-align: center;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.7);
                 line-height: 1.25;
             }
+            .tk-sticker-title.fail {
+                background: #f97316;
+                color: #fff;
+                border-color: #fff;
+            }
+            .tk-sticker-title.success {
+                background: #00e676;
+                color: #000;
+                border-color: #000;
+            }
             .tk-sticker-clue {
-                background: rgba(15, 23, 42, 0.92);
+                background: rgba(15, 23, 42, 0.94);
                 color: #38bdf8;
-                border: 2px solid #38bdf8;
+                border: 1.5px solid #38bdf8;
                 font-weight: 800;
-                font-size: 13.5px;
-                padding: 7px 14px;
-                border-radius: 12px;
+                font-size: 13px;
+                padding: 6px 12px;
+                border-radius: 10px;
                 text-align: center;
                 backdrop-filter: blur(8px);
-                box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             }
             .tk-progress-bar-wrap {
                 width: 100%;
-                height: 6px;
-                background: rgba(0,0,0,0.5);
+                height: 5px;
+                background: rgba(0,0,0,0.6);
                 border-radius: 6px;
                 overflow: hidden;
-                border: 1px solid rgba(255,255,255,0.2);
+                border: 1px solid rgba(255,255,255,0.25);
             }
             .tk-progress-bar-fill {
                 height: 100%;
@@ -190,20 +200,33 @@ server.listen(PORT, async () => {
         everyNthFrame: 1
     });
 
-    // Ticker continuo a velocidad real 1.0X (25 FPS exactos)
+    // Ticker continuo con sincronización exacta de tiempo real (25 FPS exactos)
+    let lastTime = Date.now();
+    let frameAccumulator = 0;
+    const FRAME_DURATION = 1000 / FPS;
+
     const frameTicker = setInterval(() => {
-        if (latestFrame) {
-            ffmpeg.stdin.write(latestFrame);
+        const now = Date.now();
+        const delta = Math.min(now - lastTime, 250);
+        lastTime = now;
+        frameAccumulator += delta;
+
+        while (frameAccumulator >= FRAME_DURATION) {
+            if (latestFrame) {
+                ffmpeg.stdin.write(latestFrame);
+            }
+            frameAccumulator -= FRAME_DURATION;
         }
-    }, FRAME_INTERVAL_MS);
+    }, 20);
 
     // Helper para actualizar HUD
-    async function updateTikTokHUD(titulo, pista, tiempoTotalMs = 0) {
-        await page.evaluate((tit, pis, tMs) => {
+    async function updateTikTokHUD(titulo, pista, tiempoTotalMs = 0, variant = '') {
+        await page.evaluate((tit, pis, tMs, vClass) => {
             const hud = document.getElementById('tiktok-hud-box');
             if (!hud) return;
+            const extraClass = vClass ? ` ${vClass}` : '';
             hud.innerHTML = `
-                <div class="tk-sticker-title">${tit}</div>
+                <div class="tk-sticker-title${extraClass}">${tit}</div>
                 ${pis ? `<div class="tk-sticker-clue">${pis}</div>` : ''}
                 ${tMs > 0 ? `<div class="tk-progress-bar-wrap"><div id="tk-fill" class="tk-progress-bar-fill"></div></div>` : ''}
             `;
@@ -216,7 +239,7 @@ server.listen(PORT, async () => {
                     });
                 }
             }
-        }, titulo, pista, tiempoTotalMs);
+        }, titulo, pista, tiempoTotalMs, variant);
     }
 
     // ==========================================
@@ -237,34 +260,59 @@ server.listen(PORT, async () => {
     await new Promise(r => setTimeout(r, 1400));
 
     // ==========================================
-    // FASE 1 A 5: LAS 5 RONDAS DEL RETO DIARIO
-    // 8.5 SEGUNDOS DE ESTADIO PURO POR CADA RONDA
+    // FASE 1 A 5: LAS 5 RONDAS CON PUNTAJES REALISTAS
+    // Combinación de aciertos y pifias creíbles (🟩 🟨 🟩 🟨 🟩)
     // ==========================================
     const configRondas = [
         {
+            ronda: 1,
             tit: 'RONDA 1: ¿DE QUÉ CLUB ES ESTA CANCHA? 🇪🇸👀',
-            pis: '💡 Capacidad: 53.000 espectadores · Liga Española',
-            off: { dLat: 0.0004, dLng: -0.0003 }
+            pis: '💡 Capacidad: 53.000 hinchas · Catedral de España',
+            // San Mamés: acierto casi perfecto en Bilbao (~1 km)
+            off: { dLat: 0.008, dLng: -0.005 },
+            resultadoTit: '🎯 ¡GOLAZO! 4.995 PTS EN BILBAO 🔥',
+            resultadoSub: 'San Mamés clavado al ángulo',
+            variant: 'success'
         },
         {
-            tit: 'RONDA 2: ESTA SE PONE DIFÍCIL... ¿LO SACÁS? 🇳🇱⏱️',
-            pis: '💡 Pista: Club histórico de los Países Bajos ⚓',
-            off: { dLat: -0.0005, dLng: 0.0004 }
+            ronda: 2,
+            tit: 'RONDA 2: ESTA SE PONE DIFÍCIL... ¿DE QUÉ PAÍS ES? ⏱️🤔',
+            pis: '💡 Club histórico de primera división europea ⚓',
+            // Van Donge & De Roo (Rotterdam): duda humana, se va a Bélgica/Bruselas (~168 km)
+            off: { dLat: -1.5, dLng: -0.2 },
+            resultadoTit: '😅 ¡ERA EN ROTTERDAM! PENSÉ QUE ERA BÉLGICA',
+            resultadoSub: 'A 168 km · ¡Qué engañosa esta cancha! (+4.348 pts)',
+            variant: 'fail'
         },
         {
+            ronda: 3,
             tit: 'RONDA 3: ¡EL TEMPLO DEL FÚTBOL MUNDIAL! 🇧🇷🔥',
-            pis: '💡 Pista: Mítico escenario de finales de Copa del Mundo 🏆',
-            off: { dLat: 0.0002, dLng: 0.0002 }
+            pis: '💡 Sede de finales de Copa del Mundo · Inconfundible 🏆',
+            // Maracanã: súper conocido, casi exacto en Río de Janeiro (~300m)
+            off: { dLat: 0.002, dLng: -0.002 },
+            resultadoTit: '👑 ¡IMPOSIBLE ERRAR EL MARACANÁ! 4.998 PTS 🔥',
+            resultadoSub: 'Clavado en Río de Janeiro a 300 metros',
+            variant: 'success'
         },
         {
-            tit: 'RONDA 4: PASIÓN DE PRIMERA DIVISIÓN 🇦🇷🏟️',
-            pis: '💡 Pista: El Norte argentino y una de las canchas más calientes 🔥',
-            off: { dLat: -0.0003, dLng: -0.0004 }
+            ronda: 4,
+            tit: 'RONDA 4: FÚTBOL ARGENTINO PURO 🇦🇷🏟️',
+            pis: '💡 La caldera del Norte argentino · Hinchada fiel 🔥',
+            // La Ciudadela (Tucumán): hincha duda y clava cerca de Santiago del Estero (~175 km)
+            off: { dLat: -1.6, dLng: -0.2 },
+            resultadoTit: '🫣 ¡ERA LA CIUDADELA! LE PIFIÉ POR 175 KM',
+            resultadoSub: 'Tiré cerca de Santiago y era Tucumán (+4.312 pts)',
+            variant: 'fail'
         },
         {
+            ronda: 5,
             tit: 'RONDA 5: ¡LA ÚLTIMA PARA METER EL RÉCORD! 🇩🇪👑',
-            pis: '💡 Pista: Estadio a orillas del río en la Bundesliga 🌊',
-            off: { dLat: 0.0001, dLng: 0.0002 }
+            pis: '💡 Estadio a orillas del río en la Bundesliga 🌊',
+            // Weserstadion: acierta en Bremen (~600m)
+            off: { dLat: 0.005, dLng: 0.004 },
+            resultadoTit: '🎯 ¡WERDER BREMEN RECUPERADO! 4.997 PTS 🚀',
+            resultadoSub: 'Clavado en Bremen para cerrar Galáctico',
+            variant: 'success'
         }
     ];
 
@@ -285,7 +333,7 @@ server.listen(PORT, async () => {
 
         // AHORA SÍ: Abrir el mapa suavemente
         console.log(`[Grabador] Ronda ${r}: Desplegando mapa para ubicar el estadio...`);
-        await updateTikTokHUD(`📍 ¡TIEMPO CUMPLIDO! UBICANDO EN EL MAPA...`, '🎯 Buscando la posición exacta...');
+        await updateTikTokHUD(`📍 ¡TIEMPO CUMPLIDO! UBICANDO EN EL MAPA...`, '🎯 Clavando el pin en la cancha...', 0);
         
         await page.evaluate(() => {
             const mapBox = document.getElementById('guessr-floating-map-box');
@@ -293,7 +341,7 @@ server.listen(PORT, async () => {
         });
         await new Promise(res => setTimeout(res, 1000));
 
-        // Clavar el pin muy cerca de las coordenadas reales
+        // Clavar el pin con el offset configurado para esta ronda
         await page.evaluate((off) => {
             const est = window.guessrEstadioCorrecto;
             if (est) {
@@ -307,8 +355,9 @@ server.listen(PORT, async () => {
         }, cfg.off);
 
         console.log(`[Grabador] Ronda ${r}: Acierto registrado. Mostrando puntaje...`);
-        await updateTikTokHUD(`🎯 ¡GOLAZO! CASI 5.000 PUNTOS 🔥`, 'Puntaje de crack mundial');
-        // Dejar ver el cartel de distancia y puntaje (+4.980 pts)
+        await updateTikTokHUD(cfg.resultadoTit, cfg.resultadoSub, 0, cfg.variant);
+        
+        // Dejar ver el cartel de distancia y puntaje
         await new Promise(res => setTimeout(res, 3500));
 
         // Avanzar de ronda (en la ronda 5 esto dispara automáticamente finalizarJuegoGuessr)
@@ -324,8 +373,8 @@ server.listen(PORT, async () => {
     // ==========================================
     // FASE FINAL: PANTALLA DE RESULTADOS Y COPIAR
     // ==========================================
-    console.log("[Grabador] Reto diario completado. Mostrando resumen final...");
-    await updateTikTokHUD('👑 ¡MISIÓN CUMPLIDA! ¿PODÉS SUPERARME? 🏆', 'Récord: Más de 24.000 puntos');
+    console.log("[Grabador] Reto diario completado. Mostrando podio final...");
+    await updateTikTokHUD('👑 ¡23.650 PUNTOS! ¿SOS CAPAZ DE SUPERARME? 🏆', 'Rendimiento: 👑 GALÁCTICO ABSOLUTO 👑', 0, 'success');
     await new Promise(r => setTimeout(r, 2500));
 
     // Clic en el botón 'Compartir Reto Diario'
@@ -338,7 +387,7 @@ server.listen(PORT, async () => {
 
     // Llamado a la acción final para los comentarios
     await new Promise(r => setTimeout(r, 1200));
-    await updateTikTokHUD('👇 DEJÁ TU PUNTAJE EN COMENTARIOS CON LOS EMOJIS 👇', '⚽ Jugalo gratis en estadiosvirtuales.com');
+    await updateTikTokHUD('👇 DEJÁ TU PUNTAJE EN COMENTARIOS CON LOS EMOJIS 👇', '🟩 🟨 🟩 🟨 🟩 · estadiosvirtuales.com', 0);
 
     // Mantener la pantalla final 5 segundos
     await new Promise(r => setTimeout(r, 5000));
@@ -358,7 +407,7 @@ server.listen(PORT, async () => {
     } catch(e) {}
 
     console.log("====================================================");
-    console.log("🎉 ¡VIDEO MEJORADO CON 8.5s POR ESTADIO GENERADO CON ÉXITO!");
+    console.log("🎉 ¡VIDEO MEJORADO CON POSICIÓN CENTRAL Y PUNTAJES REALISTAS GENERADO CON ÉXITO!");
     console.log("📁 Guardado en Escritorio:", destDesktop);
     console.log("📁 Guardado en Descargas:", destDownloads);
     console.log("====================================================");
