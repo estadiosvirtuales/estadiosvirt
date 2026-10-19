@@ -1,18 +1,30 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Unión La Calera (Nicolás Chahuán Nazar) desde el aire | Estadios Virtuales</title>
-    <meta name="description" content="Conoce el estadio Nicolás Chahuán Nazar de Unión La Calera (Chile) desde el aire. Capacidad para 9.200 espectadores, datos historicos y sobrevuelo en video HD.">
+    <title>Estadio de Unión La Calera (Nicolás Chahuán Nazar) | Estadios Virtuales</title>
+    <meta name="description" content="Conocé el estadio Nicolás Chahuán Nazar de Unión La Calera (Chile). Capacidad para 9.200 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/unionlacalera">
 
+    <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Estadios Virtuales">
     <meta property="og:title" content="Estadio de Unión La Calera (Nicolás Chahuán Nazar) | Estadios Virtuales">
-    <meta property="og:description" content="Recorrido aereo HD, capacidad e historia de la cancha de Unión La Calera.">
-    <meta property="og:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/unionlacalera.png">
+    <meta property="og:description" content="Recorrido aéreo en video HD, capacidad para 9.200 espectadores e historia de la cancha de Unión La Calera.">
+    <meta property="og:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/unionlacalera.webp">
     <meta property="og:url" content="https://www.estadiosvirtuales.com/unionlacalera">
 
+    <!-- 🐦 TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Estadio de Unión La Calera (Nicolás Chahuán Nazar)">
+    <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Unión La Calera.">
+    <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/unionlacalera.webp">
+
+    <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -28,31 +40,258 @@
         "latitude": -32.7841,
         "longitude": -71.2001
       },
-      "url": "https://www.estadiosvirtuales.com/unionlacalera"
+      "url": "https://www.estadiosvirtuales.com/unionlacalera",
+      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/unionlacalera.webp"
     }
     </script>
 
-    <meta http-equiv="refresh" content="0; url=/?estadio=unionlacalera">
-    <script>
-        window.location.replace("/?estadio=" + "unionlacalera");
-    </script>
-
     <style>
+        :root {
+            --bg-color: #070d14;
+            --card-bg: #111a24;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --text-main: #f0f4f8;
+            --text-muted: #94a3b8;
+            --accent-color: #00e676;
+            --accent-glow: rgba(0, 230, 118, 0.35);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: #0e141b;
-            color: #f0f4f8;
-            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 15%, rgba(0, 230, 118, 0.08), transparent 40%),
+                radial-gradient(circle at 80% 85%, rgba(14, 165, 233, 0.06), transparent 35%);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 14px;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: transform 0.2s ease;
+        }
+        .header-brand:hover { transform: scale(1.03); }
+        .header-brand img { width: 34px; height: 34px; border-radius: 8px; }
+        .header-brand span { font-weight: 900; letter-spacing: 1.2px; font-size: 0.95rem; text-transform: uppercase; }
+        
+        .card {
+            width: 100%;
+            max-width: 360px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow);
+            border-color: rgba(0, 230, 118, 0.3);
+        }
+        .estadio-foto-container {
+            width: 100%;
+            height: 190px;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            overflow: hidden;
+            padding: 28px;
+            background: linear-gradient(135deg, #e20e0e, #ffffff);
+        }
+        .estadio-foto-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(17, 26, 36, 0.95) 0%, rgba(0, 0, 0, 0.1) 60%);
+            z-index: 1;
+        }
+        .card-img-logo {
+            height: 88%;
+            width: auto;
+            max-height: 88%;
+            max-width: 88%;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.7));
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+        .card:hover .card-img-logo { transform: scale(1.08) rotate(2deg); }
+        .card-content {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+            color: var(--text-main);
+            line-height: 1.25;
+        }
+        .card-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+        .specs-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .spec-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            padding: 5px 11px;
+            border-radius: 9px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .spec-pill i { color: var(--accent-color); font-size: 0.92rem; }
+        .btn-view {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 13px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border: 2px solid var(--border-strong);
+            text-decoration: none;
+            transition: all 0.22s ease;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+        }
+        .btn-view:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #04160a;
+            box-shadow: 0 4px 16px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .fan-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .fan-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        .fan-btn:hover {
+            color: var(--text-main);
+            border-color: var(--border-strong);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .rating-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border-subtle);
+        }
+        .rating-title {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .stars-row {
+            display: flex;
+            gap: 5px;
+            color: var(--accent-color);
+            font-size: 1.15rem;
+        }
+        .footer-note {
+            margin-top: 22px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
             text-align: center;
         }
-        a { color: #00e676; font-weight: bold; text-decoration: none; }
+        .footer-note a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
-    <p>Ingresando al estadio de Unión La Calera... <br><br>Si no redirige automaticamente, <a href="/?estadio=unionlacalera">hace clic aca</a>.</p>
+    <a href="/" class="header-brand">
+        <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp" alt="Estadios Virtuales">
+        <span>Estadios Virtuales</span>
+    </a>
+
+    <article class="card">
+        <div class="estadio-foto-container">
+            <img class="card-img-logo" src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/unionlacalera.webp" alt="Unión La Calera" loading="lazy" onerror="this.src='https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';">
+        </div>
+        <div class="card-content">
+            <h1 class="card-title">Nicolás Chahuán Nazar</h1>
+            <p class="card-subtitle">Unión La Calera · Chile</p>
+            
+            <div class="specs-row">
+                <span class="spec-pill"><i class="ph-bold ph-users-three"></i> 9.200 esp.</span>
+                <span class="spec-pill"><i class="ph-bold ph-calendar-blank"></i> Año 1950</span>
+            </div>
+
+            <a href="/?estadio=unionlacalera" class="btn-view">
+                <i class="ph-fill ph-play-circle"></i> Ver Estadio
+            </a>
+
+            <div class="fan-row">
+                <a href="/?estadio=unionlacalera" class="fan-btn"><i class="ph-bold ph-map-pin"></i> Ya fui</a>
+                <a href="/?estadio=unionlacalera" class="fan-btn"><i class="ph-bold ph-star"></i> Quiero ir</a>
+            </div>
+
+            <div class="rating-box">
+                <span class="rating-title">CALIFICÁ · PROM. 9.0/10</span>
+                <div class="stars-row">
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star-half"></i>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <p class="footer-note">
+        Explorá más de 250 estadios del mundo desde el aire en <a href="/">Estadios Virtuales</a>
+    </p>
 </body>
 </html>
