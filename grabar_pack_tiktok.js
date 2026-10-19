@@ -211,7 +211,9 @@ async function grabarUnVideo(browser, config, port) {
         '-i', tempWav,
         '-c:v', 'libx264',
         '-pix_fmt', 'yuv420p',
-        '-preset', 'fast',
+        '-preset', 'veryfast',
+        '-crf', '19',
+        '-vf', 'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,format=yuv420p',
         '-c:a', 'aac',
         '-b:a', '192k',
         '-shortest',
@@ -224,17 +226,29 @@ async function grabarUnVideo(browser, config, port) {
 
     const client = await page.target().createCDPSession();
     let grabacionActiva = false;
+    let ultimoFrameBuffer = null;
 
+    // 🚀 ESTABILIZADOR DE FLUJO CFR (Constant Frame Rate):
+    // Chrome envía capturas asíncronas cuando repinta. Almacenamos el último frame recibido.
     client.on('Page.screencastFrame', async ({ data, sessionId }) => {
         if (grabacionActiva) {
-            try {
-                ffmpeg.stdin.write(Buffer.from(data, 'base64'));
-            } catch (e) {}
+            ultimoFrameBuffer = Buffer.from(data, 'base64');
         }
         try {
             await client.send('Page.screencastFrameAck', { sessionId });
         } catch (e) {}
     });
+
+    // ⏱️ TICKER DE 30 FPS CLAVADOS (1 cuadro cada 33.3ms):
+    // Garantiza que FFmpeg reciba un flujo constante y matemático de 30 fotogramas por segundo,
+    // eliminando por completo cualquier congelamiento, salto de velocidad o desfase de audio.
+    const frameTicker = setInterval(() => {
+        if (grabacionActiva && ultimoFrameBuffer) {
+            try {
+                ffmpeg.stdin.write(ultimoFrameBuffer);
+            } catch (e) {}
+        }
+    }, 1000 / 30);
 
     // 🛡️ Prevenir que el grabador de videos suba récords falsos o nombres bots a Supabase
     await page.evaluateOnNewDocument(() => {
@@ -399,9 +413,9 @@ async function grabarUnVideo(browser, config, port) {
     console.log(`- ¡Comenzando grabación de 29s desde la interfaz previa (Home)!`);
     await client.send('Page.startScreencast', {
         format: 'jpeg',
-        quality: 85,
-        maxWidth: 720,
-        maxHeight: 1280,
+        quality: 90,
+        maxWidth: 1080,
+        maxHeight: 1920,
         everyNthFrame: 1
     });
     grabacionActiva = true;
@@ -482,8 +496,10 @@ async function grabarUnVideo(browser, config, port) {
     });
 
     // Esperar a que el motor de StadiumGuessr cree la instancia de Leaflet y la modal de video
-    await page.waitForFunction(() => window.guessrMapInstance != null, { timeout: 10000 });
-    console.log(`- Motor del juego iniciado con Leaflet activo.`);
+    await page.waitForFunction(() => window.guessrMapInstance != null, { timeout: 15000 });
+    await page.waitForSelector('#modal-video-container iframe', { timeout: 15000 });
+    console.log(`- Motor del juego y video conectados. Sincronizando inicio de vuelo fluido...`);
+    await new Promise(r => setTimeout(r, 1200));
 
     // ==========================================
     // FASE AÉREA: 10 SEGUNDOS COMPLETOS DE VUELO
@@ -603,6 +619,7 @@ async function grabarUnVideo(browser, config, port) {
     // FINALIZAR
     console.log(`- Finalizando captura de video...`);
     grabacionActiva = false;
+    if (frameTicker) clearInterval(frameTicker);
     try { await client.send('Page.stopScreencast'); } catch(e) {}
     await new Promise(r => setTimeout(r, 600));
     try { ffmpeg.stdin.end(); } catch(e) {}
@@ -629,7 +646,15 @@ async function main() {
                 '--no-sandbox',
                 '--autoplay-policy=no-user-gesture-required',
                 '--disable-web-security',
-                '--window-size=430,932'
+                '--window-size=430,932',
+                '--enable-gpu',
+                '--use-gl=angle',
+                '--use-angle=d3d11',
+                '--enable-accelerated-video-decode',
+                '--enable-accelerated-2d-canvas',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding'
             ]
         });
 
