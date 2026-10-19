@@ -2070,6 +2070,7 @@ async function finalizarJuegoGuessr(){
     pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : 'guessr';
 
     // 🚀 AUTO-GUARDADO SILENCIOSO EN SERVIDOR
+    const esAutomatizado = typeof navigator !== 'undefined' && (navigator.webdriver || window.__TIKTOK_RECORDER__);
     const u = obtenerUsuarioLogueado();
     let nombreParaGuardar = getPref('ev_custom_nick', '');
     if (!nombreParaGuardar && u && u.name) {
@@ -2084,14 +2085,18 @@ async function finalizarJuegoGuessr(){
     }
 
     const emailParaGuardar = (u && u.email) ? u.email : '';
-    enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, pendingScoreType);
+    if (!esAutomatizado && !esRegistroBot(nombreParaGuardar, guessrPuntosTotales)) {
+        enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, pendingScoreType);
 
-    if (eraRetoDiario) {
-        enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, 'guessr');
-    }
-    const ligaAmigos = localStorage.getItem('ev_codigo_liga_amigos');
-    if (ligaAmigos) {
-        enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, 'duelo_' + ligaAmigos);
+        if (eraRetoDiario) {
+            enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, 'guessr');
+        }
+        const ligaAmigos = localStorage.getItem('ev_codigo_liga_amigos');
+        if (ligaAmigos) {
+            enviarPuntaje(nombreParaGuardar, guessrPuntosTotales, emailParaGuardar, 'duelo_' + ligaAmigos);
+        }
+    } else {
+        console.warn(`🛡️ Auto-guardado omitido para sesión bot/grabador: ${nombreParaGuardar} (${guessrPuntosTotales} pts)`);
     }
 
     const strokeColor = guessrPuntosTotales > 15000 ? '#00e676' : guessrPuntosTotales > 8000 ? '#ff8f00' : '#ff4757';
@@ -2252,6 +2257,25 @@ function compartirRetoDiarioWordle() {
     }
 }
 
+// 🛡️ FILTRO DE INTEGRIDAD: Descarta registros espurios de grabaciones y bots automáticos
+function esRegistroBot(nombre, puntaje) {
+    if (!nombre) return false;
+    const n = String(nombre).trim();
+    const p = Number(puntaje) || 0;
+
+    // 1. Bots explícitos reportados de grabaciones/pruebas pasadas
+    const botsExcluidos = ['pibe_241', 'capitan_174', 'capitan_494', 'dt_668', 'hincha_652', 'hincha_333', 'dt_744', 'capitan_739'];
+    if (botsExcluidos.includes(n.toLowerCase())) return true;
+
+    // 2. Patrón de nicks autogenerados de bots con puntajes anómalos o irreales
+    if (/^(Capitan|Pibe|DT|Hincha|Goleador)_\d{3}$/i.test(n)) {
+        if (p === 25000 || p === 23648 || p >= 21000) return true;
+    }
+
+    return false;
+}
+window.esRegistroBot = esRegistroBot;
+
 async function abrirModalRanking(modoEspecifico = 'solo') {
     precargarAvataresComunidad();
     const body = document.getElementById('ranking-modal-body');
@@ -2318,6 +2342,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             (rankingRaw || []).forEach(row => {
                 const n = (row.nombre || 'Anónimo').trim();
                 const p = row.puntaje || 0;
+                if (esRegistroBot(n, p)) return;
                 const clave = n.toLowerCase();
                 if (!mejorPorJugador[clave] || p > mejorPorJugador[clave].puntaje) {
                     mejorPorJugador[clave] = { nombre: n, puntaje: p };
@@ -2405,6 +2430,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             (rankingRaw || []).forEach(row => {
                 const n = (row.nombre || 'Anónimo').trim();
                 const p = row.puntaje || 0;
+                if (esRegistroBot(n, p)) return;
                 const clave = n.toLowerCase();
                 if (!mejorPorJugador[clave] || p > mejorPorJugador[clave].puntaje) {
                     mejorPorJugador[clave] = { nombre: n, puntaje: p };
@@ -2481,11 +2507,12 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             htmlContenido += '</div>';
 
         } else if (modoEspecifico === 'v_historico') {
-            const { data: rankingCompleto, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'historico' });
+            const { data: rankingRaw, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'historico' });
             if (error) throw error;
 
-            const ranking = (rankingCompleto || []).slice(0, 50); // ⚡ TOP 50
-            const miPuestoIdx = (rankingCompleto || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
+            const rankingCompleto = (rankingRaw || []).filter(f => !esRegistroBot(f.nombre_jugador, f.victorias_acumuladas));
+            const ranking = rankingCompleto.slice(0, 50); // ⚡ TOP 50
+            const miPuestoIdx = rankingCompleto.findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
 
             // 🎯 Sincronización: si estás en el ranking, toma las victorias oficiales de la nube
             const victoriasReales = miPuestoIdx !== -1 
@@ -2552,11 +2579,12 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             htmlContenido += '</div>';
 
         } else if (modoEspecifico === 'v_semanal') {
-            const { data: rankingCompleto, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
+            const { data: rankingRaw, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
             if (error) throw error;
 
-            const ranking = (rankingCompleto || []).slice(0, 50); // ⚡ TOP 50
-            const miIdx = (rankingCompleto || []).findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
+            const rankingCompleto = (rankingRaw || []).filter(f => !esRegistroBot(f.nombre_jugador, f.victorias_acumuladas));
+            const ranking = rankingCompleto.slice(0, 50); // ⚡ TOP 50
+            const miIdx = rankingCompleto.findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
             const miPuestoSemanal = miIdx !== -1 ? `#${miIdx + 1}` : 'Sin clasif.';
 
             const diaSemana = new Date().getDay();
@@ -3656,6 +3684,7 @@ window.cambiarVistaLiga = async function(vista) {
         // Contamos las W (Victorias)
         (dataV || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
+            if (typeof esRegistroBot === 'function' && esRegistroBot(n, 0)) return;
             if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
             statsLiga[n].triunfos++;
         });
@@ -3663,6 +3692,7 @@ window.cambiarVistaLiga = async function(vista) {
         // Contamos las L (Derrotas)
         (dataD || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
+            if (typeof esRegistroBot === 'function' && esRegistroBot(n, 0)) return;
             if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
             statsLiga[n].derrotas++;
         });
@@ -3821,6 +3851,7 @@ async function abrirModalLigaAmigosPrivada() {
         (data || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
             const p = row.puntaje || 0;
+            if (typeof esRegistroBot === 'function' && esRegistroBot(n, p)) return;
             const clave = n.toLowerCase();
             if (!mejorPorIntegrante[clave] || p > mejorPorIntegrante[clave].puntaje) {
                 mejorPorIntegrante[clave] = { nombre: n, puntaje: p };

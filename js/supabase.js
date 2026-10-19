@@ -178,6 +178,15 @@ async function enviarPuntaje(nombreJugador, puntosLogrados, emailJugador, modoJu
         console.error("No se pudo mandar el puntaje: Supabase no está activo.");
         return;
     }
+    // 🛡️ Blindaje contra bots y sesiones automatizadas (Puppeteer, Selenium, generadores de clips)
+    if (typeof navigator !== 'undefined' && (navigator.webdriver || window.__TIKTOK_RECORDER__)) {
+        console.warn("🛡️ Sesión automatizada detectada (webdriver/recorder): envío de puntaje omitido.");
+        return;
+    }
+    if (typeof esRegistroBot === 'function' && esRegistroBot(nombreJugador, puntosLogrados)) {
+        console.warn(`🛡️ Intento de registro bot omitido: ${nombreJugador} (${puntosLogrados} pts).`);
+        return;
+    }
     try {
         const nombreLimpio = (nombreJugador || '').trim();
         if (!nombreLimpio) return;
