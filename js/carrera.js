@@ -220,11 +220,87 @@ function obtenerOnceInicial() {
             userStats.onceInicial = {};
         }
     }
+    // 🛡️ Saneamiento: Si un DT quedó en un puesto de campo (0 a 10), pasarlo al slot DT si está libre y liberarlo de la cancha
+    const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual])
+        ? FORMACIONES_TACTICAS[formacionOnceActual]
+        : { posiciones: Array(11).fill(0) };
+    let huboCorreccion = false;
+    for (let i = 0; i < f.posiciones.length; i++) {
+        const a = userStats.onceInicial[i];
+        if (a && typeof esAvatarDT === 'function' && esAvatarDT(a)) {
+            if (!userStats.onceInicial['DT']) {
+                userStats.onceInicial['DT'] = a;
+            }
+            delete userStats.onceInicial[i];
+            huboCorreccion = true;
+        }
+    }
+    if (huboCorreccion) {
+        localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(userStats.onceInicial));
+    }
     return userStats.onceInicial;
 }
 
 function obtenerCapitanOnce() {
-    return userStats.onceCapitan || localStorage.getItem('ev_once_capitan_' + getUserId()) || null;
+    const once = (userStats && userStats.onceInicial) || obtenerOnceInicial();
+    const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
+    const fActual = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual])
+        ? FORMACIONES_TACTICAS[formacionOnceActual]
+        : null;
+
+    // Obtener futbolistas titulares válidos en cancha (posiciones 0 a 10)
+    const titulares = [];
+    if (fActual && fActual.posiciones) {
+        fActual.posiciones.forEach((_, idx) => {
+            if (once[idx]) {
+                const a = String(once[idx]).replace(/\.png$/i, '.webp');
+                if (a !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(a))) titulares.push(a);
+            }
+        });
+    } else {
+        Object.keys(once).forEach(k => {
+            if (k !== 'DT' && once[k]) {
+                const a = String(once[k]).replace(/\.png$/i, '.webp');
+                if (a !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(a))) titulares.push(a);
+            }
+        });
+    }
+
+    const rawCap = (userStats.onceCapitan || localStorage.getItem('ev_once_capitan_' + getUserId()) || '')
+        .replace(/\.png$/i, '.webp');
+
+    // 1. Si el usuario designó explícitamente un capitán en el once y sigue siendo titular (y no es DT)
+    if (rawCap && titulares.includes(rawCap) && rawCap !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(rawCap))) {
+        return rawCap;
+    }
+
+    // Si el capitán guardado ya no es titular de campo, limpiar la referencia desfasada
+    if (rawCap && (!titulares.includes(rawCap) || rawCap === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(rawCap)))) {
+        userStats.onceCapitan = null;
+        localStorage.removeItem('ev_once_capitan_' + getUserId());
+    }
+
+    // 2. Si el avatar de su carta FUT es titular en el once (y no es DT), es su capitán natural
+    const avatarFut = (typeof getPref === 'function' ? getPref('ev_avatar_hair', '') : '')
+        .replace(/\.png$/i, '.webp');
+    if (avatarFut && titulares.includes(avatarFut) && avatarFut !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(avatarFut))) {
+        return avatarFut;
+    }
+
+    // 3. Si no hay capitán explícito ni avatar FUT en cancha, buscar el titular de campo con mayor OVR (priorizando jugadores de campo sobre arquero)
+    if (titulares.length > 0) {
+        const jugadoresCampo = titulares.filter((id, idx) => idx !== 0);
+        const poolCandidatos = jugadoresCampo.length > 0 ? jugadoresCampo : titulares;
+        const ordenados = [...poolCandidatos].sort((a, b) => obtenerOvrJugador(b) - obtenerOvrJugador(a));
+        return ordenados[0];
+    }
+
+    // 4. Último recurso: avatar de la carta FUT del usuario (siempre que no sea DT)
+    if (avatarFut && avatarFut !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(avatarFut))) {
+        return avatarFut;
+    }
+
+    return titulares[0] || '1.webp';
 }
 
 // ⚡ MOTOR DE OVR INDIVIDUAL Y DEL EQUIPO
@@ -962,9 +1038,13 @@ window.iniciarSimulacionEnVivo = function() {
     const userDelanteros = [];
     let userArquero = 'El Arquero';
 
+    const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
+
     fActual.posiciones.forEach((item, idx) => {
         const idAvatar = once[idx];
         if (!idAvatar) return;
+        const cleanId = String(idAvatar).replace(/\.png$/i, '.webp');
+        if (cleanId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(cleanId))) return;
         const nombre = obtenerNombreAvatar(idAvatar);
         if (item.pos === 'POR') userArquero = nombre;
         else if (['DFC', 'LD', 'LI'].includes(item.pos)) userDefensas.push(nombre);
@@ -2212,11 +2292,20 @@ window.designarCapitanOnce = function(idx, event) {
         event.stopPropagation();
         if (event.preventDefault) event.preventDefault();
     }
+    if (idx === 'DT') {
+        showToast("El Director Técnico no puede ser el Capitán del equipo. 📋", "ph-prohibit", "warning");
+        return;
+    }
     const once = obtenerOnceInicial();
     const avatar = once[idx];
     if (!avatar) return;
 
-    const actual = obtenerCapitanOnce();
+    if (typeof esAvatarDT === 'function' && esAvatarDT(avatar)) {
+        showToast("Un Director Técnico no puede ser el Capitán de campo. 📋", "ph-prohibit", "warning");
+        return;
+    }
+
+    const actual = userStats.onceCapitan || localStorage.getItem('ev_once_capitan_' + getUserId());
     if (actual === avatar) {
         userStats.onceCapitan = null;
         localStorage.removeItem('ev_once_capitan_' + getUserId());
@@ -2224,10 +2313,7 @@ window.designarCapitanOnce = function(idx, event) {
     } else {
         userStats.onceCapitan = avatar;
         localStorage.setItem('ev_once_capitan_' + getUserId(), avatar);
-        // Sincronización con el avatar de tu carta
-        setPref('ev_avatar_hair', avatar);
-        renderizarBotonLogin();
-        showToast(`¡${obtenerNombreAvatar(avatar)} es tu Capitán y avatar activo! 👑`, "ph-crown", "success");
+        showToast(`¡${obtenerNombreAvatar(avatar)} es tu Capitán! 👑`, "ph-crown", "success");
     }
     guardarStats();
     renderizarOnceInicial();
@@ -2276,6 +2362,14 @@ window.asignarJugadorAOnce = function(avatarId) {
         showToast("Tocá primero una posición en la cancha o el DT para ubicarlo.", "ph-info", "warning");
         return;
     }
+    const avatarLimpio = avatarId.replace(/\.png$/i, '.webp');
+
+    // 🛡️ REGLA: Los DTs solo pueden asignarse en el slot DT, nunca como futbolistas en la cancha
+    if (slotActivoOnce !== 'DT' && typeof esAvatarDT === 'function' && esAvatarDT(avatarLimpio)) {
+        showToast(`¡${obtenerNombreAvatar(avatarLimpio)} es Director Técnico y no puede jugar en la cancha! 📋`, "ph-prohibit", "warning");
+        return;
+    }
+
     const nivelReq = obtenerNivelAvatar(avatarId);
     const nivelUser = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
     if (nivelUser < nivelReq) {
@@ -2284,10 +2378,15 @@ window.asignarJugadorAOnce = function(avatarId) {
     }
 
     const once = obtenerOnceInicial();
-    const avatarLimpio = avatarId.replace(/\.png$/i, '.webp');
 
     for (let k in once) {
         if (once[k] === avatarLimpio) delete once[k];
+    }
+
+    // Si el jugador reemplazado en este slot era el capitán, desmarcarlo
+    if (once[slotActivoOnce] && once[slotActivoOnce] === userStats.onceCapitan && once[slotActivoOnce] !== avatarLimpio) {
+        userStats.onceCapitan = null;
+        localStorage.removeItem('ev_once_capitan_' + getUserId());
     }
 
     once[slotActivoOnce] = avatarLimpio;
@@ -2336,9 +2435,10 @@ window.autocompletarOnceInicial = function() {
     let asignados = new Set(Object.values(once));
     let agregados = 0;
 
+    // 1. Asignar solo futbolistas de campo en las 11 posiciones (excluyendo DTs)
     for (let i = 0; i < f.posiciones.length; i++) {
         if (!once[i]) {
-            const libre = desbloqueados.find(a => !asignados.has(a.id));
+            const libre = desbloqueados.find(a => !asignados.has(a.id) && (typeof esAvatarDT !== 'function' || !esAvatarDT(a.id)));
             if (libre) {
                 once[i] = libre.id;
                 asignados.add(libre.id);
@@ -2347,8 +2447,10 @@ window.autocompletarOnceInicial = function() {
         }
     }
 
+    // 2. Asignar un Director Técnico libre en el corralito de DT (priorizando DTs oficiales)
     if (!once['DT']) {
-        const dtLibre = desbloqueados.find(a => !asignados.has(a.id));
+        const dtLibre = desbloqueados.find(a => !asignados.has(a.id) && typeof esAvatarDT === 'function' && esAvatarDT(a.id))
+                     || desbloqueados.find(a => !asignados.has(a.id));
         if (dtLibre) {
             once['DT'] = dtLibre.id;
             asignados.add(dtLibre.id);
@@ -3131,17 +3233,40 @@ function renderizarOnceInicial() {
 
     // 7. Banquillo con OVR visible en cada carta
     const jugadoresEnCancha = new Set(Object.values(once));
-    drawerContainer.innerHTML = AVATARES_LISTA.map(item => {
+    const esSeleccionandoDt = slotActivoOnce === 'DT';
+
+    // Si estamos eligiendo DT, mostramos primero los DTs oficiales
+    const listaOrdenada = [...AVATARES_LISTA].sort((a, b) => {
+        if (esSeleccionandoDt) {
+            const dtA = (typeof esAvatarDT === 'function' && esAvatarDT(a.id)) ? 1 : 0;
+            const dtB = (typeof esAvatarDT === 'function' && esAvatarDT(b.id)) ? 1 : 0;
+            if (dtB !== dtA) return dtB - dtA;
+        }
+        return 0;
+    });
+
+    drawerContainer.innerHTML = listaOrdenada.map(item => {
         const isLocked = miNivel < item.nivel;
         const yaEnCancha = jugadoresEnCancha.has(item.id);
         const ovrCarta = obtenerOvrJugador(item.id);
+        const esDt = typeof esAvatarDT === 'function' && esAvatarDT(item.id);
 
-        let lockBadge = isLocked 
-            ? `<div class="avatar-grid-lock-mask"><i class="ph-fill ph-lock-key"></i><span>NV. ${item.nivel}</span></div>` 
-            : `<div class="once-drawer-ovr-tag">${ovrCarta}</div>`;
+        let lockBadge = '';
+        if (isLocked) {
+            lockBadge = `<div class="avatar-grid-lock-mask"><i class="ph-fill ph-lock-key"></i><span>NV. ${item.nivel}</span></div>`;
+        } else if (esDt) {
+            lockBadge = `<div class="once-drawer-ovr-tag" style="background:#f59e0b; color:#000; font-weight:900;">DT ${ovrCarta}</div>`;
+        } else {
+            lockBadge = `<div class="once-drawer-ovr-tag">${ovrCarta}</div>`;
+        }
+
+        const esIncompatible = (!esSeleccionandoDt && slotActivoOnce !== null && esDt);
 
         return `
-        <div class="avatar-grid-card ${isLocked ? 'locked' : 'unlocked'} ${yaEnCancha ? 'in-pitch' : ''}" onclick="asignarJugadorAOnce('${item.id}')">
+        <div class="avatar-grid-card ${isLocked ? 'locked' : 'unlocked'} ${yaEnCancha ? 'in-pitch' : ''}" 
+             onclick="asignarJugadorAOnce('${item.id}')"
+             style="${esIncompatible ? 'opacity: 0.45; filter: grayscale(0.5);' : ''}"
+             title="${esIncompatible ? 'Es Director Técnico (solo asignable en slot DT)' : item.label}">
             <div class="avatar-grid-img-wrap">
                 <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" loading="lazy">
                 ${lockBadge}
@@ -3957,10 +4082,15 @@ function registrarGolesYAsistenciasOnce(liga, cantGoles) {
         ? FORMACIONES_TACTICAS[formacionOnceActual]
         : { posiciones: Array(11).fill(0) };
 
+    const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
+
     const titulares = [];
     f.posiciones.forEach((posObj, idx) => {
-        const idAvatar = once[idx];
-        if (idAvatar) titulares.push({ id: idAvatar, pos: posObj.pos });
+        const idAvatar = once[idx] ? String(once[idx]).replace(/\.png$/i, '.webp') : null;
+        // 🛡️ REGLA: El DT nunca juega en el campo ni puede meter goles ni asistencias
+        if (idAvatar && idAvatar !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(idAvatar))) {
+            titulares.push({ id: idAvatar, pos: posObj.pos });
+        }
     });
     if (!titulares.length) return;
 
@@ -3974,7 +4104,9 @@ function registrarGolesYAsistenciasOnce(liga, cantGoles) {
             for (let k = 0; k < Math.round(p * 10); k++) poolG.push(t.id);
         });
         const goleador = poolG[Math.floor(Math.random() * poolG.length)] || titulares[0].id;
-        liga.golesOnce[goleador] = (liga.golesOnce[goleador] || 0) + 1;
+        if (goleador !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(goleador))) {
+            liga.golesOnce[goleador] = (liga.golesOnce[goleador] || 0) + 1;
+        }
 
         if (Math.random() < 0.82 && titulares.length > 1) {
             let poolA = [];
@@ -3986,7 +4118,9 @@ function registrarGolesYAsistenciasOnce(liga, cantGoles) {
             });
             if (poolA.length) {
                 const asistidor = poolA[Math.floor(Math.random() * poolA.length)];
-                liga.asistenciasOnce[asistidor] = (liga.asistenciasOnce[asistidor] || 0) + 1;
+                if (asistidor !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(asistidor))) {
+                    liga.asistenciasOnce[asistidor] = (liga.asistenciasOnce[asistidor] || 0) + 1;
+                }
             }
         }
     }
@@ -3995,9 +4129,14 @@ function registrarGolesYAsistenciasOnce(liga, cantGoles) {
 function obtenerLideresOnce(liga) {
     let topGol = { id: null, cant: 0 };
     let topAsist = { id: null, cant: 0 };
+    const once = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
 
     if (liga.golesOnce) {
         for (const id in liga.golesOnce) {
+            const cleanId = String(id).replace(/\.png$/i, '.webp');
+            // 🛡️ REGLA: El DT nunca puede figurar como goleador
+            if (cleanId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(cleanId))) continue;
             if (liga.golesOnce[id] > topGol.cant) {
                 topGol = { id, cant: liga.golesOnce[id] };
             }
@@ -4005,6 +4144,9 @@ function obtenerLideresOnce(liga) {
     }
     if (liga.asistenciasOnce) {
         for (const id in liga.asistenciasOnce) {
+            const cleanId = String(id).replace(/\.png$/i, '.webp');
+            // 🛡️ REGLA: El DT nunca puede figurar como asistidor
+            if (cleanId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(cleanId))) continue;
             if (liga.asistenciasOnce[id] > topAsist.cant) {
                 topAsist = { id, cant: liga.asistenciasOnce[id] };
             }
@@ -4687,17 +4829,22 @@ window.mostrarCofreTemporada = function(liga) {
     const unaF = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
     let capId = typeof obtenerCapitanOnce === 'function' ? obtenerCapitanOnce() : null;
 
-    // Respaldo inteligente: si no se asignó la 'C', toma el avatar de su carta o el primer titular disponible
-    if (!capId) {
-        capId = localStorage.getItem('ev_avatar_seleccionado_' + getUserId()) 
-             || getPref('ev_avatar_hair', '') 
-             || unaF[0] 
-             || '1.webp';
-    }
-
     let dtId = unaF['DT'] || null;
     if (!dtId) {
-        dtId = '45.webp'; // Respaldo técnico si aún no contrató DT
+        dtId = '45.webp'; // Respaldo técnico si aún no contrató DT (Scaloni)
+    }
+
+    // 🛡️ REGLA: El Capitán nunca puede ser el DT
+    if (!capId || capId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(capId))) {
+        const avatarFut = (typeof getPref === 'function' ? getPref('ev_avatar_hair', '') : '').replace(/\.png$/i, '.webp');
+        const titularesSinDt = Object.keys(unaF)
+            .filter(k => k !== 'DT' && unaF[k] && unaF[k] !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(unaF[k])))
+            .map(k => unaF[k]);
+        if (avatarFut && avatarFut !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(avatarFut))) {
+            capId = avatarFut;
+        } else {
+            capId = titularesSinDt[0] || '1.webp';
+        }
     }
 
     const capNombre = obtenerNombreAvatar(capId);
@@ -4731,7 +4878,7 @@ window.mostrarCofreTemporada = function(liga) {
         const { topGol, topAsist } = typeof obtenerLideresOnce === 'function' ? obtenerLideresOnce(liga) : { topGol: {}, topAsist: {} };
 
         let hito2HTML = '';
-        if (topGol && topGol.id && topGol.cant > 0) {
+        if (topGol && topGol.id && topGol.cant > 0 && topGol.id !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(topGol.id))) {
             hito2HTML = `
                 <div class="cofre-hito-card">
                     <div class="hito-header"><i class="ph-bold ph-soccer-ball"></i> GOLEADOR</div>
@@ -4758,7 +4905,7 @@ window.mostrarCofreTemporada = function(liga) {
                     <span class="hito-sub">${filaUser.gc} GC en ${filaUser.pj} PJ</span>
                 </div>
             `;
-        } else if (topAsist && topAsist.id && topAsist.cant > 0) {
+        } else if (topAsist && topAsist.id && topAsist.cant > 0 && topAsist.id !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(topAsist.id))) {
             hito3HTML = `
                 <div class="cofre-hito-card">
                     <div class="hito-header"><i class="ph-bold ph-sneaker-move"></i> ASISTIDOR</div>
@@ -4960,7 +5107,19 @@ async function compartirPosterCampeon(datosCampeon) {
     const ovrEquipo = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 80;
 
     let capId = typeof obtenerCapitanOnce === 'function' ? obtenerCapitanOnce() : null;
-    if (!capId) capId = getPref('ev_avatar_hair', '1.webp');
+    const unaF = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
+    const dtId = unaF['DT'] || '45.webp';
+    if (!capId || capId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(capId))) {
+        const avatarFut = (typeof getPref === 'function' ? getPref('ev_avatar_hair', '') : '').replace(/\.png$/i, '.webp');
+        if (avatarFut && avatarFut !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(avatarFut))) {
+            capId = avatarFut;
+        } else {
+            const titulares = Object.keys(unaF)
+                .filter(k => k !== 'DT' && unaF[k] && unaF[k] !== dtId && (typeof esAvatarDT !== 'function' || !esAvatarDT(unaF[k])))
+                .map(k => unaF[k]);
+            capId = titulares[0] || '1.webp';
+        }
+    }
     const capNombre = obtenerNombreAvatar(capId);
 
     const torneoNombre = (datosCampeon.torneo || 'CAMPEÓN').toUpperCase();

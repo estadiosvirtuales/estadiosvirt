@@ -498,6 +498,26 @@ function obtenerNombreAvatar(id) {
     return item ? item.label : 'El Canario';
 }
 
+// 📋 Diccionario Oficial de Directores Técnicos
+const AVATARES_DTS = new Set([
+    '45.webp',              // El Estratega (Lionel Scaloni)
+    '48.webp',              // El Muñeco (Marcelo Gallardo)
+    '46.webp',              // El Filósofo (Pep Guardiola)
+    'Diego Simeone.webp',   // El Cholo (Diego Simeone)
+    'Jurgen Klopp.webp',    // Jürgen (Jürgen Klopp)
+    '49.webp',              // Special One (José Mourinho)
+    '47.webp',              // Carletto (Carlo Ancelotti)
+    'Alex Ferguson.webp'    // Sir Alex (Alex Ferguson)
+]);
+window.AVATARES_DTS = AVATARES_DTS;
+
+function esAvatarDT(id) {
+    if (!id) return false;
+    const cleanId = String(id).replace(/\.png$/i, '.webp').trim();
+    return AVATARES_DTS.has(cleanId);
+}
+window.esAvatarDT = esAvatarDT;
+
 /* ==========================================================================
    🎁 LÓGICA DE SOBRE DE BIENVENIDA Y DESBLOQUEOS POR NIVEL
    ========================================================================== */
@@ -1046,6 +1066,7 @@ async function guardarPersonalizacion(){
             return;
         }
         setPref('ev_avatar_hair', hairInput.value);
+        localStorage.setItem('ev_avatar_seleccionado_' + getUserId(), hairInput.value);
     }
 
     const logoInput = document.getElementById('avatar-logo-input');
