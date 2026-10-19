@@ -19,6 +19,7 @@
 var formacionOnceActual = '4-3-3';
 var slotActivoOnce = null;
 var dragSourceSlotOnce = null;
+var dragSourceAvatarDrawer = null;
 var touchOriginIdxOnce = null;
 var touchCloneElOnce = null;
 var touchMovedOnce = false;
@@ -2484,16 +2485,31 @@ window.limpiarOnceInicial = function() {
 };
 
 window.intercambiarPosicionesOnce = function(idx1, idx2) {
+    if (idx1 === idx2) return;
     const once = obtenerOnceInicial();
     const p1 = once[idx1];
     const p2 = once[idx2];
+    if (!p1 && !p2) return;
+
+    // Si uno de los slots es el DT, validar que un DT oficial no entre como futbolista de cancha
+    if (idx1 === 'DT' || idx2 === 'DT') {
+        const jugadorHaciaCancha = idx1 === 'DT' ? p1 : p2;
+        if (jugadorHaciaCancha && typeof esAvatarDT === 'function' && esAvatarDT(jugadorHaciaCancha)) {
+            showToast("¡Un Director Técnico no puede ingresar como futbolista de campo! 📋", "ph-prohibit", "warning");
+            return;
+        }
+    }
 
     if (p2) {
         once[idx1] = p2;
     } else {
         delete once[idx1];
     }
-    once[idx2] = p1;
+    if (p1) {
+        once[idx2] = p1;
+    } else {
+        delete once[idx2];
+    }
 
     userStats.onceInicial = once;
     localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(once));
@@ -2506,44 +2522,118 @@ window.intercambiarPosicionesOnce = function(idx1, idx2) {
 // --- DRAG & DROP EN ESCRITORIO (PC) ---
 window.iniciarArrastreOnce = function(e, idx) {
     dragSourceSlotOnce = idx;
-    e.dataTransfer.setData("text/plain", idx);
+    dragSourceAvatarDrawer = null;
+    e.dataTransfer.setData("application/x-slot-idx", String(idx));
+    e.dataTransfer.setData("text/plain", `slot:${idx}`);
     e.dataTransfer.effectAllowed = "move";
-    const node = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    const node = idx === 'DT'
+        ? document.querySelector('.once-dt-bench')
+        : document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
     if (node) node.classList.add('is-dragging');
+};
+
+window.iniciarArrastreAvatarDrawer = function(e, avatarId) {
+    dragSourceAvatarDrawer = avatarId;
+    dragSourceSlotOnce = null;
+    e.dataTransfer.setData("application/x-avatar-id", avatarId);
+    e.dataTransfer.setData("text/plain", `avatar:${avatarId}`);
+    e.dataTransfer.effectAllowed = "copyMove";
+    const card = e.currentTarget;
+    if (card) card.classList.add('is-dragging');
+};
+
+window.finalizarArrastreAvatarDrawer = function(e) {
+    document.querySelectorAll('.avatar-grid-card').forEach(c => c.classList.remove('is-dragging'));
+    document.querySelectorAll('.once-slot-node, .once-dt-bench').forEach(n => n.classList.remove('is-drag-over'));
+    dragSourceAvatarDrawer = null;
 };
 
 window.permitirArrastreSobreOnce = function(e, idx) {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
-    const targetNode = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
-    if (targetNode && dragSourceSlotOnce !== idx) {
+    const targetNode = idx === 'DT' 
+        ? document.querySelector('.once-dt-bench') 
+        : document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    if (targetNode && (dragSourceSlotOnce !== idx || dragSourceAvatarDrawer)) {
         targetNode.classList.add('is-drag-over');
     }
 };
 
 window.salirArrastreSobreOnce = function(e, idx) {
-    const targetNode = document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
+    const targetNode = idx === 'DT' 
+        ? document.querySelector('.once-dt-bench') 
+        : document.querySelector(`.once-slot-node[data-slot-idx="${idx}"]`);
     if (targetNode) targetNode.classList.remove('is-drag-over');
 };
 
 window.finalizarArrastreOnce = function(e) {
-    document.querySelectorAll('.once-slot-node').forEach(n => {
+    document.querySelectorAll('.once-slot-node, .once-dt-bench').forEach(n => {
         n.classList.remove('is-dragging', 'is-drag-over');
     });
     dragSourceSlotOnce = null;
+    dragSourceAvatarDrawer = null;
 };
 
 window.soltarJugadorEnOnce = function(e, targetIdx) {
     e.preventDefault();
-    const sourceIdx = dragSourceSlotOnce !== null ? dragSourceSlotOnce : parseInt(e.dataTransfer.getData("text/plain"));
-    document.querySelectorAll('.once-slot-node').forEach(n => {
+    document.querySelectorAll('.once-slot-node, .once-dt-bench').forEach(n => {
         n.classList.remove('is-dragging', 'is-drag-over');
     });
+
+    // 1. Caso arrastre desde el banquillo de futbolistas (Drawer -> Puesto de cancha o DT)
+    let avatarDesdeDrawer = dragSourceAvatarDrawer || e.dataTransfer.getData("application/x-avatar-id");
+    if (!avatarDesdeDrawer) {
+        const plain = e.dataTransfer.getData("text/plain");
+        if (plain && plain.startsWith('avatar:')) {
+            avatarDesdeDrawer = plain.replace('avatar:', '');
+        }
+    }
+    dragSourceAvatarDrawer = null;
+
+    if (avatarDesdeDrawer) {
+        dragSourceSlotOnce = null;
+        slotActivoOnce = targetIdx;
+        asignarJugadorAOnce(avatarDesdeDrawer);
+        return;
+    }
+
+    // 2. Caso arrastre entre puestos dentro de la cancha (Slot A -> Slot B)
+    let sourceIdx = dragSourceSlotOnce;
+    if (sourceIdx === null || sourceIdx === undefined) {
+        const rawSlot = e.dataTransfer.getData("application/x-slot-idx");
+        if (rawSlot !== "") {
+            sourceIdx = rawSlot === 'DT' ? 'DT' : parseInt(rawSlot);
+        } else {
+            const plain = e.dataTransfer.getData("text/plain");
+            if (plain && plain.startsWith('slot:')) {
+                const s = plain.replace('slot:', '');
+                sourceIdx = s === 'DT' ? 'DT' : parseInt(s);
+            }
+        }
+    }
     dragSourceSlotOnce = null;
 
-    if (isNaN(sourceIdx) || sourceIdx === targetIdx) return;
+    if (sourceIdx === null || sourceIdx === undefined || sourceIdx === targetIdx) return;
     intercambiarPosicionesOnce(sourceIdx, targetIdx);
 };
+
+// 🛡️ Prevenir navegación por defecto del navegador si se suelta fuera de los puestos
+window.addEventListener('dragover', function(e) {
+    if (dragSourceSlotOnce !== null || dragSourceAvatarDrawer !== null) {
+        e.preventDefault();
+    }
+}, false);
+window.addEventListener('drop', function(e) {
+    if (dragSourceSlotOnce !== null || dragSourceAvatarDrawer !== null) {
+        e.preventDefault();
+        dragSourceSlotOnce = null;
+        dragSourceAvatarDrawer = null;
+        document.querySelectorAll('.once-slot-node, .once-dt-bench').forEach(n => {
+            n.classList.remove('is-dragging', 'is-drag-over');
+        });
+        document.querySelectorAll('.avatar-grid-card').forEach(c => c.classList.remove('is-dragging'));
+    }
+}, false);
 
 // --- DESPLAZAMIENTO TÁCTIL EN CELULARES (TOUCH DRAG CON UMBRAL DE TOQUE) ---
 window.iniciarTouchOnce = function(e, idx) {
@@ -3160,7 +3250,12 @@ function renderizarOnceInicial() {
     const isDtActive = slotActivoOnce === 'DT';
     const ovrDt = dtAvatar ? obtenerOvrJugador(dtAvatar) : 0;
     const htmlDtCorralito = `
-        <div class="once-dt-bench ${isDtActive ? 'is-active-slot' : ''} ${dtAvatar ? 'filled' : 'empty'}" onclick="seleccionarSlotOnce('DT')" title="Elegir Director Técnico">
+        <div class="once-dt-bench ${isDtActive ? 'is-active-slot' : ''} ${dtAvatar ? 'filled' : 'empty'}" 
+             onclick="seleccionarSlotOnce('DT')" 
+             ondragover="permitirArrastreSobreOnce(event, 'DT')"
+             ondragleave="salirArrastreSobreOnce(event, 'DT')"
+             ondrop="soltarJugadorEnOnce(event, 'DT')"
+             title="Elegir Director Técnico">
             <div class="once-avatar-circle dt-circle">
                 ${dtAvatar ? `
                     <img src="${dtAvatar}" alt="DT" class="once-avatar-img" draggable="false">
@@ -3267,13 +3362,20 @@ function renderizarOnceInicial() {
 
         const esIncompatible = (!esSeleccionandoDt && slotActivoOnce !== null && esDt);
 
+        const dragAttrsDrawer = !isLocked ? `
+            draggable="true" 
+            ondragstart="iniciarArrastreAvatarDrawer(event, '${item.id}')" 
+            ondragend="finalizarArrastreAvatarDrawer(event)"
+        ` : '';
+
         return `
         <div class="avatar-grid-card ${isLocked ? 'locked' : 'unlocked'} ${yaEnCancha ? 'in-pitch' : ''}" 
              onclick="asignarJugadorAOnce('${item.id}')"
+             ${dragAttrsDrawer}
              style="${esIncompatible ? 'opacity: 0.45; filter: grayscale(0.5);' : ''}"
              title="${esIncompatible ? 'Es Director Técnico (solo asignable en slot DT)' : item.label}">
             <div class="avatar-grid-img-wrap">
-                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" loading="lazy">
+                <img src="${item.id}" alt="${item.label}" class="${isLocked ? 'avatar-locked-blur' : ''}" loading="lazy" draggable="false">
                 ${lockBadge}
             </div>
             <span>${item.label}</span>

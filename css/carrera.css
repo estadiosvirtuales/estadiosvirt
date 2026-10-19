@@ -601,6 +601,39 @@
     z-index: 12;
 }
 
+/* 🚫 Anular arrastre nativo de imágenes del navegador (evita Pantalla Dividida en Edge) */
+.once-modal-box img,
+.avatar-grid-card img,
+.once-avatar-img {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+}
+
+/* 🔄 Estados de Drag & Drop para puestos de cancha y tarjetas */
+.avatar-grid-card.unlocked {
+    cursor: grab;
+}
+.avatar-grid-card.is-dragging {
+    opacity: 0.45;
+    transform: scale(0.95);
+    cursor: grabbing;
+}
+.once-slot-node.is-dragging {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.9);
+}
+.once-slot-node.is-drag-over .once-avatar-circle,
+.once-slot-node.is-drag-over .once-empty-circle,
+.once-dt-bench.is-drag-over .once-avatar-circle,
+.once-dt-bench.is-drag-over .dt-circle {
+    border-color: #ffd700 !important;
+    box-shadow: 0 0 24px rgba(255, 215, 0, 0.85) !important;
+    transform: scale(1.18);
+    transition: all 0.15s ease;
+}
+
 .once-avatar-circle {
     position: relative !important;
     width: 54px !important;
