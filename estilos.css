@@ -7149,6 +7149,8 @@ body.video-abierto .hero-section {
     letter-spacing: 1.2px;
     text-transform: uppercase;
     cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
