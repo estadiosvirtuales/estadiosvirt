@@ -3371,61 +3371,94 @@ body.video-abierto .hero-section {
     /* ========================================== */
     /* A. FRANJA SUPERIOR (HEADER) SÚPER COMPACTA */
     /* ========================================== */
-    header, .top-bar, .navbar {
-        padding: 8px 12px !important;
+    header, .top-bar, .navbar, .app-header {
+        padding: 8px 10px !important;
         min-height: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    .app-brand {
+        gap: 8px !important;
+        min-width: 0 !important;
+        flex-shrink: 1 !important;
+    }
+    .app-logo {
+        width: 36px !important;
+        height: 36px !important;
+        flex-shrink: 0 !important;
     }
 
     /* Achicamos el texto del logo y forzamos 1 sola línea */
-    header h1, header h2, .logo-title, .header-brand-name {
-        font-size: 1.1rem !important;
+    header h1, header h2, .logo-title, .header-brand-name, .app-title {
+        font-size: 0.95rem !important;
         line-height: 1.1 !important;
         margin-bottom: 2px !important;
         white-space: nowrap !important; 
     }
 
     /* Achicamos el subtítulo verde a 1 sola línea */
-    header p, header span, .logo-subtitle, .header-slogan {
-        font-size: 0.55rem !important;
+    header p, header span, .logo-subtitle, .header-slogan, .app-subtitle {
+        font-size: 0.52rem !important;
         line-height: 1 !important;
         white-space: nowrap !important;
     }
 
     /* Botones de acción del header en celular: Sonido y Tema */
     .header-actions {
-        flex: 1 !important;
+        flex-shrink: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        gap: 6px !important;
+        gap: 5px !important;
+        margin-left: auto !important;
     }
     .theme-toggle-btn, .theme-toggle, #theme-btn, .sound-toggle-btn {
         transform: none !important; 
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important; 
-        max-width: 32px !important;
-        border-radius: 10px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important; 
+        max-width: 30px !important;
+        border-radius: 9px !important;
         flex-shrink: 0 !important;  
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
         padding: 0 !important;
         margin: 0 !important;
     }
 
-    /* El perfil se achica apenitas y se desplaza levemente a la izquierda para no quedar cortado en pantalla móvil */
+    /* El botón de perfil de usuario en celular: se compacta naturalmente sin scale(), se acerca al botón de modo y nunca se corta */
     #hero-google-profile {
-        margin-right: 8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
         flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
     }
-    .hero-profile-wrapper, #hero-google-profile {
-        transform: scale(0.88) !important;
-        transform-origin: right center !important;
+    .hero-profile-wrapper {
+        transform: none !important;
+        padding: 3px 5px 3px 8px !important;
+        gap: 5px !important;
+        border-radius: 50px !important;
     }
     .hero-profile-name {
-        max-width: 78px !important;
+        font-size: 0.78rem !important;
+        max-width: 65px !important;
+        line-height: 1.1 !important;
+    }
+    .hero-profile-sub {
+        font-size: 0.62rem !important;
+        line-height: 1 !important;
+    }
+    .hero-profile-wrapper > div:last-child {
+        width: 30px !important;
+        height: 30px !important;
+        flex-shrink: 0 !important;
+    }
+    .btn-login {
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
     }
 
     /* ========================================== */
@@ -13737,61 +13770,94 @@ body.video-abierto .hero-section {
     /* ========================================== */
     /* A. FRANJA SUPERIOR (HEADER) SÚPER COMPACTA */
     /* ========================================== */
-    header, .top-bar, .navbar {
-        padding: 8px 12px !important;
+    header, .top-bar, .navbar, .app-header {
+        padding: 8px 10px !important;
         min-height: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    .app-brand {
+        gap: 8px !important;
+        min-width: 0 !important;
+        flex-shrink: 1 !important;
+    }
+    .app-logo {
+        width: 36px !important;
+        height: 36px !important;
+        flex-shrink: 0 !important;
     }
 
     /* Achicamos el texto del logo y forzamos 1 sola línea */
-    header h1, header h2, .logo-title, .header-brand-name {
-        font-size: 1.1rem !important;
+    header h1, header h2, .logo-title, .header-brand-name, .app-title {
+        font-size: 0.95rem !important;
         line-height: 1.1 !important;
         margin-bottom: 2px !important;
         white-space: nowrap !important; 
     }
 
     /* Achicamos el subtítulo verde a 1 sola línea */
-    header p, header span, .logo-subtitle, .header-slogan {
-        font-size: 0.55rem !important;
+    header p, header span, .logo-subtitle, .header-slogan, .app-subtitle {
+        font-size: 0.52rem !important;
         line-height: 1 !important;
         white-space: nowrap !important;
     }
 
     /* Botones de acción del header en celular: Sonido y Tema */
     .header-actions {
-        flex: 1 !important;
+        flex-shrink: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        gap: 6px !important;
+        gap: 5px !important;
+        margin-left: auto !important;
     }
     .theme-toggle-btn, .theme-toggle, #theme-btn, .sound-toggle-btn {
         transform: none !important; 
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important; 
-        max-width: 32px !important;
-        border-radius: 10px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important; 
+        max-width: 30px !important;
+        border-radius: 9px !important;
         flex-shrink: 0 !important;  
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
         padding: 0 !important;
         margin: 0 !important;
     }
 
-    /* El perfil se achica apenitas y se desplaza levemente a la izquierda para no quedar cortado en pantalla móvil */
+    /* El botón de perfil de usuario en celular: se compacta naturalmente sin scale(), se acerca al botón de modo y nunca se corta */
     #hero-google-profile {
-        margin-right: 8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
         flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
     }
-    .hero-profile-wrapper, #hero-google-profile {
-        transform: scale(0.88) !important;
-        transform-origin: right center !important;
+    .hero-profile-wrapper {
+        transform: none !important;
+        padding: 3px 5px 3px 8px !important;
+        gap: 5px !important;
+        border-radius: 50px !important;
     }
     .hero-profile-name {
-        max-width: 78px !important;
+        font-size: 0.78rem !important;
+        max-width: 65px !important;
+        line-height: 1.1 !important;
+    }
+    .hero-profile-sub {
+        font-size: 0.62rem !important;
+        line-height: 1 !important;
+    }
+    .hero-profile-wrapper > div:last-child {
+        width: 30px !important;
+        height: 30px !important;
+        flex-shrink: 0 !important;
+    }
+    .btn-login {
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
     }
 
     /* ========================================== */
