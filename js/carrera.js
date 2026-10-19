@@ -388,7 +388,12 @@ window.mejorarJugadorOnce = function(avatarId, event) {
     userStats.mejorasJugadores[aLimpio] = (userStats.mejorasJugadores[aLimpio] || 0) + 1;
     guardarStats();
     renderizarOnceInicial();
-    showToast(`¡${obtenerNombreAvatar(aLimpio)} subió a ${ovrActual + 1} OVR! (-${costoSP} SP) 🔥`, "ph-lightning", "success");
+
+    // 🛡️ Prevenir apilamiento de carteles: eliminar inmediatamente cualquier toast de entrenamiento previo
+    const toastPrevio = document.querySelector('.toast-entrenamiento');
+    if (toastPrevio) toastPrevio.remove();
+
+    showToast(`¡${obtenerNombreAvatar(aLimpio)} subió a ${ovrActual + 1} OVR! (-${costoSP} SP) 🔥`, "ph-lightning", "success toast-entrenamiento");
 };
 
 // ========================================================

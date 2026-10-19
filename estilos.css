@@ -16756,4 +16756,36 @@ body.video-abierto .hero-section {
 .fut-club-icon[src*="instituto"] {
     transform: scale(1.06) !important;
 }
+
+/* 📱 CONTENEDOR Y TOASTS EN CELULAR: Compacto, centrado y anti-bloqueo de pantalla */
+@media (max-width: 768px) {
+    .toast-container {
+        bottom: 22px !important;
+        right: 16px !important;
+        left: 16px !important;
+        align-items: center !important;
+        pointer-events: none !important;
+        max-width: calc(100vw - 32px) !important;
+        gap: 6px !important;
+    }
+    .toast {
+        max-width: 100% !important;
+        width: auto !important;
+        padding: 9px 15px !important;
+        font-size: 0.80rem !important;
+        border-radius: 12px !important;
+        pointer-events: auto !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
+    }
+    .toast.toast-entrenamiento {
+        padding: 8px 16px !important;
+        font-size: 0.80rem !important;
+        font-weight: 700 !important;
+        border-radius: 20px !important;
+        border: 1px solid var(--accent-color) !important;
+        background: rgba(10, 18, 30, 0.95) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+    }
+}
 

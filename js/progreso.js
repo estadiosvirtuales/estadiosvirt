@@ -685,11 +685,39 @@ async function verificarPremiosPendientes() {
 })();
 
 
-function showToast(msg,icon='ph-check-circle',tipo=''){
-const c=document.getElementById('toast-container');const t=document.createElement('div');
-t.className='toast'+(tipo?' '+tipo:'');
-t.innerHTML=`<i class="ph-fill ${icon}" style="font-size:1.3rem;color:${tipo==='danger'?'var(--danger-color)':'var(--accent-color)'};flex-shrink:0;"></i> ${msg}`;
-c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(20px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),350);},2800);
+function showToast(msg, icon = 'ph-check-circle', tipo = '') {
+    const c = document.getElementById('toast-container');
+    if (!c) return;
+
+    // 🛡️ Si es un toast de entrenamiento, remover cualquier toast de entrenamiento previo
+    if (tipo && tipo.includes('toast-entrenamiento')) {
+        const viejos = c.querySelectorAll('.toast-entrenamiento');
+        viejos.forEach(v => v.remove());
+    }
+
+    // 🛡️ Límite anti-apilamiento global: máximo 2 toasts en pantalla al mismo tiempo
+    while (c.children.length >= 2) {
+        c.firstElementChild.remove();
+    }
+
+    const t = document.createElement('div');
+    t.className = 'toast' + (tipo ? ' ' + tipo : '');
+    t.innerHTML = `<i class="ph-fill ${icon}" style="font-size:1.3rem;color:${tipo && tipo.includes('danger') ? 'var(--danger-color)' : 'var(--accent-color)'};flex-shrink:0;"></i> <span>${msg}</span>`;
+    c.appendChild(t);
+
+    const duracion = (tipo && tipo.includes('toast-entrenamiento')) ? 1600 : 2800;
+
+    const timer = setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(20px)';
+        t.style.transition = 'all .25s ease';
+        setTimeout(() => t.remove(), 260);
+    }, duracion);
+
+    t.onclick = () => {
+        clearTimeout(timer);
+        t.remove();
+    };
 }
 
 function toggleTheme(){
