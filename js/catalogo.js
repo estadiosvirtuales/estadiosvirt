@@ -901,7 +901,8 @@ function renderizarTarjetas(lista) {
         }
 
         const vL = obtenerVotoLocal(estadio);
-        const est = vL > 0 ? vL : (prom / 2);
+        // La nota promedio de todos los votos se refleja directamente en las 5 estrellas:
+        const est = prom > 0 ? (prom / 2) : (vL > 0 ? vL : 0);
         const estadioSafe = estadio.replace(/"/g, '&quot;').replace(/'/g, '&#39;'),
               clubSafe = club.replace(/"/g, '&quot;').replace(/'/g, '&#39;'),
               paisSafe = pais.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -913,9 +914,7 @@ function renderizarTarjetas(lista) {
             else if (i === Math.ceil(est) && (est % 1 >= .5)) ic = 'ph-fill ph-star-half active';
             estrellasHTML += `<i class="${ic} star-icon" data-estadio="${estadioSafe}" data-club="${clubSafe}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;
         }
-        const lRating = vL > 0  
-            ? `Tu voto: ${vL}★${prom > 0 ? ` · prom. ${prom.toFixed(1)}/10${textoTotalVotos}` : ''}` 
-            : (prom > 0 ? `Calificá · prom. ${prom.toFixed(1)}/10${textoTotalVotos}` : 'Calificá este estadio');
+        const lRating = 'Calificá';
         const imgHTML = urlFoto 
             ? `<img class="card-img-logo" src="${urlFoto}" alt="${clubSafe}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>` 
             : `<div class="placeholder-text">${club}</div>`;
