@@ -2715,7 +2715,30 @@ function calcularYRenderizarQuimicaOnce(f, once) {
         '18.webp': ['atletico', 'racing'],
         '53.webp': ['atletico', 'chelsea', 'monaco', 'river'],
         'Didier Drogba.webp': ['chelsea'],
-        'Marco Reus.webp': ['dortmund']
+        'Marco Reus.webp': ['dortmund'],
+        '9.webp': ['barca', 'psg', 'dortmund'],
+        '10.webp': ['bayern', 'tottenham'],
+        '15.webp': ['realmadrid', 'psg', 'benfica', 'juventus', 'mufc', 'rosariocentral'],
+        '16.webp': ['tottenham', 'atalanta', 'belgrano'],
+        '21.webp': ['benfica', 'mancity', 'porto', 'velez'],
+        '24.webp': ['astonvilla', 'arsenal', 'independiente'],
+        '29.webp': ['estudiantes', 'intermilan', 'lazio', 'parma', 'mufc', 'chelsea', 'boca'],
+        '30.webp': ['santos'],
+        '38.webp': ['barca', 'liverpool', 'river', 'estudiantes'],
+        '45.webp': ['deportivo', 'lazio', 'atalanta', 'estudiantes', 'newells'],
+        '52.webp': ['realmadrid', 'bayern', 'porto', 'everton', 'saopaulo', 'monaco'],
+        '54.webp': ['tottenham', 'ajax', 'atleticonacional'],
+        '55.webp': ['everton', 'barca', 'palmeiras', 'cagliari'],
+        '56.webp': ['atleticonacional', 'valladolid'],
+        '57.webp': ['junior', 'deportivocali', 'montpellier', 'valladolid'],
+        '58.webp': ['juventus', 'bayern', 'barca', 'intermilan', 'colocolo', 'flamengo', 'leverkusen'],
+        '59.webp': ['barca', 'arsenal', 'intermilan', 'marseille', 'mufc', 'river', 'colocolo'],
+        '60.webp': ['milan', 'chelsea', 'dortmund'],
+        '61.webp': ['boca', 'sevillafc', 'intermilan', 'bologna', 'vasco'],
+        '62.webp': ['realmadrid', 'intermilan', 'america', 'sevillafc', 'colocolo'],
+        'Guilermo memo Ochoa.webp': ['america', 'malaga', 'granada'],
+        'Diego Forlán.webp': ['atletico', 'villarreal', 'mufc', 'intermilan', 'independiente', 'penarol'],
+        '70.webp': ['velez', 'sanlorenzo', 'penarol', 'zaragoza']
     };
 
     // 🔗 3. CÁLCULO DE LÍNEAS TÁCTICAS ENTRE TITULARES CERCANOS
