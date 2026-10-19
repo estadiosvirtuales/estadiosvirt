@@ -517,36 +517,50 @@ window.obtenerVotoLocal = obtenerVotoLocal;
 
 async function registrarVoto(event, estadio, club, puntuacion) {
     if (event) event.stopPropagation();
+
+    // 🛡️ REGLA: Cada usuario puede votar UNA SOLA VEZ por cada estadio
+    const votoPrevio = obtenerVotoLocal(estadio);
+    if (votoPrevio > 0) {
+        if (typeof showToast === 'function') {
+            showToast(`Ya calificaste este estadio anteriormente con ${votoPrevio}★`, "ph-check-circle", "info");
+        }
+        return;
+    }
+
+    // Guardar voto localmente para bloquear votos repetidos
+    guardarVotoLocal(estadio, puntuacion);
+
     if (typeof userStats !== 'undefined') {
         userStats.votosRealizados = (userStats.votosRealizados || 0) + 1;
         if (typeof guardarStats === 'function') guardarStats();
     }
-    guardarVotoLocal(estadio, puntuacion);
 
+    // Actualizar visualmente la barra continua de estrellas de inmediato
     if (event && event.target) {
-        const sr = event.target.closest('.stars-row');
-        if (sr) {
-            sr.querySelectorAll('.star-icon').forEach((s, i) => {
-                if (i < puntuacion) {
-                    s.classList.add('active', 'ph-fill');
-                    s.classList.remove('ph-duotone');
-                } else {
-                    s.classList.remove('active', 'ph-fill');
-                    s.classList.add('ph-duotone');
-                }
-            });
+        const container = event.target.closest('.stars-precise-container');
+        if (container) {
+            container.classList.add('voted');
+            const fill = container.querySelector('.stars-fill');
+            if (fill) {
+                fill.style.width = `${(puntuacion / 5) * 100}%`;
+            }
+            container.setAttribute('title', `Tu voto: ${puntuacion}★`);
         }
     }
 
+    // Guardar voto en Supabase
     if (typeof supabaseClient !== 'undefined' && supabaseClient) {
         try {
+            const u = typeof obtenerUsuarioLogueado === 'function' ? obtenerUsuarioLogueado() : null;
+            const uid = (u && u.sub) ? u.sub : (typeof getUserId === 'function' ? getUserId() : null);
             await supabaseClient
                 .from('votos')
                 .insert([
                     { 
                         estadio: estadio, 
                         club: club, 
-                        voto: puntuacion 
+                        voto: puntuacion,
+                        user_id: uid
                     }
                 ]);
             console.log(`Voto guardado en Supabase: ${estadio} -> ${puntuacion}★`);
@@ -555,7 +569,7 @@ async function registrarVoto(event, estadio, club, puntuacion) {
         }
     }
 
-    if (typeof showToast === 'function') showToast(`Calificaste ${estadio} con ${puntuacion}★`);
+    if (typeof showToast === 'function') showToast(`¡Calificaste ${estadio} con ${puntuacion}★! (+50 XP)`);
     if (typeof agregarXP === 'function') agregarXP(50);
 }
 window.registrarVoto = registrarVoto;
@@ -901,19 +915,47 @@ function renderizarTarjetas(lista) {
         }
 
         const vL = obtenerVotoLocal(estadio);
-        // La nota promedio de todos los votos se refleja directamente en las 5 estrellas:
-        const est = prom > 0 ? (prom / 2) : (vL > 0 ? vL : 0);
+        const yaVoto = (vL > 0);
+
+        // 🌟 Cálculo del promedio continuo exacto en escala 0 a 5 estrellas:
+        const prom5 = prom > 0 ? (prom / 2) : 0;
+        const notaEstrellas = prom5 > 0 ? prom5 : (yaVoto ? vL : 0);
+        const pctFill = Math.max(0, Math.min(100, (notaEstrellas / 5) * 100));
+
         const estadioSafe = estadio.replace(/"/g, '&quot;').replace(/'/g, '&#39;'),
               clubSafe = club.replace(/"/g, '&quot;').replace(/'/g, '&#39;'),
               paisSafe = pais.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-              
-        let estrellasHTML = '';
-        for (let i = 1; i <= 5; i++) {
-            let ic = 'ph-duotone ph-star';
-            if (i <= Math.floor(est)) ic = 'ph-fill ph-star active';
-            else if (i === Math.ceil(est) && (est % 1 >= .5)) ic = 'ph-fill ph-star-half active';
-            estrellasHTML += `<i class="${ic} star-icon" data-estadio="${estadioSafe}" data-club="${clubSafe}" data-puntuacion="${i}" onclick="registrarVotoDesdeAtributo(event,this)"></i>`;
-        }
+
+        const ratingTooltip = prom5 > 0 
+            ? `Nota promedio: ${prom5.toFixed(2)} / 5${yaVoto ? ` · Tu voto: ${vL}★` : ''}`
+            : (yaVoto ? `Tu voto: ${vL}★` : 'Aún sin calificaciones');
+
+        const estrellasHTML = `
+            <div class="stars-precise-container ${yaVoto ? 'voted' : ''}" data-estadio="${estadioSafe}" data-club="${clubSafe}" title="${ratingTooltip}">
+                <div class="stars-bg">
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                    <i class="ph-fill ph-star"></i>
+                </div>
+                <div class="stars-fill" style="width: ${pctFill.toFixed(2)}%;">
+                    <div class="stars-fill-inner">
+                        <i class="ph-fill ph-star"></i>
+                        <i class="ph-fill ph-star"></i>
+                        <i class="ph-fill ph-star"></i>
+                        <i class="ph-fill ph-star"></i>
+                        <i class="ph-fill ph-star"></i>
+                    </div>
+                </div>
+                <div class="stars-hitbox-overlay">
+                    <span class="star-hitbox" onclick="registrarVoto(event, '${estadioSafe}', '${clubSafe}', 1)" title="${yaVoto ? `Ya votaste ${vL}★` : 'Calificar 1 estrella'}"></span>
+                    <span class="star-hitbox" onclick="registrarVoto(event, '${estadioSafe}', '${clubSafe}', 2)" title="${yaVoto ? `Ya votaste ${vL}★` : 'Calificar 2 estrellas'}"></span>
+                    <span class="star-hitbox" onclick="registrarVoto(event, '${estadioSafe}', '${clubSafe}', 3)" title="${yaVoto ? `Ya votaste ${vL}★` : 'Calificar 3 estrellas'}"></span>
+                    <span class="star-hitbox" onclick="registrarVoto(event, '${estadioSafe}', '${clubSafe}', 4)" title="${yaVoto ? `Ya votaste ${vL}★` : 'Calificar 4 estrellas'}"></span>
+                    <span class="star-hitbox" onclick="registrarVoto(event, '${estadioSafe}', '${clubSafe}', 5)" title="${yaVoto ? `Ya votaste ${vL}★` : 'Calificar 5 estrellas'}"></span>
+                </div>
+            </div>`;
         const lRating = 'Calificá';
         const imgHTML = urlFoto 
             ? `<img class="card-img-logo" src="${urlFoto}" alt="${clubSafe}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div class="placeholder-text" style="display:none;">${club}</div>` 
@@ -926,7 +968,7 @@ function renderizarTarjetas(lista) {
         t.className = 'card animate-fade-up';
         t.style.animationDelay = `${idx * .04}s`;
         t.dataset.linkVideo = linkVideo;
-        t.innerHTML = `<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="fan-checklist-row"><button type="button" class="fan-badge-btn fan-fui ${yaFui ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'yaFui')"><i class="ph-bold ph-map-pin"></i> <span>Ya fui</span></button><button type="button" class="fan-badge-btn fan-quiero ${quieroIr ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'quieroIr')"><i class="ph-bold ph-star"></i> <span>Quiero ir</span></button></div><div class="rating-box"><span class="rating-title">${lRating}</span><div class="stars-row">${estrellasHTML}</div></div></div>`;
+        t.innerHTML = `<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="fan-checklist-row"><button type="button" class="fan-badge-btn fan-fui ${yaFui ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'yaFui')"><i class="ph-bold ph-map-pin"></i> <span>Ya fui</span></button><button type="button" class="fan-badge-btn fan-quiero ${quieroIr ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'quieroIr')"><i class="ph-bold ph-star"></i> <span>Quiero ir</span></button></div><div class="rating-box"><span class="rating-title">${lRating}</span>${estrellasHTML}</div></div>`;
         gr.appendChild(t);
     });
 }

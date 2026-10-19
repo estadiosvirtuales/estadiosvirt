@@ -1126,6 +1126,68 @@
 .star-icon{font-size:1.5rem;color:var(--border-strong);cursor:pointer;transition:transform .15s cubic-bezier(.175,.885,.32,1.275),color .15s;user-select:none}
 .star-icon:hover{transform:scale(1.35);color:var(--accent-hover)}
 .star-icon.active{color:var(--accent-color)}
+
+/* ⭐ Calificación Precisa Continua de Estadios */
+.stars-precise-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.stars-precise-container.voted {
+    cursor: default;
+}
+.stars-precise-container:not(.voted):hover {
+    transform: scale(1.08);
+}
+.stars-bg {
+    display: flex;
+    gap: 4px;
+    color: var(--border-strong, rgba(255, 255, 255, 0.2));
+    font-size: 1.35rem;
+    line-height: 1;
+}
+.stars-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stars-fill-inner {
+    width: max-content;
+    display: flex;
+    gap: 4px;
+    color: var(--accent-color, #00e676);
+    font-size: 1.35rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 5px var(--accent-glow, rgba(0, 230, 118, 0.35)));
+}
+.stars-fill-inner i,
+.stars-bg i {
+    flex-shrink: 0;
+}
+.stars-hitbox-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    z-index: 5;
+}
+.star-hitbox {
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+}
+.stars-precise-container.voted .star-hitbox {
+    cursor: default;
+}
 .modal-overlay {
     display: none;
     position: fixed;
@@ -16570,6 +16632,11 @@ body.video-abierto .hero-section {
     }
     .star-icon {
         font-size: 1rem !important;
+    }
+    .stars-bg,
+    .stars-fill-inner {
+        font-size: 1.05rem !important;
+        gap: 2px !important;
     }
 }
 
