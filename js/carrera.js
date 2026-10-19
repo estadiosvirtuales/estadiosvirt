@@ -2514,19 +2514,211 @@ function calcularYRenderizarQuimicaOnce(f, once) {
     let linesSVG = '';
     let quimicaPuntos = 0;
 
+    const norm = id => (id || '').replace(/\.png$/i, '.webp').trim();
+
+    // 🌎 1. DICCIONARIO COMPLETO DE NACIONALIDADES DE TODOS LOS AVATARES
     const PAISES_AVATARES = {
-        '16.webp': 'ARG', '17.webp': 'ARG', '18.webp': 'ARG', '19.webp': 'ARG', '20.webp': 'ARG',
-        '21.webp': 'ARG', '22.webp': 'ARG', '23.webp': 'ARG', '24.webp': 'ARG', '15.webp': 'ARG',
-        '26.webp': 'ARG', '1.webp': 'ARG', '2.webp': 'ARG', '3.webp': 'ARG',
-        '7.webp': 'BRA', '6.webp': 'BRA', '40.webp': 'BRA',
-        '51.webp': 'COL', '52.webp': 'COL', '53.webp': 'COL', '55.webp': 'COL',
-        '35.webp': 'URU', '36.webp': 'URU',
-        '4.webp': 'FRA', 'Antoine Griezmann.webp': 'FRA',
-        'Jordi Alba.webp': 'ESP', '10.webp': 'ENG', 'Phil Foden.webp': 'ENG',
-        '61.webp': 'CHI', '59.webp': 'CHI',
-        'Guilermo memo Ochoa.webp': 'MEX'
+        // 🌟 INICIALES (NIVEL 0)
+        '7.webp': 'BRA',                    // El Canario (Vinicius / Brasil)
+        '9.webp': 'FRA',                    // El Mosquito (Dembélé / Francia)
+        '12.webp': 'URU',                   // El Halcón (Valverde / Uruguay)
+        '13.webp': 'BRA',                   // El Timón (Casemiro / Brasil)
+        '55.webp': 'COL',                   // Yerry (Mina / Colombia)
+        '61.webp': 'CHI',                   // El Pitbull (Medel / Chile)
+
+        // ⚡ SCALONETA & FIGURAS (NIVELES 1-10)
+        '16.webp': 'ARG',                   // El Mariscal (Cuti Romero / Argentina)
+        '17.webp': 'ARG',                   // El Heredero (Enzo Fernández / Argentina)
+        '18.webp': 'ARG',                   // El Motorcito (De Paul / Argentina)
+        '19.webp': 'ARG',                   // La Araña (Julián Álvarez / Argentina)
+        '20.webp': 'ARG',                   // El Toro (Lautaro Martínez / Argentina)
+        '21.webp': 'ARG',                   // El Muro (Otamendi / Argentina)
+        '22.webp': 'ARG',                   // El Carnicero (Lisandro Martínez / Argentina)
+        '23.webp': 'ARG',                   // Alexis (Mac Allister / Argentina)
+        '24.webp': 'ARG',                   // El Guardián (Dibu Martínez / Argentina)
+        '51.webp': 'COL',                   // El Guajiro (Luis Díaz / Colombia)
+
+        // 🔥 ELITE INTERNACIONAL (NIVELES 11-20)
+        '8.webp': 'BEL',                    // La Muralla (Courtois / Bélgica)
+        '10.webp': 'ENG',                   // Hurricane (Kane / Inglaterra)
+        '11.webp': 'ENG',                   // Golden Boy (Bellingham / Inglaterra)
+        '14.webp': 'ITA',                   // Gigio (Donnarumma / Italia)
+        'Guilermo memo Ochoa.webp': 'MEX',  // Memo Ochoa (México)
+        '15.webp': 'ARG',                   // El Fideo (Di María / Argentina)
+        '26.webp': 'ARG',                   // El Kun (Agüero / Argentina)
+        '36.webp': 'URU',                   // El Matador (Cavani / Uruguay)
+        '52.webp': 'COL',                   // El 10 Cafetero (James Rodríguez / Colombia)
+        'Phil Foden.webp': 'ENG',           // The Sniper (Phil Foden / Inglaterra)
+        '53.webp': 'COL',                   // El Tigre (Falcao / Colombia)
+        '59.webp': 'CHI',                   // Niño Maravilla (Alexis Sánchez / Chile)
+
+        // 🚀 CRACKS, CAPITANES & TÉCNICOS (NIVELES 21-30)
+        '5.webp': 'NOR',                    // El Androide (Haaland / Noruega)
+        '4.webp': 'FRA',                    // Kiki (Mbappé / Francia)
+        'Jordi Alba.webp': 'ESP',           // La Flecha (Jordi Alba / España)
+        '6.webp': 'BRA',                    // Ousadia (Rodrygo / Brasil)
+        '37.webp': 'URU',                   // El Gladiador (Godín / Uruguay)
+        'Antoine Griezmann.webp': 'FRA',    // El Principito (Griezmann / Francia)
+        '35.webp': 'URU',                   // El Pistolero (Suárez / Uruguay)
+        '60.webp': 'USA',                   // Capitán América (Pulisic / USA)
+        '54.webp': 'COL',                   // El Candado (Dávinson Sánchez / Colombia)
+        'Marco Reus.webp': 'GER',           // Woodyinho (Reus / Alemania)
+        '45.webp': 'ARG',                   // El Estratega (Scaloni / Argentina)
+        '48.webp': 'ARG',                   // El Muñeco (Gallardo / Argentina)
+        '46.webp': 'ESP',                   // El Filósofo (Guardiola / España)
+
+        // 🏆 REFERENTES & CRISTIANO (NIVELES 31-40)
+        '38.webp': 'ARG',                   // El Relojito (Mascherano / Argentina)
+        '43.webp': 'GER',                   // El Francotirador (Kroos / Alemania)
+        'Gerard Pique.webp': 'ESP',         // Piquenbauer (Piqué / España)
+        'Diego Simeone.webp': 'ARG',        // El Cholo (Simeone / Argentina)
+        '42.webp': 'CRO',                   // Mago Balcánico (Modric / Croacia)
+        '58.webp': 'CHI',                   // El Rey Arturo (Vidal / Chile)
+        '27.webp': 'ARG',                   // El Apache (Tevez / Argentina)
+        'Jurgen Klopp.webp': 'GER',         // Jürgen (Klopp / Alemania)
+        '49.webp': 'POR',                   // Special One (Mourinho / Portugal)
+        '47.webp': 'ITA',                   // Carletto (Ancelotti / Italia)
+        'Virgil Van Dijk.webp': 'NED',      // El Titán (Van Dijk / Países Bajos)
+        '41.webp': 'SWE',                   // El León Sueco (Ibrahimovic / Suecia)
+        'Mohamed Salah.webp': 'EGY',        // El Faraón (Salah / Egipto)
+        '3.webp': 'BRA',                    // O Menino (Neymar / Brasil)
+        '2.webp': 'POR',                    // El Bicho (Cristiano Ronaldo / Portugal)
+
+        // 👑 MAGOS & MESSI (NIVELES 41-50)
+        '39.webp': 'ITA',                   // El Arquitecto (Pirlo / Italia)
+        'Kevin De Bruyne.webp': 'BEL',      // El Mago Rubio (De Bruyne / Bélgica)
+        '40.webp': 'ESP',                   // El Ilusionista (Iniesta / España)
+        'Thomas Muller.webp': 'GER',        // Raumdeuter (Müller / Alemania)
+        '44.webp': 'ESP',                   // El Maestro (Xavi / España)
+        'Robert Lewandoski.webp': 'POL',    // La Máquina (Lewandowski / Polonia)
+        '29.webp': 'ARG',                   // La Brujita (Verón / Argentina)
+        '28.webp': 'ARG',                   // El Torero (Riquelme / Argentina)
+        'Manuel Neuer.webp': 'GER',         // El Muro Bávaro (Neuer / Alemania)
+        '34.webp': 'BRA',                   // Il Pendolino (Cafú / Brasil)
+        '33.webp': 'BRA',                   // El Hombre Bala (Roberto Carlos / Brasil)
+        'Marcelo.webp': 'BRA',              // La Magia Carioca (Marcelo / Brasil)
+        '50.webp': 'FRA',                   // Mago de Marsella (Zidane / Francia)
+        '31.webp': 'BRA',                   // Dinho (Ronaldinho / Brasil)
+        '1.webp': 'ARG',                    // La Pulga (Messi / Argentina)
+
+        // 🌌 LEYENDAS & MARADONA (NIVELES 51-60)
+        '56.webp': 'COL',                   // El Escorpión (Higuita / Colombia)
+        '57.webp': 'COL',                   // El Pibe (Valderrama / Colombia)
+        'Diego Forlán.webp': 'URU',         // Cachavacha (Forlán / Uruguay)
+        '62.webp': 'CHI',                   // Bam-Bam (Zamorano / Chile)
+        'Rafa Marquez.webp': 'MEX',         // Káiser de Michoacán (Márquez / México)
+        '63.webp': 'CHI',                   // Gran Matador (Salas / Chile)
+        'Javier Zanetti.webp': 'ARG',       // El Pupi (Zanetti / Argentina)
+        '32.webp': 'BRA',                   // El Fenómeno (Ronaldo / Brasil)
+        '30.webp': 'BRA',                   // O Rei (Pelé / Brasil)
+        '25.webp': 'ARG',                   // El Barrilete (Maradona / Argentina)
+
+        // 💎 ÉLITE CLÁSICA & DTs (NIVELES 61-85)
+        '64.webp': 'ESP',                   // Tiburón (Puyol / España)
+        '65.webp': 'ESP',                   // El Santo (Casillas / España)
+        'Philip Lahm.webp': 'GER',          // El Reloj Alemán (Lahm / Alemania)
+        '66.webp': 'ENG',                   // Sir David (Beckham / Inglaterra)
+        'Rio Ferdinand.webp': 'ENG',        // El Káiser Inglés (Ferdinand / Inglaterra)
+        '67.webp': 'URU',                   // El Príncipe (Francescoli / Uruguay)
+        'Steven Gerard.webp': 'ENG',        // Stevie G (Gerrard / Inglaterra)
+        '68.webp': 'ITA',                   // Superman (Buffon / Italia)
+        'Didier Drogba.webp': 'CIV',        // El Elefante (Drogba / Costa de Marfil)
+        '69.webp': 'ITA',                   // Il Capitano (Maldini / Italia)
+        '70.webp': 'PAR',                   // Pepo (Chilavert / Paraguay)
+        '71.webp': 'FRA',                   // Tití (Henry / Francia)
+        'Wayne Rooney.webp': 'ENG',         // Bad Boy (Rooney / Inglaterra)
+        '72.webp': 'ITA',                   // El Eterno (Baresi / Italia)
+        '73.webp': 'NED',                   // Fútbol Total (Cruyff / Países Bajos)
+        'Alessandro del piero.webp': 'ITA', // Pinturicchio (Del Piero / Italia)
+        'Luis Figo.webp': 'POR',            // El Extremo de Oro (Figo / Portugal)
+        'Xabi Alonso.webp': 'ESP',          // La Brújula (Xabi Alonso / España)
+        'Firefly (3).webp': 'NED',          // El Tulipán Negro (Gullit / Países Bajos)
+        'Alex Ferguson.webp': 'SCO'         // Sir Alex (Ferguson / Escocia)
     };
 
+    // 🏟️ 2. DICCIONARIO DE CLUBES HISTÓRICOS PARA QUÍMICA POR EQUIPO
+    const CLUBES_AVATARES = {
+        '1.webp': ['barca', 'psg', 'intermiami'],
+        '35.webp': ['barca', 'atletico', 'intermiami', 'liverpool'],
+        '3.webp': ['barca', 'psg', 'santos'],
+        '40.webp': ['barca'],
+        '44.webp': ['barca'],
+        '64.webp': ['barca'],
+        'Gerard Pique.webp': ['barca', 'mufc'],
+        'Jordi Alba.webp': ['barca', 'intermiami'],
+        '31.webp': ['barca', 'milan', 'psg'],
+        '73.webp': ['barca', 'ajax'],
+        '46.webp': ['barca', 'mancity', 'bayern'],
+        'Rafa Marquez.webp': ['barca'],
+        '71.webp': ['barca', 'arsenal'],
+        'Robert Lewandoski.webp': ['barca', 'bayern', 'dortmund'],
+        'Antoine Griezmann.webp': ['barca', 'atletico'],
+        '2.webp': ['realmadrid', 'mufc', 'juventus'],
+        '42.webp': ['realmadrid'],
+        '43.webp': ['realmadrid', 'bayern'],
+        '7.webp': ['realmadrid'],
+        '6.webp': ['realmadrid'],
+        '11.webp': ['realmadrid', 'dortmund'],
+        '12.webp': ['realmadrid'],
+        '13.webp': ['realmadrid', 'mufc'],
+        '65.webp': ['realmadrid'],
+        '33.webp': ['realmadrid', 'intermilan'],
+        'Marcelo.webp': ['realmadrid'],
+        '50.webp': ['realmadrid', 'juventus'],
+        '32.webp': ['realmadrid', 'barca', 'intermilan', 'milan'],
+        'Luis Figo.webp': ['realmadrid', 'barca', 'intermilan'],
+        '47.webp': ['realmadrid', 'milan', 'psg', 'chelsea', 'bayern'],
+        'Xabi Alonso.webp': ['realmadrid', 'liverpool', 'bayern', 'leverkusen'],
+        '8.webp': ['realmadrid', 'chelsea', 'atletico'],
+        '4.webp': ['realmadrid', 'psg', 'monaco'],
+        '66.webp': ['realmadrid', 'mufc', 'milan', 'psg'],
+        '5.webp': ['mancity', 'dortmund'],
+        'Kevin De Bruyne.webp': ['mancity', 'chelsea'],
+        'Phil Foden.webp': ['mancity'],
+        '26.webp': ['mancity', 'atletico', 'independiente'],
+        '19.webp': ['mancity', 'river', 'atletico'],
+        'Wayne Rooney.webp': ['mufc'],
+        'Rio Ferdinand.webp': ['mufc'],
+        'Alex Ferguson.webp': ['mufc'],
+        '49.webp': ['mufc', 'realmadrid', 'chelsea', 'intermilan', 'roma'],
+        '22.webp': ['mufc', 'ajax'],
+        'Virgil Van Dijk.webp': ['liverpool'],
+        'Mohamed Salah.webp': ['liverpool', 'chelsea', 'roma'],
+        'Steven Gerard.webp': ['liverpool'],
+        'Jurgen Klopp.webp': ['liverpool', 'dortmund'],
+        '51.webp': ['liverpool', 'porto'],
+        '23.webp': ['liverpool', 'brighton', 'boca'],
+        '28.webp': ['boca', 'villarreal'],
+        '25.webp': ['boca', 'napoli'],
+        '27.webp': ['boca', 'mufc', 'mancity', 'juventus'],
+        '36.webp': ['boca', 'psg', 'napoli', 'mufc'],
+        '48.webp': ['river'],
+        '67.webp': ['river'],
+        '63.webp': ['river'],
+        '17.webp': ['river', 'chelsea', 'benfica'],
+        'Manuel Neuer.webp': ['bayern'],
+        'Thomas Muller.webp': ['bayern'],
+        'Philip Lahm.webp': ['bayern'],
+        '20.webp': ['intermilan', 'racing'],
+        'Javier Zanetti.webp': ['intermilan'],
+        '69.webp': ['milan'],
+        '72.webp': ['milan'],
+        '39.webp': ['milan', 'juventus'],
+        '34.webp': ['milan', 'roma'],
+        '14.webp': ['milan', 'psg'],
+        'Firefly (3).webp': ['milan', 'chelsea'],
+        '41.webp': ['milan', 'intermilan', 'barca', 'psg', 'juventus', 'mufc'],
+        'Alessandro del piero.webp': ['juventus'],
+        '68.webp': ['juventus', 'psg'],
+        'Diego Simeone.webp': ['atletico', 'intermilan', 'racing'],
+        '37.webp': ['atletico'],
+        '18.webp': ['atletico', 'racing'],
+        '53.webp': ['atletico', 'chelsea', 'monaco', 'river'],
+        'Didier Drogba.webp': ['chelsea'],
+        'Marco Reus.webp': ['dortmund']
+    };
+
+    // 🔗 3. CÁLCULO DE LÍNEAS TÁCTICAS ENTRE TITULARES CERCANOS
     for (let i = 0; i < posiciones.length; i++) {
         for (let j = i + 1; j < posiciones.length; j++) {
             const pA = posiciones[i];
@@ -2538,22 +2730,51 @@ function calcularYRenderizarQuimicaOnce(f, once) {
 
             const dist = Math.hypot(xA - xB, yA - yB);
             if (dist > 8 && dist < 36) {
-                const idA = once[i];
-                const idB = once[j];
+                const idA = norm(once[i]);
+                const idB = norm(once[j]);
                 let isLinked = false;
 
                 if (idA && idB) {
                     const paisA = PAISES_AVATARES[idA] || 'GEN';
                     const paisB = PAISES_AVATARES[idB] || 'GEN';
-                    if ((paisA === paisB && paisA !== 'GEN') || (idA === idB)) {
+                    const clubsA = CLUBES_AVATARES[idA] || [];
+                    const clubsB = CLUBES_AVATARES[idB] || [];
+
+                    const mismoPais = (paisA === paisB && paisA !== 'GEN');
+                    const mismoClub = clubsA.some(c => clubsB.includes(c));
+                    const mismoJugador = (idA === idB);
+
+                    if (mismoPais || mismoClub || mismoJugador) {
                         isLinked = true;
-                        quimicaPuntos += 3;
+                        quimicaPuntos += (mismoPais && mismoClub) ? 4 : 3;
                     }
                 }
 
                 linesSVG += `<line x1="${xA}%" y1="${yA}%" x2="${xB}%" y2="${yB}%" class="chemistry-line ${isLinked ? 'chemistry-linked' : ''}" />`;
             }
         }
+    }
+
+    // 👔 4. BONUS DE QUÍMICA POR DIRECTOR TÉCNICO (DT)
+    const dtId = norm(once['DT']);
+    if (dtId) {
+        const paisDt = PAISES_AVATARES[dtId] || 'GEN';
+        const clubsDt = CLUBES_AVATARES[dtId] || [];
+        let bonusDt = 0;
+
+        for (let i = 0; i < posiciones.length; i++) {
+            const idJug = norm(once[i]);
+            if (!idJug) continue;
+            const paisJug = PAISES_AVATARES[idJug] || 'GEN';
+            const clubsJug = CLUBES_AVATARES[idJug] || [];
+
+            if (paisDt !== 'GEN' && paisDt === paisJug) {
+                bonusDt += 1;
+            } else if (clubsDt.some(c => clubsJug.includes(c))) {
+                bonusDt += 1;
+            }
+        }
+        quimicaPuntos += Math.min(6, bonusDt);
     }
 
     const quimicaFinal = Math.min(33, quimicaPuntos);
