@@ -254,6 +254,33 @@
 .hero-profile-wrapper:hover{border-color:var(--accent-color);background:var(--accent-dim);transform:translateY(-1px)}
 .hero-profile-name{font-size:.85rem;font-weight:700;color:var(--text-main);max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hero-profile-sub{font-size:.68rem;color:var(--accent-color);font-weight:700;display:flex;align-items:center;gap:3px}
+.hero-profile-avatar-circle {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #71a8ff;
+    box-shadow: 0 0 8px var(--accent-glow);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.hero-profile-avatar-inner {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    margin-left: -50px;
+    bottom: -18px;
+    transform: scale(0.35);
+    transform-origin: center 75%;
+    pointer-events: none;
+}
 .xp-bar-container{width:100%;background:var(--border-subtle);border-radius:20px;height:6px;overflow:hidden;margin-top:6px}
 .xp-bar-fill{height:100%;border-radius:20px;transition:width 1.2s cubic-bezier(.4,0,.2,1);background:var(--accent-color);box-shadow:0 0 8px var(--accent-glow)}
 .level-badge-inline{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px}
@@ -3451,10 +3478,17 @@ body.video-abierto .hero-section {
         font-size: 0.62rem !important;
         line-height: 1 !important;
     }
-    .hero-profile-wrapper > div:last-child {
+    .hero-profile-wrapper > div:last-child,
+    .hero-profile-avatar-circle {
         width: 30px !important;
         height: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
         flex-shrink: 0 !important;
+    }
+    .hero-profile-avatar-inner {
+        transform: scale(0.29) !important;
+        bottom: -20px !important;
     }
     .btn-login {
         padding: 6px 12px !important;
@@ -13850,10 +13884,17 @@ body.video-abierto .hero-section {
         font-size: 0.62rem !important;
         line-height: 1 !important;
     }
-    .hero-profile-wrapper > div:last-child {
+    .hero-profile-wrapper > div:last-child,
+    .hero-profile-avatar-circle {
         width: 30px !important;
         height: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
         flex-shrink: 0 !important;
+    }
+    .hero-profile-avatar-inner {
+        transform: scale(0.29) !important;
+        bottom: -20px !important;
     }
     .btn-login {
         padding: 6px 12px !important;

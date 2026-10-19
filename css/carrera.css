@@ -4150,7 +4150,8 @@
     position: absolute !important;
     width: 100px !important;
     height: 100px !important;
-    left: -34px !important;
+    left: 50% !important;
+    margin-left: -50px !important;
     bottom: -18px !important;
 }
 .carrera-user-info {
