@@ -3415,10 +3415,17 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
-    /* El perfil se achica apenitas desde la derecha */
+    /* El perfil se achica apenitas y se desplaza levemente a la izquierda para no quedar cortado en pantalla móvil */
+    #hero-google-profile {
+        margin-right: 8px !important;
+        flex-shrink: 0 !important;
+    }
     .hero-profile-wrapper, #hero-google-profile {
-        transform: scale(0.9) !important;
+        transform: scale(0.88) !important;
         transform-origin: right center !important;
+    }
+    .hero-profile-name {
+        max-width: 78px !important;
     }
 
     /* ========================================== */
@@ -13774,10 +13781,17 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
-    /* El perfil se achica apenitas desde la derecha */
+    /* El perfil se achica apenitas y se desplaza levemente a la izquierda para no quedar cortado en pantalla móvil */
+    #hero-google-profile {
+        margin-right: 8px !important;
+        flex-shrink: 0 !important;
+    }
     .hero-profile-wrapper, #hero-google-profile {
-        transform: scale(0.9) !important;
+        transform: scale(0.88) !important;
         transform-origin: right center !important;
+    }
+    .hero-profile-name {
+        max-width: 78px !important;
     }
 
     /* ========================================== */
