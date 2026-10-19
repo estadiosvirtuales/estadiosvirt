@@ -658,7 +658,14 @@ async function main() {
             ]
         });
 
-        for (const config of VIDEOS_CONFIG) {
+        const filtro = process.argv[2] ? process.argv[2].toLowerCase() : null;
+        const listaAGrabar = filtro 
+            ? VIDEOS_CONFIG.filter(c => c.id.toLowerCase().includes(filtro) || c.club.toLowerCase().includes(filtro) || c.nombreEstadio.toLowerCase().includes(filtro))
+            : VIDEOS_CONFIG;
+
+        console.log(`📋 Videos seleccionados para grabar: ${listaAGrabar.length}`);
+
+        for (const config of listaAGrabar) {
             try {
                 await grabarUnVideo(browser, config, 5006);
             } catch (err) {
