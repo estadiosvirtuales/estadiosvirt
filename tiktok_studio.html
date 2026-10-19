@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Video TikTok | Estadios Virtuales</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #090e17;
+            color: #f1f5f9;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px;
+        }
+
+        .studio-header {
+            text-align: center;
+            max-width: 600px;
+            margin-bottom: 25px;
+        }
+        .studio-header h1 {
+            font-size: 1.8rem;
+            color: #00e676;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .studio-header p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .studio-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .phone-mockup-wrapper {
+            position: relative;
+            width: 360px;
+            height: 640px; /* Relación 9:16 exacta */
+            background: #000;
+            border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0, 230, 118, 0.15), 0 0 0 10px #1e293b, 0 0 0 12px #334155;
+            overflow: hidden;
+        }
+
+        /* Canvas interno 1080x1920 escalado al viewport del teléfono */
+        #tiktokCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #0f172a;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 22px;
+            background: #1e293b;
+            border-radius: 20px;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .controls-panel {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 550px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .status-badge {
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0, 230, 118, 0.25);
+            color: #00e676;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #1e293b;
+            border-radius: 6px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00e676, #38bdf8);
+            transition: width 0.1s linear;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #00e676;
+            color: #000;
+            grid-column: span 2;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 20px rgba(0, 230, 118, 0.3);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: #00c853;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 230, 118, 0.45);
+        }
+
+        .btn-secondary {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: #334155;
+        }
+
+        .btn-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .tiktok-tips {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        .tiktok-tips strong {
+            color: #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="studio-header">
+        <h1><i class="ph-bold ph-video-camera"></i> Creador de Videos TikTok</h1>
+        <p>Genera clips virales de 30 segundos (9:16 vertical • 1080x1920) de <strong>StadiumGuessr</strong> con efectos de sonido, racha de combo y gancho de retención para tu cuenta de 17.000 seguidores.</p>
+    </div>
+
+    <div class="studio-container">
+        
+        <div class="phone-mockup-wrapper">
+            <div class="phone-notch"></div>
+            <!-- Canvas renderizado en resolución nativa 1080x1920 de TikTok -->
+            <canvas id="tiktokCanvas" width="1080" height="1920"></canvas>
+        </div>
+
+        <div class="controls-panel">
+            <div class="status-badge" id="statusBadge">
+                <span id="statusText"><i class="ph-bold ph-check-circle"></i> Listo para simular o grabar</span>
+                <span id="timeText" style="font-family:monospace; font-size:1rem;">00:00 / 00:30</span>
+            </div>
+
+            <div class="progress-bar-container" id="progressContainer">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+
+            <button class="btn-action btn-primary" id="btnRecord" onclick="iniciarGrabacionYDescarga()">
+                <i class="ph-bold ph-record"></i> 🎬 GRABAR Y DESCARGAR VIDEO TIKTOK (30s)
+            </button>
+
+            <div class="btn-group">
+                <button class="btn-action btn-secondary" id="btnPreview" onclick="reproducirPreview()">
+                    <i class="ph-bold ph-play"></i> Ver Vista Previa
+                </button>
+                <button class="btn-action btn-secondary" id="btnReset" onclick="reiniciarVideo()">
+                    <i class="ph-bold ph-arrows-counter-clockwise"></i> Reiniciar
+                </button>
+            </div>
+
+            <div class="tiktok-tips">
+                <strong>💡 Recomendación para tu TikTok @estadiosvirtuales:</strong><br>
+                1. Descargá el video generado en alta definición.<br>
+                2. Al subirlo a TikTok, agregale un audio/música viral de fondo en volumen 15% (los sonidos de acierto y racha ya están integrados en el video).<br>
+                3. Título sugerido: <em>"¿Cuántos estadios sacaste? Dejá tu puntaje 👇⚽🔥 #estadios #futbol #trivia #stadiumguessr"</em>.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('tiktokCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Configuración de la animación
+        const TOTAL_DURATION_SEC = 30;
+        let animStartTime = null;
+        let isRecording = false;
+        let isPlaying = false;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let audioCtx = null;
+        let audioDest = null;
+
+        // Carga de imágenes de escudos locales
+        const logos = {};
+        const logoFiles = {
+            'boca': 'escudos/Boca.webp',
+            'river': 'escudos/River.webp',
+            'real': 'escudos/Real.webp',
+            'barca': 'escudos/Barca.webp',
+            'milan': 'escudos/milan.webp',
+            'inter': 'escudos/intermiami.webp',
+            'atletico': 'escudos/AMadrid.webp',
+            'city': 'escudos/manchestercity.webp'
+        };
+
+        Object.keys(logoFiles).forEach(key => {
+            const img = new Image();
+            img.src = logoFiles[key];
+            logos[key] = img;
+        });
+
+        // Generar imágenes representativas de estadios en canvas para garantizar independencia offline
+        const stadiumCanvases = {};
+        function createProceduralStadium(type, name, mainColor, standColor) {
+            const sc = document.createElement('canvas');
+            sc.width = 1080;
+            sc.height = 900;
+            const sctx = sc.getContext('2d');
+
+            // Cielo nocturno con reflectores y ambiente
+            const gradSky = sctx.createLinearGradient(0, 0, 0, 900);
+            gradSky.addColorStop(0, '#0a1128');
+            gradSky.addColorStop(0.5, '#1e293b');
+            gradSky.addColorStop(1, '#090e17');
+            sctx.fillStyle = gradSky;
+            sctx.fillRect(0, 0, 1080, 900);
+
+            // Tribunas y estructura del estadio
+            sctx.fillStyle = standColor;
+            sctx.beginPath();
+            sctx.ellipse(540, 520, 480, 320, 0, 0, Math.PI * 2);
+            sctx.fill();
+
+            // Segundo anillo
+            sctx.fillStyle = mainColor;
+            sctx.beginPath();
+            sctx.ellipse(540, 520, 430, 270, 0, 0, Math.PI * 2);
+            sctx.fill();
+
+            // Campo de juego (Césped realista con rayas)
+            sctx.fillStyle = '#15803d';
+            sctx.beginPath();
+            sctx.ellipse(540, 520, 320, 180, 0, 0, Math.PI * 2);
+            sctx.fill();
+
+            // Rayas del césped
+            sctx.fillStyle = 'rgba(34, 197, 94, 0.25)';
+            for (let x = 260; x <= 820; x += 60) {
+                sctx.fillRect(x, 340, 30, 360);
+            }
+
+            // Líneas de cal reglamentarias
+            sctx.strokeStyle = '#ffffff';
+            sctx.lineWidth = 4;
+            sctx.strokeRect(340, 400, 400, 240);
+            // Círculo central
+            sctx.beginPath();
+            sctx.arc(540, 520, 50, 0, Math.PI * 2);
+            sctx.stroke();
+            // Línea media
+            sctx.beginPath();
+            sctx.moveTo(540, 400);
+            sctx.lineTo(540, 640);
+            sctx.stroke();
+
+            // Luces de reflectores
+            const lights = [[120, 200], [960, 200], [120, 750], [960, 750]];
+            lights.forEach(([lx, ly]) => {
+                const glow = sctx.createRadialGradient(lx, ly, 10, lx, ly, 180);
+                glow.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+                glow.addColorStop(0.3, 'rgba(253, 224, 71, 0.4)');
+                glow.addColorStop(1, 'rgba(0,0,0,0)');
+                sctx.fillStyle = glow;
+                sctx.beginPath();
+                sctx.arc(lx, ly, 180, 0, Math.PI * 2);
+                sctx.fill();
+            });
+
+            // Letrero del estadio
+            sctx.fillStyle = 'rgba(0,0,0,0.6)';
+            sctx.roundRect(300, 100, 480, 55, 12);
+            sctx.fill();
+            sctx.fillStyle = '#f8fafc';
+            sctx.font = 'bold 24px system-ui';
+            sctx.textAlign = 'center';
+            sctx.fillText(`🏟️ ${name}`, 540, 137);
+
+            return sc;
+        }
+
+        stadiumCanvases['bombonera'] = createProceduralStadium('bombonera', 'ESTADIO ALBERTO J. ARMANDO (LA BOMBONERA)', '#1d4ed8', '#eab308');
+        stadiumCanvases['bernabeu'] = createProceduralStadium('bernabeu', 'ESTADIO SANTIAGO BERNABÉU (MADRID)', '#475569', '#3b82f6');
+        stadiumCanvases['sansiro'] = createProceduralStadium('sansiro', 'ESTADIO SAN SIRO / GIUSEPPE MEAZZA', '#b91c1c', '#1e293b');
+
+        // Inicializar sintetizador Web Audio para efectos integrados
+        function initAudio() {
+            if (audioCtx) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            audioDest = audioCtx.createMediaStreamDestination();
+        }
+
+        // Efectos de sonido sintetizados
+        function playSound(type) {
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            if (type === 'tick') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, now);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                osc.connect(gain);
+                gain.connect(audioDest);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.06);
+            } else if (type === 'correct') {
+                // Doble campana de acierto
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+                    gain.gain.setValueAtTime(0.2, now + idx * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioDest);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + idx * 0.06);
+                    osc.stop(now + idx * 0.06 + 0.4);
+                });
+            } else if (type === 'whistle') {
+                // Silbato de inicio
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(2400, now);
+                osc.frequency.exponentialRampToValueAtTime(2200, now + 0.25);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.connect(gain);
+                gain.connect(audioDest);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'cheer') {
+                // Ovación sintetizada con ruido blanco filtrado
+                const bufferSize = audioCtx.sampleRate * 1.5;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 800;
+                filter.Q.value = 1.2;
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.01, now);
+                gain.gain.linearRampToValueAtTime(0.3, now + 0.2);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioDest);
+                gain.connect(audioCtx.destination);
+                noise.start(now);
+                noise.stop(now + 1.5);
+            }
+        }
+
+        // Dibujar frame en Canvas (t = segundos transcurridos de 0 a 30)
+        let lastTickSec = -1;
+        let soundsPlayed = {};
+
+        function renderFrame(t) {
+            ctx.clearRect(0, 0, 1080, 1920);
+
+            // 1. Fondo oscuro con degradado premium
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, 1920);
+            bgGrad.addColorStop(0, '#090d16');
+            bgGrad.addColorStop(0.5, '#0f172a');
+            bgGrad.addColorStop(1, '#050810');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, 1080, 1920);
+
+            // ==========================================
+            // ESCENA 1: HOOK INICIAL (0s a 3.5s)
+            // ==========================================
+            if (t < 3.5) {
+                if (!soundsPlayed['whistle']) {
+                    playSound('whistle');
+                    soundsPlayed['whistle'] = true;
+                }
+
+                // Pulso de luz de fondo
+                const pulse = 1 + Math.sin(t * 8) * 0.05;
+                ctx.save();
+                ctx.translate(540, 850);
+                ctx.scale(pulse, pulse);
+
+                // Badge STADIUMGUESSR
+                ctx.fillStyle = 'rgba(0, 230, 118, 0.15)';
+                ctx.roundRect(-220, -220, 440, 70, 35);
+                ctx.fill();
+                ctx.strokeStyle = '#00e676';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                ctx.fillStyle = '#00e676';
+                ctx.font = 'bold 32px system-ui';
+                ctx.textAlign = 'center';
+                ctx.fillText('⚽ STADIUMGUESSR', 0, -175);
+
+                // Gran Pregunta de Hook
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '900 68px system-ui';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 20;
+                ctx.fillText('¿SOS CAPAZ DE', 0, -50);
+                ctx.fillStyle = '#fde047';
+                ctx.fillText('ADIVINAR ESTOS 3', 0, 30);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('ESTADIOS EN 5s?', 0, 110);
+                ctx.shadowBlur = 0;
+
+                // Subtexto con animación de flecha
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = 'bold 36px system-ui';
+                ctx.fillText('¡Comentá cuántos acertás! 👇🔥', 0, 220);
+
+                ctx.restore();
+
+                // Marca de agua abajo
+                drawWatermark();
+                return;
+            }
+
+            // ==========================================
+            // ESCENA 2: LAS 3 RONDAS DE JUEGO (3.5s a 25.5s)
+            // ==========================================
+            if (t >= 3.5 && t < 25.5) {
+                // Duración de cada ronda = 7.3 segundos aproximadamente
+                let roundIndex = 0;
+                let roundProgress = 0;
+
+                if (t < 10.8) {
+                    roundIndex = 0; // Ronda 1: La Bombonera
+                    roundProgress = (t - 3.5) / 7.3;
+                } else if (t < 18.1) {
+                    roundIndex = 1; // Ronda 2: Santiago Bernabéu
+                    roundProgress = (t - 10.8) / 7.3;
+                } else {
+                    roundIndex = 2; // Ronda 3: San Siro
+                    roundProgress = (t - 18.1) / 7.4;
+                }
+
+                const roundData = [
+                    {
+                        stadiumKey: 'bombonera',
+                        correctClub: 'Boca Juniors',
+                        correctLogo: 'boca',
+                        options: [
+                            { name: 'River Plate', logo: 'river', isCorrect: false },
+                            { name: 'Boca Juniors', logo: 'boca', isCorrect: true },
+                            { name: 'Racing Club', logo: 'city', isCorrect: false },
+                            { name: 'San Lorenzo', logo: 'atletico', isCorrect: false }
+                        ],
+                        correctIdx: 1,
+                        xp: 1000
+                    },
+                    {
+                        stadiumKey: 'bernabeu',
+                        correctClub: 'Real Madrid',
+                        correctLogo: 'real',
+                        options: [
+                            { name: 'Real Madrid', logo: 'real', isCorrect: true },
+                            { name: 'FC Barcelona', logo: 'barca', isCorrect: false },
+                            { name: 'Atlético de Madrid', logo: 'atletico', isCorrect: false },
+                            { name: 'Manchester City', logo: 'city', isCorrect: false }
+                        ],
+                        correctIdx: 0,
+                        xp: 2200
+                    },
+                    {
+                        stadiumKey: 'sansiro',
+                        correctClub: 'AC Milan',
+                        correctLogo: 'milan',
+                        options: [
+                            { name: 'Inter Miami', logo: 'inter', isCorrect: false },
+                            { name: 'Juventus', logo: 'real', isCorrect: false },
+                            { name: 'AC Milan', logo: 'milan', isCorrect: true },
+                            { name: 'FC Barcelona', logo: 'barca', isCorrect: false }
+                        ],
+                        correctIdx: 2,
+                        xp: 3500
+                    }
+                ][roundIndex];
+
+                // 2.1 Header Superior (HUD de StadiumGuessr)
+                drawTopHUD(roundIndex, roundData.xp);
+
+                // 2.2 Ventana de Vista Aérea del Estadio (con efecto dron de paneo/zoom)
+                const stadiumY = 320;
+                const stadiumHeight = 850;
+                ctx.save();
+                ctx.beginPath();
+                ctx.roundRect(40, stadiumY, 1000, stadiumHeight, 28);
+                ctx.clip();
+
+                // Paneo sutil simulando cámara aérea
+                const dronePanX = Math.sin(roundProgress * Math.PI) * 40 - 20;
+                const droneZoom = 1.05 + Math.sin(roundProgress * 2) * 0.05;
+
+                ctx.translate(540 + dronePanX, stadiumY + stadiumHeight / 2);
+                ctx.scale(droneZoom, droneZoom);
+                ctx.drawImage(stadiumCanvases[roundData.stadiumKey], -540, -450, 1080, 900);
+                ctx.restore();
+
+                // Borde de la ventana de video
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.lineWidth = 4;
+                ctx.roundRect(40, stadiumY, 1000, stadiumHeight, 28);
+                ctx.stroke();
+
+                // Badge de "CÁMARA EN VIVO - RECONOCIMIENTO"
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.roundRect(70, stadiumY + 30, 360, 50, 12);
+                ctx.fill();
+                ctx.fillStyle = '#ef4444';
+                ctx.beginPath();
+                ctx.arc(100, stadiumY + 55, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = 'bold 22px system-ui';
+                ctx.textAlign = 'left';
+                ctx.fillText('REC • VISTA AÉREA 4K', 125, stadiumY + 63);
+
+                // 2.3 Timer Regresivo Central (5 a 0 segundos)
+                const timerVal = Math.max(0, 5 - roundProgress * 5);
+                const curSec = Math.floor(timerVal);
+                if (curSec !== lastTickSec && roundProgress < 0.65) {
+                    playSound('tick');
+                    lastTickSec = curSec;
+                }
+
+                drawTimerOverlay(540, stadiumY + stadiumHeight - 100, timerVal);
+
+                // 2.4 Opciones de Clubes Abajo (4 botones estilo StadiumGuessr)
+                const isAnswered = roundProgress >= 0.65;
+                drawOptionsGrid(roundData, isAnswered, roundProgress);
+
+                // Sonido de acierto en el momento exacto
+                const soundKey = `correct_${roundIndex}`;
+                if (isAnswered && !soundsPlayed[soundKey]) {
+                    playSound('correct');
+                    soundsPlayed[soundKey] = true;
+                }
+
+                // 2.5 Feedback de Acierto con Partículas y Banner Verde
+                if (isAnswered) {
+                    drawSuccessFeedback(roundData.correctClub, roundIndex + 1);
+                }
+
+                drawWatermark();
+                return;
+            }
+
+            // ==========================================
+            // ESCENA 3: OUTRO VIRAL Y VICTORIA (25.5s a 30s)
+            // ==========================================
+            if (t >= 25.5) {
+                if (!soundsPlayed['cheer']) {
+                    playSound('cheer');
+                    soundsPlayed['cheer'] = true;
+                }
+
+                drawVictoryScreen(t - 25.5);
+                drawWatermark();
+            }
+        }
+
+        // HUD Superior
+        function drawTopHUD(roundIdx, xp) {
+            // Logo y Modo
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = '900 38px system-ui';
+            ctx.textAlign = 'left';
+            ctx.fillText('ESTADIOS VIRTUALES', 60, 110);
+
+            ctx.fillStyle = '#00e676';
+            ctx.font = 'bold 24px system-ui';
+            ctx.fillText('MODO STADIUMGUESSR', 60, 145);
+
+            // Contador de Ronda
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.roundRect(740, 80, 280, 75, 20);
+            ctx.fill();
+            ctx.fillStyle = '#fde047';
+            ctx.font = '900 30px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText(`RONDA ${roundIdx + 1} / 3`, 880, 127);
+
+            // Banner llamativo de pregunta
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 48px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('¿QUÉ ESTADIO ES ESTE?', 540, 240);
+
+            // Barra de XP y Racha
+            ctx.fillStyle = 'rgba(249, 115, 22, 0.2)';
+            ctx.roundRect(380, 265, 320, 42, 21);
+            ctx.fill();
+            ctx.strokeStyle = '#f97316';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#fb923c';
+            ctx.font = 'bold 22px system-ui';
+            ctx.fillText(`🔥 RACHA x${roundIdx + 1}  •  +${xp} XP`, 540, 294);
+        }
+
+        // Timer Circular
+        function drawTimerOverlay(x, y, val) {
+            const pct = val / 5;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, 70, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+            ctx.fill();
+            ctx.lineWidth = 10;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.stroke();
+
+            // Arco del timer
+            ctx.beginPath();
+            ctx.arc(x, y, 70, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+            ctx.strokeStyle = val > 2 ? '#00e676' : (val > 1 ? '#fde047' : '#ef4444');
+            ctx.stroke();
+
+            // Texto numérico
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 52px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(Math.ceil(val), x, y);
+            ctx.restore();
+        }
+
+        // Grilla de 4 Opciones de Respuesta
+        function drawOptionsGrid(roundData, isAnswered, roundProgress) {
+            const startY = 1220;
+            const btnWidth = 470;
+            const btnHeight = 160;
+            const gap = 30;
+
+            const coords = [
+                [55, startY],
+                [555, startY],
+                [55, startY + btnHeight + gap],
+                [555, startY + btnHeight + gap]
+            ];
+
+            roundData.options.forEach((opt, i) => {
+                const [bx, by] = coords[i];
+                const isSelected = isAnswered && opt.isCorrect;
+
+                // Fondo del botón
+                ctx.save();
+                if (isSelected) {
+                    // Botón verde brillante con pulso
+                    ctx.fillStyle = '#15803d';
+                    ctx.strokeStyle = '#00e676';
+                    ctx.lineWidth = 6;
+                    ctx.shadowColor = '#00e676';
+                    ctx.shadowBlur = 30;
+                } else if (isAnswered) {
+                    ctx.fillStyle = 'rgba(30, 41, 59, 0.4)';
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                    ctx.lineWidth = 3;
+                } else {
+                    ctx.fillStyle = '#1e293b';
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+                    ctx.lineWidth = 3;
+                }
+
+                ctx.roundRect(bx, by, btnWidth, btnHeight, 24);
+                ctx.fill();
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // Escudo del club a la izquierda
+                const logoImg = logos[opt.logo];
+                if (logoImg && logoImg.complete) {
+                    ctx.drawImage(logoImg, bx + 25, by + (btnHeight - 90) / 2, 90, 90);
+                }
+
+                // Nombre del club
+                ctx.fillStyle = isSelected ? '#ffffff' : (isAnswered ? '#64748b' : '#f8fafc');
+                ctx.font = 'bold 30px system-ui';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(opt.name, bx + 135, by + btnHeight / 2);
+
+                // Ícono de check si es la correcta seleccionada
+                if (isSelected) {
+                    ctx.fillStyle = '#00e676';
+                    ctx.font = '900 36px system-ui';
+                    ctx.fillText('✓', bx + btnWidth - 50, by + btnHeight / 2);
+                }
+
+                ctx.restore();
+            });
+
+            // Dibujar cursor que se mueve y hace clic en la opción correcta
+            if (roundProgress >= 0.55 && roundProgress < 0.65) {
+                const [targetX, targetY] = coords[roundData.correctIdx];
+                const curX = targetX + btnWidth / 2;
+                const curY = targetY + btnHeight / 2;
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.beginPath();
+                ctx.arc(curX, curY, 25, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#00e676';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
+        }
+
+        // Feedback de Acierto Pop-up
+        function drawSuccessFeedback(clubName, roundNum) {
+            ctx.save();
+            ctx.fillStyle = 'rgba(0, 230, 118, 0.95)';
+            ctx.roundRect(140, 1600, 800, 110, 25);
+            ctx.fill();
+            ctx.shadowColor = '#00e676';
+            ctx.shadowBlur = 35;
+
+            ctx.fillStyle = '#000000';
+            ctx.font = '900 42px system-ui';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`¡CORRECTO! ES ${clubName.toUpperCase()} 🎯`, 540, 1655);
+            ctx.restore();
+        }
+
+        // Pantalla de Victoria / Outro
+        function drawVictoryScreen(outroT) {
+            const scale = Math.min(1, outroT * 2);
+            ctx.save();
+            ctx.translate(540, 850);
+            ctx.scale(scale, scale);
+
+            // Tarjeta de Victoria
+            ctx.fillStyle = '#111827';
+            ctx.roundRect(-460, -550, 920, 1100, 36);
+            ctx.fill();
+            ctx.strokeStyle = '#00e676';
+            ctx.lineWidth = 6;
+            ctx.shadowColor = 'rgba(0, 230, 118, 0.4)';
+            ctx.shadowBlur = 40;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Corona y Trofeo
+            ctx.font = '100px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('👑 🏆 ⚽', 0, -400);
+
+            // Título
+            ctx.fillStyle = '#00e676';
+            ctx.font = '900 64px system-ui';
+            ctx.fillText('¡PUNTAJE PERFECTO!', 0, -290);
+
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = 'bold 44px system-ui';
+            ctx.fillText('3 / 3 ESTADIOS ACERTADOS', 0, -220);
+
+            // Detalle de XP y Racha
+            ctx.fillStyle = '#fde047';
+            ctx.font = '900 52px system-ui';
+            ctx.fillText('+3.500 XP GANADOS 🚀', 0, -120);
+
+            // Separador
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-350, -40);
+            ctx.lineTo(350, -40);
+            ctx.stroke();
+
+            // Pregunta de engagement para TikTok
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 48px system-ui';
+            ctx.fillText('¿Y VOS CUÁNTOS SACASTE?', 0, 50);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = 'bold 36px system-ui';
+            ctx.fillText('Dejá tu resultado en los comentarios 👇', 0, 120);
+
+            // CTA Final
+            ctx.fillStyle = '#00e676';
+            ctx.roundRect(-380, 220, 760, 140, 30);
+            ctx.fill();
+
+            ctx.fillStyle = '#000000';
+            ctx.font = '900 38px system-ui';
+            ctx.fillText('JUGALO GRATIS AHORA EN:', 0, 275);
+            ctx.font = '900 46px system-ui';
+            ctx.fillText('estadiosvirtuales.com', 0, 325);
+
+            ctx.restore();
+        }
+
+        // Marca de agua y pie inferior
+        function drawWatermark() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = 'bold 28px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('👉 www.estadiosvirtuales.com', 540, 1850);
+        }
+
+        // Loop de Renderizado en Tiempo Real
+        let animationFrameId = null;
+
+        function startAnimation(onComplete = null) {
+            animStartTime = performance.now();
+            isPlaying = true;
+            lastTickSec = -1;
+            soundsPlayed = {};
+
+            document.getElementById('progressContainer').style.display = 'block';
+
+            function loop(now) {
+                const elapsedSec = (now - animStartTime) / 1000;
+                const clampedSec = Math.min(TOTAL_DURATION_SEC, elapsedSec);
+
+                renderFrame(clampedSec);
+
+                // Actualizar barra de progreso y tiempo
+                const pct = (clampedSec / TOTAL_DURATION_SEC) * 100;
+                document.getElementById('progressBar').style.width = pct + '%';
+                const curM = Math.floor(clampedSec / 60);
+                const curS = Math.floor(clampedSec % 60);
+                document.getElementById('timeText').textContent = 
+                    `${String(curM).padStart(2, '0')}:${String(curS).padStart(2, '0')} / 00:30`;
+
+                if (clampedSec < TOTAL_DURATION_SEC && isPlaying) {
+                    animationFrameId = requestAnimationFrame(loop);
+                } else {
+                    isPlaying = false;
+                    if (onComplete) onComplete();
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(loop);
+        }
+
+        function reproducirPreview() {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            document.getElementById('statusText').innerHTML = '<i class="ph-bold ph-play"></i> Reproduciendo vista previa en vivo...';
+            startAnimation(() => {
+                document.getElementById('statusText').innerHTML = '<i class="ph-bold ph-check-circle"></i> Vista previa completada.';
+            });
+        }
+
+        function reiniciarVideo() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            isPlaying = false;
+            renderFrame(0);
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('timeText').textContent = '00:00 / 00:30';
+            document.getElementById('statusText').innerHTML = '<i class="ph-bold ph-check-circle"></i> Listo para simular o grabar';
+        }
+
+        // GRABAR Y EXPORTAR VIDEO TIKTOK (MediaRecorder a 60 FPS con Audio)
+        function iniciarGrabacionYDescarga() {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            document.getElementById('btnRecord').disabled = true;
+            document.getElementById('btnPreview').disabled = true;
+            document.getElementById('statusText').innerHTML = '🔴 <b>Grabando video en 1080x1920 a 60 FPS...</b> (esperá 30s)';
+
+            // Combinar stream de canvas (video 60fps) + stream de Web Audio
+            const canvasStream = canvas.captureStream(60);
+            const combinedStream = new MediaStream();
+
+            canvasStream.getVideoTracks().forEach(track => combinedStream.addTrack(track));
+            if (audioDest) {
+                audioDest.stream.getAudioTracks().forEach(track => combinedStream.addTrack(track));
+            }
+
+            // Seleccionar códec soportado
+            let mimeType = 'video/webm;codecs=vp9,opus';
+            if (!MediaRecorder.isTypeSupported(mimeType)) {
+                mimeType = 'video/webm';
+            }
+
+            recordedChunks = [];
+            mediaRecorder = new MediaRecorder(combinedStream, {
+                mimeType: mimeType,
+                videoBitsPerSecond: 12000000 // 12 Mbps Full HD calidad cristalina
+            });
+
+            mediaRecorder.ondataavailable = function(e) {
+                if (e.data && e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
+            };
+
+            mediaRecorder.onstop = function() {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'stadiumguessr-tiktok-30s.webm';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                document.getElementById('statusText').innerHTML = '✅ <b>¡Video grabado y descargado con éxito!</b>';
+                document.getElementById('btnRecord').disabled = false;
+                document.getElementById('btnPreview').disabled = false;
+            };
+
+            mediaRecorder.start();
+
+            startAnimation(() => {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
+            });
+        }
+
+        // Primer render estático al cargar
+        window.addEventListener('load', () => {
+            renderFrame(0);
+        });
+    </script>
+</body>
+</html>
