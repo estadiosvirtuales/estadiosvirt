@@ -386,6 +386,7 @@ const AVATARES_LISTA = [
     { id: '8.webp', label: 'La Muralla', nivel: 11 },
     { id: '10.webp', label: 'Hurricane', nivel: 12 },
     { id: '11.webp', label: 'Golden Boy', nivel: 13 },
+    { id: 'Lamine Yamal.webp', label: 'La Joya', nivel: 13 },
     { id: '14.webp', label: 'Gigio', nivel: 14 },
     { id: 'Guilermo memo Ochoa.webp', label: 'Memo', nivel: 14 },
     { id: '15.webp', label: 'El Fideo', nivel: 15 },
