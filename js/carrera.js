@@ -715,7 +715,7 @@ const TORNEOS_CONFIG = {
     },
     'mundial': {
         nombre: 'Copa del Mundo',
-        premioSP: 20,
+        premioSP: 15,
         clubesIds: [
             'ar', 'fr', 'gb-eng', 'es', 'br', 'de', 'pt', 'nl', 'it', 'uy',
             'co', 'hr', 'mar', 'be', 'jp', 'sen', 'us', 'mx', 'ec', 'dk'
@@ -4327,7 +4327,7 @@ function renderizarHubLigaTemporada(liga) {
                         <button type="button" class="lt-btn-play-match" onclick="jugarPartidoFechaLiga()">
                             <i class="ph-bold ph-play"></i> JUGAR FECHA
                         </button>
-                        <button type="button" class="lt-btn-sim-all ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'disabled' : ''}" onclick="simularTemporadaCompleta()" title="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'Ya usaste tu simulación rápida diaria de hoy (1 liga por día)' : 'Simular las fechas restantes automáticamente (1 vez al día · Máx 10 SP)'}" style="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'opacity:0.5; filter:grayscale(0.6);' : ''}">
+                        <button type="button" class="lt-btn-sim-all ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'disabled' : ''}" onclick="simularTemporadaCompleta()" title="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'Ya usaste tu simulación rápida diaria de hoy (1 liga por día)' : 'Simular las fechas restantes automáticamente (1 vez al día · Máx 5 SP)'}" style="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'opacity:0.5; filter:grayscale(0.6);' : ''}">
                             <i class="ph-bold ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'ph-lock-key' : 'ph-lightning'}"></i> Simular Todo ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? '(Usado hoy)' : '(1/día)'}
                         </button>
                     </div>
@@ -4368,7 +4368,7 @@ function renderizarHubLigaTemporada(liga) {
                     <h3><i class="ph-fill ph-crown"></i> ¡CAMPEÓN DE ${liga.nombre.toUpperCase()}!</h3>
                     <p style="font-size:0.85rem; color:#fef08a; margin:0;">¡Tu Once Inicial dominó la temporada y levantó el trofeo!</p>
                     <div class="lt-champ-sp-reward">
-                        <i class="ph-bold ph-trophy"></i> Botín de Campeón Reclamado (+${liga.fueSimuladaRapida ? 10 : 15} SP)
+                        <i class="ph-bold ph-trophy"></i> Botín de Campeón Reclamado (+${liga.fueSimuladaRapida ? 5 : 15} SP)
                     </div>
                 </div>
             `;
@@ -4656,7 +4656,7 @@ window.simularTemporadaCompleta = function() {
         return;
     }
 
-    if (!confirm("⚡ ¿Querés usar tu simulación rápida diaria para completar esta liga automáticamente?\n\n• Límite: 1 sola liga por día en total.\n• Recompensa de campeón reducida: 10 SP (en vez de 15 SP).")) {
+    if (!confirm("⚡ ¿Querés usar tu simulación rápida diaria para completar esta liga automáticamente?\n\n• Límite: 1 sola liga por día en total.\n• Recompensa de campeón reducida: 5 SP (en vez de 15 SP).")) {
         return;
     }
 
@@ -4801,8 +4801,8 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimula
     let btnIcon = 'ph-gift';
 
     if (esCampeon) {
-        sp = fueSimuladaRapida ? 10 : 15;
-        xp = fueSimuladaRapida ? 2500 : 4000;
+        sp = fueSimuladaRapida ? 5 : 15;
+        xp = fueSimuladaRapida ? 1800 : 4000;
         badge = esInvicto 
             ? '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN INVICTO' 
             : '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN DE LA LIGA';
@@ -4811,24 +4811,24 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimula
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-trophy';
     } else if (posicion === 2) {
-        sp = fueSimuladaRapida ? 6 : 10;
-        xp = fueSimuladaRapida ? 1500 : 2500;
+        sp = fueSimuladaRapida ? 3 : 10;
+        xp = fueSimuladaRapida ? 1200 : 2500;
         badge = '🥈 SUBCAMPEÓN';
         titulo = '#2 CLASIFICADO CONTINENTAL';
         icono = '<img src="medalla-plata.webp" class="cofre-medalla-img" alt="Subcampeón">';
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-medal';
     } else if (posicion === 3) {
-        sp = fueSimuladaRapida ? 4 : 7;
-        xp = fueSimuladaRapida ? 1000 : 1800;
+        sp = fueSimuladaRapida ? 2 : 7;
+        xp = fueSimuladaRapida ? 900 : 1800;
         badge = '🥉 PODIO DE LIGA';
         titulo = '#3 CLASIFICADO CONTINENTAL';
         icono = '<img src="medalla-bronce.webp" class="cofre-medalla-img" alt="Tercer Puesto">';
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-medal';
     } else if (posicion === 4) {
-        sp = fueSimuladaRapida ? 3 : 5;
-        xp = fueSimuladaRapida ? 700 : 1200;
+        sp = fueSimuladaRapida ? 2 : 5;
+        xp = fueSimuladaRapida ? 600 : 1200;
         badge = '🌟 ZONA DE COPAS';
         titulo = '#4 CLASIFICADO A COPA';
         icono = '<img src="estrella.webp" class="cofre-estrella-img" alt="Zona de Copas">';
@@ -4836,20 +4836,20 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimula
         btnIcon = 'ph-star';
     } else if (esDescenso) {
         sp = 1;
-        xp = fueSimuladaRapida ? 200 : 350;
+        xp = fueSimuladaRapida ? 150 : 350;
         badge = '🔻 ZONA DE DESCENSO';
         titulo = `#${posicion}º PUESTO`;
         icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Zona de Descenso">';
         btnText = 'RECOGER RECOMPENSA';
     } else if (posicion <= 10) {
-        sp = fueSimuladaRapida ? 2 : 3;
-        xp = fueSimuladaRapida ? 500 : 800;
+        sp = fueSimuladaRapida ? 1 : 3;
+        xp = fueSimuladaRapida ? 400 : 800;
         badge = '⚽ MITAD DE TABLA';
         titulo = `#${posicion}º PUESTO`;
         icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Mitad de Tabla">';
     } else {
         sp = 1;
-        xp = fueSimuladaRapida ? 300 : 500;
+        xp = fueSimuladaRapida ? 250 : 500;
         badge = '🛡️ PERMANENCIA ASEGURADA';
         titulo = `#${posicion}º PUESTO`;
         icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Permanencia">';
@@ -4895,7 +4895,7 @@ window.mostrarCofreTemporada = function(liga) {
     if (badgeEl) {
         badgeEl.innerHTML = botin.badge;
         if (botin.fueSimuladaRapida) {
-            badgeEl.innerHTML += '<div style="font-size:0.68rem; color:#fde047; font-weight:800; margin-top:4px;"><i class="ph-bold ph-lightning"></i> SIMULACIÓN RÁPIDA (MÁX 10 SP)</div>';
+            badgeEl.innerHTML += '<div style="font-size:0.68rem; color:#fde047; font-weight:800; margin-top:4px;"><i class="ph-bold ph-lightning"></i> SIMULACIÓN RÁPIDA (MÁX 5 SP)</div>';
         }
         if (botin.esDescenso) {
             badgeEl.classList.add('descenso');
