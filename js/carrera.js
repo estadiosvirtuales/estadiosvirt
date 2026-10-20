@@ -144,8 +144,7 @@ window.iniciarDesafioOnceRivalDirecto = function() {
     }
 
     if (countUser < 11) {
-        const faltan = 11 - countUser;
-        showToast(`Completá tus 11 titulares para jugar un desafío de planteles (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
         return;
     }
 
@@ -408,9 +407,9 @@ window.clickBotonTorneoOnce = function() {
         if (once[i]) count++;
     }
 
-    if (count < 11) {
-        const faltan = 11 - count;
-        showToast(`Completá los 11 titulares para clasificar a la Copa (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    if (miNivel < 4 || count < 11) {
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
         return;
     }
 
@@ -3444,6 +3443,20 @@ window.abrirModalModoCarrera = function() {
         sub.innerHTML = `OVR Equipo: <b style="color:#38bdf8;">${ovr > 0 ? ovr : '--'}</b> · Habilidad: <b style="color:#00ff77;">${sp} SP</b> · Títulos: <b style="color:#fbbf24;">${copas}</b>`;
     }
 
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    const descLiga = document.getElementById('carrera-hub-liga-desc');
+    const descCopas = document.getElementById('carrera-hub-copas-desc');
+    if (descLiga) {
+        descLiga.innerHTML = (miNivel < 4)
+            ? `<span style="color:#fbbf24; font-weight:800;"><i class="ph-bold ph-lock-key"></i> Desbloquea en Nivel 4 (Nivel actual: ${miNivel}/4)</span>`
+            : 'Disputá el torneo fecha tras fecha y peleá por el campeonato';
+    }
+    if (descCopas) {
+        descCopas.innerHTML = (miNivel < 4)
+            ? `<span style="color:#fbbf24; font-weight:800;"><i class="ph-bold ph-lock-key"></i> Desbloquea en Nivel 4 (Nivel actual: ${miNivel}/4)</span>`
+            : 'Competí en eliminación directa desde Copa Desafío a Mundial';
+    }
+
     modal.style.display = 'flex';
 };
 
@@ -3453,6 +3466,12 @@ window.cerrarModalModoCarrera = function() {
 };
 
 window.clickJugarCopaDesdeCarrera = function() {
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    if (miNivel < 4) {
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        return;
+    }
+
     const once = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
     const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) ? FORMACIONES_TACTICAS[formacionOnceActual] : { posiciones: Array(11).fill(0) };
     let count = 0;
@@ -3461,8 +3480,7 @@ window.clickJugarCopaDesdeCarrera = function() {
     }
 
     if (count < 11) {
-        const faltan = 11 - count;
-        showToast(`Completá los 11 titulares para clasificar a la Copa (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
         return;
     }
 
@@ -3471,6 +3489,12 @@ window.clickJugarCopaDesdeCarrera = function() {
 };
 
 window.clickJugarLigaDesdeCarrera = function() {
+    const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
+    if (miNivel < 4) {
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        return;
+    }
+
     const once = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
     const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[formacionOnceActual]) ? FORMACIONES_TACTICAS[formacionOnceActual] : { posiciones: Array(11).fill(0) };
     let count = 0;
@@ -3479,8 +3503,7 @@ window.clickJugarLigaDesdeCarrera = function() {
     }
 
     if (count < 11) {
-        const faltan = 11 - count;
-        showToast(`Completá los 11 titulares para disputar la Liga (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
         return;
     }
 
@@ -3859,8 +3882,7 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
     }
 
     if (countUser < 11) {
-        const faltan = 11 - countUser;
-        showToast(`Completá tus 11 titulares para jugar un desafío de planteles (te ${faltan === 1 ? 'falta 1 jugador' : `faltan ${faltan} jugadores`}) 🔒`, "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
         return;
     }
 
