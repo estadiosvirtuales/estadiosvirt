@@ -6,9 +6,10 @@ const fs = require('fs');
 const path = require('path');
 
 // ============================================================================
-// 1. GENERADOR DE AUDIO Y EFECTOS DE SONIDO PROCEDURALES (WAV 44.1kHz 16-bit, 51s)
+// 1. GENERADOR DE AUDIO Y EFECTOS PROCEDURALES (WAV 44.1kHz 16-bit, 32 segundos)
+// Ritmo viral de alta retención: ágil, dinámico y sin tiempos muertos.
 // ============================================================================
-function generarAudioTrio(duracionTotalSegundos = 51, sampleRate = 44100) {
+function generarAudioTrio(duracionTotalSegundos = 32, sampleRate = 44100) {
     const totalSamples = Math.floor(duracionTotalSegundos * sampleRate);
     const dataSize = totalSamples * 2;
     const buffer = Buffer.alloc(44 + dataSize);
@@ -66,49 +67,47 @@ function generarAudioTrio(duracionTotalSegundos = 51, sampleRate = 44100) {
         addTone(startSec, 0.04, 540, 0.28, 25);
     }
 
-    // --- INTRO Y MENÚ PRINCIPAL (0.0s - 3.0s) ---
-    addTapClick(0.6); // Home Guessr
-    addTapClick(1.4); // Solo
-    addTapClick(2.2); // Dificultad
-    addWhoosh(2.8, 0.6, 0.4);
+    // --- INTRO Y MENÚ PRINCIPAL (0.0s - 2.0s) ---
+    addTapClick(0.4); // Guessr
+    addTapClick(0.9); // Solo
+    addTapClick(1.4); // Dificultad
+    addWhoosh(1.8, 0.5, 0.4);
 
-    // --- RONDA 1: OLD TRAFFORD (3.0s - 16.5s) ---
-    addTone(6.5, 0.8, 880, 0.25, 4); // Pista campanita
-    addWhoosh(10.5, 0.45, 0.35); // Mapa sube
-    addPinPop(12.2); // Pin clava
-    addTapClick(13.8); // Confirmar
+    // --- RONDA 1: OLD TRAFFORD (2.0s - 11.0s) ---
+    addTone(4.5, 0.8, 880, 0.25, 4); // Pista campanita
+    addWhoosh(7.0, 0.45, 0.35); // Mapa sube
+    addPinPop(8.2); // Pin clava
+    addTapClick(9.0); // Confirmar tiro
     // Acorde acierto R1 (5.000 pts)
-    [523.25, 659.25, 783.99].forEach((f, idx) => addTone(14.0 + idx * 0.06, 1.8, f, 0.28, 2.5));
+    [523.25, 659.25, 783.99].forEach((f, idx) => addTone(9.2 + idx * 0.06, 1.4, f, 0.28, 2.5));
 
     // --- TRANSICIÓN A RONDA 2 ---
-    addTapClick(16.5); // Siguiente ronda
-    addWhoosh(16.8, 0.5, 0.4);
+    addWhoosh(10.5, 0.4, 0.35);
 
-    // --- RONDA 2: ANFIELD / LIVERPOOL (17.0s - 30.5s) ---
-    addTone(21.0, 0.8, 987.77, 0.25, 4); // Pista campanita
-    addWhoosh(25.0, 0.45, 0.35); // Mapa sube
-    addPinPop(26.7); // Pin clava
-    addTapClick(28.3); // Confirmar
+    // --- RONDA 2: ANFIELD / LIVERPOOL (11.0s - 20.0s) ---
+    addTone(13.5, 0.8, 987.77, 0.25, 4); // Pista campanita
+    addWhoosh(16.0, 0.45, 0.35); // Mapa sube
+    addPinPop(17.2); // Pin clava
+    addTapClick(18.0); // Confirmar tiro
     // Acorde acierto R2 (10.000 pts)
-    [587.33, 739.99, 880.00].forEach((f, idx) => addTone(28.5 + idx * 0.06, 1.8, f, 0.3, 2.5));
+    [587.33, 739.99, 880.00].forEach((f, idx) => addTone(18.2 + idx * 0.06, 1.4, f, 0.3, 2.5));
 
     // --- TRANSICIÓN A RONDA 3 ---
-    addTapClick(30.8); // Siguiente ronda
-    addWhoosh(31.2, 0.5, 0.4);
+    addWhoosh(19.5, 0.4, 0.35);
 
-    // --- RONDA 3: ETIHAD / MANCHESTER CITY (31.5s - 45.0s) ---
-    addTone(35.5, 0.8, 1046.50, 0.25, 4); // Pista campanita
-    addWhoosh(39.5, 0.45, 0.35); // Mapa sube
-    addPinPop(41.2); // Pin clava
-    addTapClick(42.8); // Confirmar
+    // --- RONDA 3: ETIHAD STADIUM (20.0s - 29.0s) ---
+    addTone(22.5, 0.8, 1046.50, 0.25, 4); // Pista campanita
+    addWhoosh(25.0, 0.45, 0.35); // Mapa sube
+    addPinPop(26.2); // Pin clava
+    addTapClick(27.0); // Confirmar tiro
     // ¡Gran Fanfarria de Victoria Completa (15.000 pts)!
     [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((f, idx) => {
-        addTone(43.0 + idx * 0.08, 4.0, f, 0.35, 1.6);
+        addTone(27.2 + idx * 0.08, 3.5, f, 0.35, 1.6);
     });
 
-    // --- OVACIÓN FINAL PARA OUTRO (45.5s - 51.0s) ---
-    for (let i = 0; i < 6; i++) {
-        addWhoosh(45.5 + i * 0.9, 1.8, 0.22);
+    // --- OVACIÓN FINAL PARA OUTRO (29.0s - 32.0s) ---
+    for (let i = 0; i < 4; i++) {
+        addWhoosh(29.0 + i * 0.8, 1.6, 0.25);
     }
 
     for (let i = 0; i < totalSamples; i++) {
@@ -120,120 +119,49 @@ function generarAudioTrio(duracionTotalSegundos = 51, sampleRate = 44100) {
 }
 
 // ============================================================================
-// 2. PRESETS DE TRÍOS DE ESTADIOS VIRALES
+// 2. CONFIGURACIÓN DEL TRÍO PREMIER LEAGUE
 // ============================================================================
-const PRESETS = {
-    premier: {
-        filename: 'tiktok_trio_premier_league.mp4',
-        tituloConsola: 'TRÍO PREMIER LEAGUE (Old Trafford ➔ Anfield ➔ Etihad)',
-        mainHook: '¿SABÉS DE PREMIER LEAGUE? ADIVINÁ ESTOS 3 🏴󠁧󠁢󠁥󠁮󠁧󠁿🔥',
-        outroQuestion: '¿Pudiste adivinar los 3 estadios ingleses? 👇',
-        estadios: [
-            {
-                ronda: 1,
-                nivelTag: 'NIVEL 1: FÁCIL ⭐',
-                nivelClass: 'pill-facil',
-                searchClub: 'Manchester United',
-                searchEstadio: 'Old Trafford',
-                nombreEstadio: 'Old Trafford',
-                club: 'Manchester United',
-                pais: 'Inglaterra',
-                lat: 53.4631,
-                lng: -2.2913,
-                videoUrl: 'https://youtu.be/DIBVFC4dtQI',
-                hint: '💡 Pista: "El Teatro de los Sueños" · 74.310 hab. 🔴',
-                scoreTag: '🎯 ¡OLD TRAFFORD! +5.000 PTS'
-            },
-            {
-                ronda: 2,
-                nivelTag: 'NIVEL 2: MEDIO ⭐⭐',
-                nivelClass: 'pill-medio',
-                searchClub: 'Liverpool',
-                searchEstadio: 'Anfield',
-                nombreEstadio: 'Anfield',
-                club: 'Liverpool',
-                pais: 'Inglaterra',
-                lat: 53.4308,
-                lng: -2.9608,
-                videoUrl: 'https://youtu.be/f9rTAFmdyXc',
-                hint: '💡 Pista: You\'ll Never Walk Alone · The Kop 🔴🔥',
-                scoreTag: '🎯 ¡ANFIELD! +5.000 PTS (10.000)'
-            },
-            {
-                ronda: 3,
-                nivelTag: 'NIVEL 3: EXPERTO ⭐⭐⭐',
-                nivelClass: 'pill-experto',
-                searchClub: 'Manchester City',
-                searchEstadio: 'Etihad',
-                nombreEstadio: 'Etihad Stadium',
-                club: 'Manchester City',
-                pais: 'Inglaterra',
-                lat: 53.4831,
-                lng: -2.2004,
-                videoUrl: 'https://youtu.be/C0ZeyMJfCDY',
-                hint: '💡 Pista: Casa de los Citizens · 53.400 hab. 🔵',
-                scoreTag: '🏆 ¡ETIHAD STADIUM! ¡15.000 PTS!'
-            }
-        ]
+const TRIO_CONFIG = [
+    {
+        ronda: 1,
+        nivelTag: 'NIVEL 1: FÁCIL ⭐',
+        nivelClass: 'pill-facil',
+        nombreEstadio: 'Old Trafford',
+        club: 'Manchester United',
+        pais: 'Inglaterra',
+        lat: 53.4631,
+        lng: -2.2913,
+        videoUrl: 'https://youtu.be/DIBVFC4dtQI',
+        hint: '💡 Pista: "El Teatro de los Sueños" · 74.310 hab. 🔴',
+        scoreTag: '🎯 ¡OLD TRAFFORD! +5.000 PTS'
     },
-    clasicos: {
-        filename: 'tiktok_trio_estadios_virales.mp4',
-        tituloConsola: 'TRÍO CLÁSICOS (Bombonera ➔ Maracaná ➔ Bernabéu)',
-        mainHook: '¿PODÉS ADIVINAR ESTOS 3 ESTADIOS? 👀⚽',
-        outroQuestion: 'Dejá tu respuesta en los comentarios y retá a tu amigo 👇',
-        estadios: [
-            {
-                ronda: 1,
-                nivelTag: 'NIVEL 1: FÁCIL ⭐',
-                nivelClass: 'pill-facil',
-                searchClub: 'Boca Juniors',
-                searchEstadio: 'Bombonera',
-                nombreEstadio: 'Alberto J. Armando (La Bombonera)',
-                club: 'Boca Juniors',
-                pais: 'Argentina',
-                lat: -34.6356,
-                lng: -58.3648,
-                videoUrl: 'https://www.youtube.com/watch?v=Glk5ppU0k2U',
-                hint: '💡 Pista: 57.200 personas · Famoso por latir 🔥',
-                scoreTag: '🎯 ¡LA BOMBONERA! +5.000 PTS'
-            },
-            {
-                ronda: 2,
-                nivelTag: 'NIVEL 2: MEDIO ⭐⭐',
-                nivelClass: 'pill-medio',
-                searchClub: 'Flamengo',
-                searchEstadio: 'Maracan',
-                nombreEstadio: 'Maracanã',
-                club: 'Flamengo / Fluminense',
-                pais: 'Brasil',
-                lat: -22.912167,
-                lng: -43.230164,
-                videoUrl: 'https://youtu.be/ZkLYkDXrJOI',
-                hint: '💡 Pista: Récord de público · Río de Janeiro 🇧🇷',
-                scoreTag: '🎯 ¡EL MARACANÁ! +5.000 PTS (10.000)'
-            },
-            {
-                ronda: 3,
-                nivelTag: 'NIVEL 3: EXPERTO ⭐⭐⭐',
-                nivelClass: 'pill-experto',
-                searchClub: 'Real Madrid',
-                searchEstadio: 'Bernab',
-                nombreEstadio: 'Santiago Bernabéu',
-                club: 'Real Madrid',
-                pais: 'España',
-                lat: 40.4531,
-                lng: -3.6883,
-                videoUrl: 'https://youtu.be/PHV4nOAu12g',
-                hint: '💡 Pista: Techo retráctil · 84.000 espectadores 👑',
-                scoreTag: '🏆 ¡SANTIAGO BERNABÉU! ¡15.000 PTS!'
-            }
-        ]
+    {
+        ronda: 2,
+        nivelTag: 'NIVEL 2: MEDIO ⭐⭐',
+        nivelClass: 'pill-medio',
+        nombreEstadio: 'Anfield',
+        club: 'Liverpool',
+        pais: 'Inglaterra',
+        lat: 53.4308,
+        lng: -2.9608,
+        videoUrl: 'https://youtu.be/f9rTAFmdyXc',
+        hint: '💡 Pista: You\'ll Never Walk Alone · The Kop 🔴🔥',
+        scoreTag: '🎯 ¡ANFIELD! +5.000 PTS (10.000)'
+    },
+    {
+        ronda: 3,
+        nivelTag: 'NIVEL 3: EXPERTO ⭐⭐⭐',
+        nivelClass: 'pill-experto',
+        nombreEstadio: 'Etihad Stadium',
+        club: 'Manchester City',
+        pais: 'Inglaterra',
+        lat: 53.4831,
+        lng: -2.2004,
+        videoUrl: 'https://youtu.be/C0ZeyMJfCDY',
+        hint: '💡 Pista: Casa de los Citizens · 53.400 hab. 🔵',
+        scoreTag: '🏆 ¡ETIHAD STADIUM! ¡15.000 PTS!'
     }
-};
-
-const arg = (process.argv[2] || '').toLowerCase();
-const presetKey = (arg.includes('clasic') || arg.includes('bombonera')) ? 'clasicos' : 'premier';
-const CURRENT_PRESET = PRESETS[presetKey];
+];
 
 // ============================================================================
 // 3. SERVIDOR LOCAL ESTÁTICO
@@ -267,16 +195,20 @@ const server = http.createServer((req, res) => {
 });
 
 async function grabarVideoTrio(browser, port) {
-    const filename = CURRENT_PRESET.filename;
+    const filename = 'tiktok_trio_premier_league.mp4';
+    const TOTAL_DURACION_SEG = 32; // Duración perfecta de retención TikTok
+    const FPS = 30;
+    const TARGET_FRAMES = TOTAL_DURACION_SEG * FPS; // Exactamente 960 frames
+
     console.log(`\n======================================================`);
-    console.log(`🎬 INICIANDO GRABACIÓN DEL TRÍO VIRAL (3 RONDAS):`);
-    console.log(`👉 ${CURRENT_PRESET.tituloConsola}`);
+    console.log(`🎬 INICIANDO GRABACIÓN DEL TRÍO PREMIER LEAGUE (3 RONDAS):`);
+    console.log(`👉 1. Old Trafford ➔ 2. Anfield (Liverpool) ➔ 3. Etihad Stadium`);
+    console.log(`⏱️ Duración exacta: ${TOTAL_DURACION_SEG}s (${TARGET_FRAMES} frames a 30 FPS)`);
     console.log(`======================================================`);
 
     const page = await browser.newPage();
     await page.setViewport({ width: 430, height: 932, deviceScaleFactor: 2 });
 
-    const TOTAL_DURACION_SEG = 51;
     const tempWav = path.join(__dirname, 'temp_audio_trio.wav');
     const audioBuffer = generarAudioTrio(TOTAL_DURACION_SEG);
     fs.writeFileSync(tempWav, audioBuffer);
@@ -319,18 +251,16 @@ async function grabarVideoTrio(browser, port) {
         } catch (e) {}
     });
 
-    // ⏱️ SINCRONIZADOR MATEMÁTICO REAL-TIME CFR (Constant Frame Rate a 30 FPS exactos):
-    // Utiliza marcas de tiempo absolutas (Date.now()) para calcular exactamente cuántos
-    // fotogramas deben haberse enviado a FFmpeg en cada milisegundo. Esto elimina cualquier
-    // aceleración o ralentización por timers de Windows o carga del sistema.
-    const FPS = 30;
+    // ⏱️ SINCRONIZADOR MATEMÁTICO REAL-TIME CFR (30 FPS EXACTOS):
+    // Garantiza que FFmpeg reciba exactamente 30 fotogramas por segundo real,
+    // eliminando congelamientos o aceleraciones, y asegurando una duración de 32s clavada.
     let startTime = Date.now();
     let framesEnviados = 0;
 
     const frameTicker = setInterval(() => {
         if (grabacionActiva && ultimoFrameBuffer) {
             const elapsedSec = (Date.now() - startTime) / 1000;
-            const targetFrames = Math.floor(elapsedSec * FPS);
+            const targetFrames = Math.min(TARGET_FRAMES, Math.floor(elapsedSec * FPS));
             const toAdd = targetFrames - framesEnviados;
             for (let i = 0; i < toAdd; i++) {
                 try {
@@ -437,7 +367,7 @@ async function grabarVideoTrio(browser, port) {
                 border: 2.5px solid #000;
                 border-radius: 14px;
                 font-weight: 900;
-                font-size: 14px;
+                font-size: 15px;
                 text-align: center;
                 letter-spacing: 0.2px;
                 box-shadow: 0 8px 25px rgba(0,0,0,0.7);
@@ -518,7 +448,7 @@ async function grabarVideoTrio(browser, port) {
     });
 
     // Iniciar captura
-    console.log(`- ¡Comenzando grabación de ${TOTAL_DURACION_SEG}s a 30 FPS exactos (CFR real-time)!`);
+    console.log(`- ¡Comenzando grabación a 30 FPS constantes!`);
     await client.send('Page.startScreencast', {
         format: 'jpeg',
         quality: 90,
@@ -529,7 +459,7 @@ async function grabarVideoTrio(browser, port) {
     startTime = Date.now();
     grabacionActiva = true;
 
-    // Menú inicial (0s - 3s)
+    // Menú inicial (0s - 2s)
     await page.evaluate(() => {
         const btn = document.querySelector('.btn-guessr');
         const cursor = document.getElementById('touch-cursor');
@@ -540,14 +470,14 @@ async function grabarVideoTrio(browser, port) {
             cursor.classList.add('visible');
         }
     });
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 400));
 
     await page.evaluate(() => {
         const cursor = document.getElementById('touch-cursor');
         if (cursor) cursor.classList.add('tap');
         window.abrirModalGuessr();
     });
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 500));
 
     await page.evaluate(() => {
         const btn = document.querySelector('.btn-opt-solo');
@@ -566,35 +496,23 @@ async function grabarVideoTrio(browser, port) {
         if (cursor) cursor.classList.add('tap');
         window.mostrarPasoDificultad('solo');
     });
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 400));
 
-    // Preset de estadios: Búsqueda inequívoca por Club y Estadio
-    const estadiosCargados = await page.evaluate((estadiosCfg) => {
-        const estadiosEncontrados = estadiosCfg.map(cfg => {
-            const targetClub = (cfg.searchClub || '').toLowerCase();
-            const targetEst = (cfg.searchEstadio || '').toLowerCase();
-
-            return window.catalogoGlobal.find(e => {
-                const c = (e['Club'] || '').toLowerCase();
-                const est = (e['Estadio'] || '').toLowerCase();
-
-                // Coincidencia exacta por club y nombre de estadio
-                return c.includes(targetClub) && (!targetEst || est.includes(targetEst));
-            });
-        });
-
-        window.__TRIO_ESTADIOS__ = estadiosEncontrados;
-        // En la primera ronda ponemos el primer estadio
-        window.catalogoGlobal = [estadiosEncontrados[0]];
-
-        return estadiosEncontrados.map(e => ({
-            estadio: e ? e['Estadio'] : 'NO ENCONTRADO',
-            club: e ? e['Club'] : 'NO ENCONTRADO',
-            pais: e ? e['País'] : 'NO ENCONTRADO'
-        }));
-    }, CURRENT_PRESET.estadios);
-
-    console.log(`- Estadios seleccionados en el motor:`, JSON.stringify(estadiosCargados));
+    // Preset de estadios: Old Trafford, Anfield (Liverpool) y Etihad (Manchester City)
+    const seleccionados = await page.evaluate(() => {
+        const est1 = window.catalogoGlobal.find(e => (e['Club'] || '').toLowerCase().includes('manchester united'));
+        const est2 = window.catalogoGlobal.find(e => (e['Club'] || '').toLowerCase() === 'liverpool');
+        const est3 = window.catalogoGlobal.find(e => (e['Club'] || '').toLowerCase() === 'manchester city');
+        window.__TRIO_ESTADIOS__ = [est1, est2, est3];
+        // En la primera ronda ponemos Old Trafford
+        window.catalogoGlobal = [est1];
+        return [
+            est1 ? est1['Estadio'] + ' (' + est1['Club'] + ')' : 'null',
+            est2 ? est2['Estadio'] + ' (' + est2['Club'] + ')' : 'null',
+            est3 ? est3['Estadio'] + ' (' + est3['Club'] + ')' : 'null'
+        ];
+    });
+    console.log(`- Estadios cargados en catálogo:`, seleccionados);
 
     await page.evaluate(() => {
         const cursor = document.getElementById('touch-cursor');
@@ -603,10 +521,10 @@ async function grabarVideoTrio(browser, port) {
         setTimeout(() => { if (cursor) cursor.classList.remove('visible', 'tap'); }, 200);
     });
 
-    // Bucle para jugar las 3 rondas con ritmo natural y fluido
-    for (let rIdx = 0; rIdx < CURRENT_PRESET.estadios.length; rIdx++) {
-        const item = CURRENT_PRESET.estadios[rIdx];
-        console.log(`\n--- JUGANDO RONDA ${item.ronda}: ${item.nombreEstadio} (${item.club} - ${item.pais}) ---`);
+    // Bucle para jugar las 3 rondas (ritmo ágil y dinámico: ~9s por ronda)
+    for (let rIdx = 0; rIdx < TRIO_CONFIG.length; rIdx++) {
+        const item = TRIO_CONFIG[rIdx];
+        console.log(`\n--- JUGANDO RONDA ${item.ronda}: ${item.nombreEstadio} ---`);
 
         // Si es ronda 2 o 3, inyectamos el estadio y abrimos la ronda limpiamente
         if (rIdx > 0) {
@@ -623,52 +541,52 @@ async function grabarVideoTrio(browser, port) {
 
         // Esperar video y mapa
         await page.waitForFunction(() => window.guessrMapInstance != null, { timeout: 15000 });
-        await new Promise(r => setTimeout(r, 1200));
+        await new Promise(r => setTimeout(r, 400));
 
         // Stickers de vuelo
-        await page.evaluate((data) => {
+        await page.evaluate((cfg) => {
             const cont = document.getElementById('tiktok-overlay-container');
             cont.innerHTML = `
-                <div class="tiktok-main-hook">${data.mainHook}</div>
-                <div class="tiktok-round-pill ${data.cfg.nivelClass}">${data.cfg.nivelTag}</div>
+                <div class="tiktok-main-hook">¿PODÉS ADIVINAR ESTOS 3 ESTADIOS? 🏴󠁧󠁢󠁥󠁮󠁧󠁿⚽</div>
+                <div class="tiktok-round-pill ${cfg.nivelClass}">${cfg.nivelTag}</div>
             `;
-        }, { mainHook: CURRENT_PRESET.mainHook, cfg: item });
-        await new Promise(r => setTimeout(r, 3000));
+        }, item);
+        await new Promise(r => setTimeout(r, 2100));
 
         // Pista
-        await page.evaluate((data) => {
+        await page.evaluate((cfg) => {
             const cont = document.getElementById('tiktok-overlay-container');
             cont.innerHTML = `
-                <div class="tiktok-main-hook">${data.mainHook}</div>
-                <div class="tiktok-round-pill ${data.cfg.nivelClass}">${data.cfg.nivelTag}</div>
-                <div class="tiktok-hint-pill">${data.cfg.hint}</div>
+                <div class="tiktok-main-hook">¿PODÉS ADIVINAR ESTOS 3 ESTADIOS? 🏴󠁧󠁢󠁥󠁮󠁧󠁿⚽</div>
+                <div class="tiktok-round-pill ${cfg.nivelClass}">${cfg.nivelTag}</div>
+                <div class="tiktok-hint-pill">${cfg.hint}</div>
             `;
-        }, { mainHook: CURRENT_PRESET.mainHook, cfg: item });
-        await new Promise(r => setTimeout(r, 3500));
+        }, item);
+        await new Promise(r => setTimeout(r, 2500));
 
         // Desplegar mapa y clavar pin
         console.log(`- Desplegando mapa para ${item.nombreEstadio}...`);
-        await page.evaluate((data) => {
+        await page.evaluate((cfg) => {
             const cont = document.getElementById('tiktok-overlay-container');
             cont.innerHTML = `
-                <div class="tiktok-main-hook">${data.mainHook}</div>
-                <div class="tiktok-round-pill ${data.cfg.nivelClass}">${data.cfg.nivelTag}</div>
+                <div class="tiktok-main-hook">¿PODÉS ADIVINAR ESTOS 3 ESTADIOS? 🏴󠁧󠁢󠁥󠁮󠁧󠁿⚽</div>
+                <div class="tiktok-round-pill ${cfg.nivelClass}">${cfg.nivelTag}</div>
             `;
             const mapBox = document.getElementById('guessr-floating-map-box');
             if (mapBox) mapBox.classList.add('mapa-visible-tiktok');
 
             if (window.guessrMapInstance) {
                 window.guessrMapInstance.invalidateSize();
-                window.guessrMapInstance.setView([data.cfg.lat, data.cfg.lng], 15);
+                window.guessrMapInstance.setView([cfg.lat, cfg.lng], 15);
 
                 setTimeout(() => {
-                    window.guessrSelectedLatLng = { lat: data.cfg.lat + 0.0001, lng: data.cfg.lng - 0.0001 };
+                    window.guessrSelectedLatLng = { lat: cfg.lat + 0.0001, lng: cfg.lng - 0.0001 };
                     if (window.guessrUserMarker) {
                         window.guessrUserMarker.setLatLng(window.guessrSelectedLatLng);
                     } else {
                         window.guessrUserMarker = L.marker(window.guessrSelectedLatLng).addTo(window.guessrMapInstance);
                     }
-                    L.circleMarker([data.cfg.lat, data.cfg.lng], {
+                    L.circleMarker([cfg.lat, cfg.lng], {
                         radius: 12,
                         color: '#00e676',
                         fillColor: '#00e676',
@@ -682,10 +600,10 @@ async function grabarVideoTrio(browser, port) {
                         btn.className = "btn-3d primary";
                         btn.disabled = false;
                     }
-                }, 1600);
+                }, 1000);
             }
-        }, { mainHook: CURRENT_PRESET.mainHook, cfg: item });
-        await new Promise(r => setTimeout(r, 3200));
+        }, item);
+        await new Promise(r => setTimeout(r, 2000));
 
         // Confirmar tiro
         console.log(`- Confirmando tiro de la ronda ${item.ronda}...`);
@@ -699,21 +617,21 @@ async function grabarVideoTrio(browser, port) {
                 <div class="tiktok-score-pill ${esUltima ? 'win-gold' : ''}">${cfg.scoreTag}</div>
             `;
         }, item);
-        await new Promise(r => setTimeout(r, 2400));
+        await new Promise(r => setTimeout(r, 1500));
 
         // Si no es la última ronda, replegamos el mapa antes de avanzar
-        if (rIdx < CURRENT_PRESET.estadios.length - 1) {
+        if (rIdx < TRIO_CONFIG.length - 1) {
             await page.evaluate(() => {
                 const mapBox = document.getElementById('guessr-floating-map-box');
                 if (mapBox) mapBox.classList.remove('mapa-visible-tiktok');
             });
-            await new Promise(r => setTimeout(r, 800));
+            await new Promise(r => setTimeout(r, 500));
         }
     }
 
-    // Outro final (45.5s - 51.0s)
+    // Outro final (29.0s - 32.0s)
     console.log(`- Mostrando Outro de Victoria Completa (15.000 pts)...`);
-    await page.evaluate((data) => {
+    await page.evaluate(() => {
         const outro = document.createElement('div');
         outro.className = 'tiktok-outro-card';
         outro.innerHTML = `
@@ -725,7 +643,7 @@ async function grabarVideoTrio(browser, port) {
                 ¿Y VOS CUÁNTOS SACASTE?
             </div>
             <p style="font-size:0.95rem; opacity:0.85; max-width:320px; margin-bottom:22px; line-height:1.4;">
-                ${data.outroQuestion}
+                Dejá tu respuesta en los comentarios y retá a tu amigo 👇
             </p>
             <div style="background:#00e676; color:#04160a; font-weight:900; font-size:1.15rem; padding:14px 28px; border-radius:50px; box-shadow:0 0 35px rgba(0,230,118,0.7); margin-bottom:16px;">
                 estadiosvirtuales.com
@@ -735,19 +653,27 @@ async function grabarVideoTrio(browser, port) {
             </div>
         `;
         document.body.appendChild(outro);
-    }, { outroQuestion: CURRENT_PRESET.outroQuestion });
+    });
+    await new Promise(r => setTimeout(r, 3000));
 
-    // Completar el tiempo hasta TOTAL_DURACION_SEG
-    const tiempoFaltanteMs = Math.max(0, (TOTAL_DURACION_SEG * 1000) - (Date.now() - startTime));
-    console.log(`- Sincronizando outro final (${(tiempoFaltanteMs / 1000).toFixed(1)}s restantes)...`);
-    await new Promise(r => setTimeout(r, tiempoFaltanteMs));
+    // Completar exactamente los 960 frames
+    while (framesEnviados < TARGET_FRAMES) {
+        if (ultimoFrameBuffer) {
+            try {
+                ffmpeg.stdin.write(ultimoFrameBuffer);
+                framesEnviados++;
+            } catch(e) {}
+        } else {
+            break;
+        }
+    }
 
     // Finalizar
-    console.log(`- Finalizando captura del video trío (Total frames enviados: ${framesEnviados})...`);
+    console.log(`- Finalizando captura del video trío (Total frames: ${framesEnviados})...`);
     grabacionActiva = false;
     if (frameTicker) clearInterval(frameTicker);
     try { await client.send('Page.stopScreencast'); } catch(e) {}
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 400));
     try { ffmpeg.stdin.end(); } catch(e) {}
 
     await new Promise(r => ffmpeg.on('close', r));
