@@ -128,7 +128,10 @@ window.iniciarDesafioOnceRivalDirecto = function() {
     const rival = window.datosUltimoRivalInspeccionado;
     if (!rival) return;
 
-    // Todos los usuarios disponen de su 11 titular completo desde Nivel 0
+    if ((rival.nivelActual || 0) < 4) {
+        showToast(`${rival.custom_nick} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 4) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
 
     // 1. Validar que el usuario tenga su equipo completo
     const onceUser = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
@@ -2447,7 +2450,33 @@ window.autocompletarOnceInicial = function() {
     let asignados = new Set(Object.values(once));
     let agregados = 0;
 
-    // 1. Asignar solo futbolistas de campo en las 11 posiciones (excluyendo DTs)
+    // 1. Ubicación preferida táctica para la formación base (4-3-3)
+    const slotsPreferidos433 = {
+        '24.webp': 10, // Dibu Martínez -> POR (Arco)
+        '61.webp': 6,  // Gary Medel -> LI (Defensa Izquierda)
+        '21.webp': 8,  // Otamendi -> DFC (Zaguero Central)
+        '55.webp': 9,  // Yerry Mina -> LD (Defensa Derecha)
+        '16.webp': 7,  // Cuti Romero -> DFC (Nivel 2)
+        '13.webp': 4,  // Casemiro -> MCD (Eje Central)
+        '12.webp': 3,  // Fede Valverde -> MC (Volante)
+        '18.webp': 5,  // Rodrigo De Paul -> MC (Nivel 1)
+        '7.webp': 1,   // Vinicius Jr -> EI (Extremo Izquierdo)
+        '9.webp': 2,   // Dembélé -> ED (Nivel 3)
+        '20.webp': 0   // Lautaro Martínez -> DC (Nivel 4 - Centrodelantero)
+    };
+
+    desbloqueados.forEach(a => {
+        if (typeof esAvatarDT === 'function' && esAvatarDT(a.id)) return;
+        if (asignados.has(a.id)) return;
+        const prefSlot = slotsPreferidos433[a.id];
+        if (prefSlot !== undefined && !once[prefSlot] && prefSlot < f.posiciones.length) {
+            once[prefSlot] = a.id;
+            asignados.add(a.id);
+            agregados++;
+        }
+    });
+
+    // Asignar en cualquier otro slot libre restante
     for (let i = 0; i < f.posiciones.length; i++) {
         if (!once[i]) {
             const libre = desbloqueados.find(a => !asignados.has(a.id) && (typeof esAvatarDT !== 'function' || !esAvatarDT(a.id)));
@@ -3583,7 +3612,8 @@ window.abrirModalRankingCarrera = async function() {
 
             const exp = p.experiencia || dj.xpTotal || 0;
             const nivelDt = calcularNivelIdx(exp);
-            // 🛡️ Todos los DTs cuentan con plantel desde Nivel 0
+            // 🛡️ Filtro de nivel mínimo: solo DTs con plantel completo (Nivel 4+)
+            if (nivelDt < 4) return;
 
             const copas = dj.copasGanadas || [];
             let ligas = 0, nac = 0, cont = 0, clubes = 0, mundial = 0;
@@ -3677,7 +3707,7 @@ window.abrirModalRankingCarrera = async function() {
             miOvrLive = Math.min(99, miOvrLive);
         }
 
-        if (!yaEstaEnLista && miNombreReal) {
+        if (!yaEstaEnLista && miNombreReal && miNivelActual >= 4) {
             rankingCampeones.push({
                 nombre: miNombreReal,
                 avatar: getPref('ev_avatar_hair', '1.webp'),
@@ -3885,7 +3915,10 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
         console.warn("Aviso al preparar duelo:", e);
     }
 
-    // Todos los rivales tienen titulares disponibles desde Nivel 0
+    if (datosRival.nivelActual < 4) {
+        showToast(`${nombreRival} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 4) 🔒`, "ph-lock-key", "warning");
+        return;
+    }
 
     window.datosUltimoRivalInspeccionado = datosRival;
     iniciarDesafioOnceRivalDirecto();
