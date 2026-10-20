@@ -6,9 +6,9 @@ const fs = require('fs');
 const path = require('path');
 
 // ============================================================================
-// 1. GENERADOR DE AUDIO Y EFECTOS DE SONIDO PROCEDURALES (WAV 44.1kHz 16-bit)
+// 1. GENERADOR DE AUDIO Y EFECTOS DE SONIDO PROCEDURALES (WAV 44.1kHz 16-bit, 51s)
 // ============================================================================
-function generarAudioTrio(duracionTotalSegundos = 46, sampleRate = 44100) {
+function generarAudioTrio(duracionTotalSegundos = 51, sampleRate = 44100) {
     const totalSamples = Math.floor(duracionTotalSegundos * sampleRate);
     const dataSize = totalSamples * 2;
     const buffer = Buffer.alloc(44 + dataSize);
@@ -66,49 +66,49 @@ function generarAudioTrio(duracionTotalSegundos = 46, sampleRate = 44100) {
         addTone(startSec, 0.04, 540, 0.28, 25);
     }
 
-    // --- INTRO Y CLICS INICIALES ---
+    // --- INTRO Y MENÚ PRINCIPAL (0.0s - 3.0s) ---
     addTapClick(0.6); // Home Guessr
-    addTapClick(1.5); // Solo
-    addTapClick(2.3); // Dificultad
+    addTapClick(1.4); // Solo
+    addTapClick(2.2); // Dificultad
     addWhoosh(2.8, 0.6, 0.4);
 
-    // --- RONDA 1 (3.0s - 14.5s) ---
-    addTone(6.0, 0.8, 880, 0.25, 4); // Pista campanita
-    addWhoosh(10.2, 0.45, 0.35); // Mapa sube
-    addPinPop(11.8); // Pin
-    addTapClick(13.2); // Confirmar
+    // --- RONDA 1: OLD TRAFFORD (3.0s - 16.5s) ---
+    addTone(6.5, 0.8, 880, 0.25, 4); // Pista campanita
+    addWhoosh(10.5, 0.45, 0.35); // Mapa sube
+    addPinPop(12.2); // Pin clava
+    addTapClick(13.8); // Confirmar
     // Acorde acierto R1 (5.000 pts)
-    [523.25, 659.25, 783.99].forEach((f, idx) => addTone(13.5 + idx * 0.06, 1.8, f, 0.28, 2.5));
+    [523.25, 659.25, 783.99].forEach((f, idx) => addTone(14.0 + idx * 0.06, 1.8, f, 0.28, 2.5));
 
     // --- TRANSICIÓN A RONDA 2 ---
-    addTapClick(15.2); // Siguiente ronda
-    addWhoosh(15.5, 0.5, 0.4);
+    addTapClick(16.5); // Siguiente ronda
+    addWhoosh(16.8, 0.5, 0.4);
 
-    // --- RONDA 2 (16.0s - 27.5s) ---
-    addTone(19.0, 0.8, 987.77, 0.25, 4); // Pista campanita
-    addWhoosh(23.2, 0.45, 0.35); // Mapa sube
-    addPinPop(24.8); // Pin
-    addTapClick(26.2); // Confirmar
+    // --- RONDA 2: ANFIELD / LIVERPOOL (17.0s - 30.5s) ---
+    addTone(21.0, 0.8, 987.77, 0.25, 4); // Pista campanita
+    addWhoosh(25.0, 0.45, 0.35); // Mapa sube
+    addPinPop(26.7); // Pin clava
+    addTapClick(28.3); // Confirmar
     // Acorde acierto R2 (10.000 pts)
-    [587.33, 739.99, 880.00].forEach((f, idx) => addTone(26.5 + idx * 0.06, 1.8, f, 0.3, 2.5));
+    [587.33, 739.99, 880.00].forEach((f, idx) => addTone(28.5 + idx * 0.06, 1.8, f, 0.3, 2.5));
 
     // --- TRANSICIÓN A RONDA 3 ---
-    addTapClick(28.2); // Siguiente ronda
-    addWhoosh(28.5, 0.5, 0.4);
+    addTapClick(30.8); // Siguiente ronda
+    addWhoosh(31.2, 0.5, 0.4);
 
-    // --- RONDA 3 (29.0s - 40.5s) ---
-    addTone(32.0, 0.8, 1046.50, 0.25, 4); // Pista campanita
-    addWhoosh(36.2, 0.45, 0.35); // Mapa sube
-    addPinPop(37.8); // Pin
-    addTapClick(39.2); // Confirmar
+    // --- RONDA 3: ETIHAD / MANCHESTER CITY (31.5s - 45.0s) ---
+    addTone(35.5, 0.8, 1046.50, 0.25, 4); // Pista campanita
+    addWhoosh(39.5, 0.45, 0.35); // Mapa sube
+    addPinPop(41.2); // Pin clava
+    addTapClick(42.8); // Confirmar
     // ¡Gran Fanfarria de Victoria Completa (15.000 pts)!
     [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((f, idx) => {
-        addTone(39.5 + idx * 0.08, 4.0, f, 0.35, 1.6);
+        addTone(43.0 + idx * 0.08, 4.0, f, 0.35, 1.6);
     });
 
-    // --- OVACIÓN FINAL PARA OUTRO (41s - 46s) ---
-    for (let i = 0; i < 5; i++) {
-        addWhoosh(41.0 + i * 1.0, 1.8, 0.22);
+    // --- OVACIÓN FINAL PARA OUTRO (45.5s - 51.0s) ---
+    for (let i = 0; i < 6; i++) {
+        addWhoosh(45.5 + i * 0.9, 1.8, 0.22);
     }
 
     for (let i = 0; i < totalSamples; i++) {
@@ -133,7 +133,8 @@ const PRESETS = {
                 ronda: 1,
                 nivelTag: 'NIVEL 1: FÁCIL ⭐',
                 nivelClass: 'pill-facil',
-                searchKey: 'trafford',
+                searchClub: 'Manchester United',
+                searchEstadio: 'Old Trafford',
                 nombreEstadio: 'Old Trafford',
                 club: 'Manchester United',
                 pais: 'Inglaterra',
@@ -147,7 +148,8 @@ const PRESETS = {
                 ronda: 2,
                 nivelTag: 'NIVEL 2: MEDIO ⭐⭐',
                 nivelClass: 'pill-medio',
-                searchKey: 'anfield',
+                searchClub: 'Liverpool',
+                searchEstadio: 'Anfield',
                 nombreEstadio: 'Anfield',
                 club: 'Liverpool',
                 pais: 'Inglaterra',
@@ -161,7 +163,8 @@ const PRESETS = {
                 ronda: 3,
                 nivelTag: 'NIVEL 3: EXPERTO ⭐⭐⭐',
                 nivelClass: 'pill-experto',
-                searchKey: 'etihad',
+                searchClub: 'Manchester City',
+                searchEstadio: 'Etihad',
                 nombreEstadio: 'Etihad Stadium',
                 club: 'Manchester City',
                 pais: 'Inglaterra',
@@ -183,7 +186,8 @@ const PRESETS = {
                 ronda: 1,
                 nivelTag: 'NIVEL 1: FÁCIL ⭐',
                 nivelClass: 'pill-facil',
-                searchKey: 'bombonera',
+                searchClub: 'Boca Juniors',
+                searchEstadio: 'Bombonera',
                 nombreEstadio: 'Alberto J. Armando (La Bombonera)',
                 club: 'Boca Juniors',
                 pais: 'Argentina',
@@ -197,7 +201,8 @@ const PRESETS = {
                 ronda: 2,
                 nivelTag: 'NIVEL 2: MEDIO ⭐⭐',
                 nivelClass: 'pill-medio',
-                searchKey: 'maracan',
+                searchClub: 'Flamengo',
+                searchEstadio: 'Maracan',
                 nombreEstadio: 'Maracanã',
                 club: 'Flamengo / Fluminense',
                 pais: 'Brasil',
@@ -211,7 +216,8 @@ const PRESETS = {
                 ronda: 3,
                 nivelTag: 'NIVEL 3: EXPERTO ⭐⭐⭐',
                 nivelClass: 'pill-experto',
-                searchKey: 'bernab',
+                searchClub: 'Real Madrid',
+                searchEstadio: 'Bernab',
                 nombreEstadio: 'Santiago Bernabéu',
                 club: 'Real Madrid',
                 pais: 'España',
@@ -225,7 +231,6 @@ const PRESETS = {
     }
 };
 
-// Selección por CLI argument o por defecto Premier League
 const arg = (process.argv[2] || '').toLowerCase();
 const presetKey = (arg.includes('clasic') || arg.includes('bombonera')) ? 'clasicos' : 'premier';
 const CURRENT_PRESET = PRESETS[presetKey];
@@ -271,8 +276,9 @@ async function grabarVideoTrio(browser, port) {
     const page = await browser.newPage();
     await page.setViewport({ width: 430, height: 932, deviceScaleFactor: 2 });
 
+    const TOTAL_DURACION_SEG = 51;
     const tempWav = path.join(__dirname, 'temp_audio_trio.wav');
-    const audioBuffer = generarAudioTrio(46);
+    const audioBuffer = generarAudioTrio(TOTAL_DURACION_SEG);
     fs.writeFileSync(tempWav, audioBuffer);
 
     const destDesktop = path.join(process.env.USERPROFILE, 'Desktop', filename);
@@ -313,13 +319,27 @@ async function grabarVideoTrio(browser, port) {
         } catch (e) {}
     });
 
+    // ⏱️ SINCRONIZADOR MATEMÁTICO REAL-TIME CFR (Constant Frame Rate a 30 FPS exactos):
+    // Utiliza marcas de tiempo absolutas (Date.now()) para calcular exactamente cuántos
+    // fotogramas deben haberse enviado a FFmpeg en cada milisegundo. Esto elimina cualquier
+    // aceleración o ralentización por timers de Windows o carga del sistema.
+    const FPS = 30;
+    let startTime = Date.now();
+    let framesEnviados = 0;
+
     const frameTicker = setInterval(() => {
         if (grabacionActiva && ultimoFrameBuffer) {
-            try {
-                ffmpeg.stdin.write(ultimoFrameBuffer);
-            } catch (e) {}
+            const elapsedSec = (Date.now() - startTime) / 1000;
+            const targetFrames = Math.floor(elapsedSec * FPS);
+            const toAdd = targetFrames - framesEnviados;
+            for (let i = 0; i < toAdd; i++) {
+                try {
+                    ffmpeg.stdin.write(ultimoFrameBuffer);
+                    framesEnviados++;
+                } catch (e) {}
+            }
         }
-    }, 1000 / 30);
+    }, 15);
 
     // Silenciar bots y blindar RPC de Supabase para tiro perfecto 5.000 pts
     await page.evaluateOnNewDocument(() => {
@@ -498,7 +518,7 @@ async function grabarVideoTrio(browser, port) {
     });
 
     // Iniciar captura
-    console.log(`- ¡Comenzando grabación de 46s a 30 FPS constantes!`);
+    console.log(`- ¡Comenzando grabación de ${TOTAL_DURACION_SEG}s a 30 FPS exactos (CFR real-time)!`);
     await client.send('Page.startScreencast', {
         format: 'jpeg',
         quality: 90,
@@ -506,6 +526,7 @@ async function grabarVideoTrio(browser, port) {
         maxHeight: 1920,
         everyNthFrame: 1
     });
+    startTime = Date.now();
     grabacionActiva = true;
 
     // Menú inicial (0s - 3s)
@@ -547,20 +568,33 @@ async function grabarVideoTrio(browser, port) {
     });
     await new Promise(r => setTimeout(r, 500));
 
-    // Preset dinámico de estadios para las 3 rondas en catálogo
-    await page.evaluate((estadiosCfg) => {
+    // Preset de estadios: Búsqueda inequívoca por Club y Estadio
+    const estadiosCargados = await page.evaluate((estadiosCfg) => {
         const estadiosEncontrados = estadiosCfg.map(cfg => {
-            const key = cfg.searchKey.toLowerCase();
+            const targetClub = (cfg.searchClub || '').toLowerCase();
+            const targetEst = (cfg.searchEstadio || '').toLowerCase();
+
             return window.catalogoGlobal.find(e => {
-                const nombre = (e['Estadio'] || '').toLowerCase();
-                const club = (e['Club'] || '').toLowerCase();
-                return nombre.includes(key) || club.includes(key);
+                const c = (e['Club'] || '').toLowerCase();
+                const est = (e['Estadio'] || '').toLowerCase();
+
+                // Coincidencia exacta por club y nombre de estadio
+                return c.includes(targetClub) && (!targetEst || est.includes(targetEst));
             });
         });
+
         window.__TRIO_ESTADIOS__ = estadiosEncontrados;
         // En la primera ronda ponemos el primer estadio
         window.catalogoGlobal = [estadiosEncontrados[0]];
+
+        return estadiosEncontrados.map(e => ({
+            estadio: e ? e['Estadio'] : 'NO ENCONTRADO',
+            club: e ? e['Club'] : 'NO ENCONTRADO',
+            pais: e ? e['País'] : 'NO ENCONTRADO'
+        }));
     }, CURRENT_PRESET.estadios);
+
+    console.log(`- Estadios seleccionados en el motor:`, JSON.stringify(estadiosCargados));
 
     await page.evaluate(() => {
         const cursor = document.getElementById('touch-cursor');
@@ -569,10 +603,10 @@ async function grabarVideoTrio(browser, port) {
         setTimeout(() => { if (cursor) cursor.classList.remove('visible', 'tap'); }, 200);
     });
 
-    // Bucle para jugar las 3 rondas
+    // Bucle para jugar las 3 rondas con ritmo natural y fluido
     for (let rIdx = 0; rIdx < CURRENT_PRESET.estadios.length; rIdx++) {
         const item = CURRENT_PRESET.estadios[rIdx];
-        console.log(`\n--- JUGANDO RONDA ${item.ronda}: ${item.nombreEstadio} ---`);
+        console.log(`\n--- JUGANDO RONDA ${item.ronda}: ${item.nombreEstadio} (${item.club} - ${item.pais}) ---`);
 
         // Si es ronda 2 o 3, inyectamos el estadio y abrimos la ronda limpiamente
         if (rIdx > 0) {
@@ -599,7 +633,7 @@ async function grabarVideoTrio(browser, port) {
                 <div class="tiktok-round-pill ${data.cfg.nivelClass}">${data.cfg.nivelTag}</div>
             `;
         }, { mainHook: CURRENT_PRESET.mainHook, cfg: item });
-        await new Promise(r => setTimeout(r, 2800));
+        await new Promise(r => setTimeout(r, 3000));
 
         // Pista
         await page.evaluate((data) => {
@@ -610,7 +644,7 @@ async function grabarVideoTrio(browser, port) {
                 <div class="tiktok-hint-pill">${data.cfg.hint}</div>
             `;
         }, { mainHook: CURRENT_PRESET.mainHook, cfg: item });
-        await new Promise(r => setTimeout(r, 3400));
+        await new Promise(r => setTimeout(r, 3500));
 
         // Desplegar mapa y clavar pin
         console.log(`- Desplegando mapa para ${item.nombreEstadio}...`);
@@ -648,10 +682,10 @@ async function grabarVideoTrio(browser, port) {
                         btn.className = "btn-3d primary";
                         btn.disabled = false;
                     }
-                }, 1400);
+                }, 1600);
             }
         }, { mainHook: CURRENT_PRESET.mainHook, cfg: item });
-        await new Promise(r => setTimeout(r, 3000));
+        await new Promise(r => setTimeout(r, 3200));
 
         // Confirmar tiro
         console.log(`- Confirmando tiro de la ronda ${item.ronda}...`);
@@ -665,7 +699,7 @@ async function grabarVideoTrio(browser, port) {
                 <div class="tiktok-score-pill ${esUltima ? 'win-gold' : ''}">${cfg.scoreTag}</div>
             `;
         }, item);
-        await new Promise(r => setTimeout(r, 2200));
+        await new Promise(r => setTimeout(r, 2400));
 
         // Si no es la última ronda, replegamos el mapa antes de avanzar
         if (rIdx < CURRENT_PRESET.estadios.length - 1) {
@@ -677,7 +711,7 @@ async function grabarVideoTrio(browser, port) {
         }
     }
 
-    // Outro final (41s - 46s)
+    // Outro final (45.5s - 51.0s)
     console.log(`- Mostrando Outro de Victoria Completa (15.000 pts)...`);
     await page.evaluate((data) => {
         const outro = document.createElement('div');
@@ -702,10 +736,14 @@ async function grabarVideoTrio(browser, port) {
         `;
         document.body.appendChild(outro);
     }, { outroQuestion: CURRENT_PRESET.outroQuestion });
-    await new Promise(r => setTimeout(r, 5000));
+
+    // Completar el tiempo hasta TOTAL_DURACION_SEG
+    const tiempoFaltanteMs = Math.max(0, (TOTAL_DURACION_SEG * 1000) - (Date.now() - startTime));
+    console.log(`- Sincronizando outro final (${(tiempoFaltanteMs / 1000).toFixed(1)}s restantes)...`);
+    await new Promise(r => setTimeout(r, tiempoFaltanteMs));
 
     // Finalizar
-    console.log(`- Finalizando captura del video trío...`);
+    console.log(`- Finalizando captura del video trío (Total frames enviados: ${framesEnviados})...`);
     grabacionActiva = false;
     if (frameTicker) clearInterval(frameTicker);
     try { await client.send('Page.stopScreencast'); } catch(e) {}
