@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.estadiosvirtuales.www.twa",
+    "sha256_cert_fingerprints": ["30:01:91:B8:92:FA:DE:12:33:DC:89:36:6E:91:93:6D:5D:49:98:AE:85:13:E4:DB:5A:20:9B:DB:26:23:8E:07"]
+  }
+}]
