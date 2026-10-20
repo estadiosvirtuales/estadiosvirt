@@ -5,8 +5,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-// 1. GENERADOR DE AUDIO Y EFECTOS DE SONIDO PROCEDURALES (WAV 44.1kHz 16-bit, 45 segundos)
-function generarAudioTrio(duracionTotalSegundos = 45, sampleRate = 44100) {
+// 1. GENERADOR DE AUDIO Y EFECTOS DE SONIDO PROCEDURALES (WAV 44.1kHz 16-bit, 46 segundos)
+function generarAudioTrio(duracionTotalSegundos = 46, sampleRate = 44100) {
     const totalSamples = Math.floor(duracionTotalSegundos * sampleRate);
     const dataSize = totalSamples * 2;
     const buffer = Buffer.alloc(44 + dataSize);
@@ -104,8 +104,8 @@ function generarAudioTrio(duracionTotalSegundos = 45, sampleRate = 44100) {
         addTone(39.5 + idx * 0.08, 4.0, f, 0.35, 1.6);
     });
 
-    // --- OVACIÓN FINAL PARA OUTRO (41s - 45s) ---
-    for (let i = 0; i < 4; i++) {
+    // --- OVACIÓN FINAL PARA OUTRO (41s - 46s) ---
+    for (let i = 0; i < 5; i++) {
         addWhoosh(41.0 + i * 1.0, 1.8, 0.22);
     }
 
@@ -128,6 +128,7 @@ const TRIO_CONFIG = [
         pais: 'Argentina',
         lat: -34.6356,
         lng: -58.3648,
+        videoUrl: 'https://www.youtube.com/watch?v=Glk5ppU0k2U',
         hint: '💡 Pista: 57.200 personas · Famoso por latir 🔥',
         scoreTag: '🎯 ¡LA BOMBONERA! +5.000 PTS'
     },
@@ -140,6 +141,7 @@ const TRIO_CONFIG = [
         pais: 'Brasil',
         lat: -22.912167,
         lng: -43.230164,
+        videoUrl: 'https://youtu.be/ZkLYkDXrJOI',
         hint: '💡 Pista: Récord de público · Río de Janeiro 🇧🇷',
         scoreTag: '🎯 ¡EL MARACANÁ! +5.000 PTS (10.000)'
     },
@@ -152,6 +154,7 @@ const TRIO_CONFIG = [
         pais: 'España',
         lat: 40.4531,
         lng: -3.6883,
+        videoUrl: 'https://youtu.be/PHV4nOAu12g',
         hint: '💡 Pista: Techo retráctil · 84.000 espectadores 👑',
         scoreTag: '🏆 ¡SANTIAGO BERNABÉU! ¡15.000 PTS!'
     }
@@ -197,7 +200,7 @@ async function grabarVideoTrio(browser, port) {
     await page.setViewport({ width: 430, height: 932, deviceScaleFactor: 2 });
 
     const tempWav = path.join(__dirname, 'temp_audio_trio.wav');
-    const audioBuffer = generarAudioTrio(45);
+    const audioBuffer = generarAudioTrio(46);
     fs.writeFileSync(tempWav, audioBuffer);
 
     const destDesktop = path.join(process.env.USERPROFILE, 'Desktop', filename);
@@ -246,7 +249,7 @@ async function grabarVideoTrio(browser, port) {
         }
     }, 1000 / 30);
 
-    // Silenciar envío de puntaje bot a Supabase
+    // Silenciar bots y blindar RPC de Supabase para tiro perfecto 5.000 pts
     await page.evaluateOnNewDocument(() => {
         window.__TIKTOK_RECORDER__ = true;
         window.enviarPuntaje = async () => {};
@@ -255,6 +258,23 @@ async function grabarVideoTrio(browser, port) {
     console.log(`- Cargando portada principal en http://localhost:${port}...`);
     await page.goto(`http://localhost:${port}/index.html`, { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => window.catalogoGlobal && window.catalogoGlobal.length > 0, { timeout: 25000 });
+
+    // Mock seguro de Supabase RPC para cálculo instantáneo 5.000 pts sin latencia de red
+    await page.evaluate(() => {
+        if (window.supabaseClient) {
+            window.supabaseClient.rpc = async (fn, params) => {
+                return {
+                    data: {
+                        distancia: 0.012,
+                        puntos: 5000,
+                        lat_real: params.p_lat || -34.6356,
+                        lng_real: params.p_lng || -58.3648
+                    },
+                    error: null
+                };
+            };
+        }
+    });
 
     // Inyectar cursor táctil, stickers y estilos de alta retención
     await page.evaluate(() => {
@@ -406,7 +426,7 @@ async function grabarVideoTrio(browser, port) {
     });
 
     // Iniciar captura
-    console.log(`- ¡Comenzando grabación de 45s a 30 FPS constantes!`);
+    console.log(`- ¡Comenzando grabación de 46s a 30 FPS constantes!`);
     await client.send('Page.startScreencast', {
         format: 'jpeg',
         quality: 90,
@@ -461,8 +481,8 @@ async function grabarVideoTrio(browser, port) {
         const est2 = window.catalogoGlobal.find(e => (e['Estadio'] || '').includes('Maracan'));
         const est3 = window.catalogoGlobal.find(e => (e['Estadio'] || '').includes('Bernab'));
         window.__TRIO_ESTADIOS__ = [est1, est2, est3];
-        // Forzamos el orden de la ronda 1
-        window.catalogoGlobal = [est1, est2, est3];
+        // En la primera ronda ponemos La Bombonera
+        window.catalogoGlobal = [est1];
     });
 
     await page.evaluate(() => {
@@ -477,10 +497,22 @@ async function grabarVideoTrio(browser, port) {
         const item = TRIO_CONFIG[rIdx];
         console.log(`\n--- JUGANDO RONDA ${item.ronda}: ${item.nombreEstadio} ---`);
 
+        // Si es ronda 2 o 3, inyectamos el estadio y abrimos la ronda limpiamente
+        if (rIdx > 0) {
+            await page.evaluate((data) => {
+                const siguienteEstadio = window.__TRIO_ESTADIOS__[data.rIdx];
+                window.catalogoGlobal = [siguienteEstadio];
+                window.guessrEstadiosJugados = []; // Evita que se considere ya jugado
+                if (typeof window.lanzarRondaGuessr === 'function') {
+                    window.guessrRondaActual = data.ronda;
+                    window.lanzarRondaGuessr();
+                }
+            }, { rIdx, ronda: item.ronda });
+        }
+
         // Esperar video y mapa
         await page.waitForFunction(() => window.guessrMapInstance != null, { timeout: 15000 });
-        await page.waitForSelector('#modal-video-container iframe', { timeout: 15000 });
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 1200));
 
         // Stickers de vuelo
         await page.evaluate((cfg) => {
@@ -490,7 +522,7 @@ async function grabarVideoTrio(browser, port) {
                 <div class="tiktok-round-pill ${cfg.nivelClass}">${cfg.nivelTag}</div>
             `;
         }, item);
-        await new Promise(r => setTimeout(r, 3000));
+        await new Promise(r => setTimeout(r, 2800));
 
         // Pista
         await page.evaluate((cfg) => {
@@ -501,7 +533,7 @@ async function grabarVideoTrio(browser, port) {
                 <div class="tiktok-hint-pill">${cfg.hint}</div>
             `;
         }, item);
-        await new Promise(r => setTimeout(r, 3500));
+        await new Promise(r => setTimeout(r, 3400));
 
         // Desplegar mapa y clavar pin
         console.log(`- Desplegando mapa para ${item.nombreEstadio}...`);
@@ -539,10 +571,10 @@ async function grabarVideoTrio(browser, port) {
                         btn.className = "btn-3d primary";
                         btn.disabled = false;
                     }
-                }, 1600);
+                }, 1400);
             }
         }, item);
-        await new Promise(r => setTimeout(r, 3200));
+        await new Promise(r => setTimeout(r, 3000));
 
         // Confirmar tiro
         console.log(`- Confirmando tiro de la ronda ${item.ronda}...`);
@@ -558,26 +590,17 @@ async function grabarVideoTrio(browser, port) {
         }, item);
         await new Promise(r => setTimeout(r, 2200));
 
-        // Si no es la última ronda, avanzar a la siguiente
+        // Si no es la última ronda, replegamos el mapa antes de avanzar
         if (rIdx < TRIO_CONFIG.length - 1) {
-            console.log(`- Avanzando a la siguiente ronda...`);
-            await page.evaluate((siguienteIdx) => {
+            await page.evaluate(() => {
                 const mapBox = document.getElementById('guessr-floating-map-box');
                 if (mapBox) mapBox.classList.remove('mapa-visible-tiktok');
-
-                // Asegurar que la siguiente ronda cargue el estadio del trío
-                if (window.__TRIO_ESTADIOS__ && window.__TRIO_ESTADIOS__[siguienteIdx]) {
-                    window.catalogoGlobal = [window.__TRIO_ESTADIOS__[siguienteIdx]];
-                }
-                if (typeof window.avanzarDeRondaGuessr === 'function') {
-                    window.avanzarDeRondaGuessr();
-                }
-            }, rIdx + 1);
-            await new Promise(r => setTimeout(r, 1200));
+            });
+            await new Promise(r => setTimeout(r, 800));
         }
     }
 
-    // Outro final (40s - 45s)
+    // Outro final (41s - 46s)
     console.log(`- Mostrando Outro de Victoria Completa (15.000 pts)...`);
     await page.evaluate(() => {
         const outro = document.createElement('div');
@@ -602,7 +625,7 @@ async function grabarVideoTrio(browser, port) {
         `;
         document.body.appendChild(outro);
     });
-    await new Promise(r => setTimeout(r, 4500));
+    await new Promise(r => setTimeout(r, 5000));
 
     // Finalizar
     console.log(`- Finalizando captura del video trío...`);
