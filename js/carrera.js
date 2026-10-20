@@ -4994,6 +4994,9 @@ window.mostrarCofreTemporada = function(liga) {
     let dtId = unaF['DT'] || null;
     if (!dtId) {
         dtId = '45.webp'; // Respaldo técnico si aún no contrató DT (Scaloni)
+        unaF['DT'] = dtId;
+        if (typeof userStats !== 'undefined') userStats.onceInicial = unaF;
+        try { localStorage.setItem('ev_once_inicial_' + getUserId(), JSON.stringify(unaF)); } catch(e) {}
     }
 
     // 🛡️ REGLA: El Capitán nunca puede ser el DT
@@ -5010,7 +5013,7 @@ window.mostrarCofreTemporada = function(liga) {
     }
 
     const capNombre = obtenerNombreAvatar(capId);
-    const dtNombre = unaF['DT'] ? obtenerNombreAvatar(dtId) : 'Director Técnico';
+    const dtNombre = (typeof obtenerNombreAvatar === 'function' ? obtenerNombreAvatar(dtId) : '') || 'El Estratega';
 
     const protagContainer = document.getElementById('cofre-protagonistas-row');
     if (protagContainer) {
