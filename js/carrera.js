@@ -4327,8 +4327,8 @@ function renderizarHubLigaTemporada(liga) {
                         <button type="button" class="lt-btn-play-match" onclick="jugarPartidoFechaLiga()">
                             <i class="ph-bold ph-play"></i> JUGAR FECHA
                         </button>
-                        <button type="button" class="lt-btn-sim-all" onclick="simularTemporadaCompleta()" title="Simular las fechas restantes automáticamente">
-                            <i class="ph-bold ph-lightning"></i> Simular Todo
+                        <button type="button" class="lt-btn-sim-all ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'disabled' : ''}" onclick="simularTemporadaCompleta()" title="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'Ya usaste tu simulación rápida diaria de hoy (1 liga por día)' : 'Simular las fechas restantes automáticamente (1 vez al día · Máx 10 SP)'}" style="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'opacity:0.5; filter:grayscale(0.6);' : ''}">
+                            <i class="ph-bold ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'ph-lock-key' : 'ph-lightning'}"></i> Simular Todo ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? '(Usado hoy)' : '(1/día)'}
                         </button>
                     </div>
                 </div>
@@ -4368,7 +4368,7 @@ function renderizarHubLigaTemporada(liga) {
                     <h3><i class="ph-fill ph-crown"></i> ¡CAMPEÓN DE ${liga.nombre.toUpperCase()}!</h3>
                     <p style="font-size:0.85rem; color:#fef08a; margin:0;">¡Tu Once Inicial dominó la temporada y levantó el trofeo!</p>
                     <div class="lt-champ-sp-reward">
-                        <i class="ph-bold ph-trophy"></i> Botín de Campeón Reclamado (+15 SP)
+                        <i class="ph-bold ph-trophy"></i> Botín de Campeón Reclamado (+${liga.fueSimuladaRapida ? 10 : 15} SP)
                     </div>
                 </div>
             `;
@@ -4649,6 +4649,21 @@ window.simularTemporadaCompleta = function() {
         return;
     }
 
+    const hoyStr = new Date().toISOString().slice(0, 10);
+    const ultimaSimulacion = localStorage.getItem('ev_simular_todo_diario_' + id);
+    if (ultimaSimulacion === hoyStr) {
+        showToast("Ya utilizaste tu simulación rápida diaria de hoy (1 sola liga por día). ¡Disputá los partidos fecha a fecha para ganar el botín completo de 15 SP! ⚽", "ph-lock-key", "warning");
+        return;
+    }
+
+    if (!confirm("⚡ ¿Querés usar tu simulación rápida diaria para completar esta liga automáticamente?\n\n• Límite: 1 sola liga por día en total.\n• Recompensa de campeón reducida: 10 SP (en vez de 15 SP).")) {
+        return;
+    }
+
+    // Registramos que utilizó la simulación rápida diaria en el día
+    localStorage.setItem('ev_simular_todo_diario_' + id, hoyStr);
+    liga.fueSimuladaRapida = true;
+
     const ovrUser = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 75;
     const filaUser = liga.tabla.find(t => t.esUsuario);
     filaUser.ovr = ovrUser;
@@ -4772,13 +4787,13 @@ window.abandonarLigaTemporada = function() {
 // ========================================================
 // (cofreTemporadaPendiente declarado arriba)
 
-function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20) {
+function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimuladaRapida = false) {
     const esInvicto = filaUser && filaUser.pp === 0;
     const esCampeon = posicion === 1;
     const esDescenso = posicion >= (totalEquipos - 1);
 
     let sp = 1;
-    let xp = 400;
+    let xp = fueSimuladaRapida ? 250 : 400;
     let badge = '🛡️ PERMANENCIA ASEGURADA';
     let titulo = `#${posicion}º PUESTO`;
     let icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Pelota">';
@@ -4786,8 +4801,8 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20) {
     let btnIcon = 'ph-gift';
 
     if (esCampeon) {
-        sp = 15;
-        xp = 4000;
+        sp = fueSimuladaRapida ? 10 : 15;
+        xp = fueSimuladaRapida ? 2500 : 4000;
         badge = esInvicto 
             ? '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN INVICTO' 
             : '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN DE LA LIGA';
@@ -4796,24 +4811,24 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20) {
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-trophy';
     } else if (posicion === 2) {
-        sp = 10;
-        xp = 2500;
+        sp = fueSimuladaRapida ? 6 : 10;
+        xp = fueSimuladaRapida ? 1500 : 2500;
         badge = '🥈 SUBCAMPEÓN';
         titulo = '#2 CLASIFICADO CONTINENTAL';
         icono = '<img src="medalla-plata.webp" class="cofre-medalla-img" alt="Subcampeón">';
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-medal';
     } else if (posicion === 3) {
-        sp = 7;
-        xp = 1800;
+        sp = fueSimuladaRapida ? 4 : 7;
+        xp = fueSimuladaRapida ? 1000 : 1800;
         badge = '🥉 PODIO DE LIGA';
         titulo = '#3 CLASIFICADO CONTINENTAL';
         icono = '<img src="medalla-bronce.webp" class="cofre-medalla-img" alt="Tercer Puesto">';
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-medal';
     } else if (posicion === 4) {
-        sp = 5;
-        xp = 1200;
+        sp = fueSimuladaRapida ? 3 : 5;
+        xp = fueSimuladaRapida ? 700 : 1200;
         badge = '🌟 ZONA DE COPAS';
         titulo = '#4 CLASIFICADO A COPA';
         icono = '<img src="estrella.webp" class="cofre-estrella-img" alt="Zona de Copas">';
@@ -4821,26 +4836,26 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20) {
         btnIcon = 'ph-star';
     } else if (esDescenso) {
         sp = 1;
-        xp = 350;
+        xp = fueSimuladaRapida ? 200 : 350;
         badge = '🔻 ZONA DE DESCENSO';
         titulo = `#${posicion}º PUESTO`;
         icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Zona de Descenso">';
         btnText = 'RECOGER RECOMPENSA';
     } else if (posicion <= 10) {
-        sp = 3;
-        xp = 800;
+        sp = fueSimuladaRapida ? 2 : 3;
+        xp = fueSimuladaRapida ? 500 : 800;
         badge = '⚽ MITAD DE TABLA';
         titulo = `#${posicion}º PUESTO`;
         icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Mitad de Tabla">';
     } else {
-        sp = 2;
-        xp = 500;
+        sp = 1;
+        xp = fueSimuladaRapida ? 300 : 500;
         badge = '🛡️ PERMANENCIA ASEGURADA';
         titulo = `#${posicion}º PUESTO`;
         icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Permanencia">';
     }
 
-    return { sp, xp, badge, titulo, icono, btnText, btnIcon, esCampeon, esInvicto, esDescenso };
+    return { sp, xp, badge, titulo, icono, btnText, btnIcon, esCampeon, esInvicto, esDescenso, fueSimuladaRapida };
 }
 
 window.mostrarCofreTemporada = function(liga) {
@@ -4850,13 +4865,15 @@ window.mostrarCofreTemporada = function(liga) {
     const filaUser = liga.tabla.find(t => t.esUsuario);
     const pos = liga.tabla.findIndex(t => t.esUsuario) + 1;
     const totalEquipos = (liga.tabla && liga.tabla.length) ? liga.tabla.length : 20;
-    const botin = calcularBotinTemporada(pos, filaUser, totalEquipos);
+    const esSimulada = !!liga.fueSimuladaRapida;
+    const botin = calcularBotinTemporada(pos, filaUser, totalEquipos, esSimulada);
 
     cofreTemporadaPendiente = {
         ligaKey: liga.key,
         ligaNombre: liga.nombre,
         posicion: pos,
         esCampeon: pos === 1,
+        fueSimuladaRapida: esSimulada,
         sp: botin.sp,
         xp: botin.xp
     };
@@ -4877,6 +4894,9 @@ window.mostrarCofreTemporada = function(liga) {
     const badgeEl = document.getElementById('cofre-revelado-badge');
     if (badgeEl) {
         badgeEl.innerHTML = botin.badge;
+        if (botin.fueSimuladaRapida) {
+            badgeEl.innerHTML += '<div style="font-size:0.68rem; color:#fde047; font-weight:800; margin-top:4px;"><i class="ph-bold ph-lightning"></i> SIMULACIÓN RÁPIDA (MÁX 10 SP)</div>';
+        }
         if (botin.esDescenso) {
             badgeEl.classList.add('descenso');
         } else {
