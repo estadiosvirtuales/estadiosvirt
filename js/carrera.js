@@ -128,10 +128,7 @@ window.iniciarDesafioOnceRivalDirecto = function() {
     const rival = window.datosUltimoRivalInspeccionado;
     if (!rival) return;
 
-    if ((rival.nivelActual || 0) < 6) {
-        showToast(`${rival.custom_nick} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 6) 🔒`, "ph-lock-key", "warning");
-        return;
-    }
+    // Todos los usuarios disponen de su 11 titular completo desde Nivel 0
 
     // 1. Validar que el usuario tenga su equipo completo
     const onceUser = typeof obtenerOnceInicial === 'function' ? obtenerOnceInicial() : {};
@@ -2331,6 +2328,15 @@ window.abrirModalOnceInicial = function() {
     formacionOnceActual = getPref('ev_once_formacion', '4-3-3');
     slotActivoOnce = null;
     modal.style.display = 'flex';
+
+    // 🌟 Si el usuario nuevo tiene la cancha vacía, poblar automáticamente con sus futbolistas iniciales
+    const once = obtenerOnceInicial();
+    if (!once || Object.keys(once).length === 0) {
+        if (typeof autocompletarOnceInicial === 'function') {
+            autocompletarOnceInicial();
+            return;
+        }
+    }
     renderizarOnceInicial();
 };
 
@@ -3577,8 +3583,7 @@ window.abrirModalRankingCarrera = async function() {
 
             const exp = p.experiencia || dj.xpTotal || 0;
             const nivelDt = calcularNivelIdx(exp);
-            // 🛡️ Filtro de nivel mínimo: solo DTs con plantel completo (Nivel 6+)
-            if (nivelDt < 6) return;
+            // 🛡️ Todos los DTs cuentan con plantel desde Nivel 0
 
             const copas = dj.copasGanadas || [];
             let ligas = 0, nac = 0, cont = 0, clubes = 0, mundial = 0;
@@ -3672,7 +3677,7 @@ window.abrirModalRankingCarrera = async function() {
             miOvrLive = Math.min(99, miOvrLive);
         }
 
-        if (!yaEstaEnLista && miNombreReal && miNivelActual >= 6) {
+        if (!yaEstaEnLista && miNombreReal) {
             rankingCampeones.push({
                 nombre: miNombreReal,
                 avatar: getPref('ev_avatar_hair', '1.webp'),
@@ -3880,10 +3885,7 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
         console.warn("Aviso al preparar duelo:", e);
     }
 
-    if (datosRival.nivelActual < 6) {
-        showToast(`${nombreRival} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 6) 🔒`, "ph-lock-key", "warning");
-        return;
-    }
+    // Todos los rivales tienen titulares disponibles desde Nivel 0
 
     window.datosUltimoRivalInspeccionado = datosRival;
     iniciarDesafioOnceRivalDirecto();
@@ -4328,7 +4330,7 @@ function renderizarHubLigaTemporada(liga) {
                             <i class="ph-bold ph-play"></i> JUGAR FECHA
                         </button>
                         <button type="button" class="lt-btn-sim-all ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'disabled' : ''}" onclick="simularTemporadaCompleta()" title="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'Ya usaste tu simulación rápida diaria de hoy (1 liga por día)' : 'Simular las fechas restantes automáticamente (1 vez al día · Máx 5 SP)'}" style="${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'opacity:0.5; filter:grayscale(0.6);' : ''}">
-                            <i class="ph-bold ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'ph-lock-key' : 'ph-lightning'}"></i> Simular Todo ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? '(Usado hoy)' : '(1/día)'}
+                            <i class="ph-bold ${(localStorage.getItem('ev_simular_todo_diario_' + getUserId()) === new Date().toISOString().slice(0, 10)) ? 'ph-lock-key' : 'ph-lightning'}"></i> Simular Todo
                         </button>
                     </div>
                 </div>

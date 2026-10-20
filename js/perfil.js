@@ -189,19 +189,11 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
     let botonInvitarLigaHTML = '';
 
     if (n.toLowerCase() !== miNombre) {
-        if (datosRival.nivelActual >= 6) {
-            botonDesafiarOnceHTML = `
-                <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
-                    <i class="ph-bold ph-sword"></i> Desafiar a su Once
-                </button>
-            `;
-        } else {
-            botonDesafiarOnceHTML = `
-                <div style="margin-top: 10px; font-size: 0.74rem; font-weight: 800; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px dashed var(--border-strong); text-align: center; width: 100%; max-width: 340px; box-sizing: border-box;">
-                    <i class="ph-bold ph-lock-key" style="color: #fbbf24; vertical-align: middle;"></i> Once en formación (Nivel ${datosRival.nivelActual}/6)
-                </div>
-            `;
-        }
+        botonDesafiarOnceHTML = `
+            <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
+                <i class="ph-bold ph-sword"></i> Desafiar a su Once
+            </button>
+        `;
     }
 
     if (miLigaActual && n.toLowerCase() !== miNombre) {
@@ -362,46 +354,47 @@ window.toggleCustomization=function(){
     }
 };
 const AVATARES_LISTA = [
-    // 🌟 INICIALES DISPONIBLES (NIVEL 0)
-    { id: '7.webp', label: 'El Canario', nivel: 0 },
-    { id: '9.webp', label: 'El Mosquito', nivel: 0 },
-    { id: '12.webp', label: 'El Halcón', nivel: 0 },
-    { id: '13.webp', label: 'El Timón', nivel: 0 },
-    { id: '55.webp', label: 'Yerry', nivel: 0 },
-    { id: '61.webp', label: 'El Pitbull', nivel: 0 },
+    // 🌟 PLANTEL INICIAL COMPLETO (NIVEL 0 - 11 TITULARES + DT SCALONI)
+    { id: '20.webp', label: 'El Toro', nivel: 0 },          // Lautaro Martínez (DC)
+    { id: '7.webp', label: 'El Canario', nivel: 0 },         // Vinicius Jr (EI)
+    { id: '9.webp', label: 'El Mosquito', nivel: 0 },        // Dembélé (ED)
+    { id: '12.webp', label: 'El Halcón', nivel: 0 },         // Fede Valverde (MC)
+    { id: '13.webp', label: 'El Timón', nivel: 0 },          // Casemiro (MCD)
+    { id: '18.webp', label: 'El Motorcito', nivel: 0 },      // Rodrigo De Paul (MC)
+    { id: '61.webp', label: 'El Pitbull', nivel: 0 },        // Gary Medel (LI)
+    { id: '16.webp', label: 'El Mariscal', nivel: 0 },       // Cuti Romero (DFC)
+    { id: '21.webp', label: 'El Muro', nivel: 0 },           // Nicolás Otamendi (DFC)
+    { id: '55.webp', label: 'Yerry', nivel: 0 },             // Yerry Mina (LD)
+    { id: '24.webp', label: 'El Guardián', nivel: 0 },       // Dibu Martínez (POR)
+    { id: '45.webp', label: 'El Estratega', nivel: 0 },      // Lionel Scaloni (DT)
 
-    // ⚡ NIVELES 1 A 10 (SCALONETA & FIGURAS)
-    { id: '16.webp', label: 'El Mariscal', nivel: 1 },
-    { id: '17.webp', label: 'El Heredero', nivel: 2 },
-    { id: '18.webp', label: 'El Motorcito', nivel: 3 },
-    { id: '19.webp', label: 'La Araña', nivel: 4 },
-    { id: '20.webp', label: 'El Toro', nivel: 5 },
-    { id: '21.webp', label: 'El Muro', nivel: 6 },
-    { id: '22.webp', label: 'El Carnicero', nivel: 7 },
-    { id: '23.webp', label: 'Alexis', nivel: 8 },
-    { id: '24.webp', label: 'El Guardián', nivel: 9 },
-    { id: '51.webp', label: 'El Guajiro', nivel: 10 },
+    // ⚡ NIVELES 1 A 10 (FIGURAS Y CRACKS DESBLOQUEABLES)
+    { id: '17.webp', label: 'El Heredero', nivel: 1 },       // Enzo Fernández
+    { id: '19.webp', label: 'La Araña', nivel: 2 },          // Julián Álvarez
+    { id: '22.webp', label: 'El Carnicero', nivel: 3 },      // Lisandro Martínez
+    { id: '23.webp', label: 'Alexis', nivel: 4 },            // Alexis Mac Allister
+    { id: '51.webp', label: 'El Guajiro', nivel: 5 },        // Luis Díaz
+    { id: 'Alejandro Garnacho.webp', label: 'El Bichito', nivel: 6 },
+    { id: 'Cole Palmer.webp', label: 'Cold Palmer', nivel: 7 },
+    { id: 'Lamine Yamal.webp', label: 'La Joya', nivel: 8 },
+    { id: 'Florian Wirtz.webp', label: 'El Prodigio', nivel: 9 },
+    { id: 'Phil Foden.webp', label: 'The Sniper', nivel: 10 },
 
     // 🔥 NIVELES 11 A 20 (ELITE INTERNACIONAL)
     { id: '8.webp', label: 'La Muralla', nivel: 11 },
     { id: '10.webp', label: 'Hurricane', nivel: 12 },
-    { id: 'Alejandro Garnacho.webp', label: 'El Bichito', nivel: 12 },
     { id: '11.webp', label: 'Golden Boy', nivel: 13 },
-    { id: 'Lamine Yamal.webp', label: 'La Joya', nivel: 13 },
     { id: '14.webp', label: 'Gigio', nivel: 14 },
     { id: 'Bukayo Saka.webp', label: 'Starboy', nivel: 14 },
     { id: 'Guilermo memo Ochoa.webp', label: 'Memo', nivel: 14 },
     { id: '15.webp', label: 'El Fideo', nivel: 15 },
-    { id: 'Cole Palmer.webp', label: 'Cold Palmer', nivel: 15 },
     { id: 'Eduardo Camavinga.webp', label: 'El Todoterreno', nivel: 15 },
     { id: '26.webp', label: 'El Kun', nivel: 16 },
-    { id: 'Florian Wirtz.webp', label: 'El Prodigio', nivel: 16 },
     { id: 'William Saliba.webp', label: 'La Muralla Francesa', nivel: 16 },
     { id: '36.webp', label: 'El Matador', nivel: 17 },
     { id: 'Jamal Musiala.webp', label: 'Bambi', nivel: 17 },
     { id: 'Raphinha.webp', label: 'El Rayo Carioca', nivel: 17 },
     { id: '52.webp', label: 'El 10 Cafetero', nivel: 18 },
-    { id: 'Phil Foden.webp', label: 'The Sniper', nivel: 18 },
     { id: 'Son Heung-min.webp', label: 'Sonny', nivel: 18 },
     { id: 'Declan Rice.webp', label: 'El General', nivel: 18 },
     { id: '53.webp', label: 'El Tigre', nivel: 19 },
@@ -419,7 +412,6 @@ const AVATARES_LISTA = [
     { id: '60.webp', label: 'Capitán América', nivel: 26 },
     { id: '54.webp', label: 'El Candado', nivel: 27 },
     { id: 'Marco Reus.webp', label: 'Woodyinho', nivel: 27 },
-    { id: '45.webp', label: 'El Estratega', nivel: 28 },
     { id: '48.webp', label: 'El Muñeco', nivel: 29 },
     { id: '46.webp', label: 'El Filósofo', nivel: 30 },
 
