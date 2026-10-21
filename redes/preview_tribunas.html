@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Previa: Nuevas Tribunas de Modo Carrera</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="css/carrera.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 24px 16px 50px;
+            background: #080c16;
+            color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 24px;
+            max-width: 760px;
+        }
+
+        .preview-header h1 {
+            margin: 0 0 8px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #00ff77 0%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .preview-header p {
+            margin: 0;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* BARRA DE CONTROLES INTERACTIVA */
+        .controls-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 14px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+        }
+
+        .ctrl-btn {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e2e8f0;
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ctrl-btn:hover {
+            background: #334155;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .ctrl-btn.active {
+            background: #00ff77;
+            color: #041008;
+            border-color: #00ff77;
+            box-shadow: 0 0 14px rgba(0, 255, 119, 0.45);
+        }
+
+        /* CONTENEDOR PRINCIPAL DEL ESTADIO */
+        .stadium-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 760px;
+            transition: all 0.3s ease;
+        }
+
+        .stadium-stage.mobile-view {
+            max-width: 340px;
+        }
+
+        .stadium-stage.mobile-view .sim-stadium-arena {
+            width: 100% !important;
+            max-width: 324px !important;
+            height: 208px !important;
+            border-radius: 18px !important;
+        }
+        .stadium-stage.mobile-view .sim-pitch-2d-horizontal {
+            width: 284px !important;
+            height: 168px !important;
+        }
+        .stadium-stage.mobile-view .sim-stands.top,
+        .stadium-stage.mobile-view .sim-stands.bottom {
+            left: 20px !important;
+            right: 20px !important;
+            height: 20px !important;
+        }
+        .stadium-stage.mobile-view .sim-stands.left,
+        .stadium-stage.mobile-view .sim-stands.right {
+            top: 20px !important;
+            bottom: 20px !important;
+            width: 20px !important;
+        }
+        .stadium-stage.mobile-view .sim-corner-stand {
+            width: 20px !important;
+            height: 20px !important;
+        }
+        .stadium-stage.mobile-view .sim-floodlight {
+            width: 8px !important;
+            height: 8px !important;
+        }
+        .stadium-stage.mobile-view .sim-floodlight::before {
+            display: none !important;
+        }
+        .stadium-stage.mobile-view .sim-floodlight::after {
+            width: 72px !important;
+            height: 72px !important;
+            opacity: 0.24 !important;
+        }
+        .stadium-stage.mobile-view .sim-pitch-team-badge {
+            font-size: 0.48rem !important;
+            padding: 1px 6px !important;
+            top: 3.5px !important;
+        }
+        .stadium-stage.mobile-view .sim-pitch-team-badge.left { left: 20px !important; }
+        .stadium-stage.mobile-view .sim-pitch-team-badge.right { right: 20px !important; }
+        .stadium-stage.mobile-view .sim-stands.top::after,
+        .stadium-stage.mobile-view .sim-stands.bottom::after {
+            height: 2px !important;
+        }
+        .stadium-stage.mobile-view .sim-stands.bottom::before {
+            width: 62px !important;
+            height: 8px !important;
+            left: calc(50% - 31px) !important;
+        }
+        .stadium-stage.mobile-view .sim-stands.left::after,
+        .stadium-stage.mobile-view .sim-stands.right::after {
+            width: 2px !important;
+        }
+
+        /* TARJETA DE DETALLES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            width: 100%;
+            max-width: 760px;
+            margin-top: 35px;
+        }
+
+        .feature-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 4px;
+            font-size: 0.82rem;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 0.74rem;
+            color: #94a3b8;
+            line-height: 1.35;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-header">
+        <h1>🏟️ Nuevas Tribunas de Modo Carrera</h1>
+        <p>Probá cómo luce la nueva arquitectura 3D con butacas, escaleras de seguridad amarillas, vallas publicitarias LED dinámicas, bancos de suplentes y torres de iluminación.</p>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="controls-toolbar">
+        <span style="font-size:0.75rem; color:#64748b; font-weight:800; text-transform:uppercase; margin-right:4px;">Torneo:</span>
+        <button class="ctrl-btn active" onclick="setTier('nacional', this)">🥉 Nacional</button>
+        <button class="ctrl-btn" onclick="setTier('continental', this)">🥈 Continental</button>
+        <button class="ctrl-btn" onclick="setTier('mundial_clubes', this)">🥇 Mundial Clubes</button>
+        <button class="ctrl-btn" onclick="setTier('mundial', this)">👑 Copa Mundial</button>
+        <span style="width:1px; height:18px; background:rgba(255,255,255,0.15); margin:0 4px;"></span>
+        <button class="ctrl-btn" id="btn-toggle-mobile" onclick="toggleMobileView()">📱 Vista Celular</button>
+    </div>
+
+    <!-- ARENA DEL ESTADIO -->
+    <div class="stadium-stage" id="stadium-stage">
+        <div class="sim-stadium-arena horizontal tier-nacional" id="sim-arena">
+            <!-- FOCOS VOLUMÉTRICOS EXTERIORES CON ESTRUCTURA METÁLICA -->
+            <div class="sim-floodlight top-left"></div>
+            <div class="sim-floodlight top-right"></div>
+            <div class="sim-floodlight bottom-left"></div>
+            <div class="sim-floodlight bottom-right"></div>
+
+            <!-- TRIBUNAS: LATERALES, CABECERAS Y CODOS CURVOS -->
+            <div class="sim-stands top"></div>
+            <div class="sim-stands bottom"></div>
+            <div class="sim-stands left"></div>
+            <div class="sim-stands right"></div>
+            <div class="sim-corner-stand top-left"></div>
+            <div class="sim-corner-stand top-right"></div>
+            <div class="sim-corner-stand bottom-left"></div>
+            <div class="sim-corner-stand bottom-right"></div>
+
+            <!-- NOMBRES DE EQUIPOS -->
+            <span class="sim-pitch-team-badge left" id="sim-pitch-badge-user">Boca Juniors</span>
+            <span class="sim-pitch-team-badge right" id="sim-pitch-badge-rival">River Plate</span>
+
+            <!-- CAMPO DE JUEGO -->
+            <div class="sim-pitch-2d-horizontal" id="sim-pitch-2d">
+                <svg class="sim-pitch-tactical-canvas" id="sim-pitch-canvas" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+
+                <div class="sim-pitch-goal left">
+                    <div class="sim-goal-post top"></div>
+                    <div class="sim-goal-netting"></div>
+                    <div class="sim-goal-post bottom"></div>
+                </div>
+                <div class="sim-pitch-goal right">
+                    <div class="sim-goal-post top"></div>
+                    <div class="sim-goal-netting"></div>
+                    <div class="sim-goal-post bottom"></div>
+                </div>
+
+                <div class="sim-pitch-lines">
+                    <div class="sim-pitch-corner-arc top-left"></div>
+                    <div class="sim-pitch-corner-arc top-right"></div>
+                    <div class="sim-pitch-corner-arc bottom-left"></div>
+                    <div class="sim-pitch-corner-arc bottom-right"></div>
+                    <div class="sim-pitch-line-center-vert"></div>
+                    <div class="sim-pitch-circle-center"></div>
+                    <div class="sim-pitch-box-left"></div>
+                    <div class="sim-pitch-box-right"></div>
+                </div>
+
+                <!-- JUGADORES 11 VS 11 -->
+                <div class="sim-pitch-players">
+                    <div class="sim-dot user por" style="top:50%; left:6%;"></div>
+                    <div class="sim-dot user def" style="top:18%; left:18%;"></div>
+                    <div class="sim-dot user def" style="top:38%; left:17%;"></div>
+                    <div class="sim-dot user def" style="top:62%; left:17%;"></div>
+                    <div class="sim-dot user def" style="top:82%; left:18%;"></div>
+                    <div class="sim-dot user med" style="top:26%; left:32%;"></div>
+                    <div class="sim-dot user med" style="top:50%; left:30%;"></div>
+                    <div class="sim-dot user med" style="top:74%; left:32%;"></div>
+                    <div class="sim-dot user del" style="top:22%; left:44%;"></div>
+                    <div class="sim-dot user del" style="top:50%; left:43%;"></div>
+                    <div class="sim-dot user del" style="top:78%; left:44%;"></div>
+
+                    <div class="sim-dot rival del" style="top:22%; left:56%;"></div>
+                    <div class="sim-dot rival del" style="top:50%; left:57%;"></div>
+                    <div class="sim-dot rival del" style="top:78%; left:56%;"></div>
+                    <div class="sim-dot rival med" style="top:26%; left:68%;"></div>
+                    <div class="sim-dot rival med" style="top:50%; left:70%;"></div>
+                    <div class="sim-dot rival med" style="top:74%; left:68%;"></div>
+                    <div class="sim-dot rival def" style="top:18%; left:82%;"></div>
+                    <div class="sim-dot rival def" style="top:38%; left:83%;"></div>
+                    <div class="sim-dot rival def" style="top:62%; left:83%;"></div>
+                    <div class="sim-dot rival def" style="top:82%; left:82%;"></div>
+                    <div class="sim-dot rival por" style="top:50%; left:94%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARACTERÍSTICAS TÉCNICAS APLICADAS -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <h3>🏟️ Gradas 3D & Butacas</h3>
+            <p>Relieve escalonado con luces y sombras realistas simulando filas de asientos y cuenco del estadio.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🟨 Escaleras de Evacuación</h3>
+            <p>Vomitorios y pasillos amarillos reglamentarios cada 78px que le dan autenticidad futbolera inmediata.</p>
+        </div>
+        <div class="feature-card">
+            <h3>✨ Vallas LED Dinámicas</h3>
+            <p>Cinta perimetral luminosa con animación continua de brillo publicitario bordeando las líneas de cal.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🪑 Bancos de Suplentes</h3>
+            <p>Área técnica con techito acrílico y butacas en el centro de la platea baja para DT local y visitante.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🔦 Torres de Iluminación</h3>
+            <p>Focos anclados a bases metálicas industriales con halos volumétricos sobre césped y gradas.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🏆 Adaptable a Torneos</h3>
+            <p>Los colores y vallas LED evolucionan según si jugás Copa Nacional, Continental o del Mundo.</p>
+        </div>
+    </div>
+
+    <script>
+        function setTier(tierName, btn) {
+            document.querySelectorAll('.controls-toolbar .ctrl-btn').forEach(b => {
+                if (b.id !== 'btn-toggle-mobile') b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            const arena = document.getElementById('sim-arena');
+            arena.className = `sim-stadium-arena horizontal tier-${tierName}`;
+        }
+
+        let isMobile = false;
+        function toggleMobileView() {
+            isMobile = !isMobile;
+            const stage = document.getElementById('stadium-stage');
+            const btn = document.getElementById('btn-toggle-mobile');
+            if (isMobile) {
+                stage.classList.add('mobile-view');
+                btn.classList.add('active');
+                btn.textContent = '🖥️ Vista Escritorio';
+            } else {
+                stage.classList.remove('mobile-view');
+                btn.classList.remove('active');
+                btn.textContent = '📱 Vista Celular';
+            }
+        }
+    </script>
+</body>
+</html>

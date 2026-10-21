@@ -173,7 +173,7 @@ const MIME_TYPES = {
 const server = http.createServer((req, res) => {
     let safePath = path.normalize(decodeURI(req.url.split('?')[0])).replace(/^(\.\.[\/\\])+/, '');
     if (safePath === '/' || safePath === '\\') safePath = '/index.html';
-    const filePath = path.join(__dirname, safePath);
+    const filePath = fs.existsSync(path.join(__dirname, safePath)) ? path.join(__dirname, safePath) : path.join(__dirname, "..", safePath);
 
     fs.readFile(filePath, (err, data) => {
         if (err) {

@@ -20,7 +20,7 @@ Este documento define la arquitectura general, las reglas técnicas del proyecto
 - `js/carrera.js`: Modo Carrera, química de planteles, sinergias de DT y desafíos.
 - `js/perfil.js`: Cartas FUT, sobres, avatares y progresión de nivel XP.
 - `js/audio.js`: Sintetizador Web Audio API para efectos de sonido nativos (whoosh, click, victoria, acierto).
-- `grabar_pack_tiktok.js`: Generador automatizado de videos verticales 9:16 Full HD (Puppeteer + FFmpeg + Web Audio).
+- `redes/`: Herramientas de difusión para redes sociales (TikTok, Instagram, X/Twitter), generadores de videos verticales 9:16 Full HD (`redes/grabar_pack_tiktok.js`, `redes/render_video_*.js`), overlays y placas gráficas.
 - `terminos.html` & `privacy.html`: Blindaje legal, descargo de marcas, nominative fair use y políticas de privacidad (AdSense, cookies DART, GDPR/ARCO).
 
 ---
@@ -35,7 +35,7 @@ Para mantener el contexto rápido, enfocado y profesional, se recomienda organiz
 
 ### 🎬 Conversación 2: Difusión y Videos Virales (TikTok / Reels)
 - **Propósito:** Generación de videos con tomas aéreas para la cuenta `@estadiosvirtuales` (17k seguidores), guiones, ganchos virales, copies y hashtags.
-- **Archivos foco:** `grabar_pack_tiktok.js`, descargas de videos, catálogo de estadios icónicos.
+- **Archivos foco:** `redes/*`, descargas de videos, catálogo de estadios icónicos.
 
 ### 💰 Conversación 3: Monetización y Google AdSense
 - **Propósito:** Aprobación e integración de Google AdSense, banners de visualización, optimización de ingresos (eCPM/RPM) sin interferir en la jugabilidad.

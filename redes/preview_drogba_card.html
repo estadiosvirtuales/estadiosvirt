@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview: Didier Drogba - Carta FUT</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="css/perfil.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 30px 20px;
+            background: #080c12;
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Outfit', sans-serif;
+        }
+        .header-box {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header-box h1 {
+            color: #00ff77;
+            font-size: 1.8rem;
+            margin: 0 0 8px 0;
+        }
+        .header-box p {
+            color: #94a3b8;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        .theme-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .th-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .th-btn:hover, .th-btn.active {
+            background: rgba(0, 255, 119, 0.2);
+            border-color: #00ff77;
+            color: #00ff77;
+        }
+        .card-stage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: radial-gradient(circle, rgba(0, 255, 119, 0.08) 0%, transparent 70%);
+            border-radius: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-box">
+        <h1>Didier Drogba · "El Elefante"</h1>
+        <p>Prueba de integración: Silueta 3D en formato <b>.webp</b> con <b>fondo 100% transparente</b> adaptada a la Carta FUT.</p>
+    </div>
+
+    <div class="theme-buttons">
+        <button class="th-btn active" onclick="cambiarTema('oro')">🏆 Oro Leyenda</button>
+        <button class="th-btn" onclick="cambiarTema('arg')">🇦🇷 Selección Argentina</button>
+        <button class="th-btn" onclick="cambiarTema('bra')">🇧🇷 Selección Brasil</button>
+        <button class="th-btn" onclick="cambiarTema('esp')">🇪🇸 Selección España</button>
+        <button class="th-btn" onclick="cambiarTema('fra')">🇫🇷 Selección Francia</button>
+        <button class="th-btn" onclick="cambiarTema('eng')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Selección Inglaterra</button>
+    </div>
+
+    <div class="card-stage">
+        <div class="fut-card oro" id="preview-fut-card" style="transform: scale(1.1);">
+            <div class="fut-card-shine"></div>
+            <div class="fut-top">
+                <div class="fut-badge-meta">
+                    <div class="fut-ovr">91</div>
+                    <div class="fut-pos">DC</div>
+                    <img src="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp" class="fut-club-icon" alt="EV Logo">
+                </div>
+                <div class="fut-avatar-container">
+                    <div class="ac-avatar-full">
+                        <img src="Didier Drogba.webp" class="ac-avatar-img-full" alt="Didier Drogba">
+                    </div>
+                </div>
+            </div>
+            <div class="fut-name">DROGBA</div>
+            <div class="fut-stats-row">
+                <div class="fut-stat-item"><span class="fut-stat-num">89</span><span class="fut-stat-label">PAC</span></div>
+                <div class="fut-stat-item"><span class="fut-stat-num">92</span><span class="fut-stat-label">SHO</span></div>
+                <div class="fut-stat-item"><span class="fut-stat-num">80</span><span class="fut-stat-label">PAS</span></div>
+                <div class="fut-stat-item"><span class="fut-stat-num">84</span><span class="fut-stat-label">DRI</span></div>
+                <div class="fut-stat-item"><span class="fut-stat-num">50</span><span class="fut-stat-label">DEF</span></div>
+                <div class="fut-stat-item"><span class="fut-stat-num">93</span><span class="fut-stat-label">PHY</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function cambiarTema(tema) {
+            const card = document.getElementById('preview-fut-card');
+            card.className = 'fut-card ' + tema;
+            document.querySelectorAll('.th-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
