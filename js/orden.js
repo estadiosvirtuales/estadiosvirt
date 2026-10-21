@@ -614,32 +614,32 @@ function renderJuegoOrden(revelar = false) {
             <span class="order-record-text">
                 <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1.1rem; flex-shrink:0;"></i> Récord anotado: <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreGuardadoOrden)}</b>
             </span>
-            <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:5px 10px; font-size:0.70rem; height:auto; min-height:auto; flex-shrink:0; border-radius:8px;">
+            <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary order-btn-change-nick">
                 <i class="ph-bold ph-pencil-simple"></i> Cambiar
             </button>
         </div>`;
 
         botonera = `
         <div class="order-endgame-summary-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div>
-                    <div style="font-size:.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:800; letter-spacing:1px;">Puntaje obtenido</div>
-                    <strong style="font-size:1.6rem; color:var(--accent-color); font-weight:900;">${orderPuntosGanados.toLocaleString('es-AR')} <span style="font-size:.85rem; color:var(--text-muted); font-weight:700;">pts</span></strong>
+            <div class="order-endgame-score-row">
+                <div class="order-endgame-score-col">
+                    <div class="order-endgame-score-lbl">Puntaje obtenido</div>
+                    <strong class="order-endgame-score-val">${orderPuntosGanados.toLocaleString('es-AR')} <span class="order-endgame-pts-unit">pts</span></strong>
                 </div>
-                <div style="text-align:right;">
-                    <span style="font-size:.78rem; color:${nivelActual.color}; font-weight:800;">${nivelActual.emoji} ${nivelActual.nombre}</span>
+                <div class="order-endgame-level-col">
+                    <span class="order-endgame-level-tag" style="color:${nivelActual.color};">${nivelActual.emoji} ${nivelActual.nombre}</span>
                 </div>
             </div>
             ${cartelGuardadoOrden}
-            <div style="display:flex; gap:10px; margin-bottom:8px;">
-                <button type="button" onclick="abrirModalRankingOrden('capacidad')" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;">
-                    <img src="medalla-oro.webp" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking
+            <div class="order-endgame-actions-row">
+                <button type="button" onclick="abrirModalRankingOrden('capacidad')" class="btn-3d btn-endgame-rank order-endgame-btn-action">
+                    <img src="medalla-oro.webp" alt="Ranking" class="order-endgame-btn-icon"> Ranking
                 </button>
-                <button type="button" onclick="iniciarJuegoOrden('capacidad')" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;">
+                <button type="button" onclick="iniciarJuegoOrden('capacidad')" class="btn-3d btn-endgame-replay order-endgame-btn-action">
                     <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
                 </button>
             </div>
-            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-endgame-back" style="width:100%; padding:10px; font-size:.82rem; font-weight:800;">
+            <button type="button" onclick="abrirModalOrden()" class="btn-3d btn-endgame-back order-endgame-btn-back">
                 <i class="ph-bold ph-arrow-left"></i> Volver al menú de desafíos
             </button>
         </div>`;
