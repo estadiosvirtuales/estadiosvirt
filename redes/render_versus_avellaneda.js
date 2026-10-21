@@ -6,7 +6,7 @@ const { spawn } = require('child_process');
 console.log('🥊 [Duelo de Capacidad] Iniciando generación de video: RACING vs INDEPENDIENTE...');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const outputFolder = "E:\\Google earth studio\\videos para mostrar\\Argentina\\DUELO-AVELLANEDA";
+const outputFolder = "E:\\Google earth studio\\videos para mostrar\\DUELO DE CAPACIDAD\\RACING-VS-INDEPENDIENTE";
 if (!fs.existsSync(outputFolder)) {
     fs.mkdirSync(outputFolder, { recursive: true });
 }
@@ -313,8 +313,6 @@ async function ejecutar() {
     const videoIndep = "E:\\Google earth studio\\videos para mostrar\\Argentina\\LIBERTADORES-DE-AMERICA\\Estadio_Libertadores_De_America_Independiente.mp4";
 
     const outputName = 'Duelo_Capacidad_Racing_vs_Independiente.mp4';
-    const outputDownloads = path.join(process.env.USERPROFILE, 'Downloads', outputName);
-    const outputDesktop = path.join(process.env.USERPROFILE, 'Desktop', outputName);
     const outputProject = path.join(outputFolder, outputName);
 
     const assetVotacion = path.join(assetsDir, 'overlay_votacion.png');
@@ -365,7 +363,7 @@ async function ejecutar() {
         '-b:a', '192k',
         '-shortest',
         '-movflags', '+faststart',
-        outputDownloads
+        outputProject
     ];
 
     console.log('🎬 Renderizando video final Duelo de Avellaneda en 1080x1920 Full HD...');
@@ -385,15 +383,9 @@ async function ejecutar() {
         if (fs.existsSync(tempAudioPath)) fs.unlinkSync(tempAudioPath);
 
         if (code === 0) {
-            fs.copyFileSync(outputDownloads, outputDesktop);
-            if (fs.existsSync(path.dirname(outputProject))) {
-                fs.copyFileSync(outputDownloads, outputProject);
-            }
             console.log(`\n\n🎉 ¡VIDEO DE DUELO GENERADO CON ÉXITO!`);
-            console.log(`📂 Descargas: ${outputDownloads}`);
-            console.log(`📂 Escritorio: ${outputDesktop}`);
-            console.log(`📂 Carpeta E: ${outputProject}`);
-            const stat = fs.statSync(outputDownloads);
+            console.log(`📂 Carpeta oficial: ${outputProject}`);
+            const stat = fs.statSync(outputProject);
             console.log(`📊 Tamaño: ${(stat.size / (1024 * 1024)).toFixed(2)} MB`);
         } else {
             console.error(`\n❌ Error al renderizar ffmpeg. Código: ${code}`);
