@@ -440,7 +440,7 @@ function renderJuegoOrden(revelar = false) {
             ? '👑 ¡Impecable! Orden perfecto de los 5 estadios' 
             : aciertos >= 3 
             ? `⚽ ¡Muy bien! Acertaste ${aciertos} de 5 en su lugar exacto` 
-            : `📊 Acertaste ${aciertos} de 5 posiciones correctas`;
+            : `Acertaste ${aciertos} de 5 posiciones correctas`;
 
         cabeceraHTML = `
         <div class="order-game-header revealed">
