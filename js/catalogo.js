@@ -1068,6 +1068,10 @@ function abrirVideoDesdeCard(event, btn) {
         userStats.vuelosAleatorios = (userStats.vuelosAleatorios || 0) + 1;
         if (typeof guardarStats === 'function') guardarStats();
     }
+    if (typeof window.trackEvento === 'function') {
+        const estadioNom = c?.querySelector('.card-title')?.textContent?.trim() || 'Estadio';
+        window.trackEvento('estadio_visto', { estadio: estadioNom });
+    }
     if (typeof abrirModalVideo === 'function') {
         abrirModalVideo(event, c?.dataset.linkVideo || '#', false);
     }
@@ -1075,10 +1079,17 @@ function abrirVideoDesdeCard(event, btn) {
 window.abrirVideoDesdeCard = abrirVideoDesdeCard;
 
 // Evento del buscador global
+let debounceSearchGA = null;
 const globalSearchInput = document.getElementById('global-search');
 if (globalSearchInput) {
     globalSearchInput.addEventListener('input', function(e) {
         const term = e.target.value.toLowerCase().trim();
+        clearTimeout(debounceSearchGA);
+        if (term.length >= 3 && typeof window.trackEvento === 'function') {
+            debounceSearchGA = setTimeout(() => {
+                window.trackEvento('busqueda_estadio', { termino: term });
+            }, 1200);
+        }
         if (term === '') {
             const last = localStorage.getItem('ev_last_gid');
             if (last) renderizarTarjetas(estadiosCargados);

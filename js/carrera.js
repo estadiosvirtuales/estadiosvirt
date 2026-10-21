@@ -749,6 +749,11 @@ window.seleccionarCopaParaJugar = function(tierKey) {
 function iniciarTorneoDeCopas(tierKey) {
     const cfg = TORNEOS_CONFIG[tierKey] || TORNEOS_CONFIG['nacional'];
     
+    // 🎯 TRACKING GA4: Torneo de Modo Carrera iniciado
+    if (typeof window.trackEvento === 'function') {
+        window.trackEvento('modo_carrera_copa', { torneo: cfg.nombre || tierKey });
+    }
+
     // 💾 Si existe una partida guardada de esta misma copa, la reanudamos
     const guardadoRaw = localStorage.getItem('ev_torneo_guardado_' + getUserId());
     let guardado = null;

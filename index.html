@@ -143,11 +143,39 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RWJXZTRDBT"></script>
 <script>
+  // 🛡️ DETECTOR AUTOMÁTICO DE ADMINISTRADOR / DESARROLLADOR
+  // Desactiva Analytics para que tus visitas de prueba en PC o móvil no cuenten como usuarios nuevos
+  (function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === '1' || urlParams.get('admin') === 'jonathan') {
+      localStorage.setItem('ev_admin_debug', 'true');
+    } else if (urlParams.get('admin') === '0') {
+      localStorage.removeItem('ev_admin_debug');
+    }
+
+    var esLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+    var esAdmin = localStorage.getItem('ev_admin_debug') === 'true';
+
+    if (esLocal || esAdmin) {
+      window['ga-disable-G-RWJXZTRDBT'] = true;
+      console.log('🛡️ [Analytics] Modo Administrador activo: tus visitas y pruebas no se envían a Google Analytics.');
+    }
+  })();
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-RWJXZTRDBT');
+
+  // 🎯 Helper global para eventos de interacción de alto valor (Métricas para Publicistas y Sponsors)
+  window.trackEvento = function(nombreEvento, parametros) {
+    try {
+      if (typeof gtag === 'function' && !window['ga-disable-G-RWJXZTRDBT']) {
+        gtag('event', nombreEvento, parametros || {});
+      }
+    } catch(e) {}
+  };
 </script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

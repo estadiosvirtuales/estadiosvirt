@@ -1591,6 +1591,13 @@ function lanzarRondaGuessr(){
 const idPartida = getUserId();
 localStorage.setItem('ev_primera_partida_iniciada_' + idPartida, 'true');
 localStorage.setItem('ev_primera_partida_iniciada_global', 'true');
+
+// 🎯 TRACKING GA4: Partida Iniciada (Para métricas de anunciantes)
+if (guessrRondaActual === 1 && typeof window.trackEvento === 'function') {
+    const modoInicio = esModoVersus ? '1v1_versus' : (esModoDiario ? 'reto_diario' : ('individual_' + (guessrDificultad || 'medio')));
+    window.trackEvento('partida_iniciada', { modo: modoInicio });
+}
+
 const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
 // === REEMPLAZA DESDE ACÁ ===
@@ -1897,6 +1904,19 @@ function avanzarDeRondaGuessr(){
 async function finalizarJuegoGuessr(){
     // 🧹 Limpieza instantánea en el milisegundo cero de cualquier cartel emergente (sello de folklore/distancia, banners, etc.)
     document.querySelectorAll('.stamp-badge, #versus-next-round-banner, .taunt-arcade-burst').forEach(el => { try { el.remove(); } catch(e) {} });
+
+    // 🎯 TRACKING GA4: Partida Completada con puntaje (Oro para mostrar retención a publicistas)
+    if (typeof window.trackEvento === 'function') {
+        const modoFin = esModoVersus ? '1v1_versus' : (esModoDiario ? 'reto_diario' : ('individual_' + (guessrDificultad || 'medio')));
+        window.trackEvento('partida_completada', {
+            modo: modoFin,
+            puntos: guessrPuntosTotales || 0,
+            rondas_jugadas: (guessrHistorialRondas && guessrHistorialRondas.length) || 5
+        });
+        if (esModoDiario) {
+            window.trackEvento('reto_diario_completado', { puntos: guessrPuntosTotales || 0 });
+        }
+    }
 
     localStorage.setItem('ev_primera_partida_finalizada_' + getUserId(), 'true');
     localStorage.setItem('ev_primera_partida_finalizada_global', 'true');
