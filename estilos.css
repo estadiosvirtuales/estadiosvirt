@@ -5283,19 +5283,22 @@ body.video-abierto .hero-section {
     box-shadow: 0 0 14px rgba(167, 139, 250, 0.28);
 }
 
-/* 🟡 4. TABLA DE POSICIONES (Oro Legendario / Copa) */
-.btn-opt-ranking {
+/* 🟡 4. TABLA DE POSICIONES & SALÓN DE CAMPEONES (Oro Legendario / Copa) */
+.btn-opt-ranking,
+.btn-opt-campeones {
     border-top: 2px solid rgba(234, 179, 8, 0.55) !important;
     background: 
         radial-gradient(circle at 10% 50%, rgba(234, 179, 8, 0.13) 0%, transparent 60%),
         linear-gradient(165deg, rgba(28, 24, 38, 0.92) 0%, rgba(14, 12, 22, 0.98) 100%) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(234, 179, 8, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
 }
-.btn-opt-ranking:hover {
+.btn-opt-ranking:hover,
+.btn-opt-campeones:hover {
     border-color: rgba(234, 179, 8, 0.6) !important;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(234, 179, 8, 0.3) !important;
 }
-.btn-opt-ranking .guessr-option-icon {
+.btn-opt-ranking .guessr-option-icon,
+.btn-opt-campeones .guessr-option-icon {
     background: rgba(234, 179, 8, 0.15);
     box-shadow: 0 0 14px rgba(234, 179, 8, 0.28);
 }
@@ -5733,11 +5736,13 @@ body.video-abierto .hero-section {
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(124, 58, 237, 0.15) !important;
 }
 
-[data-theme="light"] .btn-opt-ranking {
+[data-theme="light"] .btn-opt-ranking,
+[data-theme="light"] .btn-opt-campeones {
     border-top: 2.5px solid #d97706 !important;
     background: radial-gradient(circle at 10% 50%, rgba(245, 158, 11, 0.09) 0%, transparent 55%), linear-gradient(165deg, #ffffff 0%, #fefcf5 100%) !important;
 }
-[data-theme="light"] .btn-opt-ranking:hover {
+[data-theme="light"] .btn-opt-ranking:hover,
+[data-theme="light"] .btn-opt-campeones:hover {
     border-color: #d97706 !important;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(217, 119, 6, 0.15) !important;
 }
