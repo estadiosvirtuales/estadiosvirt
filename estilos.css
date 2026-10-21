@@ -17625,21 +17625,6 @@ body.video-abierto .hero-section {
     object-fit: contain;
     display: block;
 }
-.order-zoom-footer {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 0.74rem;
-    color: #94a3b8;
-    font-weight: 600;
-    text-align: center;
-}
-.order-zoom-footer i {
-    color: #00e676;
-    font-size: 0.95rem;
-}
 
 /* COMPATIBILIDAD CON TEMA CLARO */
 [data-theme="light"] #order-modal .order-slot {
