@@ -5317,23 +5317,6 @@ body.video-abierto .hero-section {
     box-shadow: 0 0 14px rgba(251, 191, 36, 0.28);
 }
 
-/* 🟣 BOTÓN POR ANTIGÜEDAD (Púrpura / Violeta Neón) */
-.btn-opt-antiguedad {
-    border-top: 2px solid rgba(167, 139, 250, 0.6) !important;
-    background: 
-        radial-gradient(circle at 10% 50%, rgba(167, 139, 250, 0.15) 0%, transparent 60%),
-        linear-gradient(165deg, rgba(26, 20, 46, 0.92) 0%, rgba(12, 10, 26, 0.98) 100%) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 16px rgba(167, 139, 250, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-}
-.btn-opt-antiguedad:hover {
-    border-color: rgba(167, 139, 250, 0.7) !important;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(167, 139, 250, 0.35) !important;
-}
-.btn-opt-antiguedad .guessr-option-icon {
-    background: rgba(167, 139, 250, 0.15);
-    box-shadow: 0 0 14px rgba(167, 139, 250, 0.28);
-}
-
 /* 🏆 BOTÓN RANKING DESAFÍOS (Menú Desafío de Orden) */
 .btn-order-ranking-gold {
     background: linear-gradient(145deg, rgba(251, 191, 36, 0.14) 0%, rgba(20, 24, 38, 0.94) 100%) !important;
@@ -5409,26 +5392,6 @@ body.video-abierto .hero-section {
     transform: translateY(-2px) scale(1.01) !important;
     border-color: #fbbf24 !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(251, 191, 36, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
-    filter: brightness(1.08);
-}
-
-/* 🟣 Confirmar en Antigüedad (Púrpura / Violeta Neón) */
-.btn-order-confirm.antiguedad {
-    background: 
-        radial-gradient(circle at 15% 50%, rgba(167, 139, 250, 0.28) 0%, transparent 65%),
-        linear-gradient(135deg, rgba(32, 20, 48, 0.95) 0%, rgba(14, 10, 24, 0.98) 100%) !important;
-    border: 1.5px solid rgba(167, 139, 250, 0.55) !important;
-    border-top: 2px solid #e9d5ff !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 18px rgba(167, 139, 250, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
-}
-.btn-order-confirm.antiguedad i {
-    color: #c084fc !important;
-    filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.7));
-}
-.btn-order-confirm.antiguedad:hover {
-    transform: translateY(-2px) scale(1.01) !important;
-    border-color: #c084fc !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 24px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
     filter: brightness(1.08);
 }
 
@@ -5792,19 +5755,6 @@ body.video-abierto .hero-section {
     color: #b45309 !important;
 }
 
-[data-theme="light"] .btn-opt-antiguedad {
-    border-top: 2.5px solid #7c3aed !important;
-    background: radial-gradient(circle at 10% 50%, rgba(124, 58, 237, 0.09) 0%, transparent 55%), linear-gradient(165deg, #ffffff 0%, #faf6ff 100%) !important;
-    border-color: #cbd5e1 !important;
-}
-[data-theme="light"] .btn-opt-antiguedad:hover {
-    border-color: #7c3aed !important;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09), 0 0 16px rgba(124, 58, 237, 0.15) !important;
-}
-[data-theme="light"] .btn-opt-antiguedad strong {
-    color: #6d28d9 !important;
-}
-
 [data-theme="light"] .btn-order-ranking-gold,
 [data-theme="light"] .btn-order-medal-rank {
     background: #ffffff !important;
@@ -5840,18 +5790,6 @@ body.video-abierto .hero-section {
 }
 [data-theme="light"] .btn-order-confirm.capacidad i {
     color: #d97706 !important;
-    filter: none;
-}
-
-[data-theme="light"] .btn-order-confirm.antiguedad {
-    background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%) !important;
-    border: 1.5px solid #7c3aed !important;
-    border-top: 2px solid #a855f7 !important;
-    color: #581c87 !important;
-    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.18) !important;
-}
-[data-theme="light"] .btn-order-confirm.antiguedad i {
-    color: #7c3aed !important;
     filter: none;
 }
 
@@ -6467,9 +6405,8 @@ body.video-abierto .hero-section {
     object-fit: contain !important;
 }
 
-/* ⚡ Ajuste óptico: la estatua y el reloj igualan el tamaño visual de la diana de la captura 3 */
-#ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"],
-#ranking-modal .ranking-brand-box .trophy-main-img[src*="antiguedad"] {
+/* ⚡ Ajuste óptico: la estatua iguala el tamaño visual de la diana */
+#ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"] {
     transform: scale(1.75) !important;
 }
 
@@ -6670,32 +6607,6 @@ body.video-abierto .hero-section {
     box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
 }
 
-/* 🟣 VIOLETA NEÓN: ANTIGÜEDAD */
-#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"] {
-    background: linear-gradient(165deg, rgba(32, 20, 48, 0.88) 0%, rgba(14, 10, 24, 0.96) 100%) !important;
-    border: 1.5px solid rgba(167, 139, 250, 0.35) !important;
-    border-top: 1.5px solid rgba(233, 213, 255, 0.6) !important;
-    color: #e9d5ff !important;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-}
-
-#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"]:hover {
-    border-color: #c084fc !important;
-    color: #ffffff !important;
-    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.35) !important;
-    transform: translateY(-2px);
-}
-
-#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="antiguedad"].active {
-    background: linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #7c3aed 100%) !important;
-    border-color: #f3e8ff !important;
-    border-top: 2px solid #ffffff !important;
-    color: #ffffff !important;
-    font-weight: 900 !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
-}
-
 /* 🎯 TAMAÑO Y CENTRADO PROPORCIONADO PARA BOTONES DE ORDEN */
 #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"] {
     left: 6px !important;
@@ -6706,22 +6617,12 @@ body.video-abierto .hero-section {
     filter: drop-shadow(0 2px 6px rgba(251, 191, 36, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) !important;
 }
 
-#ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
-    left: 6px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    width: 46px !important;
-    height: 46px !important;
-    filter: drop-shadow(0 2px 6px rgba(168, 85, 247, 0.45)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) !important;
-}
-
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
 #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
     transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
 }
-/* ⚡ Ajuste óptico en botones: la estatua y reloj igualan los 40px útiles de los íconos de la captura 3 */
-#ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"],
-#ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
+/* ⚡ Ajuste óptico en botones: la estatua iguala los 40px útiles de los íconos */
+#ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"] {
     left: 4px !important;
     transform: translateY(-50%) scale(1.75) !important;
 }
@@ -6731,8 +6632,7 @@ body.video-abierto .hero-section {
     transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
 }
 
-#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="capacidad"],
-#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="antiguedad"] {
+#ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="capacidad"] {
     transform: translateY(-50%) scale(1.9) rotate(-3deg) !important;
 }
 
@@ -6789,9 +6689,8 @@ body.video-abierto .hero-section {
     pointer-events: none;
 }
 
-/* ⚡ Ajuste óptico en la cápsula superior: iguala el tamaño del ícono de la captura 3 */
-.badge-title-png-icon[src*="capacidad"],
-.badge-title-png-icon[src*="antiguedad"] {
+/* ⚡ Ajuste óptico en la cápsula superior: iguala el tamaño del ícono */
+.badge-title-png-icon[src*="capacidad"] {
     transform: scale(1.8) !important;
     margin: -4px 4px -4px 2px !important;
 }
@@ -6943,8 +6842,7 @@ body.video-abierto .hero-section {
     }
 
     #ranking-modal .ranking-brand-box .trophy-main-img[src*="fuego"],
-    #ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"],
-    #ranking-modal .ranking-brand-box .trophy-main-img[src*="antiguedad"] {
+    #ranking-modal .ranking-brand-box .trophy-main-img[src*="capacidad"] {
         transform: scale(1.15) !important;
         transform-origin: center center !important;
     }
@@ -7124,9 +7022,8 @@ body.video-abierto .hero-section {
         margin: 0 !important;
     }
 
-    /* 🏆 DESAFÍO DE ORDEN EN CELULAR */
-    #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"],
-    #ranking-modal .ranking-left-panel .ranking-tab-img[src*="antiguedad"] {
+    /* 🏆 DESAFÍO DE CAPACIDAD EN CELULAR */
+    #ranking-modal .ranking-left-panel .ranking-tab-img[src*="capacidad"] {
         width: 32px !important;
         height: 32px !important;
         left: 2px !important;

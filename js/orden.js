@@ -29,19 +29,13 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
 
-    const activeCap = modo === 'capacidad' ? 'active' : '';
-    const activeAnt = modo === 'antiguedad' ? 'active' : '';
-
     const u = typeof obtenerUsuarioLogueado === 'function' ? obtenerUsuarioLogueado() : null;
     const miNombre = (typeof getPref === 'function' ? getPref('ev_custom_nick', '') : '') || (u ? u.name.split(' ')[0] : 'Vos');
 
     const subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
-        <button class="liga-tab-btn ${activeCap}" onclick="abrirModalRankingOrden('capacidad')">
+        <button class="liga-tab-btn active" style="cursor: default;">
             <img src="capacidad.webp" alt="Capacidad" class="ranking-tab-img"> <span>Capacidad</span>
-        </button>
-        <button class="liga-tab-btn ${activeAnt}" onclick="abrirModalRankingOrden('antiguedad')">
-            <img src="antiguedad.webp" alt="Antigüedad" class="ranking-tab-img"> <span>Antigüedad</span>
         </button>
     </div>`;
 
@@ -49,7 +43,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         const { data: rankingRaw, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
-            .eq('juego', modo)
+            .eq('juego', 'capacidad')
             .order('puntaje', { ascending: false })
             .limit(500);
 
@@ -76,7 +70,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             const { data: filaPorEmail } = await supabaseClient
                 .from('ranking')
                 .select('puntaje')
-                .eq('juego', modo)
+                .eq('juego', 'capacidad')
                 .eq('email', miEmail)
                 .order('puntaje', { ascending: false })
                 .limit(1);
@@ -88,7 +82,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             const { data: filaPorNombre } = await supabaseClient
                 .from('ranking')
                 .select('puntaje')
-                .eq('juego', modo)
+                .eq('juego', 'capacidad')
                 .ilike('nombre', miApodo)
                 .order('puntaje', { ascending: false })
                 .limit(1);
@@ -100,22 +94,22 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
         const textoPosicion = miPuestoIdx !== -1 ? `#${miPuestoIdx + 1}` : (recordReal > 0 ? '+50' : 'Sin clasif.');
 
-        let cantPartidas = userStats['partidas_' + modo] || 0;
+        let cantPartidas = userStats['partidas_capacidad'] || 0;
         if (supabaseClient) {
             try {
-                let qPartidas = supabaseClient.from('ranking').select('*', { count: 'exact', head: true }).eq('juego', modo);
+                let qPartidas = supabaseClient.from('ranking').select('*', { count: 'exact', head: true }).eq('juego', 'capacidad');
                 if (miEmail) qPartidas = qPartidas.eq('email', miEmail);
                 else if (miApodo) qPartidas = qPartidas.ilike('nombre', miApodo);
                 const { count: partidasDb } = await qPartidas;
                 if (partidasDb !== null && partidasDb > cantPartidas) {
                     cantPartidas = partidasDb;
-                    userStats['partidas_' + modo] = cantPartidas;
+                    userStats['partidas_capacidad'] = cantPartidas;
                 }
             } catch(e) {}
         }
         const textoPartidas = `${cantPartidas} ${cantPartidas === 1 ? 'Jugada' : 'Jugadas'}`;
 
-        const headerConfig = modo === 'capacidad' ? {
+        const headerConfig = {
             img: 'capacidad.webp',
             fallback: 'capacidad.webp',
             glowClass: 'glow-gold',
@@ -123,23 +117,6 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             badgeTitle: 'Top 50 Global',
             badgeSub: 'Capacidad',
             badgeColor: '#fbbf24',
-            pill1Label: 'TU RÉCORD',
-            pill1Val: textoRecord,
-            pill1Icon: 'ph-trophy',
-            pill2Label: 'POSICIÓN',
-            pill2Val: textoPosicion,
-            pill2Icon: 'ph-hash',
-            pill3Label: 'PARTIDAS',
-            pill3Val: textoPartidas,
-            pill3Icon: 'ph-game-controller'
-        } : {
-            img: 'antiguedad.webp',
-            fallback: 'antiguedad.webp',
-            glowClass: 'glow-blue',
-            badgeImg: 'antiguedad.webp',
-            badgeTitle: 'Top 50 Global',
-            badgeSub: 'Antigüedad',
-            badgeColor: '#a78bfa',
             pill1Label: 'TU RÉCORD',
             pill1Val: textoRecord,
             pill1Icon: 'ph-trophy',
@@ -203,7 +180,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                             <img src="${headerConfig.img}" alt="Ícono Modo" class="trophy-main-img" onerror="this.src='${headerConfig.fallback}';">
                         </div>
                     </div>
-                    <h2 class="liga-modal-title">Desafío de Orden</h2>
+                    <h2 class="liga-modal-title">Desafío de Capacidad</h2>
                 </div>
 
                 <div class="modal-header-right-pills ranking-pills-column">
@@ -277,43 +254,33 @@ function abrirModalOrden() {
             <div style="width: 140px; height: 120px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75));">
                 <img src="podio.webp" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
-            <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Orden</h2>
+            <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Capacidad</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 380px; line-height: 1.45; margin: 0 auto;">
-                Demostrá tu conocimiento. Tocá dos tarjetas para intercambiarlas y ordenalas correctamente.
+                Demostrá cuánto sabés del aforo de los estadios. Tocá dos tarjetas para intercambiarlas y ordenalas de mayor a menor capacidad.
             </p>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 380px; margin-bottom: 18px;">
-            <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-capacidad" style="padding: 14px 18px;">
+            <button onclick="iniciarJuegoOrden('capacidad')" class="guessr-option-btn btn-opt-capacidad" style="padding: 16px 20px;">
                 <div class="guessr-option-icon">
                     <img src="capacidad.webp" alt="Por Capacidad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
                 </div>
                 <div class="guessr-option-text">
-                    <strong style="font-size: 1rem; color: #fbbf24;">Por Capacidad</strong>
+                    <strong style="font-size: 1.05rem; color: #fbbf24;">¡Comenzar Desafío!</strong>
                     <span>Del más grande al más chico</span>
-                </div>
-            </button>
-
-            <button onclick="iniciarJuegoOrden('antiguedad')" class="guessr-option-btn btn-opt-antiguedad" style="padding: 14px 18px;">
-                <div class="guessr-option-icon">
-                    <img src="antiguedad.webp" alt="Por Antigüedad" style="width: 130%; height: 130%; object-fit: contain; transform: scale(1.45);">
-                </div>
-                <div class="guessr-option-text">
-                    <strong style="font-size: 1rem; color: #c084fc;">Por Antigüedad</strong>
-                    <span>Del más viejo al más moderno</span>
                 </div>
             </button>
         </div>
 
         <div style="width: 100%; max-width: 380px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
             <button onclick="abrirModalRankingOrden('capacidad')" class="btn-3d btn-order-ranking-gold" style="width: 100%; padding: 12px; font-size: 0.88rem; font-weight: 800; gap: 8px;">
-                <img src="medalla-oro.webp" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Desafíos
+                <img src="medalla-oro.webp" alt="Ranking" style="width: 24px; height: 24px; object-fit: contain;"> Ranking Global de Capacidad
             </button>
         </div>
     </div>`;
 }
 
-function iniciarJuegoOrden(modo) {
+function iniciarJuegoOrden(modo = 'capacidad') {
     const idPartida = typeof getUserId === 'function' ? getUserId() : 'guest';
     localStorage.setItem('ev_primera_partida_iniciada_' + idPartida, 'true');
     localStorage.setItem('ev_primera_partida_iniciada_global', 'true');
@@ -327,14 +294,14 @@ function iniciarJuegoOrden(modo) {
         const content = modal.querySelector('.modal-content');
         if (content) content.classList.add('order-game-active');
     }
-    orderModo = modo;
+    orderModo = 'capacidad';
     orderSelectedIdx = null;
     orderPuntosGanados = 0;
 
     const validos = pool.filter(f => {
         const n = bscarPropiedad(f, 'Estadio'), c = bscarPropiedad(f, 'Club');
         if (!n || !c) return false;
-        const raw = String(bscarPropiedad(f, modo === 'capacidad' ? 'Capacidad' : 'Año')).replace(/[^0-9]/g, '');
+        const raw = String(bscarPropiedad(f, 'Capacidad')).replace(/[^0-9]/g, '');
         return raw !== '' && parseInt(raw) > 0;
     });
 
@@ -347,7 +314,7 @@ function iniciarJuegoOrden(modo) {
     while (sel.length < 5) {
         const idx = Math.floor(Math.random() * copia.length);
         const e = copia.splice(idx, 1)[0];
-        const val = parseInt(String(bscarPropiedad(e, modo === 'capacidad' ? 'Capacidad' : 'Año')).replace(/[^0-9]/g, '')) || 0;
+        const val = parseInt(String(bscarPropiedad(e, 'Capacidad')).replace(/[^0-9]/g, '')) || 0;
         sel.push({
             estadio: bscarPropiedad(e, 'Estadio'),
             club: bscarPropiedad(e, 'Club'),
@@ -359,7 +326,7 @@ function iniciarJuegoOrden(modo) {
         });
     }
 
-    const ord = [...sel].sort((a, b) => modo === 'capacidad' ? b.valor - a.valor : a.valor - b.valor);
+    const ord = [...sel].sort((a, b) => b.valor - a.valor);
     sel.forEach(e => {
         e.correctIdx = ord.findIndex(o => o.estadio === e.estadio && o.club === e.club);
     });
@@ -450,16 +417,13 @@ function renderJuegoOrden(revelar = false) {
     const body = document.getElementById('order-modal-body');
     if (!body) return;
 
-    const imgIcono = orderModo === 'capacidad' 
-        ? '<img src="capacidad.webp" alt="Capacidad" style="width:36px;height:36px;object-fit:contain;">' 
-        : '<img src="antiguedad.webp" alt="Antigüedad" style="width:36px;height:36px;object-fit:contain;">';
+    const imgIcono = '<img src="capacidad.webp" alt="Capacidad" style="width:36px;height:36px;object-fit:contain;">';
+    const titulo = 'Mayor a Menor Capacidad';
+    const labelTopMobile = '⬆ MÁS GRANDE';
+    const labelBotMobile = '⬇ MÁS CHICO';
 
-    const titulo = orderModo === 'capacidad' ? 'Mayor a Menor Capacidad' : 'Del Más Antiguo al Más Moderno';
-    const labelTopMobile = orderModo === 'capacidad' ? '⬆ MÁS GRANDE' : '⬆ MÁS ANTIGUO';
-    const labelBotMobile = orderModo === 'capacidad' ? '⬇ MÁS CHICO' : '⬇ MÁS MODERNO';
-
-    const labelTopDesktop = orderModo === 'capacidad' ? '#1 MÁS GRANDE (Mayor Aforo)' : '#1 MÁS ANTIGUO (Fundación previa)';
-    const labelBotDesktop = orderModo === 'capacidad' ? '#5 MÁS CHICO (Menor Aforo)' : '#5 MÁS MODERNO (Fundación reciente)';
+    const labelTopDesktop = '#1 MÁS GRANDE (Mayor Aforo)';
+    const labelBotDesktop = '#5 MÁS CHICO (Menor Aforo)';
 
     let cabeceraHTML = '';
     if (!revelar) {
@@ -467,9 +431,7 @@ function renderJuegoOrden(revelar = false) {
         <div class="order-game-header">
             <h2 class="order-game-title">${imgIcono} ${titulo}</h2>
             <p class="order-game-subtitle">
-                ${orderModo === 'capacidad' 
-                    ? 'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> capacidad' 
-                    : 'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>'}
+                Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> capacidad
             </p>
         </div>`;
     } else {
@@ -524,7 +486,7 @@ function renderJuegoOrden(revelar = false) {
         const estadioSafe = (est.estadio || '').replace(/["']/g, '');
         const clubSafe = (est.club || '').replace(/["']/g, '');
         const ok = revelar && (i === est.correctIdx);
-        const v = orderModo === 'capacidad' ? `${est.valor.toLocaleString('es-AR')} esp.` : `${est.valor}`;
+        const v = `${est.valor.toLocaleString('es-AR')} esp.`;
 
         let slotClass = 'order-slot';
         if (revelar) {
@@ -670,10 +632,10 @@ function renderJuegoOrden(revelar = false) {
             </div>
             ${cartelGuardadoOrden}
             <div style="display:flex; gap:10px; margin-bottom:8px;">
-                <button type="button" onclick="abrirModalRankingOrden('${orderModo}')" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;">
+                <button type="button" onclick="abrirModalRankingOrden('capacidad')" class="btn-3d btn-endgame-rank" style="flex:1; font-size:.88rem; padding:12px 14px;">
                     <img src="medalla-oro.webp" alt="Ranking" style="width:20px; height:20px; object-fit:contain;"> Ranking
                 </button>
-                <button type="button" onclick="iniciarJuegoOrden('${orderModo}')" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;">
+                <button type="button" onclick="iniciarJuegoOrden('capacidad')" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.88rem; padding:12px 14px;">
                     <i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar
                 </button>
             </div>
@@ -731,8 +693,8 @@ function procesarResultadoOrden() {
     if (dev === 0) userStats.ordenSinFallar = true;
     orderPuntosGanados = Math.round(base + (bonus * (base / 10000)));
     pendingScore = orderPuntosGanados;
-    pendingScoreType = orderModo;
-    userStats['partidas_' + orderModo] = (userStats['partidas_' + orderModo] || 0) + 1;
+    pendingScoreType = 'capacidad';
+    userStats['partidas_capacidad'] = (userStats['partidas_capacidad'] || 0) + 1;
     if (typeof agregarXP === 'function') agregarXP(orderPuntosGanados);
     if (typeof guardarStats === 'function') guardarStats();
 
@@ -750,7 +712,7 @@ function procesarResultadoOrden() {
     }
     const emailParaGuardar = (u && u.email) ? u.email : '';
     if (typeof enviarPuntaje === 'function') {
-        enviarPuntaje(nombreParaGuardar, orderPuntosGanados, emailParaGuardar, orderModo);
+        enviarPuntaje(nombreParaGuardar, orderPuntosGanados, emailParaGuardar, 'capacidad');
     }
 
     renderJuegoOrden(true);
@@ -762,7 +724,7 @@ function procesarResultadoOrden() {
 
 function guardarScoreOrden(btn) {
     pendingScore = orderPuntosGanados;
-    pendingScoreType = orderModo;
+    pendingScoreType = 'capacidad';
     if (typeof guardarScorePendiente === 'function') guardarScorePendiente();
     if (btn) {
         btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Guardado!`;
