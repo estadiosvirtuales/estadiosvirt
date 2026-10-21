@@ -32,13 +32,6 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
     const u = typeof obtenerUsuarioLogueado === 'function' ? obtenerUsuarioLogueado() : null;
     const miNombre = (typeof getPref === 'function' ? getPref('ev_custom_nick', '') : '') || (u ? u.name.split(' ')[0] : 'Vos');
 
-    const subMenuHTML = `
-    <div class="liga-tabs-row ranking-tabs-row">
-        <button class="liga-tab-btn active" style="cursor: default;">
-            <img src="capacidad.webp" alt="Capacidad" class="ranking-tab-img"> <span>Capacidad</span>
-        </button>
-    </div>`;
-
     try {
         const { data: rankingRaw, error } = await supabaseClient
             .from('ranking')
@@ -205,10 +198,6 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
                             <strong>${headerConfig.pill3Val}</strong>
                         </div>
                     </div>
-                </div>
-
-                <div class="ranking-sidebar-menu">
-                    ${subMenuHTML}
                 </div>
             </div>
 
