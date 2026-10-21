@@ -5158,6 +5158,18 @@
     animation: pulse 1s infinite alternate;
 }
 
+/* Estado activo 3x Turbo */
+.sim-ctrl-btn.active-3x {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(249, 115, 22, 0.35) 100%);
+    border-color: #f97316;
+    color: #fdba74;
+    box-shadow: 0 0 14px rgba(249, 115, 22, 0.4);
+}
+
+.sim-ctrl-btn.active-3x i {
+    animation: pulse 0.6s infinite alternate;
+}
+
 /* Botón saltar partido */
 .sim-ctrl-skip {
     background: rgba(56, 189, 248, 0.12);

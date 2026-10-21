@@ -907,17 +907,28 @@ function prepararVistaPartidoCopa() {
 
 // ⚡ BOTÓN 2X: Acelera todo el reloj, física y movimientos al doble
 window.toggleVelocidadSimulacion = function() {
-    simVelocidadMult = (simVelocidadMult === 1) ? 2 : 1;
+    if (simVelocidadMult === 1) {
+        simVelocidadMult = 2;
+    } else if (simVelocidadMult === 2) {
+        simVelocidadMult = 3;
+    } else {
+        simVelocidadMult = 1;
+    }
+
     const btnSpeed = document.getElementById('sim-btn-speed');
     const txt = document.getElementById('sim-speed-text');
     if (btnSpeed) {
+        btnSpeed.classList.remove('active-2x', 'active-3x');
         if (simVelocidadMult === 2) {
             btnSpeed.classList.add('active-2x');
-            if (txt) txt.textContent = '2x Activo';
-            showToast("Velocidad 2x activada ⚡", "ph-fast-forward", "info");
-        } else {
-            btnSpeed.classList.remove('active-2x');
             if (txt) txt.textContent = '2x';
+            showToast("Velocidad 2x activada ⚡", "ph-fast-forward", "info");
+        } else if (simVelocidadMult === 3) {
+            btnSpeed.classList.add('active-3x');
+            if (txt) txt.textContent = '3x Turbo';
+            showToast("Velocidad 3x Turbo activada 🚀", "ph-lightning", "info");
+        } else {
+            if (txt) txt.textContent = '1x';
             showToast("Velocidad normal (1x)", "ph-play", "info");
         }
     }
@@ -926,6 +937,17 @@ window.toggleVelocidadSimulacion = function() {
 // ⚡ BOTÓN SALTAR: Fallback por si lo presionan antes de arrancar la previa
 window.saltarSimulacionCompleta = function() {
     if (!torneoEstado) return;
+    if (torneoEstado.esLiga) {
+        const idUserGuardar = getUserId();
+        const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + idUserGuardar);
+        if (guardadaRaw) {
+            try {
+                const lObj = JSON.parse(guardadaRaw);
+                lObj.fueSimuladaRapida = true;
+                localStorage.setItem('ev_liga_guardada_' + idUserGuardar, JSON.stringify(lObj));
+            } catch(e) {}
+        }
+    }
     if (!torneoEstado.partidoEnCurso) {
         iniciarSimulacionEnVivo();
         if (typeof window.saltarSimulacionCompleta === 'function') {
@@ -946,9 +968,9 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (qControls) qControls.style.display = 'none';
     const btnSpeed = document.getElementById('sim-btn-speed');
     if (btnSpeed) {
-        btnSpeed.classList.remove('active-2x');
+        btnSpeed.classList.remove('active-2x', 'active-3x');
         const txt = document.getElementById('sim-speed-text');
-        if (txt) txt.textContent = '2x';
+        if (txt) txt.textContent = '1x';
     }
 
     document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = 'none'; });
@@ -987,7 +1009,14 @@ window.iniciarSimulacionEnVivo = function() {
     const btn = document.getElementById('sim-btn-play');
     if (btn) btn.disabled = true;
 
-    // Mostramos la barra de controles rápidos (2x y Simular Todo)
+    // Mostramos la barra de controles rápidos y reseteamos indicador de velocidad
+    simVelocidadMult = 1;
+    const btnSpeedInit = document.getElementById('sim-btn-speed');
+    if (btnSpeedInit) {
+        btnSpeedInit.classList.remove('active-2x', 'active-3x');
+        const txtInit = document.getElementById('sim-speed-text');
+        if (txtInit) txtInit.textContent = '1x';
+    }
     const qControls = document.getElementById('sim-quick-controls');
     if (qControls) qControls.style.display = 'flex';
 
@@ -1932,6 +1961,17 @@ window.iniciarSimulacionEnVivo = function() {
 
     // ================= 10. SIMULACIÓN INSTANTÁNEA (SALTAR PARTIDO) =================
     window.saltarSimulacionCompleta = function() {
+        if (torneoEstado && torneoEstado.esLiga) {
+            const idUserGuardar = getUserId();
+            const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + idUserGuardar);
+            if (guardadaRaw) {
+                try {
+                    const lObj = JSON.parse(guardadaRaw);
+                    lObj.fueSimuladaRapida = true;
+                    localStorage.setItem('ev_liga_guardada_' + idUserGuardar, JSON.stringify(lObj));
+                } catch(e) {}
+            }
+        }
         if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
         if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
         if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
@@ -4854,8 +4894,15 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimula
     const esCampeon = posicion === 1;
     const esDescenso = posicion >= (totalEquipos - 1);
 
+    const idUserBotin = (typeof getUserId === 'function') ? getUserId() : 'default';
+    const hoyStrBotin = new Date().toISOString().slice(0, 10);
+    const campKey = 'ev_camp_dia_' + idUserBotin + '_' + hoyStrBotin;
+    const campeonatosHoy = parseInt(localStorage.getItem(campKey) || '0', 10);
+    // Tope económico: hasta 2 ligas completas por día otorgan los 15 SP plenos. A partir de la 3ª liga diaria se otorgan 5 SP.
+    const superoTopeDiario = campeonatosHoy >= 2;
+
     let sp = 1;
-    let xp = fueSimuladaRapida ? 250 : 400;
+    let xp = (fueSimuladaRapida || superoTopeDiario) ? 250 : 400;
     let badge = '🛡️ PERMANENCIA ASEGURADA';
     let titulo = `#${posicion}º PUESTO`;
     let icono = '<img src="pelota.webp" class="cofre-pelota-img" alt="Pelota">';
@@ -4863,8 +4910,8 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimula
     let btnIcon = 'ph-gift';
 
     if (esCampeon) {
-        sp = fueSimuladaRapida ? 5 : 15;
-        xp = fueSimuladaRapida ? 1800 : 4000;
+        sp = (fueSimuladaRapida || superoTopeDiario) ? 5 : 15;
+        xp = (fueSimuladaRapida || superoTopeDiario) ? 1800 : 4000;
         badge = esInvicto 
             ? '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN INVICTO' 
             : '<img src="coronaoro.webp" class="cofre-badge-corona" alt="Corona"> CAMPEÓN DE LA LIGA';
@@ -4873,16 +4920,16 @@ function calcularBotinTemporada(posicion, filaUser, totalEquipos = 20, fueSimula
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-trophy';
     } else if (posicion === 2) {
-        sp = fueSimuladaRapida ? 3 : 10;
-        xp = fueSimuladaRapida ? 1200 : 2500;
+        sp = (fueSimuladaRapida || superoTopeDiario) ? 3 : 10;
+        xp = (fueSimuladaRapida || superoTopeDiario) ? 1200 : 2500;
         badge = '🥈 SUBCAMPEÓN';
         titulo = '#2 CLASIFICADO CONTINENTAL';
         icono = '<img src="medalla-plata.webp" class="cofre-medalla-img" alt="Subcampeón">';
         btnText = 'RECOGER RECOMPENSA';
         btnIcon = 'ph-medal';
     } else if (posicion === 3) {
-        sp = fueSimuladaRapida ? 2 : 7;
-        xp = fueSimuladaRapida ? 900 : 1800;
+        sp = (fueSimuladaRapida || superoTopeDiario) ? 2 : 7;
+        xp = (fueSimuladaRapida || superoTopeDiario) ? 900 : 1800;
         badge = '🥉 PODIO DE LIGA';
         titulo = '#3 CLASIFICADO CONTINENTAL';
         icono = '<img src="medalla-bronce.webp" class="cofre-medalla-img" alt="Tercer Puesto">';
@@ -4936,6 +4983,7 @@ window.mostrarCofreTemporada = function(liga) {
         posicion: pos,
         esCampeon: pos === 1,
         fueSimuladaRapida: esSimulada,
+        superoTopeDiario: !!botin.superoTopeDiario,
         sp: botin.sp,
         xp: botin.xp
     };
@@ -4958,6 +5006,8 @@ window.mostrarCofreTemporada = function(liga) {
         badgeEl.innerHTML = botin.badge;
         if (botin.fueSimuladaRapida) {
             badgeEl.innerHTML += '<div style="font-size:0.68rem; color:#fde047; font-weight:800; margin-top:4px;"><i class="ph-bold ph-lightning"></i> SIMULACIÓN RÁPIDA (MÁX 5 SP)</div>';
+        } else if (botin.superoTopeDiario && botin.esCampeon) {
+            badgeEl.innerHTML += '<div style="font-size:0.68rem; color:#fde047; font-weight:800; margin-top:4px;"><i class="ph-bold ph-lock-key"></i> TOPE DIARIO DE CAMPEONATOS (+2 HOY: 5 SP)</div>';
         }
         if (botin.esDescenso) {
             badgeEl.classList.add('descenso');
@@ -5208,8 +5258,14 @@ window.reclamarRecompensaCofreTemporada = function() {
         agregarXP(cofreTemporadaPendiente.xp);
     }
 
-    // Inscribir título en el palmarés si fue campeón
+    // Inscribir título en el palmarés si fue campeón y registrar conteo diario
     if (cofreTemporadaPendiente.esCampeon) {
+        const idUserRec = getUserId();
+        const hoyStrRec = new Date().toISOString().slice(0, 10);
+        const campKeyRec = 'ev_camp_dia_' + idUserRec + '_' + hoyStrRec;
+        const cantHoy = parseInt(localStorage.getItem(campKeyRec) || '0', 10);
+        localStorage.setItem(campKeyRec, String(cantHoy + 1));
+
         if (!userStats.copasGanadas) userStats.copasGanadas = [];
         const yaRegistrado = userStats.copasGanadas.some(c => c.tier === 'liga_' + cofreTemporadaPendiente.ligaKey);
         if (!yaRegistrado) {
