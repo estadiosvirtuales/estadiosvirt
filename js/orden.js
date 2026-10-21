@@ -380,12 +380,189 @@ function moverCardOrden(e, idx, delta) {
     }
     const targetIdx = idx + delta;
     if (targetIdx < 0 || targetIdx >= orderList.length) return;
-    const t = orderList[idx];
-    orderList[idx] = orderList[targetIdx];
+    intercambiarSlotsOrden(idx, targetIdx);
+}
+
+let dragSourceIdxOrden = null;
+let touchOriginIdxOrden = null;
+let touchMovedOrden = false;
+let touchStartXOrden = 0;
+let touchStartYOrden = 0;
+let touchCloneElOrden = null;
+let touchPreventClickOrden = false;
+
+function intercambiarSlotsOrden(sourceIdx, targetIdx) {
+    if (sourceIdx === null || targetIdx === null || sourceIdx === undefined || targetIdx === undefined) return;
+    sourceIdx = parseInt(sourceIdx);
+    targetIdx = parseInt(targetIdx);
+    if (isNaN(sourceIdx) || isNaN(targetIdx) || sourceIdx === targetIdx) return;
+    if (sourceIdx < 0 || sourceIdx >= orderList.length || targetIdx < 0 || targetIdx >= orderList.length) return;
+    const t = orderList[sourceIdx];
+    orderList[sourceIdx] = orderList[targetIdx];
     orderList[targetIdx] = t;
     orderSelectedIdx = null;
+    if (typeof reproducirSonido === 'function') reproducirSonido('whoosh');
     renderJuegoOrden(false);
 }
+
+// --- DRAG & DROP NATIVO EN ESCRITORIO (MOUSE) ---
+window.iniciarArrastreOrden = function(e, idx) {
+    dragSourceIdxOrden = idx;
+    e.dataTransfer.setData("text/plain", String(idx));
+    e.dataTransfer.effectAllowed = "move";
+    const slot = document.querySelector(`.order-slot[data-slot-idx="${idx}"]`);
+    if (slot) slot.classList.add('is-dragging');
+};
+
+window.permitirArrastreSobreOrden = function(e, idx) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (dragSourceIdxOrden !== null && dragSourceIdxOrden !== idx) {
+        const slot = document.querySelector(`.order-slot[data-slot-idx="${idx}"]`);
+        if (slot) slot.classList.add('is-drag-over');
+    }
+};
+
+window.salirArrastreSobreOrden = function(e, idx) {
+    const slot = document.querySelector(`.order-slot[data-slot-idx="${idx}"]`);
+    if (slot) slot.classList.remove('is-drag-over');
+};
+
+window.finalizarArrastreOrden = function(e) {
+    document.querySelectorAll('.order-slot').forEach(n => {
+        n.classList.remove('is-dragging', 'is-drag-over');
+    });
+    dragSourceIdxOrden = null;
+};
+
+window.soltarCardOrden = function(e, targetIdx) {
+    e.preventDefault();
+    document.querySelectorAll('.order-slot').forEach(n => {
+        n.classList.remove('is-dragging', 'is-drag-over');
+    });
+    let sourceIdx = dragSourceIdxOrden;
+    if (sourceIdx === null || sourceIdx === undefined) {
+        const raw = e.dataTransfer.getData("text/plain");
+        if (raw !== "") sourceIdx = parseInt(raw);
+    }
+    dragSourceIdxOrden = null;
+    if (sourceIdx !== null && !isNaN(sourceIdx) && sourceIdx !== targetIdx) {
+        intercambiarSlotsOrden(sourceIdx, targetIdx);
+    }
+};
+
+window.addEventListener('dragover', function(e) {
+    if (dragSourceIdxOrden !== null) e.preventDefault();
+}, false);
+window.addEventListener('drop', function(e) {
+    if (dragSourceIdxOrden !== null) {
+        e.preventDefault();
+        dragSourceIdxOrden = null;
+        document.querySelectorAll('.order-slot').forEach(n => n.classList.remove('is-dragging', 'is-drag-over'));
+    }
+}, false);
+
+// --- TOUCH DRAG & DROP EN CELULARES ---
+window.iniciarTouchOrden = function(e, idx) {
+    touchOriginIdxOrden = idx;
+    touchMovedOrden = false;
+    touchPreventClickOrden = false;
+    const touch = e.touches[0];
+    touchStartXOrden = touch.clientX;
+    touchStartYOrden = touch.clientY;
+};
+
+window.moverTouchOrden = function(e) {
+    if (touchOriginIdxOrden === null) return;
+    const touch = e.touches[0];
+    const dx = Math.abs(touch.clientX - touchStartXOrden);
+    const dy = Math.abs(touch.clientY - touchStartYOrden);
+
+    if (!touchMovedOrden && (dx > 8 || dy > 8)) {
+        touchMovedOrden = true;
+        touchPreventClickOrden = true;
+        const originSlot = document.querySelector(`.order-slot[data-slot-idx="${touchOriginIdxOrden}"]`);
+        if (originSlot) originSlot.classList.add('is-dragging');
+
+        if (touchCloneElOrden) touchCloneElOrden.remove();
+        touchCloneElOrden = document.createElement('div');
+        touchCloneElOrden.className = 'order-touch-ghost';
+        const est = orderList[touchOriginIdxOrden];
+        if (est) {
+            const thumb = obtenerMiniaturaEstadioOrden(est);
+            touchCloneElOrden.innerHTML = `
+                <div class="order-ghost-badge">#${touchOriginIdxOrden + 1}</div>
+                <img src="${thumb}" class="order-ghost-img" alt="" draggable="false">
+                <div class="order-ghost-title">${est.estadio}</div>
+            `;
+        }
+        document.body.appendChild(touchCloneElOrden);
+    }
+
+    if (!touchMovedOrden || !touchCloneElOrden) return;
+
+    if (e.cancelable) e.preventDefault();
+    touchCloneElOrden.style.transform = `translate3d(${touch.clientX - 60}px, ${touch.clientY - 30}px, 0)`;
+
+    touchCloneElOrden.style.display = 'none';
+    const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    touchCloneElOrden.style.display = 'flex';
+
+    document.querySelectorAll('.order-slot').forEach(n => n.classList.remove('is-drag-over'));
+    const targetSlot = elemBelow ? elemBelow.closest('.order-slot') : null;
+    if (targetSlot) {
+        const tIdx = parseInt(targetSlot.dataset.slotIdx);
+        if (!isNaN(tIdx) && tIdx !== touchOriginIdxOrden) {
+            targetSlot.classList.add('is-drag-over');
+        }
+    }
+};
+
+window.soltarTouchOrden = function(e) {
+    if (touchOriginIdxOrden === null) return;
+
+    if (touchCloneElOrden) {
+        touchCloneElOrden.remove();
+        touchCloneElOrden = null;
+    }
+
+    document.querySelectorAll('.order-slot').forEach(n => {
+        n.classList.remove('is-dragging', 'is-drag-over');
+    });
+
+    if (!touchMovedOrden) {
+        touchOriginIdxOrden = null;
+        return;
+    }
+
+    const touch = e.changedTouches[0];
+    const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    const targetSlot = elemBelow ? elemBelow.closest('.order-slot') : null;
+
+    if (targetSlot) {
+        const targetIdx = parseInt(targetSlot.dataset.slotIdx);
+        if (!isNaN(targetIdx) && targetIdx !== touchOriginIdxOrden) {
+            intercambiarSlotsOrden(touchOriginIdxOrden, targetIdx);
+        }
+    }
+
+    touchOriginIdxOrden = null;
+    touchMovedOrden = false;
+    setTimeout(() => { touchPreventClickOrden = false; }, 250);
+};
+
+window.cancelarTouchOrden = function(e) {
+    if (touchCloneElOrden) {
+        touchCloneElOrden.remove();
+        touchCloneElOrden = null;
+    }
+    document.querySelectorAll('.order-slot').forEach(n => {
+        n.classList.remove('is-dragging', 'is-drag-over');
+    });
+    touchOriginIdxOrden = null;
+    touchMovedOrden = false;
+    touchPreventClickOrden = false;
+};
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -420,7 +597,7 @@ function renderJuegoOrden(revelar = false) {
         <div class="order-game-header">
             <h2 class="order-game-title">${imgIcono} ${titulo}</h2>
             <p class="order-game-subtitle">
-                Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> capacidad
+                Arrastrá o tocá las tarjetas para ordenarlas · de <b>Mayor a Menor</b> capacidad
             </p>
         </div>`;
     } else {
@@ -450,7 +627,7 @@ function renderJuegoOrden(revelar = false) {
         </div>
         <div class="scale-point-center">
             <i class="ph-bold ph-arrows-left-right"></i>
-            <span>Tocá dos para intercambiar o usá las flechas</span>
+            <span>Arrastrá o tocá las tarjetas para ordenar</span>
         </div>
         <div class="scale-point-right">
             <span>${labelBotDesktop}</span>
@@ -526,8 +703,22 @@ function renderJuegoOrden(revelar = false) {
             ? `<span class="order-mobile-val-badge ${ok ? 'ok' : 'wrong'}">${v}</span>` 
             : '';
 
+        const dragAttrs = !revelar ? `
+            data-slot-idx="${i}"
+            draggable="true"
+            ondragstart="iniciarArrastreOrden(event, ${i})"
+            ondragover="permitirArrastreSobreOrden(event, ${i})"
+            ondragleave="salirArrastreSobreOrden(event, ${i})"
+            ondrop="soltarCardOrden(event, ${i})"
+            ondragend="finalizarArrastreOrden(event)"
+            ontouchstart="iniciarTouchOrden(event, ${i})"
+            ontouchmove="moverTouchOrden(event)"
+            ontouchend="soltarTouchOrden(event)"
+            ontouchcancel="cancelarTouchOrden(event)"
+        ` : `data-slot-idx="${i}"`;
+
         slotsHTML += `
-        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="${slotClass}">
+        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="${slotClass}" ${dragAttrs}>
             <!-- BARRA SUPERIOR DESKTOP -->
             <div class="order-desktop-top-bar">
                 ${desktopRankTag}
@@ -539,7 +730,7 @@ function renderJuegoOrden(revelar = false) {
 
             <!-- FOTO / MINIATURA CON ACCIÓN DE ZOOM AL TOCAR -->
             <div class="order-slot-thumb-wrap" onclick="abrirFotoEstadioZoom(event, '${hdUrl}', '${estadioSafe}', '${clubSafe}')" title="Tocá para ampliar la foto">
-                <img src="${thumbUrl}" alt="${est.estadio}" class="order-slot-thumb-img" loading="lazy" onerror="this.onerror=null;this.src='${escudoClub}';">
+                <img src="${thumbUrl}" alt="${est.estadio}" class="order-slot-thumb-img" draggable="false" loading="lazy" onerror="this.onerror=null;this.src='${escudoClub}';">
                 <span class="order-slot-zoom-hint" title="Ampliar imagen"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
             </div>
 
@@ -547,7 +738,7 @@ function renderJuegoOrden(revelar = false) {
             <div class="order-slot-info">
                 <strong class="order-slot-title" title="${est.estadio}">${est.estadio}</strong>
                 <div class="order-slot-sub">
-                    <img src="${escudoClub}" class="order-slot-club-escudo" alt="${est.club}" onerror="this.style.display='none';">
+                    <img src="${escudoClub}" class="order-slot-club-escudo" draggable="false" alt="${est.club}" onerror="this.style.display='none';">
                     <span>${est.club}</span>
                 </div>
             </div>
@@ -574,7 +765,7 @@ function renderJuegoOrden(revelar = false) {
         <div class="order-desktop-confirm-bar">
             <div class="order-tip-box">
                 <i class="ph-fill ph-lightbulb"></i>
-                <span><b>Consejo:</b> Mirá el tamaño de las tribunas y bandejas haciendo clic en las fotos.</span>
+                <span><b>Consejo:</b> Arrastrá las tarjetas directamente a su lugar. Hacé clic en las fotos para ver tribunas.</span>
             </div>
             <button type="button" onclick="procesarResultadoOrden()" class="btn-confirm-order-desktop">
                 <i class="ph-fill ph-rocket-launch"></i>
@@ -655,6 +846,10 @@ function renderJuegoOrden(revelar = false) {
 }
 
 function seleccionarFilaOrden(idx) {
+    if (touchPreventClickOrden) {
+        touchPreventClickOrden = false;
+        return;
+    }
     if (orderSelectedIdx === null) {
         orderSelectedIdx = idx;
         renderJuegoOrden(false);
@@ -662,11 +857,7 @@ function seleccionarFilaOrden(idx) {
         orderSelectedIdx = null;
         renderJuegoOrden(false);
     } else {
-        const t = orderList[orderSelectedIdx];
-        orderList[orderSelectedIdx] = orderList[idx];
-        orderList[idx] = t;
-        orderSelectedIdx = null;
-        renderJuegoOrden(false);
+        intercambiarSlotsOrden(orderSelectedIdx, idx);
     }
 }
 

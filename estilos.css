@@ -16927,6 +16927,15 @@ body.video-abierto .hero-section {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
     box-sizing: border-box;
 }
+#order-modal .order-slot:not(.ok-reveal):not(.wrong-reveal) {
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+}
+#order-modal .order-slot:not(.ok-reveal):not(.wrong-reveal):active {
+    cursor: grabbing;
+}
 #order-modal .order-slot:hover:not(.ok-reveal):not(.wrong-reveal) {
     transform: translateY(-2px) scale(1.01);
     border-color: rgba(251, 191, 36, 0.5);
@@ -16936,6 +16945,21 @@ body.video-abierto .hero-section {
     border-color: #fbbf24 !important;
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(15, 24, 38, 0.98) 100%) !important;
     box-shadow: 0 8px 24px rgba(251, 191, 36, 0.35), inset 0 0 12px rgba(251, 191, 36, 0.15) !important;
+}
+#order-modal .order-slot.is-dragging {
+    opacity: 0.45 !important;
+    transform: scale(0.96) !important;
+    border: 2px dashed #fbbf24 !important;
+    box-shadow: 0 0 18px rgba(251, 191, 36, 0.4) !important;
+    cursor: grabbing !important;
+    filter: brightness(0.9);
+}
+#order-modal .order-slot.is-drag-over {
+    transform: scale(1.03) !important;
+    border-color: #00ff77 !important;
+    box-shadow: 0 0 24px rgba(0, 255, 119, 0.65), inset 0 0 14px rgba(0, 255, 119, 0.25) !important;
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(15, 24, 38, 0.98) 100%) !important;
+    z-index: 10 !important;
 }
 #order-modal .order-slot.ok-reveal {
     background: rgba(0, 230, 118, 0.12) !important;
@@ -17624,6 +17648,61 @@ body.video-abierto .hero-section {
     max-height: 60vh;
     object-fit: contain;
     display: block;
+}
+
+/* FANTASMA DE ARRASTRE TÁCTIL (MÓVIL) */
+.order-touch-ghost {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 170px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(13, 21, 34, 0.95);
+    border: 2px solid #fbbf24;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.85), 0 0 22px rgba(251, 191, 36, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 10070;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    will-change: transform;
+    transform: translate3d(-9999px, -9999px, 0);
+}
+.order-ghost-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: #fbbf24;
+    color: #000;
+    font-size: 0.78rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.order-ghost-img {
+    width: 44px;
+    height: 32px;
+    border-radius: 7px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.order-ghost-title {
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
 }
 
 /* COMPATIBILIDAD CON TEMA CLARO */
