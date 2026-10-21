@@ -82,6 +82,39 @@
                 osc.start(now);
                 osc.stop(now + 0.045);
 
+            } else if (tipo === 'pin' || tipo === 'pop') {
+                // 📍 Pop táctil / caída de aguja y pin en el mapa (680Hz -> 220Hz en 0.12s)
+                const dur = 0.12;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(680, now);
+                osc.frequency.exponentialRampToValueAtTime(220, now + dur);
+
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + dur + 0.01);
+
+                // Micro-impacto de aguja metálica tocando el mapa
+                const clickDur = 0.015;
+                const clickOsc = ctx.createOscillator();
+                const clickGain = ctx.createGain();
+                clickOsc.type = 'triangle';
+                clickOsc.frequency.setValueAtTime(1100, now);
+                clickOsc.frequency.exponentialRampToValueAtTime(350, now + clickDur);
+                clickGain.gain.setValueAtTime(0.14, now);
+                clickGain.gain.exponentialRampToValueAtTime(0.001, now + clickDur);
+
+                clickOsc.connect(clickGain);
+                clickGain.connect(ctx.destination);
+                clickOsc.start(now);
+                clickOsc.stop(now + clickDur);
+
             } else if (tipo === 'whoosh') {
                 // Transición rápida de aire / vuelo
                 const dur = 0.16;

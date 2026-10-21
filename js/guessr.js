@@ -1747,6 +1747,7 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
             guessrSelectedLatLng = e.latlng;
             if (guessrUserMarker) guessrUserMarker.setLatLng(guessrSelectedLatLng);
             else guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance);
+            if (typeof reproducirSonido === 'function') reproducirSonido('pin');
             const hint = document.getElementById('map-hint-overlay');
             if (hint) hint.style.opacity = '0';
             btn.innerHTML = `<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;
