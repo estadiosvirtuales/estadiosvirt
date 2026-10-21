@@ -174,6 +174,47 @@ El nuevo Estadio UNO vs El mítico Bosque Platense. ¿Cuál de los dos alberga m
 🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
 
 #Estudiantes #GELP #GimnasiaLP #ClasicoPlatense #EstadioUNO #ElBosque #LaPlata #FutbolArgentino #EstadiosVirtuales`
+    },
+    'central-newells': {
+        slug: 'CENTRAL-VS-NEWELLS',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Rosarino',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La máxima pasión de la ciudad de Rosario',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Central_vs_Newells.mp4',
+        portadaFileName: 'Portada_Duelo_Central_Newells.jpg',
+        bannerDiferencia: '¡CENTRAL POR CASI 5.000 LUGARES!',
+        team1: {
+            id: 'central',
+            nombre: 'ROSARIO CENTRAL',
+            estadio: 'Gigante de Arroyito',
+            apodo: 'El Gigante',
+            capacidadNum: 46955,
+            capacidadTexto: '46.955 esp.',
+            escudoFile: 'Rosario Central.webp',
+            borderColor: '#003399',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\central.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'newells',
+            nombre: "NEWELL'S",
+            estadio: 'Marcelo Bielsa',
+            apodo: 'El Coloso',
+            capacidadNum: 42000,
+            capacidadTexto: '42.000 esp.',
+            escudoFile: 'Newells.webp',
+            borderColor: '#cc0000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\newells.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿ROSARIO CENTRAL O NEWELL'S? 🏟️🔥
+El Gigante de Arroyito vs El Coloso Marcelo Bielsa. ¿Cuál de los dos templos del Clásico Rosarino tiene mayor capacidad oficial de espectadores? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#RosarioCentral #Newells #ClasicoRosarino #GiganteDeArroyito #ColosoMarceloBielsa #ElColoso #Estadios #FutbolArgentino #EstadiosVirtuales`
     }
 };
 
