@@ -177,12 +177,12 @@ async function generarOverlaysGraficos() {
                     box-shadow: 0 12px 30px rgba(0,0,0,0.8);
                 }
                 .club-pill.racing {
-                    top: 240px;
+                    top: 220px;
                     left: 50px;
                     border-left: 6px solid #00b0ff;
                 }
                 .club-pill.indep {
-                    top: 1010px;
+                    top: 1100px;
                     left: 50px;
                     border-left: 6px solid #ff3344;
                 }
@@ -245,7 +245,7 @@ async function generarOverlaysGraficos() {
             <div style="flex:1; height:3px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);"></div>
             <div style="background:linear-gradient(135deg, #ffd700 0%, #ff8800 100%); color:#0b111e; width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:38px; font-weight:900; border:4px solid #ffffff; box-shadow:0 0 30px rgba(255,190,0,0.6);">VS</div>
             <div style="flex:1; height:3px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);"></div>
-            <div style="position:absolute; top:95px; background:rgba(0,0,0,0.85); border:1.5px solid rgba(255,215,0,0.7); border-radius:20px; padding:6px 20px; color:#ffffff; font-size:19px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">¿Cuál es más grande? Votá en comentarios 🗳️</div>
+            <div style="position:absolute; top:-50px; background:rgba(0,0,0,0.85); border:1.5px solid rgba(255,215,0,0.7); border-radius:20px; padding:6px 20px; color:#ffffff; font-size:19px; font-weight:800; letter-spacing:1px; text-transform:uppercase;">¿Cuál es más grande? Votá en comentarios 🗳️</div>
         </div>
     `);
     await page.setContent(htmlVotacion, { timeout: 5000 });
@@ -309,8 +309,8 @@ async function ejecutar() {
     const tempAudioPath = path.join(__dirname, 'temp_audio_vs.wav');
     fs.writeFileSync(tempAudioPath, generarAudioProcedural(20.0));
 
-    const videoRacing = "E:\\Google earth studio\\videos para mostrar\\Argentina\\CILINDRO-AVELLANEDA\\Estadio_Cilindro_De_Avellaneda_Racing.mp4";
-    const videoIndep = "E:\\Google earth studio\\videos para mostrar\\Argentina\\LIBERTADORES-DE-AMERICA\\Estadio_Libertadores_De_America_Independiente.mp4";
+    const videoRacing = "E:\\Google earth studio\\Argentina\\Subidos\\A\\Cilindro(listo)x2\\Estadio Presidente Perón.mp4";
+    const videoIndep = "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4";
 
     const outputName = 'Duelo_Capacidad_Racing_vs_Independiente.mp4';
     const outputProject = path.join(outputFolder, outputName);
