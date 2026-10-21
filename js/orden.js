@@ -10,7 +10,11 @@ let orderStartTime = 0;
 
 function cerrarModalOrden() {
     const m = document.getElementById('order-modal');
-    if (m) m.style.display = 'none';
+    if (m) {
+        m.style.display = 'none';
+        const content = m.querySelector('.modal-content');
+        if (content) content.classList.remove('order-game-active');
+    }
     orderSelectedIdx = null;
     orderList = [];
     if (typeof verificarSobreBienvenidaPostPartida === 'function') {
@@ -262,6 +266,8 @@ function abrirModalOrden() {
     if (!modal || !body) return;
 
     modal.style.display = 'flex';
+    const content = modal.querySelector('.modal-content');
+    if (content) content.classList.remove('order-game-active');
     orderSelectedIdx = null;
     orderList = [];
 
@@ -316,6 +322,11 @@ function iniciarJuegoOrden(modo) {
         if (typeof showToast === 'function') showToast('Esperá un momento...', 'ph-info', 'danger');
         return;
     }
+    const modal = document.getElementById('order-modal');
+    if (modal) {
+        const content = modal.querySelector('.modal-content');
+        if (content) content.classList.add('order-game-active');
+    }
     orderModo = modo;
     orderSelectedIdx = null;
     orderPuntosGanados = 0;
@@ -369,25 +380,96 @@ function obtenerMiniaturaEstadioOrden(est) {
     return est.foto || 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';
 }
 
+function obtenerFotoHdEstadioOrden(est) {
+    const link = est.linkVideo || '';
+    if (link.includes('youtube.com') || link.includes('youtu.be')) {
+        const match = link.match(/(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/)|youtu\.be\/)([\w\-]{11})/i);
+        if (match && match[1]) {
+            return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+        }
+    }
+    return est.foto || 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';
+}
+
+function abrirFotoEstadioZoom(e, url, estadio, club) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    const modal = document.getElementById('order-photo-zoom-modal');
+    const imgEl = document.getElementById('order-zoom-img');
+    const titleEl = document.getElementById('order-zoom-stadium-title');
+    const clubEl = document.getElementById('order-zoom-club-title');
+    if (!modal || !imgEl) return;
+
+    imgEl.src = url;
+    if (titleEl) titleEl.textContent = estadio || 'Estadio';
+    if (clubEl) clubEl.textContent = club || '';
+
+    modal.style.display = 'flex';
+}
+
+function cerrarFotoEstadioZoom(e) {
+    if (e && e.target && e.target.closest && e.target.closest('.modal-content') && !e.target.closest('.close-btn')) {
+        return;
+    }
+    const modal = document.getElementById('order-photo-zoom-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function moverCardOrden(e, idx, delta) {
+    if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+    const targetIdx = idx + delta;
+    if (targetIdx < 0 || targetIdx >= orderList.length) return;
+    const t = orderList[idx];
+    orderList[idx] = orderList[targetIdx];
+    orderList[targetIdx] = t;
+    orderSelectedIdx = null;
+    renderJuegoOrden(false);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const zoomModal = document.getElementById('order-photo-zoom-modal');
+        if (zoomModal && zoomModal.style.display === 'flex') {
+            zoomModal.style.display = 'none';
+            e.stopPropagation();
+        }
+    }
+});
+
 function renderJuegoOrden(revelar = false) {
+    const modal = document.getElementById('order-modal');
+    if (modal) {
+        const content = modal.querySelector('.modal-content');
+        if (content) content.classList.add('order-game-active');
+    }
     const body = document.getElementById('order-modal-body');
     if (!body) return;
 
     const imgIcono = orderModo === 'capacidad' 
-        ? '<img src="capacidad.webp" alt="Capacidad" style="width:38px;height:38px;object-fit:contain;">' 
-        : '<img src="antiguedad.webp" alt="Antigüedad" style="width:38px;height:38px;object-fit:contain;">';
+        ? '<img src="capacidad.webp" alt="Capacidad" style="width:36px;height:36px;object-fit:contain;">' 
+        : '<img src="antiguedad.webp" alt="Antigüedad" style="width:36px;height:36px;object-fit:contain;">';
 
     const titulo = orderModo === 'capacidad' ? 'Mayor a Menor Capacidad' : 'Del Más Antiguo al Más Moderno';
-    const labelTop = orderModo === 'capacidad' ? '⬆ MÁS GRANDE' : '⬆ MÁS ANTIGUO';
-    const labelBot = orderModo === 'capacidad' ? '⬇ MÁS CHICO' : '⬇ MÁS MODERNO';
+    const labelTopMobile = orderModo === 'capacidad' ? '⬆ MÁS GRANDE' : '⬆ MÁS ANTIGUO';
+    const labelBotMobile = orderModo === 'capacidad' ? '⬇ MÁS CHICO' : '⬇ MÁS MODERNO';
+
+    const labelTopDesktop = orderModo === 'capacidad' ? '#1 MÁS GRANDE (Mayor Aforo)' : '#1 MÁS ANTIGUO (Fundación previa)';
+    const labelBotDesktop = orderModo === 'capacidad' ? '#5 MÁS CHICO (Menor Aforo)' : '#5 MÁS MODERNO (Fundación reciente)';
 
     let cabeceraHTML = '';
     if (!revelar) {
         cabeceraHTML = `
-        <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:10px;margin-bottom:10px;text-align:center;flex-shrink:0;">
-            <h2 style="font-size:1.15rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;">${imgIcono} ${titulo}</h2>
-            <p style="color:var(--text-muted);font-size:.82rem;margin-top:4px;line-height:1.4;">
-                ${orderModo === 'capacidad' ? 'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> capacidad' : 'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>'}
+        <div class="order-game-header">
+            <h2 class="order-game-title">${imgIcono} ${titulo}</h2>
+            <p class="order-game-subtitle">
+                ${orderModo === 'capacidad' 
+                    ? 'Tocá dos tarjetas para intercambiarlas · de <b>Mayor a Menor</b> capacidad' 
+                    : 'Tocá dos tarjetas para intercambiarlas · del <b>Más Viejo</b> al <b>Más Moderno</b>'}
             </p>
         </div>`;
     } else {
@@ -399,64 +481,160 @@ function renderJuegoOrden(revelar = false) {
             : `📊 Acertaste ${aciertos} de 5 posiciones correctas`;
 
         cabeceraHTML = `
-        <div style="border-bottom:2px dashed var(--border-subtle);padding-bottom:12px;margin-bottom:10px;text-align:center;flex-shrink:0;">
-            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,230,118,0.12);border:1px solid rgba(0,230,118,0.4);border-radius:20px;padding:3px 12px;margin-bottom:6px;font-size:0.72rem;font-weight:900;color:var(--accent-color);letter-spacing:1px;text-transform:uppercase;">
+        <div class="order-game-header revealed">
+            <div class="order-endgame-pill">
                 <i class="ph-fill ph-check-circle"></i> Desafío Finalizado
             </div>
-            <h2 style="font-size:1.35rem;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;text-transform:uppercase;letter-spacing:-0.3px;">${titulo}</h2>
-            <p style="color:var(--text-muted);font-size:.84rem;margin-top:3px;font-weight:600;">${mensajeAciertos}</p>
+            <h2 class="order-game-title">${titulo}</h2>
+            <p class="order-game-subtitle">${mensajeAciertos}</p>
         </div>`;
     }
 
+    // Escala Desktop (horizontal)
+    const scaleBarDesktopHTML = !revelar ? `
+    <div class="order-scale-bar-desktop">
+        <div class="scale-point-left">
+            <i class="ph-bold ph-trophy"></i>
+            <span>${labelTopDesktop}</span>
+        </div>
+        <div class="scale-point-center">
+            <i class="ph-bold ph-arrows-left-right"></i>
+            <span>Tocá dos para intercambiar o usá las flechas</span>
+        </div>
+        <div class="scale-point-right">
+            <span>${labelBotDesktop}</span>
+            <i class="ph-bold ph-arrow-down-right"></i>
+        </div>
+    </div>` : '';
+
+    // Mobile vertical guides
+    const subtituloGrillaMobile = !revelar 
+        ? `<div class="order-mobile-guide top">${labelTopMobile}</div>` 
+        : `<div class="order-mobile-guide top revealed">POSICIÓN FINAL REVELADA</div>`;
+
+    const pieGrillaMobile = !revelar 
+        ? `<div class="order-mobile-guide bottom">${labelBotMobile}</div>` 
+        : '';
+
     let slotsHTML = '';
     orderList.forEach((est, i) => {
-        let bgC = 'var(--surface-color)', brC = 'var(--border-strong)', badge = '', extraStyle = '';
-        let iconL = `<div style="background:var(--bg-color);color:var(--text-muted);border:2px solid var(--border-subtle);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;flex-shrink:0;">${i+1}</div>`;
+        const thumbUrl = obtenerMiniaturaEstadioOrden(est);
+        const hdUrl = obtenerFotoHdEstadioOrden(est);
+        const escudoClub = est.foto || 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';
+        const estadioSafe = (est.estadio || '').replace(/["']/g, '');
+        const clubSafe = (est.club || '').replace(/["']/g, '');
+        const ok = revelar && (i === est.correctIdx);
+        const v = orderModo === 'capacidad' ? `${est.valor.toLocaleString('es-AR')} esp.` : `${est.valor}`;
 
+        let slotClass = 'order-slot';
         if (revelar) {
-            const ok = i === est.correctIdx;
-            bgC = ok ? 'rgba(0,230,118,.12)' : 'rgba(255,71,87,.12)';
-            brC = ok ? 'var(--accent-color)' : 'var(--danger-color)';
-            iconL = ok 
-                ? `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.05rem;font-weight:900;">✓</div>` 
-                : `<div style="background:var(--danger-color);color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.05rem;font-weight:900;">✕</div>`;
-            const v = orderModo === 'capacidad' ? `${est.valor.toLocaleString('es-AR')} esp.` : `${est.valor}`;
-            badge = `<span style="background:${ok ? 'var(--accent-color)' : 'var(--danger-color)'};color:${ok ? '#000' : '#fff'};font-size:.72rem;font-weight:900;padding:3px 10px;border-radius:20px;margin-left:auto;flex-shrink:0;">${v}</span>`;
+            slotClass += ok ? ' ok-reveal' : ' wrong-reveal';
         } else if (orderSelectedIdx === i) {
-            brC = 'var(--accent-color)';
-            bgC = 'var(--accent-dim)';
-            extraStyle = 'transform:translateY(-4px) scale(1.01);box-shadow:0 8px 24px var(--accent-glow);';
-            iconL = `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;font-weight:900;">↕</div>`;
+            slotClass += ' selected';
         }
 
-        const thumbUrl = obtenerMiniaturaEstadioOrden(est);
-        const fallbackEscudo = est.foto || 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';
-        const thumbHTML = `
-        <div class="order-slot-thumb-wrap">
-            <img src="${thumbUrl}" alt="${est.estadio}" class="order-slot-thumb-img" loading="lazy" onerror="this.onerror=null;this.src='${fallbackEscudo}';">
-        </div>`;
+        // Mobile rank circle (1, 2, 3...)
+        let mobileRankCircle = `<div class="order-mobile-circle">${i + 1}</div>`;
+        if (revelar) {
+            mobileRankCircle = ok 
+                ? `<div class="order-mobile-circle ok">✓</div>` 
+                : `<div class="order-mobile-circle wrong">✕</div>`;
+        } else if (orderSelectedIdx === i) {
+            mobileRankCircle = `<div class="order-mobile-circle selected">↕</div>`;
+        }
+
+        // Desktop top bar: user explicitly requested:
+        // "le sacaria el aerea hd y el posicion 1..2..3 ya que estan los #"
+        // So just the #1, #2 badge, and if selected: "Seleccionado"
+        const desktopRankTag = `<span class="order-desktop-rank-badge ${i === 0 ? 'gold' : ''}">#${i + 1}</span>`;
+        const desktopSelectedTag = (orderSelectedIdx === i) 
+            ? `<span class="order-desktop-selected-tag"><i class="ph-fill ph-check-circle"></i> Seleccionado</span>` 
+            : '';
+
+        // Desktop action bar (arrows) or reveal badge
+        let desktopFooterContent = '';
+        if (revelar) {
+            desktopFooterContent = `
+            <div class="order-desktop-reveal-box ${ok ? 'ok' : 'wrong'}">
+                <span>${ok ? '✓ Correcto' : '✕ Incorrecto'}</span>
+                <strong>${v}</strong>
+            </div>`;
+        } else {
+            desktopFooterContent = `
+            <div class="order-desktop-footer-row">
+                <span class="order-swap-label">Posición</span>
+                <div class="order-card-arrows">
+                    <button type="button" class="order-arrow-btn" ${i === 0 ? 'disabled' : `onclick="moverCardOrden(event, ${i}, -1)"`} title="Mover a la izquierda"><i class="ph-bold ph-caret-left"></i></button>
+                    <button type="button" class="order-arrow-btn" ${i === 4 ? 'disabled' : `onclick="moverCardOrden(event, ${i}, 1)"`} title="Mover a la derecha"><i class="ph-bold ph-caret-right"></i></button>
+                </div>
+            </div>`;
+        }
+
+        // Mobile reveal badge
+        const mobileRevealBadge = revelar 
+            ? `<span class="order-mobile-val-badge ${ok ? 'ok' : 'wrong'}">${v}</span>` 
+            : '';
 
         slotsHTML += `
-        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="order-slot ${orderSelectedIdx === i ? 'selected' : ''}" style="background:${bgC};border:2px solid ${brC};cursor:${revelar ? 'default' : 'pointer'};margin-bottom:6px;${extraStyle}">
-            ${iconL}
-            ${thumbHTML}
-            <div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;">
-                <strong style="font-size:.88rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong>
-                <span style="color:var(--text-muted);font-size:.75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span>
+        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="${slotClass}">
+            <!-- BARRA SUPERIOR DESKTOP -->
+            <div class="order-desktop-top-bar">
+                ${desktopRankTag}
+                ${desktopSelectedTag}
             </div>
-            ${badge}
+
+            <!-- CÍRCULO NÚMERO MOBILE -->
+            ${mobileRankCircle}
+
+            <!-- FOTO / MINIATURA CON ACCIÓN DE ZOOM AL TOCAR -->
+            <div class="order-slot-thumb-wrap" onclick="abrirFotoEstadioZoom(event, '${hdUrl}', '${estadioSafe}', '${clubSafe}')" title="Tocá para ampliar la foto">
+                <img src="${thumbUrl}" alt="${est.estadio}" class="order-slot-thumb-img" loading="lazy" onerror="this.onerror=null;this.src='${escudoClub}';">
+                <span class="order-slot-zoom-hint" title="Ampliar imagen"><i class="ph-bold ph-magnifying-glass-plus"></i></span>
+            </div>
+
+            <!-- CUERPO DE INFORMACIÓN -->
+            <div class="order-slot-info">
+                <strong class="order-slot-title" title="${est.estadio}">${est.estadio}</strong>
+                <div class="order-slot-sub">
+                    <img src="${escudoClub}" class="order-slot-club-escudo" alt="${est.club}" onerror="this.style.display='none';">
+                    <span>${est.club}</span>
+                </div>
+            </div>
+
+            <!-- BADGE MOBILE REVELADO -->
+            ${mobileRevealBadge}
+
+            <!-- PIE DE TARJETA DESKTOP -->
+            <div class="order-desktop-card-footer">
+                ${desktopFooterContent}
+            </div>
         </div>`;
     });
 
     let timerBarHTML = !revelar 
-        ? `<div style="background:var(--border-subtle);border-radius:20px;height:4px;margin-bottom:12px;overflow:hidden;"><div id="order-timer-bar" style="height:100%;border-radius:20px;background:var(--accent-color);width:100%;transition:width .5s linear;"></div></div>` 
+        ? `<div class="order-timer-wrap"><div id="order-timer-bar"></div></div>` 
         : '';
 
+    // BOTONERAS:
     let botonera = '';
     if (!revelar) {
         botonera = `
-        <div style="margin-top: 10px; margin-bottom: 14px; width: 100%; flex-shrink: 0; box-sizing: border-box;">
-            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d" style="width: 100%; min-height: unset !important; height: auto !important; padding: 10px 18px !important; font-size: 0.88rem !important; font-weight: 900 !important; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; border-radius: 12px !important; background: linear-gradient(135deg, #00e5ff 0%, #2979ff 55%, #1a237e 100%) !important; color: #ffffff !important; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.35) !important; border-top: 2px solid rgba(255, 255, 255, 0.8) !important; box-shadow: 0 4px 18px rgba(41, 121, 255, 0.45), 0 0 16px rgba(0, 229, 255, 0.35) !important; box-sizing: border-box; cursor: pointer;">
+        <!-- BOTÓN CONFIRMAR EN DESKTOP CON CONSEJO -->
+        <div class="order-desktop-confirm-bar">
+            <div class="order-tip-box">
+                <i class="ph-fill ph-lightbulb"></i>
+                <span><b>Consejo:</b> Mirá el tamaño de las tribunas y bandejas haciendo clic en las fotos.</span>
+            </div>
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-confirm-order-desktop">
+                <i class="ph-fill ph-rocket-launch"></i>
+                <span>¡Confirmar orden!</span>
+                <i class="ph-bold ph-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- BOTÓN CONFIRMAR EN MOBILE -->
+        <div class="order-mobile-confirm-bar">
+            <button type="button" onclick="procesarResultadoOrden()" class="btn-3d order-btn-confirm-mobile">
                 <span style="display: flex; align-items: center; gap: 8px;">
                     <i class="ph-fill ph-rocket-launch" style="font-size: 1.15rem;"></i>
                     <span>¡Confirmar orden!</span>
@@ -470,8 +648,8 @@ function renderJuegoOrden(revelar = false) {
         const nivelActual = NIVELES[typeof calcularNivelIdx === 'function' ? calcularNivelIdx(userStats.xpTotal) : 0];
 
         const cartelGuardadoOrden = `
-        <div style="width:100%; background:linear-gradient(135deg, rgba(0,255,119,0.12) 0%, rgba(10,36,24,0.85) 100%); border:1.5px solid #00e676; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; box-sizing:border-box; margin-bottom:10px;">
-            <span style="font-size:0.78rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+        <div class="order-record-card">
+            <span class="order-record-text">
                 <i class="ph-fill ph-check-circle" style="color:#00ff77; font-size:1.1rem; flex-shrink:0;"></i> Récord anotado: <b id="lbl-apodo-guardado" style="color:#00ff77;">${sanitizarHTML(nombreGuardadoOrden)}</b>
             </span>
             <button type="button" onclick="cambiarApodoDesdePantallaFinal()" class="btn-3d secondary" style="padding:5px 10px; font-size:0.70rem; height:auto; min-height:auto; flex-shrink:0; border-radius:8px;">
@@ -480,7 +658,7 @@ function renderJuegoOrden(revelar = false) {
         </div>`;
 
         botonera = `
-        <div style="background:var(--surface-color); border:2px solid var(--border-strong); padding:14px; border-radius:18px; margin-top:14px; flex-shrink:0; box-shadow:0 -5px 20px rgba(0,0,0,.3); width:100%; box-sizing:border-box;">
+        <div class="order-endgame-summary-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <div>
                     <div style="font-size:.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:800; letter-spacing:1px;">Puntaje obtenido</div>
@@ -505,21 +683,16 @@ function renderJuegoOrden(revelar = false) {
         </div>`;
     }
 
-    const subtituloGrilla = !revelar 
-        ? `<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;opacity:.85;">${labelTop}</div>` 
-        : `<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">POSICIÓN FINAL REVELADA</div>`;
-
-    const pieGrilla = !revelar 
-        ? `<div style="text-align:center;font-size:.68rem;font-weight:800;color:var(--accent-color);text-transform:uppercase;letter-spacing:1px;margin-top:4px;opacity:.85;">${labelBot}</div>` 
-        : '';
-
     body.innerHTML = `
         ${cabeceraHTML}
         ${timerBarHTML}
-        <div style="display:flex;flex-direction:column;flex-grow:1;overflow-y:auto;padding:2px 4px 6px;scrollbar-width:thin;">
-            ${subtituloGrilla}
-            ${slotsHTML}
-            ${pieGrilla}
+        ${scaleBarDesktopHTML}
+        <div class="order-scroll-container">
+            ${subtituloGrillaMobile}
+            <div class="order-slots-grid">
+                ${slotsHTML}
+            </div>
+            ${pieGrillaMobile}
         </div>
         ${botonera}
     `;

@@ -1131,10 +1131,27 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 
 <div id="order-modal" class="modal-overlay">
-<div class="modal-content" style="max-width:500px;height:auto;max-height:95vh;padding:16px 20px;display:flex;flex-direction:column;transition:height 0.3s ease;">
+<div class="modal-content order-modal-content">
 <button class="close-btn" onclick="cerrarModalOrden()"><i class="ph-bold ph-x"></i></button>
 <div id="order-modal-body" style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;"></div>
 </div>
+</div>
+<!-- 🔍 MODAL ZOOM FOTO DE ESTADIO (DESAFÍO DE ORDEN) -->
+<div id="order-photo-zoom-modal" class="modal-overlay" style="display:none; z-index:10060;" onclick="cerrarFotoEstadioZoom(event)">
+    <div class="modal-content order-zoom-modal-box" onclick="event.stopPropagation()">
+        <button class="close-btn" onclick="cerrarFotoEstadioZoom()"><i class="ph-bold ph-x"></i></button>
+        <div class="order-zoom-modal-header">
+            <h3 id="order-zoom-stadium-title">Estadio</h3>
+            <span id="order-zoom-club-title">Club</span>
+        </div>
+        <div class="order-zoom-img-container">
+            <img id="order-zoom-img" src="" alt="Vista aérea ampliada">
+        </div>
+        <div class="order-zoom-footer">
+            <i class="ph-fill ph-airplane-tilt"></i>
+            <span>Vista aérea en alta definición · Tocá o hacé clic afuera para cerrar</span>
+        </div>
+    </div>
 </div>
 <div id="ranking-modal" class="modal-overlay" onclick="cerrarModalRanking()">
 <div class="modal-content" onclick="event.stopPropagation()">
