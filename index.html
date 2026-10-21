@@ -143,22 +143,67 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RWJXZTRDBT"></script>
 <script>
-  // 🛡️ DETECTOR AUTOMÁTICO DE ADMINISTRADOR / DESARROLLADOR
-  // Desactiva Analytics para que tus visitas de prueba en PC o móvil no cuenten como usuarios nuevos
+  // 🛡️ DETECTOR AUTOMÁTICO DE ADMINISTRADOR / DESARROLLADOR BLINDADO
+  // Excluye al 100%: VS Code (Go Live), localhost, tu cuenta de Google y tu celular propio
   (function() {
     var urlParams = new URLSearchParams(window.location.search);
+    var cambioAdmin = null;
+
     if (urlParams.get('admin') === '1' || urlParams.get('admin') === 'jonathan') {
       localStorage.setItem('ev_admin_debug', 'true');
+      cambioAdmin = 'activado';
     } else if (urlParams.get('admin') === '0') {
       localStorage.removeItem('ev_admin_debug');
+      cambioAdmin = 'desactivado';
     }
 
-    var esLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+    // 1. Detección automática de VS Code Go Live y servidores locales (puertos :5500, localhost, 127.0.0.1, IP local)
+    var esLocal = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.hostname.startsWith('192.168.') || 
+                  window.location.hostname.startsWith('10.') || 
+                  (window.location.port && window.location.port !== '') || 
+                  window.location.protocol === 'file:';
+
+    // 2. Detección de tu cuenta oficial de Google
+    var esCuentaAdmin = false;
+    try {
+      var uLog = JSON.parse(localStorage.getItem('ev_user_logged') || '{}');
+      if (uLog && uLog.email && uLog.email.toLowerCase() === 'estadiosvirtuales1@gmail.com') {
+        localStorage.setItem('ev_admin_debug', 'true');
+        esCuentaAdmin = true;
+      }
+    } catch(e) {}
+
+    // 3. Bandera guardada en este navegador (activada desde ?admin=1)
     var esAdmin = localStorage.getItem('ev_admin_debug') === 'true';
 
-    if (esLocal || esAdmin) {
+    // 🚫 Si es tu PC, tu Go Live o tu celular marcado -> APAGADO TOTAL DE GOOGLE ANALYTICS
+    if (esLocal || esAdmin || esCuentaAdmin) {
       window['ga-disable-G-RWJXZTRDBT'] = true;
-      console.log('🛡️ [Analytics] Modo Administrador activo: tus visitas y pruebas no se envían a Google Analytics.');
+      console.log('%c🛡️ [Analytics] MODO ADMINISTRADOR ACTIVO: Visitas, clics y partidas excluidas al 100%.', 'background:#00e676;color:#04160a;font-weight:bold;padding:4px 8px;border-radius:4px;');
+    }
+
+    // 🔔 Cartel de confirmación visual en pantalla al activar o desactivar
+    if (cambioAdmin) {
+      window.addEventListener('DOMContentLoaded', function() {
+        var aviso = document.createElement('div');
+        aviso.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:14px 22px;border-radius:14px;font-weight:800;font-size:0.92rem;z-index:9999999;box-shadow:0 12px 35px rgba(0,0,0,0.7);text-align:center;font-family:system-ui,-apple-system,sans-serif;pointer-events:none;transition:opacity 0.4s ease;';
+        if (cambioAdmin === 'activado') {
+          aviso.style.background = '#00e676';
+          aviso.style.color = '#04160a';
+          aviso.innerHTML = '🛡️ ¡MODO ADMIN ACTIVADO!<br><span style="font-size:0.78rem;font-weight:600;opacity:0.9;">Tus visitas y pruebas en este dispositivo NO se enviarán a Google Analytics.</span>';
+        } else {
+          aviso.style.background = '#ff4757';
+          aviso.style.color = '#ffffff';
+          aviso.innerHTML = '❌ MODO ADMIN DESACTIVADO<br><span style="font-size:0.78rem;font-weight:600;opacity:0.9;">Este dispositivo vuelve a contar en Analytics.</span>';
+        }
+        document.body.appendChild(aviso);
+        setTimeout(function() {
+          aviso.style.opacity = '0';
+          setTimeout(function() { aviso.remove(); }, 400);
+        }, 5000);
+      });
     }
   })();
 
