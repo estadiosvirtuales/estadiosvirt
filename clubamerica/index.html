@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Club América (Estadio Azteca) | Estadios Virtuales</title>
+    <title>Estadio de Club América (Estadio Azteca) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estadio Azteca de Club América (México). Capacidad para 87.523 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/clubamerica">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Club América (Estadio Azteca)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Club América.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/mexico.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estadio Azteca",
-      "maximumAttendeeCapacity": 87523,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "México"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 19.3029,
-        "longitude": -99.1505
-      },
-      "url": "https://www.estadiosvirtuales.com/clubamerica",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/mexico.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/clubamerica#stadium",
+          "name": "Estadio Azteca",
+          "alternateName": "Estadio de Club América",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estadio Azteca de Club América (México).",
+          "maximumAttendeeCapacity": 87523,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "México"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 19.3029,
+            "longitude": -99.1505
+          },
+          "url": "https://www.estadiosvirtuales.com/clubamerica",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/mexico.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/clubamerica#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Club América",
+              "item": "https://www.estadiosvirtuales.com/clubamerica"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

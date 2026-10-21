@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Quilmes (Centenario Ciudad de Quilmes) | Estadios Virtuales</title>
+    <title>Estadio de Quilmes (Centenario Ciudad de Quilmes) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Centenario Ciudad de Quilmes de Quilmes (Argentina). Capacidad para 30.200 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/quilmes">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Quilmes (Centenario Ciudad de Quilmes)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Quilmes.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Quilmes.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Centenario Ciudad de Quilmes",
-      "maximumAttendeeCapacity": 30200,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Argentina"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -34.7416,
-        "longitude": -58.2517
-      },
-      "url": "https://www.estadiosvirtuales.com/quilmes",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Quilmes.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/quilmes#stadium",
+          "name": "Centenario Ciudad de Quilmes",
+          "alternateName": "Estadio de Quilmes",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Centenario Ciudad de Quilmes de Quilmes (Argentina).",
+          "maximumAttendeeCapacity": 30200,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Argentina"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -34.7416,
+            "longitude": -58.2517
+          },
+          "url": "https://www.estadiosvirtuales.com/quilmes",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Quilmes.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/quilmes#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Quilmes",
+              "item": "https://www.estadiosvirtuales.com/quilmes"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

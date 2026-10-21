@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Fortuna Sittard (Fortuna Sittard Stadion) | Estadios Virtuales</title>
+    <title>Estadio de Fortuna Sittard (Fortuna Sittard Stadion) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Fortuna Sittard Stadion de Fortuna Sittard (Países Bajos). Capacidad para 10.300 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/fortunasittard">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Fortuna Sittard (Fortuna Sittard Stadion)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Fortuna Sittard.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/fortunasittard.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Fortuna Sittard Stadion",
-      "maximumAttendeeCapacity": 10300,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 50.99209656578447,
-        "longitude": 5.8440534417786285
-      },
-      "url": "https://www.estadiosvirtuales.com/fortunasittard",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/fortunasittard.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/fortunasittard#stadium",
+          "name": "Fortuna Sittard Stadion",
+          "alternateName": "Estadio de Fortuna Sittard",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Fortuna Sittard Stadion de Fortuna Sittard (Países Bajos).",
+          "maximumAttendeeCapacity": 10300,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 50.99209656578447,
+            "longitude": 5.8440534417786285
+          },
+          "url": "https://www.estadiosvirtuales.com/fortunasittard",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/fortunasittard.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/fortunasittard#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Fortuna Sittard",
+              "item": "https://www.estadiosvirtuales.com/fortunasittard"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

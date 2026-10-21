@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Feyenoord Rotterdam (Stadion Feijenoord (De Kuip)) | Estadios Virtuales</title>
+    <title>Estadio de Feyenoord Rotterdam (Stadion Feijenoord (De Kuip)) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Stadion Feijenoord (De Kuip) de Feyenoord Rotterdam (Países Bajos). Capacidad para 47.500 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/feyenoordrotterdam">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Feyenoord Rotterdam (Stadion Feijenoord (De Kuip))">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Feyenoord Rotterdam.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/feyenoord.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Stadion Feijenoord (De Kuip)",
-      "maximumAttendeeCapacity": 47500,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 51.89397702843737,
-        "longitude": 4.523856685505685
-      },
-      "url": "https://www.estadiosvirtuales.com/feyenoordrotterdam",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/feyenoord.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/feyenoordrotterdam#stadium",
+          "name": "Stadion Feijenoord (De Kuip)",
+          "alternateName": "Estadio de Feyenoord Rotterdam",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Stadion Feijenoord (De Kuip) de Feyenoord Rotterdam (Países Bajos).",
+          "maximumAttendeeCapacity": 47500,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 51.89397702843737,
+            "longitude": 4.523856685505685
+          },
+          "url": "https://www.estadiosvirtuales.com/feyenoordrotterdam",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/feyenoord.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/feyenoordrotterdam#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Feyenoord Rotterdam",
+              "item": "https://www.estadiosvirtuales.com/feyenoordrotterdam"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

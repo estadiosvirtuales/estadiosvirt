@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Borussia Mönchengladbach (Borussia-Park) | Estadios Virtuales</title>
+    <title>Estadio de Borussia Mönchengladbach (Borussia-Park) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Borussia-Park de Borussia Mönchengladbach (Alemania). Capacidad para 54.057 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/borussiamonchengladbach">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Borussia Mönchengladbach (Borussia-Park)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Borussia Mönchengladbach.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/bmonchengladbach.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Borussia-Park",
-      "maximumAttendeeCapacity": 54057,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Alemania"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 51.1747,
-        "longitude": 6.3853
-      },
-      "url": "https://www.estadiosvirtuales.com/borussiamonchengladbach",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/bmonchengladbach.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/borussiamonchengladbach#stadium",
+          "name": "Borussia-Park",
+          "alternateName": "Estadio de Borussia Mönchengladbach",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Borussia-Park de Borussia Mönchengladbach (Alemania).",
+          "maximumAttendeeCapacity": 54057,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Alemania"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 51.1747,
+            "longitude": 6.3853
+          },
+          "url": "https://www.estadiosvirtuales.com/borussiamonchengladbach",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/bmonchengladbach.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/borussiamonchengladbach#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Borussia Mönchengladbach",
+              "item": "https://www.estadiosvirtuales.com/borussiamonchengladbach"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

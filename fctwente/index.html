@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de FC Twente (De Grolsch Veste) | Estadios Virtuales</title>
+    <title>Estadio de FC Twente (De Grolsch Veste) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio De Grolsch Veste de FC Twente (Países Bajos). Capacidad para 30.205 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/fctwente">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de FC Twente (De Grolsch Veste)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de FC Twente.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/twente.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "De Grolsch Veste",
-      "maximumAttendeeCapacity": 30205,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 52.23663060956788,
-        "longitude": 6.838076710929714
-      },
-      "url": "https://www.estadiosvirtuales.com/fctwente",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/twente.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/fctwente#stadium",
+          "name": "De Grolsch Veste",
+          "alternateName": "Estadio de FC Twente",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio De Grolsch Veste de FC Twente (Países Bajos).",
+          "maximumAttendeeCapacity": 30205,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 52.23663060956788,
+            "longitude": 6.838076710929714
+          },
+          "url": "https://www.estadiosvirtuales.com/fctwente",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/twente.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/fctwente#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "FC Twente",
+              "item": "https://www.estadiosvirtuales.com/fctwente"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

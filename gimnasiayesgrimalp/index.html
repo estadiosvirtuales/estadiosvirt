@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Gimnasia y Esgrima LP (Juan Carmelo Zerillo (El Bosque)) | Estadios Virtuales</title>
+    <title>Estadio de Gimnasia y Esgrima LP (Juan Carmelo Zerillo (El Bosque)) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Juan Carmelo Zerillo (El Bosque) de Gimnasia y Esgrima LP (Argentina). Capacidad para 30.973 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/gimnasiayesgrimalp">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Gimnasia y Esgrima LP (Juan Carmelo Zerillo (El Bosque))">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Gimnasia y Esgrima LP.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Gimnasia.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Juan Carmelo Zerillo (El Bosque)",
-      "maximumAttendeeCapacity": 30973,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Argentina"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -34.9111,
-        "longitude": -57.9331
-      },
-      "url": "https://www.estadiosvirtuales.com/gimnasiayesgrimalp",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Gimnasia.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/gimnasiayesgrimalp#stadium",
+          "name": "Juan Carmelo Zerillo (El Bosque)",
+          "alternateName": "Estadio de Gimnasia y Esgrima LP",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Juan Carmelo Zerillo (El Bosque) de Gimnasia y Esgrima LP (Argentina).",
+          "maximumAttendeeCapacity": 30973,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Argentina"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -34.9111,
+            "longitude": -57.9331
+          },
+          "url": "https://www.estadiosvirtuales.com/gimnasiayesgrimalp",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Gimnasia.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/gimnasiayesgrimalp#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Gimnasia y Esgrima LP",
+              "item": "https://www.estadiosvirtuales.com/gimnasiayesgrimalp"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

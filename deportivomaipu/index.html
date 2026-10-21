@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Deportivo Maipú (Omar Higinio Sperdutti) | Estadios Virtuales</title>
+    <title>Estadio de Deportivo Maipú (Omar Higinio Sperdutti) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Omar Higinio Sperdutti de Deportivo Maipú (Argentina). Capacidad para 8.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/deportivomaipu">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Deportivo Maipú (Omar Higinio Sperdutti)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Deportivo Maipú.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/maipu.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Omar Higinio Sperdutti",
-      "maximumAttendeeCapacity": 8000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Argentina"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -32.9841,
-        "longitude": -68.7938
-      },
-      "url": "https://www.estadiosvirtuales.com/deportivomaipu",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/maipu.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/deportivomaipu#stadium",
+          "name": "Omar Higinio Sperdutti",
+          "alternateName": "Estadio de Deportivo Maipú",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Omar Higinio Sperdutti de Deportivo Maipú (Argentina).",
+          "maximumAttendeeCapacity": 8000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Argentina"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -32.9841,
+            "longitude": -68.7938
+          },
+          "url": "https://www.estadiosvirtuales.com/deportivomaipu",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/maipu.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/deportivomaipu#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Deportivo Maipú",
+              "item": "https://www.estadiosvirtuales.com/deportivomaipu"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

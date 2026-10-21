@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Defensa y Justicia (Norberto &quot;Tito&quot; Tomaghello) | Estadios Virtuales</title>
+    <title>Estadio de Defensa y Justicia (Norberto &quot;Tito&quot; Tomaghello) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Norberto &quot;Tito&quot; Tomaghello de Defensa y Justicia (Argentina). Capacidad para 20.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/defensayjusticia">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Defensa y Justicia (Norberto &quot;Tito&quot; Tomaghello)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Defensa y Justicia.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/defensa.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Norberto &quot;Tito&quot; Tomaghello",
-      "maximumAttendeeCapacity": 20000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Argentina"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -34.8218,
-        "longitude": -58.286
-      },
-      "url": "https://www.estadiosvirtuales.com/defensayjusticia",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/defensa.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/defensayjusticia#stadium",
+          "name": "Norberto &quot;Tito&quot; Tomaghello",
+          "alternateName": "Estadio de Defensa y Justicia",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Norberto &quot;Tito&quot; Tomaghello de Defensa y Justicia (Argentina).",
+          "maximumAttendeeCapacity": 20000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Argentina"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -34.8218,
+            "longitude": -58.286
+          },
+          "url": "https://www.estadiosvirtuales.com/defensayjusticia",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/defensa.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/defensayjusticia#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Defensa y Justicia",
+              "item": "https://www.estadiosvirtuales.com/defensayjusticia"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de SC Cambuur (Cambuur Stadion) | Estadios Virtuales</title>
+    <title>Estadio de SC Cambuur (Cambuur Stadion) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Cambuur Stadion de SC Cambuur (Países Bajos). Capacidad para 10.500 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/sccambuur">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de SC Cambuur (Cambuur Stadion)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de SC Cambuur.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/cambuur.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Cambuur Stadion",
-      "maximumAttendeeCapacity": 10500,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 53.205622992098604,
-        "longitude": 5.814511410697468
-      },
-      "url": "https://www.estadiosvirtuales.com/sccambuur",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/cambuur.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/sccambuur#stadium",
+          "name": "Cambuur Stadion",
+          "alternateName": "Estadio de SC Cambuur",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Cambuur Stadion de SC Cambuur (Países Bajos).",
+          "maximumAttendeeCapacity": 10500,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 53.205622992098604,
+            "longitude": 5.814511410697468
+          },
+          "url": "https://www.estadiosvirtuales.com/sccambuur",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/cambuur.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/sccambuur#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "SC Cambuur",
+              "item": "https://www.estadiosvirtuales.com/sccambuur"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Go Ahead Eagles (De Adelaarshorst) | Estadios Virtuales</title>
+    <title>Estadio de Go Ahead Eagles (De Adelaarshorst) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio De Adelaarshorst de Go Ahead Eagles (Países Bajos). Capacidad para 10.400 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/goaheadeagles">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Go Ahead Eagles (De Adelaarshorst)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Go Ahead Eagles.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/go_ahead_eagles.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "De Adelaarshorst",
-      "maximumAttendeeCapacity": 10400,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 52.260428172859406,
-        "longitude": 6.172970105533787
-      },
-      "url": "https://www.estadiosvirtuales.com/goaheadeagles",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/go_ahead_eagles.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/goaheadeagles#stadium",
+          "name": "De Adelaarshorst",
+          "alternateName": "Estadio de Go Ahead Eagles",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio De Adelaarshorst de Go Ahead Eagles (Países Bajos).",
+          "maximumAttendeeCapacity": 10400,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 52.260428172859406,
+            "longitude": 6.172970105533787
+          },
+          "url": "https://www.estadiosvirtuales.com/goaheadeagles",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/go_ahead_eagles.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/goaheadeagles#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Go Ahead Eagles",
+              "item": "https://www.estadiosvirtuales.com/goaheadeagles"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

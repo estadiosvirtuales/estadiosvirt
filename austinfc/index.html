@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Austin FC (Q2 Stadium) | Estadios Virtuales</title>
+    <title>Estadio de Austin FC (Q2 Stadium) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Q2 Stadium de Austin FC (Estados Unidos). Capacidad para 20.738 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/austinfc">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Austin FC (Q2 Stadium)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Austin FC.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/AustinFC.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Q2 Stadium",
-      "maximumAttendeeCapacity": 20738,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Estados Unidos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 30.3878,
-        "longitude": -97.7197
-      },
-      "url": "https://www.estadiosvirtuales.com/austinfc",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/AustinFC.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/austinfc#stadium",
+          "name": "Q2 Stadium",
+          "alternateName": "Estadio de Austin FC",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Q2 Stadium de Austin FC (Estados Unidos).",
+          "maximumAttendeeCapacity": 20738,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "10.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Estados Unidos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 30.3878,
+            "longitude": -97.7197
+          },
+          "url": "https://www.estadiosvirtuales.com/austinfc",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/AustinFC.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/austinfc#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Austin FC",
+              "item": "https://www.estadiosvirtuales.com/austinfc"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

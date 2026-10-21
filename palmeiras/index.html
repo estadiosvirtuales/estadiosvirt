@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Palmeiras (Allianz Parque) | Estadios Virtuales</title>
+    <title>Estadio de Palmeiras (Allianz Parque) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Allianz Parque de Palmeiras (Brasil). Capacidad para 43.713 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/palmeiras">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Palmeiras (Allianz Parque)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Palmeiras.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Palmeiras.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Allianz Parque",
-      "maximumAttendeeCapacity": 43713,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Brasil"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -23.526564,
-        "longitude": -46.678742
-      },
-      "url": "https://www.estadiosvirtuales.com/palmeiras",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Palmeiras.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/palmeiras#stadium",
+          "name": "Allianz Parque",
+          "alternateName": "Estadio de Palmeiras",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Allianz Parque de Palmeiras (Brasil).",
+          "maximumAttendeeCapacity": 43713,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Brasil"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -23.526564,
+            "longitude": -46.678742
+          },
+          "url": "https://www.estadiosvirtuales.com/palmeiras",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Palmeiras.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/palmeiras#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Palmeiras",
+              "item": "https://www.estadiosvirtuales.com/palmeiras"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

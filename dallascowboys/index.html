@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Dallas Cowboys (AT&amp;T Stadium) | Estadios Virtuales</title>
+    <title>Estadio de Dallas Cowboys (AT&amp;T Stadium) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio AT&amp;T Stadium de Dallas Cowboys (EE. UU.). Capacidad para 80.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/dallascowboys">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Dallas Cowboys (AT&amp;T Stadium)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Dallas Cowboys.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/usa.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "AT&amp;T Stadium",
-      "maximumAttendeeCapacity": 80000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "EE. UU."
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 32.7473,
-        "longitude": -97.0945
-      },
-      "url": "https://www.estadiosvirtuales.com/dallascowboys",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/usa.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/dallascowboys#stadium",
+          "name": "AT&amp;T Stadium",
+          "alternateName": "Estadio de Dallas Cowboys",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio AT&amp;T Stadium de Dallas Cowboys (EE. UU.).",
+          "maximumAttendeeCapacity": 80000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "EE. UU."
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 32.7473,
+            "longitude": -97.0945
+          },
+          "url": "https://www.estadiosvirtuales.com/dallascowboys",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/usa.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/dallascowboys#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Dallas Cowboys",
+              "item": "https://www.estadiosvirtuales.com/dallascowboys"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

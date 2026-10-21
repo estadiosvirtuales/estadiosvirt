@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de NEC Nijmegen (Stadion de Goffert) | Estadios Virtuales</title>
+    <title>Estadio de NEC Nijmegen (Stadion de Goffert) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Stadion de Goffert de NEC Nijmegen (Países Bajos). Capacidad para 12.500 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/necnijmegen">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de NEC Nijmegen (Stadion de Goffert)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de NEC Nijmegen.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/nec.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Stadion de Goffert",
-      "maximumAttendeeCapacity": 12500,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 51.82247619983504,
-        "longitude": 5.836850949262411
-      },
-      "url": "https://www.estadiosvirtuales.com/necnijmegen",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/nec.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/necnijmegen#stadium",
+          "name": "Stadion de Goffert",
+          "alternateName": "Estadio de NEC Nijmegen",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Stadion de Goffert de NEC Nijmegen (Países Bajos).",
+          "maximumAttendeeCapacity": 12500,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 51.82247619983504,
+            "longitude": 5.836850949262411
+          },
+          "url": "https://www.estadiosvirtuales.com/necnijmegen",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/nec.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/necnijmegen#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "NEC Nijmegen",
+              "item": "https://www.estadiosvirtuales.com/necnijmegen"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

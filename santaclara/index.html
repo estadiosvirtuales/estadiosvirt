@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Santa Clara (Estádio de São Miguel) | Estadios Virtuales</title>
+    <title>Estadio de Santa Clara (Estádio de São Miguel) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estádio de São Miguel de Santa Clara (Portugal). Capacidad para 13.277 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/santaclara">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Santa Clara (Estádio de São Miguel)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Santa Clara.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/santaclara.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estádio de São Miguel",
-      "maximumAttendeeCapacity": 13277,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Portugal"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 37.763815422618606,
-        "longitude": -25.622361503731174
-      },
-      "url": "https://www.estadiosvirtuales.com/santaclara",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/santaclara.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/santaclara#stadium",
+          "name": "Estádio de São Miguel",
+          "alternateName": "Estadio de Santa Clara",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estádio de São Miguel de Santa Clara (Portugal).",
+          "maximumAttendeeCapacity": 13277,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Portugal"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 37.763815422618606,
+            "longitude": -25.622361503731174
+          },
+          "url": "https://www.estadiosvirtuales.com/santaclara",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/santaclara.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/santaclara#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Santa Clara",
+              "item": "https://www.estadiosvirtuales.com/santaclara"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Manchester United (Old Trafford) | Estadios Virtuales</title>
+    <title>Estadio de Manchester United (Old Trafford) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Old Trafford de Manchester United (Inglaterra). Capacidad para 74.310 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/manchesterunited">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Manchester United (Old Trafford)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Manchester United.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/manchesterunited.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Old Trafford",
-      "maximumAttendeeCapacity": 74310,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Inglaterra"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 53.4631,
-        "longitude": -2.2913
-      },
-      "url": "https://www.estadiosvirtuales.com/manchesterunited",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/manchesterunited.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/manchesterunited#stadium",
+          "name": "Old Trafford",
+          "alternateName": "Estadio de Manchester United",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Old Trafford de Manchester United (Inglaterra).",
+          "maximumAttendeeCapacity": 74310,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Inglaterra"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 53.4631,
+            "longitude": -2.2913
+          },
+          "url": "https://www.estadiosvirtuales.com/manchesterunited",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/manchesterunited.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/manchesterunited#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Manchester United",
+              "item": "https://www.estadiosvirtuales.com/manchesterunited"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

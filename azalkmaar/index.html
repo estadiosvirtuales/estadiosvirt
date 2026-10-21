@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de AZ Alkmaar (AFAS Stadion) | Estadios Virtuales</title>
+    <title>Estadio de AZ Alkmaar (AFAS Stadion) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio AFAS Stadion de AZ Alkmaar (Países Bajos). Capacidad para 19.478 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/azalkmaar">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de AZ Alkmaar (AFAS Stadion)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de AZ Alkmaar.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/az.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "AFAS Stadion",
-      "maximumAttendeeCapacity": 19478,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Países Bajos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 52.61296712052522,
-        "longitude": 4.742694070193871
-      },
-      "url": "https://www.estadiosvirtuales.com/azalkmaar",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/az.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/azalkmaar#stadium",
+          "name": "AFAS Stadion",
+          "alternateName": "Estadio de AZ Alkmaar",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio AFAS Stadion de AZ Alkmaar (Países Bajos).",
+          "maximumAttendeeCapacity": 19478,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Países Bajos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 52.61296712052522,
+            "longitude": 4.742694070193871
+          },
+          "url": "https://www.estadiosvirtuales.com/azalkmaar",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/az.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/azalkmaar#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "AZ Alkmaar",
+              "item": "https://www.estadiosvirtuales.com/azalkmaar"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

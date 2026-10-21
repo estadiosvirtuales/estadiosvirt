@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Gil Vicente (Estádio Cidade de Barcelos) | Estadios Virtuales</title>
+    <title>Estadio de Gil Vicente (Estádio Cidade de Barcelos) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estádio Cidade de Barcelos de Gil Vicente (Portugal). Capacidad para 11.962 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/gilvicente">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Gil Vicente (Estádio Cidade de Barcelos)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Gil Vicente.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/gilvicente2.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estádio Cidade de Barcelos",
-      "maximumAttendeeCapacity": 11962,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Portugal"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 41.551315323464394,
-        "longitude": -8.622454803266507
-      },
-      "url": "https://www.estadiosvirtuales.com/gilvicente",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/gilvicente2.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/gilvicente#stadium",
+          "name": "Estádio Cidade de Barcelos",
+          "alternateName": "Estadio de Gil Vicente",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estádio Cidade de Barcelos de Gil Vicente (Portugal).",
+          "maximumAttendeeCapacity": 11962,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Portugal"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 41.551315323464394,
+            "longitude": -8.622454803266507
+          },
+          "url": "https://www.estadiosvirtuales.com/gilvicente",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/gilvicente2.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/gilvicente#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Gil Vicente",
+              "item": "https://www.estadiosvirtuales.com/gilvicente"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

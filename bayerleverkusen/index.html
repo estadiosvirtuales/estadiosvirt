@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Bayer Leverkusen (BayArena) | Estadios Virtuales</title>
+    <title>Estadio de Bayer Leverkusen (BayArena) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio BayArena de Bayer Leverkusen (Alemania). Capacidad para 30.210 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/bayerleverkusen">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Bayer Leverkusen (BayArena)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Bayer Leverkusen.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/bayerleverkusen.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "BayArena",
-      "maximumAttendeeCapacity": 30210,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Alemania"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 51.0382,
-        "longitude": 7.0022
-      },
-      "url": "https://www.estadiosvirtuales.com/bayerleverkusen",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/bayerleverkusen.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/bayerleverkusen#stadium",
+          "name": "BayArena",
+          "alternateName": "Estadio de Bayer Leverkusen",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio BayArena de Bayer Leverkusen (Alemania).",
+          "maximumAttendeeCapacity": 30210,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Alemania"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 51.0382,
+            "longitude": 7.0022
+          },
+          "url": "https://www.estadiosvirtuales.com/bayerleverkusen",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/bayerleverkusen.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/bayerleverkusen#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Bayer Leverkusen",
+              "item": "https://www.estadiosvirtuales.com/bayerleverkusen"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

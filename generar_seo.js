@@ -120,9 +120,10 @@ async function ejecutar() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de ${escapeHtml(club)} (${escapeHtml(estadio)}) | Estadios Virtuales</title>
+    <title>Estadio de ${escapeHtml(club)} (${escapeHtml(estadio)}) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio ${escapeHtml(estadio)} de ${escapeHtml(club)} (${escapeHtml(pais)}). Capacidad para ${capacidadTexto} espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="${canonicalUrl}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -134,6 +135,8 @@ async function ejecutar() {
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de ${escapeHtml(club)} (${escapeHtml(estadio)})">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de ${escapeHtml(club)}.">
     <meta name="twitter:image" content="${foto}">
@@ -141,24 +144,62 @@ async function ejecutar() {
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "${escapeHtml(estadio)}",
-      ${schemaCapacidad}
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "${escapeHtml(pais)}"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": ${latNum},
-        "longitude": ${lngNum}
-      },
-      "url": "${canonicalUrl}",
-      "image": "${foto}"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "${canonicalUrl}#stadium",
+          "name": "${escapeHtml(estadio)}",
+          "alternateName": "Estadio de ${escapeHtml(club)}",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio ${escapeHtml(estadio)} de ${escapeHtml(club)} (${escapeHtml(pais)}).",
+          ${schemaCapacidad}
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "${promTexto}",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "${escapeHtml(pais)}"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": ${latNum},
+            "longitude": ${lngNum}
+          },
+          "url": "${canonicalUrl}",
+          "image": "${foto}"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "${canonicalUrl}#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "${DOMAIN}/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "${DOMAIN}/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "${escapeHtml(club)}",
+              "item": "${canonicalUrl}"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

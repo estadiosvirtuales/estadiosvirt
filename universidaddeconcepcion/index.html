@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Universidad de Concepción (Municipal Ester Roa Rebolledo) | Estadios Virtuales</title>
+    <title>Estadio de Universidad de Concepción (Municipal Ester Roa Rebolledo) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Municipal Ester Roa Rebolledo de Universidad de Concepción (Chile). Capacidad para 30.448 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/universidaddeconcepcion">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Universidad de Concepción (Municipal Ester Roa Rebolledo)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Universidad de Concepción.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/udeconcepcion.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Municipal Ester Roa Rebolledo",
-      "maximumAttendeeCapacity": 30448,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Chile"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -36.8152,
-        "longitude": -73.0232
-      },
-      "url": "https://www.estadiosvirtuales.com/universidaddeconcepcion",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/udeconcepcion.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/universidaddeconcepcion#stadium",
+          "name": "Municipal Ester Roa Rebolledo",
+          "alternateName": "Estadio de Universidad de Concepción",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Municipal Ester Roa Rebolledo de Universidad de Concepción (Chile).",
+          "maximumAttendeeCapacity": 30448,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Chile"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -36.8152,
+            "longitude": -73.0232
+          },
+          "url": "https://www.estadiosvirtuales.com/universidaddeconcepcion",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/udeconcepcion.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/universidaddeconcepcion#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Universidad de Concepción",
+              "item": "https://www.estadiosvirtuales.com/universidaddeconcepcion"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

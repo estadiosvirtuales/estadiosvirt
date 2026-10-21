@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Ciudad de Bolívar (Municipal Eva Perón) | Estadios Virtuales</title>
+    <title>Estadio de Ciudad de Bolívar (Municipal Eva Perón) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Municipal Eva Perón de Ciudad de Bolívar (Argentina). Capacidad para 4.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/ciudaddebolivar">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Ciudad de Bolívar (Municipal Eva Perón)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Ciudad de Bolívar.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Bolivar.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Municipal Eva Perón",
-      "maximumAttendeeCapacity": 4000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Argentina"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -36.2238,
-        "longitude": -61.1221
-      },
-      "url": "https://www.estadiosvirtuales.com/ciudaddebolivar",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Bolivar.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/ciudaddebolivar#stadium",
+          "name": "Municipal Eva Perón",
+          "alternateName": "Estadio de Ciudad de Bolívar",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Municipal Eva Perón de Ciudad de Bolívar (Argentina).",
+          "maximumAttendeeCapacity": 4000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Argentina"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -36.2238,
+            "longitude": -61.1221
+          },
+          "url": "https://www.estadiosvirtuales.com/ciudaddebolivar",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Bolivar.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/ciudaddebolivar#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Ciudad de Bolívar",
+              "item": "https://www.estadiosvirtuales.com/ciudaddebolivar"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

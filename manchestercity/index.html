@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Manchester City (Etihad Stadium) | Estadios Virtuales</title>
+    <title>Estadio de Manchester City (Etihad Stadium) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Etihad Stadium de Manchester City (Inglaterra). Capacidad para 53.400 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/manchestercity">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Manchester City (Etihad Stadium)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Manchester City.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/manchestercity.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Etihad Stadium",
-      "maximumAttendeeCapacity": 53400,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Inglaterra"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 53.4831,
-        "longitude": -2.2004
-      },
-      "url": "https://www.estadiosvirtuales.com/manchestercity",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/manchestercity.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/manchestercity#stadium",
+          "name": "Etihad Stadium",
+          "alternateName": "Estadio de Manchester City",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Etihad Stadium de Manchester City (Inglaterra).",
+          "maximumAttendeeCapacity": 53400,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Inglaterra"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 53.4831,
+            "longitude": -2.2004
+          },
+          "url": "https://www.estadiosvirtuales.com/manchestercity",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/manchestercity.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/manchestercity#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Manchester City",
+              "item": "https://www.estadiosvirtuales.com/manchestercity"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

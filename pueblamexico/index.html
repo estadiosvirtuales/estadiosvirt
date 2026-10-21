@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Puebla (Estadio Cuauhtémoc) | Estadios Virtuales</title>
+    <title>Estadio de Puebla (Estadio Cuauhtémoc) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estadio Cuauhtémoc de Puebla (México). Capacidad para 51.726 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/pueblamexico">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Puebla (Estadio Cuauhtémoc)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Puebla.">
     <meta name="twitter:image" content="puebla.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estadio Cuauhtémoc",
-      "maximumAttendeeCapacity": 51726,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "México"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 19.0781,
-        "longitude": -98.1633
-      },
-      "url": "https://www.estadiosvirtuales.com/pueblamexico",
-      "image": "puebla.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/pueblamexico#stadium",
+          "name": "Estadio Cuauhtémoc",
+          "alternateName": "Estadio de Puebla",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estadio Cuauhtémoc de Puebla (México).",
+          "maximumAttendeeCapacity": 51726,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "8.6",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "México"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 19.0781,
+            "longitude": -98.1633
+          },
+          "url": "https://www.estadiosvirtuales.com/pueblamexico",
+          "image": "puebla.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/pueblamexico#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Puebla",
+              "item": "https://www.estadiosvirtuales.com/pueblamexico"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

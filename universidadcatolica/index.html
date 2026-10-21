@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Universidad Católica (Claro Arena) | Estadios Virtuales</title>
+    <title>Estadio de Universidad Católica (Claro Arena) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Claro Arena de Universidad Católica (Chile). Capacidad para 20.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/universidadcatolica">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Universidad Católica (Claro Arena)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Universidad Católica.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/ucatolica.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Claro Arena",
-      "maximumAttendeeCapacity": 20000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Chile"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -33.3958,
-        "longitude": -70.5004
-      },
-      "url": "https://www.estadiosvirtuales.com/universidadcatolica",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/ucatolica.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/universidadcatolica#stadium",
+          "name": "Claro Arena",
+          "alternateName": "Estadio de Universidad Católica",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Claro Arena de Universidad Católica (Chile).",
+          "maximumAttendeeCapacity": 20000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Chile"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -33.3958,
+            "longitude": -70.5004
+          },
+          "url": "https://www.estadiosvirtuales.com/universidadcatolica",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/ucatolica.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/universidadcatolica#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Universidad Católica",
+              "item": "https://www.estadiosvirtuales.com/universidadcatolica"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

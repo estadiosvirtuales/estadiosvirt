@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Sunderland (Stadium of Light) | Estadios Virtuales</title>
+    <title>Estadio de Sunderland (Stadium of Light) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Stadium of Light de Sunderland (Inglaterra). Capacidad para 49.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/sunderland">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Sunderland (Stadium of Light)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Sunderland.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/sunderland.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Stadium of Light",
-      "maximumAttendeeCapacity": 49000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Inglaterra"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 54.9144,
-        "longitude": -1.3883
-      },
-      "url": "https://www.estadiosvirtuales.com/sunderland",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/sunderland.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/sunderland#stadium",
+          "name": "Stadium of Light",
+          "alternateName": "Estadio de Sunderland",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Stadium of Light de Sunderland (Inglaterra).",
+          "maximumAttendeeCapacity": 49000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Inglaterra"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 54.9144,
+            "longitude": -1.3883
+          },
+          "url": "https://www.estadiosvirtuales.com/sunderland",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/sunderland.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/sunderland#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Sunderland",
+              "item": "https://www.estadiosvirtuales.com/sunderland"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

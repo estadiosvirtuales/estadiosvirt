@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Cruz Azul (Estadio Ciudad de los Deportes) | Estadios Virtuales</title>
+    <title>Estadio de Cruz Azul (Estadio Ciudad de los Deportes) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estadio Ciudad de los Deportes de Cruz Azul (México). Capacidad para 36.682 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/cruzazulmexico">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Cruz Azul (Estadio Ciudad de los Deportes)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Cruz Azul.">
     <meta name="twitter:image" content="cruzazul.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estadio Ciudad de los Deportes",
-      "maximumAttendeeCapacity": 36682,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "México"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 19.3833,
-        "longitude": -99.1783
-      },
-      "url": "https://www.estadiosvirtuales.com/cruzazulmexico",
-      "image": "cruzazul.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/cruzazulmexico#stadium",
+          "name": "Estadio Ciudad de los Deportes",
+          "alternateName": "Estadio de Cruz Azul",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estadio Ciudad de los Deportes de Cruz Azul (México).",
+          "maximumAttendeeCapacity": 36682,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "8.1",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "México"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 19.3833,
+            "longitude": -99.1783
+          },
+          "url": "https://www.estadiosvirtuales.com/cruzazulmexico",
+          "image": "cruzazul.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/cruzazulmexico#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Cruz Azul",
+              "item": "https://www.estadiosvirtuales.com/cruzazulmexico"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

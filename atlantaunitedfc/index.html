@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Atlanta United FC (Mercedes-Benz Stadium) | Estadios Virtuales</title>
+    <title>Estadio de Atlanta United FC (Mercedes-Benz Stadium) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Mercedes-Benz Stadium de Atlanta United FC (Estados Unidos). Capacidad para 42.500 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/atlantaunitedfc">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Atlanta United FC (Mercedes-Benz Stadium)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Atlanta United FC.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/AtlantaUnited.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Mercedes-Benz Stadium",
-      "maximumAttendeeCapacity": 42500,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Estados Unidos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 33.7553,
-        "longitude": -84.4008
-      },
-      "url": "https://www.estadiosvirtuales.com/atlantaunitedfc",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/AtlantaUnited.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/atlantaunitedfc#stadium",
+          "name": "Mercedes-Benz Stadium",
+          "alternateName": "Estadio de Atlanta United FC",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Mercedes-Benz Stadium de Atlanta United FC (Estados Unidos).",
+          "maximumAttendeeCapacity": 42500,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "10.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Estados Unidos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 33.7553,
+            "longitude": -84.4008
+          },
+          "url": "https://www.estadiosvirtuales.com/atlantaunitedfc",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/AtlantaUnited.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/atlantaunitedfc#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Atlanta United FC",
+              "item": "https://www.estadiosvirtuales.com/atlantaunitedfc"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de St. Louis CITY SC (Energizer Park) | Estadios Virtuales</title>
+    <title>Estadio de St. Louis CITY SC (Energizer Park) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Energizer Park de St. Louis CITY SC (Estados Unidos). Capacidad para 22.500 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/stlouiscitysc">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de St. Louis CITY SC (Energizer Park)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de St. Louis CITY SC.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/StLouisCitySC.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Energizer Park",
-      "maximumAttendeeCapacity": 22500,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Estados Unidos"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 38.6314,
-        "longitude": -90.2108
-      },
-      "url": "https://www.estadiosvirtuales.com/stlouiscitysc",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/StLouisCitySC.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/stlouiscitysc#stadium",
+          "name": "Energizer Park",
+          "alternateName": "Estadio de St. Louis CITY SC",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Energizer Park de St. Louis CITY SC (Estados Unidos).",
+          "maximumAttendeeCapacity": 22500,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "10.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Estados Unidos"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 38.6314,
+            "longitude": -90.2108
+          },
+          "url": "https://www.estadiosvirtuales.com/stlouiscitysc",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/StLouisCitySC.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/stlouiscitysc#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "St. Louis CITY SC",
+              "item": "https://www.estadiosvirtuales.com/stlouiscitysc"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

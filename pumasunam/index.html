@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Pumas UNAM (Estadio Olímpico Universitario) | Estadios Virtuales</title>
+    <title>Estadio de Pumas UNAM (Estadio Olímpico Universitario) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estadio Olímpico Universitario de Pumas UNAM (México). Capacidad para 72.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/pumasunam">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Pumas UNAM (Estadio Olímpico Universitario)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Pumas UNAM.">
     <meta name="twitter:image" content="pumas.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estadio Olímpico Universitario",
-      "maximumAttendeeCapacity": 72000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "México"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 19.3328,
-        "longitude": -99.1926
-      },
-      "url": "https://www.estadiosvirtuales.com/pumasunam",
-      "image": "pumas.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/pumasunam#stadium",
+          "name": "Estadio Olímpico Universitario",
+          "alternateName": "Estadio de Pumas UNAM",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estadio Olímpico Universitario de Pumas UNAM (México).",
+          "maximumAttendeeCapacity": 72000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.1",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "México"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 19.3328,
+            "longitude": -99.1926
+          },
+          "url": "https://www.estadiosvirtuales.com/pumasunam",
+          "image": "pumas.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/pumasunam#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Pumas UNAM",
+              "item": "https://www.estadiosvirtuales.com/pumasunam"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

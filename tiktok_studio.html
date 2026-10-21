@@ -980,6 +980,13 @@
                 a.click();
                 document.body.removeChild(a);
 
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    window.videoBase64 = reader.result;
+                    window.videoDone = true;
+                };
+                reader.readAsDataURL(blob);
+
                 document.getElementById('statusText').innerHTML = '✅ <b>¡Video grabado y descargado con éxito!</b>';
                 document.getElementById('btnRecord').disabled = false;
                 document.getElementById('btnPreview').disabled = false;
@@ -993,6 +1000,8 @@
                 }
             });
         }
+
+        window.iniciarGrabacionYDescarga = iniciarGrabacionYDescarga;
 
         // Primer render estático al cargar
         window.addEventListener('load', () => {

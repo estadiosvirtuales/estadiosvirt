@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Girona FC (Montilivi) | Estadios Virtuales</title>
+    <title>Estadio de Girona FC (Montilivi) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Montilivi de Girona FC (España). Capacidad para 14.624 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/gironafc">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Girona FC (Montilivi)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Girona FC.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Girona.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Montilivi",
-      "maximumAttendeeCapacity": 14624,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "España"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 41.9614,
-        "longitude": 2.8275
-      },
-      "url": "https://www.estadiosvirtuales.com/gironafc",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Girona.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/gironafc#stadium",
+          "name": "Montilivi",
+          "alternateName": "Estadio de Girona FC",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Montilivi de Girona FC (España).",
+          "maximumAttendeeCapacity": 14624,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "España"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 41.9614,
+            "longitude": 2.8275
+          },
+          "url": "https://www.estadiosvirtuales.com/gironafc",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/Girona.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/gironafc#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Girona FC",
+              "item": "https://www.estadiosvirtuales.com/gironafc"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

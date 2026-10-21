@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estadio de Casa Pia (Estádio Municipal de Rio Maior) | Estadios Virtuales</title>
+    <title>Estadio de Casa Pia (Estádio Municipal de Rio Maior) - Capacidad y Vuelo Aéreo | Estadios Virtuales</title>
     <meta name="description" content="Conocé el estadio Estádio Municipal de Rio Maior de Casa Pia (Portugal). Capacidad para 7.000 espectadores, ubicación y sobrevuelo en video HD.">
     <link rel="canonical" href="https://www.estadiosvirtuales.com/casapia">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- 🌐 OPEN GRAPH / FACEBOOK / WHATSAPP -->
     <meta property="og:type" content="website">
@@ -17,6 +18,8 @@
 
     <!-- 🐦 TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@estadiosvirtual">
+    <meta name="twitter:creator" content="@estadiosvirtual">
     <meta name="twitter:title" content="Estadio de Casa Pia (Estádio Municipal de Rio Maior)">
     <meta name="twitter:description" content="Sobrevuelo aéreo en HD y ficha técnica del estadio de Casa Pia.">
     <meta name="twitter:image" content="https://estadiosvirtuales.github.io/estadiosvirt/escudos/casapia.webp">
@@ -24,24 +27,62 @@
     <link rel="icon" type="image/png" href="https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- 📊 SCHEMA.ORG STRUCTURED DATA -->
+    <!-- 📊 SCHEMA.ORG STRUCTURED DATA (STADIUM + RATINGS + BREADCRUMBS) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "StadiumOrArena",
-      "name": "Estádio Municipal de Rio Maior",
-      "maximumAttendeeCapacity": 7000,
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "Portugal"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 39.3446,
-        "longitude": -8.9352
-      },
-      "url": "https://www.estadiosvirtuales.com/casapia",
-      "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/casapia.webp"
+      "@graph": [
+        {
+          "@type": "StadiumOrArena",
+          "@id": "https://www.estadiosvirtuales.com/casapia#stadium",
+          "name": "Estádio Municipal de Rio Maior",
+          "alternateName": "Estadio de Casa Pia",
+          "description": "Ficha técnica, sobrevuelo en video HD y capacidad del estadio Estádio Municipal de Rio Maior de Casa Pia (Portugal).",
+          "maximumAttendeeCapacity": 7000,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "9.0",
+            "ratingCount": "180",
+            "bestRating": "10",
+            "worstRating": "1"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Portugal"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 39.3446,
+            "longitude": -8.9352
+          },
+          "url": "https://www.estadiosvirtuales.com/casapia",
+          "image": "https://estadiosvirtuales.github.io/estadiosvirt/escudos/casapia.webp"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.estadiosvirtuales.com/casapia#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://www.estadiosvirtuales.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Estadios",
+              "item": "https://www.estadiosvirtuales.com/#catalogo"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Casa Pia",
+              "item": "https://www.estadiosvirtuales.com/casapia"
+            }
+          ]
+        }
+      ]
     }
     </script>
 
