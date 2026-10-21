@@ -3467,29 +3467,35 @@ body.video-abierto .hero-section {
     }
 
     .app-brand {
-        gap: 8px !important;
+        gap: 6px !important;
         min-width: 0 !important;
         flex-shrink: 1 !important;
     }
     .app-logo {
-        width: 36px !important;
-        height: 36px !important;
+        width: 32px !important;
+        height: 32px !important;
         flex-shrink: 0 !important;
     }
 
     /* Achicamos el texto del logo y forzamos 1 sola línea */
     header h1, header h2, .logo-title, .header-brand-name, .app-title {
-        font-size: 0.95rem !important;
+        font-size: 0.84rem !important;
         line-height: 1.1 !important;
         margin-bottom: 2px !important;
         white-space: nowrap !important; 
     }
 
-    /* Achicamos el subtítulo verde a 1 sola línea */
+    /* Achicamos el subtítulo verde a 1 sola línea para que nunca se tape con los controles */
     header p, header span, .logo-subtitle, .header-slogan, .app-subtitle {
-        font-size: 0.52rem !important;
+        font-size: 0.45rem !important;
+        letter-spacing: 0.3px !important;
+        gap: 3px !important;
         line-height: 1 !important;
         white-space: nowrap !important;
+    }
+    .app-subtitle::before {
+        width: 4px !important;
+        height: 4px !important;
     }
 
     /* Botones de acción del header en celular: Sonido y Tema */
@@ -13877,29 +13883,35 @@ body.video-abierto .hero-section {
     }
 
     .app-brand {
-        gap: 8px !important;
+        gap: 6px !important;
         min-width: 0 !important;
         flex-shrink: 1 !important;
     }
     .app-logo {
-        width: 36px !important;
-        height: 36px !important;
+        width: 32px !important;
+        height: 32px !important;
         flex-shrink: 0 !important;
     }
 
     /* Achicamos el texto del logo y forzamos 1 sola línea */
     header h1, header h2, .logo-title, .header-brand-name, .app-title {
-        font-size: 0.95rem !important;
+        font-size: 0.84rem !important;
         line-height: 1.1 !important;
         margin-bottom: 2px !important;
         white-space: nowrap !important; 
     }
 
-    /* Achicamos el subtítulo verde a 1 sola línea */
+    /* Achicamos el subtítulo verde a 1 sola línea para que nunca se tape con los controles */
     header p, header span, .logo-subtitle, .header-slogan, .app-subtitle {
-        font-size: 0.52rem !important;
+        font-size: 0.45rem !important;
+        letter-spacing: 0.3px !important;
+        gap: 3px !important;
         line-height: 1 !important;
         white-space: nowrap !important;
+    }
+    .app-subtitle::before {
+        width: 4px !important;
+        height: 4px !important;
     }
 
     /* Botones de acción del header en celular: Sonido y Tema */
