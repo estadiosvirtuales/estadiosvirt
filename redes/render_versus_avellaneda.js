@@ -288,10 +288,10 @@ async function generarOverlaysGraficos() {
             <div style="font-size:44px; font-weight:900; color:#cbd5e1;">42.069 esp.</div>
         </div>
 
-        <!-- CTA INFERIOR -->
-        <div style="position:absolute; bottom:45px; left:50px; width:980px; background:linear-gradient(135deg, #00e676 0%, #00b0ff 100%); border-radius:22px; padding:16px 24px; display:flex; align-items:center; justify-content:center; gap:14px; box-shadow:0 16px 40px rgba(0,0,0,0.8), 0 0 25px rgba(0, 230, 118, 0.4);">
-            <img src="${logoEv}" style="width:44px; height:44px; border-radius:10px;">
-            <span style="color:#04160a; font-size:26px; font-weight:900; letter-spacing:-0.3px;">Desafiá tu conocimiento en estadiosvirtuales.com</span>
+        <!-- CTA INFERIOR (Subido a zona segura para que no tape la interfaz de TikTok) -->
+        <div style="position:absolute; bottom:240px; left:50px; width:980px; background:linear-gradient(135deg, #00e676 0%, #00b0ff 100%); border-radius:24px; padding:18px 24px; display:flex; align-items:center; justify-content:center; gap:14px; box-shadow:0 16px 40px rgba(0,0,0,0.8), 0 0 30px rgba(0, 230, 118, 0.45); border:2px solid #ffffff;">
+            <img src="${logoEv}" style="width:48px; height:48px; border-radius:10px;">
+            <span style="color:#04160a; font-size:27px; font-weight:900; letter-spacing:-0.3px;">Desafiá tu conocimiento en estadiosvirtuales.com</span>
         </div>
     `);
     await page.setContent(htmlRevelacion, { timeout: 5000 });
