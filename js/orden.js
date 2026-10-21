@@ -341,6 +341,8 @@ function iniciarJuegoOrden(modo) {
             estadio: bscarPropiedad(e, 'Estadio'),
             club: bscarPropiedad(e, 'Club'),
             pais: bscarPropiedad(e, 'País') || 'Argentina',
+            linkVideo: bscarPropiedad(e, 'Link del Video') || '',
+            foto: bscarPropiedad(e, 'Foto') || '',
             valor: val,
             correctIdx: -1
         });
@@ -354,6 +356,17 @@ function iniciarJuegoOrden(modo) {
     orderList = [...sel].sort(() => Math.random() - .5);
     orderStartTime = performance.now();
     renderJuegoOrden(false);
+}
+
+function obtenerMiniaturaEstadioOrden(est) {
+    const link = est.linkVideo || '';
+    if (link.includes('youtube.com') || link.includes('youtu.be')) {
+        const match = link.match(/(?:https?:\/\/)?(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/)|youtu\.be\/)([\w\-]{11})/i);
+        if (match && match[1]) {
+            return `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+        }
+    }
+    return est.foto || 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';
 }
 
 function renderJuegoOrden(revelar = false) {
@@ -416,12 +429,20 @@ function renderJuegoOrden(revelar = false) {
             iconL = `<div style="background:var(--accent-color);color:#000;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;font-weight:900;">↕</div>`;
         }
 
+        const thumbUrl = obtenerMiniaturaEstadioOrden(est);
+        const fallbackEscudo = est.foto || 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp';
+        const thumbHTML = `
+        <div class="order-slot-thumb-wrap">
+            <img src="${thumbUrl}" alt="${est.estadio}" class="order-slot-thumb-img" loading="lazy" onerror="this.onerror=null;this.src='${fallbackEscudo}';">
+        </div>`;
+
         slotsHTML += `
-        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="order-slot" style="background:${bgC};border:2px solid ${brC};cursor:${revelar ? 'default' : 'pointer'};margin-bottom:6px;${extraStyle}">
+        <div onclick="${revelar ? '' : `seleccionarFilaOrden(${i})`}" class="order-slot ${orderSelectedIdx === i ? 'selected' : ''}" style="background:${bgC};border:2px solid ${brC};cursor:${revelar ? 'default' : 'pointer'};margin-bottom:6px;${extraStyle}">
             ${iconL}
+            ${thumbHTML}
             <div style="display:flex;flex-direction:column;overflow:hidden;min-width:0;flex:1;">
-                <strong style="font-size:.9rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong>
-                <span style="color:var(--text-muted);font-size:.76rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span>
+                <strong style="font-size:.88rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-main);">${est.estadio}</strong>
+                <span style="color:var(--text-muted);font-size:.75rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${est.club}</span>
             </div>
             ${badge}
         </div>`;
