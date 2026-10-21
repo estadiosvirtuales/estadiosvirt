@@ -215,6 +215,47 @@ El Gigante de Arroyito vs El Coloso Marcelo Bielsa. ¿Cuál de los dos templos d
 🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
 
 #RosarioCentral #Newells #ClasicoRosarino #GiganteDeArroyito #ColosoMarceloBielsa #ElColoso #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'losandes-chicago': {
+        slug: 'LOS-ANDES-VS-NUEVA-CHICAGO',
+        tituloBadge: '🥊 Duelo de Capacidad · Lomas vs Mataderos',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Duelo de gigantes históricos del ascenso',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Los_Andes_vs_Nueva_Chicago.mp4',
+        portadaFileName: 'Portada_Duelo_Los_Andes_Nueva_Chicago.jpg',
+        bannerDiferencia: '¡LOS ANDES POR CASI 12.000 LUGARES!',
+        team1: {
+            id: 'losandes',
+            nombre: 'LOS ANDES',
+            estadio: 'Eduardo Gallardón',
+            apodo: 'El Gallardón',
+            capacidadNum: 36900,
+            capacidadTexto: '36.900 esp.',
+            escudoFile: 'Losandes.webp',
+            borderColor: '#e60000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Los andes.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'chicago',
+            nombre: 'NUEVA CHICAGO',
+            estadio: 'República de Mataderos',
+            apodo: 'Mataderos',
+            capacidadNum: 25000,
+            capacidadTexto: '25.000 esp.',
+            escudoFile: 'Chicago.webp',
+            borderColor: '#008040',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Nueva Chicago.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿LOS ANDES O NUEVA CHICAGO? 🏟️🔥
+El Eduardo Gallardón de Lomas de Zamora vs la República de Mataderos. ¿Cuál de estos dos estadios históricos tiene mayor capacidad de hinchas? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#LosAndes #NuevaChicago #EduardoGallardon #RepublicaDeMataderos #Milrayitas #ToritoDeMataderos #Estadios #FutbolArgentino #EstadiosVirtuales`
     }
 };
 
