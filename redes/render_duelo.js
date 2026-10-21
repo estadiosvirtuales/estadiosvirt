@@ -91,6 +91,89 @@ El Mâs Monumental vs La Bombonera. ¿Cuál tiene mayor capacidad oficial de pú
 🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
 
 #RiverPlate #BocaJuniors #Superclasico #Monumental #LaBombonera #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'lanus-banfield': {
+        slug: 'LANUS-VS-BANFIELD',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico del Sur',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El histórico Clásico del Sur',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Lanus_vs_Banfield.mp4',
+        portadaFileName: 'Portada_Duelo_Lanus_Banfield.jpg',
+        bannerDiferencia: '¡LANÚS POR +12.000 LUGARES!',
+        team1: {
+            id: 'lanus',
+            nombre: 'LANÚS',
+            estadio: 'Ciudad de Lanús',
+            apodo: 'La Fortaleza',
+            capacidadNum: 47027,
+            capacidadTexto: '47.027 esp.',
+            escudoFile: 'Lanus.webp',
+            borderColor: '#82132b',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\lanus(listo)x2\\lanus.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'banfield',
+            nombre: 'BANFIELD',
+            estadio: 'Florencio Sola',
+            apodo: 'El Lencho',
+            capacidadNum: 34901,
+            capacidadTexto: '34.901 esp.',
+            escudoFile: 'Banfield.webp',
+            borderColor: '#008040',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\banfield(listo)x2\\banfield.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿LANÚS O BANFIELD? 🏟️🔥
+La Fortaleza vs El Lencho. ¿Cuál de las dos canchas del Clásico del Sur tiene mayor capacidad de hinchas?
+
+👉 Comentá tu voto antes de que se devele el resultado.
+🎮 Poné a prueba cuánto sabés de canchas en: estadiosvirtuales.com
+
+#Lanus #Banfield #ClasicoDelSur #LaFortaleza #FlorencioSola #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'estudiantes-gimnasia': {
+        slug: 'ESTUDIANTES-VS-GIMNASIA',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Platense',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La pasión de la Ciudad de La Plata',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Estudiantes_vs_Gimnasia.mp4',
+        portadaFileName: 'Portada_Duelo_Estudiantes_Gimnasia.jpg',
+        bannerDiferencia: '¡ESTUDIANTES POR CASI 8.000 LUGARES!',
+        team1: {
+            id: 'estudiantes',
+            nombre: 'ESTUDIANTES',
+            estadio: 'Jorge Luis Hirschi',
+            apodo: 'Estadio UNO',
+            capacidadNum: 32530,
+            capacidadTexto: '32.530 esp.',
+            escudoFile: 'Estudiantes.webp',
+            borderColor: '#d60000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\EDLPx2\\Estadio UNO Jorge Luis Hirschi.mp4",
+            customCrop: 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960:(in_w-out_w)/2:0',
+            esGanador: true
+        },
+        team2: {
+            id: 'gimnasia',
+            nombre: 'GIMNASIA LP',
+            estadio: 'Juan Carmelo Zerillo',
+            apodo: 'El Bosque',
+            capacidadNum: 24544,
+            capacidadTexto: '24.544 esp.',
+            escudoFile: 'Gimnasia.webp',
+            borderColor: '#002f6c',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\gelp.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿ESTUDIANTES O GIMNASIA? 🏟️🔥
+El nuevo Estadio UNO vs El mítico Bosque Platense. ¿Cuál de los dos alberga mayor cantidad de público?
+
+👉 ¿Sabías la diferencia o te sorprendió? Dejá tu respuesta en los comentarios.
+🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
+
+#Estudiantes #GELP #GimnasiaLP #ClasicoPlatense #EstadioUNO #ElBosque #LaPlata #FutbolArgentino #EstadiosVirtuales`
     }
 };
 
@@ -504,6 +587,9 @@ async function renderizarDuelo(dueloKey) {
     console.log('✅ Archivo TEXTOS_PUBLICACION.txt guardado.');
 
     // 2. Extraer frame de fondo para la portada
+    const crop1 = duelo.team1.customCrop || 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960';
+    const crop2 = duelo.team2.customCrop || 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960';
+
     const bgFramePath = path.join(assetsDir, 'raw_bg_frame.jpg');
     await new Promise((resolve) => {
         const p = spawn('ffmpeg', [
@@ -512,7 +598,7 @@ async function renderizarDuelo(dueloKey) {
             '-i', duelo.team1.videoPath,
             '-ss', '00:00:03',
             '-i', duelo.team2.videoPath,
-            '-filter_complex', '[0:v]scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960[t];[1:v]scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960[b];[t][b]vstack=inputs=2[outv]',
+            '-filter_complex', `[0:v]${crop1}[t];[1:v]${crop2}[b];[t][b]vstack=inputs=2[outv]`,
             '-map', '[outv]',
             '-vframes', '1',
             '-q:v', '2',
@@ -534,8 +620,8 @@ async function renderizarDuelo(dueloKey) {
     // 6. Ensamble con FFMPEG
     const videoOutPath = path.join(outFolder, duelo.videoFileName);
     const filterComplex = [
-        `[0:v]scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960[top]`,
-        `[1:v]scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960[bot]`,
+        `[0:v]${crop1}[top]`,
+        `[1:v]${crop2}[bot]`,
         `[top][bot]vstack=inputs=2[stacked]`,
         `[stacked]drawbox=x=0:y=956:w=1080:h=8:color=0x00e676@0.9:t=fill[base]`,
         `[base][3:v]overlay=0:0:enable='between(t,0,11.0)'[v1]`,
