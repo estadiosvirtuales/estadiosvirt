@@ -1122,8 +1122,8 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 
 <!-- 👑 MODAL SALÓN DE CAMPEONES (RANKING DE CLUBES Y COPAS) -->
-<div id="ranking-carrera-modal" class="modal-overlay" style="display:none; z-index:10050;">
-    <div class="modal-content ranking-carrera-box">
+<div id="ranking-carrera-modal" class="modal-overlay" style="display:none; z-index:10050;" onclick="cerrarModalRankingCarrera()">
+    <div class="modal-content ranking-split-box ranking-carrera-box" onclick="event.stopPropagation()">
         <button class="close-btn" onclick="cerrarModalRankingCarrera()"><i class="ph-bold ph-x"></i></button>
         <div id="ranking-carrera-modal-body"></div>
     </div>

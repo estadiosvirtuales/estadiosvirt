@@ -6354,7 +6354,8 @@ body.video-abierto .hero-section {
    🏆 SALÓN DE LA FAMA & LIGA DE AMIGOS: DASHBOARD 2 COLUMNAS (PC PANORÁMICO)
    ======================================================== */
 #ranking-modal .modal-content,
-#liga-amigos-modal .modal-content {
+#liga-amigos-modal .modal-content,
+#ranking-carrera-modal .modal-content {
     width: 92% !important;
     max-width: 1040px !important;
     height: 86vh !important;
@@ -6397,7 +6398,8 @@ body.video-abierto .hero-section {
    🏆 1. TAMAÑO EXCLUSIVO DE LA COPA / ÍCONO SUPERIOR
    ======================================================== */
 #ranking-modal .ranking-brand-box .trophy-main-img-box,
-#liga-amigos-modal .ranking-brand-box .trophy-main-img-box {
+#liga-amigos-modal .ranking-brand-box .trophy-main-img-box,
+#ranking-carrera-modal .ranking-brand-box .trophy-main-img-box {
     width: 190px !important;       /* 👈 [COPA] ANCHO DE LA CAJA */
     height: 190px !important;      /* 👈 [COPA] ALTO DE LA CAJA */
     overflow: visible !important;
@@ -6463,7 +6465,8 @@ body.video-abierto .hero-section {
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
-#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
     position: relative !important;
     width: 220px !important;       /* 👈 ANCHO DEL BOTÓN */
     max-width: 100% !important;
@@ -6623,7 +6626,8 @@ body.video-abierto .hero-section {
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
-#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
     transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
 }
 /* ⚡ Ajuste óptico en botones: la estatua iguala los 40px útiles de los íconos */
@@ -6633,7 +6637,8 @@ body.video-abierto .hero-section {
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
-#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img,
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
     transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
 }
 
@@ -6642,7 +6647,8 @@ body.video-abierto .hero-section {
 }
 
 #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span,
-#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span,
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
     width: 100% !important;
     margin: 0 !important;
     text-align: center !important;
@@ -6772,7 +6778,8 @@ body.video-abierto .hero-section {
 /* 📱 ADAPTACIÓN RESPONSIVE EN CELULARES */
 @media (max-width: 768px) {
     #ranking-modal .modal-content,
-    #liga-amigos-modal .modal-content {
+    #liga-amigos-modal .modal-content,
+    #ranking-carrera-modal .modal-content {
         width: 94% !important;
         max-width: 100% !important;
         height: auto !important;
@@ -6938,9 +6945,13 @@ body.video-abierto .hero-section {
         padding: 0 !important;
         margin: 0 !important;
     }
+    .ranking-left-panel .ranking-tabs-row.tabs-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
 
     /* 📱 SALÓN DE LA FAMA EN CELULAR (Botones proporcionados) */
-    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn,
+    #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
@@ -6959,7 +6970,8 @@ body.video-abierto .hero-section {
         box-sizing: border-box !important;
     }
 
-    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
+    #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span,
+    #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
         width: 100% !important;
         white-space: nowrap !important;
         overflow: hidden !important;
@@ -6970,7 +6982,8 @@ body.video-abierto .hero-section {
     }
 
     /* 🎯 ÍCONOS EN MÓVIL */
-    html body #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img {
+    html body #ranking-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img,
+    html body #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img {
         position: absolute !important;
         left: 5px !important;
         top: 50% !important;
@@ -8712,6 +8725,414 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* Escenario y aura del trofeo central para Reto Diario */
 .trophy-glow-backdrop.glow-orange {
     background: radial-gradient(circle, rgba(255, 145, 0, 0.6) 0%, rgba(255, 87, 34, 0.2) 55%, transparent 75%) !important;
+}
+
+/* ========================================================
+   🏆 SALÓN DE CAMPEONES (RANKING MODO CARRERA: COPAS, LIGAS & 1V1)
+   ======================================================== */
+.ranking-tabs-row .tab-btn-copas.active {
+    background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%) !important;
+    border-color: #fef08a !important;
+    box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+    color: #1a1202 !important;
+}
+.ranking-tabs-row .tab-btn-copas.active span {
+    color: #1a1202 !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+}
+
+.ranking-tabs-row .tab-btn-ligas.active {
+    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 50%, #0369a1 100%) !important;
+    border-color: #7dd3fc !important;
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+}
+.ranking-tabs-row .tab-btn-ligas.active span {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+.ranking-tabs-row .tab-btn-versus-carrera.active {
+    background: linear-gradient(135deg, #c084fc 0%, #9333ea 50%, #7e22ce 100%) !important;
+    border-color: #d8b4fe !important;
+    box-shadow: 0 6px 20px rgba(147, 51, 234, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+}
+.ranking-tabs-row .tab-btn-versus-carrera.active span {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+.trophy-glow-backdrop.glow-blue {
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.55) 0%, rgba(3, 105, 161, 0.2) 55%, transparent 75%) !important;
+}
+.trophy-glow-backdrop.glow-purple {
+    background: radial-gradient(circle, rgba(147, 51, 234, 0.55) 0%, rgba(126, 34, 206, 0.2) 55%, transparent 75%) !important;
+}
+
+/* Filtro Dropdown para Ligas */
+.carrera-filter-wrapper {
+    display: flex;
+    align-items: center;
+    flex: 0 0 220px;
+    max-width: 240px;
+    margin: 0 4px;
+}
+.carrera-liga-select {
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 0.80rem;
+    font-weight: 800;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    color: #f1f5f9;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: all 0.2s ease;
+}
+.carrera-liga-select:focus,
+.carrera-liga-select:hover {
+    border-color: #38bdf8;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+}
+.carrera-liga-select option {
+    background: #0f172a;
+    color: #f8fafc;
+    font-weight: 700;
+    padding: 8px;
+}
+
+/* Tabla del Salón de Campeones */
+.carrera-table-header {
+    display: grid;
+    align-items: center;
+    padding: 10px 16px;
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.carrera-table-header.carrera-tab-copas {
+    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px;
+    gap: 8px;
+}
+.carrera-table-header.carrera-tab-ligas {
+    grid-template-columns: 36px 1fr 95px 75px 75px 82px;
+    gap: 8px;
+}
+.carrera-table-header.carrera-tab-versus {
+    grid-template-columns: 36px 1fr 90px 85px 75px 82px;
+    gap: 8px;
+}
+
+.carrera-rank-row {
+    display: grid;
+    align-items: center;
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.18s ease;
+}
+.carrera-rank-row.carrera-tab-copas {
+    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px;
+    gap: 8px;
+}
+.carrera-rank-row.carrera-tab-ligas {
+    grid-template-columns: 36px 1fr 95px 75px 75px 82px;
+    gap: 8px;
+}
+.carrera-rank-row.carrera-tab-versus {
+    grid-template-columns: 36px 1fr 90px 85px 75px 82px;
+    gap: 8px;
+}
+
+.carrera-rank-row:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+.carrera-rank-row.top-1 {
+    background: linear-gradient(90deg, rgba(234, 179, 8, 0.15) 0%, rgba(234, 179, 8, 0.02) 100%);
+    border-left: 3.5px solid #eab308;
+}
+.carrera-rank-row.top-2 {
+    background: linear-gradient(90deg, rgba(156, 163, 175, 0.12) 0%, rgba(156, 163, 175, 0.02) 100%);
+    border-left: 3.5px solid #cbd5e1;
+}
+.carrera-rank-row.top-3 {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.12) 0%, rgba(205, 127, 50, 0.02) 100%);
+    border-left: 3.5px solid #cd7f32;
+}
+.carrera-rank-row.es-propio {
+    background: linear-gradient(90deg, rgba(0, 230, 118, 0.18) 0%, rgba(0, 230, 118, 0.04) 100%) !important;
+    border-left: 4px solid var(--accent-color) !important;
+    box-shadow: inset 0 0 20px rgba(0, 230, 118, 0.1);
+}
+
+.carrera-col-pos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rank-cup-medal {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+.rank-num-text {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-muted);
+}
+
+.carrera-col-dt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    cursor: pointer;
+}
+.carrera-col-dt .ranking-avatar-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+}
+.carrera-col-dt .ranking-avatar-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.carrera-user-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.carrera-user-name {
+    font-size: 0.88rem;
+    font-weight: 900;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.carrera-tag-vos {
+    color: var(--accent-color);
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+.carrera-user-meta {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.carrera-mini-shield {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
+.carrera-col-detail {
+    text-align: center;
+    font-size: 0.86rem;
+    font-weight: 800;
+    color: #cbd5e1;
+}
+.carrera-col-detail .tag-gold { color: #facc15; }
+.carrera-col-detail .tag-blue { color: #60a5fa; }
+.carrera-col-detail .tag-purple { color: #c084fc; }
+.carrera-col-detail .tag-cyan { color: #38bdf8; }
+.carrera-col-detail .dash-empty { color: rgba(255, 255, 255, 0.2); }
+
+.carrera-col-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+.total-cups-badge,
+.total-leagues-badge,
+.total-versus-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 9px;
+    border-radius: 9px;
+    font-size: 0.92rem;
+    font-weight: 900;
+    min-width: 48px;
+    letter-spacing: -0.2px;
+}
+.total-cups-badge {
+    background: rgba(234, 179, 8, 0.15);
+    border: 1px solid rgba(234, 179, 8, 0.45);
+    color: #facc15;
+}
+.total-leagues-badge {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
+}
+.total-versus-badge {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.45);
+    color: #c084fc;
+}
+.total-lbl {
+    font-size: 0.72rem;
+    font-weight: 800;
+    opacity: 0.85;
+}
+
+.glory-tags-row {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+.glory-tag {
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.carrera-col-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-desafiar-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(185, 28, 28, 0.32) 100%);
+    border: 1.5px solid #ef4444;
+    color: #fca5a5;
+    font-size: 0.72rem;
+    font-weight: 900;
+    padding: 6px 10px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.btn-desafiar-row:hover {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.65);
+    transform: scale(1.04);
+}
+.carrera-mini-swords {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+.carrera-action-self {
+    font-size: 0.68rem;
+    font-weight: 900;
+    color: #00e676;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    padding: 5px 8px;
+    border-radius: 7px;
+    white-space: nowrap;
+}
+
+/* Visibilidad Desktop vs Móvil */
+.mobile-only {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+    .mobile-only {
+        display: flex !important;
+    }
+    .carrera-filter-wrapper {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 6px 0 0 0 !important;
+    }
+    .carrera-table-header.carrera-tab-copas,
+    .carrera-table-header.carrera-tab-ligas,
+    .carrera-table-header.carrera-tab-versus {
+        grid-template-columns: 34px 1fr 66px 76px !important;
+        gap: 6px !important;
+        padding: 8px 10px !important;
+        font-size: 0.64rem !important;
+    }
+    .carrera-rank-row.carrera-tab-copas,
+    .carrera-rank-row.carrera-tab-ligas,
+    .carrera-rank-row.carrera-tab-versus {
+        grid-template-columns: 34px 1fr 66px 76px !important;
+        gap: 6px !important;
+        padding: 8px 10px !important;
+    }
+    .carrera-col-dt .ranking-avatar-circle {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    .carrera-user-name {
+        font-size: 0.78rem !important;
+    }
+    .carrera-user-meta {
+        font-size: 0.65rem !important;
+    }
+    .total-cups-badge,
+    .total-leagues-badge,
+    .total-versus-badge {
+        font-size: 0.8rem !important;
+        padding: 3px 6px !important;
+        min-width: 38px !important;
+    }
+    .vs-mobile-ratio {
+        font-size: 0.62rem !important;
+        color: var(--text-muted) !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+    }
+    .btn-desafiar-row {
+        font-size: 0.65rem !important;
+        padding: 5px 6px !important;
+        border-radius: 7px !important;
+    }
+    .carrera-action-self {
+        font-size: 0.62rem !important;
+        padding: 4px 6px !important;
+    }
 }
 /* ========================================================
    ⚔️ SCOREBOARD EN VIVO PARA 1 VS 1 (VERSUS REALTIME HUD)

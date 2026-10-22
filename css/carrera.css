@@ -4052,7 +4052,7 @@
 /* 📊 TABLA Y FILAS DE CAMPEONES: DISEÑO DE GALA / HALL OF FAME */
 .carrera-ranking-table-header {
     display: grid !important;
-    grid-template-columns: 44px minmax(130px, 1.4fr) 95px 125px 95px 90px !important;
+    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px !important;
     align-items: center !important;
     gap: 8px !important;
     padding: 9px 14px !important;
@@ -4102,7 +4102,7 @@
 
 .carrera-rank-row {
     display: grid !important;
-    grid-template-columns: 44px minmax(130px, 1.4fr) 95px 125px 95px 90px !important;
+    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px !important;
     align-items: center !important;
     gap: 8px !important;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(10, 15, 26, 0.96) 100%) !important;
@@ -4111,6 +4111,19 @@
     padding: 9px 14px !important;
     box-sizing: border-box !important;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.carrera-table-header.carrera-tab-copas,
+.carrera-rank-row.carrera-tab-copas {
+    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px !important;
+}
+.carrera-table-header.carrera-tab-ligas,
+.carrera-rank-row.carrera-tab-ligas {
+    grid-template-columns: 36px 1fr 95px 75px 75px 82px !important;
+}
+.carrera-table-header.carrera-tab-versus,
+.carrera-rank-row.carrera-tab-versus {
+    grid-template-columns: 36px 1fr 90px 85px 75px 82px !important;
 }
 
 .carrera-rank-row:hover {
@@ -4399,11 +4412,21 @@
     .carrera-ranking-sub {
         font-size: 0.74rem !important;
     }
-    .carrera-ranking-table-header {
-        display: none !important;
+    .carrera-table-header,
+    .carrera-table-header.carrera-tab-copas,
+    .carrera-table-header.carrera-tab-ligas,
+    .carrera-table-header.carrera-tab-versus {
+        grid-template-columns: 32px 1fr 64px 74px !important;
+        gap: 6px !important;
+        padding: 8px 10px !important;
+        font-size: 0.64rem !important;
+        display: grid !important;
     }
-    .carrera-rank-row {
-        grid-template-columns: 28px 1fr auto auto !important;
+    .carrera-rank-row,
+    .carrera-rank-row.carrera-tab-copas,
+    .carrera-rank-row.carrera-tab-ligas,
+    .carrera-rank-row.carrera-tab-versus {
+        grid-template-columns: 32px 1fr 64px 74px !important;
         gap: 6px !important;
         padding: 8px 10px !important;
     }
