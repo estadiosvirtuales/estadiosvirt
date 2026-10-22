@@ -4079,7 +4079,9 @@
     width: 100% !important;
 }
 
-.carrera-ranking-scroll {
+#carrera-ranking-scroll-box,
+.carrera-ranking-scroll,
+.ranking-rows-scroll {
     display: flex !important;
     flex-direction: column !important;
     gap: 8px !important;
@@ -4087,23 +4089,35 @@
     overflow-y: auto !important;
     padding: 0 4px 8px 0 !important;
     scrollbar-width: thin !important;
+    scrollbar-color: rgba(255, 255, 255, 0.22) transparent !important;
 }
 
-.carrera-ranking-scroll::-webkit-scrollbar {
+#carrera-ranking-scroll-box::-webkit-scrollbar,
+.carrera-ranking-scroll::-webkit-scrollbar,
+.ranking-rows-scroll::-webkit-scrollbar {
     width: 6px !important;
 }
-.carrera-ranking-scroll::-webkit-scrollbar-track {
+#carrera-ranking-scroll-box::-webkit-scrollbar-track,
+.carrera-ranking-scroll::-webkit-scrollbar-track,
+.ranking-rows-scroll::-webkit-scrollbar-track {
     background: transparent !important;
 }
-.carrera-ranking-scroll::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.16) !important;
+#carrera-ranking-scroll-box::-webkit-scrollbar-thumb,
+.carrera-ranking-scroll::-webkit-scrollbar-thumb,
+.ranking-rows-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.22) !important;
     border-radius: 10px !important;
+}
+#carrera-ranking-scroll-box::-webkit-scrollbar-thumb:hover,
+.carrera-ranking-scroll::-webkit-scrollbar-thumb:hover,
+.ranking-rows-scroll::-webkit-scrollbar-thumb:hover {
+    background: #38bdf8 !important;
 }
 
 .carrera-table-header {
     display: grid !important;
     align-items: center !important;
-    padding: 10px 14px !important;
+    padding: 10px 24px 10px 14px !important;
     border-left: 1.5px solid transparent !important;
     border-right: 1.5px solid transparent !important;
     border-bottom: 1.5px solid rgba(255, 255, 255, 0.08) !important;

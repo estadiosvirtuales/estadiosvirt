@@ -4262,7 +4262,7 @@ window.renderizarRankingCarrera = function() {
                     <div class="carrera-table-header carrera-tab-${tabActiva} ${tabActiva === 'ligas' ? (filtroLiga === 'todas' ? 'ligas-todas' : 'ligas-filtrada') : ''}">
                         ${tableHeaderCols}
                     </div>
-                    <div class="ranking-rows-scroll" id="carrera-ranking-scroll-box">
+                    <div class="ranking-rows-scroll carrera-ranking-scroll" id="carrera-ranking-scroll-box">
                         ${filasHTML}
                     </div>
                     ${stickyRowHTML}
