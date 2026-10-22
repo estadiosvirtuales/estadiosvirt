@@ -1176,7 +1176,7 @@ async function calcularEstatusComunidadReal(miXp, miOvr) {
             window.estatusComunidadCache.xp === xpActual) {
             const badgeEl = document.getElementById('badge-ranking-comunidad');
             if (badgeEl) {
-                badgeEl.textContent = `${window.estatusComunidadCache.texto} · OVR ${miOvr}`;
+                badgeEl.textContent = `${window.estatusComunidadCache.texto} · GRL ${miOvr}`;
             }
             return;
         }
@@ -1237,7 +1237,7 @@ async function calcularEstatusComunidadReal(miXp, miOvr) {
 
         const badgeEl = document.getElementById('badge-ranking-comunidad');
         if (badgeEl) {
-            badgeEl.textContent = `${texto} · OVR ${miOvr}`;
+            badgeEl.textContent = `${texto} · GRL ${miOvr}`;
         }
     } catch (err) {
         console.warn("Aviso al calcular estatus real en la comunidad:", err);
@@ -1379,7 +1379,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                         <div class="fut-card-shine"></div>
                         <div class="fut-top">
                             <div class="fut-badge-meta">
-                                <div class="fut-ovr" title="Overall: sube con tu XP">${nivel.ovr}</div>
+                                <div class="fut-ovr" title="Valoración General (GRL): sube con tu XP">${nivel.ovr}</div>
                                 <div class="fut-pos" id="fut-pos-display" title="Tu posición">${savedPos}</div>
                                 <img src="${obtenerUrlEscudo(savedLogo)}" class="fut-club-icon" id="fut-club-display" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
                             </div>
@@ -1518,7 +1518,7 @@ document.getElementById('profile-modal-body').innerHTML=`
                         <div class="xp-compact-text">
                             <div class="xp-compact-meta">
                                 <span class="level-badge-inline ${nivel.cssClass}">Nivel ${nivelIdx}</span>
-                                <span class="badge-ranking" id="badge-ranking-comunidad">${textoRankingTop} · OVR ${nivel.ovr}</span>
+                                <span class="badge-ranking" id="badge-ranking-comunidad">${textoRankingTop} · GRL ${nivel.ovr}</span>
                             </div>
                             <h3 class="profile-level-title">${nombreRangoPuro}</h3>
                         </div>
@@ -1854,7 +1854,7 @@ logros.push({id:'copa_nacional',icon:'<img src="medalla-bronce.webp" class="logr
 logros.push({id:'copa_continental',icon:'<img src="medalla-plata.webp" class="logro-img-icon" alt="Copa Continental">',name:'Rey de América',rarity:'epic',req:'Levantá la Copa Continental',unlocked:tieneCont,pct:tieneCont?100:0,pctLabel:tieneCont?'1/1':'0/1'});
 logros.push({id:'copa_mundial_clubes',icon:'<img src="medalla-oro.webp" class="logro-img-icon" alt="Mundial de Clubes">',name:'Rey de Clubes',rarity:'epic',req:'Levantá el Mundial de Clubes',unlocked:tieneClubes,pct:tieneClubes?100:0,pctLabel:tieneClubes?'1/1':'0/1'});
 logros.push({id:'copa_mundial',icon:'<img src="estrella.webp" class="logro-img-icon" alt="Copa del Mundo">',name:'Campeón del Mundo',rarity:'epic',req:'Levantá la Copa del Mundo',unlocked:tieneMundial,pct:tieneMundial?100:0,pctLabel:tieneMundial?'1/1':'0/1'});
-logros.push({id:'entrenador_estrella',icon:'<img src="estrella.webp" class="logro-img-icon" alt="Estrella">',name:'DT Galáctico',rarity:'rare',req:'Entrená a un futbolista a 80+ OVR',unlocked:maxOvrIndividual>=80,pct:maxOvrIndividual>=80?100:Math.min(100, Math.round((maxOvrIndividual/80)*100)),pctLabel:`${maxOvrIndividual}/80 OVR`});
+logros.push({id:'entrenador_estrella',icon:'<img src="estrella.webp" class="logro-img-icon" alt="Estrella">',name:'DT Galáctico',rarity:'rare',req:'Entrená a un futbolista a 80+ GRL',unlocked:maxOvrIndividual>=80,pct:maxOvrIndividual>=80?100:Math.min(100, Math.round((maxOvrIndividual/80)*100)),pctLabel:`${maxOvrIndividual}/80 GRL`});
 
 logros.push({id:'localista',icon:'<img src="gps-humano.webp" class="logro-img-icon" alt="GPS Humano">',name:'GPS Humano',rarity:'rare',req:'Adiviná a menos de 5 km',unlocked:s.medallaLocalista,pct:s.medallaLocalista?100:0,pctLabel:''});
 logros.push({id:'unKm',icon:'<img src="ojo-de-aguila.webp" class="logro-img-icon" alt="Ojo de Águila">',name:'Ojo de Águila',rarity:'epic',req:'Adiviná a menos de 1 km',unlocked:s.guessrUnKm,pct:s.guessrUnKm?100:0,pctLabel:''});

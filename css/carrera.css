@@ -4741,6 +4741,8 @@
     .carrera-table-header,
     .carrera-table-header.carrera-tab-copas,
     .carrera-table-header.carrera-tab-ligas,
+    .carrera-table-header.carrera-tab-ligas.ligas-todas,
+    .carrera-table-header.carrera-tab-ligas.ligas-filtrada,
     .carrera-table-header.carrera-tab-versus {
         grid-template-columns: 32px 1fr 64px 74px !important;
         gap: 6px !important;
@@ -4751,10 +4753,13 @@
     .carrera-rank-row,
     .carrera-rank-row.carrera-tab-copas,
     .carrera-rank-row.carrera-tab-ligas,
+    .carrera-rank-row.carrera-tab-ligas.ligas-todas,
+    .carrera-rank-row.carrera-tab-ligas.ligas-filtrada,
     .carrera-rank-row.carrera-tab-versus {
         grid-template-columns: 32px 1fr 64px 74px !important;
         gap: 6px !important;
         padding: 8px 10px !important;
+        display: grid !important;
     }
     .carrera-rank-ligas-col,
     .carrera-rank-copas-col {

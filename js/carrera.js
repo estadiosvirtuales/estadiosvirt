@@ -374,13 +374,13 @@ window.mejorarJugadorOnce = function(avatarId, event) {
     const aLimpio = avatarId.replace(/\.png$/i, '.webp');
     const ovrActual = obtenerOvrJugador(aLimpio);
     if (ovrActual >= 99) {
-        showToast("¡Este futbolista ya alcanzó el tope de 99 OVR! 👑", "ph-crown", "info");
+        showToast("¡Este futbolista ya alcanzó el tope de 99 GRL! 👑", "ph-crown", "info");
         return;
     }
     const spDisponibles = userStats.puntosHabilidad || 0;
     const costoSP = calcularCostoSPMejora(ovrActual);
     if (spDisponibles < costoSP) {
-        showToast(`Necesitás ${costoSP} SP para entrenar a este futbolista (OVR ${ovrActual}). ¡Jugá StadiumGuessr o torneos para sumar más! ⚽`, "ph-warning-circle", "warning");
+        showToast(`Necesitás ${costoSP} SP para entrenar a este futbolista (GRL ${ovrActual}). ¡Jugá StadiumGuessr o torneos para sumar más! ⚽`, "ph-warning-circle", "warning");
         return;
     }
     userStats.puntosHabilidad = spDisponibles - costoSP;
@@ -393,7 +393,7 @@ window.mejorarJugadorOnce = function(avatarId, event) {
     const toastPrevio = document.querySelector('.toast-entrenamiento');
     if (toastPrevio) toastPrevio.remove();
 
-    showToast(`¡${obtenerNombreAvatar(aLimpio)} subió a ${ovrActual + 1} OVR! (-${costoSP} SP) 🔥`, "ph-lightning", "success toast-entrenamiento");
+    showToast(`¡${obtenerNombreAvatar(aLimpio)} subió a ${ovrActual + 1} GRL! (-${costoSP} SP) 🔥`, "ph-lightning", "success toast-entrenamiento");
 };
 
 // ========================================================
@@ -423,7 +423,7 @@ window.abrirModalTorneoCopas = function() {
     const ovrEquipo = calcularOvrEquipoOnce();
     const sub = document.getElementById('torneo-team-ovr-sub');
     if (sub) {
-        sub.innerHTML = `Tu equipo promedia <b style="color:#38bdf8;">${ovrEquipo} OVR</b> · Elegí una copa para competir:`;
+        sub.innerHTML = `Tu equipo promedia <b style="color:#38bdf8;">${ovrEquipo} GRL</b> · Elegí una copa para competir:`;
     }
 
     const copas = userStats.copasGanadas || [];
@@ -501,7 +501,7 @@ window.abrirModalTorneoCopas = function() {
         } else {
             if (st) {
                 st.className = 'tier-status locked';
-                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 70 OVR`;
+                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 70 GRL`;
             }
             if (btn) {
                 btn.className = 'btn-3d secondary tier-action-btn';
@@ -543,7 +543,7 @@ window.abrirModalTorneoCopas = function() {
         } else {
             if (st) {
                 st.className = 'tier-status locked';
-                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 80 OVR`;
+                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 80 GRL`;
             }
             if (btn) {
                 btn.className = 'btn-3d secondary tier-action-btn';
@@ -585,7 +585,7 @@ window.abrirModalTorneoCopas = function() {
         } else {
             if (st) {
                 st.className = 'tier-status locked';
-                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 85 OVR`;
+                st.innerHTML = `<i class="ph-bold ph-lock-key"></i> Requiere 85 GRL`;
             }
             if (btn) {
                 btn.className = 'btn-3d secondary tier-action-btn';
@@ -729,15 +729,15 @@ window.seleccionarCopaParaJugar = function(tierKey) {
     const copas = userStats.copasGanadas || [];
 
     if (tierKey === 'continental' && ovrEquipo < 70 && !copas.some(c => c.tier === 'nacional')) {
-        showToast("Tu equipo necesita al menos 70 OVR o ganar la Copa Desafío para clasificar 🔒", "ph-lock-key", "warning");
+        showToast("Tu equipo necesita al menos 70 GRL o ganar la Copa Desafío para clasificar 🔒", "ph-lock-key", "warning");
         return;
     }
     if (tierKey === 'mundial_clubes' && ovrEquipo < 80 && !copas.some(c => c.tier === 'continental')) {
-        showToast("El Mundial de Clubes requiere al menos 80 OVR o ganar la Copa Continental 🔒", "ph-lock-key", "warning");
+        showToast("El Mundial de Clubes requiere al menos 80 GRL o ganar la Copa Continental 🔒", "ph-lock-key", "warning");
         return;
     }
     if (tierKey === 'mundial' && ovrEquipo < 85 && !copas.some(c => c.tier === 'mundial_clubes')) {
-        showToast("La Copa del Mundo requiere un Once Galáctico de 85+ OVR o ganar el Mundial de Clubes 👑🔒", "ph-lock-key", "warning");
+        showToast("La Copa del Mundo requiere un Once Galáctico de 85+ GRL o ganar el Mundial de Clubes 👑🔒", "ph-lock-key", "warning");
         return;
     }
 
@@ -834,12 +834,12 @@ function prepararVistaPartidoCopa() {
     // Equipo Usuario
     document.getElementById('sim-user-shield').src = obtenerUrlEscudo(escudoUsuario);
     document.getElementById('sim-user-name').textContent = nombreUsuario;
-    document.getElementById('sim-user-ovr').textContent = `OVR ${ovrUsuario}`;
+    document.getElementById('sim-user-ovr').textContent = `GRL ${ovrUsuario}`;
 
     // Club Rival
     document.getElementById('sim-rival-shield').src = obtenerUrlEscudo(rival.id);
     document.getElementById('sim-rival-name').textContent = rival.nombre;
-    document.getElementById('sim-rival-ovr').textContent = `OVR ${rival.ovr}`;
+    document.getElementById('sim-rival-ovr').textContent = `GRL ${rival.ovr}`;
 
     // Marcador y reloj a cero
     document.getElementById('sim-score-user').textContent = '0';
@@ -3208,12 +3208,12 @@ function renderizarOnceInicial() {
     if (statsPill) {
         statsPill.innerHTML = `
             <div class="once-stats-hub">
-                <!-- 🛡️ OVR HERO CARD -->
-                <div class="once-ovr-card-hero" title="OVR Promedio de tu Once Titular (con bonus de química global)">
-                    <span class="once-ovr-hero-label">OVR EQUIPO</span>
+                <!-- 🛡️ GRL HERO CARD -->
+                <div class="once-ovr-card-hero" title="GRL Promedio de tu Once Titular (con bonus de química global)">
+                    <span class="once-ovr-hero-label">GRL EQUIPO</span>
                     <div class="once-ovr-hero-val-wrap">
                         <span class="once-ovr-hero-number">${ovrEquipo > 0 ? ovrEquipo : '--'}</span>
-                        ${bonoQuimica > 0 ? `<span class="once-ovr-bonus-chip chem-bonus" title="Bono de química global: +${bonoQuimica} OVR">+${bonoQuimica}</span>` : ''}
+                        ${bonoQuimica > 0 ? `<span class="once-ovr-bonus-chip chem-bonus" title="Bono de química global: +${bonoQuimica} GRL">+${bonoQuimica}</span>` : ''}
                     </div>
                 </div>
 
@@ -3359,11 +3359,11 @@ function renderizarOnceInicial() {
         if (slotActivoOnce === 'DT' && dtAvatar) {
             const nomDt = obtenerNombreAvatar(dtAvatar);
             const costoSpDt = (ovrDt >= 99) ? 0 : calcularCostoSPMejora(ovrDt);
-            const txtEntrenarDt = (ovrDt >= 99) ? 'MÁX 99 OVR' : `Entrenar (+1 OVR · ${costoSpDt} SP)`;
+            const txtEntrenarDt = (ovrDt >= 99) ? 'MÁX 99 GRL' : `Entrenar (+1 GRL · ${costoSpDt} SP)`;
             drawerTitle.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px; flex-wrap:wrap;">
                     <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:55%;">
-                        <i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> DT: <b>${nomDt}</b> (OVR ${ovrDt})
+                        <i class="ph-bold ph-clipboard-text" style="color:var(--accent-color);"></i> DT: <b>${nomDt}</b> (GRL ${ovrDt})
                     </span>
                     <div style="display:flex; align-items:center; gap:6px;">
                         <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${dtAvatar}', event)" ${ovrDt >= 99 ? 'disabled' : ''} style="padding:4px 10px; font-size:0.65rem; height:26px; min-height:26px; border-radius:8px; gap:4px; box-shadow:none;">
@@ -3380,11 +3380,11 @@ function renderizarOnceInicial() {
             const ovrTitular = obtenerOvrJugador(idTitular);
             const isCap = (idTitular === capitanAvatar);
             const costoSpTitular = (ovrTitular >= 99) ? 0 : calcularCostoSPMejora(ovrTitular);
-            const txtEntrenarTitular = (ovrTitular >= 99) ? 'MÁX 99 OVR' : `Entrenar (+1 OVR · ${costoSpTitular} SP)`;
+            const txtEntrenarTitular = (ovrTitular >= 99) ? 'MÁX 99 GRL' : `Entrenar (+1 GRL · ${costoSpTitular} SP)`;
             drawerTitle.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px; flex-wrap:wrap;">
                     <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:50%;">
-                        <i class="ph-bold ph-user" style="color:var(--accent-color);"></i> <b>${nomTitular}</b> (OVR ${ovrTitular})
+                        <i class="ph-bold ph-user" style="color:var(--accent-color);"></i> <b>${nomTitular}</b> (GRL ${ovrTitular})
                     </span>
                     <div style="display:flex; align-items:center; gap:5px;">
                         <button type="button" class="btn-3d primary" onclick="mejorarJugadorOnce('${idTitular}', event)" ${ovrTitular >= 99 ? 'disabled' : ''} style="padding:4px 10px; font-size:0.65rem; height:26px; min-height:26px; border-radius:8px; gap:4px; box-shadow:none;">
@@ -3409,7 +3409,7 @@ function renderizarOnceInicial() {
             drawerTitle.innerHTML = `
                 <div style="display:flex; align-items:center; justify-content:center; gap:6px; width:100%; text-align:center;">
                     <i class="ph-bold ph-lightning" style="color:#00ff77; font-size:1rem; flex-shrink:0;"></i>
-                    <span>Tocá un titular para <b>entrenarlo (+1 OVR)</b> o cambiarlo:</span>
+                    <span>Tocá un titular para <b>entrenarlo (+1 GRL)</b> o cambiarlo:</span>
                 </div>`;
         }
     }
@@ -3489,7 +3489,7 @@ window.abrirModalModoCarrera = function() {
 
     const sub = document.getElementById('carrera-hub-sub');
     if (sub) {
-        sub.innerHTML = `OVR Equipo: <b style="color:#38bdf8;">${ovr > 0 ? ovr : '--'}</b> · Habilidad: <b style="color:#00ff77;">${sp} SP</b> · Títulos: <b style="color:#fbbf24;">${copas}</b>`;
+        sub.innerHTML = `GRL Equipo: <b style="color:#38bdf8;">${ovr > 0 ? ovr : '--'}</b> · Habilidad: <b style="color:#00ff77;">${sp} SP</b> · Títulos: <b style="color:#fbbf24;">${copas}</b>`;
     }
 
     const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
@@ -4026,7 +4026,7 @@ window.renderizarRankingCarrera = function() {
         } else if (tabActiva === 'ligas') {
             if (filtroLiga === 'todas') {
                 columnasCentroHTML = `
-                    <div class="carrera-col-detail desktop-only"><b class="tag-cyan">OVR ${item.ovr}</b></div>
+                    <div class="carrera-col-detail desktop-only"><b class="tag-cyan">GRL ${item.ovr}</b></div>
                     <div class="carrera-col-metric">
                         <span class="total-leagues-badge">
                             <b class="total-num">${item.ligas.total}</b>
@@ -4036,7 +4036,7 @@ window.renderizarRankingCarrera = function() {
             } else {
                 const titulosEstaLiga = item.ligas.detalle[filtroLiga] || 0;
                 columnasCentroHTML = `
-                    <div class="carrera-col-detail desktop-only"><b class="tag-cyan">OVR ${item.ovr}</b></div>
+                    <div class="carrera-col-detail desktop-only"><b class="tag-cyan">GRL ${item.ovr}</b></div>
                     <div class="carrera-col-detail desktop-only">${item.ligas.total} Tot.</div>
                     <div class="carrera-col-metric">
                         <span class="total-leagues-badge">
@@ -4082,7 +4082,7 @@ window.renderizarRankingCarrera = function() {
                     </div>
                     <div class="carrera-user-info">
                         <span class="carrera-user-name">${san(item.nombre)} ${esMio ? '<b class="carrera-tag-vos">(Vos)</b>' : ''}</span>
-                        <span class="carrera-user-meta">OVR ${item.ovr} · <img src="${obtenerUrlEscudo(item.escudo)}" class="carrera-mini-shield"></span>
+                        <span class="carrera-user-meta">GRL ${item.ovr} · <img src="${obtenerUrlEscudo(item.escudo)}" class="carrera-mini-shield"></span>
                     </div>
                 </div>
 
@@ -4126,7 +4126,7 @@ window.renderizarRankingCarrera = function() {
             tableHeaderCols = `
                 <span class="carrera-col-pos">#</span>
                 <span class="carrera-col-dt">DT / CLUB</span>
-                <span class="carrera-col-detail desktop-only">OVR DT</span>
+                <span class="carrera-col-detail desktop-only">GRL DT</span>
                 <span class="carrera-col-metric">LIGAS</span>
                 <span class="carrera-col-action">DUELO</span>
             `;
@@ -4134,7 +4134,7 @@ window.renderizarRankingCarrera = function() {
             tableHeaderCols = `
                 <span class="carrera-col-pos">#</span>
                 <span class="carrera-col-dt">DT / CLUB</span>
-                <span class="carrera-col-detail desktop-only">OVR DT</span>
+                <span class="carrera-col-detail desktop-only">GRL DT</span>
                 <span class="carrera-col-detail desktop-only">LIGAS TOT.</span>
                 <span class="carrera-col-metric">TÍTULOS</span>
                 <span class="carrera-col-action">DUELO</span>
@@ -4778,7 +4778,7 @@ function renderizarHubLigaTemporada(liga) {
                             </div>
                             <div class="lt-match-team-text">
                                 <strong>${eqLocal.nombre}</strong>
-                                <span>${eqLocal.esUsuario ? 'TU EQUIPO' : 'LOCAL'} · OVR ${eqLocal.ovr}</span>
+                                <span>${eqLocal.esUsuario ? 'TU EQUIPO' : 'LOCAL'} · GRL ${eqLocal.ovr}</span>
                             </div>
                         </div>
 
@@ -4790,7 +4790,7 @@ function renderizarHubLigaTemporada(liga) {
                             </div>
                             <div class="lt-match-team-text">
                                 <strong>${eqVis.nombre}</strong>
-                                <span>${eqVis.esUsuario ? 'TU EQUIPO' : 'VISITANTE'} · OVR ${eqVis.ovr}</span>
+                                <span>${eqVis.esUsuario ? 'TU EQUIPO' : 'VISITANTE'} · GRL ${eqVis.ovr}</span>
                             </div>
                         </div>
                     </div>
@@ -5826,7 +5826,7 @@ async function compartirPosterCampeon(datosCampeon) {
                     <img src="${escudoUrl}" style="width:36px; height:36px; object-fit:contain;">
                     <div style="display:flex; flex-direction:column; text-align:left;">
                         <strong style="font-size:1rem; font-weight:900; color:#ffffff; text-transform:uppercase; line-height:1.1;">${nombreUsuario}</strong>
-                        <span style="font-size:0.62rem; font-weight:800; color:#38bdf8; margin-top:2px;">OVR ${ovrEquipo} · ${campanaTexto}</span>
+                        <span style="font-size:0.62rem; font-weight:800; color:#38bdf8; margin-top:2px;">GRL ${ovrEquipo} · ${campanaTexto}</span>
                     </div>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px;">
@@ -5868,7 +5868,7 @@ async function compartirPosterCampeon(datosCampeon) {
                     <img src="${escudoUrl}" style="width:42px; height:42px; object-fit:contain;">
                     <div style="display:flex; flex-direction:column; text-align:left;">
                         <strong style="font-size:1.15rem; font-weight:900; color:#ffffff; text-transform:uppercase;">${nombreUsuario}</strong>
-                        <span style="font-size:0.68rem; font-weight:800; color:#38bdf8;">OVR ${ovrEquipo} · ${campanaTexto}</span>
+                        <span style="font-size:0.68rem; font-weight:800; color:#38bdf8;">GRL ${ovrEquipo} · ${campanaTexto}</span>
                     </div>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
