@@ -4652,6 +4652,7 @@
     color: var(--text-muted);
 }
 
+.carrera-col-dt,
 .carrera-rank-user {
     display: flex;
     align-items: center;
@@ -4659,14 +4660,27 @@
     cursor: pointer;
     overflow: hidden;
 }
+.carrera-col-dt .ranking-avatar-circle,
 .carrera-rank-user .ranking-avatar-circle {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    max-width: 36px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    max-width: 34px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--accent-color) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #71a8ff !important;
+    box-shadow: 0 0 8px var(--accent-glow) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
 }
+.carrera-col-dt .ranking-avatar-circle .ranking-avatar-inner,
 .carrera-rank-user .ranking-avatar-circle .ranking-avatar-inner {
-    transform: scale(0.35) !important;
+    transform: scale(0.34) !important;
     transform-origin: center 75% !important;
     position: absolute !important;
     width: 100px !important;
@@ -4674,6 +4688,32 @@
     left: 50% !important;
     margin-left: -50px !important;
     bottom: -18px !important;
+    top: auto !important;
+    right: auto !important;
+    pointer-events: none !important;
+}
+.carrera-col-dt .ranking-avatar-circle .ac-avatar-img-full,
+.carrera-rank-user .ranking-avatar-circle .ac-avatar-img-full {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 20% !important;
+}
+@media (max-width: 768px) {
+    .carrera-col-dt .ranking-avatar-circle,
+    .carrera-rank-user .ranking-avatar-circle {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
+    }
+    .carrera-col-dt .ranking-avatar-circle .ranking-avatar-inner,
+    .carrera-rank-user .ranking-avatar-circle .ranking-avatar-inner {
+        transform: scale(0.28) !important;
+        left: 50% !important;
+        margin-left: -50px !important;
+        bottom: -19px !important;
+    }
 }
 .carrera-user-info {
     display: flex;
