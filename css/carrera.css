@@ -4102,7 +4102,6 @@
 
 .carrera-rank-row {
     display: grid !important;
-    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px !important;
     align-items: center !important;
     gap: 8px !important;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(10, 15, 26, 0.96) 100%) !important;
@@ -4115,15 +4114,226 @@
 
 .carrera-table-header.carrera-tab-copas,
 .carrera-rank-row.carrera-tab-copas {
-    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px !important;
+    grid-template-columns: 36px 1fr 64px 64px 92px 68px 58px 84px !important;
 }
-.carrera-table-header.carrera-tab-ligas,
-.carrera-rank-row.carrera-tab-ligas {
-    grid-template-columns: 36px 1fr 95px 75px 75px 82px !important;
+.carrera-table-header.carrera-tab-ligas.ligas-todas,
+.carrera-rank-row.carrera-tab-ligas.ligas-todas {
+    grid-template-columns: 36px 1fr 80px 80px 84px !important;
+}
+.carrera-table-header.carrera-tab-ligas.ligas-filtrada,
+.carrera-rank-row.carrera-tab-ligas.ligas-filtrada {
+    grid-template-columns: 36px 1fr 75px 85px 75px 84px !important;
+}
+.carrera-table-header.carrera-tab-ligas:not(.ligas-filtrada),
+.carrera-rank-row.carrera-tab-ligas:not(.ligas-filtrada) {
+    grid-template-columns: 36px 1fr 80px 80px 84px !important;
 }
 .carrera-table-header.carrera-tab-versus,
 .carrera-rank-row.carrera-tab-versus {
-    grid-template-columns: 36px 1fr 90px 85px 75px 82px !important;
+    grid-template-columns: 36px 1fr 95px 95px 85px 84px !important;
+}
+
+.carrera-table-header .carrera-col-detail {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
+}
+
+.carrera-rank-row .carrera-col-detail {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* Badges tipográficas para Efectividad y Disputados en 1 vs 1 Histórico */
+.versus-stat-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+}
+.versus-stat-badge.ratio {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.45);
+    color: #e9d5ff;
+}
+.versus-stat-badge.games {
+    background: rgba(148, 163, 184, 0.14);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    color: #f1f5f9;
+}
+
+/* 🕹️ Botones de Pestañas con Emblemas 3D Circulares Idénticos a StadiumGuessr */
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+    position: relative !important;
+    width: 220px !important;
+    max-width: 100% !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    padding: 0 14px 0 52px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+    font-size: 0.80rem !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    transition: all 0.25s ease !important;
+}
+
+#ranking-carrera-modal .ranking-left-panel .ranking-tab-img {
+    position: absolute !important;
+    left: 2px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) !important;
+    pointer-events: none !important;
+    transition: transform 0.25s ease !important;
+}
+
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
+    transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
+}
+
+/* 🟡 DORADO ORO: COPAS */
+#ranking-carrera-modal .ranking-left-panel .tab-btn-copas {
+    background: linear-gradient(165deg, rgba(38, 30, 10, 0.88) 0%, rgba(18, 14, 6, 0.96) 100%) !important;
+    border: 1.5px solid rgba(234, 179, 8, 0.35) !important;
+    border-top: 1.5px solid rgba(254, 240, 138, 0.6) !important;
+    color: #fef08a !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-copas:hover {
+    border-color: #eab308 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(234, 179, 8, 0.35) !important;
+    transform: translateY(-2px);
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-copas.active {
+    background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%) !important;
+    border-color: #fef08a !important;
+    border-top: 2px solid #ffffff !important;
+    color: #1a1202 !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+    box-shadow: 0 6px 20px rgba(234, 179, 8, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-copas.active span {
+    color: #1a1202 !important;
+    font-weight: 900 !important;
+}
+
+/* 🟢 VERDE NEÓN: LIGAS */
+#ranking-carrera-modal .ranking-left-panel .tab-btn-ligas {
+    background: linear-gradient(165deg, rgba(14, 32, 22, 0.88) 0%, rgba(8, 18, 12, 0.96) 100%) !important;
+    border: 1.5px solid rgba(0, 255, 119, 0.35) !important;
+    border-top: 1.5px solid rgba(110, 255, 180, 0.6) !important;
+    color: #a7f3d0 !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-ligas:hover {
+    border-color: #00ff77 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(0, 255, 119, 0.35) !important;
+    transform: translateY(-2px);
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-ligas.active {
+    background: linear-gradient(135deg, #00ff77 0%, #00d66c 50%, #009e4f 100%) !important;
+    border-color: #86efac !important;
+    border-top: 2px solid #ffffff !important;
+    color: #04160a !important;
+    font-weight: 900 !important;
+    box-shadow: 0 8px 25px rgba(0, 255, 119, 0.5), 0 0 20px rgba(0, 255, 119, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-ligas.active span {
+    color: #04160a !important;
+    font-weight: 900 !important;
+}
+
+/* 🔵 AZUL / PÚRPURA: 1 VS 1 HISTÓRICO */
+#ranking-carrera-modal .ranking-left-panel .tab-btn-versus-carrera {
+    background: linear-gradient(165deg, rgba(16, 28, 50, 0.88) 0%, rgba(8, 14, 26, 0.96) 100%) !important;
+    border: 1.5px solid rgba(41, 121, 255, 0.35) !important;
+    border-top: 1.5px solid rgba(147, 197, 253, 0.6) !important;
+    color: #bfdbfe !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-versus-carrera:hover {
+    border-color: #2979ff !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(41, 121, 255, 0.35) !important;
+    transform: translateY(-2px);
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-versus-carrera.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%) !important;
+    border-color: #93c5fd !important;
+    border-top: 2px solid #ffffff !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+#ranking-carrera-modal .ranking-left-panel .tab-btn-versus-carrera.active span {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+}
+
+@media (max-width: 768px) {
+    #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        font-size: 0.63rem !important;
+        font-weight: 900 !important;
+        letter-spacing: -0.2px !important;
+        padding: 0 4px 0 32px !important;
+        justify-content: center !important;
+        border-radius: 12px !important;
+        position: relative !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn span {
+        width: 100% !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-size: 0.63rem !important;
+        text-align: center !important;
+    }
+    html body #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img {
+        position: absolute !important;
+        left: 5px !important;
+        top: 50% !important;
+        transform: translateY(-50%) scale(1) !important;
+        width: 32px !important;
+        height: 32px !important;
+        margin: 0 !important;
+        object-fit: contain !important;
+        flex-shrink: 0 !important;
+        pointer-events: none !important;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7)) !important;
+    }
 }
 
 .carrera-rank-row:hover {

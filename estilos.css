@@ -6489,7 +6489,8 @@ body.video-abierto .hero-section {
    🕹️ 3. BOTONES CON ONDA E ÍCONOS CENTRADOS (DESAFÍO DE ORDEN Y RANKINGS)
    ======================================================== */
 #ranking-modal .ranking-left-panel .ranking-tab-img,
-#liga-amigos-modal .ranking-left-panel .ranking-tab-img {
+#liga-amigos-modal .ranking-left-panel .ranking-tab-img,
+#ranking-carrera-modal .ranking-left-panel .ranking-tab-img {
     position: absolute !important;
     left: 2px !important;
     top: 50% !important;
@@ -8822,16 +8823,34 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .carrera-table-header.carrera-tab-copas {
-    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px;
+    grid-template-columns: 36px 1fr 64px 64px 92px 68px 58px 84px;
     gap: 8px;
 }
-.carrera-table-header.carrera-tab-ligas {
-    grid-template-columns: 36px 1fr 95px 75px 75px 82px;
+.carrera-table-header.carrera-tab-ligas.ligas-todas {
+    grid-template-columns: 36px 1fr 80px 80px 84px;
+    gap: 8px;
+}
+.carrera-table-header.carrera-tab-ligas.ligas-filtrada {
+    grid-template-columns: 36px 1fr 75px 85px 75px 84px;
+    gap: 8px;
+}
+.carrera-table-header.carrera-tab-ligas:not(.ligas-filtrada) {
+    grid-template-columns: 36px 1fr 80px 80px 84px;
     gap: 8px;
 }
 .carrera-table-header.carrera-tab-versus {
-    grid-template-columns: 36px 1fr 90px 85px 75px 82px;
+    grid-template-columns: 36px 1fr 95px 95px 85px 84px;
     gap: 8px;
+}
+
+.carrera-table-header .carrera-col-detail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.66rem;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
 }
 
 .carrera-rank-row {
@@ -8842,15 +8861,23 @@ html[data-theme="light"] .xp-bar-big-fill {
     transition: background 0.18s ease;
 }
 .carrera-rank-row.carrera-tab-copas {
-    grid-template-columns: 36px 1fr 50px 50px 50px 50px 65px 82px;
+    grid-template-columns: 36px 1fr 64px 64px 92px 68px 58px 84px;
     gap: 8px;
 }
-.carrera-rank-row.carrera-tab-ligas {
-    grid-template-columns: 36px 1fr 95px 75px 75px 82px;
+.carrera-rank-row.carrera-tab-ligas.ligas-todas {
+    grid-template-columns: 36px 1fr 80px 80px 84px;
+    gap: 8px;
+}
+.carrera-rank-row.carrera-tab-ligas.ligas-filtrada {
+    grid-template-columns: 36px 1fr 75px 85px 75px 84px;
+    gap: 8px;
+}
+.carrera-rank-row.carrera-tab-ligas:not(.ligas-filtrada) {
+    grid-template-columns: 36px 1fr 80px 80px 84px;
     gap: 8px;
 }
 .carrera-rank-row.carrera-tab-versus {
-    grid-template-columns: 36px 1fr 90px 85px 75px 82px;
+    grid-template-columns: 36px 1fr 95px 95px 85px 84px;
     gap: 8px;
 }
 

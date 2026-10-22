@@ -3924,11 +3924,11 @@ window.renderizarRankingCarrera = function() {
 
     if (tabActiva === 'copas') {
         const lider = lista[0];
-        const liderTxt = lider ? `${san(lider.nombre)} (${lider.copas.total} 🏆)` : 'N/A';
+        const liderTxt = lider ? `${san(lider.nombre)} (${lider.copas.total})` : 'N/A';
         headerConfig = {
             img: 'trofeo.webp',
             glowClass: 'glow-gold',
-            badgeImg: 'trofeo.webp',
+            badgeImg: 'ranking-icon-semanal.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: 'Vitrina de Copas',
             badgeColor: '#ffd700',
@@ -3952,21 +3952,21 @@ window.renderizarRankingCarrera = function() {
         let pill1Val = '0 Ligas';
 
         if (filtroLiga === 'todas') {
-            liderTxt = lider ? `${san(lider.nombre)} (${lider.ligas.total} 🏆)` : 'N/A';
+            liderTxt = lider ? `${san(lider.nombre)} (${lider.ligas.total})` : 'N/A';
             pill1Val = `${miItem ? miItem.ligas.total : 0} Ligas`;
         } else {
             const cantLider = lider ? (lider.ligas.detalle[filtroLiga] || 0) : 0;
-            liderTxt = lider ? `${san(lider.nombre)} (${cantLider} 🏆)` : 'N/A';
+            liderTxt = lider ? `${san(lider.nombre)} (${cantLider})` : 'N/A';
             pill1Val = `${miItem ? (miItem.ligas.detalle[filtroLiga] || 0) : 0} Títulos`;
         }
 
         headerConfig = {
-            img: 'liga-trofeo-header.webp',
-            glowClass: 'glow-blue',
-            badgeImg: 'liga-trofeo-header.webp',
+            img: 'ranking-icon-solo.webp',
+            glowClass: 'glow-green',
+            badgeImg: 'ranking-icon-solo.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: nombreLigaFiltro,
-            badgeColor: '#00b0ff',
+            badgeColor: '#00ff77',
             pill1Label: filtroLiga === 'todas' ? 'TU TOTAL LIGAS' : 'TUS TÍTULOS',
             pill1Val: pill1Val,
             pill1Icon: 'ph-shield-star',
@@ -3980,11 +3980,11 @@ window.renderizarRankingCarrera = function() {
     } else if (tabActiva === 'versus') {
         headerConfig = {
             img: 'ranking-icon-1v1.webp',
-            glowClass: 'glow-purple',
+            glowClass: 'glow-blue',
             badgeImg: 'ranking-icon-1v1.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: '1 vs 1 Histórico',
-            badgeColor: '#a855f7',
+            badgeColor: '#2979ff',
             pill1Label: 'DUELOS GANADOS',
             pill1Val: `${miItem ? miItem.versus.ganados : 0} PG`,
             pill1Icon: 'ph-sword',
@@ -4009,11 +4009,6 @@ window.renderizarRankingCarrera = function() {
             ? `<span class="sticky-rank-pill">#${idx + 1}</span>`
             : (idx < 3 ? medallas3D[idx] : `<span class="rank-num-text">${idx + 1}</span>`);
 
-        let sellosGloriaHTML = '';
-        if (item.copas.mundial > 0) sellosGloriaHTML += `<span class="glory-tag tag-mundial" title="${item.copas.mundial} Copa(s) del Mundo">⭐${item.copas.mundial > 1 ? ` ${item.copas.mundial}` : ''}</span>`;
-        if (item.copas.clubes > 0) sellosGloriaHTML += `<span class="glory-tag tag-clubes" title="${item.copas.clubes} Mundial(es) de Clubes">🌍${item.copas.clubes > 1 ? ` ${item.copas.clubes}` : ''}</span>`;
-        if (item.copas.cont > 0) sellosGloriaHTML += `<span class="glory-tag tag-continental" title="${item.copas.cont} Copa(s) Continental(es)">🏆${item.copas.cont > 1 ? ` ${item.copas.cont}` : ''}</span>`;
-
         let columnasCentroHTML = '';
 
         if (tabActiva === 'copas') {
@@ -4025,40 +4020,39 @@ window.renderizarRankingCarrera = function() {
                 <div class="carrera-col-metric">
                     <span class="total-cups-badge">
                         <b class="total-num">${item.copas.total}</b>
-                        <span class="total-lbl">🏆</span>
                     </span>
-                    ${sellosGloriaHTML ? `<div class="glory-tags-row mobile-only">${sellosGloriaHTML}</div>` : ''}
                 </div>
             `;
         } else if (tabActiva === 'ligas') {
             if (filtroLiga === 'todas') {
                 columnasCentroHTML = `
-                    <div class="carrera-col-detail desktop-only">${item.copas.total} Copas</div>
                     <div class="carrera-col-detail desktop-only"><b class="tag-cyan">OVR ${item.ovr}</b></div>
                     <div class="carrera-col-metric">
                         <span class="total-leagues-badge">
                             <b class="total-num">${item.ligas.total}</b>
-                            <span class="total-lbl">Ligas</span>
                         </span>
                     </div>
                 `;
             } else {
                 const titulosEstaLiga = item.ligas.detalle[filtroLiga] || 0;
                 columnasCentroHTML = `
-                    <div class="carrera-col-detail desktop-only">${item.ligas.total} Ligas Tot.</div>
                     <div class="carrera-col-detail desktop-only"><b class="tag-cyan">OVR ${item.ovr}</b></div>
+                    <div class="carrera-col-detail desktop-only">${item.ligas.total} Tot.</div>
                     <div class="carrera-col-metric">
                         <span class="total-leagues-badge">
                             <b class="total-num">${titulosEstaLiga}</b>
-                            <span class="total-lbl">🏆</span>
                         </span>
                     </div>
                 `;
             }
         } else if (tabActiva === 'versus') {
             columnasCentroHTML = `
-                <div class="carrera-col-detail desktop-only"><b class="tag-purple">${item.versus.efectividad}%</b></div>
-                <div class="carrera-col-detail desktop-only">${item.versus.jugados} PJ</div>
+                <div class="carrera-col-detail desktop-only">
+                    <span class="versus-stat-badge ratio">${item.versus.efectividad}%</span>
+                </div>
+                <div class="carrera-col-detail desktop-only">
+                    <span class="versus-stat-badge games">${item.versus.jugados} PJ</span>
+                </div>
                 <div class="carrera-col-metric">
                     <span class="total-versus-badge">
                         <b class="total-num">${item.versus.ganados}</b>
@@ -4076,8 +4070,10 @@ window.renderizarRankingCarrera = function() {
                    <span>DUELO</span>
                </button>`;
 
+        const ligaModClass = tabActiva === 'ligas' ? (filtroLiga === 'todas' ? 'ligas-todas' : 'ligas-filtrada') : '';
+
         return `
-            <div class="carrera-rank-row carrera-tab-${tabActiva} ${esMio ? 'es-propio' : ''} ${!esSticky && idx < 3 ? `top-${idx + 1}` : ''} ${esSticky ? 'sticky-user-row' : ''}">
+            <div class="carrera-rank-row carrera-tab-${tabActiva} ${ligaModClass} ${esMio ? 'es-propio' : ''} ${!esSticky && idx < 3 ? `top-${idx + 1}` : ''} ${esSticky ? 'sticky-user-row' : ''}">
                 <div class="carrera-col-pos">${rankBadge}</div>
 
                 <div class="carrera-col-dt" onclick="inspeccionarPerfilRival('${item.nombre.replace(/'/g, "\\'")}')" title="Ver carta de ${san(item.nombre)}">
@@ -4118,22 +4114,32 @@ window.renderizarRankingCarrera = function() {
         tableHeaderCols = `
             <span class="carrera-col-pos">#</span>
             <span class="carrera-col-dt">DT / CLUB</span>
-            <span class="carrera-col-detail desktop-only" title="Copa del Mundo">⭐ MUN</span>
-            <span class="carrera-col-detail desktop-only" title="Mundial de Clubes">🌍 CLU</span>
-            <span class="carrera-col-detail desktop-only" title="Copa Continental">🏆 CON</span>
-            <span class="carrera-col-detail desktop-only" title="Copa Nacional">🏅 NAC</span>
+            <span class="carrera-col-detail desktop-only" title="Copa del Mundo">MUNDIAL</span>
+            <span class="carrera-col-detail desktop-only" title="Mundial de Clubes">CLUBES</span>
+            <span class="carrera-col-detail desktop-only" title="Copa Continental">CONTINENTAL</span>
+            <span class="carrera-col-detail desktop-only" title="Copa Desafío">DESAFÍO</span>
             <span class="carrera-col-metric">TOTAL</span>
             <span class="carrera-col-action">DUELO</span>
         `;
     } else if (tabActiva === 'ligas') {
-        tableHeaderCols = `
-            <span class="carrera-col-pos">#</span>
-            <span class="carrera-col-dt">DT / CLUB</span>
-            <span class="carrera-col-detail desktop-only">${filtroLiga === 'todas' ? 'COPAS TOT.' : 'LIGAS TOT.'}</span>
-            <span class="carrera-col-detail desktop-only">OVR DT</span>
-            <span class="carrera-col-metric">${filtroLiga === 'todas' ? 'LIGAS' : 'TÍTULOS'}</span>
-            <span class="carrera-col-action">DUELO</span>
-        `;
+        if (filtroLiga === 'todas') {
+            tableHeaderCols = `
+                <span class="carrera-col-pos">#</span>
+                <span class="carrera-col-dt">DT / CLUB</span>
+                <span class="carrera-col-detail desktop-only">OVR DT</span>
+                <span class="carrera-col-metric">LIGAS</span>
+                <span class="carrera-col-action">DUELO</span>
+            `;
+        } else {
+            tableHeaderCols = `
+                <span class="carrera-col-pos">#</span>
+                <span class="carrera-col-dt">DT / CLUB</span>
+                <span class="carrera-col-detail desktop-only">OVR DT</span>
+                <span class="carrera-col-detail desktop-only">LIGAS TOT.</span>
+                <span class="carrera-col-metric">TÍTULOS</span>
+                <span class="carrera-col-action">DUELO</span>
+            `;
+        }
     } else if (tabActiva === 'versus') {
         tableHeaderCols = `
             <span class="carrera-col-pos">#</span>
@@ -4148,10 +4154,10 @@ window.renderizarRankingCarrera = function() {
     const subMenuHTML = `
         <div class="liga-tabs-row ranking-tabs-row tabs-3">
             <button class="liga-tab-btn tab-btn-copas ${tabActiva === 'copas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('copas')">
-                <img src="trofeo.webp" alt="Copas" class="ranking-tab-img"> <span>Copas</span>
+                <img src="ranking-icon-semanal.webp" alt="Copas" class="ranking-tab-img"> <span>Copas</span>
             </button>
             <button class="liga-tab-btn tab-btn-ligas ${tabActiva === 'ligas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('ligas')">
-                <img src="liga-trofeo-header.webp" alt="Ligas" class="ranking-tab-img"> <span>Ligas</span>
+                <img src="ranking-icon-solo.webp" alt="Ligas" class="ranking-tab-img"> <span>Ligas</span>
             </button>
             <button class="liga-tab-btn tab-btn-versus-carrera ${tabActiva === 'versus' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('versus')">
                 <img src="ranking-icon-1v1.webp" alt="1 vs 1" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>
@@ -4160,17 +4166,17 @@ window.renderizarRankingCarrera = function() {
     `;
 
     const ligasOptionsHTML = `
-        <option value="todas" ${filtroLiga === 'todas' ? 'selected' : ''}>🏆 Todas las Ligas (Totales)</option>
-        <option value="arg_primera" ${filtroLiga === 'arg_primera' ? 'selected' : ''}>🇦🇷 Primera División Argentina</option>
-        <option value="eng_premier" ${filtroLiga === 'eng_premier' ? 'selected' : ''}>🇬🇧 Premier League</option>
-        <option value="esp_laliga" ${filtroLiga === 'esp_laliga' ? 'selected' : ''}>🇪🇸 La Liga EA Sports</option>
-        <option value="ita_seriea" ${filtroLiga === 'ita_seriea' ? 'selected' : ''}>🇮🇹 Serie A Italiana</option>
-        <option value="bra_brasileirao" ${filtroLiga === 'bra_brasileirao' ? 'selected' : ''}>🇧🇷 Brasileirão Serie A</option>
-        <option value="col_primera" ${filtroLiga === 'col_primera' ? 'selected' : ''}>🇨🇴 Liga BetPlay Colombia</option>
-        <option value="chi_primera" ${filtroLiga === 'chi_primera' ? 'selected' : ''}>🇨🇱 Primera División de Chile</option>
-        <option value="ger_bundesliga" ${filtroLiga === 'ger_bundesliga' ? 'selected' : ''}>🇩🇪 Bundesliga Alemana</option>
-        <option value="fra_ligue1" ${filtroLiga === 'fra_ligue1' ? 'selected' : ''}>🇫🇷 Ligue 1 de Francia</option>
-        <option value="mex_ligamx" ${filtroLiga === 'mex_ligamx' ? 'selected' : ''}>🇲🇽 Liga MX</option>
+        <option value="todas" ${filtroLiga === 'todas' ? 'selected' : ''}>Todas las Ligas (Totales)</option>
+        <option value="arg_primera" ${filtroLiga === 'arg_primera' ? 'selected' : ''}>Primera División Argentina</option>
+        <option value="eng_premier" ${filtroLiga === 'eng_premier' ? 'selected' : ''}>Premier League</option>
+        <option value="esp_laliga" ${filtroLiga === 'esp_laliga' ? 'selected' : ''}>La Liga EA Sports</option>
+        <option value="ita_seriea" ${filtroLiga === 'ita_seriea' ? 'selected' : ''}>Serie A Italiana</option>
+        <option value="bra_brasileirao" ${filtroLiga === 'bra_brasileirao' ? 'selected' : ''}>Brasileirão Serie A</option>
+        <option value="col_primera" ${filtroLiga === 'col_primera' ? 'selected' : ''}>Liga BetPlay Colombia</option>
+        <option value="chi_primera" ${filtroLiga === 'chi_primera' ? 'selected' : ''}>Primera División de Chile</option>
+        <option value="ger_bundesliga" ${filtroLiga === 'ger_bundesliga' ? 'selected' : ''}>Bundesliga Alemana</option>
+        <option value="fra_ligue1" ${filtroLiga === 'fra_ligue1' ? 'selected' : ''}>Ligue 1 de Francia</option>
+        <option value="mex_ligamx" ${filtroLiga === 'mex_ligamx' ? 'selected' : ''}>Liga MX</option>
     `;
 
     body.innerHTML = `
@@ -4240,7 +4246,7 @@ window.renderizarRankingCarrera = function() {
                 </div>
 
                 <div class="liga-table-card">
-                    <div class="carrera-table-header carrera-tab-${tabActiva}">
+                    <div class="carrera-table-header carrera-tab-${tabActiva} ${tabActiva === 'ligas' ? (filtroLiga === 'todas' ? 'ligas-todas' : 'ligas-filtrada') : ''}">
                         ${tableHeaderCols}
                     </div>
                     <div class="ranking-rows-scroll" id="carrera-ranking-scroll-box">
