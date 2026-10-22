@@ -3928,7 +3928,7 @@ window.renderizarRankingCarrera = function() {
         headerConfig = {
             img: 'trofeo.webp',
             glowClass: 'glow-gold',
-            badgeImg: 'ranking-icon-semanal.webp',
+            badgeImg: 'trofeo.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: 'Vitrina de Copas',
             badgeColor: '#ffd700',
@@ -3961,9 +3961,9 @@ window.renderizarRankingCarrera = function() {
         }
 
         headerConfig = {
-            img: 'ranking-icon-solo.webp',
+            img: 'catador.webp',
             glowClass: 'glow-green',
-            badgeImg: 'ranking-icon-solo.webp',
+            badgeImg: 'catador.webp',
             badgeTitle: 'Top 50 Global',
             badgeSub: nombreLigaFiltro,
             badgeColor: '#00ff77',
@@ -4154,10 +4154,10 @@ window.renderizarRankingCarrera = function() {
     const subMenuHTML = `
         <div class="liga-tabs-row ranking-tabs-row tabs-3">
             <button class="liga-tab-btn tab-btn-copas ${tabActiva === 'copas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('copas')">
-                <img src="ranking-icon-semanal.webp" alt="Copas" class="ranking-tab-img"> <span>Copas</span>
+                <img src="trofeo.webp" alt="Copas" class="ranking-tab-img"> <span>Copas</span>
             </button>
             <button class="liga-tab-btn tab-btn-ligas ${tabActiva === 'ligas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('ligas')">
-                <img src="ranking-icon-solo.webp" alt="Ligas" class="ranking-tab-img"> <span>Ligas</span>
+                <img src="catador.webp" alt="Ligas" class="ranking-tab-img"> <span>Ligas</span>
             </button>
             <button class="liga-tab-btn tab-btn-versus-carrera ${tabActiva === 'versus' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('versus')">
                 <img src="ranking-icon-1v1.webp" alt="1 vs 1" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>

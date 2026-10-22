@@ -4100,6 +4100,67 @@
     border-radius: 10px !important;
 }
 
+.carrera-table-header {
+    display: grid !important;
+    align-items: center !important;
+    padding: 10px 14px !important;
+    border-left: 1.5px solid transparent !important;
+    border-right: 1.5px solid transparent !important;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+    box-sizing: border-box !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    font-size: 0.72rem !important;
+    font-weight: 900 !important;
+    color: var(--text-muted) !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+}
+
+.carrera-table-header span.carrera-col-pos {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+.carrera-table-header span.carrera-col-dt {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-left: 10px !important;
+    white-space: nowrap !important;
+}
+
+.carrera-table-header .carrera-col-detail {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.67rem !important;
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
+}
+
+.carrera-table-header .carrera-col-metric {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
+}
+
+.carrera-table-header .carrera-col-action {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.3px !important;
+    white-space: nowrap !important;
+}
+
 .carrera-rank-row {
     display: grid !important;
     align-items: center !important;
@@ -4112,35 +4173,18 @@
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.carrera-table-header.carrera-tab-copas,
-.carrera-rank-row.carrera-tab-copas {
-    grid-template-columns: 36px 1fr 64px 64px 92px 68px 58px 84px !important;
-}
-.carrera-table-header.carrera-tab-ligas.ligas-todas,
-.carrera-rank-row.carrera-tab-ligas.ligas-todas {
-    grid-template-columns: 36px 1fr 80px 80px 84px !important;
-}
-.carrera-table-header.carrera-tab-ligas.ligas-filtrada,
-.carrera-rank-row.carrera-tab-ligas.ligas-filtrada {
-    grid-template-columns: 36px 1fr 75px 85px 75px 84px !important;
-}
-.carrera-table-header.carrera-tab-ligas:not(.ligas-filtrada),
-.carrera-rank-row.carrera-tab-ligas:not(.ligas-filtrada) {
-    grid-template-columns: 36px 1fr 80px 80px 84px !important;
-}
-.carrera-table-header.carrera-tab-versus,
-.carrera-rank-row.carrera-tab-versus {
-    grid-template-columns: 36px 1fr 95px 95px 85px 84px !important;
-}
-
-.carrera-table-header .carrera-col-detail {
+.carrera-rank-row .carrera-col-pos {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-    font-size: 0.66rem !important;
-    letter-spacing: 0.2px !important;
-    white-space: nowrap !important;
+}
+
+.carrera-rank-row .carrera-col-dt {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-width: 0 !important;
 }
 
 .carrera-rank-row .carrera-col-detail {
@@ -4148,6 +4192,43 @@
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
+}
+
+.carrera-rank-row .carrera-col-metric {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.carrera-rank-row .carrera-col-action {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Grillas Exactas Sincronizadas */
+.carrera-table-header.carrera-tab-copas,
+.carrera-rank-row.carrera-tab-copas {
+    grid-template-columns: 36px 1fr 52px 50px 78px 56px 54px 80px !important;
+    gap: 8px !important;
+}
+.carrera-table-header.carrera-tab-ligas.ligas-todas,
+.carrera-rank-row.carrera-tab-ligas.ligas-todas,
+.carrera-table-header.carrera-tab-ligas:not(.ligas-filtrada),
+.carrera-rank-row.carrera-tab-ligas:not(.ligas-filtrada) {
+    grid-template-columns: 36px 1fr 90px 90px 88px !important;
+    gap: 8px !important;
+}
+.carrera-table-header.carrera-tab-ligas.ligas-filtrada,
+.carrera-rank-row.carrera-tab-ligas.ligas-filtrada {
+    grid-template-columns: 36px 1fr 85px 90px 80px 88px !important;
+    gap: 8px !important;
+}
+.carrera-table-header.carrera-tab-versus,
+.carrera-rank-row.carrera-tab-versus {
+    grid-template-columns: 36px 1fr 100px 100px 90px 88px !important;
+    gap: 8px !important;
 }
 
 /* Badges tipográficas para Efectividad y Disputados en 1 vs 1 Histórico */
@@ -4172,7 +4253,7 @@
     color: #f1f5f9;
 }
 
-/* 🕹️ Botones de Pestañas con Emblemas 3D Circulares Idénticos a StadiumGuessr */
+/* 🕹️ Botones de Pestañas con Emblemas */
 #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
     position: relative !important;
     width: 220px !important;
@@ -4195,20 +4276,41 @@
 
 #ranking-carrera-modal .ranking-left-panel .ranking-tab-img {
     position: absolute !important;
-    left: 2px !important;
+    left: 4px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    width: 60px !important;
-    height: 60px !important;
+    width: 54px !important;
+    height: 54px !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7)) !important;
     pointer-events: none !important;
     transition: transform 0.25s ease !important;
+    object-fit: contain !important;
 }
 
-#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img {
-    transform: translateY(-50%) scale(1.08) rotate(-3deg) !important;
+#ranking-carrera-modal .ranking-left-panel .ranking-tab-img[src*="trofeo"] {
+    transform: translateY(-50%) scale(1.6) !important;
+    left: 2px !important;
+}
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="trofeo"] {
+    transform: translateY(-50%) scale(1.72) rotate(-3deg) !important;
+}
+
+#ranking-carrera-modal .ranking-left-panel .ranking-tab-img[src*="catador"] {
+    transform: translateY(-50%) scale(1.1) !important;
+    left: 3px !important;
+}
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="catador"] {
+    transform: translateY(-50%) scale(1.2) rotate(-3deg) !important;
+}
+
+#ranking-carrera-modal .ranking-left-panel .ranking-tab-img[src*="1v1"] {
+    transform: translateY(-50%) scale(1.05) !important;
+    left: 3px !important;
+}
+#ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="1v1"] {
+    transform: translateY(-50%) scale(1.15) rotate(-3deg) !important;
 }
 
 /* 🟡 DORADO ORO: COPAS */
@@ -4333,6 +4435,20 @@
         flex-shrink: 0 !important;
         pointer-events: none !important;
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7)) !important;
+    }
+    html body #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img[src*="trofeo"] {
+        transform: translateY(-50%) scale(1.5) !important;
+    }
+    html body #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn img.ranking-tab-img[src*="catador"] {
+        transform: translateY(-50%) scale(1.05) !important;
+    }
+    .carrera-table-header span.carrera-col-dt {
+        padding-left: 0 !important;
+    }
+    .carrera-table-header .desktop-only,
+    .carrera-rank-row .desktop-only,
+    .carrera-col-detail.desktop-only {
+        display: none !important;
     }
 }
 
