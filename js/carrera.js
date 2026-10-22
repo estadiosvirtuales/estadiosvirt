@@ -4165,19 +4165,28 @@ window.renderizarRankingCarrera = function() {
         </div>
     `;
 
-    const ligasOptionsHTML = `
-        <option value="todas" ${filtroLiga === 'todas' ? 'selected' : ''}>Todas las Ligas (Totales)</option>
-        <option value="arg_primera" ${filtroLiga === 'arg_primera' ? 'selected' : ''}>Primera División Argentina</option>
-        <option value="eng_premier" ${filtroLiga === 'eng_premier' ? 'selected' : ''}>Premier League</option>
-        <option value="esp_laliga" ${filtroLiga === 'esp_laliga' ? 'selected' : ''}>La Liga EA Sports</option>
-        <option value="ita_seriea" ${filtroLiga === 'ita_seriea' ? 'selected' : ''}>Serie A Italiana</option>
-        <option value="bra_brasileirao" ${filtroLiga === 'bra_brasileirao' ? 'selected' : ''}>Brasileirão Serie A</option>
-        <option value="col_primera" ${filtroLiga === 'col_primera' ? 'selected' : ''}>Liga BetPlay Colombia</option>
-        <option value="chi_primera" ${filtroLiga === 'chi_primera' ? 'selected' : ''}>Primera División de Chile</option>
-        <option value="ger_bundesliga" ${filtroLiga === 'ger_bundesliga' ? 'selected' : ''}>Bundesliga Alemana</option>
-        <option value="fra_ligue1" ${filtroLiga === 'fra_ligue1' ? 'selected' : ''}>Ligue 1 de Francia</option>
-        <option value="mex_ligamx" ${filtroLiga === 'mex_ligamx' ? 'selected' : ''}>Liga MX</option>
-    `;
+    const LIGAS_LISTA_DROPDOWN = [
+        { id: 'todas', nombre: 'Todas las Ligas (Totales)' },
+        { id: 'arg_primera', nombre: 'Primera División Argentina' },
+        { id: 'eng_premier', nombre: 'Premier League' },
+        { id: 'esp_laliga', nombre: 'La Liga EA Sports' },
+        { id: 'ita_seriea', nombre: 'Serie A Italiana' },
+        { id: 'bra_brasileirao', nombre: 'Brasileirão Serie A' },
+        { id: 'col_primera', nombre: 'Liga BetPlay Colombia' },
+        { id: 'chi_primera', nombre: 'Primera División de Chile' },
+        { id: 'ger_bundesliga', nombre: 'Bundesliga Alemana' },
+        { id: 'fra_ligue1', nombre: 'Ligue 1 de Francia' },
+        { id: 'mex_ligamx', nombre: 'Liga MX' }
+    ];
+
+    const ligaSeleccionadaObj = LIGAS_LISTA_DROPDOWN.find(l => l.id === filtroLiga) || LIGAS_LISTA_DROPDOWN[0];
+
+    const ligasCustomItemsHTML = LIGAS_LISTA_DROPDOWN.map(l => `
+        <div class="carrera-select-item ${filtroLiga === l.id ? 'active' : ''}" onclick="seleccionarFiltroLigaCustom('${l.id}', event)">
+            <span>${l.nombre}</span>
+            ${filtroLiga === l.id ? '<i class="ph-bold ph-check"></i>' : ''}
+        </div>
+    `).join('');
 
     body.innerHTML = `
         <div class="ranking-split-grid">
@@ -4232,10 +4241,14 @@ window.renderizarRankingCarrera = function() {
                     </div>
 
                     ${tabActiva === 'ligas' ? `
-                        <div class="carrera-filter-wrapper">
-                            <select class="carrera-liga-select" onchange="cambiarFiltroLigaRanking(this.value)">
-                                ${ligasOptionsHTML}
-                            </select>
+                        <div class="carrera-filter-wrapper" id="carrera-filter-dropdown-wrap">
+                            <button type="button" class="carrera-custom-select-btn" onclick="toggleDropdownLigasRanking(event)">
+                                <span class="carrera-select-label">${ligaSeleccionadaObj.nombre}</span>
+                                <i class="ph-bold ph-caret-down"></i>
+                            </button>
+                            <div class="carrera-custom-select-menu" id="carrera-ligas-dropdown-menu" style="display:none;">
+                                ${ligasCustomItemsHTML}
+                            </div>
                         </div>
                     ` : ''}
 
@@ -4275,6 +4288,44 @@ window.cambiarFiltroLigaRanking = function(ligaKey) {
         renderizarRankingCarrera();
     }
 };
+
+window.toggleDropdownLigasRanking = function(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('carrera-ligas-dropdown-menu');
+    const wrap = document.getElementById('carrera-filter-dropdown-wrap');
+    if (!menu) return;
+    const estaAbierto = menu.style.display !== 'none';
+    menu.style.display = estaAbierto ? 'none' : 'block';
+    if (wrap) {
+        const btn = wrap.querySelector('.carrera-custom-select-btn');
+        if (btn) btn.classList.toggle('open', !estaAbierto);
+    }
+};
+
+window.seleccionarFiltroLigaCustom = function(ligaId, event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('carrera-ligas-dropdown-menu');
+    if (menu) menu.style.display = 'none';
+    const wrap = document.getElementById('carrera-filter-dropdown-wrap');
+    if (wrap) {
+        const btn = wrap.querySelector('.carrera-custom-select-btn');
+        if (btn) btn.classList.remove('open');
+    }
+    cambiarFiltroLigaRanking(ligaId);
+};
+
+if (!window._carreraDropdownClickInit) {
+    window._carreraDropdownClickInit = true;
+    document.addEventListener('click', (e) => {
+        const wrap = document.getElementById('carrera-filter-dropdown-wrap');
+        if (wrap && !wrap.contains(e.target)) {
+            const menu = document.getElementById('carrera-ligas-dropdown-menu');
+            if (menu) menu.style.display = 'none';
+            const btn = wrap.querySelector('.carrera-custom-select-btn');
+            if (btn) btn.classList.remove('open');
+        }
+    });
+}
 
 window.filtrarCampeonesCarrera = function(term) {
     const q = (term || '').toLowerCase().trim();
