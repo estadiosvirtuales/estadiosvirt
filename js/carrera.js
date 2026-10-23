@@ -4071,9 +4071,12 @@ window.renderizarRankingCarrera = function() {
                </button>`;
 
         const ligaModClass = tabActiva === 'ligas' ? (filtroLiga === 'todas' ? 'ligas-todas' : 'ligas-filtrada') : '';
+        const clubItem = (typeof BANDERAS_LISTA !== 'undefined') ? BANDERAS_LISTA.find(b => b.id === item.escudo) : null;
+        const clubLabel = clubItem ? clubItem.label : (item.escudo || '');
+        const dataSearch = `${item.nombre} ${clubLabel} ${item.escudo || ''}`.toLowerCase().replace(/"/g, '&quot;');
 
         return `
-            <div class="carrera-rank-row carrera-tab-${tabActiva} ${ligaModClass} ${esMio ? 'es-propio' : ''} ${!esSticky && idx < 3 ? `top-${idx + 1}` : ''} ${esSticky ? 'sticky-user-row' : ''}">
+            <div class="carrera-rank-row carrera-tab-${tabActiva} ${ligaModClass} ${esMio ? 'es-propio' : ''} ${!esSticky && idx < 3 ? `top-${idx + 1}` : ''} ${esSticky ? 'sticky-user-row' : ''}" data-search="${dataSearch}">
                 <div class="carrera-col-pos">${rankBadge}</div>
 
                 <div class="carrera-col-dt" onclick="inspeccionarPerfilRival('${item.nombre.replace(/'/g, "\\'")}')" title="Ver carta de ${san(item.nombre)}">
@@ -4254,7 +4257,7 @@ window.renderizarRankingCarrera = function() {
 
                     <div class="ranking-search-box">
                         <i class="ph-bold ph-magnifying-glass"></i>
-                        <input type="text" class="ranking-search-input" placeholder="Buscar DT o Club..." oninput="filtrarCampeonesCarrera(this.value)">
+                        <input type="text" class="ranking-search-input" id="carrera-search-dt-club" placeholder="Buscar DT o Club..." oninput="filtrarCampeonesCarrera(this.value)">
                     </div>
                 </div>
 
@@ -4264,6 +4267,10 @@ window.renderizarRankingCarrera = function() {
                     </div>
                     <div class="ranking-rows-scroll carrera-ranking-scroll" id="carrera-ranking-scroll-box">
                         ${filasHTML}
+                        <div id="carrera-no-results" style="display:none; text-align:center; padding:40px 14px; color:var(--text-muted); font-size:0.85rem; font-weight:700;">
+                            <i class="ph-bold ph-magnifying-glass" style="font-size:2rem; color:var(--accent-color); margin-bottom:10px; display:block;"></i>
+                            No se encontraron DTs o clubes que coincidan con la búsqueda.
+                        </div>
                     </div>
                     ${stickyRowHTML}
                 </div>
@@ -4330,11 +4337,29 @@ if (!window._carreraDropdownClickInit) {
 window.filtrarCampeonesCarrera = function(term) {
     const q = (term || '').toLowerCase().trim();
     const rows = document.querySelectorAll('#ranking-carrera-modal .carrera-rank-row:not(.sticky-user-row)');
+    const stickyRow = document.querySelector('#ranking-carrera-modal .sticky-user-row');
+    let visibleCount = 0;
+
     rows.forEach(r => {
-        const nameEl = r.querySelector('.carrera-user-name');
-        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
-        r.style.display = (!q || name.includes(q)) ? '' : 'none';
+        const searchText = r.getAttribute('data-search') || (r.querySelector('.carrera-user-name')?.textContent || '').toLowerCase();
+        const coincide = !q || searchText.includes(q);
+        r.classList.toggle('is-search-hidden', !coincide);
+        if (coincide) visibleCount++;
     });
+
+    if (stickyRow) {
+        if (!q) {
+            stickyRow.classList.remove('is-search-hidden');
+        } else {
+            const stickySearch = stickyRow.getAttribute('data-search') || (stickyRow.querySelector('.carrera-user-name')?.textContent || '').toLowerCase();
+            stickyRow.classList.toggle('is-search-hidden', !stickySearch.includes(q));
+        }
+    }
+
+    const noResultsMsg = document.getElementById('carrera-no-results');
+    if (noResultsMsg) {
+        noResultsMsg.style.display = (visibleCount === 0 && q) ? 'block' : 'none';
+    }
 };
 
 window.desafiarDesdeRankingCarrera = async function(nombreRival) {
