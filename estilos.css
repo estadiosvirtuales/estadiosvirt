@@ -10096,33 +10096,48 @@ html[data-theme="light"] .xp-bar-big-fill {
    👤 CÍRCULO DE AVATAR EN FILAS DE RANKINGS (IDÉNTICO AL HEADER)
    ======================================================== */
 .ranking-avatar-circle {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    max-width: 32px;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    border: 2px solid var(--accent-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #71a8ff;
-    box-shadow: 0 0 8px var(--accent-glow);
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--accent-color) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #71a8ff !important;
+    box-shadow: 0 0 8px var(--accent-glow) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
 }
 
 .ranking-avatar-circle .ranking-avatar-inner {
-    transform: scale(0.32);
-    transform-origin: center 75%;
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    left: 50%;
-    margin-left: -50px;
-    bottom: -18px;
-    pointer-events: none;
+    transform: scale(0.32) !important;
+    transform-origin: center 75% !important;
+    position: absolute !important;
+    width: 100px !important;
+    height: 100px !important;
+    left: 50% !important;
+    margin-left: -50px !important;
+    bottom: -18px !important;
+    top: auto !important;
+    right: auto !important;
+    pointer-events: none !important;
+}
+
+.ranking-avatar-circle .ac-avatar-full {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
 }
 
 .ranking-avatar-circle .ac-avatar-img-full {
@@ -10134,16 +10149,16 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 @media (max-width: 768px) {
     .ranking-avatar-circle {
-        width: 28px;
-        height: 28px;
-        min-width: 28px;
-        max-width: 28px;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
     }
     .ranking-avatar-circle .ranking-avatar-inner {
-        transform: scale(0.28);
-        left: 50%;
-        margin-left: -50px;
-        bottom: -19px;
+        transform: scale(0.28) !important;
+        left: 50% !important;
+        margin-left: -50px !important;
+        bottom: -19px !important;
     }
 }
 /* ========================================================
