@@ -5014,7 +5014,7 @@
     .carrera-table-header.carrera-tab-versus {
         grid-template-columns: 32px 1fr 64px 74px !important;
         gap: 6px !important;
-        padding: 8px 10px !important;
+        padding: 8px 14px 8px 10px !important;
         font-size: 0.64rem !important;
         display: grid !important;
     }
@@ -5028,6 +5028,55 @@
         gap: 6px !important;
         padding: 8px 10px !important;
         display: grid !important;
+    }
+
+    /* 🎯 Centrado simétrico de títulos y contenidos de columnas en Celular (3 Rankings) */
+    .carrera-table-header span.carrera-col-pos,
+    .carrera-rank-row .carrera-col-pos {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .carrera-table-header span.carrera-col-dt {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding-left: 0 !important;
+        width: 100% !important;
+    }
+    .carrera-rank-row .carrera-col-dt {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .carrera-table-header .carrera-col-metric,
+    .carrera-rank-row .carrera-col-metric {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .carrera-table-header .carrera-col-action,
+    .carrera-rank-row .carrera-col-action {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .carrera-rank-row .carrera-col-action .btn-desafiar-row,
+    .carrera-rank-row .carrera-col-action .carrera-action-self {
+        margin: 0 auto !important;
+    }
+    .carrera-rank-row .carrera-col-metric .total-cups-badge,
+    .carrera-rank-row .carrera-col-metric .total-leagues-badge,
+    .carrera-rank-row .carrera-col-metric .total-versus-badge {
+        margin: 0 auto !important;
     }
     .carrera-rank-ligas-col,
     .carrera-rank-copas-col {
