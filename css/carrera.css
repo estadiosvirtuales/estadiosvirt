@@ -4741,7 +4741,7 @@
     height: 100px !important;
     left: 50% !important;
     margin-left: -50px !important;
-    bottom: -18px !important;
+    bottom: -22px !important;
     top: auto !important;
     right: auto !important;
     pointer-events: none !important;
@@ -4766,7 +4766,7 @@
         transform: scale(0.28) !important;
         left: 50% !important;
         margin-left: -50px !important;
-        bottom: -19px !important;
+        bottom: -22px !important;
     }
 }
 .carrera-user-info {

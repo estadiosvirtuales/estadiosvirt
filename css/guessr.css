@@ -5721,7 +5721,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     height: 100px !important;
     left: 50% !important;
     margin-left: -50px !important;
-    bottom: -18px !important;
+    bottom: -22px !important;
     top: auto !important;
     right: auto !important;
     pointer-events: none !important;
@@ -5758,7 +5758,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         transform: scale(0.28) !important;
         left: 50% !important;
         margin-left: -50px !important;
-        bottom: -19px !important;
+        bottom: -22px !important;
     }
 }
 /* ========================================================
