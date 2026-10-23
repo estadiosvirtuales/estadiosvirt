@@ -190,9 +190,16 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
 
     if (n.toLowerCase() !== miNombre) {
         if (datosRival.nivelActual >= 4) {
+            const estadoSP = (typeof obtenerEstadoDuelosDiariosSP === 'function')
+                ? obtenerEstadoDuelosDiariosSP()
+                : { puedeGanarSP: true, ganadosConSP: 0 };
+            const badgeTxt = estadoSP.puedeGanarSP
+                ? `(+2 SP · ${estadoSP.ganadosConSP}/3)`
+                : `(Recreativo · 3/3 SP)`;
+
             botonDesafiarOnceHTML = `
                 <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
-                    <i class="ph-bold ph-sword"></i> Desafiar a su Once
+                    <i class="ph-bold ph-sword"></i> Desafiar a su Once <span style="font-size:0.75rem; opacity:0.85; margin-left:4px; font-weight:700;">${badgeTxt}</span>
                 </button>
             `;
         } else {

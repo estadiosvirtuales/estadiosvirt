@@ -123,6 +123,23 @@ var FORMACIONES_TACTICAS = {
 
 // --- Desafío Asincrónico de Planteles ---
 
+// ⚔️ SISTEMA DE TOPE DIARIO DE PREMIOS SP EN DUELOS 1 VS 1
+// Otorga hasta 3 victorias con recompensa de 2 SP por día. A partir del 4º triunfo, se juega en modo recreativo (0 SP) para evitar inflación.
+function obtenerEstadoDuelosDiariosSP() {
+    const idUser = (typeof getUserId === 'function') ? getUserId() : 'default';
+    const hoyStr = new Date().toISOString().slice(0, 10);
+    const spKey = 'ev_duelos_sp_dia_' + idUser + '_' + hoyStr;
+    const count = parseInt(localStorage.getItem(spKey) || '0', 10);
+    return {
+        hoy: hoyStr,
+        ganadosConSP: count,
+        limite: 3,
+        disponibles: Math.max(0, 3 - count),
+        puedeGanarSP: count < 3
+    };
+}
+window.obtenerEstadoDuelosDiariosSP = obtenerEstadoDuelosDiariosSP;
+
 // ⚔️ DISPARADOR DEL DESAFÍO DE PLANTELES ASINCRÓNICO
 window.iniciarDesafioOnceRivalDirecto = function() {
     const rival = window.datosUltimoRivalInspeccionado;
@@ -181,12 +198,16 @@ window.iniciarDesafioOnceRivalDirecto = function() {
         titularesRival = poolFinal.slice(0, 11).map(a => a.label);
     }
 
-    // 3. Estructuración del partido único
+    // 3. Estructuración del partido único con control diario de SP
+    const estadoSP = obtenerEstadoDuelosDiariosSP();
+    const tienePremioSP = estadoSP.puedeGanarSP;
+
     torneoEstado = {
         tier: 'desafio_once',
         config: {
             nombre: 'Desafío de Planteles',
-            premioSP: 2
+            premioSP: tienePremioSP ? 2 : 0,
+            duelosSPHoy: estadoSP.ganadosConSP
         },
         rondaIdx: 0,
         rivales: [{
@@ -819,7 +840,17 @@ function prepararVistaPartidoCopa() {
     const stageBadgeEl = document.getElementById('sim-stage-title');
     if (stageBadgeEl) {
         stageBadgeEl.className = 'sim-stage-badge';
-        stageBadgeEl.textContent = esDesafio ? 'DUELO DE COMUNIDAD' : rondaNombre.toUpperCase();
+        if (esDesafio) {
+            const tienePremio = (torneoEstado.config.premioSP || 0) > 0;
+            const vicHoy = torneoEstado.config.duelosSPHoy !== undefined ? torneoEstado.config.duelosSPHoy : 0;
+            if (tienePremio) {
+                stageBadgeEl.innerHTML = `<i class="ph-bold ph-sword"></i> DUELO DE COMUNIDAD · BOTÍN: 2 SP (${vicHoy}/3 HOY)`;
+            } else {
+                stageBadgeEl.innerHTML = `<i class="ph-bold ph-game-controller"></i> DUELO RECREATIVO · AMISTOSO (3/3 SP ALCANZADO)`;
+            }
+        } else {
+            stageBadgeEl.textContent = rondaNombre.toUpperCase();
+        }
     }
     document.querySelector('.sim-scoreboard-card')?.classList.remove('campeon-glory');
     document.querySelector('.sim-match-layout')?.classList.remove('campeon-view');
@@ -2205,8 +2236,21 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     if (ganoUsuario) {
         if (typeof reproducirSonido === 'function') reproducirSonido('victoria');
         if (torneoEstado.esDesafioAsincronico) {
-            const premio = torneoEstado.config.premioSP || 2;
-            userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
+            const estadoSP = (typeof obtenerEstadoDuelosDiariosSP === 'function') 
+                ? obtenerEstadoDuelosDiariosSP() 
+                : { puedeGanarSP: true, ganadosConSP: 0, hoy: new Date().toISOString().slice(0, 10) };
+            const otorgaSP = estadoSP.puedeGanarSP;
+            const premio = otorgaSP ? (torneoEstado.config.premioSP || 2) : 0;
+
+            if (otorgaSP && premio > 0) {
+                userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
+                const nuevoTotal = estadoSP.ganadosConSP + 1;
+                const idUser = (typeof getUserId === 'function') ? getUserId() : 'default';
+                const spKey = 'ev_duelos_sp_dia_' + idUser + '_' + estadoSP.hoy;
+                localStorage.setItem(spKey, String(nuevoTotal));
+                userStats.duelosSPDiarios = { fecha: estadoSP.hoy, count: nuevoTotal };
+            }
+
             userStats.duelosGanados = (userStats.duelosGanados || 0) + 1;
             userStats.duelosJugados = (userStats.duelosJugados || 0) + 1;
             guardarStats();
@@ -2217,16 +2261,27 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             const stageTitle = document.getElementById('sim-stage-title');
             if (stageTitle) {
                 stageTitle.className = 'sim-stage-badge campeon';
-                stageTitle.innerHTML = `<i class="ph-fill ph-trophy"></i> ¡VICTORIA EN EL DUELO!`;
+                stageTitle.innerHTML = otorgaSP 
+                    ? `<i class="ph-fill ph-trophy"></i> ¡VICTORIA EN EL DUELO!` 
+                    : `<i class="ph-fill ph-game-controller"></i> ¡VICTORIA EN DUELO RECREATIVO!`;
             }
 
             btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
             btn.disabled = false;
-            btn.innerHTML = `<i class="ph-bold ph-trophy"></i> ¡RECLAMAR RECOMPENSA (+${premio} SP)!`;
-            btn.onclick = () => {
-                cerrarModalSimuladorPartido();
-                showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Sumaste +${premio} SP 🔥`, 'ph-trophy', 'success');
-            };
+            if (otorgaSP && premio > 0) {
+                const nuevoTotal = estadoSP.ganadosConSP + 1;
+                btn.innerHTML = `<i class="ph-bold ph-trophy"></i> ¡RECLAMAR RECOMPENSA (+${premio} SP)! (${nuevoTotal}/3)`;
+                btn.onclick = () => {
+                    cerrarModalSimuladorPartido();
+                    showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Sumaste +${premio} SP 🔥 (${nuevoTotal}/3 diarios con premio)`, 'ph-trophy', 'success');
+                };
+            } else {
+                btn.innerHTML = `<i class="ph-bold ph-check"></i> FINALIZAR DUELO (RECREATIVO)`;
+                btn.onclick = () => {
+                    cerrarModalSimuladorPartido();
+                    showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Victoria amistosa registrada ⚔️ (Límite diario de 3 duelos con SP completado)`, 'ph-shield-check', 'info');
+                };
+            }
 
             dispararEfectoLucesGaming();
         } else {
@@ -4063,9 +4118,16 @@ window.renderizarRankingCarrera = function() {
             `;
         }
 
+        const estadoSPDuelo = (typeof obtenerEstadoDuelosDiariosSP === 'function') 
+            ? obtenerEstadoDuelosDiariosSP() 
+            : { puedeGanarSP: true, ganadosConSP: 0 };
+        const duelTooltip = estadoSPDuelo.puedeGanarSP 
+            ? `Desafiar a su Once (+2 SP · ${estadoSPDuelo.ganadosConSP}/3 hoy)` 
+            : `Desafiar a su Once (Modo Recreativo · Límite de 3 SP diarios completado)`;
+
         const accionBtnHTML = esMio
             ? `<span class="carrera-action-self"><i class="ph-fill ph-shield-check"></i> TU CLUB</span>`
-            : `<button type="button" class="btn-desafiar-row" onclick="desafiarDesdeRankingCarrera('${item.nombre.replace(/'/g, "\\'")}')" title="Desafiar a su Once">
+            : `<button type="button" class="btn-desafiar-row" onclick="desafiarDesdeRankingCarrera('${item.nombre.replace(/'/g, "\\'")}')" title="${duelTooltip}">
                    <img src="liga-icon-historial.webp" alt="Desafiar" class="carrera-mini-swords">
                    <span>DUELO</span>
                </button>`;
