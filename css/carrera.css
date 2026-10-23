@@ -4605,6 +4605,19 @@
         transform-origin: center center !important;
         animation: rayoGlowCopaCarreraMobile 3s infinite alternate ease-in-out !important;
     }
+    /* 🏆 Posicionamiento óptico del ícono principal hacia la derecha en celular */
+    #ranking-carrera-modal .ranking-brand-box.brand-box-copas .trophy-stage-wrapper,
+    #ranking-carrera-modal .ranking-brand-box:has(img[src*="trofeo"]) .trophy-stage-wrapper {
+        transform: translateX(20px) !important;
+    }
+    #ranking-carrera-modal .ranking-brand-box.brand-box-ligas .trophy-stage-wrapper,
+    #ranking-carrera-modal .ranking-brand-box:has(img[src*="catador"]) .trophy-stage-wrapper {
+        transform: translateX(14px) !important;
+    }
+    #ranking-carrera-modal .ranking-brand-box.brand-box-versus .trophy-stage-wrapper,
+    #ranking-carrera-modal .ranking-brand-box:has(img[src*="1v1"]) .trophy-stage-wrapper {
+        transform: translateX(7px) !important;
+    }
     .carrera-table-header span.carrera-col-dt {
         padding-left: 0 !important;
     }
