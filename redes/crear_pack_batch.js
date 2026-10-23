@@ -1,127 +1,155 @@
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 
 console.log('🚀 ========================================================');
-console.log('🚀 MOTOR DE PRODUCCIÓN POR LOTES: ESTADIOS VIRTUALES (LOTE 3 - EUROPA)');
+console.log('🚀 MOTOR DE PRODUCCIÓN POR LOTES: ESTADIOS VIRTUALES (LOTE 7)');
 console.log('🚀 ========================================================\n');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 
-// COLA DE PRODUCCIÓN DEL LOTE 3
+// COLA DE PRODUCCIÓN DEL LOTE 7
 const STADIUMS_QUEUE = [
     {
-        id: 'santiago_bernabeu',
-        nombreMostrar: 'SANTIAGO BERNABÉU',
-        clubMostrar: 'REAL MADRID',
-        pais: 'España',
-        folderName: 'SANTIAGO-BERNABEU',
-        videoFileName: 'Estadio_Santiago_Bernabeu_Real_Madrid.mp4',
-        coverFileName: 'Portada_Estadio_Santiago_Bernabeu.jpg',
-        inputVideoPath: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4",
-        targetLat: 40.4531,
-        targetLng: -3.6883,
-        userLat: 40.4504,
-        userLng: -3.6852,
-        distanciaTexto: '399 METROS',
-        puntosTexto: '4.390 PUNTOS 🔥',
-        ubicacionBadge: '📍 Madrid, España · SANTIAGO BERNABÉU',
+        id: 'estadio_azteca',
+        nombreMostrar: 'ESTADIO AZTECA',
+        clubMostrar: 'CLUB AMÉRICA · MÉXICO',
+        pais: 'México',
+        folderName: 'AZTECA',
+        videoFileName: 'Estadio_Azteca_Mexico.mp4',
+        coverFileName: 'Portada_Estadio_Azteca.jpg',
+        inputVideoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        targetLat: 19.3029,
+        targetLng: -99.1505,
+        userLat: 19.3001,
+        userLng: -99.1478,
+        distanciaTexto: '421 METROS',
+        puntosTexto: '4.360 PUNTOS 🔥',
+        ubicacionBadge: '📍 Ciudad de México, México · ESTADIO AZTECA',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 84.744 espectadores', color: '#00ff77' },
-            { icon: '👑', tag: 'PISTA 2:', text: 'El templo de las 15 Champions League', color: '#38bdf8' },
-            { icon: '🏟️', tag: 'PISTA 3:', text: 'Recién remodelado con techo retráctil', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 83.000 (3 Copas del Mundo)', color: '#00ff77' },
+            { icon: '👑', tag: 'PISTA 2:', text: 'El "Gol del Siglo" de Maradona en México 86', color: '#38bdf8' },
+            { icon: '🏟️', tag: 'PISTA 3:', text: 'El mítico Coloso de Santa Úrsula en CDMX', color: '#ffd700' }
         ],
-        portadaClue: '84.744 hinchas · 15 Champions · Techo retráctil',
+        portadaClue: '83.000 hinchas · Sede de 3 Copas del Mundo · Ciudad de México',
         copys: {
-            club: 'Real Madrid',
-            paisHashtag: '#realmadrid #santiagobernabeu #bernabeu #halamadrid #championsleague #laliga #estadios',
-            extraPista: 'las 15 Copas de Europa y las noches mágicas de remontada'
+            club: 'Club América y Selección Mexicana',
+            paisHashtag: '#estadioazteca #clubamerica #miseleccionmx #ligamx #mexico #futbolmexicano #cdmx #estadios',
+            extraPista: 'la consagración de Pelé en el 70 y de Maradona en el 86 en el Coloso de Santa Úrsula'
         }
     },
     {
-        id: 'san_siro',
-        nombreMostrar: 'SAN SIRO (MEAZZA)',
-        clubMostrar: 'MILAN · INTER',
-        pais: 'Italia',
-        folderName: 'SAN-SIRO',
-        videoFileName: 'Estadio_San_Siro_Milan_Inter.mp4',
-        coverFileName: 'Portada_Estadio_San_Siro.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Italia\\Subidos\\San siro.mp4",
-        targetLat: 45.4781,
-        targetLng: 9.1240,
-        userLat: 45.4752,
-        userLng: 9.1275,
-        distanciaTexto: '422 METROS',
-        puntosTexto: '4.350 PUNTOS 🔥',
-        ubicacionBadge: '📍 Milán, Italia · ESTADIO SAN SIRO',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 75.817 espectadores', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: 'Icónicas torres cilíndricas de hormigón', color: '#38bdf8' },
-            { icon: '🔴🔵', tag: 'PISTA 3:', text: 'Hogar del Derbi della Madonnina', color: '#ffd700' }
-        ],
-        portadaClue: '75.817 hinchas · Torres cilíndricas · Milan e Inter',
-        copys: {
-            club: 'AC Milan e Inter',
-            paisHashtag: '#sansiro #giuseppemeazza #acmilan #inter #forzamilan #amala #seriea #calcio #estadios',
-            extraPista: 'el Derbi della Madonnina y 10 Champions combinadas'
-        }
-    },
-    {
-        id: 'allianz_arena',
-        nombreMostrar: 'ALLIANZ ARENA',
-        clubMostrar: 'BAYERN MÚNICH',
-        pais: 'Alemania',
-        folderName: 'ALLIANZ-ARENA',
-        videoFileName: 'Estadio_Allianz_Arena_Bayern_Munich.mp4',
-        coverFileName: 'Portada_Estadio_Allianz_Arena.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Allianz Arena.mp4",
-        targetLat: 48.2188,
-        targetLng: 11.6247,
-        userLat: 48.2160,
-        userLng: 11.6285,
-        distanciaTexto: '420 METROS',
-        puntosTexto: '4.350 PUNTOS 🔥',
-        ubicacionBadge: '📍 Múnich, Alemania · ALLIANZ ARENA',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 75.024 espectadores', color: '#00ff77' },
-            { icon: '✨', tag: 'PISTA 2:', text: 'Fachada exterior de paneles ETFE que brilla', color: '#38bdf8' },
-            { icon: '🔴', tag: 'PISTA 3:', text: 'La fortaleza bávara del Bayern Múnich', color: '#ffd700' }
-        ],
-        portadaClue: '75.024 hinchas · Fachada luminosa · Bayern Múnich',
-        copys: {
-            club: 'Bayern Múnich',
-            paisHashtag: '#allianzarena #bayernmunich #fcbayern #miasanmia #bundesliga #estadios #munich',
-            extraPista: 'la fachada luminosa roja y la supremacía bávara'
-        }
-    },
-    {
-        id: 'signal_iduna_park',
-        nombreMostrar: 'SIGNAL IDUNA PARK',
-        clubMostrar: 'BORUSSIA DORTMUND',
-        pais: 'Alemania',
-        folderName: 'SIGNAL-IDUNA-PARK',
-        videoFileName: 'Estadio_Signal_Iduna_Park_Dortmund.mp4',
-        coverFileName: 'Portada_Estadio_Signal_Iduna_Park.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Borussia.mp4",
-        targetLat: 51.4926,
-        targetLng: 7.4519,
-        userLat: 51.4898,
-        userLng: 7.4552,
-        distanciaTexto: '386 METROS',
+        id: 'nueva_chicago',
+        nombreMostrar: 'REPÚBLICA DE MATADEROS',
+        clubMostrar: 'NUEVA CHICAGO',
+        pais: 'Argentina',
+        folderName: 'NUEVA-CHICAGO',
+        videoFileName: 'Estadio_Nueva_Chicago_Mataderos.mp4',
+        coverFileName: 'Portada_Estadio_Nueva_Chicago.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Nueva Chicago.mp4",
+        targetLat: -34.6644,
+        targetLng: -58.5085,
+        userLat: -34.6618,
+        userLng: -58.5058,
+        distanciaTexto: '380 METROS',
         puntosTexto: '4.410 PUNTOS 🔥',
-        ubicacionBadge: '📍 Dortmund, Alemania · SIGNAL IDUNA PARK',
+        ubicacionBadge: '📍 Mataderos, Buenos Aires · NUEVA CHICAGO',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 81.365 (el mayor de Alemania)', color: '#00ff77' },
-            { icon: '💛', tag: 'PISTA 2:', text: 'El temible «Muro Amarillo» (Gelbe Wand)', color: '#38bdf8' },
-            { icon: '🐝', tag: 'PISTA 3:', text: 'Pilares amarillos de acero cruzados', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 25.000 personas en CABA', color: '#00ff77' },
+            { icon: '🥩', tag: 'PISTA 2:', text: 'En el corazón del histórico barrio de Mataderos', color: '#38bdf8' },
+            { icon: '🟢', tag: 'PISTA 3:', text: 'El tradicional Verdinegro y su República', color: '#ffd700' }
         ],
-        portadaClue: '81.365 hinchas · Muro Amarillo · Borussia Dortmund',
+        portadaClue: '25.000 hinchas · Corazón de Mataderos · Mística del ascenso porteño',
         copys: {
-            club: 'Borussia Dortmund',
-            paisHashtag: '#signalidunapark #westfalenstadion #bvb #borussiadortmund #gelbewand #bundesliga #estadios',
-            extraPista: 'los 25.000 hinchas de pie en la Südtribüne del Muro Amarillo'
+            club: 'Nueva Chicago',
+            paisHashtag: '#nuevachicago #torito #mataderos #verdinegro #primeranacional #futbolargentino #estadios',
+            extraPista: 'la fiesta popular en Justo Suárez y Carhué y la mística de la República de Mataderos'
+        }
+    },
+    {
+        id: 'chacarita_juniors',
+        nombreMostrar: 'ESTADIO DE CHACARITA',
+        clubMostrar: 'CHACARITA JUNIORS',
+        pais: 'Argentina',
+        folderName: 'CHACARITA-JUNIORS',
+        videoFileName: 'Estadio_Chacarita_San_Martin.mp4',
+        coverFileName: 'Portada_Estadio_Chacarita.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\chaca.mp4",
+        targetLat: -34.5684,
+        targetLng: -58.5298,
+        userLat: -34.5656,
+        userLng: -58.5269,
+        distanciaTexto: '409 METROS',
+        puntosTexto: '4.370 PUNTOS 🔥',
+        ubicacionBadge: '📍 San Martín, Buenos Aires · CHACARITA JUNIORS',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 20.000 personas en Villa Maipú', color: '#00ff77' },
+            { icon: '⭐', tag: 'PISTA 2:', text: 'Campeón Metropolitano de Primera en 1969', color: '#38bdf8' },
+            { icon: '🔴', tag: 'PISTA 3:', text: 'El Funebrero tricolor de San Martín', color: '#ffd700' }
+        ],
+        portadaClue: '20.000 hinchas · Villa Maipú (San Martín) · Campeón de Primera 1969',
+        copys: {
+            club: 'Chacarita Juniors',
+            paisHashtag: '#chacarita #chacaritajuniors #chaca #funebrero #sanmartin #primeranacional #futbolargentino #estadios',
+            extraPista: 'el inolvidable campeonato de Primera de 1969 y la fidelidad del pueblo tricolor en San Martín'
+        }
+    },
+    {
+        id: 'atlanta',
+        nombreMostrar: 'DON LEÓN KOLBOWSKI',
+        clubMostrar: 'CLUB ATLÉTICO ATLANTA',
+        pais: 'Argentina',
+        folderName: 'ATLANTA-VILLA-CRESPO',
+        videoFileName: 'Estadio_Atlanta_Villa_Crespo.mp4',
+        coverFileName: 'Portada_Estadio_Atlanta.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Atlanta.mp4",
+        targetLat: -34.5934,
+        targetLng: -58.4484,
+        userLat: -34.5908,
+        userLng: -58.4456,
+        distanciaTexto: '386 METROS',
+        puntosTexto: '4.400 PUNTOS 🔥',
+        ubicacionBadge: '📍 Villa Crespo, Buenos Aires · ATLANTA',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 18.000 hinchas en Villa Crespo', color: '#00ff77' },
+            { icon: '📍', tag: 'PISTA 2:', text: 'Ubicado en la calle Humboldt, pegado a Chacarita', color: '#38bdf8' },
+            { icon: '🟡', tag: 'PISTA 3:', text: 'El tradicional Bohemio auriazul fundado en 1904', color: '#ffd700' }
+        ],
+        portadaClue: '18.000 hinchas · Esquina de Humboldt · Corazón de Villa Crespo',
+        copys: {
+            club: 'Club Atlético Atlanta',
+            paisHashtag: '#atlanta #bohemio #villacrespo #humboldt #primeranacional #futbolargentino #buenosaires #estadios',
+            extraPista: 'la legendaria cancha de madera previa, el clásico de Villa Crespo y las tardes de fútbol sobre Humboldt'
+        }
+    },
+    {
+        id: 'estudiantes_uno',
+        nombreMostrar: 'ESTADIO UNO',
+        clubMostrar: 'ESTUDIANTES DE LA PLATA',
+        pais: 'Argentina',
+        folderName: 'ESTUDIANTES-LP-UNO',
+        videoFileName: 'Estadio_UNO_Jorge_Luis_Hirschi_Estudiantes.mp4',
+        coverFileName: 'Portada_Estadio_UNO_Estudiantes.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\EDLPx2\\Estadio UNO Jorge Luis Hirschi.mp4",
+        targetLat: -34.9124,
+        targetLng: -57.9392,
+        userLat: -34.9098,
+        userLng: -57.9365,
+        distanciaTexto: '398 METROS',
+        puntosTexto: '4.380 PUNTOS 🔥',
+        ubicacionBadge: '📍 La Plata, Buenos Aires · ESTUDIANTES DE LA PLATA',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 32.530 espectadores en 1 y 57', color: '#00ff77' },
+            { icon: '🏆', tag: 'PISTA 2:', text: 'Tetracampeón de América y Campeón del Mundo 1968', color: '#38bdf8' },
+            { icon: '🦁', tag: 'PISTA 3:', text: 'La mística copera del León y la familia Pincharata', color: '#ffd700' }
+        ],
+        portadaClue: '32.530 hinchas · Mística copera en 1 y 57 · Tetracampeón de América',
+        copys: {
+            club: 'Estudiantes de La Plata',
+            paisHashtag: '#estudiantesdelaplata #edlp #pincha #estadiouno #hirschi #laplata #futbolargentino #estadios',
+            extraPista: 'las 4 Copas Libertadores, el título mundial ante el Manchester United y las noches épicas en 1 y 57'
         }
     }
 ];
@@ -230,7 +258,7 @@ ESTADIO: ${item.nombreMostrar} (${item.clubMostrar} - ${item.pais})
 ¿En cuántos segundos reconocés esta cancha desde el aire? ⏱️👀
 
 💡 Pista 1: ${item.pistas[0].text}.
-🏛️ Pista 2: ${item.pistas[1].text}.
+🏟️ Pista 2: ${item.pistas[1].text}.
 ⭐ Pista 3: ${item.pistas[2].text}.
 
 ¿Lo sacaste con la primera pista o necesitaste el mapa? Comentá tus segundos 👇
@@ -245,7 +273,7 @@ ESTADIO: ${item.nombreMostrar} (${item.clubMostrar} - ${item.pais})
 --------------------------------------------------------
 Pocos estadios tienen tanta mística y momentos grabados a fuego como este. 🏟️✨
 
-Desde ${item.copys.extraPista} hasta las grandes noches europeas que marcaron la historia de ${item.copys.club}.
+Desde ${item.copys.extraPista} hasta los partidos inolvidables que marcaron la historia de ${item.copys.club}.
 
 📍 En el mapa de StadiumGuessr quedamos a ${item.distanciaTexto} (${item.puntosTexto}). ¿Vos qué tan cerca le pegás?
 
@@ -257,32 +285,32 @@ Desde ${item.copys.extraPista} hasta las grandes noches europeas que marcaron la
 
 🎯 OPCIÓN 3: MODO GAMER / GEOGUESSR
 --------------------------------------------------------
-Modo StadiumGuessr activado: ¿Podés adivinar el estadio mirando solo la vista satelital? 🛰️⚽
+Modo StadiumGuessr activado: ¿Podés adivinar el estadio mirando solo la vista satelital? 🌍⚽
 
 En esta ronda sumamos ${item.puntosTexto} a ${item.distanciaTexto} de distancia.
 
 🕹️ Desafíos diarios, modo carrera y estadios de todo el mundo gratis sin descargar nada.
 
-🔗 Link en el perfil: estadiosvirtuales.com
+👉 Link en el perfil: estadiosvirtuales.com
 
 #stadiumguessr #geoguessr #estadiosvirtuales #gamingentiktok #futbol
 
 
 ⚡ OPCIÓN 4: CORTA Y VIRAL
 --------------------------------------------------------
-Solo los que realmente respiran fútbol lo sacan antes de los 5 segundos ⏳⚽
+Solo los que realmente respiran fútbol lo sacan antes de los 5 segundos ⏳
 
 ¿Qué estadio es y de qué club? Te leemos en comentarios 👇
 
-🎮 Más estadios para adivinar en el link del perfil (estadiosvirtuales.com)
+👉 Más estadios para adivinar en el link del perfil (estadiosvirtuales.com)
 
 #estadiosvirtuales #stadiumguessr ${item.copys.paisHashtag} #trivia
 
 
-📌 COMENTARIOS FIJADOS RECOMENDADOS:
+💬 COMENTARIOS FIJADOS RECOMENDADOS:
 --------------------------------------------------------
-1. «¿Sos capaz de clavar 5.000 puntos en el mapa? Jugá todas las rondas gratis en estadiosvirtuales.com (link en el perfil) ⚽🎯»
-2. «Comentá con qué pista lo sacaste: ¿con la 1, con la 2 o recién cuando apareció el escudo? 👇»
+1. «¿Sos capaz de clavar 5.000 puntos en el mapa? Jugá todas las rondas gratis en estadiosvirtuales.com (link en el perfil) 🗺️⚽»
+2. «Comentá con qué pista lo sacaste: ¿con la 1, con la 2 o recién cuando apareció el escudo? 👀👇»
 `;
 
     fs.writeFileSync(filePath, content, 'utf8');
@@ -576,9 +604,20 @@ async function procesarEstadio(item, index, total) {
 
     await browser.close();
 
-    // 3. FFMPEG RENDER DEL VIDEO
+    // 3. FFMPEG RENDER DEL VIDEO (CON DETECCIÓN DE ASPECTO AUTOMÁTICA)
     const destVideoPath = path.join(stadiumFolder, item.videoFileName);
     const destCoverPath = path.join(stadiumFolder, item.coverFileName);
+
+    let isVertical = false;
+    try {
+        const probe = spawnSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'json', item.inputVideoPath]);
+        const d = JSON.parse(probe.stdout.toString()).streams[0];
+        if (d && d.width < d.height) isVertical = true;
+    } catch (e) {}
+
+    const baseFilter = isVertical
+        ? `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[base]`
+        : `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.22[bg];[0:v]scale=1080:608[fg];[bg][fg]overlay=0:(H-h)/2[base]`;
 
     const assets = [
         uiHeaderImg,
@@ -594,9 +633,7 @@ async function procesarEstadio(item, index, total) {
     ];
 
     const filterComplex = [
-        `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.22[bg]`,
-        `[0:v]scale=1080:608[fg]`,
-        `[bg][fg]overlay=0:(H-h)/2[base]`,
+        baseFilter,
         `[base][2:v]overlay=50:50[v_header]`,
         `[v_header][3:v]overlay=50:1330:enable='between(t,3.5,7.5)'[v_p1]`,
         `[v_p1][4:v]overlay=50:1330:enable='between(t,7.5,11.5)'[v_p2]`,
@@ -654,8 +691,8 @@ async function procesarEstadio(item, index, total) {
 
     console.log(`\n🎉 Video listo: ${destVideoPath}`);
 
-    // 4. GENERAR PORTADA INCÓGNITA (REGLA: NUNCA NOMBRAR EL ESTADIO)
-    console.log(`🎨 Generando portada para el feed (insignia: ESTADIO...)...`);
+    // 4. GENERAR PORTADA INCÓGNITA (REGLA ESTRICTA: NUNCA NOMBRAR EL CLUB NI EL ESTADIO)
+    console.log(`🎨 Generando portada para el feed (insignia: ESTADIO... sin nombres de equipos)...`);
     const snapPath = path.join(__dirname, `snap_${item.id}.jpg`);
     await new Promise((resolve, reject) => {
         const pSnap = spawn('ffmpeg', [
@@ -733,8 +770,10 @@ async function procesarEstadio(item, index, total) {
         <div class="safe-zone">
             <div class="brand-pill">⚽ ESTADIOS VIRTUALES · TRIVIA</div>
             <div class="center-block">
+                <!-- INSIGNIA MISTERIO -->
                 <div class="difficulty-badge">ESTADIO...</div>
                 <div class="main-title">¿QUÉ ESTADIO ES ESTE?</div>
+                <!-- PISTA SIN NOMBRES DE EQUIPOS NI ESTADIOS -->
                 <div class="clue-box">
                     <div class="clue-icon">💡</div>
                     <div class="clue-desc">${item.portadaClue}</div>
@@ -767,12 +806,18 @@ async function procesarEstadio(item, index, total) {
 
 // EJECUCIÓN SECUENCIAL DEL LOTE
 async function ejecutarLote() {
-    const total = STADIUMS_QUEUE.length;
-    console.log(`Iniciando lote de ${total} estadios...`);
+    const targetArg = process.argv[2];
+    const queue = targetArg ? STADIUMS_QUEUE.filter(s => s.id === targetArg) : STADIUMS_QUEUE;
+    const total = queue.length;
+    if (total === 0) {
+        console.error(`❌ No se encontró ningún estadio con ID: "${targetArg}"`);
+        return;
+    }
+    console.log(`Iniciando lote de ${total} estadio(s)...`);
     const tInicio = Date.now();
 
     for (let i = 0; i < total; i++) {
-        await procesarEstadio(STADIUMS_QUEUE[i], i, total);
+        await procesarEstadio(queue[i], i, total);
     }
 
     const tTotalMin = ((Date.now() - tInicio) / 1000 / 60).toFixed(1);
