@@ -4140,9 +4140,11 @@
 .carrera-table-header span.carrera-col-dt {
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-start !important;
-    padding-left: 10px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding-left: 0 !important;
     white-space: nowrap !important;
+    width: 100% !important;
 }
 
 .carrera-table-header .carrera-col-detail {
@@ -4153,6 +4155,7 @@
     font-size: 0.67rem !important;
     letter-spacing: 0.2px !important;
     white-space: nowrap !important;
+    width: 100% !important;
 }
 
 .carrera-table-header .carrera-col-metric {
@@ -4163,6 +4166,7 @@
     font-size: 0.72rem !important;
     letter-spacing: 0.3px !important;
     white-space: nowrap !important;
+    width: 100% !important;
 }
 
 .carrera-table-header .carrera-col-action {
@@ -4173,6 +4177,7 @@
     font-size: 0.72rem !important;
     letter-spacing: 0.3px !important;
     white-space: nowrap !important;
+    width: 100% !important;
 }
 
 .carrera-rank-row {
@@ -4196,11 +4201,13 @@
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
+    width: 100% !important;
 }
 
 .carrera-rank-row .carrera-col-dt {
     display: flex !important;
     align-items: center !important;
+    justify-content: center !important;
     gap: 10px !important;
     min-width: 0 !important;
 }
@@ -4210,6 +4217,7 @@
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
+    width: 100% !important;
 }
 
 .carrera-rank-row .carrera-col-metric {
@@ -4217,12 +4225,27 @@
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
 }
 
 .carrera-rank-row .carrera-col-action {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.carrera-rank-row .carrera-col-action .btn-desafiar-row,
+.carrera-rank-row .carrera-col-action .carrera-action-self {
+    margin: 0 auto !important;
+}
+
+.carrera-rank-row .carrera-col-metric .total-cups-badge,
+.carrera-rank-row .carrera-col-metric .total-leagues-badge,
+.carrera-rank-row .carrera-col-metric .total-versus-badge {
+    margin: 0 auto !important;
 }
 
 /* 🏆 Grillas Sincronizadas al Milímetro: Cabecera y Filas comparten la misma plantilla exacta */
