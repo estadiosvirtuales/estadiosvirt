@@ -13,32 +13,146 @@ const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 // COLA DE ESTADIOS A PRODUCIR
 // Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
-    /*
     {
-        id: 'ejemplo',
-        nombreMostrar: 'NOMBRE ESTADIO',
-        clubMostrar: 'CLUB',
-        pais: 'Pais',
-        folderName: 'CARPETA-ESTADIO',
-        videoFileName: 'Estadio_Nombre.mp4',
-        coverFileName: 'Portada_Estadio_Nombre.jpg',
-        inputVideoPath: "E:\\Google earth studio\\...",
-        targetLat: 0.0,
-        targetLng: 0.0,
-        userLat: 0.0,
-        userLng: 0.0,
-        distanciaTexto: '400 METROS',
-        puntosTexto: '4.200 PUNTOS 🔥',
-        ubicacionBadge: '📍 Ciudad, País · NOMBRE',
+        id: 'deportivo_moron',
+        nombreMostrar: 'NUEVO FRANCISCO URBANO',
+        clubMostrar: 'DEPORTIVO MORÓN',
+        pais: 'Argentina',
+        folderName: 'DEPORTIVO-MORON',
+        videoFileName: 'Estadio_Nuevo_Francisco_Urbano_Moron.mp4',
+        coverFileName: 'Portada_Estadio_Nuevo_Francisco_Urbano.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Dep Moron 2.0.mp4",
+        targetLat: -34.6644,
+        targetLng: -58.6186,
+        userLat: -34.6618,
+        userLng: -58.6155,
+        distanciaTexto: '405 METROS',
+        puntosTexto: '4.083 PUNTOS 🔥',
+        ubicacionBadge: '📍 Morón, Buenos Aires · NUEVO FRANCISCO URBANO',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: '...', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: '...', color: '#38bdf8' },
-            { icon: '🏆', tag: 'PISTA 3:', text: '...', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 32.000 hinchas en la Zona Oeste', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 2013 tras mudarse del histórico predio', color: '#38bdf8' },
+            { icon: '🐓', tag: 'PISTA 3:', text: 'El Gallito del Oeste, orgullo de la Primera Nacional', color: '#ffd700' }
         ],
-        portadaClue: '...',
-        copys: { club: '...', paisHashtag: '...', extraPista: '...' }
+        portadaClue: '32.000 hinchas · Zona Oeste del GBA · Inaugurado en 2013',
+        copys: {
+            club: 'Club Deportivo Morón',
+            paisHashtag: '#futbolargentino #deportivomoron #moron #elgallo #zonaoeste #primeranacional #estadios',
+            extraPista: 'el orgullo de la Zona Oeste y el nuevo templo del Gallito'
+        }
+    },
+    {
+        id: 'colon_santa_fe',
+        nombreMostrar: 'BRIGADIER GENERAL ESTANISLAO LÓPEZ',
+        clubMostrar: 'COLÓN DE SANTA FE',
+        pais: 'Argentina',
+        folderName: 'COLON-SANTA-FE',
+        videoFileName: 'Estadio_Brigadier_Lopez_Colon.mp4',
+        coverFileName: 'Portada_Estadio_Brigadier_Lopez.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Colon 3.0.mp4",
+        targetLat: -31.6625,
+        targetLng: -60.7258,
+        userLat: -31.6595,
+        userLng: -60.7225,
+        distanciaTexto: '457 METROS',
+        puntosTexto: '3.979 PUNTOS 🔥',
+        ubicacionBadge: '📍 Santa Fe, Argentina · BRIGADIER ESTANISLAO LÓPEZ',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 40.000 espectadores en la ciudad de Santa Fe', color: '#00ff77' },
+            { icon: '🐘', tag: 'PISTA 2:', text: 'Apodado el mítico «Cementerio de los Elefantes»', color: '#38bdf8' },
+            { icon: '🔴⚫', tag: 'PISTA 3:', text: 'Donde cayó el Santos de Pelé y campeón de Primera 2021', color: '#ffd700' }
+        ],
+        portadaClue: '40.000 hinchas · Cementerio de los Elefantes · Santa Fe',
+        copys: {
+            club: 'Club Atlético Colón',
+            paisHashtag: '#futbolargentino #colon #colondesantafe #sabalero #cementeriodeloselefantes #santafe #estadios',
+            extraPista: 'el Cementerio de los Elefantes donde cayó el Santos de Pelé y la fiesta sabalera'
+        }
+    },
+    {
+        id: 'ferro_carril_oeste',
+        nombreMostrar: 'ARQUITECTO RICARDO ETCHEVERRI',
+        clubMostrar: 'FERRO CARRIL OESTE',
+        pais: 'Argentina',
+        folderName: 'FERRO-CABALLITO',
+        videoFileName: 'Estadio_Ricardo_Etcheverri_Ferro.mp4',
+        coverFileName: 'Portada_Estadio_Ricardo_Etcheverri.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Ferro.mp4",
+        targetLat: -34.6192,
+        targetLng: -58.4475,
+        userLat: -34.6165,
+        userLng: -58.4442,
+        distanciaTexto: '426 METROS',
+        puntosTexto: '4.041 PUNTOS 🔥',
+        ubicacionBadge: '📍 Caballito, CABA · ARQUITECTO RICARDO ETCHEVERRI',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 24.442 espectadores en el corazón de CABA', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1905: uno de los más antiguos de América', color: '#38bdf8' },
+            { icon: '🚂', tag: 'PISTA 3:', text: 'El glorioso Verdolaga de Carlos Timoteo Griguol en los 80', color: '#ffd700' }
+        ],
+        portadaClue: '24.442 hinchas · Corazón de Caballito · Inaugurado en 1905',
+        copys: {
+            club: 'Club Ferro Carril Oeste',
+            paisHashtag: '#futbolargentino #ferro #ferrocarriloeste #verdolaga #caballito #griguol #estadios',
+            extraPista: 'el corazón de Caballito, los campeonatos invictos de Timoteo Griguol y más de un siglo de historia'
+        }
+    },
+    {
+        id: 'atletico_tucuman',
+        nombreMostrar: 'MONUMENTAL JOSÉ FIERRO',
+        clubMostrar: 'ATLÉTICO TUCUMÁN',
+        pais: 'Argentina',
+        folderName: 'ATLETICO-TUCUMAN',
+        videoFileName: 'Estadio_Jose_Fierro_Atletico_Tucuman.mp4',
+        coverFileName: 'Portada_Estadio_Jose_Fierro.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\atl tucuman(listo)\\atl tucuman jose fierro.mp4",
+        targetLat: -26.8144,
+        targetLng: -65.1989,
+        userLat: -26.8115,
+        userLng: -65.1958,
+        distanciaTexto: '446 METROS',
+        puntosTexto: '4.001 PUNTOS 🔥',
+        ubicacionBadge: '📍 San Miguel de Tucumán · MONUMENTAL JOSÉ FIERRO',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 35.200 hinchas en el Jardín de la República', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1922 en el barrio de Villa 9 de Julio', color: '#38bdf8' },
+            { icon: '🤍💙', tag: 'PISTA 3:', text: 'El Decano del Norte y sus históricas noches de Libertadores', color: '#ffd700' }
+        ],
+        portadaClue: '35.200 hinchas · Villa 9 de Julio · El Decano del Norte',
+        copys: {
+            club: 'Club Atlético Tucumán',
+            paisHashtag: '#futbolargentino #atleticotucuman #eldecano #tucuman #josefierro #monumentaljosefierro #estadios',
+            extraPista: 'el fervor de Villa 9 de Julio, el Decano del Norte argentino y las noches coperas'
+        }
+    },
+    {
+        id: 'almirante_brown',
+        nombreMostrar: 'FRAGATA PRESIDENTE SARMIENTO',
+        clubMostrar: 'ALMIRANTE BROWN',
+        pais: 'Argentina',
+        folderName: 'ALMIRANTE-BROWN',
+        videoFileName: 'Estadio_Fragata_Sarmiento_Almirante_Brown.mp4',
+        coverFileName: 'Portada_Estadio_Fragata_Sarmiento.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Almirante Brown.mp4",
+        targetLat: -34.6975,
+        targetLng: -58.5833,
+        userLat: -34.6948,
+        userLng: -58.5802,
+        distanciaTexto: '413 METROS',
+        puntosTexto: '4.067 PUNTOS 🔥',
+        ubicacionBadge: '📍 Isidro Casanova, La Matanza · FRAGATA SARMIENTO',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 25.000 espectadores en La Matanza', color: '#00ff77' },
+            { icon: '⚓', tag: 'PISTA 2:', text: 'Inaugurado en 1969 en la localidad de Isidro Casanova', color: '#38bdf8' },
+            { icon: '🖤💛', tag: 'PISTA 3:', text: 'La Fragata aurinegra, una de las hinchadas más populares del Ascenso', color: '#ffd700' }
+        ],
+        portadaClue: '25.000 hinchas · Isidro Casanova (La Matanza) · La Fragata',
+        copys: {
+            club: 'Club Almirante Brown',
+            paisHashtag: '#futbolargentino #almirantebrown #lafragata #isidrocasanova #lamatanza #aurinegro #estadios',
+            extraPista: 'el gigante de Isidro Casanova, el corazón de La Matanza y la fiesta aurinegra'
+        }
     }
-    */
 ];
 
 function resolveCountAsset(name) {
