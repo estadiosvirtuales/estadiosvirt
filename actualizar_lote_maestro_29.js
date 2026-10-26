@@ -91,16 +91,17 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     addTick(18.0);
     addTick(19.0);
 
-    addWhoosh(19.4, 0.4, 0.4);
+    // addWhoosh(19.4, 0.4, 0.4); // Eliminado sonido de barrido al final
     addPinPop(19.6);
 
     [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
         addTone(20.0 + idx * 0.06, 3.5, freq, 0.35, 1.5);
     });
 
-    for (let i = 0; i < 4; i++) {
-        addWhoosh(20.5 + i * 1.1, 1.8, 0.22);
-    }
+    // Eliminados whooshes de ambiente al final
+    // for (let i = 0; i < 4; i++) {
+    //     addWhoosh(20.5 + i * 1.1, 1.8, 0.22);
+    // }
 
     for (let i = 0; i < totalSamples; i++) {
         const clamped = Math.max(-1.0, Math.min(1.0, samples[i]));
