@@ -57,3 +57,39 @@ Para mantener el contexto rápido, enfocado y profesional, se recomienda organiz
 1. **Preservar estilos de escritorio al tocar celulares:** Cualquier cambio responsive debe limitarse a `@media (max-width: 768px)`.
 2. **Audio nativo:** No depender de librerías externas de audio; usar el sintetizador procedural de `js/audio.js`.
 3. **Legal Blindado:** Mantener siempre el disclaimer de no afiliación oficial (Fair Use) y enlaces a términos y privacidad.
+
+---
+
+## 🎬 4. Estándar Inmutable para Videos Verticales (TikTok / Reels / Shorts)
+Todo video de trivia individual que se produzca DEBE seguir de forma estricta e innegociable la línea visual del **Olímpico de Roma / Spotify Camp Nou**:
+
+1. **Encuadre y Layout de Video:**
+   - Video 16:9 centrado (1080x608) sobre fondo difuminado cinemático (`boxblur=25:5,eq=brightness=-0.22`).
+   - **Header flotante superior (`y=50`, 980px ancho):** Eyebrow `ESTADIOS VIRTUALES · STADIUMGUESSR`, Título en 2 líneas obligatorio:
+     `¿QUÉ ESTADIO ES`
+     `Y DÓNDE QUEDA?`
+     y subtítulo en dorado (`¿En cuántos segundos podés adivinarlo?`).
+   - **Pistas flotantes inferiores (`y=1330`, 94px alto):** Tarjetas con barra lateral de color iluminada, icono y texto grande.
+   - **Cuenta regresiva 3, 2, 1 (`y=1340`).**
+   - **Mapa Leaflet flotante inferior (`y=1320`, 960x460px):** OpenStreetMap con pin rojo del usuario, círculo verde del estadio con radio difuso, línea punteada roja, badge superior de puntaje/distancia (`🎯 ¡A [X] METROS! · [X] PUNTOS 🔥`) y badge inferior de ubicación (`📍 [Ciudad, País] · [ESTADIO]`). **Debe dejar libre y visible el video aéreo arriba**.
+   - **Banner de revelación (`y=1240`) y Botón CTA (`y=1805`).**
+
+2. **Audio 100% Puro (PROHIBIDO EL WHOOSH / BARRIDO):**
+   - **CERO sonidos de barrido / whoosh / ruido blanco** en todo el video (ni al inicio a los 0.2s, ni al pase de mapa a los 19.4s, ni al final).
+   - Sonidos permitidos exclusivamente: campanas de pistas (3.5s, 7.5s, 11.5s), ticks de cuenta regresiva (16s-19s), pop del pin (19.6s) y fanfarria tonal de acordes (20.0s).
+
+3. **Portada Misterio (1080x1920 con Zona Segura 3:4):**
+   - Badge obligatorio: `ESTADIO...` (estrictamente prohibido poner el nombre del club o estadio en la insignia).
+   - Título en 2 líneas: `¿QUÉ ESTADIO ES / Y DÓNDE QUEDA?`.
+   - Caja de pista 100% libre de spoilers (solo capacidad, año, ciudad o hitos sin nombrar al club ni al estadio).
+
+4. **Archivos de Salida en Disco:**
+   - Destino: `E:\Google earth studio\videos para mostrar\[PAIS]\[ESTADIO]\`
+   - Contenido exacto del pack:
+     - `Estadio_[Nombre].mp4`
+     - `Portada_Estadio_[Nombre].jpg`
+     - `TEXTOS_PUBLICACION.txt` (4 variantes: Tiempo, Folclore, Geoguessr, Corta TikTok + comentarios fijados).
+   - Prohibido dejar archivos temporales (.png de overlays, snapshots, .wav) en la carpeta final o en la raíz.
+
+5. **Motor Canónico:**
+   - El script oficial es `crear_pack_batch.js`. Jamás crear maquetas con mapas a pantalla completa ni alterar las coordenadas del layout.

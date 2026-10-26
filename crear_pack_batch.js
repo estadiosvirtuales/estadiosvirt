@@ -4,41 +4,41 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 
 console.log('🚀 ========================================================');
-console.log('🚀 MOTOR DE PRODUCCIÓN: ALLIANZ PARQUE (PALMEIRAS) - NUEVO HEADER 2 LÍNEAS');
+console.log('🚀 GENERADOR MAESTRO DE VIDEOS (ESTILO CANÓNICO ROMA / CAMP NOU)');
 console.log('🚀 ========================================================\n');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 
+// COLA DE ESTADIOS A PRODUCIR
+// Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
+    /*
     {
-        id: 'palmeiras',
-        nombreMostrar: 'ALLIANZ PARQUE',
-        clubMostrar: 'SE PALMEIRAS',
-        pais: 'Brasil',
-        folderName: 'ALLIANZ-PARQUE-PALMEIRAS',
-        videoFileName: 'Estadio_Allianz_Parque_Palmeiras.mp4',
-        coverFileName: 'Portada_Estadio_Allianz_Parque_Palmeiras.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Brasil\\Allianz Parque_ Sociedade Esportiva Palmeiras.mp4",
-        targetLat: -23.5275,
-        targetLng: -46.6784,
-        userLat: -23.5248,
-        userLng: -46.6756,
-        distanciaTexto: '414 METROS',
-        puntosTexto: '4.360 PUNTOS 🔥',
-        ubicacionBadge: '📍 São Paulo, Brasil · ALLIANZ PARQUE',
+        id: 'ejemplo',
+        nombreMostrar: 'NOMBRE ESTADIO',
+        clubMostrar: 'CLUB',
+        pais: 'Pais',
+        folderName: 'CARPETA-ESTADIO',
+        videoFileName: 'Estadio_Nombre.mp4',
+        coverFileName: 'Portada_Estadio_Nombre.jpg',
+        inputVideoPath: "E:\\Google earth studio\\...",
+        targetLat: 0.0,
+        targetLng: 0.0,
+        userLat: 0.0,
+        userLng: 0.0,
+        distanciaTexto: '400 METROS',
+        puntosTexto: '4.200 PUNTOS 🔥',
+        ubicacionBadge: '📍 Ciudad, País · NOMBRE',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 43.700 espectadores en São Paulo', color: '#00ff77' },
-            { icon: '🏟️', tag: 'PISTA 2:', text: 'Construido sobre el histórico Parque Antarctica', color: '#38bdf8' },
-            { icon: '🟢', tag: 'PISTA 3:', text: 'El temible Verdão alviverde, tricampeón de América', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: '...', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: '...', color: '#38bdf8' },
+            { icon: '🏆', tag: 'PISTA 3:', text: '...', color: '#ffd700' }
         ],
-        portadaClue: '43.700 hinchas · Água Branca (São Paulo) · Tricampeón de América',
-        copys: {
-            club: 'Sociedade Esportiva Palmeiras',
-            paisHashtag: '#palmeiras #allianzparque #verdao #alviverde #brasileirao #libertadores #saopaulo #estadios',
-            extraPista: 'la mística del Palestra Itália, las 3 Copas Libertadores y las noches de fiesta alviverde en São Paulo'
-        }
+        portadaClue: '...',
+        copys: { club: '...', paisHashtag: '...', extraPista: '...' }
     }
+    */
 ];
 
 function resolveCountAsset(name) {
@@ -47,7 +47,7 @@ function resolveCountAsset(name) {
     return path.join(__dirname, name);
 }
 
-// GENERADOR DE AUDIO PROCEDURAL NATIVO (25 SEGUNDOS)
+// GENERADOR DE AUDIO PROCEDURAL NATIVO (100% LIMPIO, CERO BARRIDOS/WHOOSHES)
 function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     const totalSamples = Math.floor(duracionSeg * sampleRate);
     const dataSize = totalSamples * 2;
@@ -79,16 +79,6 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
         }
     }
 
-    function addWhoosh(startSec, durSec = 0.5, volume = 0.3) {
-        const start = Math.floor(startSec * sampleRate);
-        const count = Math.floor(durSec * sampleRate);
-        for (let i = 0; i < count && start + i < totalSamples; i++) {
-            const t = i / count;
-            const env = Math.sin(Math.PI * t);
-            samples[start + i] += (Math.random() * 2 - 1) * env * volume;
-        }
-    }
-
     function addBellDing(startSec, freq = 987.77) {
         addTone(startSec, 1.2, freq, 0.35, 4);
         addTone(startSec + 0.03, 1.0, freq * 1.5, 0.2, 5);
@@ -109,7 +99,7 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
         }
     }
 
-    // addWhoosh(0.2, 0.8, 0.35); // Eliminado por pedido del usuario (sonido seco al inicio)
+    // Audio procedural armónico y limpio: campanas, cuenta regresiva, pop y fanfarria
     addBellDing(3.5, 880);
     addBellDing(7.5, 987.77);
     addBellDing(11.5, 1174.66);
@@ -119,16 +109,11 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     addTick(18.0);
     addTick(19.0);
 
-    addWhoosh(19.4, 0.4, 0.4);
     addPinPop(19.6);
 
     [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
         addTone(20.0 + idx * 0.06, 3.5, freq, 0.35, 1.5);
     });
-
-    for (let i = 0; i < 4; i++) {
-        addWhoosh(20.5 + i * 1.1, 1.8, 0.22);
-    }
 
     for (let i = 0; i < totalSamples; i++) {
         const clamped = Math.max(-1.0, Math.min(1.0, samples[i]));
@@ -138,7 +123,7 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     return buffer;
 }
 
-// GENERAR ARCHIVO TEXTOS_PUBLICACION.TXT DENTRO DE LA CARPETA
+// GENERAR ARCHIVO TEXTOS_PUBLICACION.TXT
 function generarArchivoTextos(item, targetFolder) {
     const filePath = path.join(targetFolder, 'TEXTOS_PUBLICACION.txt');
     const content = `========================================================
@@ -207,13 +192,13 @@ Solo los que realmente respiran fútbol lo sacan antes de los 5 segundos ⏳
 `;
 
     fs.writeFileSync(filePath, content, 'utf8');
-    console.log(`📝 Archivo TEXTOS_PUBLICACION.txt generado.`);
 }
 
-// PROCESAR UN ESTADIO INDIVIDUAL
+// PROCESAR UN ESTADIO INDIVIDUAL CON EL FORMATO CANÓNICO
 async function procesarEstadio(item, index, total) {
     console.log(`\n========================================================`);
-    console.log(`📍 [${index + 1}/${total}] PROCESANDO: ${item.nombreMostrar} (${item.pais})`);
+    console.log(`📍 [${index + 1}/${total}] PRODUCIENDO: ${item.nombreMostrar} (${item.pais})`);
+    console.log(`📁 Destino: ${item.pais}\\${item.folderName}`);
     console.log(`========================================================`);
 
     const stadiumFolder = path.join(baseOutputDir, item.pais, item.folderName);
@@ -224,7 +209,6 @@ async function procesarEstadio(item, index, total) {
     const tempAudio = path.join(__dirname, `temp_audio_${item.id}.wav`);
     fs.writeFileSync(tempAudio, generarAudioProcedural(25.0));
 
-    // Generar capturas con Puppeteer
     const browser = await puppeteer.launch({
         executablePath: chromePath,
         headless: 'new',
@@ -233,7 +217,7 @@ async function procesarEstadio(item, index, total) {
 
     const page = await browser.newPage();
 
-    // 1. MAPA LEAFLET
+    // 1. MAPA LEAFLET FLOTANTE INFERIOR (960x460)
     await page.setViewport({ width: 960, height: 460, deviceScaleFactor: 2 });
     const mapHtml = `
     <!DOCTYPE html>
@@ -330,9 +314,8 @@ async function procesarEstadio(item, index, total) {
     const mapCardEl = await page.$('#map-card');
     const mapImgPath = path.join(__dirname, `mapa_${item.id}_card.png`);
     await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
-    console.log('✅ Mapa Leaflet generado.');
 
-    // 2. UI CARDS (Header con título en 2 líneas, Pistas, Revelación)
+    // 2. UI CARDS (Header superior 980px, Pistas inferiores 94px, Revelación y CTA)
     await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
     const uiHtml = `
     <!DOCTYPE html>
@@ -500,7 +483,6 @@ async function procesarEstadio(item, index, total) {
         const el = await page.$(elItem.id);
         if (el) await el.screenshot({ path: elItem.file, omitBackground: true });
     }
-    console.log('✅ Elementos UI generados.');
 
     await browser.close();
 
@@ -582,7 +564,7 @@ async function procesarEstadio(item, index, total) {
         destVideoPath
     ];
 
-    console.log(`🎬 Renderizando video 1080x1920 Full HD (25s) con nuevo header de 2 líneas...`);
+    process.stdout.write(`🎬 Renderizando video 1080x1920 (25s)... `);
     await new Promise((resolve, reject) => {
         const ff = spawn('ffmpeg', ffmpegArgs);
         let errorOutput = '';
@@ -590,7 +572,7 @@ async function procesarEstadio(item, index, total) {
             const str = d.toString();
             errorOutput += str;
             const m = str.match(/time=(\d{2}:\d{2}:\d{2}\.\d{2})/);
-            if (m) process.stdout.write(`\r⏱️ Progreso: ${m[1]} / 00:00:25.00`);
+            if (m) process.stdout.write(`\r⏱️ [${index + 1}/${total}] ${item.nombreMostrar} | Progreso: ${m[1]} / 00:00:25.00`);
         });
         ff.on('close', (code) => {
             if (code === 0) resolve();
@@ -598,10 +580,7 @@ async function procesarEstadio(item, index, total) {
         });
     });
 
-    console.log(`\n🎉 Video listo: ${destVideoPath}`);
-
-    // 4. GENERAR PORTADA INCÓGNITA (NUEVO TÍTULO EN 2 LÍNEAS, SIN NOMBRES DE EQUIPOS)
-    console.log(`🎨 Generando portada para el feed (insignia: ESTADIO... y título en 2 líneas)...`);
+    // 4. GENERAR PORTADA INCÓGNITA (ZONA SEGURA 3:4, SIN SPOILERS)
     const snapPath = path.join(__dirname, `snap_${item.id}.jpg`);
     await new Promise((resolve, reject) => {
         const pSnap = spawn('ffmpeg', [
@@ -679,51 +658,64 @@ async function procesarEstadio(item, index, total) {
         <div class="safe-zone">
             <div class="brand-pill">⚽ ESTADIOS VIRTUALES · TRIVIA</div>
             <div class="center-block">
-                <!-- INSIGNIA MISTERIO -->
                 <div class="difficulty-badge">ESTADIO...</div>
                 <div class="main-title">¿QUÉ ESTADIO ES<br>Y DÓNDE QUEDA?</div>
-                <!-- PISTA SIN NOMBRES DE EQUIPOS NI ESTADIOS -->
                 <div class="clue-box">
                     <div class="clue-icon">💡</div>
                     <div class="clue-desc">${item.portadaClue}</div>
                 </div>
             </div>
             <div class="footer-block">
-                <div class="sub-question">¿En cuántos segundos podés adivinarlo? Comentá</div>
-                <div class="cta-btn">🎮 JUGÁ EN EL LINK DEL PERFIL</div>
+                <div class="sub-question">¿Te animás a adivinarlo antes del final? 👀</div>
+                <div class="cta-btn">DEJÁ TU RESPUESTA EN COMENTARIOS ✍️</div>
             </div>
         </div>
     </body>
     </html>`;
 
-    await pCover.setContent(coverHtml, { waitUntil: 'domcontentloaded' });
-    await new Promise(r => setTimeout(r, 600));
-    await pCover.screenshot({ path: destCoverPath, quality: 95, type: 'jpeg' });
-    console.log(`✅ Portada lista: ${destCoverPath}`);
+    await pCover.setContent(coverHtml);
+    await pCover.screenshot({ path: destCoverPath });
     await bCover.close();
 
-    // 5. GENERAR ARCHIVO TEXTOS_PUBLICACION.TXT
+    // 5. TEXTOS
     generarArchivoTextos(item, stadiumFolder);
 
-    // Limpieza de archivos temporales
-    [tempAudio, snapPath, mapImgPath, uiHeaderImg, uiP1Img, uiP2Img, uiP3Img, uiRevImg, uiBtnImg].forEach(f => {
+    // Limpieza de temporales
+    const toClean = [
+        snapPath,
+        tempAudio,
+        mapImgPath,
+        uiHeaderImg,
+        uiP1Img,
+        uiP2Img,
+        uiP3Img,
+        uiRevImg,
+        uiBtnImg
+    ];
+    for (const f of toClean) {
         if (fs.existsSync(f)) fs.unlinkSync(f);
+    }
+
+    console.log(`\n✅ ¡Pack completado para ${item.nombreMostrar}!`);
+}
+
+async function main() {
+    const total = STADIUMS_QUEUE.length;
+    if (total === 0) {
+        console.log('ℹ️ La cola STADIUMS_QUEUE está vacía. Inserte estadios para procesar.');
+        return;
+    }
+    for (let i = 0; i < total; i++) {
+        await procesarEstadio(STADIUMS_QUEUE[i], i, total);
+    }
+    console.log(`\n🎉 PROCESO FINALIZADO (${total} estadios).`);
+}
+
+if (require.main === module) {
+    main().catch(err => {
+        console.error('❌ Error fatal:', err);
+        process.exit(1);
     });
-
-    console.log(`✨ [${index + 1}/${total}] ¡COMPLETADO: ${item.nombreMostrar}!`);
 }
 
-// EJECUCIÓN
-async function ejecutar() {
-    const tInicio = Date.now();
-    await procesarEstadio(STADIUMS_QUEUE[0], 0, 1);
-    const tTotalMin = ((Date.now() - tInicio) / 1000 / 60).toFixed(1);
-    console.log(`\n🎉 ========================================================`);
-    console.log(`🎉 ¡PRODUCCIÓN FINALIZADA EN ${tTotalMin} MINUTOS!`);
-    console.log(`📂 E:\\Google earth studio\\videos para mostrar\\Brasil\\ALLIANZ-PARQUE-PALMEIRAS`);
-    console.log(`🎉 ========================================================`);
-}
-
-ejecutar().catch(err => {
-    console.error('❌ Error crítico:', err);
-});
+module.exports = { procesarEstadio, generarAudioProcedural };

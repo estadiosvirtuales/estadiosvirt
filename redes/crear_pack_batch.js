@@ -4,157 +4,50 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 
 console.log('🚀 ========================================================');
-console.log('🚀 MOTOR DE PRODUCCIÓN POR LOTES: ESTADIOS VIRTUALES (LOTE 7)');
+console.log('🚀 GENERADOR MAESTRO DE VIDEOS (ESTILO CANÓNICO ROMA / CAMP NOU)');
 console.log('🚀 ========================================================\n');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 
-// COLA DE PRODUCCIÓN DEL LOTE 7
+// COLA DE ESTADIOS A PRODUCIR
+// Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
+    /*
     {
-        id: 'estadio_azteca',
-        nombreMostrar: 'ESTADIO AZTECA',
-        clubMostrar: 'CLUB AMÉRICA · MÉXICO',
-        pais: 'México',
-        folderName: 'AZTECA',
-        videoFileName: 'Estadio_Azteca_Mexico.mp4',
-        coverFileName: 'Portada_Estadio_Azteca.jpg',
-        inputVideoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
-        targetLat: 19.3029,
-        targetLng: -99.1505,
-        userLat: 19.3001,
-        userLng: -99.1478,
-        distanciaTexto: '421 METROS',
-        puntosTexto: '4.360 PUNTOS 🔥',
-        ubicacionBadge: '📍 Ciudad de México, México · ESTADIO AZTECA',
+        id: 'ejemplo',
+        nombreMostrar: 'NOMBRE ESTADIO',
+        clubMostrar: 'CLUB',
+        pais: 'Pais',
+        folderName: 'CARPETA-ESTADIO',
+        videoFileName: 'Estadio_Nombre.mp4',
+        coverFileName: 'Portada_Estadio_Nombre.jpg',
+        inputVideoPath: "E:\\Google earth studio\\...",
+        targetLat: 0.0,
+        targetLng: 0.0,
+        userLat: 0.0,
+        userLng: 0.0,
+        distanciaTexto: '400 METROS',
+        puntosTexto: '4.200 PUNTOS 🔥',
+        ubicacionBadge: '📍 Ciudad, País · NOMBRE',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 83.000 (3 Copas del Mundo)', color: '#00ff77' },
-            { icon: '👑', tag: 'PISTA 2:', text: 'El "Gol del Siglo" de Maradona en México 86', color: '#38bdf8' },
-            { icon: '🏟️', tag: 'PISTA 3:', text: 'El mítico Coloso de Santa Úrsula en CDMX', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: '...', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: '...', color: '#38bdf8' },
+            { icon: '🏆', tag: 'PISTA 3:', text: '...', color: '#ffd700' }
         ],
-        portadaClue: '83.000 hinchas · Sede de 3 Copas del Mundo · Ciudad de México',
-        copys: {
-            club: 'Club América y Selección Mexicana',
-            paisHashtag: '#estadioazteca #clubamerica #miseleccionmx #ligamx #mexico #futbolmexicano #cdmx #estadios',
-            extraPista: 'la consagración de Pelé en el 70 y de Maradona en el 86 en el Coloso de Santa Úrsula'
-        }
-    },
-    {
-        id: 'nueva_chicago',
-        nombreMostrar: 'REPÚBLICA DE MATADEROS',
-        clubMostrar: 'NUEVA CHICAGO',
-        pais: 'Argentina',
-        folderName: 'NUEVA-CHICAGO',
-        videoFileName: 'Estadio_Nueva_Chicago_Mataderos.mp4',
-        coverFileName: 'Portada_Estadio_Nueva_Chicago.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Nueva Chicago.mp4",
-        targetLat: -34.6644,
-        targetLng: -58.5085,
-        userLat: -34.6618,
-        userLng: -58.5058,
-        distanciaTexto: '380 METROS',
-        puntosTexto: '4.410 PUNTOS 🔥',
-        ubicacionBadge: '📍 Mataderos, Buenos Aires · NUEVA CHICAGO',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 25.000 personas en CABA', color: '#00ff77' },
-            { icon: '🥩', tag: 'PISTA 2:', text: 'En el corazón del histórico barrio de Mataderos', color: '#38bdf8' },
-            { icon: '🟢', tag: 'PISTA 3:', text: 'El tradicional Verdinegro y su República', color: '#ffd700' }
-        ],
-        portadaClue: '25.000 hinchas · Corazón de Mataderos · Mística del ascenso porteño',
-        copys: {
-            club: 'Nueva Chicago',
-            paisHashtag: '#nuevachicago #torito #mataderos #verdinegro #primeranacional #futbolargentino #estadios',
-            extraPista: 'la fiesta popular en Justo Suárez y Carhué y la mística de la República de Mataderos'
-        }
-    },
-    {
-        id: 'chacarita_juniors',
-        nombreMostrar: 'ESTADIO DE CHACARITA',
-        clubMostrar: 'CHACARITA JUNIORS',
-        pais: 'Argentina',
-        folderName: 'CHACARITA-JUNIORS',
-        videoFileName: 'Estadio_Chacarita_San_Martin.mp4',
-        coverFileName: 'Portada_Estadio_Chacarita.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\chaca.mp4",
-        targetLat: -34.5684,
-        targetLng: -58.5298,
-        userLat: -34.5656,
-        userLng: -58.5269,
-        distanciaTexto: '409 METROS',
-        puntosTexto: '4.370 PUNTOS 🔥',
-        ubicacionBadge: '📍 San Martín, Buenos Aires · CHACARITA JUNIORS',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 20.000 personas en Villa Maipú', color: '#00ff77' },
-            { icon: '⭐', tag: 'PISTA 2:', text: 'Campeón Metropolitano de Primera en 1969', color: '#38bdf8' },
-            { icon: '🔴', tag: 'PISTA 3:', text: 'El Funebrero tricolor de San Martín', color: '#ffd700' }
-        ],
-        portadaClue: '20.000 hinchas · Villa Maipú (San Martín) · Campeón de Primera 1969',
-        copys: {
-            club: 'Chacarita Juniors',
-            paisHashtag: '#chacarita #chacaritajuniors #chaca #funebrero #sanmartin #primeranacional #futbolargentino #estadios',
-            extraPista: 'el inolvidable campeonato de Primera de 1969 y la fidelidad del pueblo tricolor en San Martín'
-        }
-    },
-    {
-        id: 'atlanta',
-        nombreMostrar: 'DON LEÓN KOLBOWSKI',
-        clubMostrar: 'CLUB ATLÉTICO ATLANTA',
-        pais: 'Argentina',
-        folderName: 'ATLANTA-VILLA-CRESPO',
-        videoFileName: 'Estadio_Atlanta_Villa_Crespo.mp4',
-        coverFileName: 'Portada_Estadio_Atlanta.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Atlanta.mp4",
-        targetLat: -34.5934,
-        targetLng: -58.4484,
-        userLat: -34.5908,
-        userLng: -58.4456,
-        distanciaTexto: '386 METROS',
-        puntosTexto: '4.400 PUNTOS 🔥',
-        ubicacionBadge: '📍 Villa Crespo, Buenos Aires · ATLANTA',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 18.000 hinchas en Villa Crespo', color: '#00ff77' },
-            { icon: '📍', tag: 'PISTA 2:', text: 'Ubicado en la calle Humboldt, pegado a Chacarita', color: '#38bdf8' },
-            { icon: '🟡', tag: 'PISTA 3:', text: 'El tradicional Bohemio auriazul fundado en 1904', color: '#ffd700' }
-        ],
-        portadaClue: '18.000 hinchas · Esquina de Humboldt · Corazón de Villa Crespo',
-        copys: {
-            club: 'Club Atlético Atlanta',
-            paisHashtag: '#atlanta #bohemio #villacrespo #humboldt #primeranacional #futbolargentino #buenosaires #estadios',
-            extraPista: 'la legendaria cancha de madera previa, el clásico de Villa Crespo y las tardes de fútbol sobre Humboldt'
-        }
-    },
-    {
-        id: 'estudiantes_uno',
-        nombreMostrar: 'ESTADIO UNO',
-        clubMostrar: 'ESTUDIANTES DE LA PLATA',
-        pais: 'Argentina',
-        folderName: 'ESTUDIANTES-LP-UNO',
-        videoFileName: 'Estadio_UNO_Jorge_Luis_Hirschi_Estudiantes.mp4',
-        coverFileName: 'Portada_Estadio_UNO_Estudiantes.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\EDLPx2\\Estadio UNO Jorge Luis Hirschi.mp4",
-        targetLat: -34.9124,
-        targetLng: -57.9392,
-        userLat: -34.9098,
-        userLng: -57.9365,
-        distanciaTexto: '398 METROS',
-        puntosTexto: '4.380 PUNTOS 🔥',
-        ubicacionBadge: '📍 La Plata, Buenos Aires · ESTUDIANTES DE LA PLATA',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 32.530 espectadores en 1 y 57', color: '#00ff77' },
-            { icon: '🏆', tag: 'PISTA 2:', text: 'Tetracampeón de América y Campeón del Mundo 1968', color: '#38bdf8' },
-            { icon: '🦁', tag: 'PISTA 3:', text: 'La mística copera del León y la familia Pincharata', color: '#ffd700' }
-        ],
-        portadaClue: '32.530 hinchas · Mística copera en 1 y 57 · Tetracampeón de América',
-        copys: {
-            club: 'Estudiantes de La Plata',
-            paisHashtag: '#estudiantesdelaplata #edlp #pincha #estadiouno #hirschi #laplata #futbolargentino #estadios',
-            extraPista: 'las 4 Copas Libertadores, el título mundial ante el Manchester United y las noches épicas en 1 y 57'
-        }
+        portadaClue: '...',
+        copys: { club: '...', paisHashtag: '...', extraPista: '...' }
     }
+    */
 ];
 
-// GENERADOR DE AUDIO PROCEDURAL NATIVO (25 SEGUNDOS)
+function resolveCountAsset(name) {
+    if (fs.existsSync(path.join(__dirname, name))) return path.join(__dirname, name);
+    if (fs.existsSync(path.join(__dirname, 'redes', name))) return path.join(__dirname, 'redes', name);
+    return path.join(__dirname, name);
+}
+
+// GENERADOR DE AUDIO PROCEDURAL NATIVO (100% LIMPIO, CERO BARRIDOS/WHOOSHES)
 function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     const totalSamples = Math.floor(duracionSeg * sampleRate);
     const dataSize = totalSamples * 2;
@@ -186,16 +79,6 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
         }
     }
 
-    function addWhoosh(startSec, durSec = 0.5, volume = 0.3) {
-        const start = Math.floor(startSec * sampleRate);
-        const count = Math.floor(durSec * sampleRate);
-        for (let i = 0; i < count && start + i < totalSamples; i++) {
-            const t = i / count;
-            const env = Math.sin(Math.PI * t);
-            samples[start + i] += (Math.random() * 2 - 1) * env * volume;
-        }
-    }
-
     function addBellDing(startSec, freq = 987.77) {
         addTone(startSec, 1.2, freq, 0.35, 4);
         addTone(startSec + 0.03, 1.0, freq * 1.5, 0.2, 5);
@@ -216,7 +99,7 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
         }
     }
 
-    // addWhoosh(0.2, 0.8, 0.35); // Eliminado por pedido del usuario (sonido seco al inicio)
+    // Audio procedural armónico y limpio: campanas, cuenta regresiva, pop y fanfarria
     addBellDing(3.5, 880);
     addBellDing(7.5, 987.77);
     addBellDing(11.5, 1174.66);
@@ -226,16 +109,11 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     addTick(18.0);
     addTick(19.0);
 
-    addWhoosh(19.4, 0.4, 0.4);
     addPinPop(19.6);
 
     [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
         addTone(20.0 + idx * 0.06, 3.5, freq, 0.35, 1.5);
     });
-
-    for (let i = 0; i < 4; i++) {
-        addWhoosh(20.5 + i * 1.1, 1.8, 0.22);
-    }
 
     for (let i = 0; i < totalSamples; i++) {
         const clamped = Math.max(-1.0, Math.min(1.0, samples[i]));
@@ -245,7 +123,7 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
     return buffer;
 }
 
-// GENERAR ARCHIVO TEXTOS_PUBLICACION.TXT DENTRO DE LA CARPETA
+// GENERAR ARCHIVO TEXTOS_PUBLICACION.TXT
 function generarArchivoTextos(item, targetFolder) {
     const filePath = path.join(targetFolder, 'TEXTOS_PUBLICACION.txt');
     const content = `========================================================
@@ -255,7 +133,7 @@ ESTADIO: ${item.nombreMostrar} (${item.clubMostrar} - ${item.pais})
 
 🏆 OPCIÓN 1: DESAFÍO DE TIEMPO (MÁXIMA RETENCIÓN Y COMENTARIOS)
 --------------------------------------------------------
-¿En cuántos segundos reconocés esta cancha desde el aire? ⏱️👀
+¿Qué estadio es y dónde queda? ¿Podés sacarlo desde el aire? ⏱️👀
 
 💡 Pista 1: ${item.pistas[0].text}.
 🏟️ Pista 2: ${item.pistas[1].text}.
@@ -314,13 +192,13 @@ Solo los que realmente respiran fútbol lo sacan antes de los 5 segundos ⏳
 `;
 
     fs.writeFileSync(filePath, content, 'utf8');
-    console.log(`📝 Archivo TEXTOS_PUBLICACION.txt generado.`);
 }
 
-// PROCESAR UN ESTADIO INDIVIDUAL
+// PROCESAR UN ESTADIO INDIVIDUAL CON EL FORMATO CANÓNICO
 async function procesarEstadio(item, index, total) {
     console.log(`\n========================================================`);
-    console.log(`📍 [${index + 1}/${total}] PROCESANDO: ${item.nombreMostrar} (${item.pais})`);
+    console.log(`📍 [${index + 1}/${total}] PRODUCIENDO: ${item.nombreMostrar} (${item.pais})`);
+    console.log(`📁 Destino: ${item.pais}\\${item.folderName}`);
     console.log(`========================================================`);
 
     const stadiumFolder = path.join(baseOutputDir, item.pais, item.folderName);
@@ -331,7 +209,6 @@ async function procesarEstadio(item, index, total) {
     const tempAudio = path.join(__dirname, `temp_audio_${item.id}.wav`);
     fs.writeFileSync(tempAudio, generarAudioProcedural(25.0));
 
-    // Generar capturas con Puppeteer
     const browser = await puppeteer.launch({
         executablePath: chromePath,
         headless: 'new',
@@ -340,7 +217,7 @@ async function procesarEstadio(item, index, total) {
 
     const page = await browser.newPage();
 
-    // 1. MAPA LEAFLET
+    // 1. MAPA LEAFLET FLOTANTE INFERIOR (960x460)
     await page.setViewport({ width: 960, height: 460, deviceScaleFactor: 2 });
     const mapHtml = `
     <!DOCTYPE html>
@@ -437,9 +314,8 @@ async function procesarEstadio(item, index, total) {
     const mapCardEl = await page.$('#map-card');
     const mapImgPath = path.join(__dirname, `mapa_${item.id}_card.png`);
     await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
-    console.log('✅ Mapa Leaflet generado.');
 
-    // 2. UI CARDS (Header, Pistas, Revelación)
+    // 2. UI CARDS (Header superior 980px, Pistas inferiores 94px, Revelación y CTA)
     await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
     const uiHtml = `
     <!DOCTYPE html>
@@ -455,7 +331,7 @@ async function procesarEstadio(item, index, total) {
                 border: 2px solid rgba(0, 255, 119, 0.45);
                 border-top: 2.5px solid rgba(110, 255, 180, 0.85);
                 border-radius: 28px;
-                padding: 18px 24px;
+                padding: 16px 24px 18px 24px;
                 text-align: center;
                 box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 255, 119, 0.25);
             }
@@ -464,16 +340,23 @@ async function procesarEstadio(item, index, total) {
                 background: rgba(0, 255, 119, 0.12);
                 border: 1.5px solid rgba(0, 255, 119, 0.6);
                 color: #00ff77;
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: 900;
                 text-transform: uppercase;
                 letter-spacing: 2px;
-                padding: 6px 22px;
+                padding: 5px 20px;
                 border-radius: 30px;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
-            .title { color: #ffffff; font-size: 52px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 6px; }
-            .subtitle { color: #ffd700; font-size: 28px; font-weight: 700; }
+            .title {
+                color: #ffffff;
+                font-size: 48px;
+                font-weight: 900;
+                letter-spacing: -0.5px;
+                line-height: 1.12;
+                margin-bottom: 8px;
+            }
+            .subtitle { color: #ffd700; font-size: 26px; font-weight: 700; }
 
             .clue-group { display: flex; flex-direction: column; gap: 14px; width: 980px; }
             .clue-card {
@@ -523,7 +406,7 @@ async function procesarEstadio(item, index, total) {
     <body>
         <div class="header-container" id="ui-header">
             <div class="hero-eyebrow">ESTADIOS VIRTUALES · STADIUMGUESSR</div>
-            <div class="title">¿QUÉ ESTADIO ES ESTE?</div>
+            <div class="title">¿QUÉ ESTADIO ES<br>Y DÓNDE QUEDA?</div>
             <div class="subtitle">¿En cuántos segundos podés adivinarlo?</div>
         </div>
 
@@ -600,11 +483,10 @@ async function procesarEstadio(item, index, total) {
         const el = await page.$(elItem.id);
         if (el) await el.screenshot({ path: elItem.file, omitBackground: true });
     }
-    console.log('✅ Elementos UI generados.');
 
     await browser.close();
 
-    // 3. FFMPEG RENDER DEL VIDEO (CON DETECCIÓN DE ASPECTO AUTOMÁTICA)
+    // 3. FFMPEG RENDER DEL VIDEO
     const destVideoPath = path.join(stadiumFolder, item.videoFileName);
     const destCoverPath = path.join(stadiumFolder, item.coverFileName);
 
@@ -624,13 +506,19 @@ async function procesarEstadio(item, index, total) {
         uiP1Img,
         uiP2Img,
         uiP3Img,
-        path.join(__dirname, 'ui_count_3.png'),
-        path.join(__dirname, 'ui_count_2.png'),
-        path.join(__dirname, 'ui_count_1.png'),
+        resolveCountAsset('ui_count_3.png'),
+        resolveCountAsset('ui_count_2.png'),
+        resolveCountAsset('ui_count_1.png'),
         mapImgPath,
         uiRevImg,
         uiBtnImg
     ];
+
+    for (let aIdx = 0; aIdx < assets.length; aIdx++) {
+        if (!fs.existsSync(assets[aIdx])) {
+            throw new Error(`Asset faltante para ffmpeg [${aIdx}]: ${assets[aIdx]}`);
+        }
+    }
 
     const filterComplex = [
         baseFilter,
@@ -676,23 +564,23 @@ async function procesarEstadio(item, index, total) {
         destVideoPath
     ];
 
-    console.log(`🎬 Renderizando video 1080x1920 Full HD (25s)...`);
+    process.stdout.write(`🎬 Renderizando video 1080x1920 (25s)... `);
     await new Promise((resolve, reject) => {
         const ff = spawn('ffmpeg', ffmpegArgs);
+        let errorOutput = '';
         ff.stderr.on('data', (d) => {
-            const m = d.toString().match(/time=(\d{2}:\d{2}:\d{2}\.\d{2})/);
-            if (m) process.stdout.write(`\r⏱️ Progreso: ${m[1]} / 00:00:25.00`);
+            const str = d.toString();
+            errorOutput += str;
+            const m = str.match(/time=(\d{2}:\d{2}:\d{2}\.\d{2})/);
+            if (m) process.stdout.write(`\r⏱️ [${index + 1}/${total}] ${item.nombreMostrar} | Progreso: ${m[1]} / 00:00:25.00`);
         });
         ff.on('close', (code) => {
             if (code === 0) resolve();
-            else reject(new Error(`FFmpeg falló con código ${code}`));
+            else reject(new Error(`FFmpeg falló con código ${code}: ${errorOutput.slice(-500)}`));
         });
     });
 
-    console.log(`\n🎉 Video listo: ${destVideoPath}`);
-
-    // 4. GENERAR PORTADA INCÓGNITA (REGLA ESTRICTA: NUNCA NOMBRAR EL CLUB NI EL ESTADIO)
-    console.log(`🎨 Generando portada para el feed (insignia: ESTADIO... sin nombres de equipos)...`);
+    // 4. GENERAR PORTADA INCÓGNITA (ZONA SEGURA 3:4, SIN SPOILERS)
     const snapPath = path.join(__dirname, `snap_${item.id}.jpg`);
     await new Promise((resolve, reject) => {
         const pSnap = spawn('ffmpeg', [
@@ -744,7 +632,7 @@ async function procesarEstadio(item, index, total) {
                 box-shadow: 0 0 20px rgba(255, 215, 0, 0.35); text-transform: uppercase;
             }
             .main-title {
-                color: #ffffff; font-size: 64px; font-weight: 900; line-height: 1.15; letter-spacing: -1px;
+                color: #ffffff; font-size: 58px; font-weight: 900; line-height: 1.12; letter-spacing: -1px;
                 text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 0 35px rgba(0, 255, 119, 0.4); text-transform: uppercase;
             }
             .clue-box {
@@ -770,64 +658,64 @@ async function procesarEstadio(item, index, total) {
         <div class="safe-zone">
             <div class="brand-pill">⚽ ESTADIOS VIRTUALES · TRIVIA</div>
             <div class="center-block">
-                <!-- INSIGNIA MISTERIO -->
                 <div class="difficulty-badge">ESTADIO...</div>
-                <div class="main-title">¿QUÉ ESTADIO ES ESTE?</div>
-                <!-- PISTA SIN NOMBRES DE EQUIPOS NI ESTADIOS -->
+                <div class="main-title">¿QUÉ ESTADIO ES<br>Y DÓNDE QUEDA?</div>
                 <div class="clue-box">
                     <div class="clue-icon">💡</div>
                     <div class="clue-desc">${item.portadaClue}</div>
                 </div>
             </div>
             <div class="footer-block">
-                <div class="sub-question">¿En cuántos segundos podés adivinarlo? Comentá</div>
-                <div class="cta-btn">🎮 JUGÁ EN EL LINK DEL PERFIL</div>
+                <div class="sub-question">¿Te animás a adivinarlo antes del final? 👀</div>
+                <div class="cta-btn">DEJÁ TU RESPUESTA EN COMENTARIOS ✍️</div>
             </div>
         </div>
     </body>
     </html>`;
 
-    await pCover.setContent(coverHtml, { waitUntil: 'domcontentloaded' });
-    await new Promise(r => setTimeout(r, 600));
-    await pCover.screenshot({ path: destCoverPath, quality: 95, type: 'jpeg' });
-    console.log(`✅ Portada lista: ${destCoverPath}`);
+    await pCover.setContent(coverHtml);
+    await pCover.screenshot({ path: destCoverPath });
     await bCover.close();
 
-    // 5. GENERAR ARCHIVO TEXTOS_PUBLICACION.TXT
+    // 5. TEXTOS
     generarArchivoTextos(item, stadiumFolder);
 
-    // Limpieza de archivos temporales
-    [tempAudio, snapPath, mapImgPath, uiHeaderImg, uiP1Img, uiP2Img, uiP3Img, uiRevImg, uiBtnImg].forEach(f => {
+    // Limpieza de temporales
+    const toClean = [
+        snapPath,
+        tempAudio,
+        mapImgPath,
+        uiHeaderImg,
+        uiP1Img,
+        uiP2Img,
+        uiP3Img,
+        uiRevImg,
+        uiBtnImg
+    ];
+    for (const f of toClean) {
         if (fs.existsSync(f)) fs.unlinkSync(f);
-    });
+    }
 
-    console.log(`✨ [${index + 1}/${total}] ¡COMPLETADO: ${item.nombreMostrar}!`);
+    console.log(`\n✅ ¡Pack completado para ${item.nombreMostrar}!`);
 }
 
-// EJECUCIÓN SECUENCIAL DEL LOTE
-async function ejecutarLote() {
-    const targetArg = process.argv[2];
-    const queue = targetArg ? STADIUMS_QUEUE.filter(s => s.id === targetArg) : STADIUMS_QUEUE;
-    const total = queue.length;
+async function main() {
+    const total = STADIUMS_QUEUE.length;
     if (total === 0) {
-        console.error(`❌ No se encontró ningún estadio con ID: "${targetArg}"`);
+        console.log('ℹ️ La cola STADIUMS_QUEUE está vacía. Inserte estadios para procesar.');
         return;
     }
-    console.log(`Iniciando lote de ${total} estadio(s)...`);
-    const tInicio = Date.now();
-
     for (let i = 0; i < total; i++) {
-        await procesarEstadio(queue[i], i, total);
+        await procesarEstadio(STADIUMS_QUEUE[i], i, total);
     }
-
-    const tTotalMin = ((Date.now() - tInicio) / 1000 / 60).toFixed(1);
-    console.log(`\n🎉 ========================================================`);
-    console.log(`🎉 ¡LOTE COMPLETO FINALIZADO EN ${tTotalMin} MINUTOS!`);
-    console.log(`🎉 Todos los videos, portadas y textos guardados en:`);
-    console.log(`📂 ${baseOutputDir}`);
-    console.log(`🎉 ========================================================`);
+    console.log(`\n🎉 PROCESO FINALIZADO (${total} estadios).`);
 }
 
-ejecutarLote().catch(err => {
-    console.error('❌ Error crítico en el lote:', err);
-});
+if (require.main === module) {
+    main().catch(err => {
+        console.error('❌ Error fatal:', err);
+        process.exit(1);
+    });
+}
+
+module.exports = { procesarEstadio, generarAudioProcedural };
