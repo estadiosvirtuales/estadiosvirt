@@ -2144,6 +2144,61 @@
     white-space: nowrap !important;
 }
 
+/* 📋 TABLA Y COLUMNA G/E/P DE ONCE INICIAL EN LIGA DE AMIGOS */
+.liga-once-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 14px;
+    font-size: 0.70rem;
+    font-weight: 900;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.once-stat-gep {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    font-size: 0.80rem;
+    font-weight: 900;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.once-stat-gep .gep-sub {
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-left: 1px;
+}
+
+.once-stat-gep .gep-sep {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+#liga-amigos-modal .ranking-left-panel .ranking-tab-img[src*="posicion"] {
+    width: 48px !important;
+    height: 48px !important;
+    left: 4px !important;
+    transform: translateY(-50%) scale(1.18) !important;
+}
+
+#liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:hover .ranking-tab-img[src*="posicion"] {
+    transform: translateY(-50%) scale(1.28) rotate(-3deg) !important;
+}
+
 /* 👉 PANEL DERECHO: Título Activo Centrado y Tabla de Posiciones */
 .ranking-right-panel {
     display: flex;
@@ -2526,6 +2581,47 @@
         width: 28px !important;
         height: 28px !important;
         margin: 0 !important;
+    }
+
+    #liga-amigos-modal .ranking-left-panel .ranking-tab-img[src*="posicion"] {
+        width: 32px !important;
+        height: 32px !important;
+        left: 2px !important;
+        top: calc(50% - 1px) !important;
+        transform: translateY(-50%) scale(1.1) !important;
+    }
+
+    .liga-once-header-row {
+        padding: 4px 6px !important;
+        font-size: 0.58rem !important;
+    }
+
+    .liga-once-header-row .col-gep-hdr {
+        min-width: 48px !important;
+    }
+
+    .liga-once-header-row .col-grl-hdr {
+        min-width: 46px !important;
+    }
+
+    .liga-once-header-row .col-act-hdr {
+        min-width: 38px !important;
+    }
+
+    .once-stat-gep {
+        padding: 2px 4px !important;
+        font-size: 0.68rem !important;
+        gap: 2px !important;
+        border-radius: 5px !important;
+    }
+
+    .once-stat-gep .gep-sub {
+        font-size: 0.54rem !important;
+    }
+
+    .carrera-action-self.once-self-badge {
+        padding: 2px 5px !important;
+        font-size: 0.60rem !important;
     }
 
     /* 🏆 DESAFÍO DE ORDEN EN CELULAR */

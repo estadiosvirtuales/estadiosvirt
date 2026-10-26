@@ -3485,10 +3485,10 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
     // 🎨 Configuración dinámica de ícono, resplandor y colores según la pestaña activa
     const headerConfig = esOnce ? {
-        img: 'trofeo.webp',
-        alt: 'Once Inicial',
+        img: 'posicion.webp',
+        alt: 'Pizarra Táctica',
         glowClass: 'glow-gold',
-        badgeImg: 'trofeo.webp',
+        badgeImg: 'posicion.webp',
         badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
         badgeSub: 'Once Inicial',
         badgeColor: '#fbbf24'
@@ -3545,11 +3545,24 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             <img src="liga-icon-historial.webp" alt="Historial" class="ranking-tab-img"> <span>Historial W/L</span>
         </button>
         <button class="liga-tab-btn ${esOnce ? 'active' : ''}" onclick="cambiarVistaLiga('once')">
-            <img src="trofeo.webp" alt="Once Inicial" class="ranking-tab-img"> <span>Once Inicial</span>
+            <img src="posicion.webp" alt="Once Inicial" class="ranking-tab-img"> <span>Once Inicial</span>
         </button>
     </div>`;
 
-    let htmlContenido = `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
+    let headerTablaHTML = '';
+    if (esOnce && lista && lista.length > 0) {
+        headerTablaHTML = `
+        <div class="liga-once-header-row" style="display:flex; align-items:center; justify-content:space-between; padding:6px 14px; font-size:0.70rem; font-weight:900; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:4px;">
+            <span># &nbsp; Integrante</span>
+            <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                <span class="col-gep-hdr" style="min-width:62px; text-align:center;">G / E / P</span>
+                <span class="col-grl-hdr" style="min-width:54px; text-align:center;">GRL</span>
+                <span class="col-act-hdr" style="min-width:48px; text-align:center;">Duelo</span>
+            </div>
+        </div>`;
+    }
+
+    let htmlContenido = `<div class="liga-table-card">${headerTablaHTML}<div class="ranking-rows-scroll">`;
 
     if (!lista || lista.length === 0) {
         htmlContenido += `
@@ -3583,15 +3596,24 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 }
             }
 
+            let bloqueGEP = "";
             let bloquePuntos = "";
             if (esOnce) {
+                const part = f.partidos || { g: 0, e: 0, p: 0 };
+                bloqueGEP = `<div class="once-stat-gep" title="Partidos del Once: ${part.g}G · ${part.e}E · ${part.p}P">
+                                <strong style="color:#00e676;">${part.g}<span class="gep-sub">G</span></strong>
+                                <span class="gep-sep">·</span>
+                                <strong style="color:#fbbf24;">${part.e}<span class="gep-sub">E</span></strong>
+                                <span class="gep-sep">·</span>
+                                <strong style="color:#ff4757;">${part.p}<span class="gep-sub">P</span></strong>
+                            </div>`;
                 const urlEscudo = typeof obtenerUrlEscudo === 'function' ? obtenerUrlEscudo(f.escudo || 'ev') : 'escudo-ev.webp';
                 bloquePuntos = `<div style="display:flex; align-items:center; gap:6px;">
                                     <span style="color:#fbbf24; font-weight:900; font-size:0.98rem; white-space:nowrap;">GRL ${f.ovr || 60}</span>
                                     <img src="${urlEscudo}" class="carrera-mini-shield" style="width:20px; height:20px; object-fit:contain; flex-shrink:0;" title="Club" onerror="this.src='escudo-ev.webp';">
                                 </div>`;
                 if (esPropio) {
-                    botonReto = `<span class="carrera-action-self" style="font-size:0.64rem; font-weight:900; color:#00e676; padding:3px 6px; border-radius:6px; background:rgba(0,230,118,0.12); border:1px solid rgba(0,230,118,0.3); white-space:nowrap;">TU EQUIPO</span>`;
+                    botonReto = `<span class="carrera-action-self once-self-badge" style="font-size:0.64rem; font-weight:900; color:#00e676; padding:3px 6px; border-radius:6px; background:rgba(0,230,118,0.12); border:1px solid rgba(0,230,118,0.3); white-space:nowrap;"><span class="desktop-only">TU EQUIPO</span><span class="mobile-only">VOS</span></span>`;
                 } else if ((f.nivelActual || 1) >= 4) {
                     botonReto = `<button type="button" class="btn-desafiar-row" onclick="desafiarOnceDesdeLigaAmigos('${nombreRival.replace(/'/g, "\\'")}')" title="Desafiar al Once de ${sanitizarHTML(nombreRival)}" style="margin-left:4px;"><img src="liga-icon-historial.webp" alt="Duelo" class="carrera-mini-swords"> <span>DUELO</span></button>`;
                 } else {
@@ -3614,7 +3636,8 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 <span class="inspect-clickable-user" style="display:inline-flex; align-items:center; gap:6px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
                     ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
                 </span>
-                <span style="display:flex; align-items:center; gap:8px; flex-shrink:0; margin-left:8px;">
+                <span style="display:flex; align-items:center; gap:6px; flex-shrink:0; margin-left:6px;">
+                    ${bloqueGEP}
                     ${bloquePuntos}
                     ${botonReto}
                 </span>
@@ -3628,12 +3651,21 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     const miPuestoLigaIdx = (lista || []).findIndex(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
     if (miPuestoLigaIdx >= 50 && miFila) {
         let bloquePuntosSticky = "";
+        let bloqueGEPSticky = "";
         if (esOnce) {
             let miOvrLive = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
             if (miOvrLive === 0) {
                 const miNivelActual = (userStats && userStats.nivelActual !== undefined) ? userStats.nivelActual : 1;
                 miOvrLive = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[miNivelActual]) ? NIVELES[miNivelActual].ovr : 60);
             }
+            const partMio = miFila.partidos || { g: 0, e: 0, p: 0 };
+            bloqueGEPSticky = `<div class="once-stat-gep" title="Tus partidos del Once: ${partMio.g}G · ${partMio.e}E · ${partMio.p}P">
+                                <strong style="color:#00e676;">${partMio.g}<span class="gep-sub">G</span></strong>
+                                <span class="gep-sep">·</span>
+                                <strong style="color:#fbbf24;">${partMio.e}<span class="gep-sub">E</span></strong>
+                                <span class="gep-sep">·</span>
+                                <strong style="color:#ff4757;">${partMio.p}<span class="gep-sub">P</span></strong>
+                               </div>`;
             bloquePuntosSticky = `<span style="color:#fbbf24; font-weight:900; font-size:1.05rem;">GRL ${miOvrLive}</span>`;
         } else if (tipoVista === 'triunfos') {
             bloquePuntosSticky = `<div style="display:flex; align-items:center; gap:6px;">
@@ -3650,7 +3682,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
                 <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
             </span>
-            <span>${bloquePuntosSticky}</span>
+            <span style="display:flex; align-items:center; gap:8px;">${bloqueGEPSticky}${bloquePuntosSticky}</span>
         </div>`;
     }
 
@@ -3847,12 +3879,37 @@ window.cambiarVistaLiga = async function(vista) {
 
                 const esMio = nLower === miNickLower || nLower === (miNombreRankingLiga || '').toLowerCase();
                 if (esMio) {
+                    const dG = (userStats && userStats.duelosGanados) || 0;
+                    const dJ = (userStats && userStats.duelosJugados) || 0;
+                    const dE = (userStats && userStats.duelosEmpatados) || 0;
+                    const dP = (userStats && userStats.duelosPerdidos !== undefined) ? userStats.duelosPerdidos : Math.max(0, dJ - dG - dE);
+                    
+                    let lG = 0, lE = 0, lP = 0;
+                    try {
+                        const idU = (typeof getUserId === 'function') ? getUserId() : 'default';
+                        const lgRaw = localStorage.getItem('ev_liga_guardada_' + idU);
+                        if (lgRaw) {
+                            const lgObj = JSON.parse(lgRaw);
+                            const uRow = (lgObj.tabla || []).find(t => t.esUsuario);
+                            if (uRow) {
+                                lG = uRow.pg || 0;
+                                lE = uRow.pe || 0;
+                                lP = uRow.pp || 0;
+                            }
+                        }
+                    } catch (err) {}
+
                     listaOnce.push({
                         nombre: miNombreRankingLiga || miNick,
                         ovr: miOvrLive,
                         escudo: miEscudo,
                         nivelActual: miNivel,
-                        esUsuario: true
+                        esUsuario: true,
+                        partidos: {
+                            g: dG + lG,
+                            e: dE + lE,
+                            p: dP + lP
+                        }
                     });
                     return;
                 }
@@ -3894,12 +3951,25 @@ window.cambiarVistaLiga = async function(vista) {
                         ovr = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[nivelDt]) ? NIVELES[nivelDt].ovr : 60);
                     }
 
+                    const rivDG = dj.duelosGanados || 0;
+                    const rivDJ = dj.duelosJugados || 0;
+                    const rivDE = dj.duelosEmpatados || 0;
+                    const rivDP = dj.duelosPerdidos !== undefined ? dj.duelosPerdidos : Math.max(0, rivDJ - rivDG - rivDE);
+                    const rivG = dj.oncePartidos?.g ?? rivDG;
+                    const rivE = dj.oncePartidos?.e ?? rivDE;
+                    const rivP = dj.oncePartidos?.p ?? rivDP;
+
                     listaOnce.push({
                         nombre: n,
                         ovr: ovr,
                         escudo: dj.onceEscudo || pref.avatar_logo || 'ev',
                         nivelActual: nivelDt,
-                        esUsuario: false
+                        esUsuario: false,
+                        partidos: {
+                            g: rivG,
+                            e: rivE,
+                            p: rivP
+                        }
                     });
                 } else {
                     listaOnce.push({
@@ -3907,7 +3977,8 @@ window.cambiarVistaLiga = async function(vista) {
                         ovr: 60,
                         escudo: 'ev',
                         nivelActual: 1,
-                        esUsuario: false
+                        esUsuario: false,
+                        partidos: { g: 0, e: 0, p: 0 }
                     });
                 }
             });

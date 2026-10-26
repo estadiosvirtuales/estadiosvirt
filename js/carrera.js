@@ -2376,6 +2376,7 @@ function finalizarPartidoCopa(golesUser, golesRival) {
 
         if (torneoEstado.esDesafioAsincronico) {
             userStats.duelosJugados = (userStats.duelosJugados || 0) + 1;
+            userStats.duelosPerdidos = (userStats.duelosPerdidos || 0) + 1;
             guardarStats();
             btn.className = 'btn-3d secondary sim-main-btn danger';
             btn.disabled = false;
