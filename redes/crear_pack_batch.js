@@ -216,7 +216,7 @@ function generarAudioProcedural(duracionSeg = 25.0, sampleRate = 44100) {
         }
     }
 
-    addWhoosh(0.2, 0.8, 0.35);
+    // addWhoosh(0.2, 0.8, 0.35); // Eliminado por pedido del usuario (sonido seco al inicio)
     addBellDing(3.5, 880);
     addBellDing(7.5, 987.77);
     addBellDing(11.5, 1174.66);

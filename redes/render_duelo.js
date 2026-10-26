@@ -312,8 +312,8 @@ function generarAudioProcedural(duracionSeg = 20.0, sampleRate = 44100) {
         addTone(startSec, 0.06, 1200, 0.35, 25);
     }
 
-    // 0.2s: Whoosh épico
-    addWhoosh(0.2, 0.8, 0.4);
+    // 0.2s: Eliminado el whoosh inicial seco por pedido del usuario
+    // addWhoosh(0.2, 0.8, 0.4);
     // 1.0s: Campana de inicio
     addBellDing(1.0, 784);
 
