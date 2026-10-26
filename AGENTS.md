@@ -91,5 +91,7 @@ Todo video de trivia individual que se produzca DEBE seguir de forma estricta e 
      - `TEXTOS_PUBLICACION.txt` (4 variantes: Tiempo, Folclore, Geoguessr, Corta TikTok + comentarios fijados).
    - Prohibido dejar archivos temporales (.png de overlays, snapshots, .wav) en la carpeta final o en la raíz.
 
-5. **Motor Canónico:**
-   - El script oficial es `crear_pack_batch.js`. Jamás crear maquetas con mapas a pantalla completa ni alterar las coordenadas del layout.
+5. **Motor Canónico y Frases Clave:**
+   - **Frase detonante:** *"hagamos videos para que estadio es y donde queda"* ➔ Interpretar de forma automática como este estándar de `AGENTS.md` y usar exclusivamente `crear_pack_batch.js`.
+   - **Frase detonante para duelos:** *"vamos a hacer duelos de capacidad"* ➔ Usar estrictamente el motor oficial de `redes/render_duelo.js` (20.0s, split screen top/bottom, campana de inicio a 1.0s, cuenta regresiva 11-13s, revelación a 14.0s, audio puro sin barridos/whooshes), idéntico a los duelos ya guardados en `E:\Google earth studio\videos para mostrar\DUELO DE CAPACIDAD\`.
+   - Jamás crear maquetas experimentales ni alterar las coordenadas del layout.
