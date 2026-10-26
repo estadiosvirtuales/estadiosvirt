@@ -13,32 +13,146 @@ const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 // COLA DE ESTADIOS A PRODUCIR
 // Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
-    /*
     {
-        id: 'ejemplo',
-        nombreMostrar: 'NOMBRE ESTADIO',
-        clubMostrar: 'CLUB',
-        pais: 'Pais',
-        folderName: 'CARPETA-ESTADIO',
-        videoFileName: 'Estadio_Nombre.mp4',
-        coverFileName: 'Portada_Estadio_Nombre.jpg',
-        inputVideoPath: "E:\\Google earth studio\\...",
-        targetLat: 0.0,
-        targetLng: 0.0,
-        userLat: 0.0,
-        userLng: 0.0,
-        distanciaTexto: '400 METROS',
-        puntosTexto: '4.200 PUNTOS 🔥',
-        ubicacionBadge: '📍 Ciudad, País · NOMBRE',
+        id: 'neo_quimica_arena',
+        nombreMostrar: 'NEO QUÍMICA ARENA',
+        clubMostrar: 'SC CORINTHIANS',
+        pais: 'Brasil',
+        folderName: 'NEO-QUIMICA-ARENA-CORINTHIANS',
+        videoFileName: 'Estadio_Neo_Quimica_Arena_Corinthians.mp4',
+        coverFileName: 'Portada_Estadio_Neo_Quimica_Arena.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Brasil\\Neo Química Arena_ Corinthians.mp4",
+        targetLat: -23.5453,
+        targetLng: -46.4742,
+        userLat: -23.5424,
+        userLng: -46.4712,
+        distanciaTexto: '442 METROS',
+        puntosTexto: '4.009 PUNTOS 🔥',
+        ubicacionBadge: '📍 São Paulo, Brasil · NEO QUÍMICA ARENA',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: '...', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: '...', color: '#38bdf8' },
-            { icon: '🏆', tag: 'PISTA 3:', text: '...', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 49.000 hinchas en la Zona Este paulista', color: '#00ff77' },
+            { icon: '🏆', tag: 'PISTA 2:', text: 'Sede inaugural de la Copa del Mundo Brasil 2014', color: '#38bdf8' },
+            { icon: '🦅', tag: 'PISTA 3:', text: 'La casa del Timão, uno de los clubes más populares del mundo', color: '#ffd700' }
         ],
-        portadaClue: '...',
-        copys: { club: '...', paisHashtag: '...', extraPista: '...' }
+        portadaClue: '49.000 hinchas · Sede inaugural Mundial 2014 · São Paulo',
+        copys: {
+            club: 'Sport Club Corinthians Paulista',
+            paisHashtag: '#futbolbrasilero #corinthians #timao #itaquera #neoquimicaarena #brasileirao #estadios',
+            extraPista: 'el mítico templo de Itaquera, la marea corinthiana y la sede del partido inaugural de Brasil 2014'
+        }
+    },
+    {
+        id: 'morumbi_sao_paulo',
+        nombreMostrar: 'ESTÁDIO DO MORUMBI',
+        clubMostrar: 'SÃO PAULO FC',
+        pais: 'Brasil',
+        folderName: 'MORUMBI-SAO-PAULO',
+        videoFileName: 'Estadio_Morumbi_Sao_Paulo.mp4',
+        coverFileName: 'Portada_Estadio_Morumbi.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4",
+        targetLat: -23.6001,
+        targetLng: -46.7202,
+        userLat: -23.5972,
+        userLng: -46.7173,
+        distanciaTexto: '431 METROS',
+        puntosTexto: '4.031 PUNTOS 🔥',
+        ubicacionBadge: '📍 São Paulo, Brasil · ESTÁDIO DO MORUMBI',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para más de 66.000 hinchas en la capital paulista', color: '#00ff77' },
+            { icon: '🏆', tag: 'PISTA 2:', text: 'Inaugurado en 1960 y templo de noches épicas de Libertadores', color: '#38bdf8' },
+            { icon: '🔴⚪⚫', tag: 'PISTA 3:', text: 'El gigante del Tricolor Paulista, tres veces campeón del mundo', color: '#ffd700' }
+        ],
+        portadaClue: '66.000 hinchas · Templo de Libertadores · São Paulo',
+        copys: {
+            club: 'São Paulo Futebol Clube',
+            paisHashtag: '#futbolbrasilero #saopaulofc #morumbi #spfc #tricolorpaulista #brasileirao #estadios',
+            extraPista: 'el coloso del barrio de Morumbi, las tres Copas del Mundo del Tricolor y las finales coperas'
+        }
+    },
+    {
+        id: 'vila_belmiro_santos',
+        nombreMostrar: 'ESTÁDIO VILA BELMIRO',
+        clubMostrar: 'SANTOS FC',
+        pais: 'Brasil',
+        folderName: 'VILA-BELMIRO-SANTOS',
+        videoFileName: 'Estadio_Vila_Belmiro_Santos.mp4',
+        coverFileName: 'Portada_Estadio_Vila_Belmiro.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Brasil\\Estadio Urbano Caldeira_ Santos FC.mp4",
+        targetLat: -23.9511,
+        targetLng: -46.3392,
+        userLat: -23.9482,
+        userLng: -46.3364,
+        distanciaTexto: '428 METROS',
+        puntosTexto: '4.037 PUNTOS 🔥',
+        ubicacionBadge: '📍 Santos, São Paulo · VILA BELMIRO',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'El mítico Alçapão en la ciudad portuaria de Santos', color: '#00ff77' },
+            { icon: '👑', tag: 'PISTA 2:', text: 'Cuna sagrada inaugurada en 1916 donde brilló O Rei Pelé', color: '#38bdf8' },
+            { icon: '⚪⚫', tag: 'PISTA 3:', text: 'La casa del Peixe que maravilló al planeta y vio nacer a Neymar', color: '#ffd700' }
+        ],
+        portadaClue: '16.000 hinchas · El templo sagrado de Pelé · Santos',
+        copys: {
+            club: 'Santos Futebol Clube',
+            paisHashtag: '#futbolbrasilero #santosfc #vilabelmiro #pele #neymar #peixe #meninosdavila #estadios',
+            extraPista: 'el templo sagrado de Pelé en la costa paulista, la cuna del Joga Bonito y la magia del Santos'
+        }
+    },
+    {
+        id: 'mineirao_belo_horizonte',
+        nombreMostrar: 'ESTÁDIO DO MINEIRÃO',
+        clubMostrar: 'CRUZEIRO / ATLÉTICO MINEIRO',
+        pais: 'Brasil',
+        folderName: 'MINEIRAO-BELO-HORIZONTE',
+        videoFileName: 'Estadio_Mineirao_Belo_Horizonte.mp4',
+        coverFileName: 'Portada_Estadio_Mineirao.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4",
+        targetLat: -19.8659,
+        targetLng: -43.9711,
+        userLat: -19.8629,
+        userLng: -43.9682,
+        distanciaTexto: '454 METROS',
+        puntosTexto: '3.985 PUNTOS 🔥',
+        ubicacionBadge: '📍 Belo Horizonte, Brasil · ESTÁDIO MINEIRÃO',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 62.000 espectadores en la laguna de Pampulha', color: '#00ff77' },
+            { icon: '🏆', tag: 'PISTA 2:', text: 'Inaugurado en 1965 y sede de dos Mundiales de la FIFA', color: '#38bdf8' },
+            { icon: '🦊', tag: 'PISTA 3:', text: 'El coloso de Belo Horizonte y escenario del clásico Mineiro', color: '#ffd700' }
+        ],
+        portadaClue: '62.000 hinchas · Gigante de Pampulha · Belo Horizonte',
+        copys: {
+            club: 'Cruzeiro EC / Atlético Mineiro',
+            paisHashtag: '#futbolbrasilero #mineirao #cruzeiro #atleticomineiro #belohorizonte #pampulha #estadios',
+            extraPista: 'el gigante de Pampulha, la pasión de Belo Horizonte y la mística de los clásicos mineiros'
+        }
+    },
+    {
+        id: 'sao_januario_vasco',
+        nombreMostrar: 'ESTÁDIO SÃO JANUÁRIO',
+        clubMostrar: 'CR VASCO DA GAMA',
+        pais: 'Brasil',
+        folderName: 'SAO-JANUARIO-VASCO',
+        videoFileName: 'Estadio_Sao_Januario_Vasco.mp4',
+        coverFileName: 'Portada_Estadio_Sao_Januario.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Brasil\\Vasco Da Gama.mp4",
+        targetLat: -22.8906,
+        targetLng: -43.2283,
+        userLat: -22.8876,
+        userLng: -43.2253,
+        distanciaTexto: '454 METROS',
+        puntosTexto: '3.985 PUNTOS 🔥',
+        ubicacionBadge: '📍 Río de Janeiro, Brasil · SÃO JANUÁRIO',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Famosa fachada neocolonial declarada patrimonio en Río', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1927 construido con las donaciones de su hinchada', color: '#38bdf8' },
+            { icon: '💢', tag: 'PISTA 3:', text: 'La mítica Colina Histórica del Gigante da Colina y cuna de ídolos', color: '#ffd700' }
+        ],
+        portadaClue: '22.000 hinchas · Fachada histórica patrimonio · Río de Janeiro',
+        copys: {
+            club: 'Club de Regatas Vasco da Gama',
+            paisHashtag: '#futbolbrasilero #vascodagama #vasco #saojanuario #gigantedacolina #riodejaneiro #estadios',
+            extraPista: 'la Colina Histórica de San Cristóbal en Río, la lucha contra el racismo y la pasión vascaína'
+        }
     }
-    */
 ];
 
 function resolveCountAsset(name) {
