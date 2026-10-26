@@ -15,8 +15,8 @@ window.supabaseClient = null;
 // Memoria global para guardar los promedios de Supabase
 var promediosSupabase = {};
 window.promediosSupabase = promediosSupabase;
-var bloqueasSincronizacionNube = true;
-window.bloqueasSincronizacionNube = bloqueasSincronizacionNube;
+var bloqueasSincronizacionNube = false;
+window.bloqueasSincronizacionNube = false;
 var guessrHistorialCoordenadas = [];
 window.guessrHistorialCoordenadas = guessrHistorialCoordenadas;
 

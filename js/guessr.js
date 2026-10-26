@@ -35,6 +35,7 @@ var ligaAmigosChannel = null;
 var usuariosOnlineLiga = [];
 var cacheTop15Ligas = [];
 var cacheTriunfosLiga = null;
+var cacheOnceLiga = null;
 var vistaLigaActual = 'puntaje';
 var versusLigaOrigen = null;
 
@@ -263,13 +264,17 @@ async function precargarAvataresComunidad() {
         const { data, error } = await supabaseClient
             .from('perfiles')
             .select('datos_juego')
-            .limit(150);
+            .limit(500);
         if (!error && data) {
             data.forEach(p => {
                 const nick = p.datos_juego?.preferencias?.custom_nick;
                 const avatar = p.datos_juego?.preferencias?.avatar_hair;
                 if (nick && avatar) {
-                    cacheAvataresUsuarios[nick.trim().toLowerCase()] = avatar;
+                    let av = String(avatar).replace(/\.png$/i, '.webp').trim();
+                    if (!av.includes('.')) av += '.webp';
+                    if (typeof AVATARES_LISTA === 'undefined' || AVATARES_LISTA.some(a => a.id === av)) {
+                        cacheAvataresUsuarios[nick.trim().toLowerCase()] = av;
+                    }
                 }
             });
         }
@@ -2298,10 +2303,10 @@ function esRegistroBot(nombre, puntaje) {
 window.esRegistroBot = esRegistroBot;
 
 async function abrirModalRanking(modoEspecifico = 'solo') {
-    precargarAvataresComunidad();
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
+    await precargarAvataresComunidad();
 
     let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
     let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
@@ -3476,9 +3481,18 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     if (!body) return;
 
     const esPuntaje = tipoVista === 'puntaje';
+    const esOnce = tipoVista === 'once';
 
     // 🎨 Configuración dinámica de ícono, resplandor y colores según la pestaña activa
-    const headerConfig = esPuntaje ? {
+    const headerConfig = esOnce ? {
+        img: 'trofeo.webp',
+        alt: 'Once Inicial',
+        glowClass: 'glow-gold',
+        badgeImg: 'trofeo.webp',
+        badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
+        badgeSub: 'Once Inicial',
+        badgeColor: '#fbbf24'
+    } : (esPuntaje ? {
         img: 'liga-icon-puntaje.webp',
         alt: 'Puntaje Máximo',
         glowClass: 'glow-green',
@@ -3494,7 +3508,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         badgeTitle: nombreVisualLiga.replace(/_/g, ' '),
         badgeSub: 'Historial W/L',
         badgeColor: '#2979ff'
-    };
+    });
 
     // 📊 Cálculo en vivo de las métricas de la liga
     const miFila = (lista || []).find(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
@@ -3503,13 +3517,35 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     const totalMiembros = (lista || []).length;
     const conectadosAhora = (usuariosOnlineLiga || []).length;
 
+    let labelPill1 = 'TU PUNTAJE';
+    let valorPill1 = miPuntajeLiga > 0 ? miPuntajeLiga.toLocaleString('es-AR') + ' pts' : '0 pts';
+    let iconPill1 = 'ph-trophy';
+
+    if (tipoVista === 'triunfos') {
+        labelPill1 = 'TUS DUELOS';
+        valorPill1 = miWLLiga;
+        iconPill1 = 'ph-sword';
+    } else if (esOnce) {
+        let miOvrLive = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
+        if (miOvrLive === 0) {
+            const miNivelActual = (userStats && userStats.nivelActual !== undefined) ? userStats.nivelActual : 1;
+            miOvrLive = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[miNivelActual]) ? NIVELES[miNivelActual].ovr : 60);
+        }
+        labelPill1 = 'TU EQUIPO';
+        valorPill1 = `GRL ${miOvrLive}`;
+        iconPill1 = 'ph-shield-check';
+    }
+
     const subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
         <button class="liga-tab-btn ${esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('puntaje')">
             <img src="liga-icon-puntaje.webp" alt="Puntaje" class="ranking-tab-img"> <span>Puntaje máx.</span>
         </button>
-        <button class="liga-tab-btn ${!esPuntaje ? 'active' : ''}" onclick="cambiarVistaLiga('triunfos')">
+        <button class="liga-tab-btn ${tipoVista === 'triunfos' ? 'active' : ''}" onclick="cambiarVistaLiga('triunfos')">
             <img src="liga-icon-historial.webp" alt="Historial" class="ranking-tab-img"> <span>Historial W/L</span>
+        </button>
+        <button class="liga-tab-btn ${esOnce ? 'active' : ''}" onclick="cambiarVistaLiga('once')">
+            <img src="trofeo.webp" alt="Once Inicial" class="ranking-tab-img"> <span>Once Inicial</span>
         </button>
     </div>`;
 
@@ -3518,9 +3554,11 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     if (!lista || lista.length === 0) {
         htmlContenido += `
         <div style="text-align:center; padding:36px 20px; color:var(--text-muted); font-size:.85rem; line-height:1.5;">
-            ${tipoVista === 'triunfos'
-                ? 'Todavía nadie disputó duelos ⚔️ en esta liga. ¡Desafiá a alguien que esté online!'
-                : 'Todavía nadie registró partidas en esta liga.'}
+            ${esOnce 
+                ? 'Todavía no hay equipos registrados en esta liga.'
+                : (tipoVista === 'triunfos'
+                    ? 'Todavía nadie disputó duelos ⚔️ en esta liga. ¡Desafiá a alguien que esté online!'
+                    : 'Todavía nadie registró partidas en esta liga.')}
         </div>`;
     } else {
         lista.forEach((f, i) => {
@@ -3540,13 +3578,26 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
             if (estaOnline) {
                 indicadorOnline = `<span style="background:#00e676; width:8px; height:8px; border-radius:50%; display:inline-block; margin-left:8px; box-shadow:0 0 8px #00e676; animation: pulseGlow 2s infinite;" title="Mirando la liga ahora"></span>`;
-                if (!esPropio) {
+                if (!esPropio && !esOnce) {
                     botonReto = `<img src="liga-icon-historial.webp" alt="Desafiar" onclick="desafiarAmigoDirecto('${nombreRival.replace(/'/g, "\\'")}')" style="cursor:pointer; width:28px; height:28px; object-fit:contain; margin-left:8px; transition:transform 0.15s; vertical-align:middle; filter: drop-shadow(0 0 6px rgba(0, 255, 119, 0.5));" onmouseover="this.style.transform='scale(1.3)'" onmouseout="this.style.transform='scale(1)'" title="Retar a duelo en vivo">`;
                 }
             }
 
             let bloquePuntos = "";
-            if (tipoVista === 'triunfos') {
+            if (esOnce) {
+                const urlEscudo = typeof obtenerUrlEscudo === 'function' ? obtenerUrlEscudo(f.escudo || 'ev') : 'escudo-ev.webp';
+                bloquePuntos = `<div style="display:flex; align-items:center; gap:6px;">
+                                    <span style="color:#fbbf24; font-weight:900; font-size:0.98rem; white-space:nowrap;">GRL ${f.ovr || 60}</span>
+                                    <img src="${urlEscudo}" class="carrera-mini-shield" style="width:20px; height:20px; object-fit:contain; flex-shrink:0;" title="Club" onerror="this.src='escudo-ev.webp';">
+                                </div>`;
+                if (esPropio) {
+                    botonReto = `<span class="carrera-action-self" style="font-size:0.64rem; font-weight:900; color:#00e676; padding:3px 6px; border-radius:6px; background:rgba(0,230,118,0.12); border:1px solid rgba(0,230,118,0.3); white-space:nowrap;">TU EQUIPO</span>`;
+                } else if ((f.nivelActual || 1) >= 4) {
+                    botonReto = `<button type="button" class="btn-desafiar-row" onclick="desafiarOnceDesdeLigaAmigos('${nombreRival.replace(/'/g, "\\'")}')" title="Desafiar al Once de ${sanitizarHTML(nombreRival)}" style="margin-left:4px;"><img src="liga-icon-historial.webp" alt="Duelo" class="carrera-mini-swords"> <span>DUELO</span></button>`;
+                } else {
+                    botonReto = `<span style="font-size:0.70rem; font-weight:700; color:var(--text-muted); opacity:0.8; margin-left:4px; white-space:nowrap;" title="Nivel ${f.nivelActual || 1}/4 para desbloquear Once"><i class="ph-bold ph-lock-key"></i> Nivel ${f.nivelActual || 1}/4</span>`;
+                }
+            } else if (tipoVista === 'triunfos') {
                 const w = f.triunfos || 0;
                 const l = f.derrotas || 0;
                 bloquePuntos = `<div style="display:flex; align-items:center; gap:6px;">
@@ -3560,10 +3611,10 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
             htmlContenido += `
             <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
-                    ${med} ${obtenerAvatarCirculoHTML(nombreRival)} ${sanitizarHTML(nombreRival)} ${indicadorOnline}
+                <span class="inspect-clickable-user" style="display:inline-flex; align-items:center; gap:6px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
+                    ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
                 </span>
-                <span style="display:flex; align-items:center; gap:12px;">
+                <span style="display:flex; align-items:center; gap:8px; flex-shrink:0; margin-left:8px;">
                     ${bloquePuntos}
                     ${botonReto}
                 </span>
@@ -3577,7 +3628,14 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     const miPuestoLigaIdx = (lista || []).findIndex(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
     if (miPuestoLigaIdx >= 50 && miFila) {
         let bloquePuntosSticky = "";
-        if (tipoVista === 'triunfos') {
+        if (esOnce) {
+            let miOvrLive = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
+            if (miOvrLive === 0) {
+                const miNivelActual = (userStats && userStats.nivelActual !== undefined) ? userStats.nivelActual : 1;
+                miOvrLive = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[miNivelActual]) ? NIVELES[miNivelActual].ovr : 60);
+            }
+            bloquePuntosSticky = `<span style="color:#fbbf24; font-weight:900; font-size:1.05rem;">GRL ${miOvrLive}</span>`;
+        } else if (tipoVista === 'triunfos') {
             bloquePuntosSticky = `<div style="display:flex; align-items:center; gap:6px;">
                                     <strong style="color:#00e676; font-weight:900;">${miFila.triunfos || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">W</span></strong>
                                     <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
@@ -3598,6 +3656,12 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
     htmlContenido += `</div>`;
 
+    const botonEditarOnceHTML = esOnce
+        ? `<button onclick="cerrarModalLigaAmigosPrivada(); if (typeof abrirModalOnceInicial === 'function') abrirModalOnceInicial(false);" class="btn-invitar-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
+            <i class="ph-bold ph-strategy"></i> Editar Mi Once Inicial
+           </button>`
+        : '';
+
     body.innerHTML = `
     <div class="ranking-split-grid">
         <div class="ranking-left-panel">
@@ -3613,10 +3677,10 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
             <div class="modal-header-right-pills ranking-pills-column">
                 <div class="header-stat-pill">
-                    <i class="ph-bold ${esPuntaje ? 'ph-trophy' : 'ph-sword'}" style="color: ${headerConfig.badgeColor};"></i>
+                    <i class="ph-bold ${iconPill1}" style="color: ${headerConfig.badgeColor};"></i>
                     <div class="stat-pill-info">
-                        <span>${esPuntaje ? 'TU PUNTAJE' : 'TUS DUELOS'}</span>
-                        <strong>${esPuntaje ? (miPuntajeLiga > 0 ? miPuntajeLiga.toLocaleString('es-AR') + ' pts' : '0 pts') : miWLLiga}</strong>
+                        <span>${labelPill1}</span>
+                        <strong>${valorPill1}</strong>
                     </div>
                 </div>
                 <div class="header-stat-pill">
@@ -3658,6 +3722,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             </div>
             ${htmlContenido}
             <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 16px; margin-bottom: 6px;">
+                ${botonEditarOnceHTML}
                 <button onclick="compartirLinkLiga('${sanitizarHTML(nombreVisualLiga)}')" class="btn-invitar-liga">
                     <i class="ph-bold ph-share-network"></i> Invitar a mi liga
                 </button>
@@ -3669,10 +3734,9 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     </div>`;
 }
 
-// 🔄 Cambia entre la pestaña "Puntaje máximo" y "Triunfos" dentro del modal de la liga.
-// El ranking de triunfos se pide a Supabase una sola vez por apertura del modal y después se cachea.
+// 🔄 Cambia entre "Puntaje máximo", "Historial W/L" y "Once Inicial" dentro del modal de la liga.
 window.cambiarVistaLiga = async function(vista) {
-    if (vista === vistaLigaActual) return; // Ya estamos parados en esa pestaña
+    if (vista === vistaLigaActual) return;
 
     if (vista === 'puntaje') {
         vistaLigaActual = 'puntaje';
@@ -3680,55 +3744,192 @@ window.cambiarVistaLiga = async function(vista) {
         return;
     }
 
-    // vista === 'triunfos'
-    if (cacheTriunfosLiga !== null) {
-        vistaLigaActual = 'triunfos';
-        renderizarCuerpoLiga(cacheTriunfosLiga, nombreLigaActivaCache, miNombreRankingLiga, 'triunfos');
+    if (vista === 'triunfos') {
+        if (cacheTriunfosLiga !== null) {
+            vistaLigaActual = 'triunfos';
+            renderizarCuerpoLiga(cacheTriunfosLiga, nombreLigaActivaCache, miNombreRankingLiga, 'triunfos');
+            return;
+        }
+
+        const body = document.getElementById('liga-amigos-modal-body');
+        if (body) body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:var(--accent-color);"></i></div>`;
+
+        try {
+            const [{ data: dataV, error: errV }, { data: dataD, error: errD }] = await Promise.all([
+                supabaseClient.from('victorias_versus').select('nombre').eq('liga', nombreLigaActivaCache),
+                supabaseClient.from('derrotas_versus').select('nombre').eq('liga', nombreLigaActivaCache)
+            ]);
+
+            if (errV) throw errV;
+            if (errD) throw errD;
+
+            const statsLiga = {};
+            (dataV || []).forEach(row => {
+                const n = (row.nombre || 'Anónimo').trim();
+                if (typeof esRegistroBot === 'function' && esRegistroBot(n, 0)) return;
+                if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
+                statsLiga[n].triunfos++;
+            });
+
+            (dataD || []).forEach(row => {
+                const n = (row.nombre || 'Anónimo').trim();
+                if (typeof esRegistroBot === 'function' && esRegistroBot(n, 0)) return;
+                if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
+                statsLiga[n].derrotas++;
+            });
+
+            cacheTriunfosLiga = Object.values(statsLiga)
+                .sort((a, b) => b.triunfos - a.triunfos)
+                .slice(0, 50);
+
+            vistaLigaActual = 'triunfos';
+            renderizarCuerpoLiga(cacheTriunfosLiga, nombreLigaActivaCache, miNombreRankingLiga, 'triunfos');
+        } catch (e) {
+            console.error("Error al cargar el ranking de triunfos de la liga:", e);
+            showToast("No se pudo cargar el ranking de triunfos. 📡", "ph-warning-circle", "danger");
+            renderizarCuerpoLiga(cacheTop15Ligas, nombreLigaActivaCache, miNombreRankingLiga, 'puntaje');
+        }
         return;
     }
 
-    const body = document.getElementById('liga-amigos-modal-body');
-    if (body) body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:var(--accent-color);"></i></div>`;
+    if (vista === 'once') {
+        if (cacheOnceLiga !== null) {
+            vistaLigaActual = 'once';
+            renderizarCuerpoLiga(cacheOnceLiga, nombreLigaActivaCache, miNombreRankingLiga, 'once');
+            return;
+        }
 
-    try {
-        // Traemos las victorias (W) y las derrotas (L) de esta liga al mismo tiempo
-        const [{ data: dataV, error: errV }, { data: dataD, error: errD }] = await Promise.all([
-            supabaseClient.from('victorias_versus').select('nombre').eq('liga', nombreLigaActivaCache),
-            supabaseClient.from('derrotas_versus').select('nombre').eq('liga', nombreLigaActivaCache)
-        ]);
+        const body = document.getElementById('liga-amigos-modal-body');
+        if (body) body.innerHTML = `<div style="text-align:center; padding:50px 0;"><i class="ph-bold ph-circle-notch animate-spin" style="font-size:2rem; color:#ffd700;"></i><p style="margin-top:12px; font-size:0.85rem; font-weight:800; color:var(--text-main);">Cargando planteles de la liga...</p></div>`;
 
-        if (errV) throw errV;
-        if (errD) throw errD;
+        try {
+            await precargarAvataresComunidad();
 
-        const statsLiga = {};
-        
-        // Contamos las W (Victorias)
-        (dataV || []).forEach(row => {
-            const n = (row.nombre || 'Anónimo').trim();
-            if (typeof esRegistroBot === 'function' && esRegistroBot(n, 0)) return;
-            if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
-            statsLiga[n].triunfos++;
-        });
+            // 1. Integrantes de la liga
+            const nombresSet = new Set();
+            (cacheTop15Ligas || []).forEach(m => {
+                const n = (m.nombre || '').trim();
+                if (n) nombresSet.add(n);
+            });
+            if (miNombreRankingLiga) nombresSet.add(miNombreRankingLiga.trim());
 
-        // Contamos las L (Derrotas)
-        (dataD || []).forEach(row => {
-            const n = (row.nombre || 'Anónimo').trim();
-            if (typeof esRegistroBot === 'function' && esRegistroBot(n, 0)) return;
-            if (!statsLiga[n]) statsLiga[n] = { nombre: n, triunfos: 0, derrotas: 0 };
-            statsLiga[n].derrotas++;
-        });
+            // 2. Traer perfiles de Supabase
+            let perfilesNube = [];
+            if (supabaseClient) {
+                const { data } = await supabaseClient
+                    .from('perfiles')
+                    .select('id_usuario, experiencia, datos_juego')
+                    .limit(500);
+                perfilesNube = data || [];
+            }
 
-        cacheTriunfosLiga = Object.values(statsLiga)
-            .sort((a, b) => b.triunfos - a.triunfos) // El que tiene más victorias va primero
-            .slice(0, 50);
+            // 3. OVR en vivo del usuario actual
+            const u = obtenerUsuarioLogueado();
+            const miNick = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos')).trim();
+            const miNickLower = miNick.toLowerCase();
+            let miOvrLive = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
+            if (miOvrLive === 0) {
+                const miNivelActual = (userStats && userStats.nivelActual !== undefined) ? userStats.nivelActual : (typeof calcularNivelIdx === 'function' ? calcularNivelIdx(userStats.xpTotal || 0) : 1);
+                miOvrLive = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[miNivelActual]) ? NIVELES[miNivelActual].ovr : 60);
+            }
+            const miEscudo = userStats.onceEscudo || getPref('ev_avatar_logo', 'ev');
+            const miNivel = (userStats && userStats.nivelActual !== undefined) ? userStats.nivelActual : 1;
 
-        vistaLigaActual = 'triunfos';
-        renderizarCuerpoLiga(cacheTriunfosLiga, nombreLigaActivaCache, miNombreRankingLiga, 'triunfos');
-    } catch (e) {
-        console.error("Error al cargar el ranking de triunfos de la liga:", e);
-        showToast("No se pudo cargar el ranking de triunfos. 📡", "ph-warning-circle", "danger");
-        // Volvemos a mostrar la pestaña de puntaje para no dejar el modal roto
-        renderizarCuerpoLiga(cacheTop15Ligas, nombreLigaActivaCache, miNombreRankingLiga, 'puntaje');
+            const listaOnce = [];
+            const procesadosLower = new Set();
+
+            nombresSet.forEach(nombreJugador => {
+                const n = nombreJugador.trim();
+                if (!n) return;
+                const nLower = n.toLowerCase();
+                if (procesadosLower.has(nLower)) return;
+                procesadosLower.add(nLower);
+
+                const esMio = nLower === miNickLower || nLower === (miNombreRankingLiga || '').toLowerCase();
+                if (esMio) {
+                    listaOnce.push({
+                        nombre: miNombreRankingLiga || miNick,
+                        ovr: miOvrLive,
+                        escudo: miEscudo,
+                        nivelActual: miNivel,
+                        esUsuario: true
+                    });
+                    return;
+                }
+
+                // Buscar perfil rival en la nube
+                const p = perfilesNube.find(item => {
+                    const nick = item.datos_juego?.preferencias?.custom_nick;
+                    return nick && nick.trim().toLowerCase() === nLower;
+                });
+
+                if (p) {
+                    const dj = p.datos_juego || {};
+                    const pref = dj.preferencias || {};
+                    const exp = p.experiencia || dj.xpTotal || 0;
+                    const nivelDt = typeof calcularNivelIdx === 'function' ? calcularNivelIdx(exp) : 1;
+                    
+                    let ovr = 60;
+                    const onceR = dj.onceInicial;
+                    const mejoras = dj.mejorasJugadores || {};
+                    let idsTitulares = [];
+                    if (onceR && typeof onceR === 'object') {
+                        idsTitulares = Object.keys(onceR).filter(k => k !== 'DT' && onceR[k]).map(k => onceR[k]);
+                    }
+                    if (idsTitulares.length >= 11) {
+                        let sumaOvr = 0;
+                        idsTitulares.forEach(id => {
+                            const aLimpio = String(id).replace(/\.png$/i, '.webp');
+                            const extra = mejoras[aLimpio] || 0;
+                            const item = (typeof AVATARES_LISTA !== 'undefined') ? AVATARES_LISTA.find(a => a.id === aLimpio) : null;
+                            const nivelReq = item ? item.nivel : 0;
+                            const baseOvr = (typeof NIVELES !== 'undefined' && NIVELES[nivelReq]) ? NIVELES[nivelReq].ovr : 50;
+                            sumaOvr += Math.min(99, baseOvr + extra);
+                        });
+                        ovr = Math.round(sumaOvr / idsTitulares.length);
+                        if (dj.onceCapitan) ovr += 2;
+                        if (onceR['DT']) ovr += 1;
+                        ovr = Math.min(99, ovr);
+                    } else {
+                        ovr = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[nivelDt]) ? NIVELES[nivelDt].ovr : 60);
+                    }
+
+                    listaOnce.push({
+                        nombre: n,
+                        ovr: ovr,
+                        escudo: dj.onceEscudo || pref.avatar_logo || 'ev',
+                        nivelActual: nivelDt,
+                        esUsuario: false
+                    });
+                } else {
+                    listaOnce.push({
+                        nombre: n,
+                        ovr: 60,
+                        escudo: 'ev',
+                        nivelActual: 1,
+                        esUsuario: false
+                    });
+                }
+            });
+
+            cacheOnceLiga = listaOnce.sort((a, b) => b.ovr - a.ovr);
+            vistaLigaActual = 'once';
+            renderizarCuerpoLiga(cacheOnceLiga, nombreLigaActivaCache, miNombreRankingLiga, 'once');
+        } catch (e) {
+            console.error("Error al cargar Once Inicial de la liga:", e);
+            showToast("No se pudo cargar la vista de Once Inicial. 📡", "ph-warning-circle", "danger");
+            renderizarCuerpoLiga(cacheTop15Ligas, nombreLigaActivaCache, miNombreRankingLiga, 'puntaje');
+        }
+        return;
+    }
+};
+
+window.desafiarOnceDesdeLigaAmigos = function(nombreRival) {
+    cerrarModalLigaAmigosPrivada();
+    if (typeof desafiarDesdeRankingCarrera === 'function') {
+        desafiarDesdeRankingCarrera(nombreRival);
+    } else if (typeof inspeccionarPerfilRival === 'function') {
+        inspeccionarPerfilRival(nombreRival);
     }
 };
 
@@ -3851,6 +4052,7 @@ async function abrirModalLigaAmigosPrivada() {
     nombreLigaActivaCache = nombreLiga;
     vistaLigaActual = 'puntaje';   // Siempre arrancamos en la pestaña de puntaje al reabrir el modal
     cacheTriunfosLiga = null;      // Invalidamos el cache de triunfos: se vuelve a pedir si el usuario abre esa pestaña
+    cacheOnceLiga = null;          // Invalidamos el cache de Once Inicial
     miNombreRankingLiga = obtenerNombreDisplay().trim();
 
     if (body) {
@@ -3858,6 +4060,7 @@ async function abrirModalLigaAmigosPrivada() {
     }
 
     try {
+        await precargarAvataresComunidad();
         const { data, error } = await supabaseClient
             .from('ranking')
             .select('nombre, puntaje')
@@ -3913,7 +4116,9 @@ function conectarPresenciaLiga(nombreLiga, miNombre) {
             const estado = ligaAmigosChannel.presenceState();
             usuariosOnlineLiga = Object.keys(estado);
             // Repintamos con el cache de la pestaña que esté activa ahora mismo (sin volver a pegarle a la base de datos)
-            const listaActual = vistaLigaActual === 'triunfos' ? (cacheTriunfosLiga || []) : cacheTop15Ligas;
+            const listaActual = vistaLigaActual === 'once'
+                ? (cacheOnceLiga || [])
+                : (vistaLigaActual === 'triunfos' ? (cacheTriunfosLiga || []) : cacheTop15Ligas);
             renderizarCuerpoLiga(listaActual, nombreLigaActivaCache, miNombreRankingLiga, vistaLigaActual);
         })
         .on('broadcast', { event: 'reto_directo' }, (response) => {
@@ -4057,3 +4262,4 @@ window.crearOCargarLigaAmigos = crearOCargarLigaAmigos;
 window.abrirModalLigaAmigosPrivada = abrirModalLigaAmigosPrivada;
 window.cerrarModalLigaAmigosPrivada = cerrarModalLigaAmigosPrivada;
 window.salirLigaAmigos = salirLigaAmigos;
+window.desafiarOnceDesdeLigaAmigos = desafiarOnceDesdeLigaAmigos;

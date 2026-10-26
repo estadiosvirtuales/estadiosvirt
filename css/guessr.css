@@ -2514,6 +2514,10 @@
         overflow: visible !important;
     }
 
+    #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:nth-child(3) {
+        grid-column: span 2 !important;
+    }
+
     #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
         position: absolute !important;
         left: 4px !important;

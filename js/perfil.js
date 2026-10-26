@@ -58,11 +58,17 @@ function obtenerAvatarParaUsuario(nombre) {
     const u = obtenerUsuarioLogueado();
     const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim().toLowerCase();
     if (nLower === miNombre || nLower === 'vos' || nLower === 'invitado') {
-        return getPref('ev_avatar_hair', '1.webp').replace(/\.png$/i, '.webp');
+        let miAv = (getPref('ev_avatar_hair', '1.webp') || '1.webp').replace(/\.png$/i, '.webp');
+        if (!miAv.includes('.')) miAv += '.webp';
+        return miAv;
     }
 
     if (cacheAvataresUsuarios[nLower]) {
-        return cacheAvataresUsuarios[nLower];
+        let av = String(cacheAvataresUsuarios[nLower]).replace(/\.png$/i, '.webp').trim();
+        if (!av.includes('.')) av += '.webp';
+        if (typeof AVATARES_LISTA === 'undefined' || AVATARES_LISTA.some(a => a.id === av)) {
+            return av;
+        }
     }
 
     let hash = 0;
@@ -1063,7 +1069,9 @@ async function guardarPersonalizacion(){
         futName.textContent = nickNuevo || (u ? u.name.split(' ')[0] : 'Jugador');
     }
     if (nickNuevo) {
-        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = document.getElementById('avatar-hair-input')?.value || '1.webp';
+        let avVal = (hairInput?.value || document.getElementById('avatar-hair-input')?.value || '1.webp').replace(/\.png$/i, '.webp');
+        if (!avVal.includes('.')) avVal += '.webp';
+        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = avVal;
     }
     
     const hairInput = document.getElementById('avatar-hair-input');
@@ -1086,6 +1094,11 @@ async function guardarPersonalizacion(){
     renderizarBotonLogin();
     ancestralHeaderNivel();
     guardarStats(); 
+
+    const uId = getUserId();
+    if (uId && uId !== 'guest' && typeof sincronizarPerfilSupabase === 'function') {
+        sincronizarPerfilSupabase(uId, userStats.xpTotal, userStats);
+    } 
 
     const futOvr = document.querySelector('.fut-ovr');
     if (futOvr) {

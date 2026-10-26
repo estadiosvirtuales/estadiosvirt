@@ -3860,9 +3860,17 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
             const dJugados = esMio ? misDuelosJugados : (dj.duelosJugados || 0);
             const dEfectividad = dJugados > 0 ? Math.round((dGanados / dJugados) * 100) : 0;
 
+            const avatarRaw = esMio ? getPref('ev_avatar_hair', '1.webp') : (pref.avatar_hair || '1.webp');
+            let avatarLimpio = String(avatarRaw).replace(/\.png$/i, '.webp').trim();
+            if (!avatarLimpio.includes('.')) avatarLimpio += '.webp';
+            if (typeof AVATARES_LISTA !== 'undefined' && !AVATARES_LISTA.some(a => a.id === avatarLimpio)) {
+                avatarLimpio = '1.webp';
+            }
+            if (nick) cacheAvataresUsuarios[nick.toLowerCase()] = avatarLimpio;
+
             rankingProcesado.push({
                 nombre: esMio ? miNombreReal : nick,
-                avatar: esMio ? getPref('ev_avatar_hair', '1.webp') : (pref.avatar_hair || '1.webp'),
+                avatar: avatarLimpio,
                 escudo: esMio ? (userStats.onceEscudo || getPref('ev_avatar_logo', 'ev')) : (dj.onceEscudo || pref.avatar_logo || 'ev'),
                 ovr: ovr,
                 esUsuario: esMio,

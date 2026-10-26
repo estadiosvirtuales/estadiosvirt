@@ -6609,8 +6609,9 @@ body.video-abierto .hero-section {
     box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
-/* 🟡 DORADO ORO: RANKING SEMANAL */
-#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"] {
+/* 🟡 DORADO ORO: RANKING SEMANAL Y ONCE INICIAL LIGA DE AMIGOS */
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"],
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="once"] {
     background: linear-gradient(165deg, rgba(38, 30, 10, 0.88) 0%, rgba(18, 14, 6, 0.96) 100%) !important;
     border: 1.5px solid rgba(234, 179, 8, 0.35) !important;
     border-top: 1.5px solid rgba(254, 240, 138, 0.6) !important;
@@ -6618,14 +6619,16 @@ body.video-abierto .hero-section {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
-#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"]:hover {
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"]:hover,
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="once"]:hover {
     border-color: #eab308 !important;
     color: #ffffff !important;
     box-shadow: 0 8px 24px rgba(234, 179, 8, 0.35) !important;
     transform: translateY(-2px);
 }
 
-#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"].active {
+#ranking-modal .ranking-left-panel .liga-tab-btn[onclick*="v_semanal"].active,
+#liga-amigos-modal .ranking-left-panel .liga-tab-btn[onclick*="once"].active {
     background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%) !important;
     border-color: #fef08a !important;
     border-top: 2px solid #ffffff !important;
@@ -7079,6 +7082,10 @@ body.video-abierto .hero-section {
         position: relative !important;
         white-space: nowrap !important;
         overflow: visible !important;
+    }
+
+    #liga-amigos-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn:nth-child(3) {
+        grid-column: span 2 !important;
     }
 
     #liga-amigos-modal .ranking-left-panel .ranking-tab-img {
