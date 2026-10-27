@@ -3612,7 +3612,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 htmlContenido += `
                 <div class="liga-row-item liga-once-row ${esPropio ? 'es-propio' : ''}">
                     <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
-                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span class="once-user-name">${sanitizarHTML(nombreRival)}</span> <sub class="once-user-grl-sub" title="GRL de Once Inicial">GRL ${f.ovr || 60}</sub> ${indicadorOnline}
+                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span class="once-user-name">${sanitizarHTML(nombreRival)}<sub class="once-user-grl-sub" title="GRL Once Inicial: ${f.ovr || 60}">${f.ovr || 60}</sub></span> ${indicadorOnline}
                     </div>
                     <div class="once-col-gep once-data-cell">${bloqueGEP}</div>
                     <div class="once-col-act once-data-cell">${botonReto}</div>
@@ -3668,7 +3668,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             htmlContenido += `
             <div class="liga-row-item liga-once-row sticky-user-row es-propio">
                 <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
-                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="once-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b></span> <sub class="once-user-grl-sub" title="Tu GRL">GRL ${miOvrLive}</sub>
+                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="once-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b><sub class="once-user-grl-sub" title="Tu GRL Once Inicial: ${miOvrLive}">${miOvrLive}</sub></span>
                 </div>
                 <div class="once-col-gep once-data-cell">${bloqueGEPSticky}</div>
                 <div class="once-col-act once-data-cell"></div>
