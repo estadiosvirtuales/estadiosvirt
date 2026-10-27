@@ -6758,6 +6758,54 @@ body.video-abierto .hero-section {
     transform: translateY(-50%) scale(1.28) rotate(-3deg) !important;
 }
 
+/* 🎛️ SELECTOR SUB-RANKINGS STADIUMGUESSR EN LIGA DE AMIGOS */
+.guessr-subtab-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.7);
+    padding: 3px 5px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    margin: 0 10px;
+}
+
+.guessr-subtab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.guessr-subtab-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.guessr-subtab-btn.active {
+    background: linear-gradient(135deg, rgba(0, 255, 119, 0.22) 0%, rgba(0, 230, 118, 0.12) 100%) !important;
+    color: #00ff77 !important;
+    border-color: rgba(0, 255, 119, 0.4) !important;
+    box-shadow: 0 2px 8px rgba(0, 255, 119, 0.25) !important;
+}
+
+.guessr-subtab-btn.active[onclick*="triunfos"] {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.15) 100%) !important;
+    color: #60a5fa !important;
+    border-color: rgba(59, 130, 246, 0.45) !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25) !important;
+}
+
 /* 👉 PANEL DERECHO: Título Activo Centrado y Tabla de Posiciones */
 .ranking-right-panel {
     display: flex;
@@ -7192,6 +7240,20 @@ body.video-abierto .hero-section {
     .carrera-action-self.once-self-badge {
         padding: 2px 5px !important;
         font-size: 0.60rem !important;
+    }
+
+    .guessr-subtab-switch {
+        width: 100% !important;
+        justify-content: stretch !important;
+        margin: 4px 0 8px 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .guessr-subtab-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+        padding: 6px 8px !important;
+        font-size: 0.70rem !important;
     }
 
     /* 🏆 DESAFÍO DE CAPACIDAD EN CELULAR */
