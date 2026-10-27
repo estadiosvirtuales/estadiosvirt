@@ -2984,7 +2984,7 @@ body.video-abierto .hero-section {
 .privacy-modal-header{padding:26px 55px 18px 30px;border-bottom:2px dashed var(--border-subtle);flex-shrink:0}
 .privacy-modal-header h2{font-size:1.3rem;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:12px;margin-bottom:8px}
 .privacy-modal-header p{font-size:.92rem;color:var(--text-muted);line-height:1.5}
-.privacy-modal-body{padding:22px 28px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
+.privacy-modal-body{padding:22px 28px;overflow-y:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
 .privacy-section-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent-color);margin:20px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--border-subtle)}
 .privacy-modal-body p{font-size:.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:10px}
 .privacy-modal-body ul{padding-left:20px;margin-bottom:10px}
@@ -14594,7 +14594,7 @@ body.video-abierto .hero-section {
 .privacy-modal-header{padding:26px 55px 18px 30px;border-bottom:2px dashed var(--border-subtle);flex-shrink:0}
 .privacy-modal-header h2{font-size:1.3rem;font-weight:800;color:var(--text-main);display:flex;align-items:center;gap:12px;margin-bottom:8px}
 .privacy-modal-header p{font-size:.92rem;color:var(--text-muted);line-height:1.5}
-.privacy-modal-body{padding:22px 28px;overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
+.privacy-modal-body{padding:22px 28px;overflow-y:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent}
 .privacy-section-title{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent-color);margin:20px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--border-subtle)}
 .privacy-modal-body p{font-size:.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:10px}
 .privacy-modal-body ul{padding-left:20px;margin-bottom:10px}
@@ -17717,6 +17717,113 @@ body.video-abierto .hero-section {
 
     .streak-week-row {
         gap: 2px !important;
+    }
+}
+
+/* ========================================================
+   📱 TABLETS EN VERTICAL (769px a 1024px)
+   ======================================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #profile-modal .modal-content {
+        max-height: 94vh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-y !important;
+    }
+
+    .left-fut-column {
+        padding: 22px 18px 24px 18px !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-y !important;
+    }
+
+    .left-fut-column .fut-card {
+        transform: scale(0.88) !important;
+        transform-origin: top center !important;
+        margin-bottom: -38px !important;
+    }
+
+    .left-fut-column .profile-fan-passport-box {
+        margin: 6px auto 0 auto !important;
+        padding: 8px 12px !important;
+    }
+
+    #profile-modal-body .profile-card-actions-row {
+        max-width: 280px !important;
+    }
+
+    .right-dashboard-column {
+        padding: 22px 20px 30px 20px !important;
+        gap: 16px !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-y !important;
+    }
+
+    .right-dashboard-top-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 14px !important;
+    }
+}
+
+/* ========================================================
+   💻 TABLETS EN HORIZONTAL O PANTALLAS CON ALTURA COMPACTA (<= 850px)
+   ======================================================== */
+@media (min-width: 992px) and (max-height: 850px) {
+    #profile-modal .modal-content {
+        height: 92vh !important;
+        max-height: 92vh !important;
+    }
+
+    .left-fut-column {
+        padding: 16px 18px 22px 18px !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-y !important;
+    }
+
+    .left-fut-column .fut-card {
+        transform: scale(0.88) !important;
+        transform-origin: top center !important;
+        margin-bottom: -38px !important;
+    }
+
+    .left-fut-column .profile-fan-passport-box {
+        margin: 4px auto 0 auto !important;
+        padding: 6px 10px !important;
+    }
+
+    #profile-modal-body .profile-card-actions-row {
+        max-width: 280px !important;
+        margin-top: 6px !important;
+    }
+
+    .right-dashboard-column {
+        padding: 18px 20px 24px 20px !important;
+        gap: 14px !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-y !important;
+    }
+
+    /* Ajuste en modal de privacidad para alturas compactas */
+    #privacy-modal-overlay {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .privacy-modal-box {
+        max-height: 88vh !important;
+    }
+
+    .privacy-modal-header {
+        padding: 18px 45px 14px 24px !important;
+    }
+
+    .privacy-modal-body {
+        padding: 16px 22px !important;
+    }
+
+    .privacy-modal-footer {
+        padding: 14px 22px !important;
     }
 }
 

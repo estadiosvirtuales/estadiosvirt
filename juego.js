@@ -86,6 +86,10 @@ function abrirModalPrivacy(){
         if (btn) {
             btn.disabled = true;
         }
+
+        // 📱 Verificación automática: Si en esta pantalla (tablets o monitores) el texto cabe completo sin scroll, desbloquea de inmediato
+        setTimeout(() => { if (body) checkPrivacyScrolled(body); }, 60);
+        setTimeout(() => { if (body) checkPrivacyScrolled(body); }, 250);
     }
 }
 function cerrarModalPrivacy(){
@@ -96,9 +100,17 @@ function cerrarModalPrivacy(){
     }
 }
 function checkPrivacyScrolled(el){
-    if(el.scrollTop + el.clientHeight >= el.scrollHeight - 40){
+    if (!el) el = document.getElementById('privacy-scroll-body');
+    if (!el) return;
+    
+    // Desbloquea si el contenido cabe entero sin necesidad de scroll (ej: tablets o monitores altos)
+    // O si el usuario llegó al final del scroll (umbral tolerante de 40px)
+    const cabeEntero = (el.scrollHeight <= el.clientHeight + 15);
+    const llegoAlFinal = (el.scrollTop + el.clientHeight >= el.scrollHeight - 40);
+
+    if (cabeEntero || llegoAlFinal) {
         const ind = document.getElementById('privacy-read-indicator');
-        if (ind) {
+        if (ind && !ind.classList.contains('ready')) {
             ind.innerHTML = '<i class="ph-fill ph-check-circle"></i> ¡Leíste todo! Ahora podés aceptar.';
             ind.classList.add('ready');
         }
