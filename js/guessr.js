@@ -3547,17 +3547,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         </button>
     </div>`;
 
-    let headerTablaHTML = '';
-    if (esOnce && lista && lista.length > 0) {
-        headerTablaHTML = `
-        <div class="liga-once-header-row">
-            <div class="once-hdr-user"># &nbsp; Integrante</div>
-            <div class="once-col-gep once-hdr-cell">G / E / P</div>
-            <div class="once-col-act once-hdr-cell">DUELO</div>
-        </div>`;
-    }
-
-    let htmlContenido = `<div class="liga-table-card">${headerTablaHTML}<div class="ranking-rows-scroll">`;
+    let htmlContenido = `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
 
     if (!lista || lista.length === 0) {
         htmlContenido += `
