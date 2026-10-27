@@ -96,9 +96,23 @@ window.cerrarModalInspeccionarRival = function() {
 
 // 👥 Invitaciones y enlaces de Mini Ligas de Amigos migrados a: js/guessr.js
 
+window.tabInspectActual = 'perfil';
+
+window.cambiarTabInspeccionar = function(nuevaTab) {
+    window.tabInspectActual = nuevaTab;
+    if (typeof reproducirSonido === 'function') {
+        try { reproducirSonido('click'); } catch(e) {}
+    }
+    if (window.datosUltimoRivalInspeccionado) {
+        renderizarModalInspeccion(window.datosUltimoRivalInspeccionado);
+    }
+};
+
 window.inspeccionarPerfilRival = async function(nombreRival) {
     const n = (nombreRival || '').trim();
     if (!n || n.toLowerCase() === 'anónimo') return;
+
+    window.tabInspectActual = 'perfil';
 
     const modal = document.getElementById('inspect-profile-modal');
     const body = document.getElementById('inspect-profile-body');
@@ -125,7 +139,13 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
         partidasGanadas: 0,
         votosRealizados: 0,
         triviasVistas: 0,
-        partidasJugadas: 0
+        partidasJugadas: 0,
+        puntajeMaxGuessr: 0,
+        onceInicial: null,
+        onceCapitan: null,
+        onceEscudo: 'ev',
+        onceFormacion: '4-3-3',
+        mejorasJugadores: {}
     };
 
     if (supabaseClient) {
@@ -156,10 +176,12 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                     datosRival.votosRealizados = dj.votosRealizados || 0;
                     datosRival.triviasVistas = dj.triviasVistas || 0;
                     datosRival.partidasJugadas = dj.partidasJugadas || 0;
+                    datosRival.puntajeMaxGuessr = dj.maxScore || dj.recordPuntaje || dj.mejorPuntaje || dj.puntajeMax || dj.stats?.maxScore || 0;
                     // 👥 Descarga de su Once Inicial real
                     datosRival.onceInicial = dj.onceInicial || null;
                     datosRival.onceCapitan = dj.onceCapitan || null;
                     datosRival.onceEscudo = dj.onceEscudo || pref.avatar_logo || 'ev';
+                    datosRival.onceFormacion = dj.onceFormacion || pref.once_formacion || dj.formacionOnceActual || '4-3-3';
                     datosRival.mejorasJugadores = dj.mejorasJugadores || {};
                 }
             }
@@ -176,9 +198,33 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
 
             const uActual = obtenerUsuarioLogueado();
             const miNickActual = (getPref('ev_custom_nick', '') || (uActual ? uActual.name.split(' ')[0] : '')).trim().toLowerCase();
-            if (n.toLowerCase() === miNickActual && victoriasReales !== null && victoriasReales !== undefined) {
-                userStats.partidasGanadas = victoriasReales;
-                guardarStats();
+            if (n.toLowerCase() === miNickActual) {
+                if (victoriasReales !== null && victoriasReales !== undefined) {
+                    userStats.partidasGanadas = victoriasReales;
+                    guardarStats();
+                }
+                datosRival.puntajeMaxGuessr = userStats.maxScore || datosRival.puntajeMaxGuessr;
+                datosRival.partidasJugadas = userStats.partidasJugadas || datosRival.partidasJugadas;
+                datosRival.onceInicial = (userStats.onceInicial && Object.keys(userStats.onceInicial).length > 0) ? userStats.onceInicial : datosRival.onceInicial;
+                datosRival.onceCapitan = userStats.onceCapitan || datosRival.onceCapitan;
+                datosRival.onceEscudo = userStats.onceEscudo || getPref('ev_avatar_logo', 'ev');
+                datosRival.onceFormacion = (typeof formacionOnceActual !== 'undefined' ? formacionOnceActual : '4-3-3');
+                datosRival.mejorasJugadores = userStats.mejorasJugadores || {};
+            }
+
+            // Si aún no tenemos puntaje máximo en guessr, consultamos la tabla ranking
+            if (datosRival.puntajeMaxGuessr === 0) {
+                try {
+                    const { data: maxRow } = await supabaseClient
+                        .from('ranking')
+                        .select('puntaje')
+                        .ilike('nombre', n)
+                        .order('puntaje', { ascending: false })
+                        .limit(1);
+                    if (maxRow && maxRow.length > 0 && maxRow[0].puntaje) {
+                        datosRival.puntajeMaxGuessr = maxRow[0].puntaje;
+                    }
+                } catch(eRank) {}
             }
         } catch (e) {
             console.warn("Aviso al cargar perfil de rival:", e);
@@ -186,15 +232,23 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
     }
 
     window.datosUltimoRivalInspeccionado = datosRival;
+    renderizarModalInspeccion(datosRival);
+};
 
+function renderizarModalInspeccion(datosRival) {
+    const body = document.getElementById('inspect-profile-body');
+    if (!body || !datosRival) return;
+
+    const n = datosRival.custom_nick || '';
     const u = obtenerUsuarioLogueado();
     const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : '')).trim().toLowerCase();
     const miLigaActual = localStorage.getItem('ev_codigo_liga_amigos');
+    const esMiPropioPerfil = n.trim().toLowerCase() === miNombre;
 
     let botonDesafiarOnceHTML = '';
     let botonInvitarLigaHTML = '';
 
-    if (n.toLowerCase() !== miNombre) {
+    if (!esMiPropioPerfil) {
         if (datosRival.nivelActual >= 4) {
             const estadoSP = (typeof obtenerEstadoDuelosDiariosSP === 'function')
                 ? obtenerEstadoDuelosDiariosSP()
@@ -205,7 +259,7 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
 
             botonDesafiarOnceHTML = `
                 <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
-                    <i class="ph-bold ph-sword"></i> Desafiar a su Once <span style="font-size:0.75rem; opacity:0.85; margin-left:4px; font-weight:700;">${badgeTxt}</span>
+                    <i class="ph-bold ph-sword"></i> Desafiar a este Once <span style="font-size:0.75rem; opacity:0.85; margin-left:4px; font-weight:700;">${badgeTxt}</span>
                 </button>
             `;
         } else {
@@ -217,7 +271,7 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
         }
     }
 
-    if (miLigaActual && n.toLowerCase() !== miNombre) {
+    if (miLigaActual && !esMiPropioPerfil) {
         botonInvitarLigaHTML = `
             <button type="button" onclick="enviarInvitacionDirectaRival('${sanitizarHTML(miLigaActual)}', '${sanitizarHTML(n)}', this)" class="btn-inspect-invite-liga">
                 <i class="ph-bold ph-paper-plane-tilt"></i> Invitar a mi liga (${sanitizarHTML(miLigaActual.replace(/_/g, ' '))})
@@ -225,52 +279,230 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
         `;
     }
 
-    body.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
-            <div class="fut-card ${datosRival.card_theme}" style="transform:scale(0.92); margin:4px 0 -12px 0;">
-                <div class="fut-card-shine"></div>
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr">${datosRival.ovr}</div>
-                        <div class="fut-pos">${datosRival.user_pos}</div>
-                        <img src="${obtenerUrlEscudo(datosRival.avatar_logo)}" class="fut-club-icon" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
-                    </div>
-                    <div class="fut-avatar-container">${generarAvatarHTML(datosRival.avatar_hair, true)}</div>
-                </div>
-                <div class="fut-name">${sanitizarHTML(datosRival.custom_nick)}</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.partidasGanadas}</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">${datosRival.xpTotal > 999 ? (datosRival.xpTotal/1000).toFixed(1)+'K' : datosRival.xpTotal}</span><span class="fut-stat-label">XP</span></div>
-                </div>
-            </div>
-
-            <div class="inspect-stats-grid">
-                <div class="inspect-stat-pill">
-                    <i class="ph-bold ph-shield-star"></i>
-                    <span>Nivel</span>
-                    <strong>Nivel ${datosRival.nivelActual}</strong>
-                </div>
-                <div class="inspect-stat-pill">
-                    <i class="ph-bold ph-fire" style="color:#ff9f05;"></i>
-                    <span>Racha</span>
-                    <strong>${datosRival.rachaActual} Días</strong>
-                </div>
-                <div class="inspect-stat-pill">
-                    <i class="ph-bold ph-sword" style="color:#3b82f6;"></i>
-                    <span>Victorias</span>
-                    <strong>${datosRival.partidasGanadas} PG</strong>
-                </div>
-            </div>
-            ${obtenerBadgeH2HHTML(datosRival.custom_nick)}
-
-            ${botonDesafiarOnceHTML}
-            ${botonInvitarLigaHTML}
+    // 🗂️ Selector de Pestañas (Ficha DT vs Once Titular)
+    const tabsBarHTML = `
+        <div class="inspect-tabs-bar">
+            <button type="button" class="inspect-tab-btn ${window.tabInspectActual === 'perfil' ? 'active' : ''}" onclick="cambiarTabInspeccionar('perfil')">
+                <i class="ph-bold ph-identification-card"></i> Ficha DT
+            </button>
+            <button type="button" class="inspect-tab-btn ${window.tabInspectActual === 'once' ? 'active' : ''}" onclick="cambiarTabInspeccionar('once')">
+                <i class="ph-bold ph-users-three"></i> Once Titular
+            </button>
         </div>
     `;
-};
+
+    let contenidoTabHTML = '';
+
+    if (window.tabInspectActual === 'perfil') {
+        const pj = datosRival.partidasJugadas || 0;
+        const pg = datosRival.partidasGanadas || 0;
+        const winrate = pj > 0 ? Math.round((pg / pj) * 100) : (pg > 0 ? 100 : 0);
+        const maxScore = datosRival.puntajeMaxGuessr || 0;
+        const maxTxt = maxScore > 999 
+            ? (maxScore >= 10000 ? (maxScore / 1000).toFixed(1) + 'K' : (maxScore / 1000).toFixed(1) + 'K') 
+            : (maxScore > 0 ? maxScore : '-');
+        const xpTxt = datosRival.xpTotal > 999 ? (datosRival.xpTotal / 1000).toFixed(1) + 'K' : (datosRival.xpTotal || 0);
+
+        const badgeH2H = (typeof obtenerBadgeH2HHTML === 'function') ? obtenerBadgeH2HHTML(datosRival.custom_nick) : '';
+
+        contenidoTabHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+                <div class="fut-card ${datosRival.card_theme}" style="transform:scale(0.92); margin:4px 0 -12px 0;">
+                    <div class="fut-card-shine"></div>
+                    <div class="fut-top">
+                        <div class="fut-badge-meta">
+                            <div class="fut-ovr">${datosRival.ovr}</div>
+                            <div class="fut-pos">${datosRival.user_pos}</div>
+                            <img src="${obtenerUrlEscudo(datosRival.avatar_logo)}" class="fut-club-icon" referrerpolicy="no-referrer" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                        </div>
+                        <div class="fut-avatar-container">${generarAvatarHTML(datosRival.avatar_hair, true)}</div>
+                    </div>
+                    <div class="fut-name">${sanitizarHTML(datosRival.custom_nick)}</div>
+                    <div class="fut-stats-row">
+                        <div class="fut-stat-item" title="Récord máximo en StadiumGuessr"><span class="fut-stat-num">${maxTxt}</span><span class="fut-stat-label">MAX</span></div>
+                        <div class="fut-stat-item" title="Partidas jugadas en Versus"><span class="fut-stat-num">${pj}</span><span class="fut-stat-label">PJ</span></div>
+                        <div class="fut-stat-item" title="Victorias oficiales en Versus"><span class="fut-stat-num">${pg}</span><span class="fut-stat-label">PG</span></div>
+                        <div class="fut-stat-item" title="Efectividad de victoria"><span class="fut-stat-num">${winrate}%</span><span class="fut-stat-label">WR</span></div>
+                        <div class="fut-stat-item" title="Experiencia total"><span class="fut-stat-num">${xpTxt}</span><span class="fut-stat-label">XP</span></div>
+                    </div>
+                </div>
+
+                <div class="inspect-stats-grid">
+                    <div class="inspect-stat-pill">
+                        <i class="ph-bold ph-shield-star"></i>
+                        <span>Nivel</span>
+                        <strong>Nivel ${datosRival.nivelActual}</strong>
+                    </div>
+                    <div class="inspect-stat-pill">
+                        <i class="ph-bold ph-fire" style="color:#ff9f05;"></i>
+                        <span>Racha</span>
+                        <strong>${datosRival.rachaActual} Días</strong>
+                    </div>
+                    <div class="inspect-stat-pill">
+                        <i class="ph-bold ph-sword" style="color:#3b82f6;"></i>
+                        <span>Victorias</span>
+                        <strong>${pg} PG</strong>
+                    </div>
+                </div>
+
+                ${badgeH2H}
+                ${botonDesafiarOnceHTML}
+                ${botonInvitarLigaHTML}
+            </div>
+        `;
+    } else {
+        // Tab Once Titular
+        if (datosRival.nivelActual < 4) {
+            contenidoTabHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+                    <div class="inspect-once-locked-box" style="text-align:center; padding: 32px 18px; background: rgba(0,0,0,0.3); border: 1px dashed rgba(255,255,255,0.15); border-radius: 14px; width: 100%; box-sizing: border-box; margin: 12px 0;">
+                        <i class="ph-bold ph-lock-key" style="font-size: 2.4rem; color: #fbbf24; margin-bottom: 8px; display:inline-block;"></i>
+                        <div style="font-size: 0.95rem; font-weight: 900; color: #ffffff; margin-bottom: 6px;">Once en Formación</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600; line-height: 1.4;">
+                            ${sanitizarHTML(datosRival.custom_nick)} está en Nivel ${datosRival.nivelActual}.<br>
+                            El Once Titular se desbloquea al alcanzar el <strong>Nivel 4</strong> (11 titulares).
+                        </div>
+                    </div>
+                    ${botonDesafiarOnceHTML}
+                    ${botonInvitarLigaHTML}
+                </div>
+            `;
+        } else {
+            const fKey = datosRival.onceFormacion || '4-3-3';
+            const f = (typeof FORMACIONES_TACTICAS !== 'undefined' && FORMACIONES_TACTICAS[fKey])
+                ? FORMACIONES_TACTICAS[fKey]
+                : (window.FORMACIONES_TACTICAS && window.FORMACIONES_TACTICAS['4-3-3'] ? window.FORMACIONES_TACTICAS['4-3-3'] : { posiciones: [] });
+
+            const onceR = (datosRival.onceInicial && typeof datosRival.onceInicial === 'object') ? { ...datosRival.onceInicial } : {};
+            const poolDesbloqueados = (typeof AVATARES_LISTA !== 'undefined')
+                ? AVATARES_LISTA.filter(a => a.nivel <= datosRival.nivelActual && !(typeof esAvatarDT === 'function' && esAvatarDT(a.id)))
+                : [];
+            const yaUsados = new Set(Object.values(onceR).map(v => String(v).replace(/\.png$/i, '.webp')));
+            let poolIdx = 0;
+            for (let i = 0; i < f.posiciones.length; i++) {
+                if (!onceR[i]) {
+                    while (poolIdx < poolDesbloqueados.length && yaUsados.has(poolDesbloqueados[poolIdx].id)) {
+                        poolIdx++;
+                    }
+                    if (poolIdx < poolDesbloqueados.length) {
+                        onceR[i] = poolDesbloqueados[poolIdx].id;
+                        yaUsados.add(poolDesbloqueados[poolIdx].id);
+                        poolIdx++;
+                    }
+                }
+            }
+            if (!onceR['DT']) {
+                onceR['DT'] = '45.webp'; // Lionel Scaloni por defecto
+            }
+
+            const capitanId = datosRival.onceCapitan || onceR[0] || null;
+
+            let sumaOvr = 0;
+            let countTitulares = 0;
+            for (let i = 0; i < f.posiciones.length; i++) {
+                const id = onceR[i];
+                if (id) {
+                    const aLimpio = String(id).replace(/\.png$/i, '.webp');
+                    const item = (typeof AVATARES_LISTA !== 'undefined') ? AVATARES_LISTA.find(a => a.id === aLimpio) : null;
+                    const nivelReq = item ? item.nivel : 0;
+                    const baseOvr = (typeof NIVELES !== 'undefined' && NIVELES[nivelReq]) ? NIVELES[nivelReq].ovr : 50;
+                    const extra = (datosRival.mejorasJugadores && datosRival.mejorasJugadores[aLimpio]) || 0;
+                    sumaOvr += Math.min(99, baseOvr + extra);
+                    countTitulares++;
+                }
+            }
+            let ovrOnceRival = countTitulares > 0 ? Math.round(sumaOvr / countTitulares) : (datosRival.ovr || 60);
+            if (capitanId) ovrOnceRival += 2;
+            if (onceR['DT']) ovrOnceRival += 1;
+            ovrOnceRival = Math.min(99, ovrOnceRival);
+
+            const escudoClub = datosRival.onceEscudo || datosRival.avatar_logo || 'ev';
+            const itemEscudo = (typeof BANDERAS_LISTA !== 'undefined') ? BANDERAS_LISTA.find(b => b.id === escudoClub) : null;
+            const nombreClub = itemEscudo ? itemEscudo.label : 'Estadios Virt.';
+
+            const nodosHTML = f.posiciones.map((item, idx) => {
+                const avatarId = onceR[idx];
+                if (!avatarId) {
+                    return `
+                        <div class="inspect-pitch-node empty" style="top:${item.top}; left:${item.left};">
+                            <div class="node-avatar-wrap"></div>
+                            <div class="node-pos-pill">${item.pos}</div>
+                        </div>
+                    `;
+                }
+                const aLimpio = String(avatarId).replace(/\.png$/i, '.webp');
+                const isCaptain = capitanId && (String(capitanId).replace(/\.png$/i, '.webp') === aLimpio);
+                const itemAv = (typeof AVATARES_LISTA !== 'undefined') ? AVATARES_LISTA.find(a => a.id === aLimpio) : null;
+                const nivelReq = itemAv ? itemAv.nivel : 0;
+                const baseOvr = (typeof NIVELES !== 'undefined' && NIVELES[nivelReq]) ? NIVELES[nivelReq].ovr : 50;
+                const extra = (datosRival.mejorasJugadores && datosRival.mejorasJugadores[aLimpio]) || 0;
+                const ovrInd = Math.min(99, baseOvr + extra);
+                const nombreJugador = typeof obtenerNombreAvatar === 'function' ? obtenerNombreAvatar(aLimpio) : (itemAv ? itemAv.label : 'Jugador');
+
+                return `
+                    <div class="inspect-pitch-node" style="top:${item.top}; left:${item.left};">
+                        <div class="node-avatar-wrap">
+                            <img src="${aLimpio}" alt="${item.pos}" class="node-avatar-img">
+                            ${isCaptain ? '<div class="node-captain-badge" title="Capitán">C</div>' : ''}
+                        </div>
+                        <div class="node-pos-pill">${item.pos} · ${ovrInd}</div>
+                        <div class="node-player-name" title="${sanitizarHTML(nombreJugador)}">${sanitizarHTML(nombreJugador)}</div>
+                    </div>
+                `;
+            }).join('');
+
+            let dtHTML = '';
+            if (onceR['DT']) {
+                const dtLimpio = String(onceR['DT']).replace(/\.png$/i, '.webp');
+                const nomDt = typeof obtenerNombreAvatar === 'function' ? obtenerNombreAvatar(dtLimpio) : 'Director Técnico';
+                dtHTML = `
+                    <div class="inspect-dt-bar">
+                        <img src="${dtLimpio}" alt="DT">
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-weight:900; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">DT: ${sanitizarHTML(nomDt)}</div>
+                            <div style="font-size:0.64rem; color:var(--text-muted); font-weight:700;">Director Técnico Oficial</div>
+                        </div>
+                        <span style="font-size:0.68rem; font-weight:900; color:#fbbf24; background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.4); border-radius:6px; padding:2px 6px;">+1 GRL</span>
+                    </div>
+                `;
+            }
+
+            contenidoTabHTML = `
+                <div class="inspect-pitch-card">
+                    <div class="inspect-pitch-header">
+                        <div class="inspect-pitch-header-left">
+                            <img src="${obtenerUrlEscudo(escudoClub)}" class="inspect-pitch-shield" alt="Escudo" onerror="this.src='${ESCUDOS_MAP['ev']}';">
+                            <div style="min-width:0;">
+                                <div class="inspect-pitch-title">Once de ${sanitizarHTML(datosRival.custom_nick)}</div>
+                                <div class="inspect-pitch-sub">Formación ${fKey} · ${sanitizarHTML(nombreClub)}</div>
+                            </div>
+                        </div>
+                        <div class="inspect-pitch-ovr-pill">GRL ${ovrOnceRival}</div>
+                    </div>
+
+                    <div class="inspect-pitch-field">
+                        <div class="inspect-pitch-line-center"></div>
+                        <div class="inspect-pitch-circle-center"></div>
+                        ${nodosHTML}
+                    </div>
+
+                    ${dtHTML}
+                    ${botonDesafiarOnceHTML}
+                    ${botonInvitarLigaHTML}
+                </div>
+            `;
+        }
+    }
+
+    body.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+            ${tabsBarHTML}
+            ${contenidoTabHTML}
+        </div>
+    `;
+}
+
+window.renderizarModalInspeccion = renderizarModalInspeccion;
 
 
 // --- Cierre y Control de Modal Perfil ---
@@ -2122,6 +2354,8 @@ window.obtenerAvatarParaUsuario = obtenerAvatarParaUsuario;
 window.obtenerAvatarCirculoHTML = obtenerAvatarCirculoHTML;
 window.inspeccionarPerfilRival = inspeccionarPerfilRival;
 window.cerrarModalInspeccionarRival = cerrarModalInspeccionarRival;
+window.cambiarTabInspeccionar = cambiarTabInspeccionar;
+window.renderizarModalInspeccion = renderizarModalInspeccion;
 
 window.abrirModalPerfil = abrirModalPerfil;
 window.cerrarModalPerfil = cerrarModalPerfil;
