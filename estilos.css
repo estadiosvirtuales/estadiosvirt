@@ -9377,13 +9377,13 @@ html[data-theme="light"] .xp-bar-big-fill {
 .carrera-rank-row.carrera-tab-ligas.ligas-todas,
 .carrera-table-header.carrera-tab-ligas:not(.ligas-filtrada),
 .carrera-rank-row.carrera-tab-ligas:not(.ligas-filtrada) {
-    grid-template-columns: 36px 1fr 82px 82px 84px !important;
+    grid-template-columns: 36px 1fr 90px 84px !important;
     gap: 8px !important;
 }
 
 .carrera-table-header.carrera-tab-ligas.ligas-filtrada,
 .carrera-rank-row.carrera-tab-ligas.ligas-filtrada {
-    grid-template-columns: 36px 1fr 78px 88px 76px 84px !important;
+    grid-template-columns: 36px 1fr 94px 84px 84px !important;
     gap: 8px !important;
 }
 

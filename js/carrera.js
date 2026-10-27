@@ -4090,7 +4090,6 @@ window.renderizarRankingCarrera = function() {
         } else if (tabActiva === 'ligas') {
             if (filtroLiga === 'todas') {
                 columnasCentroHTML = `
-                    <div class="carrera-col-detail desktop-only"><b class="tag-cyan">GRL ${item.ovr}</b></div>
                     <div class="carrera-col-metric">
                         <span class="total-leagues-badge">
                             <b class="total-num">${item.ligas.total}</b>
@@ -4100,7 +4099,6 @@ window.renderizarRankingCarrera = function() {
             } else {
                 const titulosEstaLiga = item.ligas.detalle[filtroLiga] || 0;
                 columnasCentroHTML = `
-                    <div class="carrera-col-detail desktop-only"><b class="tag-cyan">GRL ${item.ovr}</b></div>
                     <div class="carrera-col-detail desktop-only">${item.ligas.total} Tot.</div>
                     <div class="carrera-col-metric">
                         <span class="total-leagues-badge">
@@ -4193,25 +4191,23 @@ window.renderizarRankingCarrera = function() {
             <span class="carrera-col-detail desktop-only" title="Copa Continental">CONTINENTAL</span>
             <span class="carrera-col-detail desktop-only" title="Copa Desafío">DESAFÍO</span>
             <span class="carrera-col-metric">TOTAL</span>
-            <span class="carrera-col-action">DUELO</span>
+            <span class="carrera-col-action"></span>
         `;
     } else if (tabActiva === 'ligas') {
         if (filtroLiga === 'todas') {
             tableHeaderCols = `
                 <span class="carrera-col-pos">#</span>
                 <span class="carrera-col-dt">DT / CLUB</span>
-                <span class="carrera-col-detail desktop-only">GRL DT</span>
                 <span class="carrera-col-metric">LIGAS</span>
-                <span class="carrera-col-action">DUELO</span>
+                <span class="carrera-col-action"></span>
             `;
         } else {
             tableHeaderCols = `
                 <span class="carrera-col-pos">#</span>
                 <span class="carrera-col-dt">DT / CLUB</span>
-                <span class="carrera-col-detail desktop-only">GRL DT</span>
                 <span class="carrera-col-detail desktop-only">LIGAS TOT.</span>
                 <span class="carrera-col-metric">TÍTULOS</span>
-                <span class="carrera-col-action">DUELO</span>
+                <span class="carrera-col-action"></span>
             `;
         }
     } else if (tabActiva === 'versus') {
@@ -4221,7 +4217,7 @@ window.renderizarRankingCarrera = function() {
             <span class="carrera-col-detail desktop-only">EFECTIVIDAD</span>
             <span class="carrera-col-detail desktop-only">DISPUTADOS</span>
             <span class="carrera-col-metric">VICTORIAS</span>
-            <span class="carrera-col-action">DUELO</span>
+            <span class="carrera-col-action"></span>
         `;
     }
 
