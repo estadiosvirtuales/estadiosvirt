@@ -2144,22 +2144,37 @@
     white-space: nowrap !important;
 }
 
-/* 📋 TABLA Y COLUMNAS DE ONCE INICIAL EN LIGA DE AMIGOS */
+/* 📋 TABLA Y COLUMNAS DE ONCE INICIAL EN LIGA DE AMIGOS (CSS GRID) */
 .liga-once-header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 9px 20px;
-    background: rgba(0, 0, 0, 0.22);
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
-    width: 100%;
-    box-sizing: border-box;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 110px 96px 96px !important;
+    column-gap: 8px !important;
+    align-items: center !important;
+    padding: 10px 18px !important;
+    border-left: 3.5px solid transparent !important;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(0, 0, 0, 0.25) !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
 }
 
+.liga-table-card .ranking-rows-scroll {
+    padding: 0 !important;
+}
+
+.liga-row-item.liga-once-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 110px 96px 96px !important;
+    column-gap: 8px !important;
+    align-items: center !important;
+    padding: 11px 18px !important;
+    box-sizing: border-box !important;
+}
+
 .once-hdr-user {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 6px;
     font-size: 0.70rem;
@@ -2168,15 +2183,22 @@
     text-transform: uppercase;
     letter-spacing: 0.6px;
     user-select: none;
-    flex: 1;
     min-width: 0;
 }
 
-.once-stats-cluster {
+.liga-once-row .inspect-clickable-user {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
+    gap: 6px;
+    min-width: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.liga-once-row .once-user-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .once-hdr-cell {
@@ -2185,39 +2207,28 @@
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
     user-select: none;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
+    width: 100% !important;
 }
 
 .once-data-cell {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-shrink: 0;
-    box-sizing: border-box;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
 }
 
-.once-col-gep {
-    width: 96px;
-    min-width: 96px;
-    max-width: 96px;
-}
-
-.once-col-grl {
-    width: 86px;
-    min-width: 86px;
-    max-width: 86px;
-}
-
+.once-col-gep,
+.once-col-grl,
 .once-col-act {
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
+    width: 100% !important;
 }
 
 .once-stat-gep {
@@ -2738,7 +2749,15 @@
     }
 
     .liga-once-header-row {
+        grid-template-columns: minmax(0, 1fr) 68px 54px 56px !important;
+        column-gap: 4px !important;
         padding: 6px 10px !important;
+    }
+
+    .liga-row-item.liga-once-row {
+        grid-template-columns: minmax(0, 1fr) 68px 54px 56px !important;
+        column-gap: 4px !important;
+        padding: 9px 10px !important;
     }
 
     .ranking-right-panel .liga-row-item .inspect-clickable-user img[alt="1º"],
@@ -2752,28 +2771,6 @@
     .once-hdr-cell {
         font-size: 0.58rem !important;
         letter-spacing: 0.4px !important;
-    }
-
-    .once-stats-cluster {
-        gap: 5px !important;
-    }
-
-    .once-col-gep {
-        width: 62px !important;
-        min-width: 62px !important;
-        max-width: 62px !important;
-    }
-
-    .once-col-grl {
-        width: 50px !important;
-        min-width: 50px !important;
-        max-width: 50px !important;
-    }
-
-    .once-col-act {
-        width: 52px !important;
-        min-width: 52px !important;
-        max-width: 52px !important;
     }
 
     .once-grl-num {

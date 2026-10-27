@@ -3551,12 +3551,10 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     if (esOnce && lista && lista.length > 0) {
         headerTablaHTML = `
         <div class="liga-once-header-row">
-            <span class="once-hdr-user"># &nbsp; Integrante</span>
-            <div class="once-stats-cluster">
-                <span class="once-col-gep once-hdr-cell">G / E / P</span>
-                <span class="once-col-grl once-hdr-cell">GRL</span>
-                <span class="once-col-act once-hdr-cell">Duelo</span>
-            </div>
+            <div class="once-hdr-user"># &nbsp; Integrante</div>
+            <div class="once-col-gep once-hdr-cell">G / E / P</div>
+            <div class="once-col-grl once-hdr-cell">GRL</div>
+            <div class="once-col-act once-hdr-cell">DUELO</div>
         </div>`;
     }
 
@@ -3617,41 +3615,40 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 } else {
                     botonReto = `<span class="once-lock-text" title="Nivel ${f.nivelActual || 1}/4 para desbloquear Once"><i class="ph-bold ph-lock-key"></i> Nvl ${f.nivelActual || 1}/4</span>`;
                 }
-            } else if (tipoVista === 'triunfos') {
-                const w = f.triunfos || 0;
-                const l = f.derrotas || 0;
-                bloquePuntos = `<div style="display:flex; align-items:center; gap:6px;">
-                                    <strong style="color:#00e676; font-weight:900;">${w} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">G</span></strong>
-                                    <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
-                                    <strong style="color:#ff4757; font-weight:900;">${l} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">P</span></strong>
-                                </div>`;
-            } else {
-                bloquePuntos = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${(f.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
-            }
 
-            let clusterDerecho = "";
-            if (esOnce) {
-                clusterDerecho = `
-                <div class="once-stats-cluster">
+                htmlContenido += `
+                <div class="liga-row-item liga-once-row ${esPropio ? 'es-propio' : ''}">
+                    <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
+                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span class="once-user-name">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
+                    </div>
                     <div class="once-col-gep once-data-cell">${bloqueGEP}</div>
                     <div class="once-col-grl once-data-cell">${bloquePuntos}</div>
                     <div class="once-col-act once-data-cell">${botonReto}</div>
                 </div>`;
             } else {
-                clusterDerecho = `
-                <span style="display:flex; align-items:center; gap:6px; flex-shrink:0; margin-left:6px;">
-                    ${bloquePuntos}
-                    ${botonReto}
-                </span>`;
-            }
+                if (tipoVista === 'triunfos') {
+                    const w = f.triunfos || 0;
+                    const l = f.derrotas || 0;
+                    bloquePuntos = `<div style="display:flex; align-items:center; gap:6px;">
+                                        <strong style="color:#00e676; font-weight:900;">${w} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">G</span></strong>
+                                        <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
+                                        <strong style="color:#ff4757; font-weight:900;">${l} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">P</span></strong>
+                                    </div>`;
+                } else {
+                    bloquePuntos = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${(f.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
+                }
 
-            htmlContenido += `
-            <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                <span class="inspect-clickable-user" style="display:inline-flex; align-items:center; gap:6px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
-                    ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
-                </span>
-                ${clusterDerecho}
-            </div>`;
+                htmlContenido += `
+                <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
+                    <span class="inspect-clickable-user" style="display:inline-flex; align-items:center; gap:6px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
+                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
+                    </span>
+                    <span style="display:flex; align-items:center; gap:6px; flex-shrink:0; margin-left:6px;">
+                        ${bloquePuntos}
+                        ${botonReto}
+                    </span>
+                </div>`;
+            }
         });
     }
 
@@ -3679,35 +3676,35 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             bloquePuntosSticky = `<div class="once-grl-box">
                                     <span class="once-grl-num">GRL ${miOvrLive}</span>
                                   </div>`;
-        } else if (tipoVista === 'triunfos') {
-            bloquePuntosSticky = `<div style="display:flex; align-items:center; gap:6px;">
-                                    <strong style="color:#00e676; font-weight:900;">${miFila.triunfos || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">G</span></strong>
-                                    <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
-                                    <strong style="color:#ff4757; font-weight:900;">${miFila.derrotas || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">P</span></strong>
-                                  </div>`;
-        } else {
-            bloquePuntosSticky = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${(miFila.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
-        }
 
-        let stickyDerecho = "";
-        if (esOnce) {
-            stickyDerecho = `
-            <div class="once-stats-cluster">
+            htmlContenido += `
+            <div class="liga-row-item liga-once-row sticky-user-row es-propio">
+                <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
+                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
+                </div>
                 <div class="once-col-gep once-data-cell">${bloqueGEPSticky}</div>
                 <div class="once-col-grl once-data-cell">${bloquePuntosSticky}</div>
                 <div class="once-col-act once-data-cell"></div>
             </div>`;
         } else {
-            stickyDerecho = `<span style="display:flex; align-items:center; gap:8px;">${bloqueGEPSticky}${bloquePuntosSticky}</span>`;
-        }
+            if (tipoVista === 'triunfos') {
+                bloquePuntosSticky = `<div style="display:flex; align-items:center; gap:6px;">
+                                        <strong style="color:#00e676; font-weight:900;">${miFila.triunfos || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">G</span></strong>
+                                        <span style="color:var(--text-muted); font-size:0.8rem;">-</span>
+                                        <strong style="color:#ff4757; font-weight:900;">${miFila.derrotas || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">P</span></strong>
+                                      </div>`;
+            } else {
+                bloquePuntosSticky = `<span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">${(miFila.puntaje || 0).toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span></span>`;
+            }
 
-        htmlContenido += `
-        <div class="liga-row-item sticky-user-row es-propio">
-            <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
-                <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
-            </span>
-            ${stickyDerecho}
-        </div>`;
+            htmlContenido += `
+            <div class="liga-row-item sticky-user-row es-propio">
+                <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
+                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
+                </span>
+                <span style="display:flex; align-items:center; gap:8px;">${bloqueGEPSticky}${bloquePuntosSticky}</span>
+            </div>`;
+        }
     }
 
     htmlContenido += `</div>`;
