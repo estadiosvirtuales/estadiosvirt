@@ -14,123 +14,11 @@ const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 // Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
     {
-        id: 'wembley_stadium',
-        nombreMostrar: 'WEMBLEY STADIUM',
-        clubMostrar: 'SELECCIÓN DE INGLATERRA',
-        pais: 'Inglaterra',
-        folderName: 'WEMBLEY-STADIUM',
-        videoFileName: 'Estadio_Wembley_Londres.mp4',
-        coverFileName: 'Portada_Estadio_Wembley.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Inglaterra\\Wembley Stadium_ Inglaterra.mp4",
-        targetLat: 51.5560,
-        targetLng: -0.2795,
-        userLat: 51.5532,
-        userLng: -0.2760,
-        distanciaTexto: '394 METROS',
-        puntosTexto: '4.106 PUNTOS 🔥',
-        ubicacionBadge: '📍 Londres, Inglaterra · WEMBLEY STADIUM',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad monumental para 90.000 espectadores', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: 'Su icónico arco de 133 metros domina el cielo londinense', color: '#38bdf8' },
-            { icon: '👑', tag: 'PISTA 3:', text: 'La mítica Catedral del Fútbol mundial y sede de finales históricas', color: '#ffd700' }
-        ],
-        portadaClue: '90.000 hinchas · La Catedral del Fútbol · Londres',
-        copys: {
-            club: 'Wembley Stadium / Selección de Inglaterra',
-            paisHashtag: '#premierleague #wembley #london #england #futbol #estadios #stadiumguessr',
-            extraPista: 'el templo de las finales de Champions, la consagración de 1966 y el mítico arco londinense'
-        }
-    },
-    {
-        id: 'tottenham_hotspur',
-        nombreMostrar: 'TOTTENHAM HOTSPUR STADIUM',
-        clubMostrar: 'TOTTENHAM HOTSPUR FC',
-        pais: 'Inglaterra',
-        folderName: 'TOTTENHAM-HOTSPUR-STADIUM',
-        videoFileName: 'Estadio_Tottenham_Hotspur_London.mp4',
-        coverFileName: 'Portada_Estadio_Tottenham_Hotspur.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Inglaterra\\Tottenham Hotspur Stadium.mp4",
-        targetLat: 51.6042,
-        targetLng: -0.0662,
-        userLat: 51.6015,
-        userLng: -0.0630,
-        distanciaTexto: '373 METROS',
-        puntosTexto: '4.149 PUNTOS 🔥',
-        ubicacionBadge: '📍 Londres, Inglaterra · TOTTENHAM STADIUM',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 62.850 hinchas en el norte de Londres', color: '#00ff77' },
-            { icon: '🏟️', tag: 'PISTA 2:', text: 'Inaugurado en 2019 con una espectacular cancha retráctil de NFL', color: '#38bdf8' },
-            { icon: '⚪🔵', tag: 'PISTA 3:', text: 'El hogar de los Spurs y una de las maravillas modernas de Europa', color: '#ffd700' }
-        ],
-        portadaClue: '62.850 hinchas · Estadio ultramoderno · Norte de Londres',
-        copys: {
-            club: 'Tottenham Hotspur Football Club',
-            paisHashtag: '#premierleague #tottenham #spurs #coys #london #estadios #futbolingles',
-            extraPista: 'el imponente coloso del norte de Londres, la tecnología con cancha retráctil y la pasión de los Spurs'
-        }
-    },
-    {
-        id: 'villa_park',
-        nombreMostrar: 'VILLA PARK',
-        clubMostrar: 'ASTON VILLA FC',
-        pais: 'Inglaterra',
-        folderName: 'VILLA-PARK-BIRMINGHAM',
-        videoFileName: 'Estadio_Villa_Park_Aston_Villa.mp4',
-        coverFileName: 'Portada_Estadio_Villa_Park.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Inglaterra\\Villa Park_ Aston Villa Football Club.mp4",
-        targetLat: 52.5091,
-        targetLng: -1.8848,
-        userLat: 52.5065,
-        userLng: -1.8815,
-        distanciaTexto: '365 METROS',
-        puntosTexto: '4.166 PUNTOS 🔥',
-        ubicacionBadge: '📍 Birmingham, Inglaterra · VILLA PARK',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 42.600 hinchas en la ciudad de Birmingham', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: 'Templo histórico del fútbol británico inaugurado en 1897', color: '#38bdf8' },
-            { icon: '🦁', tag: 'PISTA 3:', text: 'La fortaleza de los Villanos, campeones de Europa y hogar del Dibu Martínez', color: '#ffd700' }
-        ],
-        portadaClue: '42.600 hinchas · Inaugurado en 1897 · Birmingham',
-        copys: {
-            club: 'Aston Villa Football Club',
-            paisHashtag: '#premierleague #astonvilla #villapark #dibumartinez #birmingham #futbolingles #estadios',
-            extraPista: 'la mística de Birmingham, el título de la Copa de Europa de 1982 y las atajadas del Dibu Martínez'
-        }
-    },
-    {
-        id: 'stamford_bridge',
-        nombreMostrar: 'STAMFORD BRIDGE',
-        clubMostrar: 'CHELSEA FC',
-        pais: 'Inglaterra',
-        folderName: 'STAMFORD-BRIDGE-CHELSEA',
-        videoFileName: 'Estadio_Stamford_Bridge_Chelsea.mp4',
-        coverFileName: 'Portada_Estadio_Stamford_Bridge.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Inglaterra\\Stamford Bridge_ Chelsea FC.mp4",
-        targetLat: 51.4816,
-        targetLng: -0.1910,
-        userLat: 51.4788,
-        userLng: -0.1878,
-        distanciaTexto: '382 METROS',
-        puntosTexto: '4.131 PUNTOS 🔥',
-        ubicacionBadge: '📍 Londres, Inglaterra · STAMFORD BRIDGE',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 40.340 hinchas en el distinguido barrio de Fulham', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1877: una de las canchas con más historia del planeta', color: '#38bdf8' },
-            { icon: '🔵', tag: 'PISTA 3:', text: 'La casa de los Blues, dos veces campeones de la Champions League', color: '#ffd700' }
-        ],
-        portadaClue: '40.340 hinchas · Distrito de Fulham · Londres',
-        copys: {
-            club: 'Chelsea Football Club',
-            paisHashtag: '#premierleague #chelsea #chelseafc #stamfordbridge #theblues #london #estadios',
-            extraPista: 'el corazón de Fulham Road, las dos Champions League de los Blues y las leyendas de Drogba y Lampard'
-        }
-    },
-    {
         id: 'st_james_park',
         nombreMostrar: 'ST JAMES\' PARK',
         clubMostrar: 'NEWCASTLE UNITED',
         pais: 'Inglaterra',
-        folderName: 'ST-JAMES-PARK-NEWCASTLE',
+        folderName: 'ST-JAMES-PARK',
         videoFileName: 'Estadio_St_James_Park_Newcastle.mp4',
         coverFileName: 'Portada_Estadio_St_James_Park.jpg',
         inputVideoPath: "E:\\Google earth studio\\Inglaterra\\St James’ Park_ Newcastle.mp4",
@@ -142,8 +30,8 @@ const STADIUMS_QUEUE = [
         puntosTexto: '4.176 PUNTOS 🔥',
         ubicacionBadge: '📍 Newcastle, Inglaterra · ST JAMES\' PARK',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Monumental capacidad para 52.300 hinchas en el centro urbano', color: '#00ff77' },
-            { icon: '🏗️', tag: 'PISTA 2:', text: 'Su colosal tribuna Milburn domina el horizonte de la ciudad', color: '#38bdf8' },
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad monumental para 52.300 hinchas en el centro urbano', color: '#00ff77' },
+            { icon: '⚽', tag: 'PISTA 2:', text: 'El templo donde Alan Shearer se convirtió en el máximo goleador histórico de la Premier League', color: '#38bdf8' },
             { icon: '🖤🤍', tag: 'PISTA 3:', text: 'La catedral del Toon Army y hogar de las legendarias Urracas', color: '#ffd700' }
         ],
         portadaClue: '52.300 hinchas · En el centro urbano · Newcastle',
