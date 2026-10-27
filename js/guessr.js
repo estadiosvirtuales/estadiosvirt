@@ -2419,9 +2419,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
-                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} <span class="ranking-user-name">${sanitizarHTML(nombreJugador)}</span>
                         </span>
-                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                             ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
                         </span>
                     </div>`;
@@ -2434,9 +2434,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
-                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                         ${miFila.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
                     </span>
                 </div>`;
@@ -2508,9 +2508,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
-                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} <span class="ranking-user-name">${sanitizarHTML(nombreJugador)}</span>
                         </span>
-                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                             ${f.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
                         </span>
                     </div>`;
@@ -2523,9 +2523,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
-                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                         ${recordReal.toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
                     </span>
                 </div>`;
@@ -2579,10 +2579,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
-                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} <span class="ranking-user-name">${sanitizarHTML(nombreJugador)}</span>
                         </span>
-                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
-                            ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
+                            ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">G</span>
                         </span>
                     </div>`;
                 });
@@ -2595,10 +2595,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
-                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
-                        ${misWins} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
+                        ${misWins} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">G</span>
                     </span>
                 </div>`;
             }
@@ -2653,10 +2653,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                     htmlContenido += `
                     <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
                         <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreJugador.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreJugador)}">
-                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} ${sanitizarHTML(nombreJugador)}
+                            ${med} ${obtenerAvatarCirculoHTML(nombreJugador)} <span class="ranking-user-name">${sanitizarHTML(nombreJugador)}</span>
                         </span>
-                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
-                            ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                        <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
+                            ${f.victorias_acumuladas || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">G</span>
                         </span>
                     </div>`;
                 });
@@ -2669,10 +2669,10 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                        <span class="sticky-rank-pill">#${miIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
-                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
-                        ${misWinsSemana} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">W</span>
+                    <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
+                        ${misWinsSemana} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">G</span>
                     </span>
                 </div>`;
             }
@@ -3623,8 +3623,8 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
 
                 htmlContenido += `
                 <div class="liga-row-item ${esPropio ? 'es-propio' : ''}">
-                    <span class="inspect-clickable-user" style="display:inline-flex; align-items:center; gap:6px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
-                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
+                    <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
+                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span class="ranking-user-name">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
                     </span>
                     <span style="display:flex; align-items:center; gap:6px; flex-shrink:0; margin-left:6px;">
                         ${bloquePuntos}
@@ -3678,7 +3678,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             htmlContenido += `
             <div class="liga-row-item sticky-user-row es-propio">
                 <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
-                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
+                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b></span>
                 </span>
                 <span style="display:flex; align-items:center; gap:8px;">${bloquePuntosSticky}</span>
             </div>`;
