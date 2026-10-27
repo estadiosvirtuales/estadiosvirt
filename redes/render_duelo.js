@@ -256,6 +256,211 @@ El Eduardo Gallardón de Lomas de Zamora vs la República de Mataderos. ¿Cuál 
 🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
 
 #LosAndes #NuevaChicago #EduardoGallardon #RepublicaDeMataderos #Milrayitas #ToritoDeMataderos #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'river-maracana': {
+        slug: 'RIVER-VS-MARACANA',
+        tituloBadge: '🥊 Duelo de Capacidad · Choque de Gigantes',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El Coloso Argentino vs El Templo Brasileño',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_River_vs_Maracana.mp4',
+        portadaFileName: 'Portada_Duelo_River_Maracana.jpg',
+        bannerDiferencia: '¡EL MONUMENTAL POR +5.700 LUGARES!',
+        team1: {
+            id: 'river',
+            nombre: 'RIVER PLATE',
+            estadio: 'Mâs Monumental',
+            apodo: 'El Monumental',
+            capacidadNum: 84567,
+            capacidadTexto: '84.567 esp.',
+            escudoFile: 'River.webp',
+            borderColor: '#ff2233',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'maracana',
+            nombre: 'MARACANÃ',
+            estadio: 'Jornalista Mário Filho',
+            apodo: 'El Maracaná',
+            capacidadNum: 78838,
+            capacidadTexto: '78.838 esp.',
+            escudoFile: 'Flamengo.webp',
+            borderColor: '#cc0000',
+            videoPath: "E:\\Google earth studio\\Brasil\\Maracaná.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿EL MONUMENTAL O EL MARACANÁ? 🏟️🔥
+El Mâs Monumental de River Plate vs el legendario Maracaná de Río de Janeiro. ¿Cuál de estos dos gigantes de Sudamérica tiene hoy mayor capacidad oficial de público? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#RiverPlate #Maracana #Monumental #Flamengo #Fluminense #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'madrid-barca': {
+        slug: 'MADRID-VS-BARCELONA',
+        tituloBadge: '🥊 Duelo de Capacidad · El Clásico',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La mayor rivalidad del fútbol mundial',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Real_Madrid_vs_Barcelona.mp4',
+        portadaFileName: 'Portada_Duelo_Real_Madrid_Barcelona.jpg',
+        bannerDiferencia: '¡CAMP NOU POR CASI 15.000 LUGARES!',
+        team1: {
+            id: 'madrid',
+            nombre: 'REAL MADRID',
+            estadio: 'Santiago Bernabéu',
+            apodo: 'El Bernabéu',
+            capacidadNum: 84744,
+            capacidadTexto: '84.744 esp.',
+            escudoFile: 'Real.webp',
+            borderColor: '#ffd700',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'barca',
+            nombre: 'FC BARCELONA',
+            estadio: 'Spotify Camp Nou',
+            apodo: 'El Camp Nou',
+            capacidadNum: 99354,
+            capacidadTexto: '99.354 esp.',
+            escudoFile: 'Barca.webp',
+            borderColor: '#a50044',
+            videoPath: "E:\\Google earth studio\\España\\Spotify Camp Nou_ Barcelona.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿SANTIAGO BERNABÉU O SPOTIFY CAMP NOU? 🏟️🔥
+El nuevo Santiago Bernabéu vs el imponente Spotify Camp Nou. ¿Cuál de los dos colosos del fútbol español tiene mayor capacidad oficial de espectadores? 😱
+
+👉 ¿Acertaste o pensabas que con las reformas era al revés? Dejá tu voto en los comentarios.
+🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
+
+#RealMadrid #FCBarcelona #ElClasico #SantiagoBernabeu #CampNou #HalaMadrid #ViscaBarca #Estadios #EstadiosVirtuales`
+    },
+    'corinthians-palmeiras': {
+        slug: 'CORINTHIANS-VS-PALMEIRAS',
+        tituloBadge: '🥊 Duelo de Capacidad · O Derby Paulista',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La máxima rivalidad del estado de São Paulo',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Corinthians_vs_Palmeiras.mp4',
+        portadaFileName: 'Portada_Duelo_Corinthians_Palmeiras.jpg',
+        bannerDiferencia: '¡CORINTHIANS POR +5.400 LUGARES!',
+        team1: {
+            id: 'corinthians',
+            nombre: 'CORINTHIANS',
+            estadio: 'Neo Química Arena',
+            apodo: 'Arena Corinthians',
+            capacidadNum: 49205,
+            capacidadTexto: '49.205 esp.',
+            escudoFile: 'Corinthians.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Brasil\\Neo Química Arena_ Corinthians.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'palmeiras',
+            nombre: 'PALMEIRAS',
+            estadio: 'Allianz Parque',
+            apodo: 'O Verdão',
+            capacidadNum: 43713,
+            capacidadTexto: '43.713 esp.',
+            escudoFile: 'Palmeiras.webp',
+            borderColor: '#006437',
+            videoPath: "E:\\Google earth studio\\Brasil\\Allianz Parque_ Sociedade Esportiva Palmeiras.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿CORINTHIANS O PALMEIRAS? 🏟️🔥
+La Neo Química Arena del Timão vs el Allianz Parque del Verdão. ¿Cuál de los dos templos del Derby Paulista tiene mayor capacidad oficial? 😱
+
+👉 ¿Sabías la diferencia o te sorprendió el resultado? Comentá abajo 👇
+🎮 Poné a prueba cuánto sabés de canchas en el link del perfil: estadiosvirtuales.com
+
+#Corinthians #Palmeiras #DerbyPaulista #NeoQuimicaArena #AllianzParque #Timao #Verdao #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+    'betis-sevilla': {
+        slug: 'BETIS-VS-SEVILLA',
+        tituloBadge: '🥊 Duelo de Capacidad · El Gran Derbi',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La pasión del fútbol de Sevilla',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Betis_vs_Sevilla.mp4',
+        portadaFileName: 'Portada_Duelo_Betis_Sevilla.jpg',
+        bannerDiferencia: '¡EL BETIS POR CASI 17.000 LUGARES!',
+        team1: {
+            id: 'betis',
+            nombre: 'REAL BETIS',
+            estadio: 'Benito Villamarín',
+            apodo: 'El Villamarín',
+            capacidadNum: 60721,
+            capacidadTexto: '60.721 esp.',
+            escudoFile: 'Betis.webp',
+            borderColor: '#0bb364',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Benito Villamarín_ Real Betis.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'sevilla',
+            nombre: 'SEVILLA FC',
+            estadio: 'Ramón Sánchez-Pizjuán',
+            apodo: 'El Sánchez-Pizjuán',
+            capacidadNum: 43883,
+            capacidadTexto: '43.883 esp.',
+            escudoFile: 'Sevilla.webp',
+            borderColor: '#d4001f',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Ramón Sánchez-Pizjuán_ Sevilla FC.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿REAL BETIS O SEVILLA FC? 🏟️🔥
+El Benito Villamarín vs el Ramón Sánchez-Pizjuán. ¿Cuál de las dos canchas del Gran Derbi de Sevilla tiene mayor capacidad de hinchas? 😱
+
+👉 ¿Sabías la tremenda diferencia o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Jugá la trivia de estadios gratis en: estadiosvirtuales.com
+
+#RealBetis #SevillaFC #ElGranDerbi #BenitoVillamarin #SanchezPizjuan #LaLiga #FutbolEspañol #Estadios #EstadiosVirtuales`
+    },
+    'madrid-atleti': {
+        slug: 'MADRID-VS-ATLETICO',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi Madrileño',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El derbi de la capital española',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Real_Madrid_vs_Atletico.mp4',
+        portadaFileName: 'Portada_Duelo_Real_Madrid_Atletico.jpg',
+        bannerDiferencia: '¡EL BERNABÉU POR +14.000 LUGARES!',
+        team1: {
+            id: 'madrid',
+            nombre: 'REAL MADRID',
+            estadio: 'Santiago Bernabéu',
+            apodo: 'El Bernabéu',
+            capacidadNum: 84744,
+            capacidadTexto: '84.744 esp.',
+            escudoFile: 'Real.webp',
+            borderColor: '#ffd700',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'atleti',
+            nombre: 'ATLÉTICO DE MADRID',
+            estadio: 'Cívitas Metropolitano',
+            apodo: 'El Metropolitano',
+            capacidadNum: 70460,
+            capacidadTexto: '70.460 esp.',
+            escudoFile: 'AMadrid.webp',
+            borderColor: '#cb3524',
+            videoPath: "E:\\Google earth studio\\España\\Riyadh Air Metropolitano Club Atlético de Madrid.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿REAL MADRID O ATLÉTICO DE MADRID? 🏟️🔥
+El nuevo Santiago Bernabéu vs el imponente Cívitas Metropolitano. ¿Cuál de los dos gigantes de la capital española tiene mayor aforo oficial? 😱
+
+👉 ¿Acertaste o pensabas que estaban más parejos? Dejá tu voto en los comentarios.
+🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
+
+#RealMadrid #Atleti #AtleticoDeMadrid #DerbiMadrileño #SantiagoBernabeu #CivitasMetropolitano #LaLiga #EstadiosVirtuales`
     }
 };
 
@@ -322,8 +527,8 @@ function generarAudioProcedural(duracionSeg = 20.0, sampleRate = 44100) {
     addTick(12.0);
     addTick(13.0);
 
-    // 14.0s: Revelación
-    addWhoosh(13.8, 0.5, 0.4);
+    // 14.0s: Revelación (campana limpia sin whoosh)
+    // addWhoosh(13.8, 0.5, 0.4);
     addBellDing(14.0, 1046.5);
 
     // 14.1s: Fanfarria de victoria
@@ -331,10 +536,10 @@ function generarAudioProcedural(duracionSeg = 20.0, sampleRate = 44100) {
         addTone(14.1 + idx * 0.07, 3.0, freq, 0.35, 1.8);
     });
 
-    // 14.5s - 20s: Clima hinchada
-    for (let i = 0; i < 5; i++) {
-        addWhoosh(14.5 + i * 1.1, 1.6, 0.25);
-    }
+    // Eliminados whooshes de ambiente al final
+    // for (let i = 0; i < 5; i++) {
+    //     addWhoosh(14.5 + i * 1.1, 1.6, 0.25);
+    // }
 
     for (let i = 0; i < totalSamples; i++) {
         const clamped = Math.max(-1.0, Math.min(1.0, samples[i]));
@@ -767,5 +972,27 @@ async function renderizarDuelo(dueloKey) {
 // ==========================================
 // EJECUCIÓN CLI
 // ==========================================
-const target = process.argv[2] || 'casla-huracan';
-renderizarDuelo(target).catch(console.error);
+async function main() {
+    const target = process.argv[2] || 'lote-top5';
+    const TOP5_KEYS = ['river-maracana', 'madrid-barca', 'corinthians-palmeiras', 'betis-sevilla', 'madrid-atleti'];
+
+    if (target === 'lote-top5' || target === 'nuevos') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE LOTE TOP 5 DUELOS DE CAPACIDAD (${TOP5_KEYS.length} videos)...\n`);
+        for (let i = 0; i < TOP5_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${TOP5_KEYS.length}] PROCESANDO DUELO: ${TOP5_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(TOP5_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE TOP 5 DUELOS DE CAPACIDAD FINALIZADO CON ÉXITO!`);
+    } else if (target === 'all') {
+        const allKeys = Object.keys(CONFIG_DUELOS);
+        for (let i = 0; i < allKeys.length; i++) {
+            await renderizarDuelo(allKeys[i]);
+        }
+    } else {
+        await renderizarDuelo(target);
+    }
+}
+
+main().catch(console.error);
