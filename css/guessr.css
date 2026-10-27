@@ -6083,14 +6083,20 @@ html[data-theme="light"] .xp-bar-big-fill {
 .inspect-modal-box {
     max-width: 420px !important;
     height: auto !important;
-    max-height: 90vh !important;
-    padding: 24px 20px !important;
+    max-height: 92vh !important;
+    padding: 16px 18px 18px 18px !important;
     border-radius: 22px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     overflow-y: auto !important;
     scrollbar-width: thin;
+}
+
+.inspect-modal-box .fut-card {
+    transform: scale(0.85) !important;
+    transform-origin: top center !important;
+    margin: 2px 0 -44px 0 !important;
 }
 
 .inspect-clickable-user {
@@ -6128,7 +6134,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     width: 100%;
-    margin-top: 14px;
+    margin-top: 8px;
 }
 
 .inspect-stat-pill {
@@ -6172,8 +6178,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: center;
     gap: 8px;
     width: 100%;
-    margin-bottom: 12px;
-    padding: 4px;
+    margin-bottom: 8px;
+    padding: 3px;
     background: rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
@@ -6186,8 +6192,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 8px 12px;
-    font-size: 0.78rem;
+    padding: 6px 12px;
+    font-size: 0.76rem;
     font-weight: 900;
     color: var(--text-muted);
     background: transparent;
@@ -6263,13 +6269,13 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 .inspect-pitch-ovr-pill {
     background: linear-gradient(135deg, rgba(234, 179, 8, 0.25) 0%, rgba(202, 138, 4, 0.35) 100%);
-    border: 1px solid #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.85);
     color: #fef08a;
-    font-size: 0.78rem;
+    font-size: 0.66rem;
     font-weight: 900;
-    padding: 4px 9px;
-    border-radius: 8px;
-    letter-spacing: 0.3px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.2px;
     white-space: nowrap;
     flex-shrink: 0;
 }

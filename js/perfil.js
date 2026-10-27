@@ -258,13 +258,13 @@ function renderizarModalInspeccion(datosRival) {
                 : `(Recreativo · 3/3 SP)`;
 
             botonDesafiarOnceHTML = `
-                <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 10px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
+                <button type="button" onclick="iniciarDesafioOnceRivalDirecto()" class="btn-inspect-invite-liga" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.28) 0%, rgba(20, 16, 8, 0.96) 60%, rgba(10, 8, 4, 0.98) 100%) !important; border: 1.5px solid #fbbf24 !important; border-top: 2px solid #fef08a !important; color: #fef08a !important; margin-top: 8px; box-shadow: 0 4px 14px rgba(234, 179, 8, 0.35) !important;">
                     <i class="ph-bold ph-sword"></i> Desafiar a este Once <span style="font-size:0.75rem; opacity:0.85; margin-left:4px; font-weight:700;">${badgeTxt}</span>
                 </button>
             `;
         } else {
             botonDesafiarOnceHTML = `
-                <div style="margin-top: 10px; font-size: 0.74rem; font-weight: 800; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px dashed var(--border-strong); text-align: center; width: 100%; max-width: 340px; box-sizing: border-box;">
+                <div style="margin-top: 8px; font-size: 0.74rem; font-weight: 800; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 8px 14px; border-radius: 12px; border: 1px dashed var(--border-strong); text-align: center; width: 100%; max-width: 340px; box-sizing: border-box;">
                     <i class="ph-bold ph-lock-key" style="color: #fbbf24; vertical-align: middle;"></i> Once en formación (Nivel ${datosRival.nivelActual}/4)
                 </div>
             `;
@@ -273,7 +273,7 @@ function renderizarModalInspeccion(datosRival) {
 
     if (miLigaActual && !esMiPropioPerfil) {
         botonInvitarLigaHTML = `
-            <button type="button" onclick="enviarInvitacionDirectaRival('${sanitizarHTML(miLigaActual)}', '${sanitizarHTML(n)}', this)" class="btn-inspect-invite-liga">
+            <button type="button" onclick="enviarInvitacionDirectaRival('${sanitizarHTML(miLigaActual)}', '${sanitizarHTML(n)}', this)" class="btn-inspect-invite-liga" style="margin-top: 8px;">
                 <i class="ph-bold ph-paper-plane-tilt"></i> Invitar a mi liga (${sanitizarHTML(miLigaActual.replace(/_/g, ' '))})
             </button>
         `;
@@ -307,7 +307,7 @@ function renderizarModalInspeccion(datosRival) {
 
         contenidoTabHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
-                <div class="fut-card ${datosRival.card_theme}" style="transform:scale(0.92); margin:4px 0 -12px 0;">
+                <div class="fut-card ${datosRival.card_theme}" style="transform:scale(0.85); transform-origin:top center; margin:2px 0 -44px 0;">
                     <div class="fut-card-shine"></div>
                     <div class="fut-top">
                         <div class="fut-badge-meta">
