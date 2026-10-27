@@ -31,7 +31,7 @@ const STADIUMS_QUEUE = [
         ubicacionBadge: '📍 Newcastle, Inglaterra · ST JAMES\' PARK',
         pistas: [
             { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad monumental para 52.300 hinchas en el centro urbano', color: '#00ff77' },
-            { icon: '⚽', tag: 'PISTA 2:', text: 'El templo donde Alan Shearer se convirtió en el máximo goleador histórico de la Premier League', color: '#38bdf8' },
+            { icon: '⚽', tag: 'PISTA 2:', text: 'Donde brilló Alan Shearer, goleador histórico', color: '#38bdf8' },
             { icon: '🖤🤍', tag: 'PISTA 3:', text: 'La catedral del Toon Army y hogar de las legendarias Urracas', color: '#ffd700' }
         ],
         portadaClue: '52.300 hinchas · En el centro urbano · Newcastle',
@@ -376,7 +376,7 @@ async function procesarEstadio(item, index, total) {
             }
             .clue-indicator { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; }
             .clue-icon { font-size: 38px; margin-right: 18px; }
-            .clue-text { color: #ffffff; font-size: 34px; font-weight: 800; }
+            .clue-text { color: #ffffff; font-size: 34px; font-weight: 800; white-space: nowrap; }
             .clue-tag { font-weight: 900; margin-right: 10px; }
 
             .reveal-banner {
