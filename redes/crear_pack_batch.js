@@ -14,31 +14,87 @@ const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
 // Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
     {
-        id: 'st_james_park',
-        nombreMostrar: 'ST JAMES\' PARK',
-        clubMostrar: 'NEWCASTLE UNITED',
-        pais: 'Inglaterra',
-        folderName: 'ST-JAMES-PARK',
-        videoFileName: 'Estadio_St_James_Park_Newcastle.mp4',
-        coverFileName: 'Portada_Estadio_St_James_Park.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Inglaterra\\St James’ Park_ Newcastle.mp4",
-        targetLat: 54.9755,
-        targetLng: -1.6216,
-        userLat: 54.9728,
-        userLng: -1.6185,
-        distanciaTexto: '360 METROS',
-        puntosTexto: '4.176 PUNTOS 🔥',
-        ubicacionBadge: '📍 Newcastle, Inglaterra · ST JAMES\' PARK',
+        id: 'lanus_la_fortaleza',
+        nombreMostrar: 'LA FORTALEZA',
+        clubMostrar: 'CLUB ATLÉTICO LANÚS',
+        pais: 'Argentina',
+        folderName: 'Primera División\\LANUS-LA-FORTALEZA',
+        videoFileName: 'Estadio_La_Fortaleza_Lanus.mp4',
+        coverFileName: 'Portada_Estadio_La_Fortaleza.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\lanus.mp4",
+        targetLat: -34.7176,
+        targetLng: -58.3842,
+        userLat: -34.7148,
+        userLng: -58.3815,
+        distanciaTexto: '375 METROS',
+        puntosTexto: '4.142 PUNTOS 🔥',
+        ubicacionBadge: '📍 Lanús, Buenos Aires · LA FORTALEZA',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad monumental para 52.300 hinchas en el centro urbano', color: '#00ff77' },
-            { icon: '⚽', tag: 'PISTA 2:', text: 'Donde brilló Alan Shearer, goleador histórico', color: '#38bdf8' },
-            { icon: '🖤🤍', tag: 'PISTA 3:', text: 'La catedral del Toon Army y hogar de las legendarias Urracas', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 47.020 hinchas en el sur del Gran Buenos Aires', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1929: una de las fortalezas más difíciles del fútbol argentino', color: '#38bdf8' },
+            { icon: '🇱🇧', tag: 'PISTA 3:', text: 'El hogar del Granate, campeón de Primera División y de la Copa Sudamericana', color: '#ffd700' }
         ],
-        portadaClue: '52.300 hinchas · En el centro urbano · Newcastle',
+        portadaClue: '47.020 hinchas · Sur del Gran Buenos Aires · Inaugurado en 1929',
         copys: {
-            club: 'Newcastle United Football Club',
-            paisHashtag: '#premierleague #newcastle #newcastleunited #stjamespark #toonarmy #magpies #estadios',
-            extraPista: 'la marea albinegra del Toon Army, los goles eternos de Alan Shearer y la catedral del norte inglés'
+            club: 'Club Atlético Lanús',
+            paisHashtag: '#lanus #clubatleticolanus #lafortaleza #granate #futbolargentino #estadios #stadiumguessr',
+            extraPista: 'las noches coperas en el sur, la mística de La Fortaleza y los goles del Pepe Sand'
+        }
+    },
+    {
+        id: 'huracan_el_palacio',
+        nombreMostrar: 'EL PALACIO DUCÓ',
+        clubMostrar: 'CLUB ATLÉTICO HURACÁN',
+        pais: 'Argentina',
+        folderName: 'Primera División\\HURACAN-EL-PALACIO',
+        videoFileName: 'Estadio_El_Palacio_Huracan.mp4',
+        coverFileName: 'Portada_Estadio_El_Palacio.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\huracan.mp4",
+        targetLat: -34.6433,
+        targetLng: -58.3965,
+        userLat: -34.6405,
+        userLng: -58.3932,
+        distanciaTexto: '388 METROS',
+        puntosTexto: '4.118 PUNTOS 🔥',
+        ubicacionBadge: '📍 Parque Patricios, CABA · EL PALACIO DUCÓ',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 48.314 espectadores con su imponente torre Art Déco', color: '#00ff77' },
+            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1947: declarado patrimonio histórico y cultural porteño', color: '#38bdf8' },
+            { icon: '🎈', tag: 'PISTA 3:', text: 'El templo del Globo donde brillaron leyendas como René Houseman y Miguel Brindisi', color: '#ffd700' }
+        ],
+        portadaClue: '48.314 hinchas · Torre Art Déco · Parque Patricios',
+        copys: {
+            club: 'Club Atlético Huracán',
+            paisHashtag: '#huracan #elpalacio #tomasadolfoduco #cahuracan #parquepatricios #futbolargentino #estadios',
+            extraPista: 'la torre Art Déco, las gambetas eternas de Houseman y el clásico de barrio porteño'
+        }
+    },
+    {
+        id: 'union_santa_fe',
+        nombreMostrar: 'ESTADIO 15 DE ABRIL',
+        clubMostrar: 'CA UNIÓN DE SANTA FE',
+        pais: 'Argentina',
+        folderName: 'Primera División\\UNION-SANTA-FE',
+        videoFileName: 'Estadio_15_De_Abril_Union_Santa_Fe.mp4',
+        coverFileName: 'Portada_Estadio_15_De_Abril.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\union.mp4",
+        targetLat: -31.6318,
+        targetLng: -60.7157,
+        userLat: -31.6290,
+        userLng: -60.7128,
+        distanciaTexto: '392 METROS',
+        puntosTexto: '4.110 PUNTOS 🔥',
+        ubicacionBadge: '📍 Santa Fe Capital · ESTADIO 15 DE ABRIL',
+        pistas: [
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 28.000 hinchas en la capital de la provincia de Santa Fe', color: '#00ff77' },
+            { icon: '🔴⚪', tag: 'PISTA 2:', text: 'Inaugurado en 1929: su nombre conmemora la fecha de fundación del club', color: '#38bdf8' },
+            { icon: '🇦🇷', tag: 'PISTA 3:', text: 'La fortaleza del Tatengue y uno de los estadios más tradicionales del interior', color: '#ffd700' }
+        ],
+        portadaClue: '28.000 hinchas · Santa Fe Capital · Fundado en 1907',
+        copys: {
+            club: 'Club Atlético Unión de Santa Fe',
+            paisHashtag: '#uniondesantafe #tatengue #clubaunion #santafe #futbolargentino #estadios #stadiumguessr',
+            extraPista: 'la fiesta rojiblanca en la avenida López y Planes, la pasión santafesina y el Clásico de la ciudad'
         }
     }
 ];
