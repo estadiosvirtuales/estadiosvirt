@@ -8468,10 +8468,17 @@ html[data-theme="light"] .xp-bar-big-fill {
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.75)) !important;
 }
 
-/* 🍏 BLINDAJE SAFARI IOS: Elimina la máscara de degradado que volvía invisible la cara del jugador */
-#poster-export-container .ac-avatar-full {
+/* 🍏 BLINDAJE SAFARI IOS: Elimina la máscara de degradado que volvía invisible la cara del jugador y previene colapsos */
+#poster-export-container img {
     -webkit-mask-image: none !important;
     mask-image: none !important;
+}
+
+#poster-export-container .ac-avatar-full,
+#poster-export-container .ac-avatar-img-full {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    max-width: none !important;
 }
 
 .poster-card-glow {

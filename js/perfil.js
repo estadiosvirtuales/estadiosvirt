@@ -2131,9 +2131,65 @@ function toggleLogrosMobile() {
 
 const FALLBACK_PIXEL_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
+// 🍏 Helper para convertir cualquier Blob (incluyendo WebP) a DataURL en formato PNG estándar
+function blobAPngDataUrl(blob) {
+    return new Promise((resolve) => {
+        const objUrl = URL.createObjectURL(blob);
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth || img.width || 100;
+                canvas.height = img.naturalHeight || img.height || 100;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                URL.revokeObjectURL(objUrl);
+                const pngData = canvas.toDataURL('image/png');
+                resolve(pngData);
+            } catch (err) {
+                URL.revokeObjectURL(objUrl);
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve(FALLBACK_PIXEL_BASE64);
+                reader.readAsDataURL(blob);
+            }
+        };
+        img.onerror = () => {
+            URL.revokeObjectURL(objUrl);
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = () => resolve(FALLBACK_PIXEL_BASE64);
+            reader.readAsDataURL(blob);
+        };
+        img.src = objUrl;
+    });
+}
+
 async function urlABase64Seguro(url) {
     if (!url || typeof url !== 'string') return FALLBACK_PIXEL_BASE64;
-    if (url.startsWith('data:image')) return url;
+    if (url.startsWith('data:image/png')) return url;
+
+    // Si ya es un data URI pero en otro formato (WebP/JPEG), lo convertimos a PNG
+    if (url.startsWith('data:image')) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.naturalWidth || 100;
+                    canvas.height = img.naturalHeight || 100;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                } catch (e) {
+                    resolve(url);
+                }
+            };
+            img.onerror = () => resolve(url);
+            img.src = url;
+        });
+    }
 
     let absUrl;
     try {
@@ -2144,17 +2200,15 @@ async function urlABase64Seguro(url) {
 
     // 1. Fetch directo (mismo origen o con cabeceras CORS válidas)
     try {
-        const res = await fetch(absUrl, { mode: 'cors' });
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 3500);
+        const res = await fetch(absUrl, { mode: 'cors', signal: ctrl.signal });
+        clearTimeout(tid);
         if (res.ok) {
             const blob = await res.blob();
-            const dataUri = await new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-            });
-            if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
-                return dataUri;
+            const pngData = await blobAPngDataUrl(blob);
+            if (pngData && typeof pngData === 'string' && pngData.startsWith('data:image')) {
+                return pngData;
             }
         }
     } catch (e) {}
@@ -2162,22 +2216,43 @@ async function urlABase64Seguro(url) {
     // 2. Fallback por Proxy CORS si la imagen viene de un dominio externo
     if (absUrl.startsWith('http')) {
         try {
+            const ctrl = new AbortController();
+            const tid = setTimeout(() => ctrl.abort(), 4000);
             const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(absUrl)}&output=png`;
-            const resProxy = await fetch(proxyUrl, { mode: 'cors' });
+            const resProxy = await fetch(proxyUrl, { mode: 'cors', signal: ctrl.signal });
+            clearTimeout(tid);
             if (resProxy.ok) {
                 const blob = await resProxy.blob();
-                const dataUri = await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(blob);
-                });
-                if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:image')) {
-                    return dataUri;
+                const pngData = await blobAPngDataUrl(blob);
+                if (pngData && typeof pngData === 'string' && pngData.startsWith('data:image')) {
+                    return pngData;
                 }
             }
         } catch (e) {}
     }
+
+    // 3. Fallback directo creando un elemento Image con crossOrigin anónimo
+    try {
+        const directPng = await new Promise((resolve) => {
+            const directImg = new Image();
+            directImg.crossOrigin = 'anonymous';
+            directImg.onload = () => {
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = directImg.naturalWidth || 100;
+                    canvas.height = directImg.naturalHeight || 100;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(directImg, 0, 0);
+                    resolve(canvas.toDataURL('image/png'));
+                } catch (err) {
+                    resolve(FALLBACK_PIXEL_BASE64);
+                }
+            };
+            directImg.onerror = () => resolve(FALLBACK_PIXEL_BASE64);
+            directImg.src = absUrl;
+        });
+        if (directPng && directPng !== FALLBACK_PIXEL_BASE64) return directPng;
+    } catch (e) {}
 
     return FALLBACK_PIXEL_BASE64;
 }
@@ -2205,7 +2280,7 @@ async function generarYDescargarPosterFUT() {
     poster.id = 'poster-export-container';
     poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
-    const logoHeaderUrl = new URL('https://estadiosvirtuales.github.io/estadiosvirt/escudos/Logo.webp', window.location.href).href;
+    const logoHeaderUrl = new URL('escudos/Logo.webp', window.location.href).href;
     const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.webp', window.location.href).href;
     const fuegoIconUrl = new URL('fuego.webp', window.location.href).href;
     const trofeoIconUrl = new URL('trofeo.webp', window.location.href).href;
@@ -2271,7 +2346,7 @@ async function generarYDescargarPosterFUT() {
     poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
 
     try {
-        // Conversión a Base64 de todas las imágenes
+        // Conversión a Base64 PNG pura de todas las imágenes (blindaje total iOS / Safari WebKit)
         const allImages = Array.from(poster.querySelectorAll('img'));
         await Promise.all(allImages.map(async (img) => {
             const rawSrc = img.getAttribute('src') || img.src;
@@ -2290,14 +2365,34 @@ async function generarYDescargarPosterFUT() {
             }
         }));
 
-        await new Promise(r => setTimeout(r, 200));
+        // Aseguramos que todas las fuentes tipográficas estén montadas
+        if (document.fonts && document.fonts.ready) {
+            try { await document.fonts.ready; } catch (e) {}
+        }
 
+        // Breve pausa para asegurar sincronización en el árbol DOM
+        await new Promise(r => setTimeout(r, 150));
+
+        // 🍏 Pase 1 (Warm-up silencioso para Safari WebKit en iOS): precarga texturas internas de foreignObject
+        try {
+            await htmlToImage.toJpeg(poster, {
+                quality: 0.5,
+                pixelRatio: 1,
+                backgroundColor: '#090e15',
+                skipFonts: true
+            });
+        } catch (e) {}
+
+        await new Promise(r => setTimeout(r, 120));
+
+        // 🍏 Pase 2 (Definitivo en alta resolución): Renderizado completo con todas las imágenes ya presentes en caché
         const dataUrl = await htmlToImage.toJpeg(poster, {
             quality: 0.95,
-            pixelRatio: 2.2,
+            pixelRatio: 2.0,
             backgroundColor: '#090e15',
             width: 450,
-            height: 800
+            height: 800,
+            skipFonts: true
         });
 
         poster.remove();
@@ -2312,13 +2407,13 @@ async function generarYDescargarPosterFUT() {
             showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
         };
 
-        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
         if (esMobile && navigator.canShare) {
             try {
                 const res = await fetch(dataUrl);
                 const blob = await res.blob();
-                const file = new File([blob], 'mi-carta-estadiosvirtuales.jpg', { type: 'image/jpeg' });
+                const file = new File([blob], `carta-fut-${customNick.toLowerCase().replace(/\s+/g, '-')}.jpg`, { type: 'image/jpeg' });
 
                 if (navigator.canShare({ files: [file] })) {
                     await navigator.share({
@@ -2330,6 +2425,10 @@ async function generarYDescargarPosterFUT() {
                     return;
                 }
             } catch (shareErr) {
+                if (shareErr && shareErr.name === 'AbortError') {
+                    // El usuario canceló conscientemente el menú de compartir nativo
+                    return;
+                }
                 console.warn("Cancelación de compartir nativo, procediendo a descarga directa:", shareErr);
             }
         }
