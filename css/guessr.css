@@ -2144,28 +2144,88 @@
     white-space: nowrap !important;
 }
 
-/* 📋 TABLA Y COLUMNA G/E/P DE ONCE INICIAL EN LIGA DE AMIGOS */
+/* 📋 TABLA Y COLUMNAS DE ONCE INICIAL EN LIGA DE AMIGOS */
 .liga-once-header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 14px;
+    padding: 9px 20px;
+    background: rgba(0, 0, 0, 0.22);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+    box-sizing: border-box;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+.once-hdr-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 0.70rem;
     font-weight: 900;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 4px;
-    width: 100%;
+    letter-spacing: 0.6px;
+    user-select: none;
+    flex: 1;
+    min-width: 0;
+}
+
+.once-stats-cluster {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.once-hdr-cell {
+    font-size: 0.70rem;
+    font-weight: 900;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    user-select: none;
     box-sizing: border-box;
+}
+
+.once-data-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.once-col-gep {
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
+}
+
+.once-col-grl {
+    width: 86px;
+    min-width: 86px;
+    max-width: 86px;
+}
+
+.once-col-act {
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
 }
 
 .once-stat-gep {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
-    padding: 3px 8px;
+    padding: 4px 8px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
@@ -2173,6 +2233,7 @@
     font-weight: 900;
     line-height: 1;
     white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .once-stat-gep .gep-sub {
@@ -2186,6 +2247,43 @@
     font-size: 0.68rem;
     color: var(--text-muted);
     opacity: 0.5;
+}
+
+.once-grl-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.once-grl-num {
+    color: #fbbf24;
+    font-weight: 900;
+    font-size: 0.96rem;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+.once-lock-text {
+    font-size: 0.70rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    opacity: 0.8;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+[data-theme="light"] .liga-once-header-row {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .once-stat-gep {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 #liga-amigos-modal .ranking-left-panel .ranking-tab-img[src*="posicion"] {
@@ -2640,31 +2738,61 @@
     }
 
     .liga-once-header-row {
-        padding: 4px 6px !important;
+        padding: 6px 10px !important;
+    }
+
+    .ranking-right-panel .liga-row-item .inspect-clickable-user img[alt="1º"],
+    .ranking-right-panel .liga-row-item .inspect-clickable-user img[alt="2º"],
+    .ranking-right-panel .liga-row-item .inspect-clickable-user img[alt="3º"] {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .once-hdr-user,
+    .once-hdr-cell {
         font-size: 0.58rem !important;
+        letter-spacing: 0.4px !important;
     }
 
-    .liga-once-header-row .col-gep-hdr {
-        min-width: 48px !important;
+    .once-stats-cluster {
+        gap: 5px !important;
     }
 
-    .liga-once-header-row .col-grl-hdr {
-        min-width: 46px !important;
+    .once-col-gep {
+        width: 62px !important;
+        min-width: 62px !important;
+        max-width: 62px !important;
     }
 
-    .liga-once-header-row .col-act-hdr {
-        min-width: 38px !important;
+    .once-col-grl {
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
+    }
+
+    .once-col-act {
+        width: 52px !important;
+        min-width: 52px !important;
+        max-width: 52px !important;
+    }
+
+    .once-grl-num {
+        font-size: 0.78rem !important;
     }
 
     .once-stat-gep {
         padding: 2px 4px !important;
-        font-size: 0.68rem !important;
+        font-size: 0.66rem !important;
         gap: 2px !important;
         border-radius: 5px !important;
     }
 
     .once-stat-gep .gep-sub {
         font-size: 0.54rem !important;
+    }
+
+    .once-lock-text {
+        font-size: 0.56rem !important;
     }
 
     .carrera-action-self.once-self-badge {
