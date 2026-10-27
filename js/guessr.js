@@ -3553,7 +3553,6 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
         <div class="liga-once-header-row">
             <div class="once-hdr-user"># &nbsp; Integrante</div>
             <div class="once-col-gep once-hdr-cell">G / E / P</div>
-            <div class="once-col-grl once-hdr-cell">GRL</div>
             <div class="once-col-act once-hdr-cell">DUELO</div>
         </div>`;
     }
@@ -3593,7 +3592,6 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             }
 
             let bloqueGEP = "";
-            let bloquePuntos = "";
             if (esOnce) {
                 const part = f.partidos || { g: 0, e: 0, p: 0 };
                 bloqueGEP = `<div class="once-stat-gep" title="Partidos del Once: ${part.g}G · ${part.e}E · ${part.p}P">
@@ -3603,11 +3601,6 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                                 <span class="gep-sep">·</span>
                                 <strong style="color:#ff4757;">${part.p}<span class="gep-sub">P</span></strong>
                             </div>`;
-                const urlEscudo = typeof obtenerUrlEscudo === 'function' ? obtenerUrlEscudo(f.escudo || 'ev') : 'escudo-ev.webp';
-                bloquePuntos = `<div class="once-grl-box">
-                                    <span class="once-grl-num">GRL ${f.ovr || 60}</span>
-                                    <img src="${urlEscudo}" class="carrera-mini-shield" title="Club" onerror="this.src='escudo-ev.webp';">
-                                </div>`;
                 if (esPropio) {
                     botonReto = '';
                 } else if ((f.nivelActual || 1) >= 4) {
@@ -3619,13 +3612,13 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 htmlContenido += `
                 <div class="liga-row-item liga-once-row ${esPropio ? 'es-propio' : ''}">
                     <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${nombreRival.replace(/'/g, "\\'")}')" title="Ver carta de ${sanitizarHTML(nombreRival)}">
-                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span class="once-user-name">${sanitizarHTML(nombreRival)}</span> ${indicadorOnline}
+                        ${med} ${obtenerAvatarCirculoHTML(nombreRival)} <span class="once-user-name">${sanitizarHTML(nombreRival)}</span> <sub class="once-user-grl-sub" title="GRL de Once Inicial">GRL ${f.ovr || 60}</sub> ${indicadorOnline}
                     </div>
                     <div class="once-col-gep once-data-cell">${bloqueGEP}</div>
-                    <div class="once-col-grl once-data-cell">${bloquePuntos}</div>
                     <div class="once-col-act once-data-cell">${botonReto}</div>
                 </div>`;
             } else {
+                let bloquePuntos = "";
                 if (tipoVista === 'triunfos') {
                     const w = f.triunfos || 0;
                     const l = f.derrotas || 0;
@@ -3657,8 +3650,6 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
     // 📌 FILA ANCLADA (STICKY) EN LIGA SI ESTÁS FUERA DEL TOP 50
     const miPuestoLigaIdx = (lista || []).findIndex(f => (f.nombre || '').trim().toLowerCase() === (miNombreRanking || '').toLowerCase());
     if (miPuestoLigaIdx >= 50 && miFila) {
-        let bloquePuntosSticky = "";
-        let bloqueGEPSticky = "";
         if (esOnce) {
             let miOvrLive = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
             if (miOvrLive === 0) {
@@ -3666,27 +3657,24 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 miOvrLive = Math.min(99, (typeof NIVELES !== 'undefined' && NIVELES[miNivelActual]) ? NIVELES[miNivelActual].ovr : 60);
             }
             const partMio = miFila.partidos || { g: 0, e: 0, p: 0 };
-            bloqueGEPSticky = `<div class="once-stat-gep" title="Tus partidos del Once: ${partMio.g}G · ${partMio.e}E · ${partMio.p}P">
-                                <strong style="color:#00e676;">${partMio.g}<span class="gep-sub">G</span></strong>
-                                <span class="gep-sep">·</span>
-                                <strong style="color:#fbbf24;">${partMio.e}<span class="gep-sub">E</span></strong>
-                                <span class="gep-sep">·</span>
-                                <strong style="color:#ff4757;">${partMio.p}<span class="gep-sub">P</span></strong>
-                               </div>`;
-            bloquePuntosSticky = `<div class="once-grl-box">
-                                    <span class="once-grl-num">GRL ${miOvrLive}</span>
-                                  </div>`;
+            const bloqueGEPSticky = `<div class="once-stat-gep" title="Tus partidos del Once: ${partMio.g}G · ${partMio.e}E · ${partMio.p}P">
+                                        <strong style="color:#00e676;">${partMio.g}<span class="gep-sub">G</span></strong>
+                                        <span class="gep-sep">·</span>
+                                        <strong style="color:#fbbf24;">${partMio.e}<span class="gep-sub">E</span></strong>
+                                        <span class="gep-sep">·</span>
+                                        <strong style="color:#ff4757;">${partMio.p}<span class="gep-sub">P</span></strong>
+                                     </div>`;
 
             htmlContenido += `
             <div class="liga-row-item liga-once-row sticky-user-row es-propio">
                 <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
-                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
+                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="once-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b></span> <sub class="once-user-grl-sub" title="Tu GRL">GRL ${miOvrLive}</sub>
                 </div>
                 <div class="once-col-gep once-data-cell">${bloqueGEPSticky}</div>
-                <div class="once-col-grl once-data-cell">${bloquePuntosSticky}</div>
                 <div class="once-col-act once-data-cell"></div>
             </div>`;
         } else {
+            let bloquePuntosSticky = "";
             if (tipoVista === 'triunfos') {
                 bloquePuntosSticky = `<div style="display:flex; align-items:center; gap:6px;">
                                         <strong style="color:#00e676; font-weight:900;">${miFila.triunfos || 0} <span style="font-size:.75rem; color:var(--text-muted); font-weight:700;">G</span></strong>
@@ -3702,7 +3690,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                 <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
                     <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <b>${sanitizarHTML(miNombreRanking)} (Vos)</b>
                 </span>
-                <span style="display:flex; align-items:center; gap:8px;">${bloqueGEPSticky}${bloquePuntosSticky}</span>
+                <span style="display:flex; align-items:center; gap:8px;">${bloquePuntosSticky}</span>
             </div>`;
         }
     }

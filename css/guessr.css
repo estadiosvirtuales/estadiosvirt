@@ -2147,7 +2147,7 @@
 /* 📋 TABLA Y COLUMNAS DE ONCE INICIAL EN LIGA DE AMIGOS (CSS GRID) */
 .liga-once-header-row {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 110px 96px 96px !important;
+    grid-template-columns: minmax(0, 1fr) 110px 96px !important;
     column-gap: 8px !important;
     align-items: center !important;
     padding: 10px 18px !important;
@@ -2166,11 +2166,33 @@
 
 .liga-row-item.liga-once-row {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 110px 96px 96px !important;
+    grid-template-columns: minmax(0, 1fr) 110px 96px !important;
     column-gap: 8px !important;
     align-items: center !important;
     padding: 11px 18px !important;
     box-sizing: border-box !important;
+}
+
+.once-user-grl-sub {
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 0.3px;
+    vertical-align: baseline;
+    margin-left: 5px;
+    padding: 1px 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    white-space: nowrap;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+[data-theme="light"] .once-user-grl-sub {
+    color: #475569 !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
 }
 
 .once-hdr-user {
@@ -2749,15 +2771,21 @@
     }
 
     .liga-once-header-row {
-        grid-template-columns: minmax(0, 1fr) 68px 54px 56px !important;
+        grid-template-columns: minmax(0, 1fr) 68px 58px !important;
         column-gap: 4px !important;
         padding: 6px 10px !important;
     }
 
     .liga-row-item.liga-once-row {
-        grid-template-columns: minmax(0, 1fr) 68px 54px 56px !important;
+        grid-template-columns: minmax(0, 1fr) 68px 58px !important;
         column-gap: 4px !important;
         padding: 9px 10px !important;
+    }
+
+    .once-user-grl-sub {
+        font-size: 0.58rem !important;
+        padding: 1px 4px !important;
+        margin-left: 3px !important;
     }
 
     .ranking-right-panel .liga-row-item .inspect-clickable-user img[alt="1º"],
