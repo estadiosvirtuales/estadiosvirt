@@ -464,6 +464,7 @@ El nuevo Santiago Bernabéu vs el imponente Cívitas Metropolitano. ¿Cuál de l
     },
     'man-united-man-city': {
         slug: 'MANCHESTER-UNITED-VS-MANCHESTER-CITY',
+        pais: 'Inglaterra',
         tituloBadge: '🥊 Duelo de Capacidad · Derbi de Manchester',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La gran batalla de Manchester',
@@ -505,6 +506,7 @@ Old Trafford vs el Etihad Stadium. ¿Cuál de los dos colosos del Derbi de Manch
     },
     'tottenham-arsenal': {
         slug: 'TOTTENHAM-VS-ARSENAL',
+        pais: 'Inglaterra',
         tituloBadge: '🥊 Duelo de Capacidad · Norte de Londres',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'El Derbi del Norte de Londres',
@@ -528,7 +530,7 @@ Old Trafford vs el Etihad Stadium. ¿Cuál de los dos colosos del Derbi de Manch
             id: 'arsenal',
             nombre: 'ARSENAL',
             estadio: 'Emirates Stadium',
-            apodo: 'El Emirates',
+            apodo: 'Emirates',
             capacidadNum: 60704,
             capacidadTexto: '60.704 esp.',
             escudoFile: 'arsenal.webp',
@@ -546,6 +548,7 @@ El ultramoderno Tottenham Hotspur Stadium vs el Emirates Stadium de los Gunners.
     },
     'man-united-liverpool': {
         slug: 'MANCHESTER-UNITED-VS-LIVERPOOL',
+        pais: 'Inglaterra',
         tituloBadge: '🥊 Duelo de Capacidad · Clásico de Inglaterra',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La rivalidad más histórica del fútbol inglés',
@@ -584,6 +587,132 @@ Old Trafford vs Anfield. Los dos gigantes del fútbol inglés cara a cara en un 
 🎮 Desafiá cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
 
 #ManchesterUnited #Liverpool #NorthWestDerby #OldTrafford #Anfield #PremierLeague #YNWA #EstadiosVirtuales`
+    },
+    'sanmartin-atletico-tucuman': {
+        slug: 'SAN-MARTIN-VS-ATLETICO-TUCUMAN',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Tucumano',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La máxima pasión del Norte Argentino',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_San_Martin_vs_Atletico_Tucuman.mp4',
+        portadaFileName: 'Portada_Duelo_San_Martin_Atletico_Tucuman.jpg',
+        bannerDiferencia: '¡ATLÉTICO TUCUMÁN POR 4.700 LUGARES!',
+        team1: {
+            id: 'san_martin_tuc',
+            nombre: 'SAN MARTÍN (T)',
+            estadio: 'La Ciudadela',
+            apodo: 'La Ciudadela',
+            capacidadNum: 30500,
+            capacidadTexto: '30.500 esp.',
+            escudoFile: 'SMTucuman.webp',
+            borderColor: '#e20613',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\San Martin de tucuman(listo)x2\\San Martín de Tucumán 4.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'atletico_tucuman',
+            nombre: 'ATLÉTICO TUCUMÁN',
+            estadio: 'Monumental José Fierro',
+            apodo: 'José Fierro',
+            capacidadNum: 35200,
+            capacidadTexto: '35.200 esp.',
+            escudoFile: 'atucuman.webp',
+            borderColor: '#0099cc',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\atl tucuman(listo)\\atl tucuman jose fierro.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿SAN MARTÍN O ATLÉTICO TUCUMÁN? 🏟️🔥
+La Ciudadela vs el Monumental José Fierro. ¿Cuál de los dos colosos del Clásico Tucumano tiene mayor capacidad oficial de público? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de canchas en el link del perfil: estadiosvirtuales.com
+
+#SanMartinTucuman #AtleticoTucuman #ClasicoTucumano #LaCiudadela #JoseFierro #Tucuman #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'colon-union': {
+        slug: 'COLON-VS-UNION',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Santafesino',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La fiesta del fútbol de Santa Fe',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Colon_vs_Union.mp4',
+        portadaFileName: 'Portada_Duelo_Colon_Union.jpg',
+        bannerDiferencia: '¡COLÓN POR 13.000 LUGARES!',
+        team1: {
+            id: 'colon',
+            nombre: 'COLÓN DE SANTA FE',
+            estadio: 'Brigadier Estanislao López',
+            apodo: 'Cementerio de Elefantes',
+            capacidadNum: 40000,
+            capacidadTexto: '40.000 esp.',
+            escudoFile: 'Colon.webp',
+            borderColor: '#e30613',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Colon 3.0.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'union',
+            nombre: 'UNIÓN DE SANTA FE',
+            estadio: '15 de Abril',
+            apodo: 'El 15 de Abril',
+            capacidadNum: 27000,
+            capacidadTexto: '27.000 esp.',
+            escudoFile: 'Union.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\union.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿COLÓN O UNIÓN? 🏟️🔥
+El Cementerio de los Elefantes vs el 15 de Abril. ¿Cuál de los dos templos del Clásico Santafesino tiene mayor capacidad oficial de espectadores? 😱
+
+👉 ¿Sabías la tremenda diferencia o pensabas que estaban más parejos? Dejá tu voto 👇
+🎮 Jugá la trivia de estadios gratis en: estadiosvirtuales.com
+
+#Colon #Union #ClasicoSantafesino #CementerioDeLosElefantes #15DeAbril #SantaFe #FutbolArgentino #EstadiosVirtuales`
+    },
+    'allboys-atlanta': {
+        slug: 'ALL-BOYS-VS-ATLANTA',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Floresta vs Villa Crespo',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Histórico clásico del ascenso porteño',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_All_Boys_vs_Atlanta.mp4',
+        portadaFileName: 'Portada_Duelo_All_Boys_Atlanta.jpg',
+        bannerDiferencia: '¡ALL BOYS POR +7.500 LUGARES!',
+        team1: {
+            id: 'all_boys',
+            nombre: 'ALL BOYS',
+            estadio: 'Islas Malvinas',
+            apodo: 'Floresta',
+            capacidadNum: 21500,
+            capacidadTexto: '21.500 esp.',
+            escudoFile: 'Allboys.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\All Boys(listo)x2\\All Boys.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'atlanta',
+            nombre: 'ATLANTA',
+            estadio: 'Don León Kolbowski',
+            apodo: 'Villa Crespo',
+            capacidadNum: 14000,
+            capacidadTexto: '14.000 esp.',
+            escudoFile: 'Atlanta.webp',
+            borderColor: '#ffd700',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Atlanta.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿ALL BOYS O ATLANTA? 🏟️🔥
+El Islas Malvinas de Floresta vs el Don León Kolbowski de Villa Crespo. ¿Cuál de estos dos estadios tradicionales del ascenso tiene mayor capacidad de público? 😱
+
+👉 ¿Acertaste o pensabas que ganaba el Bohemio? Comentá abajo 👇
+🎮 Poné a prueba cuánto sabés de canchas en el link del perfil: estadiosvirtuales.com
+
+#AllBoys #Atlanta #Floresta #VillaCrespo #Albo #Bohemio #AscensoArgentino #EstadiosVirtuales`
     }
 };
 
@@ -985,7 +1114,9 @@ async function renderizarDuelo(dueloKey) {
     console.log(`🥊 INICIANDO PRODUCCIÓN: ${duelo.slug}`);
     console.log(`🥊 ========================================================\n`);
 
-    const outFolder = path.join(BASE_OUTPUT_DIR, duelo.slug);
+    const outFolder = duelo.pais 
+        ? path.join(BASE_OUTPUT_DIR, duelo.pais, duelo.slug)
+        : path.join(BASE_OUTPUT_DIR, duelo.slug);
     if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
     // Carpeta temporal de assets
@@ -1099,8 +1230,18 @@ async function main() {
     const target = process.argv[2] || 'bloque1';
     const PREMIER_KEYS = ['man-united-man-city', 'tottenham-arsenal', 'man-united-liverpool'];
     const TOP5_KEYS = ['river-maracana', 'madrid-barca', 'corinthians-palmeiras', 'betis-sevilla', 'madrid-atleti'];
+    const ARG_KEYS = ['sanmartin-atletico-tucuman', 'colon-union', 'allboys-atlanta'];
 
-    if (target === 'bloque1' || target === 'premier' || target === 'lote-premier') {
+    if (target === 'argentina' || target === 'arg' || target === 'lote-argentina') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS ARGENTINA (${ARG_KEYS.length} videos)...\n`);
+        for (let i = 0; i < ARG_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${ARG_KEYS.length}] PROCESANDO DUELO: ${ARG_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(ARG_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE ARGENTINA FINALIZADO CON ÉXITO!`);
+    } else if (target === 'bloque1' || target === 'premier' || target === 'lote-premier') {
         console.log(`🚀 INICIANDO PRODUCCIÓN DE BLOQUE 1: DUELOS PREMIER LEAGUE (${PREMIER_KEYS.length} videos)...\n`);
         for (let i = 0; i < PREMIER_KEYS.length; i++) {
             console.log(`\n========================================================`);
