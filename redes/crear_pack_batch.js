@@ -9,9 +9,10 @@ console.log('🚀 ========================================================\n');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const baseOutputDir = "E:\\Google earth studio\\videos para mostrar\\TRIVIAS";
+const { TRIVIAS_DATABASE } = require('./trivias_database.js');
 
-// COLA DE ESTADIOS A PRODUCIR
-const STADIUMS_QUEUE = [
+// COLA DE ESTADIOS A PRODUCIR (Por defecto o reemplazable por CLI)
+let STADIUMS_QUEUE = [
     {
         id: 'argentinos_diego_maradona',
         nombreMostrar: 'DIEGO ARMANDO MARADONA',
@@ -723,15 +724,38 @@ async function procesarEstadio(item, index, total) {
 }
 
 async function main() {
-    const total = STADIUMS_QUEUE.length;
+    let queue = STADIUMS_QUEUE;
+    const arg = process.argv[2];
+
+    if (arg === 'all' || arg === '--all') {
+        queue = TRIVIAS_DATABASE.filter(s => s.id !== 'argentinos_diego_maradona');
+    } else if (arg) {
+        const filtered = TRIVIAS_DATABASE.filter(s =>
+            s.id.toLowerCase().includes(arg.toLowerCase()) ||
+            s.pais.toLowerCase().includes(arg.toLowerCase()) ||
+            s.clubMostrar.toLowerCase().includes(arg.toLowerCase())
+        );
+        if (filtered.length > 0) {
+            queue = filtered;
+        }
+    }
+
+    const total = queue.length;
     if (total === 0) {
-        console.log('ℹ️ La cola STADIUMS_QUEUE está vacía. Inserte estadios para procesar.');
+        console.log('ℹ️ La cola STADIUMS_QUEUE está vacía.');
         return;
     }
+
+    console.log(`\n🚀 INICIANDO PRODUCCIÓN DE ${total} TRIVIAS EN CADENA...\n`);
+
     for (let i = 0; i < total; i++) {
-        await procesarEstadio(STADIUMS_QUEUE[i], i, total);
+        try {
+            await procesarEstadio(queue[i], i, total);
+        } catch (err) {
+            console.error(`❌ Error al procesar estadio [${queue[i].nombreMostrar}]:`, err.message);
+        }
     }
-    console.log(`\n🎉 PROCESO FINALIZADO (${total} estadios).`);
+    console.log(`\n🎉 PROCESO FINALIZADO (${total} estadios procesados).`);
 }
 
 if (require.main === module) {
