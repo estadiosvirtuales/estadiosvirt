@@ -1751,8 +1751,23 @@ async function renderizarRetoDiario(targetKey = '2') {
     } catch (_) {}
 }
 
-const targetKey = process.argv[2] || '2';
-renderizarRetoDiario(targetKey).catch((err) => {
-    console.error('❌ Error fatal al renderizar Reto Diario:', err);
+async function main() {
+    let args = process.argv.slice(2);
+    if (args.length === 0) args = ['2'];
+    if (args.includes('all')) {
+        args = ['1', '2', '3', '4', '5', '6', '7'];
+    }
+
+    for (let i = 0; i < args.length; i++) {
+        const key = args[i];
+        console.log(`\n========================================================`);
+        console.log(`🎬 PROCESANDO RETO DIARIO [${i + 1}/${args.length}]: ${key}`);
+        console.log(`========================================================\n`);
+        await renderizarRetoDiario(key);
+    }
+}
+
+main().catch((err) => {
+    console.error('❌ Error fatal al renderizar Retos Diarios:', err);
     process.exit(1);
 });
