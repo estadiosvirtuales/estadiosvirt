@@ -426,6 +426,109 @@ const RETOS_DATABASE = {
                 ubicacionBadge: '📍 Sevilla, España · BENITO VILLAMARÍN'
             }
         ]
+    },
+    '5': {
+        id: 'RETO-DIARIO-05-MUNDIAL',
+        numeroReto: 5,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_05_Mundial.mp4',
+        portadaFileName: 'Portada_Reto_Diario_05.jpg',
+        puntuacionTotal: 24710,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'LA BOMBONERA',
+                clubNombre: 'BOCA JUNIORS',
+                ciudad: 'Buenos Aires, Argentina',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4",
+                clipStart: 3.0,
+                pista: '57.200 hinchas en Brandsen 805, La Boca',
+                targetLat: -34.6356,
+                targetLng: -58.3648,
+                userLat: -34.6340,
+                userLng: -58.3630,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 4940,
+                ubicacionBadge: '📍 Buenos Aires, Argentina · LA BOMBONERA'
+            },
+            {
+                num: 2,
+                estadioNombre: 'ESTADIO MARACANÁ',
+                clubNombre: 'FLAMENGO / FLUMINENSE',
+                ciudad: 'Río de Janeiro, Brasil',
+                videoPath: "E:\\Google earth studio\\Brasil\\Maracaná.mp4",
+                clipStart: 3.0,
+                pista: '78.838 hinchas en el templo sagrado carioca',
+                targetLat: -22.9122,
+                targetLng: -43.2302,
+                userLat: -22.9105,
+                userLng: -43.2285,
+                distanciaTexto: '250 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 9870,
+                ubicacionBadge: '📍 Río de Janeiro, Brasil · MARACANÁ'
+            },
+            {
+                num: 3,
+                estadioNombre: 'ALLIANZ ARENA',
+                clubNombre: 'BAYERN MÚNICH',
+                ciudad: 'Múnich, Alemania',
+                videoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Allianz Arena.mp4",
+                clipStart: 3.0,
+                pista: '75.024 hinchas iluminados de rojo en Baviera',
+                targetLat: 48.2188,
+                targetLng: 11.6247,
+                userLat: 48.2170,
+                userLng: 11.6230,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 14810,
+                ubicacionBadge: '📍 Múnich, Alemania · ALLIANZ ARENA'
+            },
+            {
+                num: 4,
+                estadioNombre: 'SAN SIRO / MEAZZA',
+                clubNombre: 'AC MILAN / INTER',
+                ciudad: 'Milán, Italia',
+                videoPath: "E:\\Google earth studio\\Italia\\Subidos\\San Siro 2.mp4",
+                clipStart: 3.0,
+                pista: '75.817 hinchas en La Scala del Calcio',
+                targetLat: 45.4781,
+                targetLng: 9.1240,
+                userLat: 45.4765,
+                userLng: 9.1220,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 19760,
+                ubicacionBadge: '📍 Milán, Italia · SAN SIRO'
+            },
+            {
+                num: 5,
+                estadioNombre: 'ESTADIO AZTECA',
+                clubNombre: 'SELECCIÓN DE MÉXICO',
+                ciudad: 'Ciudad de México, México',
+                videoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+                clipStart: 3.0,
+                pista: '83.264 hinchas en el Coloso de Santa Úrsula',
+                targetLat: 19.3029,
+                targetLng: -99.1505,
+                userLat: 19.3012,
+                userLng: -99.1490,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 24710,
+                ubicacionBadge: '📍 CDMX, México · ESTADIO AZTECA'
+            }
+        ]
     }
 };
 
@@ -435,6 +538,8 @@ RETOS_DATABASE['argentina'] = RETOS_DATABASE['1'];
 RETOS_DATABASE['premier'] = RETOS_DATABASE['3'];
 RETOS_DATABASE['espana'] = RETOS_DATABASE['4'];
 RETOS_DATABASE['laliga'] = RETOS_DATABASE['4'];
+RETOS_DATABASE['mundial'] = RETOS_DATABASE['5'];
+RETOS_DATABASE['catedrales'] = RETOS_DATABASE['5'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
