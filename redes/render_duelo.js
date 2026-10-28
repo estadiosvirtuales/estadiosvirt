@@ -619,7 +619,7 @@ Old Trafford vs Anfield. Los dos gigantes del fútbol inglés cara a cara en un 
             capacidadTexto: '35.200 esp.',
             escudoFile: 'atucuman.webp',
             borderColor: '#0099cc',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\atl tucuman(listo)\\atl tucuman jose fierro.mp4",
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\atl tucuman(listo)\\Atl Tucumán 2.mp4",
             esGanador: true
         },
         copy: `🥊 DUELO DE CAPACIDAD: ¿SAN MARTÍN O ATLÉTICO TUCUMÁN? 🏟️🔥
