@@ -461,6 +461,129 @@ El nuevo Santiago Bernabéu vs el imponente Cívitas Metropolitano. ¿Cuál de l
 🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
 
 #RealMadrid #Atleti #AtleticoDeMadrid #DerbiMadrileño #SantiagoBernabeu #CivitasMetropolitano #LaLiga #EstadiosVirtuales`
+    },
+    'man-united-man-city': {
+        slug: 'MANCHESTER-UNITED-VS-MANCHESTER-CITY',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi de Manchester',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La gran batalla de Manchester',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Man_United_vs_Man_City.mp4',
+        portadaFileName: 'Portada_Duelo_Man_United_Man_City.jpg',
+        bannerDiferencia: '¡EL UNITED POR CASI 21.000 LUGARES!',
+        team1: {
+            id: 'man_united',
+            nombre: 'MANCHESTER UNITED',
+            estadio: 'Old Trafford',
+            apodo: 'Teatro de los Sueños',
+            capacidadNum: 74310,
+            capacidadTexto: '74.310 esp.',
+            escudoFile: 'manchesterunited.webp',
+            borderColor: '#da291c',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Old Trafford_ Manchester United.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'man_city',
+            nombre: 'MANCHESTER CITY',
+            estadio: 'Etihad Stadium',
+            apodo: 'Etihad Stadium',
+            capacidadNum: 53400,
+            capacidadTexto: '53.400 esp.',
+            escudoFile: 'manchestercity.webp',
+            borderColor: '#6cabdd',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Etihad Stadium_ Manchester City.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿MANCHESTER UNITED O MANCHESTER CITY? 🏟️🔥
+Old Trafford vs el Etihad Stadium. ¿Cuál de los dos colosos del Derbi de Manchester tiene mayor capacidad oficial de espectadores? 😱
+
+👉 ¿Acertaste o pensabas que la diferencia era menor? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de canchas en el link del perfil: estadiosvirtuales.com
+
+#ManchesterUnited #ManchesterCity #ManchesterDerby #OldTrafford #EtihadStadium #PremierLeague #FutbolIngles #EstadiosVirtuales`
+    },
+    'tottenham-arsenal': {
+        slug: 'TOTTENHAM-VS-ARSENAL',
+        tituloBadge: '🥊 Duelo de Capacidad · Norte de Londres',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El Derbi del Norte de Londres',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Tottenham_vs_Arsenal.mp4',
+        portadaFileName: 'Portada_Duelo_Tottenham_Arsenal.jpg',
+        bannerDiferencia: '¡TOTTENHAM POR APENAS 2.146 LUGARES!',
+        team1: {
+            id: 'tottenham',
+            nombre: 'TOTTENHAM',
+            estadio: 'Tottenham Hotspur Stadium',
+            apodo: 'Spurs Stadium',
+            capacidadNum: 62850,
+            capacidadTexto: '62.850 esp.',
+            escudoFile: 'tottenham.webp',
+            borderColor: '#132257',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Tottenham Hotspur Stadium.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'arsenal',
+            nombre: 'ARSENAL',
+            estadio: 'Emirates Stadium',
+            apodo: 'El Emirates',
+            capacidadNum: 60704,
+            capacidadTexto: '60.704 esp.',
+            escudoFile: 'arsenal.webp',
+            borderColor: '#ef0107',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Emirates Stadium_ Arsenal.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿TOTTENHAM O ARSENAL? 🏟️🔥
+El ultramoderno Tottenham Hotspur Stadium vs el Emirates Stadium de los Gunners. ¿Cuál de los dos templos del Norte de Londres tiene más aforo? 😱
+
+👉 ¡Duelo súper ajustado! ¿Acertaste o pensabas que ganaba Arsenal? Comentá abajo 👇
+🎮 Jugá la trivia de estadios gratis en: estadiosvirtuales.com
+
+#Tottenham #Arsenal #NorthLondonDerby #Spurs #Gunners #EmiratesStadium #PremierLeague #EstadiosVirtuales`
+    },
+    'man-united-liverpool': {
+        slug: 'MANCHESTER-UNITED-VS-LIVERPOOL',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico de Inglaterra',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La rivalidad más histórica del fútbol inglés',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Man_United_vs_Liverpool.mp4',
+        portadaFileName: 'Portada_Duelo_Man_United_Liverpool.jpg',
+        bannerDiferencia: '¡OLD TRAFFORD POR +13.000 LUGARES!',
+        team1: {
+            id: 'man_united',
+            nombre: 'MANCHESTER UNITED',
+            estadio: 'Old Trafford',
+            apodo: 'Teatro de los Sueños',
+            capacidadNum: 74310,
+            capacidadTexto: '74.310 esp.',
+            escudoFile: 'manchesterunited.webp',
+            borderColor: '#da291c',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Old Trafford_ Manchester United.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'liverpool',
+            nombre: 'LIVERPOOL FC',
+            estadio: 'Anfield',
+            apodo: 'Anfield Road',
+            capacidadNum: 61276,
+            capacidadTexto: '61.276 esp.',
+            escudoFile: 'liverpool.webp',
+            borderColor: '#c8102e',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Anfield_ Liverpool FC.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿MANCHESTER UNITED O LIVERPOOL? 🏟️🔥
+Old Trafford vs Anfield. Los dos gigantes del fútbol inglés cara a cara en un duelo de capacidad tremendo. 😱
+
+👉 ¿Sabías la diferencia o creías que con la ampliación de Anfield estaban más cerca? Dejá tu voto 👇
+🎮 Desafiá cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#ManchesterUnited #Liverpool #NorthWestDerby #OldTrafford #Anfield #PremierLeague #YNWA #EstadiosVirtuales`
     }
 };
 
@@ -973,10 +1096,20 @@ async function renderizarDuelo(dueloKey) {
 // EJECUCIÓN CLI
 // ==========================================
 async function main() {
-    const target = process.argv[2] || 'lote-top5';
+    const target = process.argv[2] || 'bloque1';
+    const PREMIER_KEYS = ['man-united-man-city', 'tottenham-arsenal', 'man-united-liverpool'];
     const TOP5_KEYS = ['river-maracana', 'madrid-barca', 'corinthians-palmeiras', 'betis-sevilla', 'madrid-atleti'];
 
-    if (target === 'lote-top5' || target === 'nuevos') {
+    if (target === 'bloque1' || target === 'premier' || target === 'lote-premier') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE BLOQUE 1: DUELOS PREMIER LEAGUE (${PREMIER_KEYS.length} videos)...\n`);
+        for (let i = 0; i < PREMIER_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${PREMIER_KEYS.length}] PROCESANDO DUELO: ${PREMIER_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(PREMIER_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE BLOQUE 1 PREMIER LEAGUE FINALIZADO CON ÉXITO!`);
+    } else if (target === 'lote-top5' || target === 'nuevos') {
         console.log(`🚀 INICIANDO PRODUCCIÓN DE LOTE TOP 5 DUELOS DE CAPACIDAD (${TOP5_KEYS.length} videos)...\n`);
         for (let i = 0; i < TOP5_KEYS.length; i++) {
             console.log(`\n========================================================`);
