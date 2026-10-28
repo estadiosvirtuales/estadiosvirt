@@ -529,6 +529,109 @@ const RETOS_DATABASE = {
                 ubicacionBadge: '📍 CDMX, México · ESTADIO AZTECA'
             }
         ]
+    },
+    '6': {
+        id: 'RETO-DIARIO-06-SUDAMERICA',
+        numeroReto: 6,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_06_Sudamerica.mp4',
+        portadaFileName: 'Portada_Reto_Diario_06.jpg',
+        puntuacionTotal: 24720,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'MÂS MONUMENTAL',
+                clubNombre: 'RIVER PLATE',
+                ciudad: 'Buenos Aires, Argentina',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4",
+                clipStart: 3.0,
+                pista: '84.567 hinchas en Núñez, el coloso argentino',
+                targetLat: -34.5453,
+                targetLng: -58.4498,
+                userLat: -34.5435,
+                userLng: -58.4480,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 4940,
+                ubicacionBadge: '📍 Buenos Aires, Argentina · MÂS MONUMENTAL'
+            },
+            {
+                num: 2,
+                estadioNombre: 'ESTADIO DO MORUMBI',
+                clubNombre: 'SÃO PAULO FC',
+                ciudad: 'São Paulo, Brasil',
+                videoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4",
+                clipStart: 3.0,
+                pista: '66.795 hinchas en el Cícero Pompeu de Toledo',
+                targetLat: -23.6001,
+                targetLng: -46.7202,
+                userLat: -23.5985,
+                userLng: -46.7185,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 9880,
+                ubicacionBadge: '📍 São Paulo, Brasil · MORUMBI'
+            },
+            {
+                num: 3,
+                estadioNombre: 'CILINDRO DE AVELLANEDA',
+                clubNombre: 'RACING CLUB',
+                ciudad: 'Avellaneda, Buenos Aires',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\racing.mp4",
+                clipStart: 3.0,
+                pista: '55.000 hinchas en el templo de la Academia',
+                targetLat: -34.6675,
+                targetLng: -58.3686,
+                userLat: -34.6660,
+                userLng: -58.3670,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 14830,
+                ubicacionBadge: '📍 Avellaneda, Argentina · EL CILINDRO'
+            },
+            {
+                num: 4,
+                estadioNombre: 'ESTADIO MINEIRÃO',
+                clubNombre: 'CRUZEIRO / ATL. MINEIRO',
+                ciudad: 'Belo Horizonte, Brasil',
+                videoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4",
+                clipStart: 3.0,
+                pista: '61.846 hinchas en el Gigante de la Pampulha',
+                targetLat: -19.8658,
+                targetLng: -43.9711,
+                userLat: -19.8640,
+                userLng: -43.9695,
+                distanciaTexto: '250 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 19760,
+                ubicacionBadge: '📍 Belo Horizonte, Brasil · MINEIRÃO'
+            },
+            {
+                num: 5,
+                estadioNombre: 'VILA BELMIRO',
+                clubNombre: 'SANTOS FC',
+                ciudad: 'Santos, São Paulo, Brasil',
+                videoPath: "E:\\Google earth studio\\Brasil\\Estadio Urbano Caldeira_ Santos FC.mp4",
+                clipStart: 3.0,
+                pista: '16.068 hinchas en Urbano Caldeira, la casa de Pelé',
+                targetLat: -23.9511,
+                targetLng: -46.3389,
+                userLat: -23.9495,
+                userLng: -46.3375,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 24720,
+                ubicacionBadge: '📍 Santos, Brasil · VILA BELMIRO'
+            }
+        ]
     }
 };
 
@@ -540,6 +643,8 @@ RETOS_DATABASE['espana'] = RETOS_DATABASE['4'];
 RETOS_DATABASE['laliga'] = RETOS_DATABASE['4'];
 RETOS_DATABASE['mundial'] = RETOS_DATABASE['5'];
 RETOS_DATABASE['catedrales'] = RETOS_DATABASE['5'];
+RETOS_DATABASE['sudamerica'] = RETOS_DATABASE['6'];
+RETOS_DATABASE['brasil-argentina'] = RETOS_DATABASE['6'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
