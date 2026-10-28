@@ -61,8 +61,10 @@ Para mantener el contexto rápido, enfocado y profesional, se recomienda organiz
 ---
 
 ## 🎬 4. Estándar Inmutable para Videos Verticales (TikTok / Reels / Shorts)
-Todo video de trivia individual que se produzca DEBE seguir de forma estricta e innegociable la línea visual del **Olímpico de Roma / Spotify Camp Nou**:
+El canal cuenta con **3 formatos canónicos oficiales** de alta retención que deben respetarse rigurosamente:
 
+### Formato 1: Trivia Individual («¿Qué estadio es y dónde queda?»)
+Sigue de forma estricta la línea visual del **Olímpico de Roma / Spotify Camp Nou**:
 1. **Encuadre y Layout de Video:**
    - Video 16:9 centrado (1080x608) sobre fondo difuminado cinemático (`boxblur=25:5,eq=brightness=-0.22`).
    - **Header flotante superior (`y=50`, 980px ancho):** Eyebrow `ESTADIOS VIRTUALES · STADIUMGUESSR`, Título en 2 líneas obligatorio:
@@ -73,25 +75,43 @@ Todo video de trivia individual que se produzca DEBE seguir de forma estricta e 
    - **Cuenta regresiva 3, 2, 1 (`y=1340`).**
    - **Mapa Leaflet flotante inferior (`y=1320`, 960x460px):** OpenStreetMap con pin rojo del usuario, círculo verde del estadio con radio difuso, línea punteada roja, badge superior de puntaje/distancia (`🎯 ¡A [X] METROS! · [X] PUNTOS 🔥`) y badge inferior de ubicación (`📍 [Ciudad, País] · [ESTADIO]`). **Debe dejar libre y visible el video aéreo arriba**.
    - **Banner de revelación (`y=1240`) y Botón CTA (`y=1805`).**
+   - **Motor:** `redes/crear_pack_batch.js` (25.0s).
 
-2. **Audio 100% Puro (PROHIBIDO EL WHOOSH / BARRIDO):**
-   - **CERO sonidos de barrido / whoosh / ruido blanco** en todo el video (ni al inicio a los 0.2s, ni al pase de mapa a los 19.4s, ni al final).
-   - Sonidos permitidos exclusivamente: campanas de pistas (3.5s, 7.5s, 11.5s), ticks de cuenta regresiva (16s-19s), pop del pin (19.6s) y fanfarria tonal de acordes (20.0s).
+### Formato 2: Duelo de Capacidad («¿Cuál es más grande?»)
+1. **Encuadre y Layout:**
+   - Pantalla dividida 50/50 vertical (top/bottom) para enfrentar dos canchas.
+   - Campana de inicio a 1.0s, cuenta regresiva a 11-13s, revelación de capacidad con barras luminosas a 14.0s.
+   - **Motor:** `redes/render_duelo.js` (20.0s).
 
-3. **Portada Misterio (1080x1920 con Zona Segura 3:4):**
-   - Badge obligatorio: `ESTADIO...` (estrictamente prohibido poner el nombre del club o estadio en la insignia).
-   - Título en 2 líneas: `¿QUÉ ESTADIO ES / Y DÓNDE QUEDA?`.
-   - Caja de pista 100% libre de spoilers (solo capacidad, año, ciudad o hitos sin nombrar al club ni al estadio).
+### Formato 3: Reto Diario Oficial («5 Estadios · 25.000 Puntos»)
+Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
+1. **Encuadre y Layout (35.0s):**
+   - Video 16:9 centrado (1080x608) sobre fondo difuminado cinemático (`y=656`).
+   - **Header superior dinámico (`y=50`, 980px):** Contador de rondas con dots activos (`[🟩 R1] [🟩 R2] [⚪ R3]...`) y puntaje acumulado en vivo.
+   - **5 rondas consecutivas de 6s cada una:** 0 a 3.5s pista flotante inferior (`y=1330`), 3.5 a 6.0s mapa Leaflet 960x460 (`y=1320`) con tiles 100% cargados, pin cayendo y distancia/puntos obtenidos.
+   - **Pantalla final Wordle (30s a 35s, `y=420`):** Modal auténtico de la web con rango (`👑 GALÁCTICO ABSOLUTO`), puntuación total sobre 25.000, grilla de emojis (`🟩 🟩 🟩 🟩 🟩`) y llamado a la acción (`¿PODÉS SUPERAR MI PUNTAJE DE HOY? JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM`).
+   - **Motor:** `redes/render_reto_diario.js` (35.0s).
 
-4. **Archivos de Salida en Disco:**
-   - Destino: `E:\Google earth studio\videos para mostrar\[PAIS]\[ESTADIO]\`
-   - Contenido exacto del pack:
-     - `Estadio_[Nombre].mp4`
-     - `Portada_Estadio_[Nombre].jpg`
-     - `TEXTOS_PUBLICACION.txt` (4 variantes: Tiempo, Folclore, Geoguessr, Corta TikTok + comentarios fijados).
-   - Prohibido dejar archivos temporales (.png de overlays, snapshots, .wav) en la carpeta final o en la raíz.
+---
 
-5. **Motor Canónico y Frases Clave:**
-   - **Frase detonante:** *"hagamos videos para que estadio es y donde queda"* ➔ Interpretar de forma automática como este estándar de `AGENTS.md` y usar exclusivamente `crear_pack_batch.js`.
-   - **Frase detonante para duelos:** *"vamos a hacer duelos de capacidad"* ➔ Usar estrictamente el motor oficial de `redes/render_duelo.js` (20.0s, split screen top/bottom, campana de inicio a 1.0s, cuenta regresiva 11-13s, revelación a 14.0s, audio puro sin barridos/whooshes), idéntico a los duelos ya guardados en `E:\Google earth studio\videos para mostrar\DUELO DE CAPACIDAD\`.
+## 🎵 5. Reglas de Audio y Portadas (Comunes a los 3 Formatos)
+1. **Audio 100% Puro (PROHIBIDO EL WHOOSH / BARRIDO):**
+   - **CERO sonidos de barrido / whoosh / ruido blanco** en todo el video.
+   - Sonidos permitidos exclusivamente: campanas armónicas de pistas/rondas, ticks de tensión, pop del pin en el mapa y acordes de victoria triunfal.
+
+2. **Portada Misterio (1080x1920 con Zona Segura 3:4):**
+   - Retención máxima con cero spoilers (estrictamente prohibido poner los nombres de los estadios o ganadores).
+   - Tipografía grande y visible en la cuadrícula de perfiles de TikTok e Instagram.
+
+3. **Archivos de Salida en Disco:**
+   - Destino según formato:
+     - Trivia: `E:\Google earth studio\videos para mostrar\[PAIS]\[CATEGORIA]\[ESTADIO]\`
+     - Duelos: `E:\Google earth studio\videos para mostrar\DUELO DE CAPACIDAD\[DUELO]\`
+     - Reto Diario: `E:\Google earth studio\videos para mostrar\RETO DIARIO\[RETO]\`
+   - Contenido exacto del pack: Video MP4, Portada JPG y `TEXTOS_PUBLICACION.txt` (4 variantes + comentarios fijados). Prohibido dejar archivos temporales.
+
+4. **Frases Detonantes:**
+   - *"hagamos videos para que estadio es y donde queda"* ➔ `redes/crear_pack_batch.js`.
+   - *"vamos a hacer duelos de capacidad"* ➔ `redes/render_duelo.js`.
+   - *"hagamos reto diario"* ➔ `redes/render_reto_diario.js`.
    - Jamás crear maquetas experimentales ni alterar las coordenadas del layout.
