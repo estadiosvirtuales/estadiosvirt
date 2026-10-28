@@ -89,7 +89,7 @@ Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
    - Video 16:9 centrado (1080x608) sobre fondo difuminado cinemático (`y=656`).
    - **Header superior dinámico (`y=50`, 980px):** Contador de rondas con dots activos (`[🟩 R1] [🟩 R2] [⚪ R3]...`) y puntaje acumulado en vivo.
    - **5 rondas consecutivas de 6s cada una:** 0 a 3.5s pista flotante inferior (`y=1330`), 3.5 a 6.0s mapa Leaflet 960x460 (`y=1320`) con tiles 100% cargados, pin cayendo y distancia/puntos obtenidos.
-   - **Pantalla final Wordle (30s a 35s, `y=420`):** Modal auténtico de la web con rango (`👑 GALÁCTICO ABSOLUTO`), puntuación total sobre 25.000, grilla de emojis (`🟩 🟩 🟩 🟩 🟩`) y llamado a la acción (`¿PODÉS SUPERAR MI PUNTAJE DE HOY? JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM`).
+   - **Pantalla final Wordle (30s a 35s, centrado vertical):** Modal auténtico con rango (`👑 GALÁCTICO ABSOLUTO`), puntuación total sobre 25.000, grilla de emojis (`🟩 🟩 🟩 🟩 🟩`), sección «ESTADIOS DE ESTE RETO» desglosando los 5 estadios y clubes de cada ronda (`[R1]`-`[R5]`) y llamado a la acción (`¿PODÉS SUPERAR MI PUNTAJE DE HOY? JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM`).
    - **Motor:** `redes/render_reto_diario.js` (35.0s).
 
 ---
