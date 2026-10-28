@@ -323,6 +323,109 @@ const RETOS_DATABASE = {
                 ubicacionBadge: '📍 Manchester, Inglaterra · ETIHAD STADIUM'
             }
         ]
+    },
+    '4': {
+        id: 'RETO-DIARIO-04-ESPANA',
+        numeroReto: 4,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_04_Espana.mp4',
+        portadaFileName: 'Portada_Reto_Diario_04.jpg',
+        puntuacionTotal: 24720,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'SANTIAGO BERNABÉU',
+                clubNombre: 'REAL MADRID',
+                ciudad: 'Madrid, España',
+                videoPath: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4",
+                clipStart: 3.0,
+                pista: '84.744 hinchas en Chamartín, la casa blanca',
+                targetLat: 40.453056,
+                targetLng: -3.688333,
+                userLat: 40.451500,
+                userLng: -3.686500,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 4940,
+                ubicacionBadge: '📍 Madrid, España · SANTIAGO BERNABÉU'
+            },
+            {
+                num: 2,
+                estadioNombre: 'SPOTIFY CAMP NOU',
+                clubNombre: 'FC BARCELONA',
+                ciudad: 'Barcelona, España',
+                videoPath: "E:\\Google earth studio\\España\\Spotify Camp Nou_ Barcelona.mp4",
+                clipStart: 3.0,
+                pista: '99.354 hinchas en Les Corts, el templo culé',
+                targetLat: 41.380896,
+                targetLng: 2.122820,
+                userLat: 41.379200,
+                userLng: 2.124500,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 9870,
+                ubicacionBadge: '📍 Barcelona, España · SPOTIFY CAMP NOU'
+            },
+            {
+                num: 3,
+                estadioNombre: 'CÍVITAS METROPOLITANO',
+                clubNombre: 'ATLÉTICO DE MADRID',
+                ciudad: 'Madrid, España',
+                videoPath: "E:\\Google earth studio\\España\\Riyadh Air Metropolitano Club Atlético de Madrid.mp4",
+                clipStart: 3.0,
+                pista: '70.460 hinchas en San Blas, el hogar colchonero',
+                targetLat: 40.436111,
+                targetLng: -3.599444,
+                userLat: 40.434500,
+                userLng: -3.597500,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 14810,
+                ubicacionBadge: '📍 Madrid, España · METROPOLITANO'
+            },
+            {
+                num: 4,
+                estadioNombre: 'SAN MAMÉS',
+                clubNombre: 'ATHLETIC CLUB',
+                ciudad: 'Bilbao, España',
+                videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio de San Mamés_ Athletic Club.mp4",
+                clipStart: 3.0,
+                pista: '53.289 hinchas en La Catedral de Bilbao',
+                targetLat: 43.264167,
+                targetLng: -2.949444,
+                userLat: 43.262500,
+                userLng: -2.947500,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 19760,
+                ubicacionBadge: '📍 Bilbao, España · SAN MAMÉS'
+            },
+            {
+                num: 5,
+                estadioNombre: 'BENITO VILLAMARÍN',
+                clubNombre: 'REAL BETIS',
+                ciudad: 'Sevilla, España',
+                videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Benito Villamarín_ Real Betis.mp4",
+                clipStart: 3.0,
+                pista: '60.721 hinchas en Heliópolis, la pasión bética',
+                targetLat: 37.356389,
+                targetLng: -5.981389,
+                userLat: 37.354800,
+                userLng: -5.979500,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 24720,
+                ubicacionBadge: '📍 Sevilla, España · BENITO VILLAMARÍN'
+            }
+        ]
     }
 };
 
@@ -330,6 +433,8 @@ const RETOS_DATABASE = {
 RETOS_DATABASE['ascenso'] = RETOS_DATABASE['2'];
 RETOS_DATABASE['argentina'] = RETOS_DATABASE['1'];
 RETOS_DATABASE['premier'] = RETOS_DATABASE['3'];
+RETOS_DATABASE['espana'] = RETOS_DATABASE['4'];
+RETOS_DATABASE['laliga'] = RETOS_DATABASE['4'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
