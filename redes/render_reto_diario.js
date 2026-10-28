@@ -632,6 +632,110 @@ const RETOS_DATABASE = {
                 ubicacionBadge: '📍 Santos, Brasil · VILA BELMIRO'
             }
         ]
+    },
+    '7': {
+        id: 'RETO-DIARIO-07-EUROPA',
+        numeroReto: 7,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        descripcionPortada: '📍 5 templos legendarios de Europa en el mapa satelital. <b>¿Te da para el 5/5?</b>',
+        videoFileName: 'Reto_Diario_07_Europa.mp4',
+        portadaFileName: 'Portada_Reto_Diario_07.jpg',
+        puntuacionTotal: 24740,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'SIGNAL IDUNA PARK',
+                clubNombre: 'BORUSSIA DORTMUND',
+                ciudad: 'Dortmund, Alemania',
+                videoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Borussia.mp4",
+                clipStart: 3.0,
+                pista: '81.365 hinchas en el mítico Muro Amarillo alemán',
+                targetLat: 51.4926,
+                targetLng: 7.4519,
+                userLat: 51.4912,
+                userLng: 7.4502,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 4940,
+                ubicacionBadge: '📍 Dortmund, Alemania · SIGNAL IDUNA PARK'
+            },
+            {
+                num: 2,
+                estadioNombre: 'JOHAN CRUYFF ARENA',
+                clubNombre: 'AJAX AMSTERDAM',
+                ciudad: 'Ámsterdam, Países Bajos',
+                videoPath: "E:\\Google earth studio\\Holanda\\Johan Cruyff Arena Ajax Amsterdam.mp4",
+                clipStart: 3.0,
+                pista: '55.885 hinchas en el templo del fútbol total',
+                targetLat: 52.3144,
+                targetLng: 4.9419,
+                userLat: 52.3130,
+                userLng: 4.9402,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 9890,
+                ubicacionBadge: '📍 Ámsterdam, Países Bajos · CRUYFF ARENA'
+            },
+            {
+                num: 3,
+                estadioNombre: 'ALLIANZ STADIUM',
+                clubNombre: 'JUVENTUS FC',
+                ciudad: 'Turín, Italia',
+                videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Juventus.mp4",
+                clipStart: 3.0,
+                pista: '41.507 hinchas en la fortaleza de la Vecchia Signora',
+                targetLat: 45.1096,
+                targetLng: 7.6413,
+                userLat: 45.1080,
+                userLng: 7.6398,
+                distanciaTexto: '210 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 14840,
+                ubicacionBadge: '📍 Turín, Italia · ALLIANZ STADIUM'
+            },
+            {
+                num: 4,
+                estadioNombre: 'PARQUE DE LOS PRÍNCIPES',
+                clubNombre: 'PARIS SAINT-GERMAIN',
+                ciudad: 'París, Francia',
+                videoPath: "E:\\Google earth studio\\Francia\\Subidos\\PSG.mp4",
+                clipStart: 3.0,
+                pista: '47.929 hinchas a orillas del Sena en París',
+                targetLat: 48.8414,
+                targetLng: 2.2530,
+                userLat: 48.8400,
+                userLng: 2.2515,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 19780,
+                ubicacionBadge: '📍 París, Francia · PARQUE DE LOS PRÍNCIPES'
+            },
+            {
+                num: 5,
+                estadioNombre: 'ESTADIO DE MESTALLA',
+                clubNombre: 'VALENCIA CF',
+                ciudad: 'Valencia, España',
+                videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Mestalla_ Valencia.mp4",
+                clipStart: 3.0,
+                pista: '49.430 hinchas en las tribunas verticales de Valencia',
+                targetLat: 39.4746,
+                targetLng: -0.3582,
+                userLat: 39.4730,
+                userLng: -0.3570,
+                distanciaTexto: '210 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 24740,
+                ubicacionBadge: '📍 Valencia, España · MESTALLA'
+            }
+        ]
     }
 };
 
@@ -645,6 +749,8 @@ RETOS_DATABASE['mundial'] = RETOS_DATABASE['5'];
 RETOS_DATABASE['catedrales'] = RETOS_DATABASE['5'];
 RETOS_DATABASE['sudamerica'] = RETOS_DATABASE['6'];
 RETOS_DATABASE['brasil-argentina'] = RETOS_DATABASE['6'];
+RETOS_DATABASE['europa'] = RETOS_DATABASE['7'];
+RETOS_DATABASE['champions'] = RETOS_DATABASE['7'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
@@ -1366,7 +1472,7 @@ async function generarPortadaReto(config, outFolder, bgFramePath) {
             <div class="badge-live">RETO DIARIO #${config.numeroReto}</div>
             <div class="main-title">5 ESTADIOS · <span>25.000 PTS</span><br>¿CUÁNTOS SACÁS HOY? ⚽</div>
             <div class="mystery-card">
-                <p>📍 5 canchas del fútbol argentino en el mapa satelital. <b>¿Te da para el 5/5?</b></p>
+                <p>${config.descripcionPortada || '📍 5 templos del fútbol en el mapa satelital. <b>¿Te da para el 5/5?</b>'}</p>
             </div>
             <div class="challenge-pill">¿PODÉS SUPERARME? 🏆</div>
             <div class="url-tag">JUGALO GRATIS EN: WWW.ESTADIOSVIRTUALES.COM</div>
