@@ -12,111 +12,220 @@ const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\RETO DIARIO";
 
 // ==========================================
-// CONFIGURACIÓN OFICIAL DEL RETO DIARIO #01
+// BASE DE DATOS OFICIAL DE RETOS DIARIOS
 // ==========================================
-const RETO_CONFIG = {
-    id: 'RETO-DIARIO-01-ARGENTINA',
-    numeroReto: 1,
-    tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
-    subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
-    videoFileName: 'Reto_Diario_01_Argentina.mp4',
-    portadaFileName: 'Portada_Reto_Diario_01.jpg',
-    puntuacionTotal: 24510,
-    rangoFinal: '👑 GALÁCTICO ABSOLUTO',
-    grillaWordle: '🟩 🟩 🟩 🟩 🟩',
-    rondas: [
-        {
-            num: 1,
-            estadioNombre: 'EL PALACIO DUCÓ',
-            clubNombre: 'HURACÁN',
-            ciudad: 'Parque Patricios, CABA',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\huracan.mp4",
-            clipStart: 3.0,
-            pista: 'Capacidad para 48.314 hinchas con su torre Art Déco',
-            targetLat: -34.6433,
-            targetLng: -58.3965,
-            userLat: -34.6415,
-            userLng: -58.3945,
-            distanciaTexto: '260 METROS',
-            puntosTexto: '+4.920 PTS 🔥',
-            puntos: 4920,
-            puntosAcumulados: 4920,
-            ubicacionBadge: '📍 Parque Patricios, CABA · EL PALACIO DUCÓ'
-        },
-        {
-            num: 2,
-            estadioNombre: 'COLOSO MARCELO BIELSA',
-            clubNombre: 'NEWELL\'S OLD BOYS',
-            ciudad: 'Rosario, Santa Fe',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\newells.mp4",
-            clipStart: 3.0,
-            pista: '42.000 hinchas en el Parque de la Independencia',
-            targetLat: -32.9556,
-            targetLng: -60.6698,
-            userLat: -32.9540,
-            userLng: -60.6680,
-            distanciaTexto: '230 METROS',
-            puntosTexto: '+4.940 PTS 🔥',
-            puntos: 4940,
-            puntosAcumulados: 9860,
-            ubicacionBadge: '📍 Rosario, Santa Fe · COLOSO MARCELO BIELSA'
-        },
-        {
-            num: 3,
-            estadioNombre: 'LA FORTALEZA',
-            clubNombre: 'CLUB ATLÉTICO LANÚS',
-            ciudad: 'Lanús, Buenos Aires',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\lanus.mp4",
-            clipStart: 3.0,
-            pista: '47.020 hinchas en el sur del Gran Buenos Aires',
-            targetLat: -34.7176,
-            targetLng: -58.3842,
-            userLat: -34.7150,
-            userLng: -58.3820,
-            distanciaTexto: '320 METROS',
-            puntosTexto: '+4.810 PTS 🔥',
-            puntos: 4810,
-            puntosAcumulados: 14670,
-            ubicacionBadge: '📍 Lanús, Buenos Aires · LA FORTALEZA'
-        },
-        {
-            num: 4,
-            estadioNombre: 'MONUMENTAL JOSÉ FIERRO',
-            clubNombre: 'ATLÉTICO TUCUMÁN',
-            ciudad: 'San Miguel de Tucumán',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\atucuman.mp4",
-            clipStart: 3.0,
-            pista: '35.200 hinchas en 25 de Mayo y Chile, norte argentino',
-            targetLat: -26.8164,
-            targetLng: -65.1994,
-            userLat: -26.8145,
-            userLng: -65.1975,
-            distanciaTexto: '280 METROS',
-            puntosTexto: '+4.880 PTS 🔥',
-            puntos: 4880,
-            puntosAcumulados: 19550,
-            ubicacionBadge: '📍 San Miguel de Tucumán · MONUMENTAL JOSÉ FIERRO'
-        },
-        {
-            num: 5,
-            estadioNombre: 'GIGANTE DE ARROYITO',
-            clubNombre: 'ROSARIO CENTRAL',
-            ciudad: 'Rosario, Santa Fe',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\central.mp4",
-            clipStart: 3.0,
-            pista: '46.955 hinchas a orillas del Río Paraná',
-            targetLat: -32.9098,
-            targetLng: -60.6723,
-            userLat: -32.9080,
-            userLng: -60.6705,
-            distanciaTexto: '240 METROS',
-            puntosTexto: '+4.960 PTS 🔥',
-            puntos: 4960,
-            puntosAcumulados: 24510,
-            ubicacionBadge: '📍 Rosario, Santa Fe · GIGANTE DE ARROYITO'
-        }
-    ]
+const RETOS_DATABASE = {
+    '1': {
+        id: 'RETO-DIARIO-01-ARGENTINA',
+        numeroReto: 1,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_01_Argentina.mp4',
+        portadaFileName: 'Portada_Reto_Diario_01.jpg',
+        puntuacionTotal: 24510,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'EL PALACIO DUCÓ',
+                clubNombre: 'HURACÁN',
+                ciudad: 'Parque Patricios, CABA',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\huracan.mp4",
+                clipStart: 3.0,
+                pista: 'Capacidad para 48.314 hinchas con su torre Art Déco',
+                targetLat: -34.6433,
+                targetLng: -58.3965,
+                userLat: -34.6415,
+                userLng: -58.3945,
+                distanciaTexto: '260 METROS',
+                puntosTexto: '+4.920 PTS 🔥',
+                puntos: 4920,
+                puntosAcumulados: 4920,
+                ubicacionBadge: '📍 Parque Patricios, CABA · EL PALACIO DUCÓ'
+            },
+            {
+                num: 2,
+                estadioNombre: 'COLOSO MARCELO BIELSA',
+                clubNombre: 'NEWELL\'S OLD BOYS',
+                ciudad: 'Rosario, Santa Fe',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\newells.mp4",
+                clipStart: 3.0,
+                pista: '42.000 hinchas en el Parque de la Independencia',
+                targetLat: -32.9556,
+                targetLng: -60.6698,
+                userLat: -32.9540,
+                userLng: -60.6680,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 9860,
+                ubicacionBadge: '📍 Rosario, Santa Fe · COLOSO MARCELO BIELSA'
+            },
+            {
+                num: 3,
+                estadioNombre: 'LA FORTALEZA',
+                clubNombre: 'CLUB ATLÉTICO LANÚS',
+                ciudad: 'Lanús, Buenos Aires',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\lanus.mp4",
+                clipStart: 3.0,
+                pista: '47.020 hinchas en el sur del Gran Buenos Aires',
+                targetLat: -34.7176,
+                targetLng: -58.3842,
+                userLat: -34.7150,
+                userLng: -58.3820,
+                distanciaTexto: '320 METROS',
+                puntosTexto: '+4.810 PTS 🔥',
+                puntos: 4810,
+                puntosAcumulados: 14670,
+                ubicacionBadge: '📍 Lanús, Buenos Aires · LA FORTALEZA'
+            },
+            {
+                num: 4,
+                estadioNombre: 'MONUMENTAL JOSÉ FIERRO',
+                clubNombre: 'ATLÉTICO TUCUMÁN',
+                ciudad: 'San Miguel de Tucumán',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\atucuman.mp4",
+                clipStart: 3.0,
+                pista: '35.200 hinchas en 25 de Mayo y Chile, norte argentino',
+                targetLat: -26.8164,
+                targetLng: -65.1994,
+                userLat: -26.8145,
+                userLng: -65.1975,
+                distanciaTexto: '280 METROS',
+                puntosTexto: '+4.880 PTS 🔥',
+                puntos: 4880,
+                puntosAcumulados: 19550,
+                ubicacionBadge: '📍 San Miguel de Tucumán · MONUMENTAL JOSÉ FIERRO'
+            },
+            {
+                num: 5,
+                estadioNombre: 'GIGANTE DE ARROYITO',
+                clubNombre: 'ROSARIO CENTRAL',
+                ciudad: 'Rosario, Santa Fe',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\central.mp4",
+                clipStart: 3.0,
+                pista: '46.955 hinchas a orillas del Río Paraná',
+                targetLat: -32.9098,
+                targetLng: -60.6723,
+                userLat: -32.9080,
+                userLng: -60.6705,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 24510,
+                ubicacionBadge: '📍 Rosario, Santa Fe · GIGANTE DE ARROYITO'
+            }
+        ]
+    },
+    '2': {
+        id: 'RETO-DIARIO-02-ASCENSO',
+        numeroReto: 2,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_02_Ascenso.mp4',
+        portadaFileName: 'Portada_Reto_Diario_02.jpg',
+        puntuacionTotal: 24600,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'DON LEÓN KOLBOWSKI',
+                clubNombre: 'ATLANTA',
+                ciudad: 'Villa Crespo, CABA',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Atlanta.mp4",
+                clipStart: 3.0,
+                pista: '14.000 hinchas en Humboldt 374, Villa Crespo',
+                targetLat: -34.5937,
+                targetLng: -58.4485,
+                userLat: -34.5920,
+                userLng: -58.4465,
+                distanciaTexto: '260 METROS',
+                puntosTexto: '+4.920 PTS 🔥',
+                puntos: 4920,
+                puntosAcumulados: 4920,
+                ubicacionBadge: '📍 Villa Crespo, CABA · DON LEÓN KOLBOWSKI'
+            },
+            {
+                num: 2,
+                estadioNombre: 'ISLAS MALVINAS',
+                clubNombre: 'ALL BOYS',
+                ciudad: 'Floresta, CABA',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\All Boys(listo)x2\\All Boys.mp4",
+                clipStart: 3.0,
+                pista: '21.500 hinchas en Jonte y Mercedes, Floresta',
+                targetLat: -34.6200,
+                targetLng: -58.4975,
+                userLat: -34.6180,
+                userLng: -58.4955,
+                distanciaTexto: '285 METROS',
+                puntosTexto: '+4.890 PTS 🔥',
+                puntos: 4890,
+                puntosAcumulados: 9810,
+                ubicacionBadge: '📍 Floresta, CABA · ISLAS MALVINAS'
+            },
+            {
+                num: 3,
+                estadioNombre: 'REPÚBLICA DE MATADEROS',
+                clubNombre: 'NUEVA CHICAGO',
+                ciudad: 'Mataderos, CABA',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Nueva Chicago.mp4",
+                clipStart: 3.0,
+                pista: '25.000 hinchas en Justo Suárez, Mataderos',
+                targetLat: -34.6644,
+                targetLng: -58.5089,
+                userLat: -34.6625,
+                userLng: -58.5070,
+                distanciaTexto: '270 METROS',
+                puntosTexto: '+4.910 PTS 🔥',
+                puntos: 4910,
+                puntosAcumulados: 14720,
+                ubicacionBadge: '📍 Mataderos, CABA · REPÚBLICA DE MATADEROS'
+            },
+            {
+                num: 4,
+                estadioNombre: 'ESTADIO DE CHACARITA',
+                clubNombre: 'CHACARITA JUNIORS',
+                ciudad: 'Villa Maipú, San Martín',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\chaca.mp4",
+                clipStart: 3.0,
+                pista: 'El Templo Funebrero en Villa Maipú, San Martín',
+                targetLat: -34.5681,
+                targetLng: -58.5204,
+                userLat: -34.5665,
+                userLng: -58.5185,
+                distanciaTexto: '250 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 19650,
+                ubicacionBadge: '📍 Villa Maipú, San Martín · CHACARITA JUNIORS'
+            },
+            {
+                num: 5,
+                estadioNombre: 'EDUARDO GALLARDÓN',
+                clubNombre: 'LOS ANDES',
+                ciudad: 'Lomas de Zamora, Buenos Aires',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Los andes.mp4",
+                clipStart: 3.0,
+                pista: '36.900 hinchas en Santa Fe 159, Lomas de Zamora',
+                targetLat: -34.7644,
+                targetLng: -58.3978,
+                userLat: -34.7630,
+                userLng: -58.3960,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 24600,
+                ubicacionBadge: '📍 Lomas de Zamora · EDUARDO GALLARDÓN'
+            }
+        ]
+    }
 };
+
+// Aliases para CLI
+RETOS_DATABASE['ascenso'] = RETOS_DATABASE['2'];
+RETOS_DATABASE['argentina'] = RETOS_DATABASE['1'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
@@ -210,6 +319,9 @@ function generarAudioProcedural(duracionSeg = 35.0, sampleRate = 44100) {
 // ==========================================
 function generarArchivoTextos(config, targetFolder) {
     const filePath = path.join(targetFolder, 'TEXTOS_PUBLICACION.txt');
+    const listaEstadios = config.rondas.map(r => `${r.num}. ${r.clubNombre} (${r.estadioNombre})`).join('\n');
+    const hashtagsClubes = config.rondas.map(r => '#' + r.clubNombre.toLowerCase().replace(/[^a-z0-9]/g, '')).join(' ');
+
     const content = `========================================================
 ESTADIOS VIRTUALES · PACK LISTO PARA PUBLICAR
 FORMATO: RETO DIARIO OFICIAL (5 ESTADIOS · 25.000 PTS)
@@ -218,7 +330,7 @@ FECHA / EDICIÓN: RETO DIARIO #${config.numeroReto}
 
 🏆 OPCIÓN 1: DESAFÍO DIRECTO Y WORDLE (MÁXIMA CONVERSIÓN)
 --------------------------------------------------------
-Completé el Reto Diario de hoy en estadiosvirtuales.com 🌍⚽
+Completé el Reto Diario #${config.numeroReto} en estadiosvirtuales.com 🌍⚽
 Metí ${config.puntuacionTotal.toLocaleString('es-AR')} / 25.000 puntos (${config.rangoFinal}) 🎯🔥
 
 Mi resultado de hoy:
@@ -232,19 +344,15 @@ ${config.grillaWordle}
 
 ⚽ OPCIÓN 2: FOLCLORE Y DEBATE DE CANCHAS
 --------------------------------------------------------
-5 estadios del fútbol argentino desde el aire 🚁👀
+5 estadios desde el aire 🚁👀
 ¿Cuántos pudiste reconocer antes de que caiga el pin en el mapa?
 
 Dejanos tu puntaje en los comentarios 👇
-1. Huracán (El Palacio)
-2. Newell's (Coloso Bielsa)
-3. Lanús (La Fortaleza)
-4. Atlético Tucumán (José Fierro)
-5. Rosario Central (Gigante de Arroyito)
+${listaEstadios}
 
 🎮 Jugá el Reto Diario nuevo todos los días gratis en: estadiosvirtuales.com
 
-#futbol #estadios #futbolargentino #huracan #newells #lanus #atleticotucuman #rosariocentral
+#futbol #estadios #futbolargentino ${hashtagsClubes}
 
 
 🎮 OPCIÓN 3: MODO GAMER / GEOGUESSR
@@ -253,7 +361,7 @@ Para los que respiran fútbol y mapas 🕹️🗺️
 5 canchas distintas, 5.000 puntos posibles por cada una.
 
 En este reto sumamos ${config.puntuacionTotal.toLocaleString('es-AR')} puntos.
-¿Te da la nafta para clavar 25.000 clavados o vas a pifiar en alguna provincia?
+¿Te da la nafta para clavar 25.000 clavados o vas a pifiar en algún club?
 
 👉 Link en el perfil: estadiosvirtuales.com
 
@@ -262,7 +370,7 @@ En este reto sumamos ${config.puntuacionTotal.toLocaleString('es-AR')} puntos.
 
 ⚡ OPCIÓN 4: CORTA Y VIRAL
 --------------------------------------------------------
-Metí ${config.puntuacionTotal.toLocaleString('es-AR')} puntos en el Reto Diario de hoy 🎯
+Metí ${config.puntuacionTotal.toLocaleString('es-AR')} puntos en el Reto Diario #${config.numeroReto} 🎯
 ${config.grillaWordle}
 
 ¿Cuánto sacás vos? Jugalo gratis en el link de la bio 📲⚽
@@ -273,7 +381,7 @@ ${config.grillaWordle}
 💬 COMENTARIOS FIJADOS RECOMENDADOS:
 --------------------------------------------------------
 1. «¿Cuántos puntos hiciste vos en el reto de hoy? Comentá tus aciertos y jugalo gratis en estadiosvirtuales.com (link en el perfil) 🗺️⚽»
-2. «Comentá cuál fue la cancha más difícil: ¿la de Tucumán o la de Rosario? 👀👇»
+2. «Comentá cuál fue la cancha más difícil: ¿la de ${config.rondas[0].clubNombre} o la de ${config.rondas[3].clubNombre}? 👀👇»
 `;
 
     fs.writeFileSync(filePath, content, 'utf8');
@@ -858,8 +966,12 @@ async function generarPortadaReto(config, outFolder, bgFramePath) {
 // ==========================================
 // 5. RENDERIZADO FINAL DEL VIDEO (35s) CON FFMPEG
 // ==========================================
-async function renderizarRetoDiario() {
-    const config = RETO_CONFIG;
+async function renderizarRetoDiario(targetKey = '2') {
+    const config = RETOS_DATABASE[targetKey] || RETOS_DATABASE['2'];
+    if (!config) {
+        throw new Error(`Reto diario "${targetKey}" no encontrado en base de datos.`);
+    }
+
     console.log(`\n========================================================`);
     console.log(`🎬 RENDERIZANDO RETO DIARIO: ${config.id}`);
     console.log(`========================================================\n`);
@@ -924,13 +1036,13 @@ async function renderizarRetoDiario() {
     // 21: Final Results Modal
 
     const filterComplex = [
-        // 1. Recortar 6s de cada video
-        `[0:v]trim=start=3:end=9,setpts=PTS-STARTPTS[v0]`,
-        `[1:v]trim=start=3:end=9,setpts=PTS-STARTPTS[v1]`,
-        `[2:v]trim=start=3:end=9,setpts=PTS-STARTPTS[v2]`,
-        `[3:v]trim=start=3:end=9,setpts=PTS-STARTPTS[v3]`,
-        `[4:v]trim=start=3:end=9,setpts=PTS-STARTPTS[v4]`,
-        `[4:v]trim=start=9:end=14,setpts=PTS-STARTPTS[v5_end]`,
+        // 1. Recortar 6s de cada video y normalizar escala/fps para concat perfecto
+        `[0:v]trim=start=3:end=9,setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30[v0]`,
+        `[1:v]trim=start=3:end=9,setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30[v1]`,
+        `[2:v]trim=start=3:end=9,setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30[v2]`,
+        `[3:v]trim=start=3:end=9,setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30[v3]`,
+        `[4:v]trim=start=3:end=9,setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30[v4]`,
+        `[4:v]trim=start=9:end=14,setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30[v5_end]`,
         // Concatenar en un único stream de 35s y dividir en 2 para fondo y primer plano
         `[v0][v1][v2][v3][v4][v5_end]concat=n=6:v=1:a=0,split=2[df1][df2]`,
         // Fondo difuminado cinemático (1080x1920)
@@ -1039,7 +1151,8 @@ async function renderizarRetoDiario() {
     } catch (_) {}
 }
 
-renderizarRetoDiario().catch((err) => {
+const targetKey = process.argv[2] || '2';
+renderizarRetoDiario(targetKey).catch((err) => {
     console.error('❌ Error fatal al renderizar Reto Diario:', err);
     process.exit(1);
 });
