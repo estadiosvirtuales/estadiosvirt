@@ -12,6 +12,7 @@ const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\DUELO DE 
 const CONFIG_DUELOS = {
     'casla-huracan': {
         slug: 'SAN-LORENZO-VS-HURACAN',
+        pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Clásico Porteño',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'El clásico de barrio más grande del mundo',
@@ -53,6 +54,7 @@ const CONFIG_DUELOS = {
     },
     'river-boca': {
         slug: 'RIVER-VS-BOCA',
+        pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Superclásico',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'El Superclásico del Fútbol Argentino',
@@ -94,6 +96,7 @@ El Mâs Monumental vs La Bombonera. ¿Cuál tiene mayor capacidad oficial de pú
     },
     'lanus-banfield': {
         slug: 'LANUS-VS-BANFIELD',
+        pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Clásico del Sur',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'El histórico Clásico del Sur',
@@ -135,6 +138,7 @@ La Fortaleza vs El Lencho. ¿Cuál de las dos canchas del Clásico del Sur tiene
     },
     'estudiantes-gimnasia': {
         slug: 'ESTUDIANTES-VS-GIMNASIA',
+        pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Clásico Platense',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La pasión de la Ciudad de La Plata',
@@ -177,6 +181,7 @@ El nuevo Estadio UNO vs El mítico Bosque Platense. ¿Cuál de los dos alberga m
     },
     'central-newells': {
         slug: 'CENTRAL-VS-NEWELLS',
+        pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Clásico Rosarino',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La máxima pasión de la ciudad de Rosario',

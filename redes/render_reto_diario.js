@@ -1397,6 +1397,19 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 margin-top: 3px;
                 color: #002e1b;
             }
+            .follow-sub-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(255, 215, 0, 0.12);
+                border: 1.5px solid #ffd700;
+                color: #ffd700;
+                font-size: 20px;
+                font-weight: 800;
+                padding: 8px 24px;
+                border-radius: 18px;
+                letter-spacing: 0.5px;
+            }
         </style>
     </head>
     <body>
@@ -1420,6 +1433,10 @@ async function generarOverlaysYMapas(config, assetsDir) {
             <div class="cta-card">
                 👉 ¿PODÉS SUPERAR MI PUNTAJE DE HOY? 👀
                 <span class="cta-sub">JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM</span>
+            </div>
+
+            <div class="follow-sub-pill">
+                🔔 Seguinos para jugar el reto diario de mañana
             </div>
         </div>
     </body>
