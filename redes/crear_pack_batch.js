@@ -8,7 +8,7 @@ console.log('🚀 GENERADOR MAESTRO DE VIDEOS (ESTILO CANÓNICO ROMA / CAMP NOU)
 console.log('🚀 ========================================================\n');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const baseOutputDir = "E:\\Google earth studio\\videos para mostrar";
+const baseOutputDir = "E:\\Google earth studio\\videos para mostrar\\TRIVIAS";
 
 // COLA DE ESTADIOS A PRODUCIR
 // Modificar o inyectar los estadios aquí para procesar lotes

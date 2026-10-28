@@ -105,7 +105,7 @@ Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
 
 3. **Archivos de Salida en Disco:**
    - Destino según formato:
-     - Trivia: `E:\Google earth studio\videos para mostrar\[PAIS]\[CATEGORIA]\[ESTADIO]\`
+     - Trivia: `E:\Google earth studio\videos para mostrar\TRIVIAS\[PAIS]\[CATEGORIA]\[ESTADIO]\`
      - Duelos: `E:\Google earth studio\videos para mostrar\DUELO DE CAPACIDAD\[DUELO]\`
      - Reto Diario: `E:\Google earth studio\videos para mostrar\RETO DIARIO\[RETO]\`
    - Contenido exacto del pack: Video MP4, Portada JPG y `TEXTOS_PUBLICACION.txt` (4 variantes + comentarios fijados). Prohibido dejar archivos temporales.
