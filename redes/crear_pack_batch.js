@@ -200,10 +200,11 @@ Solo los que realmente respiran fútbol lo sacan antes de los 5 segundos ⏳
 async function procesarEstadio(item, index, total) {
     console.log(`\n========================================================`);
     console.log(`📍 [${index + 1}/${total}] PRODUCIENDO: ${item.nombreMostrar} (${item.pais})`);
-    console.log(`📁 Destino: ${item.pais}\\${item.folderName}`);
+    const stadiumFolder = item.folderName.startsWith(item.pais)
+        ? path.join(baseOutputDir, item.folderName)
+        : path.join(baseOutputDir, item.pais, item.folderName);
+    console.log(`📁 Destino: ${stadiumFolder}`);
     console.log(`========================================================`);
-
-    const stadiumFolder = path.join(baseOutputDir, item.pais, item.folderName);
     if (!fs.existsSync(stadiumFolder)) {
         fs.mkdirSync(stadiumFolder, { recursive: true });
     }
