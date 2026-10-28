@@ -11,90 +11,33 @@ const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const baseOutputDir = "E:\\Google earth studio\\videos para mostrar\\TRIVIAS";
 
 // COLA DE ESTADIOS A PRODUCIR
-// Modificar o inyectar los estadios aquí para procesar lotes
 const STADIUMS_QUEUE = [
     {
-        id: 'lanus_la_fortaleza',
-        nombreMostrar: 'LA FORTALEZA',
-        clubMostrar: 'CLUB ATLÉTICO LANÚS',
+        id: 'argentinos_diego_maradona',
+        nombreMostrar: 'DIEGO ARMANDO MARADONA',
+        clubMostrar: 'ARGENTINOS JUNIORS',
         pais: 'Argentina',
-        folderName: 'Primera División\\LANUS-LA-FORTALEZA',
-        videoFileName: 'Estadio_La_Fortaleza_Lanus.mp4',
-        coverFileName: 'Portada_Estadio_La_Fortaleza.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\lanus.mp4",
-        targetLat: -34.7176,
-        targetLng: -58.3842,
-        userLat: -34.7148,
-        userLng: -58.3815,
-        distanciaTexto: '375 METROS',
-        puntosTexto: '4.142 PUNTOS 🔥',
-        ubicacionBadge: '📍 Lanús, Buenos Aires · LA FORTALEZA',
+        folderName: 'Primera División\\ARGENTINOS-DIEGO-MARADONA',
+        videoFileName: 'Estadio_Diego_Armando_Maradona_Argentinos.mp4',
+        coverFileName: 'Portada_Estadio_Diego_Maradona.jpg',
+        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\argentinos.mp4",
+        targetLat: -34.6062,
+        targetLng: -58.4728,
+        userLat: -34.6040,
+        userLng: -58.4705,
+        distanciaTexto: '280 METROS',
+        puntosTexto: '4.880 PUNTOS 🔥',
+        ubicacionBadge: '📍 La Paternal, CABA · DIEGO ARMANDO MARADONA',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 47.020 hinchas en el sur del Gran Buenos Aires', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1929: una de las fortalezas más difíciles del fútbol argentino', color: '#38bdf8' },
-            { icon: '🇱🇧', tag: 'PISTA 3:', text: 'El hogar del Granate, campeón de Primera División y de la Copa Sudamericana', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 26.000 hinchas en el corazón de La Paternal', color: '#00ff77' },
+            { icon: '⭐', tag: 'PISTA 2:', text: 'El Semillero del Mundo: cuna de leyendas y campeones mundiales', color: '#38bdf8' },
+            { icon: '🔟', tag: 'PISTA 3:', text: 'El templo donde debutó Diego Armando Maradona en 1976', color: '#ffd700' }
         ],
-        portadaClue: '47.020 hinchas · Sur del Gran Buenos Aires · Inaugurado en 1929',
+        portadaClue: '26.000 hinchas · La Paternal · Debut de D10S',
         copys: {
-            club: 'Club Atlético Lanús',
-            paisHashtag: '#lanus #clubatleticolanus #lafortaleza #granate #futbolargentino #estadios #stadiumguessr',
-            extraPista: 'las noches coperas en el sur, la mística de La Fortaleza y los goles del Pepe Sand'
-        }
-    },
-    {
-        id: 'huracan_el_palacio',
-        nombreMostrar: 'EL PALACIO DUCÓ',
-        clubMostrar: 'CLUB ATLÉTICO HURACÁN',
-        pais: 'Argentina',
-        folderName: 'Primera División\\HURACAN-EL-PALACIO',
-        videoFileName: 'Estadio_El_Palacio_Huracan.mp4',
-        coverFileName: 'Portada_Estadio_El_Palacio.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\huracan.mp4",
-        targetLat: -34.6433,
-        targetLng: -58.3965,
-        userLat: -34.6405,
-        userLng: -58.3932,
-        distanciaTexto: '388 METROS',
-        puntosTexto: '4.118 PUNTOS 🔥',
-        ubicacionBadge: '📍 Parque Patricios, CABA · EL PALACIO DUCÓ',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 48.314 espectadores con su imponente torre Art Déco', color: '#00ff77' },
-            { icon: '🏛️', tag: 'PISTA 2:', text: 'Inaugurado en 1947: declarado patrimonio histórico y cultural porteño', color: '#38bdf8' },
-            { icon: '🎈', tag: 'PISTA 3:', text: 'El templo del Globo donde brillaron leyendas como René Houseman y Miguel Brindisi', color: '#ffd700' }
-        ],
-        portadaClue: '48.314 hinchas · Torre Art Déco · Parque Patricios',
-        copys: {
-            club: 'Club Atlético Huracán',
-            paisHashtag: '#huracan #elpalacio #tomasadolfoduco #cahuracan #parquepatricios #futbolargentino #estadios',
-            extraPista: 'la torre Art Déco, las gambetas eternas de Houseman y el clásico de barrio porteño'
-        }
-    },
-    {
-        id: 'union_santa_fe',
-        nombreMostrar: 'ESTADIO 15 DE ABRIL',
-        clubMostrar: 'CA UNIÓN DE SANTA FE',
-        pais: 'Argentina',
-        folderName: 'Primera División\\UNION-SANTA-FE',
-        videoFileName: 'Estadio_15_De_Abril_Union_Santa_Fe.mp4',
-        coverFileName: 'Portada_Estadio_15_De_Abril.jpg',
-        inputVideoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\union.mp4",
-        targetLat: -31.6318,
-        targetLng: -60.7157,
-        userLat: -31.6290,
-        userLng: -60.7128,
-        distanciaTexto: '392 METROS',
-        puntosTexto: '4.110 PUNTOS 🔥',
-        ubicacionBadge: '📍 Santa Fe Capital · ESTADIO 15 DE ABRIL',
-        pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 28.000 hinchas en la capital de la provincia de Santa Fe', color: '#00ff77' },
-            { icon: '🔴⚪', tag: 'PISTA 2:', text: 'Inaugurado en 1929: su nombre conmemora la fecha de fundación del club', color: '#38bdf8' },
-            { icon: '🇦🇷', tag: 'PISTA 3:', text: 'La fortaleza del Tatengue y uno de los estadios más tradicionales del interior', color: '#ffd700' }
-        ],
-        portadaClue: '28.000 hinchas · Santa Fe Capital · Fundado en 1907',
-        copys: {
-            club: 'Club Atlético Unión de Santa Fe',
-            paisHashtag: '#uniondesantafe #tatengue #clubaunion #santafe #futbolargentino #estadios #stadiumguessr',
-            extraPista: 'la fiesta rojiblanca en la avenida López y Planes, la pasión santafesina y el Clásico de la ciudad'
+            club: 'Argentinos Juniors',
+            paisHashtag: '#argentinosjuniors #aaaj #paternal #maradona #diegomaradona #futbolargentino #estadios #stadiumguessr',
+            extraPista: 'el debut de Diego en 1976, la mística de La Paternal y el semillero más grande del mundo'
         }
     }
 ];
@@ -448,15 +391,28 @@ async function procesarEstadio(item, index, total) {
             .reveal-text { color: #00ff77; font-size: 42px; font-weight: 900; }
             .club-tag { color: #ffffff; font-size: 32px; font-weight: 700; background: rgba(255, 255, 255, 0.14); padding: 4px 16px; border-radius: 12px; }
 
+            .cta-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
             .btn-cta {
                 display: inline-block;
                 background: linear-gradient(135deg, #00ff77 0%, #00c853 100%);
                 color: #090e17;
-                font-size: 28px;
+                font-size: 26px;
                 font-weight: 900;
-                padding: 16px 40px;
-                border-radius: 22px;
+                padding: 12px 38px;
+                border-radius: 20px;
                 box-shadow: 0 8px 25px rgba(0, 255, 119, 0.4);
+                letter-spacing: 0.5px;
+            }
+            .btn-sub-follow {
+                color: #ffd700;
+                font-size: 20px;
+                font-weight: 800;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.9);
                 letter-spacing: 0.5px;
             }
         </style>
@@ -512,8 +468,9 @@ async function procesarEstadio(item, index, total) {
             <span class="club-tag">${item.clubMostrar}</span>
         </div>
 
-        <div class="btn-cta" id="ui-cta-btn">
-            JUGÁ GRATIS EN EL LINK DEL PERFIL
+        <div class="cta-container" id="ui-cta-btn">
+            <div class="btn-cta">JUGÁ GRATIS EN EL LINK DEL PERFIL ⚽</div>
+            <div class="btn-sub-follow">🔔 Seguinos para adivinar la cancha de mañana</div>
         </div>
     </body>
     </html>`;
@@ -590,7 +547,7 @@ async function procesarEstadio(item, index, total) {
         `[v_c1][10:v]overlay=(W-w)/2:1240:enable='between(t,19.5,25)'[v_rev_title]`,
         `[9:v]scale=960:460[map_scaled]`,
         `[v_rev_title][map_scaled]overlay=60:1320:enable='between(t,19.5,25)'[v_map]`,
-        `[v_map][11:v]overlay=(W-w)/2:1805:enable='between(t,19.5,25)'[outv]`
+        `[v_map][11:v]overlay=(W-w)/2:1790:enable='between(t,19.5,25)'[outv]`
     ].join(';');
 
     const ffmpegArgs = [

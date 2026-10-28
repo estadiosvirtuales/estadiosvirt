@@ -1002,6 +1002,11 @@ async function generarOverlaysGraficos(duelo, assetsDir) {
             <img src="${logoEv}" style="width:48px; height:48px; border-radius:10px;">
             <span style="color:#04160a; font-size:27px; font-weight:900; letter-spacing:-0.3px;">Desafiá tu conocimiento en estadiosvirtuales.com</span>
         </div>
+
+        <!-- SEGUINOS SUB-PILL (bottom: 165px) -->
+        <div style="position:absolute; bottom:165px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:8px; background:rgba(9, 14, 23, 0.9); border:1.5px solid #ffd700; padding:8px 24px; border-radius:20px; color:#ffd700; font-size:20px; font-weight:800; box-shadow:0 8px 25px rgba(0,0,0,0.85); white-space:nowrap; letter-spacing:0.5px;">
+            <span>🔔 Seguinos para no perderte el próximo duelo ⚽</span>
+        </div>
     `);
 
     await page.setContent(htmlRevelacion, { timeout: 5000 });
