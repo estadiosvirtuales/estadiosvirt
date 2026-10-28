@@ -4,7 +4,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 console.log('🚀 ========================================================');
-console.log('🚀 MOTOR OFICIAL: GAMEPLAY REAL / RETO DIARIO EN VIVO');
+console.log('🚀 MOTOR OFICIAL: GAMEPLAY REAL / DESAFÍO STADIUMGUESSR');
 console.log('🚀 ESTADIOS VIRTUALES · WWW.ESTADIOSVIRTUALES.COM');
 console.log('🚀 ========================================================\n');
 
@@ -12,163 +12,123 @@ const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\RETO DIARIO";
 
 // ==========================================
-// CONFIGURACIÓN DE RETOS DIARIOS DISPONIBLES
+// CONFIGURACIÓN DE ESTADIOS DE ALTA RETENCIÓN
 // ==========================================
-const CONFIG_RETOS = {
-    'bombonera': {
-        slug: 'BOMBONERA-BOCA-JUNIORS',
-        numeroReto: 42,
-        estadioNombre: 'LA BOMBONERA',
-        clubNombre: 'BOCA JUNIORS',
+const CONFIG_ESTADIOS = {
+    'central': {
+        slug: 'ROSARIO-CENTRAL-GIGANTE-DE-ARROYITO',
+        estadioNombre: 'GIGANTE DE ARROYITO',
+        clubNombre: 'ROSARIO CENTRAL',
         pais: 'Argentina',
-        ciudad: 'Buenos Aires',
-        videoFileName: 'Reto_Diario_La_Bombonera.mp4',
-        portadaFileName: 'Portada_Reto_Diario_La_Bombonera.jpg',
-        videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4",
-        targetLat: -34.6356,
-        targetLng: -58.3648,
-        userLat: -34.6370,
-        userLng: -58.3635,
-        zoomMap: 15,
-        distanciaTexto: '180 METROS',
-        puntosTexto: '4.982 PTS',
-        puntosNum: 4982,
-        pista1: 'Capacidad para 57.200 hinchas en la Ciudad de Buenos Aires',
-        pista2: 'Templo mítico fundado en 1940: tribunas verticales que laten',
-        ubicacionBadge: '📍 La Boca, Buenos Aires · ESTADIO ALBERTO J. ARMANDO',
-        portadaClue: '57.200 hinchas · La Boca · Inaugurado en 1940',
-        rondasSimuladas: [
-            { ronda: 1, puntos: '4.982 PTS', dist: '180 m', status: '🟩' },
-            { ronda: 2, puntos: '4.965 PTS', dist: '210 m', status: '🟩' },
-            { ronda: 3, puntos: '4.410 PTS', dist: '850 m', status: '🟨' },
-            { ronda: 4, puntos: '4.990 PTS', dist: '90 m', status: '🟩' },
-            { ronda: 5, puntos: '4.803 PTS', dist: '340 m', status: '🟩' }
-        ],
-        puntajeTotal: '24.150 / 25.000 PTS',
-        rangoTexto: '👑 GALÁCTICO SUPREMO',
-        copys: {
-            club: 'Boca Juniors (La Bombonera)',
-            hashtags: '#bocajuniors #labombonera #boca #futbolargentino #geoguessr #stadiumguessr #estadiosvirtuales',
-            preguntaViral: '¿En qué calle de La Boca está la cancha? ¿Sos capaz de clavar 5.000 puntos exactos?'
-        }
-    },
-    'monumental': {
-        slug: 'MONUMENTAL-RIVER-PLATE',
-        numeroReto: 43,
-        estadioNombre: 'EL MONUMENTAL',
-        clubNombre: 'RIVER PLATE',
-        pais: 'Argentina',
-        ciudad: 'Buenos Aires',
-        videoFileName: 'Reto_Diario_El_Monumental.mp4',
-        portadaFileName: 'Portada_Reto_Diario_El_Monumental.jpg',
-        videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4",
-        targetLat: -34.5453,
-        targetLng: -58.4498,
-        userLat: -34.5435,
-        userLng: -58.4480,
-        zoomMap: 15,
-        distanciaTexto: '220 METROS',
-        puntosTexto: '4.965 PTS',
-        puntosNum: 4965,
-        pista1: 'El coloso más grande de Sudamérica con 84.567 espectadores',
-        pista2: 'Sede de la final del Mundial 1978 en el barrio de Núñez',
-        ubicacionBadge: '📍 Núñez, Buenos Aires · MÂS MONUMENTAL',
-        portadaClue: '84.567 hinchas · El más grande de Sudamérica · Núñez',
-        rondasSimuladas: [
-            { ronda: 1, puntos: '4.965 PTS', dist: '220 m', status: '🟩' },
-            { ronda: 2, puntos: '4.980 PTS', dist: '120 m', status: '🟩' },
-            { ronda: 3, puntos: '4.350 PTS', dist: '920 m', status: '🟨' },
-            { ronda: 4, puntos: '4.995 PTS', dist: '65 m', status: '🟩' },
-            { ronda: 5, puntos: '4.890 PTS', dist: '280 m', status: '🟩' }
-        ],
-        puntajeTotal: '24.180 / 25.000 PTS',
-        rangoTexto: '👑 GALÁCTICO SUPREMO',
-        copys: {
-            club: 'River Plate (Mâs Monumental)',
-            hashtags: '#riverplate #river #elmonumental #futbolargentino #geoguessr #stadiumguessr #estadiosvirtuales',
-            preguntaViral: '¿Reconocés el Monumental desde el aire? ¿Podés marcarlo a menos de 100 metros?'
-        }
-    },
-    'san-mames': {
-        slug: 'SAN-MAMES-ATHLETIC-BILBAO',
-        numeroReto: 44,
-        estadioNombre: 'SAN MAMÉS',
-        clubNombre: 'ATHLETIC CLUB',
-        pais: 'España',
-        ciudad: 'Bilbao',
-        videoFileName: 'Reto_Diario_San_Mames.mp4',
-        portadaFileName: 'Portada_Reto_Diario_San_Mames.jpg',
-        videoPath: "E:\\Google earth studio\\España\\San Mamés Athletic Club.mp4",
-        targetLat: 43.2641,
-        targetLng: -2.9493,
-        userLat: 43.2625,
-        userLng: -2.9475,
-        zoomMap: 15,
-        distanciaTexto: '215 METROS',
-        puntosTexto: '4.970 PTS',
-        puntosNum: 4970,
-        pista1: 'La Catedral del fútbol español con 53.300 localidades',
-        pista2: 'Inaugurado en 2013 a orillas de la ría en el País Vasco',
-        ubicacionBadge: '📍 Bilbao, País Vasco · ESTADIO SAN MAMÉS',
-        portadaClue: '53.300 hinchas · La Catedral · Bilbao, España',
-        rondasSimuladas: [
-            { ronda: 1, puntos: '4.970 PTS', dist: '215 m', status: '🟩' },
-            { ronda: 2, puntos: '4.985 PTS', dist: '110 m', status: '🟩' },
-            { ronda: 3, puntos: '4.450 PTS', dist: '790 m', status: '🟨' },
-            { ronda: 4, puntos: '4.992 PTS', dist: '80 m', status: '🟩' },
-            { ronda: 5, puntos: '4.820 PTS', dist: '320 m', status: '🟩' }
-        ],
-        puntajeTotal: '24.217 / 25.000 PTS',
-        rangoTexto: '👑 GALÁCTICO SUPREMO',
-        copys: {
-            club: 'Athletic Club (San Mamés)',
-            hashtags: '#athleticclub #sanmames #bilbao #laliga #geoguessr #stadiumguessr #estadiosvirtuales',
-            preguntaViral: '¿Ubicas La Catedral en el mapa de Bilbao? Probá tu puntería en el Reto Diario.'
-        }
-    },
-    'camp-nou': {
-        slug: 'CAMP-NOU-BARCELONA',
-        numeroReto: 45,
-        estadioNombre: 'SPOTIFY CAMP NOU',
-        clubNombre: 'FC BARCELONA',
-        pais: 'España',
-        ciudad: 'Barcelona',
-        videoFileName: 'Reto_Diario_Camp_Nou.mp4',
-        portadaFileName: 'Portada_Reto_Diario_Camp_Nou.jpg',
-        videoPath: "E:\\Google earth studio\\España\\Spotify Camp Nou_ Barcelona.mp4",
-        targetLat: 41.3809,
-        targetLng: 2.1228,
-        userLat: 41.3792,
-        userLng: 2.1205,
+        ciudad: 'Rosario, Santa Fe',
+        videoFileName: 'Gameplay_Rosario_Central_Gigante_Arroyito.mp4',
+        portadaFileName: 'Portada_Gameplay_Rosario_Central.jpg',
+        videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\central.mp4",
+        targetLat: -32.9098,
+        targetLng: -60.6723,
+        userLat: -32.9080,
+        userLng: -60.6705,
         zoomMap: 15,
         distanciaTexto: '240 METROS',
-        puntosTexto: '4.960 PTS',
+        puntosTexto: '4.960 PUNTOS 🔥',
         puntosNum: 4960,
-        pista1: 'El coliseo más grande de Europa con capacidad para 99.354 personas',
-        pista2: 'Ubicado en el distrito de Les Corts e inaugurado en 1957',
-        ubicacionBadge: '📍 Barcelona, España · SPOTIFY CAMP NOU',
-        portadaClue: '99.354 hinchas · Distrito de Les Corts · Barcelona',
-        rondasSimuladas: [
-            { ronda: 1, puntos: '4.960 PTS', dist: '240 m', status: '🟩' },
-            { ronda: 2, puntos: '4.990 PTS', dist: '90 m', status: '🟩' },
-            { ronda: 3, puntos: '4.400 PTS', dist: '860 m', status: '🟨' },
-            { ronda: 4, puntos: '4.998 PTS', dist: '40 m', status: '🟩' },
-            { ronda: 5, puntos: '4.810 PTS', dist: '330 m', status: '🟩' }
-        ],
-        puntajeTotal: '24.158 / 25.000 PTS',
-        rangoTexto: '👑 GALÁCTICO SUPREMO',
+        pista1: 'Capacidad para 46.955 espectadores a orillas del Río Paraná',
+        pista2: 'Inaugurado en 1926: sede de la Copa del Mundo 1978 y caldera rosarina',
+        ubicacionBadge: '📍 Rosario, Santa Fe · GIGANTE DE ARROYITO',
+        portadaClue: '46.955 hinchas · A orillas del Río Paraná · Rosario',
         copys: {
-            club: 'FC Barcelona (Spotify Camp Nou)',
-            hashtags: '#fcbarcelona #campnou #barca #laliga #geoguessr #stadiumguessr #estadiosvirtuales',
-            preguntaViral: '¿Sos capaz de clavar el Camp Nou a menos de 200 metros? Jugalo gratis.'
+            club: 'Rosario Central (Gigante de Arroyito)',
+            hashtags: '#rosariocentral #central #gigantedearroyito #rosario #futbolargentino #stadiumguessr #estadiosvirtuales',
+            preguntaViral: '¿Reconocés el Gigante de Arroyito desde el aire? ¿En qué barrio de Rosario queda?'
+        }
+    },
+    'estudiantes': {
+        slug: 'ESTUDIANTES-LP-ESTADIO-UNO',
+        estadioNombre: 'ESTADIO UNO',
+        clubNombre: 'ESTUDIANTES DE LA PLATA',
+        pais: 'Argentina',
+        ciudad: 'La Plata, Buenos Aires',
+        videoFileName: 'Gameplay_Estudiantes_LP_Estadio_UNO.mp4',
+        portadaFileName: 'Portada_Gameplay_Estudiantes_UNO.jpg',
+        videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\EDLPx2\\Estadio UNO Jorge Luis Hirschi.mp4",
+        targetLat: -34.9126,
+        targetLng: -57.9392,
+        userLat: -34.9110,
+        userLng: -57.9378,
+        zoomMap: 15,
+        distanciaTexto: '210 METROS',
+        puntosTexto: '4.968 PUNTOS 🔥',
+        puntosNum: 4968,
+        pista1: 'Capacidad para 32.530 espectadores en la esquina de 1 y 57',
+        pista2: 'Moderno estadio sustentable inaugurado en 2019 en el Paseo del Bosque',
+        ubicacionBadge: '📍 La Plata, Buenos Aires · ESTADIO UNO JORGE LUIS HIRSCHI',
+        portadaClue: '32.530 hinchas · Esquina de 1 y 57 · La Plata',
+        copys: {
+            club: 'Estudiantes de La Plata (Estadio UNO)',
+            hashtags: '#edlp #estudiantesdelaplata #estadidouno #laplata #futbolargentino #stadiumguessr #estadiosvirtuales',
+            preguntaViral: '¿Sos capaz de clavar el pin en 1 y 57? Poné a prueba tus conocimientos.'
+        }
+    },
+    'newells': {
+        slug: 'NEWELLS-COLOSO-MARCELO-BIELSA',
+        estadioNombre: 'COLOSO MARCELO BIELSA',
+        clubNombre: 'NEWELL\'S OLD BOYS',
+        pais: 'Argentina',
+        ciudad: 'Rosario, Santa Fe',
+        videoFileName: 'Gameplay_Newells_Coloso_Marcelo_Bielsa.mp4',
+        portadaFileName: 'Portada_Gameplay_Newells_Coloso.jpg',
+        videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\newells.mp4",
+        targetLat: -32.9556,
+        targetLng: -60.6698,
+        userLat: -32.9540,
+        userLng: -60.6682,
+        zoomMap: 15,
+        distanciaTexto: '225 METROS',
+        puntosTexto: '4.964 PUNTOS 🔥',
+        puntosNum: 4964,
+        pista1: 'Capacidad para 42.000 espectadores en el Parque de la Independencia',
+        pista2: 'Inaugurado en 1911: el templo rojinegro donde jugó Diego Armando Maradona',
+        ubicacionBadge: '📍 Rosario, Santa Fe · COLOSO MARCELO BIELSA',
+        portadaClue: '42.000 hinchas · Parque de la Independencia · Rosario',
+        copys: {
+            club: 'Newell\'s Old Boys (Coloso Marcelo Bielsa)',
+            hashtags: '#newells #nob #colosobielsa #rosario #futbolargentino #stadiumguessr #estadiosvirtuales',
+            preguntaViral: '¿Reconocés el Coloso en medio del Parque Independencia? Jugalo en el mapa.'
+        }
+    },
+    'lanus': {
+        slug: 'LANUS-LA-FORTALEZA',
+        estadioNombre: 'LA FORTALEZA',
+        clubNombre: 'CLUB ATLÉTICO LANÚS',
+        pais: 'Argentina',
+        ciudad: 'Lanús, Buenos Aires',
+        videoFileName: 'Gameplay_Lanus_La_Fortaleza.mp4',
+        portadaFileName: 'Portada_Gameplay_Lanus_La_Fortaleza.jpg',
+        videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\lanus.mp4",
+        targetLat: -34.7176,
+        targetLng: -58.3842,
+        userLat: -34.7148,
+        userLng: -58.3815,
+        zoomMap: 15,
+        distanciaTexto: '375 METROS',
+        puntosTexto: '4.142 PUNTOS 🔥',
+        puntosNum: 4142,
+        pista1: 'Capacidad para 47.020 hinchas en el sur del Gran Buenos Aires',
+        pista2: 'Inaugurado en 1929 y conocido como una de las fortalezas más difíciles del país',
+        ubicacionBadge: '📍 Lanús, Buenos Aires · LA FORTALEZA',
+        portadaClue: '47.020 hinchas · Sur del Gran Buenos Aires · Inaugurado en 1929',
+        copys: {
+            club: 'Club Atlético Lanús',
+            hashtags: '#lanus #lafortaleza #granate #futbolargentino #stadiumguessr #estadiosvirtuales',
+            preguntaViral: '¿En qué parte del sur bonaerense queda La Fortaleza? Ubicalo en el mapa.'
         }
     }
 };
 
 // ==========================================
-// 1. GENERADOR DE AUDIO PROCEDURAL NATIVO
+// 1. GENERADOR DE AUDIO PROCEDURAL (22s)
 // ==========================================
-// 100% puro: cero whoosh, cero barrido, cero ruido blanco.
+// Cero whoosh, cero barrido, cero ruido blanco.
 function generarAudioProcedural(duracionSeg = 22.0, sampleRate = 44100) {
     const totalSamples = Math.floor(duracionSeg * sampleRate);
     const dataSize = totalSamples * 2;
@@ -220,30 +180,27 @@ function generarAudioProcedural(duracionSeg = 22.0, sampleRate = 44100) {
         }
     }
 
-    // Cronograma sonoro procedural
-    // 0.5s: Inicio / ding de bienvenida suave
-    addBellDing(0.5, 880);
+    // Cronograma sonoro armónico
+    addBellDing(0.5, 880);      // Inicio
+    addBellDing(4.0, 987.77);   // Pista 2
 
-    // 4.0s: Pista 2 revelada
-    addBellDing(4.0, 987.77);
-
-    // 9.5s a 12.5s: Ticks de tiempo mientras busca en el mapa
+    // Ticks de tiempo mientras busca
     addTick(9.5);
     addTick(10.5);
     addTick(11.5);
     addTick(12.5);
 
-    // 13.5s: Clavada del pin en el mapa
+    // 13.5s: Pin cae en el mapa
     addPinPop(13.5);
 
-    // 14.5s: Fanfarria de acierto y cálculo de puntaje (C - E - G - C)
+    // 14.5s: Fanfarria de acierto Haversine (C - E - G - C)
     [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-        addTone(14.5 + idx * 0.07, 3.2, freq, 0.35, 2.0);
+        addTone(14.5 + idx * 0.07, 3.0, freq, 0.35, 2.0);
     });
 
-    // 18.5s: Acorde dorado de victoria Galáctica
+    // 18.5s: Acorde dorado de victoria
     [659.25, 830.61, 987.77, 1318.51].forEach((freq, idx) => {
-        addTone(18.5 + idx * 0.05, 3.0, freq, 0.32, 2.2);
+        addTone(18.5 + idx * 0.05, 3.2, freq, 0.32, 2.2);
     });
 
     for (let i = 0; i < totalSamples; i++) {
@@ -261,50 +218,45 @@ function generarArchivoTextos(item, targetFolder) {
     const filePath = path.join(targetFolder, 'TEXTOS_PUBLICACION.txt');
     const content = `========================================================
 ESTADIOS VIRTUALES · PACK LISTO PARA PUBLICAR
-FORMATO: RETO DIARIO / GAMEPLAY REAL EN VIVO
+FORMATO: GAMEPLAY REAL / DESAFÍO EN VIVO
 ESTADIO: ${item.estadioNombre} (${item.clubNombre} - ${item.pais})
 ========================================================
 
-🏆 OPCIÓN 1: DESAFÍO DE RETO DIARIO (CONVERSIÓN DIRECTA A LA WEB)
+🏆 OPCIÓN 1: DESAFÍO DIRECTO (CONVERSIÓN A LA WEB)
 --------------------------------------------------------
-Completando el Reto Diario de hoy en estadiosvirtuales.com 🌍⚽
-Metimos ${item.puntosTexto} en la Ronda 1 clavando el pin a solo ${item.distanciaTexto}.
+Jugando a StadiumGuessr en estadiosvirtuales.com 🌍⚽
+Clavé el pin en el mapa a solo ${item.distanciaTexto} y sumé ${item.puntosTexto} 🔥
 
-Al final cerramos en ${item.puntajeTotal} (${item.rangoTexto}) 🔥
-
-¿Sos capaz de superar mi puntaje en el día de hoy?
+¿Sos capaz de superar mi puntaje en este estadio?
 👉 Jugalo 100% gratis en el link del perfil: estadiosvirtuales.com
 
 ${item.copys.hashtags}
 
 
-⚽ OPCIÓN 2: FOLCLORE Y DEBATE FUTBOLERO
+⚽ OPCIÓN 2: FOLCLORE Y DEBATE
 --------------------------------------------------------
-¿Sos capaz de reconocer la cancha mirando solamente la vista aérea de Google Earth? 🚁👀
+¿Sos capaz de reconocer la cancha mirando la vista aérea de Google Earth? 🚁👀
 ${item.copys.preguntaViral}
 
-Dejanos en los comentarios cuántos puntos sacaste hoy 👇
+Dejanos tu respuesta antes de ver el mapa 👇
 🎮 Más estadios y duelos 1v1 en vivo gratis en: estadiosvirtuales.com
 
 ${item.copys.hashtags}
 
 
-🎮 OPCIÓN 3: MODO GEOGUESSR GAMER
+🎮 OPCIÓN 3: MODO GEOGUESSR FÚTBOL
 --------------------------------------------------------
-Para los fanáticos de GeoGuessr y el fútbol mundial 🕹️📍
-Hoy en el Reto Diario de Estadios Virtuales tocó una de las canchas más icónicas del planeta.
+Para los fanáticos de GeoGuessr y del fútbol argentino 🕹️📍
+¿En cuántos segundos podés encontrar este estadio en el mapa satelital?
 
-¿En cuántos segundos la sacás vos?
 👉 Entrá a estadiosvirtuales.com (Directo en el navegador, sin descargar nada).
 
 #stadiumguessr #geoguessr #estadiosvirtuales #futbol #gamingentiktok
 
 
-⚡ OPCIÓN 4: CORTA Y VIRAL PARA TIKTOK
+⚡ OPCIÓN 4: CORTA Y VIRAL
 --------------------------------------------------------
-Clavé el pin a ${item.distanciaTexto} y sumé ${item.puntosTexto} 🎯🔥
-¿Sos capaz de sacar 5.000 puntos en esta ronda?
-
+Clavé el pin a ${item.distanciaTexto} 🎯 ¿Vos cuántos puntos sacás?
 Jugalo gratis en el link del perfil ⚽📲
 
 ${item.copys.hashtags}
@@ -312,15 +264,15 @@ ${item.copys.hashtags}
 
 💬 COMENTARIOS FIJADOS RECOMENDADOS:
 --------------------------------------------------------
-1. «¿Cuánto sacaste en el Reto Diario de hoy? Jugalo gratis en el link del perfil (estadiosvirtuales.com) y dejá tus emojis 🟩 🟨 🟩 👇»
-2. «El Reto Diario cambia todos los días a las 00:00 hs. ¿Cuál fue el estadio más difícil de hoy? 🤔»
+1. «¿A cuántos metros lo clavaste vos? Jugá todas las canchas gratis en estadiosvirtuales.com (link en el perfil) 🗺️⚽»
+2. «Comentá con qué pista lo sacaste: ¿con la capacidad o recién cuando abrí el mapa? 👀👇»
 `;
 
     fs.writeFileSync(filePath, content, 'utf8');
 }
 
 // ==========================================
-// 3. GENERADOR DE OVERLAYS GRÁFICOS Y MAPAS
+// 3. GENERADOR DE OVERLAYS Y MAPAS LEAFLET
 // ==========================================
 async function generarOverlaysYMapas(item, assetsDir) {
     const browser = await puppeteer.launch({
@@ -330,10 +282,12 @@ async function generarOverlaysYMapas(item, assetsDir) {
     });
 
     const page = await browser.newPage();
+
+    // -------------------------------------------------------------
+    // A. OVERLAYS SUPERIORES Y DE PISTAS (1080x1920)
+    // -------------------------------------------------------------
     await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
 
-    // A. OVERLAYS DE CABECERA Y CAJA DE JUEGO (1080x1920 transparente)
-    // -------------------------------------------------------------
     const htmlOverlays = `
     <!DOCTYPE html>
     <html>
@@ -343,7 +297,7 @@ async function generarOverlaysYMapas(item, assetsDir) {
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
             body { width: 1080px; height: 1920px; background: transparent; overflow: hidden; position: relative; }
             
-            /* TOP WEB HEADER (y=50 a y=200) */
+            /* TOP WEB HEADER (y=50 a y=185) */
             .web-header {
                 position: absolute;
                 top: 50px;
@@ -414,13 +368,13 @@ async function generarOverlaysYMapas(item, assetsDir) {
             .hud-round b { color: #38bdf8; }
             .hud-score { color: #00e676; font-size: 22px; font-weight: 900; text-shadow: 0 0 12px rgba(0,230,118,0.5); }
 
-            /* VENTANA DE VIDEO DRONE (Marco estético) */
+            /* MARCO DEL VIDEO AÉREO (y=210 a y=1260) */
             .drone-frame {
                 position: absolute;
-                top: 215px;
+                top: 210px;
                 left: 50px;
                 width: 980px;
-                height: 855px;
+                height: 1050px;
                 border-radius: 28px;
                 border: 3px solid rgba(255, 255, 255, 0.18);
                 pointer-events: none;
@@ -428,7 +382,7 @@ async function generarOverlaysYMapas(item, assetsDir) {
             }
             .drone-tag-top {
                 position: absolute;
-                top: 232px;
+                top: 225px;
                 right: 70px;
                 background: rgba(15, 23, 42, 0.85);
                 backdrop-filter: blur(8px);
@@ -444,275 +398,87 @@ async function generarOverlaysYMapas(item, assetsDir) {
             }
             .red-rec { width: 8px; height: 8px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 10px #ff3b30; }
 
-            /* DRAWER INFERIOR DE PISTAS (y=1090 a y=1700) */
-            .bottom-drawer {
+            /* CAJA DE PISTAS DURANTE EL VUELO (y=1120 a y=1240) */
+            .clue-overlay-chip {
                 position: absolute;
-                top: 1090px;
-                left: 50px;
-                width: 980px;
-                background: linear-gradient(145deg, rgba(14, 20, 32, 0.97) 0%, rgba(8, 12, 20, 0.99) 100%);
-                border: 2px solid rgba(0, 230, 118, 0.4);
-                border-radius: 26px;
-                padding: 24px 28px;
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-                box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-            }
-            .drawer-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            .drawer-title { color: #ffffff; font-size: 26px; font-weight: 900; }
-            .drawer-badge {
-                background: rgba(56, 189, 248, 0.15);
-                border: 1.5px solid #38bdf8;
-                color: #38bdf8;
-                font-size: 16px;
-                font-weight: 800;
-                padding: 4px 14px;
-                border-radius: 16px;
-            }
-            .clue-box {
-                background: rgba(255, 255, 255, 0.04);
-                border: 1.5px solid rgba(255, 255, 255, 0.12);
-                border-radius: 18px;
-                padding: 14px 20px;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-            }
-            .clue-box.active {
-                border-color: #ffd700;
-                background: rgba(255, 215, 0, 0.08);
-                box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-            }
-            .clue-icon { font-size: 32px; }
-            .clue-text { color: #ffffff; font-size: 22px; font-weight: 700; line-height: 1.25; }
-            .clue-text b { color: #ffd700; }
-
-            .btn-action-map {
-                background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
-                border: 2px solid #ffffff;
-                color: #041409;
-                font-size: 26px;
-                font-weight: 900;
+                top: 1120px;
+                left: 60px;
+                width: 960px;
+                background: linear-gradient(135deg, rgba(14, 22, 36, 0.96) 0%, rgba(8, 12, 20, 0.98) 100%);
+                border: 2px solid #00e676;
+                border-radius: 20px;
                 padding: 16px 24px;
-                border-radius: 20px;
-                text-align: center;
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                gap: 12px;
-                box-shadow: 0 10px 30px rgba(0, 230, 118, 0.45);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            /* PODIO FINAL DE RETO DIARIO (y=1085 a y=1710) */
-            .podium-card {
-                position: absolute;
-                top: 1085px;
-                left: 50px;
-                width: 980px;
-                background: linear-gradient(145deg, rgba(14, 22, 36, 0.98) 0%, rgba(8, 12, 20, 0.99) 100%);
-                border: 3px solid #ffd700;
-                border-radius: 26px;
-                padding: 24px 30px;
-                display: flex;
-                flex-direction: column;
                 gap: 16px;
-                box-shadow: 0 20px 55px rgba(255, 215, 0, 0.25), 0 0 0 2px rgba(0,0,0,0.8);
+                box-shadow: 0 12px 35px rgba(0,0,0,0.85);
             }
-            .podium-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
-                padding-bottom: 12px;
+            .clue-overlay-chip.p2 {
+                border-color: #ffd700;
             }
-            .podium-title { color: #ffd700; font-size: 28px; font-weight: 900; letter-spacing: -0.5px; }
-            .podium-rank {
-                background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
-                color: #000;
-                font-size: 17px;
-                font-weight: 900;
-                padding: 5px 16px;
-                border-radius: 20px;
-            }
-            .rounds-table {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-            .round-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 12px;
-                padding: 8px 16px;
-                font-size: 20px;
-                font-weight: 800;
-                color: #ffffff;
-            }
-            .round-row.highlight {
-                background: rgba(0, 230, 118, 0.14);
-                border: 1.5px solid #00e676;
-            }
-            .round-label { display: flex; align-items: center; gap: 10px; }
-            .round-dist { color: #94a3b8; font-size: 17px; font-weight: 600; }
-            .total-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                background: rgba(255, 215, 0, 0.14);
-                border: 2px solid #ffd700;
-                border-radius: 16px;
-                padding: 12px 20px;
-                margin-top: 4px;
-            }
-            .total-label { color: #ffffff; font-size: 22px; font-weight: 900; }
-            .total-score { color: #ffd700; font-size: 28px; font-weight: 900; }
-
-            .cta-btn-glow {
-                background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
-                color: #000000;
-                border: 2px solid #ffffff;
-                font-size: 24px;
-                font-weight: 900;
-                padding: 16px;
-                border-radius: 20px;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5);
-                line-height: 1.25;
-            }
+            .clue-chip-icon { font-size: 32px; }
+            .clue-chip-text { color: #ffffff; font-size: 24px; font-weight: 800; line-height: 1.25; }
+            .clue-chip-text b { color: #00e676; }
+            .clue-overlay-chip.p2 .clue-chip-text b { color: #ffd700; }
         </style>
     </head>
     <body>
-        <!-- 1. OVERLAY INICIO (0.0s a 3.5s) -->
+        <!-- 1. INTRO (0.0s a 3.5s): Pista 1 -->
         <div id="view-intro">
             <div class="web-header">
                 <div class="header-top-row">
                     <div class="brand-pill"><div class="pulse-dot"></div> WWW.ESTADIOSVIRTUALES.COM</div>
                     <div class="status-timer">⏱️ 15s</div>
                 </div>
-                <div class="game-main-title">📅 RETO DIARIO #${item.numeroReto}: ¿QUÉ CANCHA ES? ⚽</div>
+                <div class="game-main-title">¿DÓNDE QUEDA ESTE ESTADIO? ⚽📍</div>
                 <div class="hud-status-bar">
-                    <div class="hud-round">Ronda <b>1 de 5</b> · Modo Solo</div>
+                    <div class="hud-round">Desafío en Vivo · <b>StadiumGuessr</b></div>
                     <div class="hud-score">0 PUNTOS</div>
                 </div>
             </div>
-
             <div class="drone-frame"></div>
             <div class="drone-tag-top"><div class="red-rec"></div> VISTA AÉREA EN VIVO</div>
-
-            <div class="bottom-drawer">
-                <div class="drawer-header">
-                    <div class="drawer-title">🧭 ¿DÓNDE QUEDA ESTE ESTADIO?</div>
-                    <div class="drawer-badge">RONDA 1</div>
-                </div>
-                <div class="clue-box active">
-                    <div class="clue-icon">💡</div>
-                    <div class="clue-text"><b>PISTA 1:</b> ${item.pista1}</div>
-                </div>
-                <div class="btn-action-map">
-                    <span>📍 ABRIR MAPA PARA ARRIESGAR</span>
-                </div>
+            <div class="clue-overlay-chip">
+                <div class="clue-chip-icon">💡</div>
+                <div class="clue-chip-text"><b>PISTA 1:</b> ${item.pista1}</div>
             </div>
         </div>
 
-        <!-- 2. OVERLAY PISTAS AVANZADAS (3.5s a 9.5s) -->
+        <!-- 2. PISTA 2 (3.5s a 9.5s) -->
         <div id="view-clues" style="display:none;">
             <div class="web-header">
                 <div class="header-top-row">
                     <div class="brand-pill"><div class="pulse-dot"></div> WWW.ESTADIOSVIRTUALES.COM</div>
-                    <div class="status-timer" style="color:#ff3b30; border-color:#ff3b30; background:rgba(255,59,48,0.15);">⏱️ 09s</div>
+                    <div class="status-timer" style="color:#ffd700; border-color:#ffd700; background:rgba(255,215,0,0.15);">⏱️ 09s</div>
                 </div>
-                <div class="game-main-title">📅 RETO DIARIO #${item.numeroReto}: ¿QUÉ CANCHA ES? ⚽</div>
+                <div class="game-main-title">¿DÓNDE QUEDA ESTE ESTADIO? ⚽📍</div>
                 <div class="hud-status-bar">
-                    <div class="hud-round">Ronda <b>1 de 5</b> · Buscando en el mapa...</div>
+                    <div class="hud-round">Desafío en Vivo · <b>Abriendo mapa...</b></div>
                     <div class="hud-score">0 PUNTOS</div>
                 </div>
             </div>
-
             <div class="drone-frame"></div>
             <div class="drone-tag-top"><div class="red-rec"></div> VISTA AÉREA EN VIVO</div>
-
-            <div class="bottom-drawer">
-                <div class="drawer-header">
-                    <div class="drawer-title">⏱️ ¡TIEMPO CORRIENDO!</div>
-                    <div class="drawer-badge" style="border-color:#ffd700; color:#ffd700;">ÚLTIMA PISTA</div>
-                </div>
-                <div class="clue-box">
-                    <div class="clue-icon">💡</div>
-                    <div class="clue-text"><b>PISTA 1:</b> ${item.pista1}</div>
-                </div>
-                <div class="clue-box active">
-                    <div class="clue-icon">🏛️</div>
-                    <div class="clue-text"><b>PISTA 2:</b> ${item.pista2}</div>
-                </div>
-                <div class="btn-action-map" style="background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);">
-                    <span>🗺️ DESPLEGANDO MAPA... ⏳</span>
-                </div>
+            <div class="clue-overlay-chip p2">
+                <div class="clue-chip-icon">🏛️</div>
+                <div class="clue-chip-text"><b>PISTA 2:</b> ${item.pista2}</div>
             </div>
         </div>
 
-        <!-- 3. OVERLAY SCORE EN VIVO (14.5s a 18.5s) -->
+        <!-- 3. SCORE ACTUALIZADO (14.5s a 18.5s) -->
         <div id="view-score-live" style="display:none;">
-            <div class="web-header" style="border-color:#00e676; box-shadow:0 16px 45px rgba(0,230,118,0.3);">
+            <div class="web-header" style="border-color:#00e676; box-shadow:0 16px 45px rgba(0,230,118,0.35);">
                 <div class="header-top-row">
                     <div class="brand-pill"><div class="pulse-dot"></div> WWW.ESTADIOSVIRTUALES.COM</div>
                     <div class="status-timer" style="color:#00e676; border-color:#00e676; background:rgba(0,230,118,0.15);">✅ ¡ACERTADO!</div>
                 </div>
-                <div class="game-main-title">🎯 ¡GOLAZO! CLAVADO A ${item.distanciaTexto}</div>
+                <div class="game-main-title">🎯 ¡CLAVADO A ${item.distanciaTexto}!</div>
                 <div class="hud-status-bar">
-                    <div class="hud-round">Ronda <b>1 de 5</b> · Puntos sumados:</div>
-                    <div class="hud-score">+${item.puntosTexto} 🔥</div>
+                    <div class="hud-round">Puntaje obtenido:</div>
+                    <div class="hud-score">+${item.puntosTexto}</div>
                 </div>
             </div>
             <div class="drone-frame"></div>
-        </div>
-
-        <!-- 4. OVERLAY PODIO FINAL RETO DIARIO (18.5s a 22.0s) -->
-        <div id="view-podium" style="display:none;">
-            <div class="web-header" style="border-color:#ffd700; box-shadow:0 16px 45px rgba(255,215,0,0.3);">
-                <div class="header-top-row">
-                    <div class="brand-pill"><div class="pulse-dot"></div> WWW.ESTADIOSVIRTUALES.COM</div>
-                    <div class="status-timer" style="color:#ffd700; border-color:#ffd700;">🏆 RESULTADO FINAL</div>
-                </div>
-                <div class="game-main-title">👑 ¡RETO DIARIO #${item.numeroReto} COMPLETADO!</div>
-                <div class="hud-status-bar">
-                    <div class="hud-round">5 de 5 rondas completadas</div>
-                    <div class="hud-score" style="color:#ffd700;">${item.puntajeTotal}</div>
-                </div>
-            </div>
-
-            <div class="drone-frame"></div>
-
-            <div class="podium-card">
-                <div class="podium-header">
-                    <div class="podium-title">📊 RESUMEN DE LA PARTIDA</div>
-                    <div class="podium-rank">${item.rangoTexto}</div>
-                </div>
-                <div class="rounds-table">
-                    ${item.rondasSimuladas.map(r => `
-                        <div class="round-row ${r.ronda === 1 ? 'highlight' : ''}">
-                            <div class="round-label">${r.status} Ronda ${r.ronda}: <span class="round-dist">(${r.dist})</span></div>
-                            <div style="color:${r.ronda === 1 ? '#00e676' : '#ffffff'};">${r.puntos}</div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="total-row">
-                    <div class="total-label">PUNTAJE FINAL:</div>
-                    <div class="total-score">${item.puntajeTotal}</div>
-                </div>
-                <div class="cta-btn-glow">
-                    👉 ¿SOS CAPAZ DE SUPERARME? 👀<br>
-                    <span style="font-size:18px; font-weight:800;">JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM</span>
-                </div>
-            </div>
         </div>
     </body>
     </html>
@@ -724,7 +490,7 @@ async function generarOverlaysYMapas(item, assetsDir) {
     const introPath = path.join(assetsDir, 'overlay_intro.png');
     await page.screenshot({ path: introPath, omitBackground: true });
 
-    // Snapshot Clues (3.5s - 9.5s)
+    // Snapshot Pista 2 (3.5s - 9.5s)
     await page.evaluate(() => {
         document.getElementById('view-intro').style.display = 'none';
         document.getElementById('view-clues').style.display = 'block';
@@ -740,18 +506,11 @@ async function generarOverlaysYMapas(item, assetsDir) {
     const scoreLivePath = path.join(assetsDir, 'overlay_score_live.png');
     await page.screenshot({ path: scoreLivePath, omitBackground: true });
 
-    // Snapshot Podium (18.5s - 22.0s)
-    await page.evaluate(() => {
-        document.getElementById('view-score-live').style.display = 'none';
-        document.getElementById('view-podium').style.display = 'block';
-    });
-    const podiumPath = path.join(assetsDir, 'overlay_podium.png');
-    await page.screenshot({ path: podiumPath, omitBackground: true });
 
-
-    // B. MAPAS LEAFLET INTERACTIVOS (980x600 px en el Drawer)
     // -------------------------------------------------------------
-    await page.setViewport({ width: 980, height: 600, deviceScaleFactor: 2 });
+    // B. MAPAS LEAFLET FLOTANTES (960x460 px exactos - Estándar Canónico)
+    // -------------------------------------------------------------
+    await page.setViewport({ width: 960, height: 460, deviceScaleFactor: 2 });
 
     // 1. MAPA FASE BUSCANDO (9.5s a 13.5s): Touch indicator apuntando
     const mapSearchHtml = `
@@ -762,26 +521,26 @@ async function generarOverlaysYMapas(item, assetsDir) {
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-            body { width: 980px; height: 600px; background: transparent; overflow: hidden; position: relative; }
+            body { width: 960px; height: 460px; background: transparent; overflow: hidden; position: relative; }
             #map-card {
-                width: 980px;
-                height: 600px;
-                border-radius: 26px;
+                width: 960px;
+                height: 460px;
+                border-radius: 28px;
                 overflow: hidden;
-                border: 3px solid rgba(56, 189, 248, 0.8);
-                box-shadow: 0 16px 45px rgba(0,0,0,0.85);
+                border: 4px solid #38bdf8;
+                box-shadow: 0 16px 50px rgba(56, 189, 248, 0.4), 0 0 0 2px rgba(0,0,0,0.8);
                 position: relative;
             }
             #map { width: 100%; height: 100%; background: #111; }
             .top-search-badge {
                 position: absolute;
-                top: 18px;
+                top: 16px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(14, 20, 32, 0.94);
+                background: rgba(14, 20, 32, 0.95);
                 border: 2px solid #38bdf8;
                 color: #38bdf8;
-                padding: 10px 28px;
+                padding: 8px 24px;
                 border-radius: 30px;
                 font-size: 22px;
                 font-weight: 800;
@@ -789,31 +548,30 @@ async function generarOverlaysYMapas(item, assetsDir) {
                 align-items: center;
                 gap: 10px;
                 z-index: 1000;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.85);
             }
             .bottom-action-pill {
                 position: absolute;
-                bottom: 20px;
+                bottom: 16px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
                 color: #000;
-                padding: 12px 32px;
-                border-radius: 24px;
-                font-size: 24px;
+                padding: 10px 28px;
+                border-radius: 22px;
+                font-size: 22px;
                 font-weight: 900;
                 z-index: 1000;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.85);
                 border: 2px solid #fff;
             }
             .touch-indicator {
-                width: 50px;
-                height: 50px;
+                width: 44px;
+                height: 44px;
                 border-radius: 50%;
-                border: 4px solid #00e676;
-                background: rgba(0, 230, 118, 0.35);
+                border: 3.5px solid #00e676;
+                background: rgba(0, 230, 118, 0.4);
                 box-shadow: 0 0 25px #00e676;
-                animation: pulse 1s infinite alternate;
             }
         </style>
     </head>
@@ -825,19 +583,20 @@ async function generarOverlaysYMapas(item, assetsDir) {
         </div>
         <script>
             const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([${item.userLat}, ${item.userLng}], ${item.zoomMap});
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-            const touchIcon = L.divIcon({ className: 'touch-indicator', iconSize: [50, 50], iconAnchor: [25, 25] });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+            const touchIcon = L.divIcon({ className: 'touch-indicator', iconSize: [44, 44], iconAnchor: [22, 22] });
             L.marker([${item.userLat}, ${item.userLng}], { icon: touchIcon }).addTo(map);
         </script>
     </body>
     </html>
     `;
     await page.setContent(mapSearchHtml, { waitUntil: 'domcontentloaded' });
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 1400));
+    const mapSearchCard = await page.$('#map-card');
     const mapSearchPath = path.join(assetsDir, 'map_search.png');
-    await page.screenshot({ path: mapSearchPath, omitBackground: true });
+    await mapSearchCard.screenshot({ path: mapSearchPath, omitBackground: true });
 
-    // 2. MAPA FASE RESULTADO Y CÁLCULO (13.5s a 18.5s)
+    // 2. MAPA FASE RESULTADO (13.5s a 18.5s): Pin caído, círculo verde y distancia
     const mapResultHtml = `
     <!DOCTYPE html>
     <html>
@@ -846,50 +605,50 @@ async function generarOverlaysYMapas(item, assetsDir) {
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-            body { width: 980px; height: 600px; background: transparent; overflow: hidden; position: relative; }
+            body { width: 960px; height: 460px; background: transparent; overflow: hidden; position: relative; }
             #map-card {
-                width: 980px;
-                height: 600px;
-                border-radius: 26px;
+                width: 960px;
+                height: 460px;
+                border-radius: 28px;
                 overflow: hidden;
-                border: 3.5px solid #00e676;
+                border: 4px solid #00e676;
                 box-shadow: 0 16px 50px rgba(0, 230, 118, 0.4), 0 0 0 2px rgba(0,0,0,0.8);
                 position: relative;
             }
             #map { width: 100%; height: 100%; background: #111; }
             .score-badge {
                 position: absolute;
-                top: 18px;
+                top: 16px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: rgba(9, 14, 23, 0.95);
                 border: 2px solid #00e676;
                 color: #00e676;
-                padding: 10px 28px;
+                padding: 10px 26px;
                 border-radius: 30px;
                 font-size: 24px;
-                font-weight: 900;
+                font-weight: 800;
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 z-index: 1000;
-                box-shadow: 0 8px 30px rgba(0,0,0,0.85);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.8);
             }
             .score-badge span { color: #fff; }
             .bottom-badge {
                 position: absolute;
-                bottom: 18px;
+                bottom: 16px;
                 left: 50%;
                 transform: translateX(-50%);
                 background: rgba(9, 14, 23, 0.95);
-                border: 1.5px solid rgba(255,255,255,0.25);
+                border: 1px solid rgba(255,255,255,0.25);
                 color: #ffd700;
                 padding: 8px 24px;
                 border-radius: 20px;
                 font-size: 20px;
-                font-weight: 800;
+                font-weight: 700;
                 z-index: 1000;
-                box-shadow: 0 6px 20px rgba(0,0,0,0.8);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.7);
                 white-space: nowrap;
             }
             .user-pin {
@@ -899,13 +658,13 @@ async function generarOverlaysYMapas(item, assetsDir) {
                 border: 4px solid #fff;
                 border-radius: 50% 50% 50% 0;
                 transform: rotate(-45deg);
-                box-shadow: 0 6px 16px rgba(0,0,0,0.8);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.7);
             }
         </style>
     </head>
     <body>
         <div id="map-card">
-            <div class="score-badge">🎯 ¡A ${item.distanciaTexto}! · <span>+${item.puntosTexto} 🔥</span></div>
+            <div class="score-badge">🎯 ¡A ${item.distanciaTexto}! · <span>${item.puntosTexto}</span></div>
             <div id="map"></div>
             <div class="bottom-badge">${item.ubicacionBadge}</div>
         </div>
@@ -915,29 +674,135 @@ async function generarOverlaysYMapas(item, assetsDir) {
             const centerLat = (userPos[0] + targetPos[0]) / 2;
             const centerLng = (userPos[1] + targetPos[1]) / 2;
 
-            const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([centerLat, centerLng], ${item.zoomMap});
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+            const map = L.map('map', { attributionControl: false, zoomControl: false }).setView([centerLat, centerLng], ${item.zoomMap});
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 
-            // Círculo del estadio
-            L.circle(targetPos, { color: '#00e676', fillColor: '#00e676', fillOpacity: 0.35, radius: 100, weight: 3 }).addTo(map);
+            L.polyline([userPos, targetPos], { color: '#ff3b30', weight: 4, dashArray: '8, 8', opacity: 0.95 }).addTo(map);
 
-            // Línea punteada de distancia
-            L.polyline([userPos, targetPos], { color: '#ff3b30', weight: 4, dashArray: '10, 10', opacity: 0.95 }).addTo(map);
+            L.circleMarker(targetPos, { radius: 14, color: '#00e676', fillColor: '#090e17', fillOpacity: 1, weight: 4 }).addTo(map);
+            L.circleMarker(targetPos, { radius: 35, color: '#00e676', fillColor: '#00e676', fillOpacity: 0.25, weight: 2 }).addTo(map);
 
-            // Pin del usuario
-            const pinIcon = L.divIcon({ className: 'user-pin', iconSize: [32, 32], iconAnchor: [16, 32] });
+            const pinIcon = L.divIcon({ className: 'custom-pin-wrap', html: '<div class="user-pin"></div>', iconSize: [32, 32], iconAnchor: [16, 32] });
             L.marker(userPos, { icon: pinIcon }).addTo(map);
         </script>
     </body>
     </html>
     `;
     await page.setContent(mapResultHtml, { waitUntil: 'domcontentloaded' });
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 1400));
+    const mapResultCard = await page.$('#map-card');
     const mapResultPath = path.join(assetsDir, 'map_result.png');
-    await page.screenshot({ path: mapResultPath, omitBackground: true });
+    await mapResultCard.screenshot({ path: mapResultPath, omitBackground: true });
+
+
+    // -------------------------------------------------------------
+    // C. TARJETA FINAL DE VICTORIA Y CTA (960x460 px - Reemplaza al mapa)
+    // -------------------------------------------------------------
+    const finalCardHtml = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+            body { width: 960px; height: 460px; background: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+            #reward-card {
+                width: 960px;
+                height: 460px;
+                background: linear-gradient(135deg, rgba(14, 24, 40, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%);
+                border: 3.5px solid #ffd700;
+                border-radius: 28px;
+                padding: 24px 32px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                box-shadow: 0 16px 50px rgba(255, 215, 0, 0.35), 0 0 0 2px rgba(0,0,0,0.85);
+                text-align: center;
+            }
+            .reward-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                border-bottom: 1.5px solid rgba(255, 255, 255, 0.14);
+                padding-bottom: 10px;
+            }
+            .reward-badge {
+                background: rgba(0, 230, 118, 0.15);
+                border: 1.5px solid #00e676;
+                color: #00e676;
+                font-size: 18px;
+                font-weight: 900;
+                padding: 6px 18px;
+                border-radius: 20px;
+                letter-spacing: 1px;
+            }
+            .reward-rank {
+                background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
+                color: #000;
+                font-size: 18px;
+                font-weight: 900;
+                padding: 6px 18px;
+                border-radius: 20px;
+            }
+            .reward-main {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                align-items: center;
+            }
+            .reward-score {
+                color: #ffd700;
+                font-size: 54px;
+                font-weight: 900;
+                letter-spacing: -1px;
+                text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            }
+            .reward-dist {
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: 800;
+            }
+            .reward-dist span { color: #00e676; }
+            .reward-cta {
+                width: 100%;
+                background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+                color: #041409;
+                border: 2px solid #ffffff;
+                font-size: 24px;
+                font-weight: 900;
+                padding: 14px 20px;
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5);
+                line-height: 1.2;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="reward-card">
+            <div class="reward-header">
+                <div class="reward-badge">🎯 PARTIDA FINALIZADA</div>
+                <div class="reward-rank">👑 GALÁCTICO SUPREMO</div>
+            </div>
+            <div class="reward-main">
+                <div class="reward-score">+${item.puntosTexto}</div>
+                <div class="reward-dist">Ubicado a <span>${item.distanciaTexto}</span> de distancia</div>
+            </div>
+            <div class="reward-cta">
+                👉 ¿SOS CAPAZ DE SUPERARME? 👀<br>
+                <span style="font-size:18px; font-weight:800;">JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM</span>
+            </div>
+        </div>
+    </body>
+    </html>
+    `;
+    await page.setContent(finalCardHtml, { waitUntil: 'load' });
+    const rewardCardEl = await page.$('#reward-card');
+    const finalCardPath = path.join(assetsDir, 'card_final.png');
+    await rewardCardEl.screenshot({ path: finalCardPath, omitBackground: true });
 
     await browser.close();
-    console.log('✅ Overlays gráficos y mapas Leaflet generados con éxito.');
+    console.log('✅ Overlays, Mapas Leaflet (960x460) y Tarjeta Final generados.');
 }
 
 // ==========================================
@@ -1047,13 +912,13 @@ async function generarPortada(item, outFolder, bgFramePath) {
         <div class="bg-drone"></div>
         <div class="vignette"></div>
         <div class="safe-zone-box">
-            <div class="badge-live">📅 RETO DIARIO #${item.numeroReto} · STADIUMGUESSR</div>
+            <div class="badge-live">ESTADIO...</div>
             <div class="main-title">¿QUÉ ESTADIO ES<br>Y <span>DÓNDE QUEDA?</span> ⚽</div>
             <div class="clue-mystery-card">
                 <p>💡 ${item.portadaClue}</p>
             </div>
             <div class="challenge-pill">¿SOS CAPAZ DE ADIVINARLO? 🗺️</div>
-            <div class="url-tag">JUGALO GRATIS EN: ESTADIOSVIRTUALES.COM</div>
+            <div class="url-tag">JUGALO GRATIS EN: WWW.ESTADIOSVIRTUALES.COM</div>
         </div>
     </body>
     </html>
@@ -1070,14 +935,14 @@ async function generarPortada(item, outFolder, bgFramePath) {
 // 5. RENDERIZAR VIDEO FINAL CON FFMPEG
 // ==========================================
 async function renderizarReto(retoKey) {
-    const item = CONFIG_RETOS[retoKey];
+    const item = CONFIG_ESTADIOS[retoKey];
     if (!item) {
-        console.error(`❌ Reto no encontrado: ${retoKey}`);
+        console.error(`❌ Estadio no encontrado: ${retoKey}`);
         return;
     }
 
     console.log(`\n========================================================`);
-    console.log(`🎬 RENDERIZANDO GAMEPLAY RETO DIARIO: ${item.estadioNombre}`);
+    console.log(`🎬 RENDERIZANDO GAMEPLAY EN VIVO: ${item.estadioNombre}`);
     console.log(`📁 Slug: ${item.slug}`);
     console.log(`========================================================\n`);
 
@@ -1091,7 +956,7 @@ async function renderizarReto(retoKey) {
     generarArchivoTextos(item, outFolder);
     console.log('✅ Archivo TEXTOS_PUBLICACION.txt generado.');
 
-    // 2. Extraer frame de fondo para la portada
+    // 2. Extraer frame de fondo para portada
     const bgFramePath = path.join(assetsDir, 'raw_bg_frame.jpg');
     await new Promise((resolve) => {
         const p = spawn('ffmpeg', [
@@ -1122,23 +987,27 @@ async function renderizarReto(retoKey) {
     // Timeline exacto:
     // 0.0s a 3.5s: Intro + Pista 1 (overlay_intro.png)
     // 3.5s a 9.5s: Clues + Pista 2 (overlay_clues.png)
-    // 9.5s a 13.5s: Mapa buscando (map_search.png en y=1090)
-    // 13.5s a 18.5s: Score Live Header (overlay_score_live.png) + Mapa resultado (map_result.png en y=1090)
-    // 18.5s a 22.0s: Podio final y CTA (overlay_podium.png)
+    // 9.5s a 13.5s: Mapa buscando (map_search.png en x=60, y=1320, 960x460)
+    // 13.5s a 18.5s: Score Live Header (overlay_score_live.png) + Mapa resultado (map_result.png en x=60, y=1320, 960x460)
+    // 18.5s a 22.0s: Tarjeta final de victoria y CTA (card_final.png en x=60, y=1320, 960x460)
 
     const filterComplex = [
-        // Background difuminado cinemático
+        // Fondo difuminado cinemático
         `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.28[bg]`,
-        // Video de dron nítido centrado en la ventana de juego (980x855 a y=215, x=50)
-        `[0:v]scale=980:855:force_original_aspect_ratio=increase,crop=980:855[drone]`,
-        `[bg][drone]overlay=50:215[base]`,
+        // Video de dron nítido centrado en la ventana superior (980x1050 a y=210, x=50)
+        `[0:v]scale=980:1050:force_original_aspect_ratio=increase,crop=980:1050[drone]`,
+        `[bg][drone]overlay=50:210[base]`,
+        // Escalar mapas y tarjetas exactamente a 960x460 (Estándar Canónico)
+        `[4:v]scale=960:460[map_search_sc]`,
+        `[6:v]scale=960:460[map_result_sc]`,
+        `[7:v]scale=960:460[card_final_sc]`,
         // Overlays temporales
         `[base][2:v]overlay=0:0:enable='between(t,0,3.5)'[v1]`,
         `[v1][3:v]overlay=0:0:enable='between(t,3.5,9.5)'[v2]`,
-        `[v2][4:v]overlay=50:1090:enable='between(t,9.5,13.5)'[v3]`,
+        `[v2][map_search_sc]overlay=60:1320:enable='between(t,9.5,13.5)'[v3]`,
         `[v3][5:v]overlay=0:0:enable='between(t,13.5,18.5)'[v4]`,
-        `[v4][6:v]overlay=50:1090:enable='between(t,13.5,18.5)'[v5]`,
-        `[v5][7:v]overlay=0:0:enable='between(t,18.5,22.0)'[outv]`
+        `[v4][map_result_sc]overlay=60:1320:enable='between(t,13.5,18.5)'[v5]`,
+        `[v5][card_final_sc]overlay=60:1320:enable='between(t,18.5,22.0)'[outv]`
     ].join(';');
 
     const ffmpegArgs = [
@@ -1151,7 +1020,7 @@ async function renderizarReto(retoKey) {
         '-i', path.join(assetsDir, 'map_search.png'),             // 4:v
         '-i', path.join(assetsDir, 'overlay_score_live.png'),     // 5:v
         '-i', path.join(assetsDir, 'map_result.png'),             // 6:v
-        '-i', path.join(assetsDir, 'overlay_podium.png'),         // 7:v
+        '-i', path.join(assetsDir, 'card_final.png'),             // 7:v
         '-filter_complex', filterComplex,
         '-map', '[outv]',
         '-map', '1:a',
@@ -1196,15 +1065,15 @@ async function renderizarReto(retoKey) {
 // EJECUCIÓN PRINCIPAL
 // ==========================================
 async function main() {
-    const target = process.argv[2] || 'bombonera';
+    const target = process.argv[2] || 'central';
 
     if (target === 'all') {
-        const keys = Object.keys(CONFIG_RETOS);
-        console.log(`🚀 INICIANDO PRODUCCIÓN DE TODOS LOS RETOS (${keys.length} videos)...\n`);
+        const keys = Object.keys(CONFIG_ESTADIOS);
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE GAMEPLAY REAL (${keys.length} videos)...\n`);
         for (let i = 0; i < keys.length; i++) {
             await renderizarReto(keys[i]);
         }
-        console.log(`\n🎉 ¡TODOS LOS RETOS GENERADOS CON ÉXITO!`);
+        console.log(`\n🎉 ¡TODOS LOS VIDEOS DE GAMEPLAY GENERADOS CON ÉXITO!`);
     } else {
         await renderizarReto(target);
     }
