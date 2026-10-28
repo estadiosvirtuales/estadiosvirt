@@ -607,7 +607,7 @@ Old Trafford vs Anfield. Los dos gigantes del fútbol inglés cara a cara en un 
             capacidadTexto: '30.500 esp.',
             escudoFile: 'SMTucuman.webp',
             borderColor: '#e20613',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\San Martin de tucuman(listo)x2\\San Martín de Tucumán 4.mp4",
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\San Martin de tucuman(listo)x2\\San Martin de Tucuman 25.mp4",
             esGanador: false
         },
         team2: {
