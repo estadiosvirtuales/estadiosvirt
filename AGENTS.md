@@ -74,7 +74,7 @@ Sigue de forma estricta la línea visual del **Olímpico de Roma / Spotify Camp 
    - **Pistas flotantes inferiores (`y=1330`, 94px alto):** Tarjetas con barra lateral de color iluminada, icono y texto grande.
    - **Cuenta regresiva 3, 2, 1 (`y=1340`).**
    - **Mapa Leaflet flotante inferior (`y=1320`, 960x460px):** OpenStreetMap con pin rojo del usuario, círculo verde del estadio con radio difuso, línea punteada roja, badge superior de puntaje/distancia (`🎯 ¡A [X] METROS! · [X] PUNTOS 🔥`) y badge inferior de ubicación (`📍 [Ciudad, País] · [ESTADIO]`). **Debe dejar libre y visible el video aéreo arriba**.
-   - **Banner de revelación (`y=1240`) y Botón CTA (`y=1805`).**
+   - **Banner de revelación (`y=420`, centrado entre el header superior y el video) y Botón CTA (`y=1790`).**
    - **Motor:** `redes/crear_pack_batch.js` (25.0s).
 
 ### Formato 2: Duelo de Capacidad («¿Cuál es más grande?»)

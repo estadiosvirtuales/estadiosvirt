@@ -379,17 +379,21 @@ async function procesarEstadio(item, index, total) {
             .clue-tag { font-weight: 900; margin-right: 10px; }
 
             .reveal-banner {
+                max-width: 980px;
                 background: linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%);
-                border: 2px solid #00ff77;
+                border: 2.5px solid #00ff77;
                 border-radius: 24px;
-                padding: 12px 36px;
+                padding: 14px 32px;
                 display: inline-flex;
+                flex-wrap: wrap;
                 align-items: center;
+                justify-content: center;
                 gap: 16px;
-                box-shadow: 0 8px 30px rgba(0, 255, 119, 0.35);
+                box-shadow: 0 10px 35px rgba(0, 255, 119, 0.4);
+                text-align: center;
             }
-            .reveal-text { color: #00ff77; font-size: 42px; font-weight: 900; }
-            .club-tag { color: #ffffff; font-size: 32px; font-weight: 700; background: rgba(255, 255, 255, 0.14); padding: 4px 16px; border-radius: 12px; }
+            .reveal-text { color: #00ff77; font-size: 38px; font-weight: 900; letter-spacing: -0.5px; }
+            .club-tag { color: #ffffff; font-size: 28px; font-weight: 800; background: rgba(255, 255, 255, 0.14); padding: 5px 18px; border-radius: 14px; text-transform: uppercase; }
 
             .cta-container {
                 display: flex;
@@ -544,7 +548,7 @@ async function procesarEstadio(item, index, total) {
         `[v_p3][6:v]overlay=50:1340:enable='between(t,16.0,17.5)'[v_c3]`,
         `[v_c3][7:v]overlay=50:1340:enable='between(t,17.5,18.5)'[v_c2]`,
         `[v_c2][8:v]overlay=50:1340:enable='between(t,18.5,19.5)'[v_c1]`,
-        `[v_c1][10:v]overlay=(W-w)/2:1240:enable='between(t,19.5,25)'[v_rev_title]`,
+        `[v_c1][10:v]overlay=(W-w)/2:420:enable='between(t,19.5,25)'[v_rev_title]`,
         `[9:v]scale=960:460[map_scaled]`,
         `[v_rev_title][map_scaled]overlay=60:1320:enable='between(t,19.5,25)'[v_map]`,
         `[v_map][11:v]overlay=(W-w)/2:1790:enable='between(t,19.5,25)'[outv]`
