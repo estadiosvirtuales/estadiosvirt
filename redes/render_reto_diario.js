@@ -220,12 +220,116 @@ const RETOS_DATABASE = {
                 ubicacionBadge: '📍 Lomas de Zamora · EDUARDO GALLARDÓN'
             }
         ]
+    },
+    '3': {
+        id: 'RETO-DIARIO-03-PREMIER-LEAGUE',
+        numeroReto: 3,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_03_Premier_League.mp4',
+        portadaFileName: 'Portada_Reto_Diario_03.jpg',
+        puntuacionTotal: 24740,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'ANFIELD',
+                clubNombre: 'LIVERPOOL FC',
+                ciudad: 'Liverpool, Inglaterra',
+                videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Anfield_ Liverpool FC.mp4",
+                clipStart: 3.0,
+                pista: '61.276 hinchas en el mítico templo de The Kop',
+                targetLat: 53.4308,
+                targetLng: -2.9608,
+                userLat: 53.4290,
+                userLng: -2.9590,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 4940,
+                ubicacionBadge: '📍 Liverpool, Inglaterra · ANFIELD'
+            },
+            {
+                num: 2,
+                estadioNombre: 'OLD TRAFFORD',
+                clubNombre: 'MANCHESTER UNITED',
+                ciudad: 'Manchester, Inglaterra',
+                videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Old Trafford_ Manchester United.mp4",
+                clipStart: 3.0,
+                pista: '74.310 hinchas en el Teatro de los Sueños',
+                targetLat: 53.4631,
+                targetLng: -2.2913,
+                userLat: 53.4612,
+                userLng: -2.2895,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 9870,
+                ubicacionBadge: '📍 Manchester, Inglaterra · OLD TRAFFORD'
+            },
+            {
+                num: 3,
+                estadioNombre: 'TOTTENHAM HOTSPUR STADIUM',
+                clubNombre: 'TOTTENHAM HOTSPUR',
+                ciudad: 'Londres, Inglaterra',
+                videoPath: "E:\\Google earth studio\\Inglaterra\\Tottenham Hotspur Stadium.mp4",
+                clipStart: 3.0,
+                pista: '62.850 hinchas en la joya del norte de Londres',
+                targetLat: 51.6042,
+                targetLng: -0.0664,
+                userLat: 51.6025,
+                userLng: -0.0645,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 14820,
+                ubicacionBadge: '📍 Londres, Inglaterra · TOTTENHAM STADIUM'
+            },
+            {
+                num: 4,
+                estadioNombre: 'STAMFORD BRIDGE',
+                clubNombre: 'CHELSEA FC',
+                ciudad: 'Londres, Inglaterra',
+                videoPath: "E:\\Google earth studio\\Inglaterra\\Stamford Bridge_ Chelsea FC.mp4",
+                clipStart: 3.0,
+                pista: '40.340 hinchas en Fulham Road, oeste de Londres',
+                targetLat: 51.4816,
+                targetLng: -0.1910,
+                userLat: 51.4800,
+                userLng: -0.1890,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 19780,
+                ubicacionBadge: '📍 Londres, Inglaterra · STAMFORD BRIDGE'
+            },
+            {
+                num: 5,
+                estadioNombre: 'ETIHAD STADIUM',
+                clubNombre: 'MANCHESTER CITY',
+                ciudad: 'Manchester, Inglaterra',
+                videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Etihad Stadium_ Manchester City.mp4",
+                clipStart: 3.0,
+                pista: '53.400 hinchas en el City of Manchester Stadium',
+                targetLat: 53.4831,
+                targetLng: -2.2004,
+                userLat: 53.4815,
+                userLng: -2.1985,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 24740,
+                ubicacionBadge: '📍 Manchester, Inglaterra · ETIHAD STADIUM'
+            }
+        ]
     }
 };
 
 // Aliases para CLI
 RETOS_DATABASE['ascenso'] = RETOS_DATABASE['2'];
 RETOS_DATABASE['argentina'] = RETOS_DATABASE['1'];
+RETOS_DATABASE['premier'] = RETOS_DATABASE['3'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
