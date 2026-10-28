@@ -1232,6 +1232,16 @@ async function generarOverlaysYMapas(config, assetsDir) {
     const finalPage = await browser.newPage();
     await finalPage.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
 
+    const stadiumsRowsHtml = config.rondas.map(r => `
+        <div class="stadium-summary-row">
+            <div class="stadium-left">
+                <span class="round-tag">R${r.num}</span>
+                <span class="stadium-title">${r.estadioNombre}</span>
+            </div>
+            <span class="club-badge">${r.clubNombre}</span>
+        </div>
+    `).join('');
+
     const finalScreenHtml = `
     <!DOCTYPE html>
     <html>
@@ -1245,11 +1255,11 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 background: linear-gradient(135deg, rgba(14, 24, 40, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%);
                 border: 3.5px solid #00e676;
                 border-radius: 36px;
-                padding: 44px 40px;
+                padding: 34px 36px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 26px;
+                gap: 18px;
                 box-shadow: 0 20px 60px rgba(0, 230, 118, 0.35), 0 0 0 2px rgba(0,0,0,0.9);
                 text-align: center;
             }
@@ -1260,74 +1270,131 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 background: rgba(0, 230, 118, 0.12);
                 border: 1.5px solid #00e676;
                 color: #00e676;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 900;
-                padding: 6px 20px;
+                padding: 5px 18px;
                 border-radius: 30px;
                 letter-spacing: 1px;
             }
             .modal-title {
                 color: #ffffff;
-                font-size: 52px;
+                font-size: 46px;
                 font-weight: 900;
                 letter-spacing: -1px;
                 line-height: 1.1;
             }
+            .rank-score-row {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
             .rank-pill {
                 background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
                 color: #000;
-                font-size: 24px;
+                font-size: 20px;
                 font-weight: 900;
-                padding: 8px 28px;
-                border-radius: 30px;
+                padding: 6px 20px;
+                border-radius: 20px;
                 box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
             }
-            .score-circle-wrap {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 6px;
-            }
-            .big-score {
+            .score-pill {
                 color: #00e676;
-                font-size: 72px;
+                font-size: 34px;
                 font-weight: 900;
-                letter-spacing: -1.5px;
-                text-shadow: 0 0 40px rgba(0, 230, 118, 0.6);
+                letter-spacing: -0.5px;
+                text-shadow: 0 0 25px rgba(0, 230, 118, 0.5);
             }
-            .max-score-label {
+            .score-sub {
+                font-size: 19px;
                 color: #94a3b8;
-                font-size: 24px;
-                font-weight: 800;
+                font-weight: 700;
             }
             .wordle-grid {
                 background: rgba(255, 255, 255, 0.05);
                 border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 20px;
-                padding: 16px 36px;
-                font-size: 38px;
-                letter-spacing: 12px;
+                border-radius: 16px;
+                padding: 10px 28px;
+                font-size: 32px;
+                letter-spacing: 10px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+            }
+            .summary-section {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 2px;
+            }
+            .summary-header {
+                color: #38bdf8;
+                font-size: 18px;
+                font-weight: 900;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                text-align: left;
+                padding-left: 4px;
+            }
+            .summary-list {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+            }
+            .stadium-summary-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 12px;
+                padding: 8px 16px;
+            }
+            .stadium-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .round-tag {
+                background: #00e676;
+                color: #000;
+                font-weight: 900;
+                font-size: 15px;
+                padding: 3px 8px;
+                border-radius: 7px;
+            }
+            .stadium-title {
+                color: #ffffff;
+                font-weight: 800;
+                font-size: 21px;
+                letter-spacing: -0.3px;
+            }
+            .club-badge {
+                color: #ffd700;
+                font-weight: 800;
+                font-size: 17px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
             .cta-card {
                 width: 100%;
                 background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
                 color: #041409;
                 border: 2px solid #ffffff;
-                font-size: 28px;
+                font-size: 26px;
                 font-weight: 900;
-                padding: 18px 24px;
-                border-radius: 24px;
-                box-shadow: 0 12px 35px rgba(0, 230, 118, 0.5);
+                padding: 16px 24px;
+                border-radius: 22px;
+                box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5);
                 line-height: 1.25;
+                margin-top: 4px;
             }
             .cta-sub {
                 display: block;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 800;
-                margin-top: 4px;
+                margin-top: 3px;
                 color: #002e1b;
             }
         </style>
@@ -1336,12 +1403,20 @@ async function generarOverlaysYMapas(config, assetsDir) {
         <div class="endgame-modal" id="final-modal">
             <div class="brand-badge">ESTADIOSVIRTUALES.COM · RETO DIARIO</div>
             <div class="modal-title">🏆 ¡RETO COMPLETADO!</div>
-            <div class="rank-pill">${config.rangoFinal}</div>
-            <div class="score-circle-wrap">
-                <div class="big-score">${config.puntuacionTotal.toLocaleString('es-AR')}</div>
-                <div class="max-score-label">DE 25.000 PUNTOS POSIBLES</div>
+            <div class="rank-score-row">
+                <span class="rank-pill">${config.rangoFinal}</span>
+                <span class="score-pill">${config.puntuacionTotal.toLocaleString('es-AR')} <span class="score-sub">/ 25.000 PTS</span></span>
             </div>
             <div class="wordle-grid">${config.grillaWordle}</div>
+
+            <!-- SECCIÓN ESTADIOS DEL RETO -->
+            <div class="summary-section">
+                <div class="summary-header">🏟️ ESTADIOS DE ESTE RETO:</div>
+                <div class="summary-list">
+                    ${stadiumsRowsHtml}
+                </div>
+            </div>
+
             <div class="cta-card">
                 👉 ¿PODÉS SUPERAR MI PUNTAJE DE HOY? 👀
                 <span class="cta-sub">JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM</span>
@@ -1604,8 +1679,8 @@ async function renderizarRetoDiario(targetKey = '2') {
         `[vm3][map4_sc]overlay=60:1320:enable='between(t,21.5,24)'[vm4]`,
         `[vm4][map5_sc]overlay=60:1320:enable='between(t,27.5,30)'[vm5]`,
 
-        // Pantalla final Wordle de Resultados (30s a 35s, centrada x=50, y=420)
-        `[vm5][21:v]overlay=50:420:enable='between(t,30,35)'[outv]`
+        // Pantalla final Wordle de Resultados (30s a 35s, centrada x=50, vertical centrada)
+        `[vm5][21:v]overlay=50:(H-h)/2:enable='between(t,30,35)'[outv]`
     ].join(';');
 
     const ffmpegArgs = [
