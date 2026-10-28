@@ -317,6 +317,25 @@ async function procesarEstadio(item, index, total) {
     await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
 
     // 2. UI CARDS (Header superior 980px, Pistas inferiores 94px, Revelación y CTA)
+    function renderClueCard(pista) {
+        const totalLen = ((pista.tag || '') + ' ' + (pista.text || '')).length;
+        let fontSize = '33px';
+        if (totalLen > 75) fontSize = '23px';
+        else if (totalLen > 55) fontSize = '26px';
+        else if (totalLen > 42) fontSize = '29px';
+
+        return `
+            <div class="clue-card">
+                <div class="clue-indicator" style="background:${pista.color}; box-shadow: 0 0 15px ${pista.color};"></div>
+                <div class="clue-icon">${pista.icon}</div>
+                <div class="clue-text" style="font-size:${fontSize};">
+                    <span class="clue-tag" style="color:${pista.color};">${pista.tag}</span>
+                    ${pista.text}
+                </div>
+            </div>
+        `;
+    }
+
     await page.setViewport({ width: 1080, height: 2400, deviceScaleFactor: 1 });
     const uiHtml = `
     <!DOCTYPE html>
@@ -374,9 +393,18 @@ async function procesarEstadio(item, index, total) {
                 overflow: hidden;
             }
             .clue-indicator { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; }
-            .clue-icon { font-size: 38px; margin-right: 18px; }
-            .clue-text { color: #ffffff; font-size: 34px; font-weight: 800; white-space: nowrap; }
-            .clue-tag { font-weight: 900; margin-right: 10px; }
+            .clue-icon { font-size: 38px; margin-right: 18px; flex-shrink: 0; }
+            .clue-text {
+                color: #ffffff;
+                font-weight: 800;
+                line-height: 1.2;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                flex: 1;
+            }
+            .clue-tag { font-weight: 900; margin-right: 8px; }
 
             .reveal-banner {
                 max-width: 980px;
@@ -429,42 +457,18 @@ async function procesarEstadio(item, index, total) {
         </div>
 
         <div class="clue-group" id="ui-pistas-1">
-            <div class="clue-card">
-                <div class="clue-indicator" style="background:${item.pistas[0].color}; box-shadow: 0 0 15px ${item.pistas[0].color};"></div>
-                <div class="clue-icon">${item.pistas[0].icon}</div>
-                <div class="clue-text"><span class="clue-tag" style="color:${item.pistas[0].color};">${item.pistas[0].tag}</span> ${item.pistas[0].text}</div>
-            </div>
+            ${renderClueCard(item.pistas[0])}
         </div>
 
         <div class="clue-group" id="ui-pistas-2">
-            <div class="clue-card">
-                <div class="clue-indicator" style="background:${item.pistas[0].color}; box-shadow: 0 0 15px ${item.pistas[0].color};"></div>
-                <div class="clue-icon">${item.pistas[0].icon}</div>
-                <div class="clue-text"><span class="clue-tag" style="color:${item.pistas[0].color};">${item.pistas[0].tag}</span> ${item.pistas[0].text}</div>
-            </div>
-            <div class="clue-card">
-                <div class="clue-indicator" style="background:${item.pistas[1].color}; box-shadow: 0 0 15px ${item.pistas[1].color};"></div>
-                <div class="clue-icon">${item.pistas[1].icon}</div>
-                <div class="clue-text"><span class="clue-tag" style="color:${item.pistas[1].color};">${item.pistas[1].tag}</span> ${item.pistas[1].text}</div>
-            </div>
+            ${renderClueCard(item.pistas[0])}
+            ${renderClueCard(item.pistas[1])}
         </div>
 
         <div class="clue-group" id="ui-pistas-3">
-            <div class="clue-card">
-                <div class="clue-indicator" style="background:${item.pistas[0].color}; box-shadow: 0 0 15px ${item.pistas[0].color};"></div>
-                <div class="clue-icon">${item.pistas[0].icon}</div>
-                <div class="clue-text"><span class="clue-tag" style="color:${item.pistas[0].color};">${item.pistas[0].tag}</span> ${item.pistas[0].text}</div>
-            </div>
-            <div class="clue-card">
-                <div class="clue-indicator" style="background:${item.pistas[1].color}; box-shadow: 0 0 15px ${item.pistas[1].color};"></div>
-                <div class="clue-icon">${item.pistas[1].icon}</div>
-                <div class="clue-text"><span class="clue-tag" style="color:${item.pistas[1].color};">${item.pistas[1].tag}</span> ${item.pistas[1].text}</div>
-            </div>
-            <div class="clue-card">
-                <div class="clue-indicator" style="background:${item.pistas[2].color}; box-shadow: 0 0 15px ${item.pistas[2].color};"></div>
-                <div class="clue-icon">${item.pistas[2].icon}</div>
-                <div class="clue-text"><span class="clue-tag" style="color:${item.pistas[2].color};">${item.pistas[2].tag}</span> ${item.pistas[2].text}</div>
-            </div>
+            ${renderClueCard(item.pistas[0])}
+            ${renderClueCard(item.pistas[1])}
+            ${renderClueCard(item.pistas[2])}
         </div>
 
         <div class="reveal-banner" id="ui-reveal-title">
