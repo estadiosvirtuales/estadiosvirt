@@ -3,51 +3,15 @@ const fs = require('fs');
 
 console.log('🤖 ========================================================');
 console.log('🤖 PIPELINE AUTOMÁTICO: DUELOS DE CAPACIDAD & RETO DIARIO');
-console.log('🤖 MODO MANOS LIBRES (OPCIÓN B: RE-RENDER NATIVO)');
+console.log('🤖 REANUDANDO DESDE DUELO INTERRUMPIDO');
 console.log('🤖 ESTADIOS VIRTUALES · WWW.ESTADIOSVIRTUALES.COM');
 console.log('🤖 ========================================================\n');
 
-function isTriviaRunning() {
-    try {
-        const res = spawnSync('wmic', [
-            'process',
-            'where',
-            'name="node.exe" and commandline like "%crear_pack_batch.js%"',
-            'get',
-            'processid'
-        ], { encoding: 'utf8' });
-        const out = res.stdout || '';
-        if (out.includes('No hay instancias') || out.includes('No Instance')) {
-            return false;
-        }
-        // Buscar si hay algún número de PID en la salida
-        const lines = out.split(/\r?\n/).map(l => l.trim()).filter(l => /^\d+$/.test(l));
-        return lines.length > 0;
-    } catch (_) {
-        return false;
-    }
-}
-
-async function waitTrivia() {
-    console.log('⏳ Monitoreando proceso de Trivias en la conversación "Muestras"...');
-    let checks = 0;
-    while (isTriviaRunning()) {
-        checks++;
-        const elapsedMin = ((checks * 15) / 60).toFixed(1);
-        process.stdout.write(`⏳ Trivias procesándose en segundo plano... (${elapsedMin} min transcurridos)\r`);
-        await new Promise(r => setTimeout(r, 15000));
-    }
-    console.log('\n\n🎉 ¡LA CONVERSACIÓN "MUESTRAS" TERMINÓ TODAS LAS TRIVIAS!');
-    console.log('🚀 CPU y GPU liberadas. Iniciando inmediatamente DUELOS DE CAPACIDAD...\n');
-}
+// 5 primeros ya completados exitosamente:
+// river-boca, casla-huracan, central-newells, lanus-banfield, estudiantes-gimnasia
 
 const DUELOS_KEYS = [
-    'river-boca',
-    'casla-huracan',
-    'central-newells',
-    'lanus-banfield',
-    'estudiantes-gimnasia',
-    'sanmartin-atletico-tucuman',
+    'sanmartin-atletico-tucuman', // Reanuda este que fue interrumpido
     'colon-union',
     'allboys-atlanta',
     'madrid-barca',
@@ -63,15 +27,8 @@ const DUELOS_KEYS = [
 const RETOS_KEYS = ['1', '2', '3', '4', '5', '6', '7'];
 
 async function run() {
-    // 1. Espera activa hasta que termine "Muestras"
-    await waitTrivia();
-
-    // Pequeño descanso de 5s para vaciar buffers
-    await new Promise(r => setTimeout(r, 5000));
-
-    // 2. Renderizado de Duelos de Capacidad
     console.log(`\n🥊 ========================================================`);
-    console.log(`🥊 FASE 1: RE-RENDER NATIVO DE DUELOS DE CAPACIDAD (${DUELOS_KEYS.length} VIDEOS)`);
+    console.log(`🥊 REANUDANDO FASE 1: DUELOS DE CAPACIDAD (${DUELOS_KEYS.length} PENDIENTES)`);
     console.log(`🥊 ========================================================\n`);
 
     for (let i = 0; i < DUELOS_KEYS.length; i++) {
@@ -85,11 +42,11 @@ async function run() {
         }
     }
 
-    console.log(`\n🎉 ¡FASE 1 COMPLETADA! Los ${DUELOS_KEYS.length} Duelos de Capacidad están listos.`);
+    console.log(`\n🎉 ¡FASE 1 COMPLETADA! Todos los 16 Duelos de Capacidad están listos.`);
 
     await new Promise(r => setTimeout(r, 5000));
 
-    // 3. Renderizado de Retos Diarios
+    // Renderizado de Retos Diarios
     console.log(`\n🎯 ========================================================`);
     console.log(`🎯 FASE 2: RE-RENDER NATIVO DE RETOS DIARIOS (${RETOS_KEYS.length} VIDEOS)`);
     console.log(`🎯 ========================================================\n`);
@@ -107,7 +64,7 @@ async function run() {
 
     console.log(`\n🏆 ========================================================`);
     console.log(`🏆 ¡PIPELINE COMPLETO FINALIZADO CON ÉXITO!`);
-    console.log(`🏆 ${DUELOS_KEYS.length} Duelos + ${RETOS_KEYS.length} Retos Diarios actualizados con Opción B.`);
+    console.log(`🏆 16 Duelos + 7 Retos Diarios 100% actualizados con Opción B.`);
     console.log(`🏆 Todos los videos incluyen el nuevo llamado a seguirte/suscribirse.`);
     console.log(`🏆 ========================================================\n`);
 }
