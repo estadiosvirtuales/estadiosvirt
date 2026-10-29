@@ -802,7 +802,9 @@ function resolverUrlFotoClub(club, pais, fotoOriginal, gid) {
     // 🛡️ Corrección específica para clubes homónimos: Santos Laguna (México) vs Santos (Brasil)
     const clbNorm = (club || '').toLowerCase().trim();
     if (clbNorm.includes('santos laguna') || clbNorm === 'santos laguna' || (clbNorm.includes('santos') && (pLimpio.includes('m\u00e9x') || pLimpio.includes('mex') || gidStr === '120485921'))) {
-        return 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/santoslaguna.webp';
+        return (typeof window !== 'undefined' && (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'))
+            ? 'escudos/santos_laguna_oficial.webp?v=2'
+            : 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/santos_laguna_oficial.webp?v=2';
     }
 
     // 1. 🏆 CATEGORÍA MUNDIAL (Sedes Mundialistas - GID 879164460)
@@ -1200,7 +1202,9 @@ async function indexarCatalogoMasivo() {
             } else if (clb.includes('real salt lake') || (foto.includes('RealSaltLake') || (foto.includes('realsaltlake') && !foto.includes('realstaltlake')))) {
                 foto = 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/realstaltlake.webp';
             } else if ((clb.includes('santos laguna') || clb === 'santos laguna') || (clb.includes('santos') && (ps.includes('mex') || ps.includes('m\u00e9x') || gidStr === '120485921'))) {
-                foto = 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/santoslaguna.webp';
+                foto = (typeof window !== 'undefined' && (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'))
+                    ? 'escudos/santos_laguna_oficial.webp?v=2'
+                    : 'https://estadiosvirtuales.github.io/estadiosvirt/escudos/santos_laguna_oficial.webp?v=2';
             }
 
             return {

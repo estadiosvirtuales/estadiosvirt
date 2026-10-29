@@ -322,7 +322,7 @@ const ESCUDOS_MAP = {
   'mex_monterrey': URL_BASE + 'monterrey.webp',
   'mex_toluca': URL_BASE + 'toluca.webp',
   'mex_pachuca': URL_BASE + 'pachuca.webp',
-  'mex_santos': URL_BASE + 'santoslaguna.webp',
+  'mex_santos': URL_BASE + 'santos_laguna_oficial.webp?v=2',
   'mex_leon': URL_BASE + 'leon.webp',
   'mex_atlas': URL_BASE + 'atlas.webp',
   'mex_tijuana': URL_BASE + 'tijuana.webp',
