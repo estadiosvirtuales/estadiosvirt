@@ -730,6 +730,18 @@ async function main() {
 
     if (arg === 'all' || arg === '--all') {
         queue = TRIVIAS_DATABASE.filter(s => s.id !== 'argentinos_diego_maradona');
+    } else if (arg === 'nuevos' || arg === '--nuevos') {
+        const idsNuevos = [
+            'mexico_estadio_akron',
+            'italia_diego_maradona_napoli',
+            'francia_orange_velodrome',
+            'portugal_estadio_da_luz',
+            'portugal_estadio_do_dragao',
+            'holanda_johan_cruyff_arena',
+            'holanda_de_kuip_feyenoord',
+            'chile_estadio_monumental_colo_colo'
+        ];
+        queue = TRIVIAS_DATABASE.filter(s => idsNuevos.includes(s.id));
     } else if (arg === 'corregidos' || arg === '--corregidos') {
         const idsCorregidos = [
             'atletico_tucuman',

@@ -2105,6 +2105,350 @@ const TRIVIAS_DATABASE = [
       "paisHashtag": "#clubamricamxico #estadios #stadiumguessr #futbol #geoguessr",
       "extraPista": "El \"Gol del Siglo\" de Maradona en México 86."
     }
+  },
+  {
+    "id": "mexico_estadio_akron",
+    "folderName": "México\\ESTADIO-AKRON-CHIVAS",
+    "nombreMostrar": "ESTADIO AKRON",
+    "clubMostrar": "CHIVAS DE GUADALAJARA",
+    "pais": "México",
+    "videoFileName": "Estadio_Akron_Chivas_Guadalajara.mp4",
+    "coverFileName": "Portada_Estadio_Akron_Chivas.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\México\\Estadio Guadalajara Ubicación Zapopan, Jalisco, México.mp4",
+    "targetLat": 20.6819,
+    "targetLng": -103.4626,
+    "userLat": 20.6835,
+    "userLng": -103.4608,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Zapopan, Jalisco · ESTADIO AKRON",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 46.232 hinchas rojiblancos.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌋",
+        "tag": "PISTA 2:",
+        "text": "Diseño arquitectónico con forma de volcán verde.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "Sede oficial de la Copa del Mundo 2026.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ESTADIO AKRON · CHIVAS",
+    "copys": {
+      "club": "CHIVAS DE GUADALAJARA",
+      "paisHashtag": "#chivas #estadios #stadiumguessr #futbol #geoguessr #ligamx",
+      "extraPista": "Diseño arquitectónico con forma de volcán verde."
+    }
+  },
+  {
+    "id": "italia_diego_maradona_napoli",
+    "folderName": "Italia\\DIEGO-ARMANDO-MARADONA-NAPOLI",
+    "nombreMostrar": "DIEGO ARMANDO MARADONA",
+    "clubMostrar": "SSC NAPOLI",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Diego_Armando_Maradona_Napoli.mp4",
+    "coverFileName": "Portada_Diego_Armando_Maradona_Napoli.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Subidos\\Diego Armando Maradona_Napoli.mp4",
+    "targetLat": 40.8279,
+    "targetLng": 14.193,
+    "userLat": 40.8295,
+    "userLng": 14.195,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Fuorigrotta, Nápoles · DIEGO ARMANDO MARADONA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 54.726 espectadores en el sur italiano.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏛️",
+        "tag": "PISTA 2:",
+        "text": "Histórico estadio San Paolo rebautizado en 2020.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "El santuario donde Diego ganó dos Scudettos.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "DIEGO ARMANDO MARADONA · NAPOLI",
+    "copys": {
+      "club": "SSC NAPOLI",
+      "paisHashtag": "#napoli #seriea #maradona #stadiumguessr #futbol #italia",
+      "extraPista": "Histórico estadio San Paolo rebautizado en 2020."
+    }
+  },
+  {
+    "id": "francia_orange_velodrome",
+    "folderName": "Francia\\ORANGE-VELODROME-MARSEILLE",
+    "nombreMostrar": "ORANGE VÉLODROME",
+    "clubMostrar": "OLYMPIQUE DE MARSELLA",
+    "pais": "Francia",
+    "videoFileName": "Estadio_Orange_Velodrome_Marsella.mp4",
+    "coverFileName": "Portada_Orange_Velodrome_Marsella.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Francia\\Subidos\\Marsella Rulli.mp4",
+    "targetLat": 43.2698,
+    "targetLng": 5.3959,
+    "userLat": 43.2715,
+    "userLng": 5.3978,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Marsella, Costa Azul · ORANGE VÉLODROME",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 67.394 hinchas (el mayor de clubes de Francia).",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏟️",
+        "tag": "PISTA 2:",
+        "text": "Cubierta blanca ondulada que amplifica el rugido del público.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 3:",
+        "text": "La caldera del único campeón francés de Champions League.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ORANGE VÉLODROME · MARSELLA",
+    "copys": {
+      "club": "OLYMPIQUE DE MARSELLA",
+      "paisHashtag": "#om #marseille #velodrome #ligue1 #stadiumguessr #futbol",
+      "extraPista": "Cubierta blanca ondulada que amplifica el rugido del público."
+    }
+  },
+  {
+    "id": "portugal_estadio_da_luz",
+    "folderName": "Portugal\\ESTADIO-DA-LUZ-BENFICA",
+    "nombreMostrar": "ESTÁDIO DA LUZ",
+    "clubMostrar": "SL BENFICA",
+    "pais": "Portugal",
+    "videoFileName": "Estadio_Da_Luz_Benfica.mp4",
+    "coverFileName": "Portada_Estadio_Da_Luz_Benfica.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Primeira Liga\\Estadio da luz portugal.mp4",
+    "targetLat": 38.7526,
+    "targetLng": -9.1847,
+    "userLat": 38.7542,
+    "userLng": -9.1828,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Lisboa, Portugal · ESTÁDIO DA LUZ",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 64.642 almas (La Catedral de Lisboa).",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🦅",
+        "tag": "PISTA 2:",
+        "text": "Un águila real vuela sobre la cancha antes de cada partido.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "La fortaleza roja del SL Benfica y de la leyenda Eusébio.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ESTÁDIO DA LUZ · BENFICA",
+    "copys": {
+      "club": "SL BENFICA",
+      "paisHashtag": "#benfica #estadiodaluz #lisboa #primeiraliga #stadiumguessr",
+      "extraPista": "Un águila real vuela sobre la cancha antes de cada partido."
+    }
+  },
+  {
+    "id": "portugal_estadio_do_dragao",
+    "folderName": "Portugal\\ESTADIO-DO-DRAGAO-PORTO",
+    "nombreMostrar": "ESTÁDIO DO DRAGÃO",
+    "clubMostrar": "FC PORTO",
+    "pais": "Portugal",
+    "videoFileName": "Estadio_Do_Dragao_Porto.mp4",
+    "coverFileName": "Portada_Estadio_Do_Dragao_Porto.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Primeira Liga\\Porto nehuen perez.mp4",
+    "targetLat": 41.1618,
+    "targetLng": -8.5836,
+    "userLat": 41.1634,
+    "userLng": -8.5818,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Oporto, Portugal · ESTÁDIO DO DRAGÃO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 50.033 fanáticos en el norte portugués.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🐉",
+        "tag": "PISTA 2:",
+        "text": "Techo translúcido suspendido de moderna estructura metálica.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 3:",
+        "text": "El hogar de los dragones blanquiazules campeones de Europa.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ESTÁDIO DO DRAGÃO · PORTO",
+    "copys": {
+      "club": "FC PORTO",
+      "paisHashtag": "#fcporto #dragao #porto #primeiraliga #stadiumguessr #futbol",
+      "extraPista": "Techo translúcido suspendido de moderna estructura metálica."
+    }
+  },
+  {
+    "id": "holanda_johan_cruyff_arena",
+    "folderName": "Países Bajos\\JOHAN-CRUYFF-ARENA-AJAX",
+    "nombreMostrar": "JOHAN CRUYFF ARENA",
+    "clubMostrar": "AJAX ÁMSTERDAM",
+    "pais": "Países Bajos",
+    "videoFileName": "Estadio_Johan_Cruyff_Arena_Ajax.mp4",
+    "coverFileName": "Portada_Johan_Cruyff_Arena_Ajax.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Holanda\\Johan Cruyff Arena Ajax Amsterdam.mp4",
+    "targetLat": 52.3144,
+    "targetLng": 4.941,
+    "userLat": 52.3158,
+    "userLng": 4.9432,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Ámsterdam, Países Bajos · JOHAN CRUYFF ARENA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 55.865 espectadores de rojo y blanco.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏟️",
+        "tag": "PISTA 2:",
+        "text": "Techo retráctil inaugurado como Amsterdam ArenA en 1996.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "Templo del fútbol total y del cuatro veces rey de Europa.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "JOHAN CRUYFF ARENA · AJAX",
+    "copys": {
+      "club": "AJAX ÁMSTERDAM",
+      "paisHashtag": "#ajax #amsterdam #cruyff #eredivisie #stadiumguessr #futbol",
+      "extraPista": "Techo retráctil inaugurado como Amsterdam ArenA en 1996."
+    }
+  },
+  {
+    "id": "holanda_de_kuip_feyenoord",
+    "folderName": "Países Bajos\\DE-KUIP-FEYENOORD",
+    "nombreMostrar": "DE KUIP (FEIJENOORD)",
+    "clubMostrar": "FEYENOORD ROTTERDAM",
+    "pais": "Países Bajos",
+    "videoFileName": "Estadio_De_Kuip_Feyenoord.mp4",
+    "coverFileName": "Portada_De_Kuip_Feyenoord.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Holanda\\Stadion Feijenoord (De Kuip) Feyenoord Rotterdam.mp4",
+    "targetLat": 51.894,
+    "targetLng": 4.5239,
+    "userLat": 51.8955,
+    "userLng": 4.526,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Róterdam, Países Bajos · DE KUIP",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 47.500 apasionados al sur del río Mosa.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏟️",
+        "tag": "PISTA 2:",
+        "text": "Legendario diseño curvado de acero apodado «La Bañera».",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "La caldera más ruidosa de los Países Bajos, cuna del Feyenoord.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "DE KUIP · FEYENOORD",
+    "copys": {
+      "club": "FEYENOORD ROTTERDAM",
+      "paisHashtag": "#feyenoord #rotterdam #dekuip #eredivisie #stadiumguessr #futbol",
+      "extraPista": "Legendario diseño curvado de acero apodado «La Bañera»."
+    }
+  },
+  {
+    "id": "chile_estadio_monumental_colo_colo",
+    "folderName": "Chile\\ESTADIO-MONUMENTAL-COLO-COLO",
+    "nombreMostrar": "ESTADIO MONUMENTAL",
+    "clubMostrar": "COLO-COLO",
+    "pais": "Chile",
+    "videoFileName": "Estadio_Monumental_Colo_Colo.mp4",
+    "coverFileName": "Portada_Estadio_Monumental_Colo_Colo.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Monumental_ Club Social y Deportivo Colo-Colo.mp4",
+    "targetLat": -33.5064,
+    "targetLng": -70.6058,
+    "userLat": -33.5048,
+    "userLng": -70.604,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Macul, Santiago de Chile · ESTADIO MONUMENTAL",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 47.017 hinchas en la comuna de Macul.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏔️",
+        "tag": "PISTA 2:",
+        "text": "Vista majestuosa a la Cordillera de los Andes desde las tribunas.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 3:",
+        "text": "La casa del «Cacique», campeón de Copa Libertadores 1991.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ESTADIO MONUMENTAL · COLO-COLO",
+    "copys": {
+      "club": "COLO-COLO",
+      "paisHashtag": "#colocolo #vamoscacique #chile #monumental #stadiumguessr #futbol",
+      "extraPista": "Vista majestuosa a la Cordillera de los Andes desde las tribunas."
+    }
   }
 ];
 

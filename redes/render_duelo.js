@@ -724,6 +724,216 @@ El Islas Malvinas de Floresta vs el Don León Kolbowski de Villa Crespo. ¿Cuál
 🎮 Poné a prueba cuánto sabés de canchas en el link del perfil: estadiosvirtuales.com
 
 #AllBoys #Atlanta #Floresta #VillaCrespo #Albo #Bohemio #AscensoArgentino #EstadiosVirtuales`
+    },
+    'dortmund-bayern': {
+        slug: 'DORTMUND-VS-BAYERN',
+        pais: 'Alemania',
+        tituloBadge: '🥊 Duelo de Capacidad · Der Klassiker',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más grande de Alemania',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Dortmund_vs_Bayern.mp4',
+        portadaFileName: 'Portada_Duelo_Dortmund_Bayern.jpg',
+        bannerDiferencia: '¡EL DORTMUND POR +6.300 LUGARES!',
+        team1: {
+            id: 'dortmund',
+            nombre: 'BORUSSIA DORTMUND',
+            estadio: 'Signal Iduna Park',
+            apodo: 'El Muro Amarillo',
+            capacidadNum: 81365,
+            capacidadTexto: '81.365 esp.',
+            escudoFile: 'borussiadortmund.webp',
+            borderColor: '#ffd700',
+            videoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Borussia.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'bayern',
+            nombre: 'BAYERN MÚNICH',
+            estadio: 'Allianz Arena',
+            apodo: 'La Fortaleza Bávara',
+            capacidadNum: 75024,
+            capacidadTexto: '75.024 esp.',
+            escudoFile: 'bayernmunchen.webp',
+            borderColor: '#dc052d',
+            videoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Allianz Arena.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿DORTMUND O BAYERN MÚNICH? 🏟️🔥
+Der Klassiker del fútbol alemán: Signal Iduna Park vs Allianz Arena. ¿Cuál de los dos colosos bávaros y del Ruhr tiene más capacidad oficial de hinchas? 😱
+
+👉 ¿Acertaste o pensabas que ganaba el Bayern? Dejá tu voto en los comentarios.
+🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
+
+#Dortmund #BayernMunich #DerKlassiker #Bundesliga #SignalIdunaPark #AllianzArena #Estadios #EstadiosVirtuales`
+    },
+    'inter-juve': {
+        slug: 'INTER-VS-JUVENTUS',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo de Capacidad · Derby d\'Italia',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más caliente de Italia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Inter_vs_Juventus.mp4',
+        portadaFileName: 'Portada_Duelo_Inter_Juventus.jpg',
+        bannerDiferencia: '¡SAN SIRO POR +34.000 LUGARES!',
+        team1: {
+            id: 'inter',
+            nombre: 'INTER DE MILÁN',
+            estadio: 'San Siro (Giuseppe Meazza)',
+            apodo: 'La Scala del Calcio',
+            capacidadNum: 75923,
+            capacidadTexto: '75.923 esp.',
+            escudoFile: 'inter.webp',
+            borderColor: '#001ea0',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\San Siro 2.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'juventus',
+            nombre: 'JUVENTUS FC',
+            estadio: 'Allianz Stadium',
+            apodo: 'Juventus Stadium',
+            capacidadNum: 41507,
+            capacidadTexto: '41.507 esp.',
+            escudoFile: 'juventus.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Juventus.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿INTER DE MILÁN O JUVENTUS? 🏟️🔥
+El Derby d'Italia frente a frente: San Siro vs Allianz Stadium de Turín. ¿Cuál de las dos canchas tiene mayor capacidad oficial? ¡La diferencia es tremenda! 😱
+
+👉 Dejanos tu voto y comentá si sabías este dato.
+🎮 Jugá gratis y adiviná estadios en el link del perfil: estadiosvirtuales.com
+
+#Inter #Juventus #SerieA #SanSiro #AllianzStadium #DerbyDItalia #Calcio #EstadiosVirtuales`
+    },
+    'marsella-psg': {
+        slug: 'MARSELLA-VS-PSG',
+        pais: 'Francia',
+        tituloBadge: '🥊 Duelo de Capacidad · Le Classique',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más apasionante de Francia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Marsella_vs_PSG.mp4',
+        portadaFileName: 'Portada_Duelo_Marsella_PSG.jpg',
+        bannerDiferencia: '¡EL VÉLODROME POR +19.400 LUGARES!',
+        team1: {
+            id: 'marsella',
+            nombre: 'OLYMPIQUE DE MARSELLA',
+            estadio: 'Orange Vélodrome',
+            apodo: 'El Vélodrome',
+            capacidadNum: 67394,
+            capacidadTexto: '67.394 esp.',
+            escudoFile: 'olimpiquemarsella.webp',
+            borderColor: '#2faee0',
+            videoPath: "E:\\Google earth studio\\Francia\\Subidos\\Marsella Rulli.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'psg',
+            nombre: 'PARIS SAINT-GERMAIN',
+            estadio: 'Parc des Princes',
+            apodo: 'Parque de los Príncipes',
+            capacidadNum: 47929,
+            capacidadTexto: '47.929 esp.',
+            escudoFile: 'psg.webp',
+            borderColor: '#004170',
+            videoPath: "E:\\Google earth studio\\Francia\\Subidos\\PSG.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿MARSELLA O PSG? 🏟️🔥
+Le Classique de la Ligue 1: Orange Vélodrome en la Costa Azul vs Parc des Princes en París. ¿Cuál tiene más capacidad oficial de hinchas? 😱
+
+👉 ¿Acertaste o pensabas que ganaba París? Dejá tu comentario abajo 👇
+🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
+
+#Marseille #PSG #LeClassique #Ligue1 #OrangeVelodrome #ParcDesPrinces #Estadios #EstadiosVirtuales`
+    },
+    'america-chivas': {
+        slug: 'AMERICA-VS-CHIVAS',
+        pais: 'México',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Nacional',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más grande de México',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_America_vs_Chivas.mp4',
+        portadaFileName: 'Portada_Duelo_America_Chivas.jpg',
+        bannerDiferencia: '¡EL AZTECA POR +37.000 LUGARES!',
+        team1: {
+            id: 'america',
+            nombre: 'CLUB AMÉRICA',
+            estadio: 'Estadio Azteca',
+            apodo: 'El Coloso de Santa Úrsula',
+            capacidadNum: 83264,
+            capacidadTexto: '83.264 esp.',
+            escudoFile: 'america.webp',
+            borderColor: '#f9d835',
+            videoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'chivas',
+            nombre: 'CHIVAS DE GUADALAJARA',
+            estadio: 'Estadio Akron',
+            apodo: 'La Fortaleza Rojiblanca',
+            capacidadNum: 46232,
+            capacidadTexto: '46.232 esp.',
+            escudoFile: 'guadalajara.webp',
+            borderColor: '#c8102e',
+            videoPath: "E:\\Google earth studio\\México\\Estadio Guadalajara Ubicación Zapopan, Jalisco, México.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿AMÉRICA O CHIVAS? 🏟️🔥
+El Clásico Nacional del fútbol mexicano: El mítico Estadio Azteca vs el moderno Estadio Akron de Zapopan. ¿Cuál tiene mayor aforo oficial? 😱
+
+👉 Votá en los comentarios cuál cancha te gusta más.
+🎮 Demostrá cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#ClubAmerica #Chivas #ClasicoNacional #LigaMX #EstadioAzteca #EstadioAkron #FutbolMexicano #EstadiosVirtuales`
+    },
+    'nacional-colocolo': {
+        slug: 'UDECHILE-VS-COLOCOLO',
+        pais: 'Chile',
+        tituloBadge: '🥊 Duelo de Capacidad · Superclásico Chileno',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El Superclásico del Fútbol Chileno',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_UdeChile_vs_ColoColo.mp4',
+        portadaFileName: 'Portada_Duelo_UdeChile_ColoColo.jpg',
+        bannerDiferencia: '¡EL NACIONAL POR SOLO 1.300 LUGARES!',
+        team1: {
+            id: 'udechile',
+            nombre: 'UNIVERSIDAD DE CHILE',
+            estadio: 'Nacional Julio Martínez',
+            apodo: 'El Coloso de Ñuñoa',
+            capacidadNum: 48665,
+            capacidadTexto: '48.665 esp.',
+            escudoFile: 'udechile.webp',
+            borderColor: '#003399',
+            videoPath: "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Nacional Julio Martínez Prádanos.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'colocolo',
+            nombre: 'COLO-COLO',
+            estadio: 'Monumental David Arellano',
+            apodo: 'La Ruca de Macul',
+            capacidadNum: 47347,
+            capacidadTexto: '47.347 esp.',
+            escudoFile: 'ColoColo.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Monumental_ Club Social y Deportivo Colo-Colo.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿U. DE CHILE O COLO-COLO? 🏟️🔥
+El Superclásico del fútbol chileno: Estadio Nacional de Ñuñoa vs Estadio Monumental David Arellano de Macul. ¡La definición es milimétrica! 😱
+
+👉 ¿Acertaste o pensabas que ganaba el Cacique? Comentá abajo 👇
+🎮 Poné a prueba tus conocimientos en: estadiosvirtuales.com
+
+#UdeChile #ColoColo #Superclasico #Chile #EstadioNacional #EstadioMonumental #FutbolChileno #EstadiosVirtuales`
     }
 };
 
@@ -1246,6 +1456,13 @@ async function main() {
     const target = process.argv[2] || 'bloque1';
     const PREMIER_KEYS = ['man-united-man-city', 'tottenham-arsenal', 'man-united-liverpool'];
     const TOP5_KEYS = ['river-maracana', 'madrid-barca', 'corinthians-palmeiras', 'betis-sevilla', 'madrid-atleti'];
+    const NUEVOS_INTERNACIONALES_KEYS = [
+        'dortmund-bayern',
+        'inter-juve',
+        'marsella-psg',
+        'america-chivas',
+        'nacional-colocolo'
+    ];
     const ARG_KEYS = [
         'river-boca',
         'casla-huracan',
@@ -1274,7 +1491,16 @@ async function main() {
             await renderizarDuelo(PREMIER_KEYS[i]);
         }
         console.log(`\n🎉 ¡LOTE BLOQUE 1 PREMIER LEAGUE FINALIZADO CON ÉXITO!`);
-    } else if (target === 'lote-top5' || target === 'nuevos') {
+    } else if (target === 'nuevos' || target === 'internacionales' || target === 'lote-internacional') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE NUEVOS DUELOS INTERNACIONALES (${NUEVOS_INTERNACIONALES_KEYS.length} videos)...\n`);
+        for (let i = 0; i < NUEVOS_INTERNACIONALES_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${NUEVOS_INTERNACIONALES_KEYS.length}] PROCESANDO DUELO: ${NUEVOS_INTERNACIONALES_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(NUEVOS_INTERNACIONALES_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE DE DUELOS INTERNACIONALES FINALIZADO CON ÉXITO!`);
+    } else if (target === 'lote-top5') {
         console.log(`🚀 INICIANDO PRODUCCIÓN DE LOTE TOP 5 DUELOS DE CAPACIDAD (${TOP5_KEYS.length} videos)...\n`);
         for (let i = 0; i < TOP5_KEYS.length; i++) {
             console.log(`\n========================================================`);

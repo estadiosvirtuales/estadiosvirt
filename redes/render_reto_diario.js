@@ -736,6 +736,212 @@ const RETOS_DATABASE = {
                 ubicacionBadge: '📍 Valencia, España · MESTALLA'
             }
         ]
+    },
+    '8': {
+        id: 'RETO-DIARIO-08-MEXICO',
+        numeroReto: 8,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_08_Mexico.mp4',
+        portadaFileName: 'Portada_Reto_Diario_08.jpg',
+        puntuacionTotal: 24690,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'ESTADIO BBVA',
+                clubNombre: 'CF MONTERREY',
+                ciudad: 'Guadalupe, Nuevo León',
+                videoPath: "E:\\Google earth studio\\México\\Estadio BBVA_CF Monterrey.mp4",
+                clipStart: 3.0,
+                pista: '53.500 hinchas en el Gigante de Acero junto al cerro',
+                targetLat: 25.6691,
+                targetLng: -100.2443,
+                userLat: 25.6705,
+                userLng: -100.2425,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 4950,
+                ubicacionBadge: '📍 Guadalupe, NL · ESTADIO BBVA'
+            },
+            {
+                num: 2,
+                estadioNombre: 'ESTADIO AKRON',
+                clubNombre: 'CHIVAS DE GUADALAJARA',
+                ciudad: 'Zapopan, Jalisco',
+                videoPath: "E:\\Google earth studio\\México\\Estadio Guadalajara Ubicación Zapopan, Jalisco, México.mp4",
+                clipStart: 3.0,
+                pista: '46.232 hinchas en la joya volcánica de Zapopan',
+                targetLat: 20.6819,
+                targetLng: -103.4626,
+                userLat: 20.6835,
+                userLng: -103.4608,
+                distanciaTexto: '250 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 9880,
+                ubicacionBadge: '📍 Zapopan, Jalisco · ESTADIO AKRON'
+            },
+            {
+                num: 3,
+                estadioNombre: 'ESTADIO UNIVERSITARIO',
+                clubNombre: 'TIGRES UANL',
+                ciudad: 'San Nicolás de los Garza',
+                videoPath: "E:\\Google earth studio\\México\\Estadio Universitario de la UANL Tigres.mp4",
+                clipStart: 3.0,
+                pista: '41.886 hinchas en la caldera del Volcán universitario',
+                targetLat: 25.7258,
+                targetLng: -100.3126,
+                userLat: 25.7242,
+                userLng: -100.3110,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 14840,
+                ubicacionBadge: '📍 San Nicolás, NL · ESTADIO UNIVERSITARIO'
+            },
+            {
+                num: 4,
+                estadioNombre: 'OLÍMPICO UNIVERSITARIO',
+                clubNombre: 'PUMAS UNAM',
+                ciudad: 'Ciudad de México',
+                videoPath: "E:\\Google earth studio\\México\\Estadio Olimpico Universitario Pumas.mp4",
+                clipStart: 3.0,
+                pista: '72.000 hinchas y mural de Diego Rivera, sede del 68',
+                targetLat: 19.3317,
+                targetLng: -99.1923,
+                userLat: 19.3332,
+                userLng: -99.1905,
+                distanciaTexto: '250 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 19770,
+                ubicacionBadge: '📍 Ciudad de México · OLÍMPICO UNIVERSITARIO'
+            },
+            {
+                num: 5,
+                estadioNombre: 'ESTADIO NEMESIO DIEZ',
+                clubNombre: 'TOLUCA FC',
+                ciudad: 'Toluca, Edo. de México',
+                videoPath: "E:\\Google earth studio\\México\\Estadio Nemesio Diez Toluca FC.mp4",
+                clipStart: 3.0,
+                pista: '30.000 hinchas a 2.660 metros sobre el nivel del mar',
+                targetLat: 19.2872,
+                targetLng: -99.6672,
+                userLat: 19.2887,
+                userLng: -99.6655,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.920 PTS 🔥',
+                puntos: 4920,
+                puntosAcumulados: 24690,
+                ubicacionBadge: '📍 Toluca, México · ESTADIO NEMESIO DIEZ'
+            }
+        ]
+    },
+    '9': {
+        id: 'RETO-DIARIO-09-ITALIA',
+        numeroReto: 9,
+        tituloPortada: '¿CUÁNTOS PUNTOS SACÁS EN EL RETO DE HOY?',
+        subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
+        videoFileName: 'Reto_Diario_09_Italia.mp4',
+        portadaFileName: 'Portada_Reto_Diario_09.jpg',
+        puntuacionTotal: 24710,
+        rangoFinal: '👑 GALÁCTICO ABSOLUTO',
+        grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        rondas: [
+            {
+                num: 1,
+                estadioNombre: 'DIEGO ARMANDO MARADONA',
+                clubNombre: 'SSC NAPOLI',
+                ciudad: 'Nápoles, Italia',
+                videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Diego Armando Maradona_Napoli.mp4",
+                clipStart: 3.0,
+                pista: '54.726 hinchas en el santuario sureño del Calcio',
+                targetLat: 40.8279,
+                targetLng: 14.1930,
+                userLat: 40.8295,
+                userLng: 14.1950,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.950 PTS 🔥',
+                puntos: 4950,
+                puntosAcumulados: 4950,
+                ubicacionBadge: '📍 Nápoles, Italia · DIEGO ARMANDO MARADONA'
+            },
+            {
+                num: 2,
+                estadioNombre: 'ESTADIO ARTEMIO FRANCHI',
+                clubNombre: 'ACF FIORENTINA',
+                ciudad: 'Florencia, Italia',
+                videoPath: "E:\\Google earth studio\\Italia\\Artemio Franchi Fiorentina.mp4",
+                clipStart: 3.0,
+                pista: '43.147 hinchas de la Viola con su torre de Maratón',
+                targetLat: 43.7808,
+                targetLng: 11.2825,
+                userLat: 43.7822,
+                userLng: 11.2842,
+                distanciaTexto: '220 METROS',
+                puntosTexto: '+4.960 PTS 🔥',
+                puntos: 4960,
+                puntosAcumulados: 9910,
+                ubicacionBadge: '📍 Florencia, Italia · ARTEMIO FRANCHI'
+            },
+            {
+                num: 3,
+                estadioNombre: 'GEWISS STADIUM',
+                clubNombre: 'ATALANTA BC',
+                ciudad: 'Bérgamo, Lombardía',
+                videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Gewiss Stadium Atalanta.mp4",
+                clipStart: 3.0,
+                pista: '21.747 hinchas en la moderna guarida de la Dea',
+                targetLat: 45.7088,
+                targetLng: 9.6806,
+                userLat: 45.7103,
+                userLng: 9.6824,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 14850,
+                ubicacionBadge: '📍 Bérgamo, Italia · GEWISS STADIUM'
+            },
+            {
+                num: 4,
+                estadioNombre: 'ESTADIO LUIGI FERRARIS',
+                clubNombre: 'GENOA CFC',
+                ciudad: 'Génova, Liguria',
+                videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Luigi Ferraris_Genoa.mp4",
+                clipStart: 3.0,
+                pista: '36.599 hinchas en el barrio de Marassi desde 1911',
+                targetLat: 44.4164,
+                targetLng: 8.9525,
+                userLat: 44.4180,
+                userLng: 8.9542,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 19780,
+                ubicacionBadge: '📍 Génova, Italia · LUIGI FERRARIS'
+            },
+            {
+                num: 5,
+                estadioNombre: 'ESTADIO RENATO DALL\'ARA',
+                clubNombre: 'BOLOGNA FC',
+                ciudad: 'Bolonia, Emilia-Romaña',
+                videoPath: "E:\\Google earth studio\\Italia\\Renato DallAra Bologna.mp4",
+                clipStart: 3.0,
+                pista: '36.462 hinchas y su famosa Torre de Maratona',
+                targetLat: 44.4922,
+                targetLng: 11.3097,
+                userLat: 44.4938,
+                userLng: 11.3115,
+                distanciaTexto: '230 METROS',
+                puntosTexto: '+4.930 PTS 🔥',
+                puntos: 4930,
+                puntosAcumulados: 24710,
+                ubicacionBadge: '📍 Bolonia, Italia · RENATO DALL\'ARA'
+            }
+        ]
     }
 };
 
@@ -750,7 +956,10 @@ RETOS_DATABASE['catedrales'] = RETOS_DATABASE['5'];
 RETOS_DATABASE['sudamerica'] = RETOS_DATABASE['6'];
 RETOS_DATABASE['brasil-argentina'] = RETOS_DATABASE['6'];
 RETOS_DATABASE['europa'] = RETOS_DATABASE['7'];
+
 RETOS_DATABASE['champions'] = RETOS_DATABASE['7'];
+RETOS_DATABASE['mexico'] = RETOS_DATABASE['8'];
+RETOS_DATABASE['italia'] = RETOS_DATABASE['9'];
 
 // ==========================================
 // 1. GENERADOR DE AUDIO PROCEDURAL LIMPIO (35s)
