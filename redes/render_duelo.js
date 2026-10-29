@@ -223,6 +223,7 @@ El Gigante de Arroyito vs El Coloso Marcelo Bielsa. ¿Cuál de los dos templos d
     },
     'losandes-chicago': {
         slug: 'LOS-ANDES-VS-NUEVA-CHICAGO',
+        pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Lomas vs Mataderos',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'Duelo de gigantes históricos del ascenso',
@@ -264,6 +265,7 @@ El Eduardo Gallardón de Lomas de Zamora vs la República de Mataderos. ¿Cuál 
     },
     'river-maracana': {
         slug: 'RIVER-VS-MARACANA',
+        pais: 'Internacional',
         tituloBadge: '🥊 Duelo de Capacidad · Choque de Gigantes',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'El Coloso Argentino vs El Templo Brasileño',
@@ -305,6 +307,7 @@ El Mâs Monumental de River Plate vs el legendario Maracaná de Río de Janeiro.
     },
     'madrid-barca': {
         slug: 'MADRID-VS-BARCELONA',
+        pais: 'España',
         tituloBadge: '🥊 Duelo de Capacidad · El Clásico',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La mayor rivalidad del fútbol mundial',
@@ -346,6 +349,7 @@ El nuevo Santiago Bernabéu vs el imponente Spotify Camp Nou. ¿Cuál de los dos
     },
     'corinthians-palmeiras': {
         slug: 'CORINTHIANS-VS-PALMEIRAS',
+        pais: 'Brasil',
         tituloBadge: '🥊 Duelo de Capacidad · O Derby Paulista',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La máxima rivalidad del estado de São Paulo',
@@ -387,6 +391,7 @@ La Neo Química Arena del Timão vs el Allianz Parque del Verdão. ¿Cuál de lo
     },
     'betis-sevilla': {
         slug: 'BETIS-VS-SEVILLA',
+        pais: 'España',
         tituloBadge: '🥊 Duelo de Capacidad · El Gran Derbi',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'La pasión del fútbol de Sevilla',
@@ -428,6 +433,7 @@ El Benito Villamarín vs el Ramón Sánchez-Pizjuán. ¿Cuál de las dos canchas
     },
     'madrid-atleti': {
         slug: 'MADRID-VS-ATLETICO',
+        pais: 'España',
         tituloBadge: '🥊 Duelo de Capacidad · Derbi Madrileño',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
         subtitulo: 'El derbi de la capital española',
@@ -1240,7 +1246,15 @@ async function main() {
     const target = process.argv[2] || 'bloque1';
     const PREMIER_KEYS = ['man-united-man-city', 'tottenham-arsenal', 'man-united-liverpool'];
     const TOP5_KEYS = ['river-maracana', 'madrid-barca', 'corinthians-palmeiras', 'betis-sevilla', 'madrid-atleti'];
-    const ARG_KEYS = ['sanmartin-atletico-tucuman', 'colon-union', 'allboys-atlanta'];
+    const ARG_KEYS = [
+        'river-boca',
+        'casla-huracan',
+        'central-newells',
+        'lanus-banfield',
+        'sanmartin-atletico-tucuman',
+        'colon-union',
+        'allboys-atlanta'
+    ];
 
     if (target === 'argentina' || target === 'arg' || target === 'lote-argentina') {
         console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS ARGENTINA (${ARG_KEYS.length} videos)...\n`);
