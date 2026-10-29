@@ -19,6 +19,7 @@ var rivalPuntosTotales = 0;
 var guessrEstadioCorrecto = null;
 var guessrEstadiosJugados = [];
 var guessrHistorialRondas = [];
+var guessrHistorialCoordenadas = [];
 var guessrDificultad = 'medio';
 var guessrTimerIndividualInterval = null;
 var guessrTiempoRestanteIndividual = 45;
@@ -1403,7 +1404,8 @@ async function arrancarPartidoVersus() {
 // ==========================================
 function obtenerEstadiosRetoDiario() {
     // 1. Filtramos los estadios que tienen video y coordenadas válidas
-    let pool = catalogoGlobal.filter(f => {
+    const poolBase = (typeof catalogoGlobal !== 'undefined' && catalogoGlobal.length > 0) ? catalogoGlobal : (typeof estadiosCargados !== 'undefined' ? estadiosCargados : []);
+    let pool = poolBase.filter(f => {
         const l = String(bscarPropiedad(f, 'Link del Video')).trim();
         return (l.includes('youtube') || l.includes('youtu.be')) && 
                String(bscarPropiedad(f, 'Latitud')).trim() !== '' && 
@@ -1604,7 +1606,8 @@ if (guessrRondaActual === 1 && typeof window.trackEvento === 'function') {
     window.trackEvento('partida_iniciada', { modo: modoInicio });
 }
 
-const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
+const poolActual = (typeof catalogoGlobal !== 'undefined' && catalogoGlobal.length > 0) ? catalogoGlobal : (typeof estadiosCargados !== 'undefined' ? estadiosCargados : []);
+const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toString().trim();return(l.includes('youtube.com')||l.includes('youtu.be'))&&bscarPropiedad(f,'Latitud').toString().trim()!==''&&bscarPropiedad(f,'Longitud').toString().trim()!==''&&!guessrEstadiosJugados.includes(bscarPropiedad(f,'Estadio'));});
 
 // === REEMPLAZA DESDE ACÁ ===
     if (esModoVersus) {
@@ -1623,7 +1626,12 @@ const disp=catalogoGlobal.filter(f=>{const l=bscarPropiedad(f,'Link del Video').
     } else if (esModoDiario) {
         // 🌍 LÓGICA NUEVA: RETO DIARIO
         const nombreEstadioDiario = estadiosDiariosList[guessrRondaActual - 1];
-        guessrEstadioCorrecto = catalogoGlobal.find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioDiario);
+        guessrEstadioCorrecto = poolActual.find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioDiario);
+        if (!guessrEstadioCorrecto) {
+            showToast("Error al cargar el estadio del reto diario 🚨", "ph-warning-circle", "danger");
+            cerrarModalVideo();
+            return;
+        }
         guessrEstadiosJugados.push(nombreEstadioDiario);
         const taunts = document.getElementById('taunts-container');
         if (taunts) taunts.style.display = 'none';
@@ -1811,8 +1819,12 @@ let dist = 0;
 let pts = 0;
 
 const nombreEstadio = bscarPropiedad(guessrEstadioCorrecto, 'Estadio');
-const latUsuario = guessrSelectedLatLng ? guessrSelectedLatLng.lat : 0;
-const lngUsuario = guessrSelectedLatLng ? guessrSelectedLatLng.lng : 0;
+if (!guessrSelectedLatLng) guessrSelectedLatLng = { lat: 0, lng: 0 };
+if (!guessrUserMarker && guessrMapInstance) {
+    try { guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance); } catch(e) {}
+}
+const latUsuario = guessrSelectedLatLng.lat;
+const lngUsuario = guessrSelectedLatLng.lng;
 
 // 🛡️ Validación en servidor por RPC
 if (supabaseClient) {
@@ -1861,7 +1873,9 @@ guessrHistorialCoordenadas.push({
 if(!isNaN(dist)&&dist<5)userStats.medallaLocalista=true;if(!isNaN(dist)&&dist<1)userStats.guessrUnKm=true;actualizarDotsProgreso();
 guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColor:'#111820',fillOpacity:1,weight:3}).addTo(guessrMapInstance).bindPopup(`<b>${bscarPropiedad(guessrEstadioCorrecto,'Estadio')}</b>`).openPopup();
 guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:3,className:'animated-flight-path'}).addTo(guessrMapInstance);
-guessrMapInstance.fitBounds(L.featureGroup([guessrUserMarker,guessrTargetMarker]).getBounds(),{padding:[40,40]});
+let marcasParaEncuadrar = [guessrTargetMarker];
+if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
+guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(),{padding:[40,40]});
 document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
 const textoBotonSolitario = guessrRondaActual < 5 ? 'SIGUIENTE' : 'FINAL';
@@ -2275,7 +2289,21 @@ function compartirRetoDiarioWordle() {
 
     texto += emojisRondas.trim() + `\n\n👀 ¿Te da para ganarme o vas a arrugar?\n⚽ Desafiame acá: estadiosvirtuales.com`;
 
-    if (navigator.clipboard) {
+    if (navigator.share) {
+        navigator.share({
+            title: 'StadiumGuessr - Reto Diario',
+            text: texto,
+            url: 'https://www.estadiosvirtuales.com'
+        }).then(() => {
+            showToast("¡Reto compartido exitosamente! 🚀", "ph-share-network", "success");
+        }).catch(err => {
+            if (err.name !== 'AbortError' && navigator.clipboard) {
+                navigator.clipboard.writeText(texto).then(() => {
+                    showToast("¡Reto copiado! Compartilo con tus amigos 🚀", "ph-copy", "success");
+                });
+            }
+        });
+    } else if (navigator.clipboard) {
         navigator.clipboard.writeText(texto).then(() => {
             showToast("¡Reto copiado! Compartilo con tus amigos 🚀", "ph-copy", "success");
         }).catch(err => {
