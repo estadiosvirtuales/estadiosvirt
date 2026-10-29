@@ -730,6 +730,23 @@ async function main() {
 
     if (arg === 'all' || arg === '--all') {
         queue = TRIVIAS_DATABASE.filter(s => s.id !== 'argentinos_diego_maradona');
+    } else if (arg === 'corregidos' || arg === '--corregidos') {
+        const idsCorregidos = [
+            'atletico_tucuman',
+            'banfield_florencio_sola',
+            'coloso_del_parque',
+            'gigante_de_arroyito',
+            'almirante_brown',
+            'atlanta_villa_crespo',
+            'chacarita_juniors',
+            'deportivo_moron',
+            'nueva_chicago',
+            'quilmes_centenario',
+            'temperley_alfredo_beranger',
+            'los_andes_lomas',
+            'allianz_parque_palmeiras'
+        ];
+        queue = TRIVIAS_DATABASE.filter(s => idsCorregidos.includes(s.id));
     } else if (arg) {
         const filtered = TRIVIAS_DATABASE.filter(s =>
             s.id.toLowerCase().includes(arg.toLowerCase()) ||
