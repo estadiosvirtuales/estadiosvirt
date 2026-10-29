@@ -122,17 +122,26 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         };
 
         const medallas3D = [
-            '<img src="medalla-oro.webp" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-plata.webp" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-bronce.webp" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+            '<img src="medalla-oro.webp" alt="1º" class="rank-pos-medal">',
+            '<img src="medalla-plata.webp" alt="2º" class="rank-pos-medal">',
+            '<img src="medalla-bronce.webp" alt="3º" class="rank-pos-medal">'
         ];
+        const renderRankSlot = (idx, esSticky = false, stickyNum = 0) => {
+            if (esSticky) {
+                return `<span class="ranking-pos-slot sticky-slot"><span class="sticky-rank-pill">#${stickyNum}</span></span>`;
+            }
+            if (idx < 3) {
+                return `<span class="ranking-pos-slot top3-slot">${medallas3D[idx]}</span>`;
+            }
+            return `<span class="ranking-pos-slot"><span class="ranking-pos-num">${idx + 1}</span></span>`;
+        };
 
         let htmlContenido = `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
         if (!ranking || !ranking.length) {
             htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:36px 20px;font-size:0.85rem;">Aún no hay récords registrados en este modo.</p>`;
         } else {
             ranking.forEach((f, i) => {
-                const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                const med = renderRankSlot(i);
                 const nombreJugador = (f.nombre || 'Anónimo').trim();
                 const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
 
@@ -153,7 +162,7 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
             htmlContenido += `
             <div class="liga-row-item sticky-user-row es-propio">
                 <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                    <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
+                    ${renderRankSlot(0, true, miPuestoIdx + 1)} ${obtenerAvatarCirculoHTML(miNombre)} <b>${sanitizarHTML(miNombre)} (Vos)</b>
                 </span>
                 <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem;">
                     ${recordReal.toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>

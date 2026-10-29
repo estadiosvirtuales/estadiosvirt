@@ -6141,6 +6141,53 @@ html[data-theme="light"] .xp-bar-big-fill {
     white-space: nowrap;
 }
 
+/* 🎯 Posición fija uniforme para alinear verticalmente todos los avatars */
+.ranking-pos-slot {
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+}
+.ranking-pos-slot .rank-pos-medal,
+.ranking-pos-slot img {
+    width: 36px !important;
+    height: 36px !important;
+    object-fit: contain !important;
+    vertical-align: middle !important;
+}
+.ranking-pos-slot .ranking-pos-num {
+    color: var(--text-muted) !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+.ranking-pos-slot .sticky-rank-pill {
+    margin: 0 !important;
+}
+@media (max-width: 768px) {
+    .ranking-pos-slot {
+        width: 26px !important;
+        min-width: 26px !important;
+        max-width: 26px !important;
+        height: 26px !important;
+    }
+    .ranking-pos-slot .rank-pos-medal,
+    .ranking-pos-slot img {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    .ranking-pos-slot .ranking-pos-num {
+        font-size: 0.85rem !important;
+    }
+}
+
 .inspect-stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

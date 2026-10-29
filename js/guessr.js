@@ -2373,10 +2373,19 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
         let htmlContenido = "";
         let headerConfig = {};
         const medallas3D = [
-            '<img src="medalla-oro.webp" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-plata.webp" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-            '<img src="medalla-bronce.webp" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
+            '<img src="medalla-oro.webp" alt="1º" class="rank-pos-medal">',
+            '<img src="medalla-plata.webp" alt="2º" class="rank-pos-medal">',
+            '<img src="medalla-bronce.webp" alt="3º" class="rank-pos-medal">'
         ];
+        const renderRankSlot = (idx, esSticky = false, stickyNum = 0) => {
+            if (esSticky) {
+                return `<span class="ranking-pos-slot sticky-slot"><span class="sticky-rank-pill">#${stickyNum}</span></span>`;
+            }
+            if (idx < 3) {
+                return `<span class="ranking-pos-slot top3-slot">${medallas3D[idx]}</span>`;
+            }
+            return `<span class="ranking-pos-slot"><span class="ranking-pos-num">${idx + 1}</span></span>`;
+        };
 
         if (modoEspecifico === 'diario') {
             const hoy = new Date();
@@ -2441,7 +2450,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún nadie registró puntaje en el reto de hoy. ¡Sé el primero!</p>`;
             } else {
                 ranking.forEach((f, i) => {
-                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const med = renderRankSlot(i);
                     const nombreJugador = (f.nombre || 'Anónimo').trim();
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
@@ -2462,7 +2471,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
+                        ${renderRankSlot(0, true, miPuestoIdx + 1)} ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
                     <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                         ${miFila.puntaje || 0} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
@@ -2530,7 +2539,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay registros solitarios.</p>`;
             } else {
                 ranking.forEach((f, i) => {
-                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const med = renderRankSlot(i);
                     const nombreJugador = (f.nombre || 'Anónimo').trim();
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
@@ -2551,7 +2560,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
+                        ${renderRankSlot(0, true, miPuestoIdx + 1)} ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
                     <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                         ${recordReal.toLocaleString('es-AR')} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">pts</span>
@@ -2601,7 +2610,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
             } else {
                 ranking.forEach((f, i) => {
-                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const med = renderRankSlot(i);
                     const nombreJugador = (f.nombre_jugador || 'Anónimo').trim();
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
@@ -2623,7 +2632,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miPuestoIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
+                        ${renderRankSlot(0, true, miPuestoIdx + 1)} ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
                     <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                         ${misWins} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">G</span>
@@ -2675,7 +2684,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Sin partidos registrados en este período.</p>`;
             } else {
                 ranking.forEach((f, i) => {
-                    const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+                    const med = renderRankSlot(i);
                     const nombreJugador = (f.nombre_jugador || 'Anónimo').trim();
                     const esPropio = miNombre && nombreJugador.toLowerCase() === miNombre.toLowerCase();
                     htmlContenido += `
@@ -2697,7 +2706,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 htmlContenido += `
                 <div class="liga-row-item sticky-user-row es-propio">
                     <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombre.replace(/'/g, "\\'")}')" title="Tu posición">
-                        <span class="sticky-rank-pill">#${miIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
+                        ${renderRankSlot(0, true, miIdx + 1)} ${obtenerAvatarCirculoHTML(miNombre)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombre)} (Vos)</b></span>
                     </span>
                     <span style="color:var(--accent-color); font-weight:900; font-size:1.05rem; flex-shrink:0; margin-left:8px; white-space:nowrap;">
                         ${misWinsSemana} <span style="font-size:.78rem; color:var(--text-muted); font-weight:700;">G</span>
@@ -3587,13 +3596,22 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
                     : 'Todavía nadie registró partidas en esta liga.')}
         </div>`;
     } else {
+        const medallas3DLiga = [
+            '<img src="medalla-oro.webp" alt="1º" class="rank-pos-medal">',
+            '<img src="medalla-plata.webp" alt="2º" class="rank-pos-medal">',
+            '<img src="medalla-bronce.webp" alt="3º" class="rank-pos-medal">'
+        ];
+        const renderRankSlotLiga = (idx, esSticky = false, stickyNum = 0) => {
+            if (esSticky) {
+                return `<span class="ranking-pos-slot sticky-slot"><span class="sticky-rank-pill">#${stickyNum}</span></span>`;
+            }
+            if (idx < 3) {
+                return `<span class="ranking-pos-slot top3-slot">${medallas3DLiga[idx]}</span>`;
+            }
+            return `<span class="ranking-pos-slot"><span class="ranking-pos-num">${idx + 1}</span></span>`;
+        };
         lista.forEach((f, i) => {
-            const medallas3D = [
-                '<img src="medalla-oro.webp" alt="1º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-                '<img src="medalla-plata.webp" alt="2º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">',
-                '<img src="medalla-bronce.webp" alt="3º" style="width:36px; height:36px; object-fit:contain; vertical-align:middle;">'
-            ];
-            const med = i < 3 ? medallas3D[i] : `<span style="color:var(--text-muted); font-weight:700; width:24px; display:inline-block; text-align:center;">${i + 1}</span>`;
+            const med = renderRankSlotLiga(i);
             const nombreRival = (f.nombre || 'Anónimo').trim();
 
             const estaOnline = usuariosOnlineLiga.includes(nombreRival);
@@ -3686,7 +3704,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             htmlContenido += `
             <div class="liga-row-item liga-once-row sticky-user-row es-propio">
                 <div class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
-                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="once-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b><sub class="once-user-grl-sub" title="Tu GRL Once Inicial: ${miOvrLive}">${miOvrLive}</sub></span>
+                    ${renderRankSlotLiga(0, true, miPuestoLigaIdx + 1)} ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="once-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b><sub class="once-user-grl-sub" title="Tu GRL Once Inicial: ${miOvrLive}">${miOvrLive}</sub></span>
                 </div>
                 <div class="once-col-gep once-data-cell">${bloqueGEPSticky}</div>
                 <div class="once-col-act once-data-cell"></div>
@@ -3706,7 +3724,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             htmlContenido += `
             <div class="liga-row-item sticky-user-row es-propio">
                 <span class="inspect-clickable-user" onclick="inspeccionarPerfilRival('${miNombreRanking.replace(/'/g, "\\'")}')" title="Tu posición">
-                    <span class="sticky-rank-pill">#${miPuestoLigaIdx + 1}</span> ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b></span>
+                    ${renderRankSlotLiga(0, true, miPuestoLigaIdx + 1)} ${obtenerAvatarCirculoHTML(miNombreRanking)} <span class="ranking-user-name"><b>${sanitizarHTML(miNombreRanking)} (Vos)</b></span>
                 </span>
                 <span style="display:flex; align-items:center; gap:8px;">${bloquePuntosSticky}</span>
             </div>`;

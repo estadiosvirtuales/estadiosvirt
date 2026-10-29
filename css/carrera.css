@@ -4140,9 +4140,9 @@
 .carrera-table-header span.carrera-col-dt {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    padding-left: 0 !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding-left: 6px !important;
     white-space: nowrap !important;
     width: 100% !important;
 }
@@ -4207,9 +4207,10 @@
 .carrera-rank-row .carrera-col-dt {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     gap: 10px !important;
     min-width: 0 !important;
+    padding-left: 6px !important;
 }
 
 .carrera-rank-row .carrera-col-detail {
@@ -4646,7 +4647,7 @@
         transform: translateX(7px) !important;
     }
     .carrera-table-header span.carrera-col-dt {
-        padding-left: 0 !important;
+        padding-left: 6px !important;
     }
     .carrera-table-header .desktop-only,
     .carrera-rank-row .desktop-only,
@@ -5065,15 +5066,17 @@
     .carrera-table-header span.carrera-col-dt {
         display: flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        padding-left: 0 !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        padding-left: 4px !important;
         width: 100% !important;
     }
     .carrera-rank-row .carrera-col-dt {
         display: flex !important;
         align-items: center !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        padding-left: 4px !important;
     }
     .carrera-table-header .carrera-col-metric,
     .carrera-rank-row .carrera-col-metric {
