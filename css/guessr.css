@@ -5239,24 +5239,35 @@ html[data-theme="light"] .xp-bar-big-fill {
    📱 CELULAR 1V1 (RESTAURADO AL FORMATO DE CAJITA CLÁSICA ORIGINAL)
    ======================================================== */
 @media (max-width: 768px) {
-    /* HUD superior anclado arriba a la izquierda en columna vertical */
+    /* HUD superior centrado en celular */
     .guessr-top-hud,
     .guessr-top-hud.hud-versus-active {
         position: absolute !important;
         top: 64px !important;
-        left: 10px !important;
+        left: 50% !important;
         right: auto !important;
-        width: auto !important;
-        max-width: 330px !important;
+        transform: translateX(-50%) !important;
+        width: max-content !important;
+        max-width: calc(100% - 24px) !important;
         margin: 0 !important;
         padding: 0 !important;
         display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 2px !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 3px !important;
         z-index: 25 !important;
         pointer-events: auto !important;
         box-sizing: border-box !important;
+    }
+
+    /* Placa de Puntaje y Ronda Centrada */
+    #game-title {
+        margin: 0 auto !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
     }
 
     /* Dock de emojis arcade compacto (EXCLUSIVO MODO VERSUS) */
@@ -5585,8 +5596,9 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
     .guessr-top-hud,
     .guessr-top-hud.hud-versus-active {
-        left: 6px !important;
-        max-width: 295px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        max-width: calc(100% - 16px) !important;
     }
     .guessr-top-hud #versus-live-scoreboard,
     .guessr-top-hud .versus-scoreboard-box,

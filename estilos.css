@@ -3138,7 +3138,7 @@ body.video-abierto .hero-section {
 /* 📱 EN CELULAR: Video a pantalla completa y mapa flotante en panel inferior */
 .modal-content.stadium-guessr-layout{width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;border:none!important;padding:0!important}
 .modal-content.stadium-guessr-layout .video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important}
-.guessr-top-hud{top:64px!important;left:10px!important}.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:175px!important;opacity:1!important;background:#080e18!important}
+.guessr-top-hud{top:64px!important;left:50%!important;transform:translateX(-50%)!important;align-items:center!important}.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:175px!important;opacity:1!important;background:#080e18!important}
 .guessr-floating-map-box.expanded,
 .guessr-floating-map-box.pinned{height:55vh!important;width:calc(100% - 20px)!important;opacity:1!important}
 
@@ -10147,19 +10147,39 @@ html[data-theme="light"] .xp-bar-big-fill {
         width: 100% !important;
     }
 
-    /* ⚡ REDUCCIÓN DE ESPACIO VERTICAL DEL HUD */
+    /* ⚡ HUD SUPERIOR ESPACIAL CENTRADO EN CELULAR */
     .guessr-top-hud {
-        gap: 2px !important;
+        top: 64px !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: max-content !important;
+        max-width: calc(100% - 24px) !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 3px !important;
     }
 
-    /* 🎮 REDUCCIÓN DIRECTA DE BOTONES DE EMOJIS (EXCLUSIVO MODO VERSUS) */
+    /* 🏆 Placa Principal de Puntaje y Ronda Centrada */
+    #game-title {
+        margin: 0 auto !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+
+    /* 🎮 REDUCCIÓN DIRECTA DE BOTONES DE EMOJIS (EXCLUSIVO MODO VERSUS CENTRADO) */
     .guessr-top-hud.hud-versus-active #taunts-container {
         margin: 1px auto 2px auto !important;
         gap: 5px !important;
         padding: 0 !important;
         width: 100% !important;
-        max-width: 260px !important;
+        max-width: 240px !important;
         box-sizing: border-box !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
     .guessr-top-hud.hud-versus-active #taunts-container > *,
     .guessr-top-hud.hud-versus-active #taunts-container button,
@@ -10184,6 +10204,9 @@ html[data-theme="light"] .xp-bar-big-fill {
 
     #rounds-progress {
         margin: 2px auto !important;
+        width: 100% !important;
+        max-width: 200px !important;
+        justify-content: center !important;
     }
     .round-dot {
         height: 3px !important;
@@ -10192,9 +10215,12 @@ html[data-theme="light"] .xp-bar-big-fill {
     .guessr-top-hud #versus-live-scoreboard,
     .guessr-top-hud .versus-scoreboard-box {
         order: 1 !important;
-        margin: 2px 0 !important;
-        padding: 4px 8px !important;
-        gap: 3px !important;
+        margin: 2px auto !important;
+        padding: 4px 10px !important;
+        gap: 4px !important;
+        width: auto !important;
+        max-width: 280px !important;
+        justify-content: center !important;
     }
     .guessr-top-hud .vs-sb-score {
         font-size: 1.05rem !important;
@@ -10209,13 +10235,13 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 1px 5px !important;
     }
 
-    /* 💡 BOTÓN PISTAS ALINEADO Y CONTENIDO FUERA DEL VIDEO */
+    /* 💡 BOTÓN PISTAS CENTRADO EN CELULAR */
     #guessr-hud-hints {
         order: 2 !important;
-        margin: 2px 0 0 0 !important;
+        margin: 2px auto 0 auto !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
@@ -10237,7 +10263,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         max-width: calc(100vw - 20px) !important;
         box-sizing: border-box !important;
         padding: 10px 12px !important;
-        left: 0 !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
         right: auto !important;
     }
 }
@@ -14719,7 +14746,7 @@ body.video-abierto .hero-section {
 /* 📱 EN CELULAR: Video a pantalla completa y mapa flotante en panel inferior */
 .modal-content.stadium-guessr-layout{width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;border:none!important;padding:0!important}
 .modal-content.stadium-guessr-layout .video-container{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border-radius:0!important}
-.guessr-top-hud{top:64px!important;left:10px!important}.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:175px!important;opacity:1!important;background:#080e18!important}
+.guessr-top-hud{top:64px!important;left:50%!important;transform:translateX(-50%)!important;align-items:center!important}.guessr-floating-map-box{bottom:10px!important;right:10px!important;left:10px!important;width:calc(100% - 20px)!important;height:175px!important;opacity:1!important;background:#080e18!important}
 .guessr-floating-map-box.expanded,
 .guessr-floating-map-box.pinned{height:55vh!important;width:calc(100% - 20px)!important;opacity:1!important}
 
