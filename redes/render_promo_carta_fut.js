@@ -187,19 +187,38 @@ async function generarOverlaysPromo(assetsDir) {
         .fut-club-icon { width: 62px; height: 62px; margin-top: 8px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
 
         .fut-avatar-container {
-            width: 66%;
+            width: 65%;
             height: 100%;
             position: relative;
             display: flex;
-            align-items: flex-end;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: visible;
         }
-        .fut-avatar-container img {
-            width: 114%;
-            height: 124%;
-            object-fit: contain;
-            transform: scale(1.22) translateY(8px);
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
+
+        .ac-avatar-full { 
+            position: absolute; 
+            bottom: -5px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; 
+            height: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            pointer-events: none;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+        }
+
+        .ac-avatar-img-full {
+            width: 110%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+            filter: none;
         }
 
         .fut-name {
@@ -292,7 +311,11 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${bocaBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarTevezBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarTevezBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">EL APACHE</div>
                 <div class="fut-stats-row">
@@ -309,7 +332,11 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${logoBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarMessiBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarMessiBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">LA PULGA</div>
                 <div class="fut-stats-row">
@@ -328,7 +355,11 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${riverBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarJulianBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarJulianBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">LA ARAÑA</div>
                 <div class="fut-stats-row">
@@ -370,7 +401,11 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${racingBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">TU JUGADOR</div>
                 <div class="fut-stats-row">
@@ -439,7 +474,11 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${bocaBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">GONZÁLEZ #9</div>
                 <div class="fut-stats-row">
@@ -508,7 +547,11 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${bocaBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">TU NOMBRE</div>
                 <div class="fut-stats-row">
@@ -519,16 +562,14 @@ async function generarOverlaysPromo(assetsDir) {
                 </div>
             </div>
 
-            <!-- Footer póster con QR y espaditas 1v1 -->
+            <!-- Footer póster con QR y espaditas 1v1 (Mismo tamaño exacto: 78x78px) -->
             <div style="display:flex; align-items:center; justify-content:space-between; width:100%; background:rgba(20, 32, 48, 0.92); border:2px solid rgba(0, 230, 118, 0.5); border-radius:20px; padding:12px 18px; gap:12px;">
                 <img src="${qrApiUrl}" style="width:78px; height:78px; border-radius:12px; border:2px solid #00e676; flex-shrink:0;">
                 <div style="display:flex; flex-direction:column; text-align:left; flex:1;">
                     <strong style="color:#ffffff; font-size:19px; font-weight:900;">¿Te animás a ganarme?</strong>
                     <span style="color:#a0aec0; font-size:13.5px; font-weight:700;">Escaneá el QR y desafiame en vivo.</span>
                 </div>
-                <div style="display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                    <img src="${dueloIconBase64}" style="width:52px; height:52px; object-fit:contain; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));">
-                </div>
+                <img src="${dueloIconBase64}" style="width:78px; height:78px; object-fit:contain; filter:drop-shadow(0 0 12px rgba(0, 255, 119, 0.85)); flex-shrink:0;">
             </div>
         </div>
 
@@ -629,10 +670,33 @@ async function generarPortada(outFolder) {
                 height: 100%;
                 position: relative;
                 display: flex;
-                align-items: flex-end;
-                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                overflow: visible;
             }
-            .fut-avatar-container img { width: 100%; height: 110%; object-fit: contain; }
+            .ac-avatar-full { 
+                position: absolute; 
+                bottom: -5px; 
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%; 
+                height: 100%; 
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                pointer-events: none;
+                overflow: hidden;
+                -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+            }
+            .ac-avatar-img-full {
+                width: 110%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center 15%;
+                filter: none;
+            }
             .fut-name {
                 width: 100%;
                 text-align: center;
@@ -679,7 +743,11 @@ async function generarPortada(outFolder) {
                         <div class="fut-pos">DEL</div>
                         <img src="${bocaBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container">
+                        <div class="ac-avatar-full">
+                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
+                        </div>
+                    </div>
                 </div>
                 <div class="fut-name">TU NOMBRE</div>
                 <div class="fut-stats-row">
