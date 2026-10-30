@@ -535,12 +535,9 @@ async function generarOverlaysPromo(assetsDir) {
 
         <!-- Póster final oficial idéntico al de la web -->
         <div style="position:absolute; top:420px; left:50%; transform:translateX(-50%); width:520px; height:820px; background:#090e15; border:3px solid #00e676; border-radius:28px; padding:24px 20px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; box-shadow:0 25px 60px rgba(0,0,0,0.95), 0 0 50px rgba(0, 230, 118, 0.4);">
-            <div style="display:flex; align-items:center; gap:12px; width:100%; justify-content:center;">
-                <img src="${logoBase64}" style="width:42px; height:42px; border-radius:10px; border:1.5px solid #00e676;">
-                <div style="display:flex; flex-direction:column; text-align:left;">
-                    <div style="font-size:1.3rem; font-weight:900; letter-spacing:1.5px; color:#ffffff; text-transform:uppercase;">Estadios Virtuales</div>
-                    <div style="font-size:0.75rem; font-weight:800; letter-spacing:2px; color:#00e676; text-transform:uppercase;">El mundo desde el aire</div>
-                </div>
+            <div style="display:flex; align-items:center; gap:14px; width:100%; justify-content:center;">
+                <img src="${logoBase64}" style="width:44px; height:44px; border-radius:10px; border:1.5px solid #00e676;">
+                <span style="font-size:1.45rem; font-weight:900; letter-spacing:1.5px; color:#ffffff; text-transform:uppercase;">Estadios Virtuales</span>
             </div>
 
             <!-- Mini carta en el póster -->
