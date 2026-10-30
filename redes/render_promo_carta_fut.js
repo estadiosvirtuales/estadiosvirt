@@ -240,7 +240,7 @@ Estadios Virtuales · www.estadiosvirtuales.com
 🔥 ¿DE QUÉ LADO DEL CLÁSICO ESTÁS? CREÁ TU PROPIA CARTA FUT 👑⚽
 
 ¿Sos del Real Madrid o del Barcelona? ¿Cristiano ('El Bicho') o Messi ('La Pulga')?
-En www.estadiosvirtuales.com podés crear tu carta personalizada 100% GRATIS con el escudo de tu club, tu avatar y tus estadísticas reales adivinando estadios en StadiumGuessr.
+En www.estadiosvirtuales.com podés crear tu carta personalizada con el escudo de tu club, tu avatar y tus estadísticas reales adivinando estadios en StadiumGuessr.
 
 📲 Tocá el link de mi perfil y armá la tuya ahora:
 👉 www.estadiosvirtuales.com
@@ -283,7 +283,7 @@ Armá la tuya con el club que quieras en el enlace de mi perfil 👉 www.estadio
 
 ───────────────────────────────────────────────────────────────
 💬 PRIMER COMENTARIO FIJADO (Pinned Comment sugerido):
-👉 Creá tu carta FUT 100% gratis con el escudo de tu equipo acá: www.estadiosvirtuales.com (Link directo en mi perfil 📲) ¿De qué club la vas a armar? Te leo 👇
+👉 Creá tu carta FUT con el escudo de tu equipo acá: www.estadiosvirtuales.com (Link directo en mi perfil 📲) ¿De qué club la vas a armar? Te leo 👇
 `
     }
 };

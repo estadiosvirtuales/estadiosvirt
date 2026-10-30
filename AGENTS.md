@@ -96,7 +96,7 @@ Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
 Promociona la funcionalidad de la web para crear cartas FUT personalizadas con escudo y avatar:
 1. **Encuadre y Layout (20.0s):**
    - Transición aérea cinemática de fondo (dos estadios emblemáticos en `xfade` de 1.0s a los 9.5s, ej. Monumental a Bombonera).
-   - **0 a 4s (Hook):** 3 cartas con avatares anatómicos (`.ac-avatar-full` y `.ac-avatar-img-full`), sobrenombres oficiales y stats 2x2 completas (`MAX`, `PG`, `WR`, `XP`). Pill inferior `100% GRATIS · SIN DESCARGAR APPS`.
+   - **0 a 4s (Hook):** 3 cartas con avatares anatómicos (`.ac-avatar-full` y `.ac-avatar-img-full`), sobrenombres oficiales y stats 2x2 completas (`MAX`, `PG`, `WR`, `XP`).
    - **4 a 9s (Paso 1 - Edición):** Carta central interactiva + carrusel inferior de escudos (80px) + botones de posición (Delantero, Mediocampo, Defensa, Arquero).
    - **9 a 14.5s (Paso 2 - Stats):** Revelación de carta Gold con stats desbloqueadas + 3 badges oficiales (Nivel / Galáctico, Racha de Días, Victorias 1v1).
    - **14.5 a 20s (Paso 3 - CTA Final):** Póster oficial de la web con mini carta, código QR (`78x78px`), desafío `¿Te animás a ganarme?`, icono de espaditas 1v1 (`78x78px` simétrico al QR) y botón CTA inferior elevado a zona segura (`y=1680`): `👉 TOCÁ EL LINK EN MI PERFIL DE TIKTOK 📲`.
