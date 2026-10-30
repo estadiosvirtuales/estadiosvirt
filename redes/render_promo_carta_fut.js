@@ -760,8 +760,7 @@ async function generarOverlaysPromo(config, assetsDir) {
     <html>
     <head><style>${cssGlobal}</style></head>
     <body>
-        <div class="header-top">
-            <div class="eyebrow" style="border-color:#00ff77; color:#00ff77;">¡CREÁ TU CARTA!</div>
+        <div class="header-top" style="top: 85px;">
             <div class="title-main">CREÁ TU CARTA AHORA</div>
         </div>
 
