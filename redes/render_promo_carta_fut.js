@@ -85,6 +85,10 @@ function generarAudioProcedural(duracionSeg = 20.0, sampleRate = 44100) {
         addTone(9.1 + idx * 0.08, 3.2, freq, 0.32, 1.8);
     });
 
+    // 9.5s: Transición de estadio (Campana brillante y acorde aéreo)
+    addBellDing(9.5, 1174.66);
+    addTone(9.6, 2.5, 880.0, 0.25, 2.0);
+
     // 14.5s: Campana de póster y QR
     addBellDing(14.5, 987.77);
     [659.25, 830.61, 987.77, 1318.51].forEach((freq, idx) => {
@@ -173,13 +177,13 @@ async function generarOverlaysPromo(assetsDir) {
         .fut-card.river .fut-name { border-bottom-color: rgba(0,0,0,0.3); }
 
         .fut-top { display: flex; width: 100%; height: 50%; margin-top: 10px; }
-        .fut-badge-meta { width: 35%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
-        .fut-ovr { font-size: 3.5rem; font-weight: 900; letter-spacing: -1.5px; }
-        .fut-pos { font-size: 1.3rem; font-weight: 900; text-transform: uppercase; opacity: 0.85; margin-top: -2px; }
-        .fut-club-icon { width: 52px; height: 52px; margin-top: 12px; object-fit: contain; }
+        .fut-badge-meta { width: 34%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+        .fut-ovr { font-size: 3.8rem; font-weight: 900; letter-spacing: -1.5px; }
+        .fut-pos { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; opacity: 0.9; margin-top: -2px; }
+        .fut-club-icon { width: 62px; height: 62px; margin-top: 8px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
 
         .fut-avatar-container {
-            width: 65%;
+            width: 66%;
             height: 100%;
             position: relative;
             display: flex;
@@ -187,10 +191,11 @@ async function generarOverlaysPromo(assetsDir) {
             justify-content: center;
         }
         .fut-avatar-container img {
-            width: 100%;
-            height: 110%;
+            width: 114%;
+            height: 124%;
             object-fit: contain;
-            transform: translateY(12px);
+            transform: scale(1.22) translateY(8px);
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
         }
 
         .fut-name {
@@ -374,34 +379,34 @@ async function generarOverlaysPromo(assetsDir) {
         </div>
 
         <!-- Carousel de clubes flotante -->
-        <div style="position:absolute; bottom:300px; left:50px; width:980px; background:rgba(9, 14, 23, 0.92); border:1.5px solid rgba(255,255,255,0.25); border-radius:24px; padding:20px; display:flex; justify-content:space-around; align-items:center; box-shadow:0 12px 35px rgba(0,0,0,0.85);">
-            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                <img src="${riverBase64}" style="width:64px;height:64px;object-fit:contain;">
-                <span style="color:#ffffff; font-size:15px; font-weight:800;">RIVER</span>
+        <div style="position:absolute; bottom:290px; left:50px; width:980px; background:rgba(9, 14, 23, 0.94); border:2px solid rgba(255,255,255,0.3); border-radius:26px; padding:22px; display:flex; justify-content:space-around; align-items:center; box-shadow:0 14px 40px rgba(0,0,0,0.9);">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <img src="${riverBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
+                <span style="color:#ffffff; font-size:17px; font-weight:900;">RIVER</span>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                <img src="${bocaBase64}" style="width:64px;height:64px;object-fit:contain;">
-                <span style="color:#ffffff; font-size:15px; font-weight:800;">BOCA</span>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <img src="${bocaBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
+                <span style="color:#ffffff; font-size:17px; font-weight:900;">BOCA</span>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:6px; transform:scale(1.15); padding:8px 16px; background:rgba(0, 230, 118, 0.15); border:2px solid #00e676; border-radius:16px;">
-                <img src="${racingBase64}" style="width:64px;height:64px;object-fit:contain;">
-                <span style="color:#00ff77; font-size:15px; font-weight:900;">RACING</span>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; transform:scale(1.18); padding:10px 20px; background:rgba(0, 230, 118, 0.2); border:2.5px solid #00e676; border-radius:20px; box-shadow:0 0 25px rgba(0, 230, 118, 0.5);">
+                <img src="${racingBase64}" style="width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.7));">
+                <span style="color:#00ff77; font-size:19px; font-weight:900;">RACING</span>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                <img src="${barcaBase64}" style="width:64px;height:64px;object-fit:contain;">
-                <span style="color:#ffffff; font-size:15px; font-weight:800;">BARÇA</span>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <img src="${barcaBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
+                <span style="color:#ffffff; font-size:17px; font-weight:900;">BARÇA</span>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-                <img src="${realBase64}" style="width:64px;height:64px;object-fit:contain;">
-                <span style="color:#ffffff; font-size:15px; font-weight:800;">MADRID</span>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                <img src="${realBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
+                <span style="color:#ffffff; font-size:17px; font-weight:900;">MADRID</span>
             </div>
         </div>
 
-        <div style="position:absolute; bottom:220px; left:50%; transform:translateX(-50%); display:flex; gap:16px;">
-            <div style="background:#00e676; color:#04160a; padding:8px 24px; border-radius:20px; font-size:18px; font-weight:900;">DELANTERO</div>
-            <div style="background:rgba(255,255,255,0.15); color:#ffffff; padding:8px 24px; border-radius:20px; font-size:18px; font-weight:800;">MEDIOCAMPO</div>
-            <div style="background:rgba(255,255,255,0.15); color:#ffffff; padding:8px 24px; border-radius:20px; font-size:18px; font-weight:800;">DEFENSA</div>
-            <div style="background:rgba(255,255,255,0.15); color:#ffffff; padding:8px 24px; border-radius:20px; font-size:18px; font-weight:800;">ARQUERO</div>
+        <div style="position:absolute; bottom:200px; left:50%; transform:translateX(-50%); display:flex; gap:18px;">
+            <div style="background:#00e676; color:#04160a; padding:10px 28px; border-radius:24px; font-size:21px; font-weight:900; box-shadow:0 6px 20px rgba(0, 230, 118, 0.4);">DELANTERO</div>
+            <div style="background:rgba(255,255,255,0.18); color:#ffffff; padding:10px 28px; border-radius:24px; font-size:21px; font-weight:800; border:1px solid rgba(255,255,255,0.25);">MEDIOCAMPO</div>
+            <div style="background:rgba(255,255,255,0.18); color:#ffffff; padding:10px 28px; border-radius:24px; font-size:21px; font-weight:800; border:1px solid rgba(255,255,255,0.25);">DEFENSA</div>
+            <div style="background:rgba(255,255,255,0.18); color:#ffffff; padding:10px 28px; border-radius:24px; font-size:21px; font-weight:800; border:1px solid rgba(255,255,255,0.25);">ARQUERO</div>
         </div>
     </body>
     </html>
@@ -444,21 +449,21 @@ async function generarOverlaysPromo(assetsDir) {
         </div>
 
         <!-- 3 Badges oficiales de la web -->
-        <div style="position:absolute; bottom:240px; left:50px; width:980px; display:flex; justify-content:space-between; gap:20px;">
-            <div style="flex:1; background:rgba(9, 14, 23, 0.95); border:2px solid #ffd700; border-radius:20px; padding:18px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.85);">
-                <div style="font-size:32px;">👑</div>
-                <div style="color:#ffffff; font-size:22px; font-weight:900; margin-top:4px;">Nivel 10</div>
-                <div style="color:#ffd700; font-size:15px; font-weight:800; text-transform:uppercase;">Galáctico</div>
+        <div style="position:absolute; bottom:220px; left:50px; width:980px; display:flex; justify-content:space-between; gap:22px;">
+            <div style="flex:1; background:rgba(9, 14, 23, 0.96); border:2.5px solid #ffd700; border-radius:24px; padding:22px; text-align:center; box-shadow:0 12px 35px rgba(0,0,0,0.9), 0 0 25px rgba(255, 215, 0, 0.35);">
+                <div style="font-size:42px;">👑</div>
+                <div style="color:#ffffff; font-size:25px; font-weight:900; margin-top:6px;">Nivel 10</div>
+                <div style="color:#ffd700; font-size:17px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">Galáctico</div>
             </div>
-            <div style="flex:1; background:rgba(9, 14, 23, 0.95); border:2px solid #ff7700; border-radius:20px; padding:18px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.85);">
-                <img src="${fuegoBase64}" style="width:36px;height:36px;margin:0 auto;display:block;">
-                <div style="color:#ffffff; font-size:22px; font-weight:900; margin-top:4px;">14 Días</div>
-                <div style="color:#ff8800; font-size:15px; font-weight:800; text-transform:uppercase;">Racha Activa</div>
+            <div style="flex:1; background:rgba(9, 14, 23, 0.96); border:2.5px solid #ff7700; border-radius:24px; padding:22px; text-align:center; box-shadow:0 12px 35px rgba(0,0,0,0.9), 0 0 25px rgba(255, 119, 0, 0.35);">
+                <img src="${fuegoBase64}" style="width:46px;height:46px;margin:0 auto;display:block;filter:drop-shadow(0 4px 10px rgba(255,119,0,0.5));">
+                <div style="color:#ffffff; font-size:25px; font-weight:900; margin-top:6px;">14 Días</div>
+                <div style="color:#ff8800; font-size:17px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">Racha Activa</div>
             </div>
-            <div style="flex:1; background:rgba(9, 14, 23, 0.95); border:2px solid #00e676; border-radius:20px; padding:18px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.85);">
-                <img src="${trofeoBase64}" style="width:36px;height:36px;margin:0 auto;display:block;">
-                <div style="color:#ffffff; font-size:22px; font-weight:900; margin-top:4px;">41 PG</div>
-                <div style="color:#00ff77; font-size:15px; font-weight:800; text-transform:uppercase;">Victorias 1v1</div>
+            <div style="flex:1; background:rgba(9, 14, 23, 0.96); border:2.5px solid #00e676; border-radius:24px; padding:22px; text-align:center; box-shadow:0 12px 35px rgba(0,0,0,0.9), 0 0 25px rgba(0, 230, 118, 0.35);">
+                <img src="${trofeoBase64}" style="width:46px;height:46px;margin:0 auto;display:block;filter:drop-shadow(0 4px 10px rgba(0,230,118,0.5));">
+                <div style="color:#ffffff; font-size:25px; font-weight:900; margin-top:6px;">41 PG</div>
+                <div style="color:#00ff77; font-size:17px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">Victorias 1v1</div>
             </div>
         </div>
     </body>
@@ -512,21 +517,21 @@ async function generarOverlaysPromo(assetsDir) {
             </div>
 
             <!-- Footer póster con QR -->
-            <div style="display:flex; align-items:center; gap:14px; width:100%; background:rgba(20, 32, 48, 0.8); border:1.5px solid rgba(0, 230, 118, 0.4); border-radius:18px; padding:12px 18px;">
-                <img src="${qrApiUrl}" style="width:70px; height:70px; border-radius:10px; border:1.5px solid #00e676;">
+            <div style="display:flex; align-items:center; gap:16px; width:100%; background:rgba(20, 32, 48, 0.9); border:2px solid rgba(0, 230, 118, 0.5); border-radius:20px; padding:14px 20px;">
+                <img src="${qrApiUrl}" style="width:82px; height:82px; border-radius:12px; border:2px solid #00e676;">
                 <div style="display:flex; flex-direction:column; text-align:left;">
-                    <strong style="color:#ffffff; font-size:17px; font-weight:900;">¿Te animás a ganarme?</strong>
-                    <span style="color:#94a3b8; font-size:13px; font-weight:600;">Escaneá el QR y desafiame en vivo.</span>
+                    <strong style="color:#ffffff; font-size:20px; font-weight:900;">¿Te animás a ganarme?</strong>
+                    <span style="color:#a0aec0; font-size:14px; font-weight:700;">Escaneá el QR y desafiame en vivo.</span>
                 </div>
             </div>
         </div>
 
         <!-- BOTÓN CTA PRINCIPAL ELEVADO (bottom: 240px) -->
-        <div style="position:absolute; bottom:240px; left:50px; width:980px; background:linear-gradient(135deg, #00e676 0%, #00b0ff 100%); border-radius:26px; padding:20px 24px; display:flex; align-items:center; justify-content:center; gap:16px; box-shadow:0 18px 45px rgba(0,0,0,0.85), 0 0 40px rgba(0, 230, 118, 0.6); border:3px solid #ffffff;">
-            <span style="font-size:36px;">📲</span>
+        <div style="position:absolute; bottom:240px; left:50px; width:980px; background:linear-gradient(135deg, #00e676 0%, #00b0ff 100%); border-radius:26px; padding:20px 24px; display:flex; align-items:center; justify-content:center; gap:16px; box-shadow:0 18px 45px rgba(0,0,0,0.9), 0 0 50px rgba(0, 230, 118, 0.7); border:3.5px solid #ffffff;">
+            <span style="font-size:38px;">📲</span>
             <div style="display:flex; flex-direction:column; align-items:center;">
-                <span style="color:#04160a; font-size:32px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">LINK DIRECTO EN MI PERFIL DE TIKTOK</span>
-                <span style="color:#04160a; font-size:18px; font-weight:800; opacity:0.9;">100% GRATIS · JUGÁ EN WWW.ESTADIOSVIRTUALES.COM</span>
+                <span style="color:#04160a; font-size:33px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">👉 TOCÁ EL LINK EN MI PERFIL DE TIKTOK</span>
+                <span style="color:#04160a; font-size:19px; font-weight:900; opacity:0.95;">100% GRATIS · JUGÁ EN WWW.ESTADIOSVIRTUALES.COM</span>
             </div>
         </div>
 
@@ -742,19 +747,45 @@ Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Loren
     // 5. Video con FFmpeg
     const videoOutPath = path.join(outFolder, 'Promo_Crea_Tu_Carta_FUT.mp4');
 
-    // Fondo: si existe un video de estadio en E:, lo usa con blur; sino, genera fondo dinámico espacial oscuro
-    const droneTestPath = "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4";
-    const hasDrone = fs.existsSync(droneTestPath);
+    // Fondo: si existen River y Boca en E:, hace transición cinemática cruzada (xfade fade a los 9.5s)
+    const droneRiverPath = "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4";
+    const droneBocaPath = "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4";
+    const hasBothDrones = fs.existsSync(droneRiverPath) && fs.existsSync(droneBocaPath);
+    const hasSingleDrone = fs.existsSync(droneRiverPath);
 
     let ffmpegInputs = [];
     let filterComplex = '';
+    let audioMapIndex = '5:a';
 
-    if (hasDrone) {
+    if (hasBothDrones) {
+        console.log(`🏟️ Configurando transición cinematográfica: Monumental ➔ Bombonera (xfade a 9.5s)...`);
+        ffmpegInputs = [
+            '-y',
+            '-stream_loop', '-1', '-t', '11.0', '-i', droneRiverPath,                  // 0: River (0s a 10.5s)
+            '-stream_loop', '-1', '-t', '11.0', '-i', droneBocaPath,                   // 1: Boca (9.5s a 20s)
+            '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),   // 2: Hook (0s a 4s)
+            '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),  // 3: Paso 1 (4s a 9s)
+            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),  // 4: Paso 2 (9s a 14.5s)
+            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_cta.png'),    // 5: Paso 3 & CTA (14.5s a 20s)
+            '-i', audioPath                                                             // 6: Audio
+        ];
+
+        filterComplex = `
+            [0:v]trim=0:10.5,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.32[bg0];
+            [1:v]trim=0:10.5,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.32[bg1];
+            [bg0][bg1]xfade=transition=fade:duration=1.0:offset=9.5[bg];
+            [bg][2:v]overlay=0:0:enable='between(t,0,4.0)'[v1];
+            [v1][3:v]overlay=0:0:enable='between(t,4.0,9.0)'[v2];
+            [v2][4:v]overlay=0:0:enable='between(t,9.0,14.5)'[v3];
+            [v3][5:v]overlay=0:0:enable='between(t,14.5,20.0)'[outv]
+        `;
+        audioMapIndex = '6:a';
+    } else if (hasSingleDrone) {
         ffmpegInputs = [
             '-y',
             '-t', '20.0',
             '-stream_loop', '-1',
-            '-i', droneTestPath,                                   // 0: Video drone
+            '-i', droneRiverPath,                                   // 0: Video drone
             '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),   // 1: Hook (0s a 4s)
             '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),  // 2: Paso 1 (4s a 9s)
             '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),  // 3: Paso 2 (9s a 14.5s)
@@ -769,6 +800,7 @@ Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Loren
             [v2][3:v]overlay=0:0:enable='between(t,9.0,14.5)'[v3];
             [v3][4:v]overlay=0:0:enable='between(t,14.5,20.0)'[outv]
         `;
+        audioMapIndex = '5:a';
     } else {
         // Fondo cinemático nativo generado por FFmpeg (sin depender del disco externo)
         ffmpegInputs = [
@@ -788,13 +820,14 @@ Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Loren
             [v2][3:v]overlay=0:0:enable='between(t,9.0,14.5)'[v3];
             [v3][4:v]overlay=0:0:enable='between(t,14.5,20.0)'[outv]
         `;
+        audioMapIndex = '5:a';
     }
 
     const ffmpegArgs = [
         ...ffmpegInputs,
         '-filter_complex', filterComplex.replace(/\s+/g, ' ').trim(),
         '-map', '[outv]',
-        '-map', '5:a',
+        '-map', audioMapIndex,
         '-c:v', 'libx264',
         '-preset', 'veryfast',
         '-crf', '18',
