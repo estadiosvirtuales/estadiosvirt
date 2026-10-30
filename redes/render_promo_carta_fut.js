@@ -321,6 +321,8 @@ async function generarOverlaysPromo(assetsDir) {
                 <div class="fut-stats-row">
                     <div class="fut-stat-item"><span class="fut-stat-num">95</span><span class="fut-stat-label">MAX</span></div>
                     <div class="fut-stat-item"><span class="fut-stat-num">88</span><span class="fut-stat-label">PG</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">85%</span><span class="fut-stat-label">WR</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">32K</span><span class="fut-stat-label">XP</span></div>
                 </div>
             </div>
 
@@ -365,6 +367,8 @@ async function generarOverlaysPromo(assetsDir) {
                 <div class="fut-stats-row">
                     <div class="fut-stat-item"><span class="fut-stat-num">94</span><span class="fut-stat-label">MAX</span></div>
                     <div class="fut-stat-item"><span class="fut-stat-num">91</span><span class="fut-stat-label">PG</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">82%</span><span class="fut-stat-label">WR</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">28K</span><span class="fut-stat-label">XP</span></div>
                 </div>
             </div>
         </div>
