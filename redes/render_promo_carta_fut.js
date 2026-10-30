@@ -27,6 +27,268 @@ function getBase64Image(filePath) {
 }
 
 // ==========================================
+// CONFIGURACIONES POR PROMO (Modular)
+// ==========================================
+const CONFIG_PROMOS = {
+    'promo-01': {
+        slug: 'PROMO-01-CREA-TU-CARTA',
+        videoName: 'Promo_Crea_Tu_Carta_FUT.mp4',
+        portadaName: 'Portada_Promo_Carta_FUT.jpg',
+        titleMain: '¿SABÍAS QUE PODÉS CREAR<br>TU PROPIA CARTA FUT?',
+        titleSub: 'Con el escudo de tu club ⚽🔥',
+        drone1: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4",
+        drone2: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4",
+        hookCards: {
+            left: {
+                theme: 'boca',
+                ovr: '92',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '27.webp',
+                name: 'EL APACHE',
+                stats: [['95', 'MAX'], ['88', 'PG'], ['85%', 'WR'], ['32K', 'XP']]
+            },
+            center: {
+                theme: 'gold',
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Logo.webp',
+                avatar: '1.webp',
+                name: 'LA PULGA',
+                stats: [['99', 'MAX'], ['99', 'PG'], ['98%', 'WR'], ['45K', 'XP']]
+            },
+            right: {
+                theme: 'river',
+                ovr: '94',
+                pos: 'DEL',
+                escudo: 'River.webp',
+                avatar: '19.webp',
+                name: 'LA ARAÑA',
+                stats: [['94', 'MAX'], ['91', 'PG'], ['82%', 'WR'], ['28K', 'XP']]
+            }
+        },
+        step1: {
+            eyebrow: 'PASO 1 DE 3',
+            title: 'ELEGÍ TU CLUB Y TU POSICIÓN',
+            subtitle: '+100 Escudos oficiales y posiciones tácticas ⚽',
+            centerCard: {
+                theme: 'arg',
+                ovr: '89',
+                pos: 'DEL',
+                escudo: 'Racing.webp',
+                avatar: '1.webp',
+                name: 'TU JUGADOR',
+                stats: [['89', 'MAX'], ['24', 'PJ'], ['18', 'PG'], ['75%', 'WR']]
+            },
+            carousel: [
+                { name: 'RIVER', escudo: 'River.webp' },
+                { name: 'BOCA', escudo: 'Boca.webp' },
+                { name: 'RACING', escudo: 'Racing.webp', active: true },
+                { name: 'BARÇA', escudo: 'Barca.webp' },
+                { name: 'MADRID', escudo: 'Real.webp' }
+            ]
+        },
+        step2: {
+            eyebrow: 'PASO 2 DE 3',
+            title: 'SE DESBLOQUEAN TUS STATS',
+            subtitle: 'Subí de nivel y acumulá XP adivinando estadios 🏟️🔥',
+            card: {
+                theme: 'gold',
+                ovr: '95',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '1.webp',
+                name: 'GONZÁLEZ #9',
+                stats: [['24.5K', 'MAX'], ['52', 'PJ'], ['41', 'PG'], ['79%', 'WR'], ['38.2K', 'XP TOTAL']]
+            }
+        },
+        step3: {
+            card: {
+                theme: 'gold',
+                ovr: '95',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '1.webp',
+                name: 'TU NOMBRE',
+                stats: [['24K', 'MAX'], ['52', 'PJ'], ['41', 'PG'], ['79%', 'WR']]
+            }
+        },
+        portada: {
+            titleHtml: '¿CÓMO CREAR TU<br><span style="color:#ffd700;">PROPIA CARTA FUT?</span>',
+            subtitle: 'Con el escudo de tu club ⚽🔥',
+            card: {
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '1.webp',
+                name: 'TU NOMBRE',
+                stats: [['99', 'MAX'], ['99', 'PG'], ['98%', 'WR'], ['45K', 'XP']]
+            }
+        },
+        textos: `🔥 ¿SABÍAS QUE PODÉS CREAR TU PROPIA CARTA FUT CON EL ESCUDO DE TU CLUB? ⚽🔥
+
+Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Lorenzo, Newell's, Central y +100 clubes), elegí tu posición en cancha y subí de nivel con tus estadísticas reales de juego.
+
+📲 ¡Creá la tuya en el link de mi perfil!
+👉 www.estadiosvirtuales.com
+
+¿De qué club vas a armar tu carta? Dejamelo en los comentarios 👇
+
+#CartaFUT #EstadiosVirtuales #FutbolArgentino #BocaJuniors #RiverPlate #RacingClub #SanLorenzo #FIFA24 #EAFC24 #StadiumGuessr #Futbol #Estadios`
+    },
+    'promo-02-laliga': {
+        slug: 'PROMO-02-LALIGA',
+        videoName: 'Promo_02_LaLiga_Carta_FUT.mp4',
+        portadaName: 'Portada_Promo_02_LaLiga.jpg',
+        titleMain: '¿DE QUÉ LADO DEL CLÁSICO ESTÁS?<br>CREÁ TU CARTA FUT',
+        titleSub: 'Real Madrid vs Barcelona · LaLiga EA Sports 🇪🇸👑',
+        drone1: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4",
+        drone2: "E:\\Google earth studio\\España\\Spotify Camp Nou_ Barcelona.mp4",
+        hookCards: {
+            left: {
+                theme: 'real',
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Real.webp',
+                avatar: '2.webp',
+                name: 'EL BICHO',
+                stats: [['99', 'MAX'], ['96', 'PG'], ['94%', 'WR'], ['48K', 'XP']]
+            },
+            center: {
+                theme: 'gold',
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Logo.webp',
+                avatar: '1.webp',
+                name: 'LA PULGA',
+                stats: [['99', 'MAX'], ['99', 'PG'], ['98%', 'WR'], ['50K', 'XP']]
+            },
+            right: {
+                theme: 'barca',
+                ovr: '91',
+                pos: 'DEL',
+                escudo: 'Barca.webp',
+                avatar: 'Lamine Yamal.webp',
+                name: 'YAMAL',
+                stats: [['92', 'MAX'], ['88', 'PG'], ['86%', 'WR'], ['29K', 'XP']]
+            }
+        },
+        step1: {
+            eyebrow: 'PASO 1 DE 3 · LALIGA',
+            title: 'ELEGÍ TU CLUB Y TU POSICIÓN',
+            subtitle: 'Real Madrid, Barcelona, Atlético y los gigantes de España 🇪🇸',
+            centerCard: {
+                theme: 'real',
+                ovr: '94',
+                pos: 'DEL',
+                escudo: 'Real.webp',
+                avatar: '2.webp',
+                name: 'TU JUGADOR',
+                stats: [['94', 'MAX'], ['38', 'PJ'], ['31', 'PG'], ['82%', 'WR']]
+            },
+            carousel: [
+                { name: 'BARÇA', escudo: 'Barca.webp' },
+                { name: 'MADRID', escudo: 'Real.webp', active: true },
+                { name: 'ATLETI', escudo: 'AMadrid.webp' },
+                { name: 'BETIS', escudo: 'Betis.webp' },
+                { name: 'SEVILLA', escudo: 'Sevilla.webp' }
+            ]
+        },
+        step2: {
+            eyebrow: 'PASO 2 DE 3 · STATS DE JUEGO',
+            title: 'SE DESBLOQUEAN TUS STATS',
+            subtitle: 'Adiviná estadios del mundo y acumulá nivel XP 🏟️🔥',
+            card: {
+                theme: 'gold',
+                ovr: '96',
+                pos: 'DEL',
+                escudo: 'Real.webp',
+                avatar: '2.webp',
+                name: 'CR7_FAN #7',
+                stats: [['24.8K', 'MAX'], ['64', 'PJ'], ['53', 'PG'], ['83%', 'WR'], ['42.5K', 'XP TOTAL']]
+            }
+        },
+        step3: {
+            card: {
+                theme: 'gold',
+                ovr: '96',
+                pos: 'DEL',
+                escudo: 'Real.webp',
+                avatar: '2.webp',
+                name: 'TU NOMBRE',
+                stats: [['25K', 'MAX'], ['64', 'PJ'], ['53', 'PG'], ['83%', 'WR']]
+            }
+        },
+        portada: {
+            titleHtml: 'CREÁ TU CARTA FUT<br><span style="color:#ffd700;">REAL MADRID O BARÇA</span>',
+            subtitle: '¿De qué lado del Clásico estás? ⚽🇪🇸',
+            card: {
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Real.webp',
+                avatar: '2.webp',
+                name: 'EL BICHO',
+                stats: [['99', 'MAX'], ['96', 'PG'], ['94%', 'WR'], ['48K', 'XP']]
+            }
+        },
+        textos: `═══════════════════════════════════════════════════════════════
+PACK DE PUBLICACIÓN: PROMO-02-LALIGA · CARTA FUT
+Estadios Virtuales · www.estadiosvirtuales.com
+═══════════════════════════════════════════════════════════════
+
+📌 VARIANTE 1: VIRAL / EL CLÁSICO (Recomendada para TikTok & Reels)
+🔥 ¿DE QUÉ LADO DEL CLÁSICO ESTÁS? CREÁ TU PROPIA CARTA FUT 👑⚽
+
+¿Sos del Real Madrid o del Barcelona? ¿Cristiano ('El Bicho') o Messi ('La Pulga')?
+En www.estadiosvirtuales.com podés crear tu carta personalizada 100% GRATIS con el escudo de tu club, tu avatar y tus estadísticas reales adivinando estadios en StadiumGuessr.
+
+📲 Tocá el link de mi perfil y armá la tuya ahora:
+👉 www.estadiosvirtuales.com
+
+👇 ¿A quién elegís para tu equipo? ¿Real Madrid o Barça? Dejalo en los comentarios.
+
+#ElClasico #RealMadrid #FCBarcelona #CristianoRonaldo #Messi #LamineYamal #CartaFUT #LaLiga #Bernabeu #CampNou #StadiumGuessr #EstadiosVirtuales #Futbol #FIFA24 #EAFC24
+
+───────────────────────────────────────────────────────────────
+📌 VARIANTE 2: COLECCIÓN & PERSONALIZACIÓN (Ideal para Instagram & Facebook)
+⚽ ¡TU PROPIA CARTA FUT CON EL ESCUDO DE TU EQUIPO FAVORITO! 🇪🇸✨
+
+¿Querías una carta con el escudo del Real Madrid, Barça, Atlético de Madrid o Betis?
+1️⃣ Entrá a www.estadiosvirtuales.com
+2️⃣ Elegí tu posición y club favorito
+3️⃣ Poné a prueba tu conocimiento de canchas en el Reto Diario y subí tu OVR al máximo.
+
+🔗 Link directo en bio para armar tu carta sin registrarte ni descargar apps.
+
+#CartaFUT #ColeccionFUT #LaLigaEA #HalaMadrid #ViscaBarca #FolletoFutbolero #GeografiaFutbolera #EstadiosDelMundo
+
+───────────────────────────────────────────────────────────────
+📌 VARIANTE 3: DESAFÍO 1v1 & SALAS PRIVADAS (Para comunidad gamer)
+⚔️ ¿TE ANIMÁS A GANARME EN UN DUELO DE ESTADIOS? 🏟️🔥
+
+Creá tu carta FUT con stats reales de juego, escaneá el código QR en pantalla o entrá al link de mi perfil para desafiar a tus amigos en salas 1v1 privadas en vivo.
+
+🎮 Jugá gratis en www.estadiosvirtuales.com y demostrá quién sabe más de fútbol mundial.
+
+#RetoFutbolero #1v1Futbol #DueloDeEstadios #StadiumGuessr #GamerFootball #FUT24
+
+───────────────────────────────────────────────────────────────
+📌 VARIANTE 4: COMUNIDAD Y DEBATE (Máximo engagement de comentarios)
+💬 ENCUESTA DEFINITIVA: ¿Cuál es la mejor carta del video?
+A) Cristiano Ronaldo (Real Madrid - 99 OVR) 👑
+B) Lionel Messi (Gold - 99 OVR) 🐐
+C) Lamine Yamal (Barça - 91 OVR) 💎
+
+Armá la tuya con el club que quieras en el enlace de mi perfil 👉 www.estadiosvirtuales.com
+
+───────────────────────────────────────────────────────────────
+💬 PRIMER COMENTARIO FIJADO (Pinned Comment sugerido):
+👉 Creá tu carta FUT 100% gratis con el escudo de tu equipo acá: www.estadiosvirtuales.com (Link directo en mi perfil 📲) ¿De qué club la vas a armar? Te leo 👇
+`
+    }
+};
+
+// ==========================================
 // SÍNTESIS DE AUDIO PROCEDURAL (Puro, Cero Whooshes)
 // ==========================================
 function generarAudioProcedural(duracionSeg = 20.0, sampleRate = 44100) {
@@ -106,7 +368,7 @@ function generarAudioProcedural(duracionSeg = 20.0, sampleRate = 44100) {
 // ==========================================
 // RENDERIZADO DE OVERLAYS EN PUPPETEER
 // ==========================================
-async function generarOverlaysPromo(assetsDir) {
+async function generarOverlaysPromo(config, assetsDir) {
     const browser = await puppeteer.launch({
         executablePath: chromePath,
         headless: 'new',
@@ -117,16 +379,7 @@ async function generarOverlaysPromo(assetsDir) {
     await page.setViewport({ width: 1080, height: 1920 });
 
     const logoBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Logo.webp'));
-    const bocaBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Boca.webp'));
-    const riverBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'River.webp'));
-    const racingBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Racing.webp'));
-    const realBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Real.webp'));
-    const barcaBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Barca.webp'));
-    const avatarMessiBase64 = getBase64Image(path.join(__dirname, '..', '1.webp'));
-    const avatarTevezBase64 = getBase64Image(path.join(__dirname, '..', '27.webp'));
-    const avatarJulianBase64 = getBase64Image(path.join(__dirname, '..', '19.webp'));
     const dueloIconBase64 = getBase64Image(path.join(__dirname, '..', 'liga-icon-historial.webp'));
-    const avatarBase64 = avatarMessiBase64;
     const fuegoBase64 = getBase64Image(path.join(__dirname, '..', 'fuego.webp'));
     const trofeoBase64 = getBase64Image(path.join(__dirname, '..', 'trofeo.webp'));
 
@@ -160,12 +413,14 @@ async function generarOverlaysPromo(assetsDir) {
         .fut-card.arg {
             background: linear-gradient(135deg, #74acdf 0%, #ffffff 50%, #74acdf 100%);
             color: #0b1320;
+            border: 3px solid #ffd700;
         }
         .fut-card.arg .fut-name { border-bottom-color: rgba(0,0,0,0.3); }
 
         .fut-card.gold {
             background: linear-gradient(135deg, #e5b338 0%, #fff2a3 40%, #c48c1b 70%, #f7dc6f 100%);
             color: #1a1002;
+            border: 3.5px solid #ffe877;
             filter: drop-shadow(0 22px 55px rgba(255, 215, 0, 0.45));
         }
         .fut-card.gold .fut-name { border-bottom-color: rgba(26, 16, 2, 0.4); }
@@ -173,12 +428,30 @@ async function generarOverlaysPromo(assetsDir) {
         .fut-card.boca {
             background: linear-gradient(135deg, #002b66 0%, #ffd700 50%, #002b66 100%);
             color: #ffffff;
+            border: 3.5px solid #ffd700;
         }
         .fut-card.river {
             background: linear-gradient(135deg, #ffffff 0%, #ee162d 50%, #ffffff 100%);
             color: #111827;
+            border: 3.5px solid #ee162d;
         }
         .fut-card.river .fut-name { border-bottom-color: rgba(0,0,0,0.3); }
+
+        .fut-card.real {
+            background: linear-gradient(135deg, #ffffff 0%, #edf2f7 50%, #e2e8f0 100%);
+            color: #0b1528;
+            border: 3.5px solid #d4af37;
+            filter: drop-shadow(0 22px 50px rgba(0, 0, 0, 0.85));
+        }
+        .fut-card.real .fut-name { border-bottom-color: rgba(11, 21, 40, 0.4); }
+
+        .fut-card.barca {
+            background: linear-gradient(135deg, #004d98 0%, #a50044 50%, #004d98 100%);
+            color: #ffffff;
+            border: 3.5px solid #ffd700;
+            filter: drop-shadow(0 22px 50px rgba(0, 0, 0, 0.85));
+        }
+        .fut-card.barca .fut-name { border-bottom-color: rgba(255, 255, 255, 0.4); }
 
         .fut-top { display: flex; width: 100%; height: 50%; margin-top: 10px; }
         .fut-badge-meta { width: 34%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
@@ -290,7 +563,35 @@ async function generarOverlaysPromo(assetsDir) {
         }
     `;
 
+    function renderCardHtml(cardData) {
+        const escudoSrc = getBase64Image(path.join(__dirname, '..', 'escudos', cardData.escudo));
+        const avatarSrc = getBase64Image(path.join(__dirname, '..', cardData.avatar));
+        const statsHtml = cardData.stats.map(s => `
+            <div class="fut-stat-item"><span class="fut-stat-num">${s[0]}</span><span class="fut-stat-label">${s[1]}</span></div>
+        `).join('');
+
+        return `
+            <div class="fut-top">
+                <div class="fut-badge-meta">
+                    <div class="fut-ovr">${cardData.ovr}</div>
+                    <div class="fut-pos">${cardData.pos}</div>
+                    <img src="${escudoSrc}" class="fut-club-icon">
+                </div>
+                <div class="fut-avatar-container">
+                    <div class="ac-avatar-full">
+                        <img src="${avatarSrc}" class="ac-avatar-img-full" alt="Avatar">
+                    </div>
+                </div>
+            </div>
+            <div class="fut-name">${cardData.name}</div>
+            <div class="fut-stats-row">
+                ${statsHtml}
+            </div>
+        `;
+    }
+
     // 1. OVERLAY HOOK (0s a 4s)
+    const hook = config.hookCards;
     const htmlHook = `
     <!DOCTYPE html>
     <html>
@@ -298,86 +599,28 @@ async function generarOverlaysPromo(assetsDir) {
     <body>
         <div class="header-top">
             <div class="eyebrow"><img src="${logoBase64}" style="width:24px;height:24px;border-radius:6px;"> ESTADIOS VIRTUALES · CARTA FUT</div>
-            <div class="title-main">¿SABÍAS QUE PODÉS CREAR<br>TU PROPIA CARTA FUT?</div>
-            <div class="title-sub">Con el escudo de tu club ⚽🔥</div>
+            <div class="title-main">${config.titleMain}</div>
+            <div class="title-sub">${config.titleSub}</div>
         </div>
 
         <div style="position:absolute; top:520px; left:50%; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; gap:30px; width:100%;">
-            <!-- Carta Boca - El Apache (izquierda inclinada) -->
-            <div class="fut-card boca" style="transform: scale(0.85) rotate(-10deg) translateY(30px); opacity:0.9;">
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr">92</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${bocaBase64}" class="fut-club-icon">
-                    </div>
-                    <div class="fut-avatar-container">
-                        <div class="ac-avatar-full">
-                            <img src="${avatarTevezBase64}" class="ac-avatar-img-full" alt="Avatar">
-                        </div>
-                    </div>
-                </div>
-                <div class="fut-name">EL APACHE</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">95</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">88</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">85%</span><span class="fut-stat-label">WR</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">32K</span><span class="fut-stat-label">XP</span></div>
-                </div>
+            <!-- Carta Izquierda (inclinada) -->
+            <div class="fut-card ${hook.left.theme}" style="transform: scale(0.85) rotate(-10deg) translateY(30px); opacity:0.92;">
+                ${renderCardHtml(hook.left)}
             </div>
 
-            <!-- Carta Gold Argentina - La Pulga (centro destacada) -->
-            <div class="fut-card gold" style="transform: scale(1.18); z-index:10; box-shadow:0 0 60px rgba(255, 215, 0, 0.65);">
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr">99</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${logoBase64}" class="fut-club-icon">
-                    </div>
-                    <div class="fut-avatar-container">
-                        <div class="ac-avatar-full">
-                            <img src="${avatarMessiBase64}" class="ac-avatar-img-full" alt="Avatar">
-                        </div>
-                    </div>
-                </div>
-                <div class="fut-name">LA PULGA</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">99</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">99</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">98%</span><span class="fut-stat-label">WR</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">45K</span><span class="fut-stat-label">XP</span></div>
-                </div>
+            <!-- Carta Centro Gold (destacada) -->
+            <div class="fut-card ${hook.center.theme}" style="transform: scale(1.18); z-index:10; box-shadow:0 0 65px rgba(255, 215, 0, 0.7);">
+                ${renderCardHtml(hook.center)}
             </div>
 
-            <!-- Carta River - La Araña (derecha inclinada) -->
-            <div class="fut-card river" style="transform: scale(0.85) rotate(10deg) translateY(30px); opacity:0.9;">
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr">94</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${riverBase64}" class="fut-club-icon">
-                    </div>
-                    <div class="fut-avatar-container">
-                        <div class="ac-avatar-full">
-                            <img src="${avatarJulianBase64}" class="ac-avatar-img-full" alt="Avatar">
-                        </div>
-                    </div>
-                </div>
-                <div class="fut-name">LA ARAÑA</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">94</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">91</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">82%</span><span class="fut-stat-label">WR</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">28K</span><span class="fut-stat-label">XP</span></div>
-                </div>
+            <!-- Carta Derecha (inclinada) -->
+            <div class="fut-card ${hook.right.theme}" style="transform: scale(0.85) rotate(10deg) translateY(30px); opacity:0.92;">
+                ${renderCardHtml(hook.right)}
             </div>
         </div>
 
-        <!-- Pill inferior de aviso -->
-        <div style="position:absolute; bottom:250px; left:50%; transform:translateX(-50%); background:rgba(9, 14, 23, 0.95); border:2px solid #00ff77; border-radius:30px; padding:16px 36px; display:flex; align-items:center; gap:16px; box-shadow:0 10px 40px rgba(0,0,0,0.85);">
-            <span style="font-size:32px;">🔥</span>
-            <span style="color:#ffffff; font-size:24px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">100% GRATIS · SIN DESCARGAR APPS</span>
-        </div>
+
     </body>
     </html>
     `;
@@ -385,64 +628,46 @@ async function generarOverlaysPromo(assetsDir) {
     await page.screenshot({ path: path.join(assetsDir, 'overlay_hook.png'), omitBackground: true });
 
     // 2. OVERLAY PASO 1: SELECCIÓN DE CLUB Y POSICIÓN (4s a 9s)
+    const step1 = config.step1;
+    const carouselHtml = step1.carousel.map(c => {
+        const cImg = getBase64Image(path.join(__dirname, '..', 'escudos', c.escudo));
+        if (c.active) {
+            return `
+            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; transform:scale(1.18); padding:10px 20px; background:rgba(0, 230, 118, 0.2); border:2.5px solid #00e676; border-radius:20px; box-shadow:0 0 25px rgba(0, 230, 118, 0.5);">
+                <img src="${cImg}" style="width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.7));">
+                <span style="color:#00ff77; font-size:19px; font-weight:900;">${c.name}</span>
+            </div>
+            `;
+        }
+        return `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <img src="${cImg}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
+            <span style="color:#ffffff; font-size:17px; font-weight:900;">${c.name}</span>
+        </div>
+        `;
+    }).join('');
+
     const htmlStep1 = `
     <!DOCTYPE html>
     <html>
     <head><style>${cssGlobal}</style></head>
     <body>
         <div class="header-top">
-            <div class="eyebrow" style="border-color:#38bdf8; color:#38bdf8;">PASO 1 DE 3</div>
-            <div class="title-main">ELEGÍ TU CLUB Y TU POSICIÓN</div>
-            <div class="title-sub">+100 Escudos oficiales y posiciones tácticas ⚽</div>
+            <div class="eyebrow" style="border-color:#38bdf8; color:#38bdf8;">${step1.eyebrow}</div>
+            <div class="title-main">${step1.title}</div>
+            <div class="title-sub">${step1.subtitle}</div>
         </div>
 
         <!-- Carta central interactiva -->
         <div style="position:absolute; top:480px; left:50%; transform:translateX(-50%);">
-            <div class="fut-card arg" style="transform: scale(1.3); box-shadow:0 0 50px rgba(116, 172, 223, 0.6);">
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr">89</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${racingBase64}" class="fut-club-icon">
-                    </div>
-                    <div class="fut-avatar-container">
-                        <div class="ac-avatar-full">
-                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
-                        </div>
-                    </div>
-                </div>
-                <div class="fut-name">TU JUGADOR</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">89</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">24</span><span class="fut-stat-label">PJ</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">18</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">75%</span><span class="fut-stat-label">WR</span></div>
-                </div>
+            <div class="fut-card ${step1.centerCard.theme}" style="transform: scale(1.3); box-shadow:0 0 55px rgba(255, 215, 0, 0.65);">
+                ${renderCardHtml(step1.centerCard)}
             </div>
         </div>
 
         <!-- Carousel de clubes flotante -->
         <div style="position:absolute; bottom:290px; left:50px; width:980px; background:rgba(9, 14, 23, 0.94); border:2px solid rgba(255,255,255,0.3); border-radius:26px; padding:22px; display:flex; justify-content:space-around; align-items:center; box-shadow:0 14px 40px rgba(0,0,0,0.9);">
-            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-                <img src="${riverBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
-                <span style="color:#ffffff; font-size:17px; font-weight:900;">RIVER</span>
-            </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-                <img src="${bocaBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
-                <span style="color:#ffffff; font-size:17px; font-weight:900;">BOCA</span>
-            </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:8px; transform:scale(1.18); padding:10px 20px; background:rgba(0, 230, 118, 0.2); border:2.5px solid #00e676; border-radius:20px; box-shadow:0 0 25px rgba(0, 230, 118, 0.5);">
-                <img src="${racingBase64}" style="width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.7));">
-                <span style="color:#00ff77; font-size:19px; font-weight:900;">RACING</span>
-            </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-                <img src="${barcaBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
-                <span style="color:#ffffff; font-size:17px; font-weight:900;">BARÇA</span>
-            </div>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-                <img src="${realBase64}" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.6));">
-                <span style="color:#ffffff; font-size:17px; font-weight:900;">MADRID</span>
-            </div>
+            ${carouselHtml}
         </div>
 
         <div style="position:absolute; bottom:200px; left:50%; transform:translateX(-50%); display:flex; gap:18px;">
@@ -457,16 +682,26 @@ async function generarOverlaysPromo(assetsDir) {
     await page.setContent(htmlStep1, { timeout: 8000 });
     await page.screenshot({ path: path.join(assetsDir, 'overlay_step1.png'), omitBackground: true });
 
-    // 3. OVERLAY PASO 2: SE DESBLOQUEA TU CARTA CON TUS STATS (9s a 14.5s)
+    // 3. OVERLAY PASO 2: SE DESBLOQUEAN TUS STATS (9s a 14.5s)
+    const step2 = config.step2;
+    const cardStep2StatsHtml = step2.card.stats.slice(0, 4).map(s => `
+        <div class="fut-stat-item"><span class="fut-stat-num">${s[0]}</span><span class="fut-stat-label">${s[1]}</span></div>
+    `).join('') + (step2.card.stats[4] ? `
+        <div class="fut-stat-item" style="grid-column: span 2;"><span class="fut-stat-num">${step2.card.stats[4][0]}</span><span class="fut-stat-label">${step2.card.stats[4][1]}</span></div>
+    ` : '');
+
+    const escudoStep2Src = getBase64Image(path.join(__dirname, '..', 'escudos', step2.card.escudo));
+    const avatarStep2Src = getBase64Image(path.join(__dirname, '..', step2.card.avatar));
+
     const htmlStep2 = `
     <!DOCTYPE html>
     <html>
     <head><style>${cssGlobal}</style></head>
     <body>
         <div class="header-top">
-            <div class="eyebrow" style="border-color:#ffd700; color:#ffd700;">PASO 2 DE 3</div>
-            <div class="title-main">SE DESBLOQUEAN TUS STATS</div>
-            <div class="title-sub">Subí de nivel y acumulá XP adivinando estadios 🏟️🔥</div>
+            <div class="eyebrow" style="border-color:#ffd700; color:#ffd700;">${step2.eyebrow}</div>
+            <div class="title-main">${step2.title}</div>
+            <div class="title-sub">${step2.subtitle}</div>
         </div>
 
         <!-- Carta Gold Máxima -->
@@ -474,23 +709,19 @@ async function generarOverlaysPromo(assetsDir) {
             <div class="fut-card gold" style="transform: scale(1.36); box-shadow:0 0 70px rgba(255, 215, 0, 0.7);">
                 <div class="fut-top">
                     <div class="fut-badge-meta">
-                        <div class="fut-ovr">95</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${bocaBase64}" class="fut-club-icon">
+                        <div class="fut-ovr">${step2.card.ovr}</div>
+                        <div class="fut-pos">${step2.card.pos}</div>
+                        <img src="${escudoStep2Src}" class="fut-club-icon">
                     </div>
                     <div class="fut-avatar-container">
                         <div class="ac-avatar-full">
-                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
+                            <img src="${avatarStep2Src}" class="ac-avatar-img-full" alt="Avatar">
                         </div>
                     </div>
                 </div>
-                <div class="fut-name">GONZÁLEZ #9</div>
+                <div class="fut-name">${step2.card.name}</div>
                 <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">24.5K</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">52</span><span class="fut-stat-label">PJ</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">41</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">79%</span><span class="fut-stat-label">WR</span></div>
-                    <div class="fut-stat-item" style="grid-column: span 2;"><span class="fut-stat-num">38.2K</span><span class="fut-stat-label">XP TOTAL</span></div>
+                    ${cardStep2StatsHtml}
                 </div>
             </div>
         </div>
@@ -522,6 +753,7 @@ async function generarOverlaysPromo(assetsDir) {
     // 4. OVERLAY PASO 3 & CTA FINAL (14.5s a 20s)
     const urlReto = `https://www.estadiosvirtuales.com`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(urlReto)}&color=00e676&bgcolor=142030`;
+    const step3 = config.step3;
 
     const htmlStep3 = `
     <!DOCTYPE html>
@@ -529,7 +761,7 @@ async function generarOverlaysPromo(assetsDir) {
     <head><style>${cssGlobal}</style></head>
     <body>
         <div class="header-top">
-            <div class="eyebrow" style="border-color:#00ff77; color:#00ff77;">¡DESCARGALA GRATIS!</div>
+            <div class="eyebrow" style="border-color:#00ff77; color:#00ff77;">¡CREÁ TU CARTA!</div>
             <div class="title-main">CREÁ TU CARTA AHORA</div>
         </div>
 
@@ -541,26 +773,8 @@ async function generarOverlaysPromo(assetsDir) {
             </div>
 
             <!-- Mini carta en el póster -->
-            <div class="fut-card gold" style="transform: scale(0.95); margin: 10px 0;">
-                <div class="fut-top">
-                    <div class="fut-badge-meta">
-                        <div class="fut-ovr">95</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${bocaBase64}" class="fut-club-icon">
-                    </div>
-                    <div class="fut-avatar-container">
-                        <div class="ac-avatar-full">
-                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
-                        </div>
-                    </div>
-                </div>
-                <div class="fut-name">TU NOMBRE</div>
-                <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">24K</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">52</span><span class="fut-stat-label">PJ</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">41</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">79%</span><span class="fut-stat-label">WR</span></div>
-                </div>
+            <div class="fut-card ${step3.card.theme}" style="transform: scale(0.95); margin: 10px 0;">
+                ${renderCardHtml(step3.card)}
             </div>
 
             <!-- Footer póster con QR y espaditas 1v1 (Mismo tamaño exacto: 78x78px) -->
@@ -574,12 +788,12 @@ async function generarOverlaysPromo(assetsDir) {
             </div>
         </div>
 
-        <!-- BOTÓN CTA PRINCIPAL ELEVADO (bottom: 240px) -->
+        <!-- BOTÓN CTA PRINCIPAL ELEVADO (bottom: 240px -> y=1680) -->
         <div style="position:absolute; bottom:240px; left:50px; width:980px; background:linear-gradient(135deg, #00e676 0%, #00b0ff 100%); border-radius:26px; padding:20px 24px; display:flex; align-items:center; justify-content:center; gap:16px; box-shadow:0 18px 45px rgba(0,0,0,0.9), 0 0 50px rgba(0, 230, 118, 0.7); border:3.5px solid #ffffff;">
             <span style="font-size:38px;">📲</span>
             <div style="display:flex; flex-direction:column; align-items:center;">
                 <span style="color:#04160a; font-size:33px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">👉 TOCÁ EL LINK EN MI PERFIL DE TIKTOK</span>
-                <span style="color:#04160a; font-size:19px; font-weight:900; opacity:0.95;">100% GRATIS · JUGÁ EN WWW.ESTADIOSVIRTUALES.COM</span>
+                <span style="color:#04160a; font-size:20px; font-weight:900; opacity:0.95;">JUGÁ EN WWW.ESTADIOSVIRTUALES.COM ⚽🔥</span>
             </div>
         </div>
 
@@ -599,7 +813,7 @@ async function generarOverlaysPromo(assetsDir) {
 // ==========================================
 // GENERACIÓN DE PORTADA MISTERIO (1080x1920)
 // ==========================================
-async function generarPortada(outFolder) {
+async function generarPortada(config, outFolder) {
     const browser = await puppeteer.launch({
         executablePath: chromePath,
         headless: 'new',
@@ -610,9 +824,8 @@ async function generarPortada(outFolder) {
     await page.setViewport({ width: 1080, height: 1920 });
 
     const logoBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Logo.webp'));
-    const bocaBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Boca.webp'));
-    const riverBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'River.webp'));
-    const avatarBase64 = getBase64Image(path.join(__dirname, '..', '1.webp'));
+    const escudoPortBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', config.portada.card.escudo));
+    const avatarPortBase64 = getBase64Image(path.join(__dirname, '..', config.portada.card.avatar));
 
     const htmlPortada = `
     <!DOCTYPE html>
@@ -728,10 +941,10 @@ async function generarPortada(outFolder) {
                 <img src="${logoBase64}" style="width:28px;height:28px;border-radius:8px;"> ESTADIOS VIRTUALES
             </div>
             <div style="font-size:52px; font-weight:900; color:#ffffff; line-height:1.15; text-transform:uppercase; text-shadow:0 6px 25px rgba(0,0,0,0.9);">
-                ¿CÓMO CREAR TU<br><span style="color:#ffd700;">PROPIA CARTA FUT?</span>
+                ${config.portada.titleHtml}
             </div>
             <div style="font-size:24px; font-weight:800; color:#e2e8f0; margin-top:10px;">
-                Con el escudo de tu club ⚽🔥
+                ${config.portada.subtitle}
             </div>
         </div>
 
@@ -740,22 +953,22 @@ async function generarPortada(outFolder) {
             <div class="fut-card gold">
                 <div class="fut-top">
                     <div class="fut-badge-meta">
-                        <div class="fut-ovr">99</div>
-                        <div class="fut-pos">DEL</div>
-                        <img src="${bocaBase64}" class="fut-club-icon">
+                        <div class="fut-ovr">${config.portada.card.ovr}</div>
+                        <div class="fut-pos">${config.portada.card.pos}</div>
+                        <img src="${escudoPortBase64}" class="fut-club-icon">
                     </div>
                     <div class="fut-avatar-container">
                         <div class="ac-avatar-full">
-                            <img src="${avatarBase64}" class="ac-avatar-img-full" alt="Avatar">
+                            <img src="${avatarPortBase64}" class="ac-avatar-img-full" alt="Avatar">
                         </div>
                     </div>
                 </div>
-                <div class="fut-name">TU NOMBRE</div>
+                <div class="fut-name">${config.portada.card.name}</div>
                 <div class="fut-stats-row">
-                    <div class="fut-stat-item"><span class="fut-stat-num">99</span><span class="fut-stat-label">MAX</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">99</span><span class="fut-stat-label">PG</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">98%</span><span class="fut-stat-label">WR</span></div>
-                    <div class="fut-stat-item"><span class="fut-stat-num">45K</span><span class="fut-stat-label">XP</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${config.portada.card.stats[0][0]}</span><span class="fut-stat-label">${config.portada.card.stats[0][1]}</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${config.portada.card.stats[1][0]}</span><span class="fut-stat-label">${config.portada.card.stats[1][1]}</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${config.portada.card.stats[2][0]}</span><span class="fut-stat-label">${config.portada.card.stats[2][1]}</span></div>
+                    <div class="fut-stat-item"><span class="fut-stat-num">${config.portada.card.stats[3][0]}</span><span class="fut-stat-label">${config.portada.card.stats[3][1]}</span></div>
                 </div>
             </div>
         </div>
@@ -763,7 +976,7 @@ async function generarPortada(outFolder) {
         <!-- Badge inferior de llamada -->
         <div style="position:absolute; bottom:340px; left:50px; width:980px; background:linear-gradient(135deg, #00e676 0%, #00b0ff 100%); border-radius:26px; padding:22px; text-align:center; box-shadow:0 18px 45px rgba(0,0,0,0.9), 0 0 45px rgba(0, 230, 118, 0.55); border:3px solid #ffffff;">
             <div style="color:#04160a; font-size:34px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">
-                👉 JUGALO GRATIS EN EL LINK DEL PERFIL
+                👉 JUGALO EN EL LINK DEL PERFIL
             </div>
         </div>
     </body>
@@ -771,7 +984,7 @@ async function generarPortada(outFolder) {
     `;
 
     await page.setContent(htmlPortada, { timeout: 8000 });
-    const portadaPath = path.join(outFolder, 'Portada_Promo_Carta_FUT.jpg');
+    const portadaPath = path.join(outFolder, config.portadaName);
     await page.screenshot({ path: portadaPath, quality: 95, type: 'jpeg' });
     console.log(`✅ Portada guardada: ${portadaPath}`);
 
@@ -781,63 +994,50 @@ async function generarPortada(outFolder) {
 // ==========================================
 // RENDERIZADO PRINCIPAL FFmpeg
 // ==========================================
-async function renderizarPromoCartaFUT() {
-    const slug = 'PROMO-01-CREA-TU-CARTA';
-    const outFolder = path.join(BASE_OUTPUT_DIR, slug);
+async function renderizarPromo(promoKey = 'promo-02-laliga') {
+    const config = CONFIG_PROMOS[promoKey] || CONFIG_PROMOS['promo-02-laliga'];
+    const outFolder = path.join(BASE_OUTPUT_DIR, config.slug);
     if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
-    const assetsDir = path.join(__dirname, 'temp_promo_assets');
+    const assetsDir = path.join(__dirname, `temp_${config.slug.toLowerCase()}_assets`);
     if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
+    console.log(`🎬 EJECUTANDO GENERACIÓN: ${config.slug}`);
     console.log(`📂 Carpeta de salida: ${outFolder}`);
 
-    // 1. Textos de publicación optimizados para TikTok e Instagram
-    const textos = `🔥 ¿SABÍAS QUE PODÉS CREAR TU PROPIA CARTA FUT CON EL ESCUDO DE TU CLUB? ⚽🔥
-
-Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Lorenzo, Newell's, Central y +100 clubes), elegí tu posición en cancha y subí de nivel con tus estadísticas reales de juego.
-
-📲 ¡Creá la tuya 100% gratis en el link de mi perfil!
-👉 www.estadiosvirtuales.com
-
-¿De qué club vas a armar tu carta? Dejamelo en los comentarios 👇
-
-#CartaFUT #EstadiosVirtuales #FutbolArgentino #BocaJuniors #RiverPlate #RacingClub #SanLorenzo #FIFA24 #EAFC24 #StadiumGuessr #Futbol #Estadios`;
-
-    fs.writeFileSync(path.join(outFolder, 'TEXTOS_PUBLICACION.txt'), textos, 'utf8');
+    // 1. Textos de publicación
+    fs.writeFileSync(path.join(outFolder, 'TEXTOS_PUBLICACION.txt'), config.textos, 'utf8');
     console.log(`✅ Archivo TEXTOS_PUBLICACION.txt guardado.`);
 
-    // 2. Audio procedural
+    // 2. Audio procedural puro
     const audioPath = path.join(assetsDir, 'audio_promo.wav');
     fs.writeFileSync(audioPath, generarAudioProcedural(20.0));
     console.log(`✅ Audio procedural generado.`);
 
     // 3. Generación de Portada
-    await generarPortada(outFolder);
+    await generarPortada(config, outFolder);
 
     // 4. Overlays con Puppeteer
     console.log(`🎨 Generando overlays en Puppeteer...`);
-    await generarOverlaysPromo(assetsDir);
+    await generarOverlaysPromo(config, assetsDir);
     console.log(`✅ Overlays generados exitosamente.`);
 
     // 5. Video con FFmpeg
-    const videoOutPath = path.join(outFolder, 'Promo_Crea_Tu_Carta_FUT.mp4');
+    const videoOutPath = path.join(outFolder, config.videoName);
 
-    // Fondo: si existen River y Boca en E:, hace transición cinemática cruzada (xfade fade a los 9.5s)
-    const droneRiverPath = "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4";
-    const droneBocaPath = "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4";
-    const hasBothDrones = fs.existsSync(droneRiverPath) && fs.existsSync(droneBocaPath);
-    const hasSingleDrone = fs.existsSync(droneRiverPath);
+    const hasBothDrones = fs.existsSync(config.drone1) && fs.existsSync(config.drone2);
+    const hasSingleDrone = fs.existsSync(config.drone1);
 
     let ffmpegInputs = [];
     let filterComplex = '';
     let audioMapIndex = '5:a';
 
     if (hasBothDrones) {
-        console.log(`🏟️ Configurando transición cinematográfica: Monumental ➔ Bombonera (xfade a 9.5s)...`);
+        console.log(`🏟️ Configurando transición cinematográfica de estadios (xfade a 9.5s)...`);
         ffmpegInputs = [
             '-y',
-            '-stream_loop', '-1', '-t', '11.0', '-i', droneRiverPath,                  // 0: River (0s a 10.5s)
-            '-stream_loop', '-1', '-t', '11.0', '-i', droneBocaPath,                   // 1: Boca (9.5s a 20s)
+            '-stream_loop', '-1', '-t', '11.0', '-i', config.drone1,                  // 0: Drone 1 (0s a 10.5s)
+            '-stream_loop', '-1', '-t', '11.0', '-i', config.drone2,                  // 1: Drone 2 (9.5s a 20s)
             '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),   // 2: Hook (0s a 4s)
             '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),  // 3: Paso 1 (4s a 9s)
             '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),  // 4: Paso 2 (9s a 14.5s)
@@ -860,12 +1060,12 @@ Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Loren
             '-y',
             '-t', '20.0',
             '-stream_loop', '-1',
-            '-i', droneRiverPath,                                   // 0: Video drone
-            '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),   // 1: Hook (0s a 4s)
-            '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),  // 2: Paso 1 (4s a 9s)
-            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),  // 3: Paso 2 (9s a 14.5s)
-            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_cta.png'),    // 4: Paso 3 & CTA (14.5s a 20s)
-            '-i', audioPath                                         // 5: Audio
+            '-i', config.drone1,
+            '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),
+            '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),
+            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),
+            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_cta.png'),
+            '-i', audioPath
         ];
 
         filterComplex = `
@@ -877,15 +1077,14 @@ Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Loren
         `;
         audioMapIndex = '5:a';
     } else {
-        // Fondo cinemático nativo generado por FFmpeg (sin depender del disco externo)
         ffmpegInputs = [
             '-y',
-            '-f', 'lavfi', '-i', 'color=c=#070b12:s=1080x1920:d=20.0:r=30', // 0: Fondo oscuro
-            '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),   // 1: Hook
-            '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),  // 2: Paso 1
-            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),  // 3: Paso 2
-            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_cta.png'),    // 4: CTA
-            '-i', audioPath                                         // 5: Audio
+            '-f', 'lavfi', '-i', 'color=c=#070b12:s=1080x1920:d=20.0:r=30',
+            '-loop', '1', '-t', '4.0', '-i', path.join(assetsDir, 'overlay_hook.png'),
+            '-loop', '1', '-t', '5.0', '-i', path.join(assetsDir, 'overlay_step1.png'),
+            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_step2.png'),
+            '-loop', '1', '-t', '5.5', '-i', path.join(assetsDir, 'overlay_cta.png'),
+            '-i', audioPath
         ];
 
         filterComplex = `
@@ -943,4 +1142,5 @@ Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Loren
     } catch (_) {}
 }
 
-renderizarPromoCartaFUT().catch(console.error);
+const promoArg = process.argv[2] || 'promo-02-laliga';
+renderizarPromo(promoArg).catch(console.error);
