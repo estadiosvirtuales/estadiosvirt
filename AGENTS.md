@@ -92,7 +92,7 @@ Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
    - **Pantalla final Wordle (30s a 35s, centrado vertical):** Modal auténtico con rango (`👑 GALÁCTICO ABSOLUTO`), puntuación total sobre 25.000, grilla de emojis (`🟩 🟩 🟩 🟩 🟩`), sección «ESTADIOS DE ESTE RETO» desglosando los 5 estadios y clubes de cada ronda (`[R1]`-`[R5]`) y llamado a la acción (`¿PODÉS SUPERAR MI PUNTAJE DE HOY? JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM`).
    - **Motor:** `redes/render_reto_diario.js` (35.0s).
 
-### Formato 4: Promo Viral Carta FUT («Creá tu Carta con tu Club y Cancha»)
+### Formato 4: Promo Viral Carta FUT («Creá tu Carta con tu Club»)
 Promociona la funcionalidad de la web para crear cartas FUT personalizadas con escudo y avatar:
 1. **Encuadre y Layout (20.0s):**
    - Transición aérea cinemática de fondo (dos estadios emblemáticos en `xfade` de 1.0s a los 9.5s, ej. Monumental a Bombonera).

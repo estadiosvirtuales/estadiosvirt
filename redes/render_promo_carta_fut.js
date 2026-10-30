@@ -299,7 +299,7 @@ async function generarOverlaysPromo(assetsDir) {
         <div class="header-top">
             <div class="eyebrow"><img src="${logoBase64}" style="width:24px;height:24px;border-radius:6px;"> ESTADIOS VIRTUALES · CARTA FUT</div>
             <div class="title-main">¿SABÍAS QUE PODÉS CREAR<br>TU PROPIA CARTA FUT?</div>
-            <div class="title-sub">Con el escudo de tu club y tu cancha favorita 🏟️</div>
+            <div class="title-sub">Con el escudo de tu club ⚽🔥</div>
         </div>
 
         <div style="position:absolute; top:520px; left:50%; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; gap:30px; width:100%;">
@@ -734,7 +734,7 @@ async function generarPortada(outFolder) {
                 ¿CÓMO CREAR TU<br><span style="color:#ffd700;">PROPIA CARTA FUT?</span>
             </div>
             <div style="font-size:24px; font-weight:800; color:#e2e8f0; margin-top:10px;">
-                Con el escudo de tu club y tu cancha favorita 🏟️
+                Con el escudo de tu club ⚽🔥
             </div>
         </div>
 
@@ -795,7 +795,7 @@ async function renderizarPromoCartaFUT() {
     console.log(`📂 Carpeta de salida: ${outFolder}`);
 
     // 1. Textos de publicación optimizados para TikTok e Instagram
-    const textos = `🔥 ¿SABÍAS QUE PODÉS CREAR TU PROPIA CARTA FUT CON TU CLUB Y TU CANCHA? 🏟️⚽
+    const textos = `🔥 ¿SABÍAS QUE PODÉS CREAR TU PROPIA CARTA FUT CON EL ESCUDO DE TU CLUB? ⚽🔥
 
 Personalizá tu carta con el escudo de tu equipo (River, Boca, Racing, San Lorenzo, Newell's, Central y +100 clubes), elegí tu posición en cancha y subí de nivel con tus estadísticas reales de juego.
 
