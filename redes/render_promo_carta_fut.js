@@ -122,7 +122,11 @@ async function generarOverlaysPromo(assetsDir) {
     const racingBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Racing.webp'));
     const realBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Real.webp'));
     const barcaBase64 = getBase64Image(path.join(__dirname, '..', 'escudos', 'Barca.webp'));
-    const avatarBase64 = getBase64Image(path.join(__dirname, '..', '1.webp'));
+    const avatarMessiBase64 = getBase64Image(path.join(__dirname, '..', '1.webp'));
+    const avatarTevezBase64 = getBase64Image(path.join(__dirname, '..', '27.webp'));
+    const avatarJulianBase64 = getBase64Image(path.join(__dirname, '..', '19.webp'));
+    const dueloIconBase64 = getBase64Image(path.join(__dirname, '..', 'liga-icon-historial.webp'));
+    const avatarBase64 = avatarMessiBase64;
     const fuegoBase64 = getBase64Image(path.join(__dirname, '..', 'fuego.webp'));
     const trofeoBase64 = getBase64Image(path.join(__dirname, '..', 'trofeo.webp'));
 
@@ -280,7 +284,7 @@ async function generarOverlaysPromo(assetsDir) {
         </div>
 
         <div style="position:absolute; top:520px; left:50%; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; gap:30px; width:100%;">
-            <!-- Carta Boca (izquierda inclinada) -->
+            <!-- Carta Boca - El Apache (izquierda inclinada) -->
             <div class="fut-card boca" style="transform: scale(0.85) rotate(-10deg) translateY(30px); opacity:0.9;">
                 <div class="fut-top">
                     <div class="fut-badge-meta">
@@ -288,16 +292,16 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${bocaBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container"><img src="${avatarTevezBase64}"></div>
                 </div>
-                <div class="fut-name">BOMBONERA</div>
+                <div class="fut-name">EL APACHE</div>
                 <div class="fut-stats-row">
                     <div class="fut-stat-item"><span class="fut-stat-num">95</span><span class="fut-stat-label">MAX</span></div>
                     <div class="fut-stat-item"><span class="fut-stat-num">88</span><span class="fut-stat-label">PG</span></div>
                 </div>
             </div>
 
-            <!-- Carta Gold Argentina (centro destacada) -->
+            <!-- Carta Gold Argentina - La Pulga (centro destacada) -->
             <div class="fut-card gold" style="transform: scale(1.18); z-index:10; box-shadow:0 0 60px rgba(255, 215, 0, 0.65);">
                 <div class="fut-top">
                     <div class="fut-badge-meta">
@@ -305,9 +309,9 @@ async function generarOverlaysPromo(assetsDir) {
                         <div class="fut-pos">DEL</div>
                         <img src="${logoBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container"><img src="${avatarMessiBase64}"></div>
                 </div>
-                <div class="fut-name">TU NOMBRE</div>
+                <div class="fut-name">LA PULGA</div>
                 <div class="fut-stats-row">
                     <div class="fut-stat-item"><span class="fut-stat-num">99</span><span class="fut-stat-label">MAX</span></div>
                     <div class="fut-stat-item"><span class="fut-stat-num">99</span><span class="fut-stat-label">PG</span></div>
@@ -316,17 +320,17 @@ async function generarOverlaysPromo(assetsDir) {
                 </div>
             </div>
 
-            <!-- Carta River (derecha inclinada) -->
+            <!-- Carta River - La Araña (derecha inclinada) -->
             <div class="fut-card river" style="transform: scale(0.85) rotate(10deg) translateY(30px); opacity:0.9;">
                 <div class="fut-top">
                     <div class="fut-badge-meta">
                         <div class="fut-ovr">94</div>
-                        <div class="fut-pos">MC</div>
+                        <div class="fut-pos">DEL</div>
                         <img src="${riverBase64}" class="fut-club-icon">
                     </div>
-                    <div class="fut-avatar-container"><img src="${avatarBase64}"></div>
+                    <div class="fut-avatar-container"><img src="${avatarJulianBase64}"></div>
                 </div>
-                <div class="fut-name">MONUMENTAL</div>
+                <div class="fut-name">LA ARAÑA</div>
                 <div class="fut-stats-row">
                     <div class="fut-stat-item"><span class="fut-stat-num">94</span><span class="fut-stat-label">MAX</span></div>
                     <div class="fut-stat-item"><span class="fut-stat-num">91</span><span class="fut-stat-label">PG</span></div>
@@ -484,7 +488,6 @@ async function generarOverlaysPromo(assetsDir) {
         <div class="header-top">
             <div class="eyebrow" style="border-color:#00ff77; color:#00ff77;">¡DESCARGALA GRATIS!</div>
             <div class="title-main">CREÁ TU CARTA AHORA</div>
-            <div class="title-sub">Para fondo de pantalla o historia de Instagram 📲</div>
         </div>
 
         <!-- Póster final oficial idéntico al de la web -->
@@ -516,12 +519,15 @@ async function generarOverlaysPromo(assetsDir) {
                 </div>
             </div>
 
-            <!-- Footer póster con QR -->
-            <div style="display:flex; align-items:center; gap:16px; width:100%; background:rgba(20, 32, 48, 0.9); border:2px solid rgba(0, 230, 118, 0.5); border-radius:20px; padding:14px 20px;">
-                <img src="${qrApiUrl}" style="width:82px; height:82px; border-radius:12px; border:2px solid #00e676;">
-                <div style="display:flex; flex-direction:column; text-align:left;">
-                    <strong style="color:#ffffff; font-size:20px; font-weight:900;">¿Te animás a ganarme?</strong>
-                    <span style="color:#a0aec0; font-size:14px; font-weight:700;">Escaneá el QR y desafiame en vivo.</span>
+            <!-- Footer póster con QR y espaditas 1v1 -->
+            <div style="display:flex; align-items:center; justify-content:space-between; width:100%; background:rgba(20, 32, 48, 0.92); border:2px solid rgba(0, 230, 118, 0.5); border-radius:20px; padding:12px 18px; gap:12px;">
+                <img src="${qrApiUrl}" style="width:78px; height:78px; border-radius:12px; border:2px solid #00e676; flex-shrink:0;">
+                <div style="display:flex; flex-direction:column; text-align:left; flex:1;">
+                    <strong style="color:#ffffff; font-size:19px; font-weight:900;">¿Te animás a ganarme?</strong>
+                    <span style="color:#a0aec0; font-size:13.5px; font-weight:700;">Escaneá el QR y desafiame en vivo.</span>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <img src="${dueloIconBase64}" style="width:52px; height:52px; object-fit:contain; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.6));">
                 </div>
             </div>
         </div>
