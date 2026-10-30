@@ -92,9 +92,19 @@ Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
    - **Pantalla final Wordle (30s a 35s, centrado vertical):** Modal auténtico con rango (`👑 GALÁCTICO ABSOLUTO`), puntuación total sobre 25.000, grilla de emojis (`🟩 🟩 🟩 🟩 🟩`), sección «ESTADIOS DE ESTE RETO» desglosando los 5 estadios y clubes de cada ronda (`[R1]`-`[R5]`) y llamado a la acción (`¿PODÉS SUPERAR MI PUNTAJE DE HOY? JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM`).
    - **Motor:** `redes/render_reto_diario.js` (35.0s).
 
+### Formato 4: Promo Viral Carta FUT («Creá tu Carta con tu Club y Cancha»)
+Promociona la funcionalidad de la web para crear cartas FUT personalizadas con escudo y avatar:
+1. **Encuadre y Layout (20.0s):**
+   - Transición aérea cinemática de fondo (dos estadios emblemáticos en `xfade` de 1.0s a los 9.5s, ej. Monumental a Bombonera).
+   - **0 a 4s (Hook):** 3 cartas con avatares anatómicos (`.ac-avatar-full` y `.ac-avatar-img-full`), sobrenombres oficiales y stats 2x2 completas (`MAX`, `PG`, `WR`, `XP`). Pill inferior `100% GRATIS · SIN DESCARGAR APPS`.
+   - **4 a 9s (Paso 1 - Edición):** Carta central interactiva + carrusel inferior de escudos (80px) + botones de posición (Delantero, Mediocampo, Defensa, Arquero).
+   - **9 a 14.5s (Paso 2 - Stats):** Revelación de carta Gold con stats desbloqueadas + 3 badges oficiales (Nivel / Galáctico, Racha de Días, Victorias 1v1).
+   - **14.5 a 20s (Paso 3 - CTA Final):** Póster oficial de la web con mini carta, código QR (`78x78px`), desafío `¿Te animás a ganarme?`, icono de espaditas 1v1 (`78x78px` simétrico al QR) y botón CTA inferior elevado a zona segura (`y=1680`): `👉 TOCÁ EL LINK EN MI PERFIL DE TIKTOK 📲`.
+   - **Motor:** `redes/render_promo_carta_fut.js` (20.0s).
+
 ---
 
-## 🎵 5. Reglas de Audio y Portadas (Comunes a los 3 Formatos)
+## 🎵 5. Reglas de Audio y Portadas (Comunes a los 4 Formatos)
 1. **Audio 100% Puro (PROHIBIDO EL WHOOSH / BARRIDO):**
    - **CERO sonidos de barrido / whoosh / ruido blanco** en todo el video.
    - Sonidos permitidos exclusivamente: campanas armónicas de pistas/rondas, ticks de tensión, pop del pin en el mapa y acordes de victoria triunfal.
@@ -108,10 +118,12 @@ Muestra la jugabilidad real y auténtica de la web en ráfaga rápida:
      - Trivia: `E:\Google earth studio\videos para mostrar\TRIVIAS\[PAIS]\[CATEGORIA]\[ESTADIO]\`
      - Duelos: `E:\Google earth studio\videos para mostrar\DUELO DE CAPACIDAD\[DUELO]\`
      - Reto Diario: `E:\Google earth studio\videos para mostrar\RETO DIARIO\[RETO]\`
+     - Cartas FUT: `E:\Google earth studio\videos para mostrar\CARTAS FUT\[PACK]\`
    - Contenido exacto del pack: Video MP4, Portada JPG y `TEXTOS_PUBLICACION.txt` (4 variantes + comentarios fijados). Prohibido dejar archivos temporales.
 
 4. **Frases Detonantes:**
    - *"hagamos videos para que estadio es y donde queda"* ➔ `redes/crear_pack_batch.js`.
    - *"vamos a hacer duelos de capacidad"* ➔ `redes/render_duelo.js`.
    - *"hagamos reto diario"* ➔ `redes/render_reto_diario.js`.
+   - *"hagamos promos de cartas FUT"* o *"crear videos de cartas FUT"* ➔ `redes/render_promo_carta_fut.js`.
    - Jamás crear maquetas experimentales ni alterar las coordenadas del layout.
