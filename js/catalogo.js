@@ -747,6 +747,13 @@ window.switchTabMapa = switchTabMapa;
 
 function toggleTriviaPopup(event, el) {
     if (event) event.stopPropagation();
+
+    // 📱 En celulares / tablets angostas (<= 768px), abrimos el modal emergente optimizado
+    if (window.innerWidth <= 768) {
+        abrirModalTriviaMobile(el);
+        return;
+    }
+
     const g = el.querySelector('.trivia-balloon');
     if (!g) return;
     const open = g.classList.contains('active');
@@ -764,6 +771,86 @@ function toggleTriviaPopup(event, el) {
     }
 }
 window.toggleTriviaPopup = toggleTriviaPopup;
+
+function abrirModalTriviaMobile(el) {
+    const card = el.closest('.card');
+    if (!card) return;
+
+    const estadio = card.querySelector('.card-title')?.textContent?.trim() || 'Estadio';
+    const sub = card.querySelector('.card-subtitle')?.textContent?.trim() || '';
+    const triviaText = el.querySelector('.b-trivia p')?.textContent?.trim() || '¡Este estadio esconde grandes historias!';
+    const btnMapa = el.querySelector('.b-tab[data-estadio]');
+    const pais = btnMapa?.dataset?.pais || '';
+    const lat = btnMapa?.dataset?.lat || '';
+    const lng = btnMapa?.dataset?.lng || '';
+    const logoImg = el.querySelector('.card-img-logo');
+
+    const modal = document.getElementById('trivia-mobile-modal');
+    if (!modal) return;
+
+    const elEstadio = document.getElementById('trivia-mobile-estadio');
+    const elSub = document.getElementById('trivia-mobile-sub');
+    const elTexto = document.getElementById('trivia-mobile-texto');
+    const elShield = document.getElementById('trivia-mobile-shield');
+    const btnMapModal = document.getElementById('trivia-mobile-btn-mapa');
+    const btnVidModal = document.getElementById('trivia-mobile-btn-video');
+
+    if (elEstadio) elEstadio.textContent = estadio;
+    if (elSub) elSub.textContent = sub;
+    if (elTexto) elTexto.textContent = triviaText;
+
+    if (elShield) {
+        if (logoImg && logoImg.src && logoImg.style.display !== 'none') {
+            elShield.src = logoImg.src;
+            elShield.alt = sub;
+            elShield.style.display = 'inline-block';
+        } else {
+            elShield.style.display = 'none';
+        }
+    }
+
+    if (btnMapModal) {
+        btnMapModal.onclick = (e) => {
+            if (e) e.stopPropagation();
+            cerrarModalTriviaMobile();
+            if (typeof abrirModalMapa === 'function') {
+                abrirModalMapa(estadio, pais, lat, lng);
+            }
+        };
+    }
+
+    if (btnVidModal) {
+        btnVidModal.onclick = (e) => {
+            if (e) e.stopPropagation();
+            cerrarModalTriviaMobile();
+            const btnView = card.querySelector('.btn-view');
+            if (btnView) {
+                btnView.click();
+            } else if (typeof abrirModalVideo === 'function') {
+                abrirModalVideo(e, card.dataset.linkVideo || '#', false);
+            }
+        };
+    }
+
+    modal.style.display = 'flex';
+    if (typeof reproducirSonido === 'function') reproducirSonido('click');
+
+    // Registrar stats y XP de trivia descubierta
+    if (typeof userStats !== 'undefined') {
+        userStats.triviasVistas = (userStats.triviasVistas || 0) + 1;
+        if (estadio && userStats.triviasDescubiertas) userStats.triviasDescubiertas.add(estadio);
+        if (typeof guardarStats === 'function') guardarStats();
+    }
+    if (typeof gridXP === 'function') gridXP(10);
+    else if (typeof agregarXP === 'function') agregarXP(10);
+}
+
+function cerrarModalTriviaMobile() {
+    const modal = document.getElementById('trivia-mobile-modal');
+    if (modal) modal.style.display = 'none';
+}
+window.abrirModalTriviaMobile = abrirModalTriviaMobile;
+window.cerrarModalTriviaMobile = cerrarModalTriviaMobile;
 
 document.addEventListener('click', () => document.querySelectorAll('.trivia-balloon').forEach(g => g.classList.remove('active')));
 
