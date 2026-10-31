@@ -137,6 +137,7 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
         ovr: 60,
         rachaActual: 1,
         partidasGanadas: 0,
+        partidasVersus: 0,
         votosRealizados: 0,
         triviasVistas: 0,
         partidasJugadas: 0,
@@ -173,6 +174,7 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                     datosRival.avatar_logo = pref.avatar_logo || 'ev';
                     datosRival.rachaActual = dj.rachaActual || 1;
                     datosRival.partidasGanadas = dj.partidasGanadas || 0;
+                    datosRival.partidasVersus = dj.partidasVersus || dj.partidasJugadas1v1 || 0;
                     datosRival.votosRealizados = dj.votosRealizados || 0;
                     datosRival.triviasVistas = dj.triviasVistas || 0;
                     datosRival.partidasJugadas = dj.partidasJugadas || 0;
@@ -186,25 +188,50 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
                 }
             }
 
-            // 🎯 Verdad única: consultamos SIEMPRE las victorias oficiales en la tabla victorias_versus
-            const { count: victoriasReales } = await supabaseClient
-                .from('victorias_versus')
-                .select('*', { count: 'exact', head: true })
-                .ilike('nombre', n);
+            // 🎯 Verdad única: consultamos las estadísticas oficiales de 1v1 en Supabase
+            let victoriasReales = null;
+            let derrotasReales = null;
+            try {
+                const [resWins, resLosses] = await Promise.all([
+                    supabaseClient.from('victorias_versus').select('*', { count: 'exact', head: true }).ilike('nombre', n),
+                    supabaseClient.from('derrotas_versus').select('*', { count: 'exact', head: true }).ilike('nombre', n)
+                ]);
+                victoriasReales = resWins ? resWins.count : null;
+                derrotasReales = resLosses ? resLosses.count : null;
+            } catch (errWins) {
+                console.warn("Aviso al consultar balance 1v1 oficial:", errWins);
+            }
 
             if (victoriasReales !== null && victoriasReales !== undefined) {
                 datosRival.partidasGanadas = victoriasReales;
             }
 
+            const sumaPartidasOficiales = ((victoriasReales || 0) + (derrotasReales || 0));
+            datosRival.partidasVersus = Math.max(
+                datosRival.partidasVersus || 0,
+                sumaPartidasOficiales,
+                datosRival.partidasGanadas || 0
+            );
+
             const uActual = obtenerUsuarioLogueado();
             const miNickActual = (getPref('ev_custom_nick', '') || (uActual ? uActual.name.split(' ')[0] : '')).trim().toLowerCase();
             if (n.toLowerCase() === miNickActual) {
-                if (victoriasReales !== null && victoriasReales !== undefined) {
+                let huboCambioStats = false;
+                if (victoriasReales !== null && victoriasReales !== undefined && userStats.partidasGanadas !== victoriasReales) {
                     userStats.partidasGanadas = victoriasReales;
+                    huboCambioStats = true;
+                }
+                const minVersusReales = Math.max(sumaPartidasOficiales, userStats.partidasGanadas || 0);
+                if ((userStats.partidasVersus || 0) < minVersusReales) {
+                    userStats.partidasVersus = minVersusReales;
+                    huboCambioStats = true;
+                }
+                if (huboCambioStats) {
                     guardarStats();
                 }
                 datosRival.puntajeMaxGuessr = userStats.maxScore || datosRival.puntajeMaxGuessr;
                 datosRival.partidasJugadas = userStats.partidasJugadas || datosRival.partidasJugadas;
+                datosRival.partidasVersus = Math.max(userStats.partidasVersus || 0, datosRival.partidasGanadas || 0);
                 datosRival.onceInicial = (userStats.onceInicial && Object.keys(userStats.onceInicial).length > 0) ? userStats.onceInicial : datosRival.onceInicial;
                 datosRival.onceCapitan = userStats.onceCapitan || datosRival.onceCapitan;
                 datosRival.onceEscudo = userStats.onceEscudo || getPref('ev_avatar_logo', 'ev');
@@ -294,9 +321,9 @@ function renderizarModalInspeccion(datosRival) {
     let contenidoTabHTML = '';
 
     if (window.tabInspectActual === 'perfil') {
-        const pj = datosRival.partidasJugadas || 0;
-        const pg = datosRival.partidasGanadas || 0;
-        const winrate = pj > 0 ? Math.round((pg / pj) * 100) : (pg > 0 ? 100 : 0);
+        const pj1v1 = Math.max(datosRival.partidasVersus || 0, datosRival.partidasGanadas || 0);
+        const pg1v1 = datosRival.partidasGanadas || 0;
+        const winrate = pj1v1 > 0 ? Math.round((pg1v1 / pj1v1) * 100) : (pg1v1 > 0 ? 100 : 0);
         const maxScore = datosRival.puntajeMaxGuessr || 0;
         const maxTxt = maxScore > 999 
             ? (maxScore >= 10000 ? (maxScore / 1000).toFixed(1) + 'K' : (maxScore / 1000).toFixed(1) + 'K') 
@@ -320,9 +347,9 @@ function renderizarModalInspeccion(datosRival) {
                     <div class="fut-name">${sanitizarHTML(datosRival.custom_nick)}</div>
                     <div class="fut-stats-row">
                         <div class="fut-stat-item" title="Récord máximo en StadiumGuessr"><span class="fut-stat-num">${maxTxt}</span><span class="fut-stat-label">MAX</span></div>
-                        <div class="fut-stat-item" title="Partidas jugadas en Versus"><span class="fut-stat-num">${pj}</span><span class="fut-stat-label">PJ</span></div>
-                        <div class="fut-stat-item" title="Victorias oficiales en Versus"><span class="fut-stat-num">${pg}</span><span class="fut-stat-label">PG</span></div>
-                        <div class="fut-stat-item" title="Efectividad de victoria"><span class="fut-stat-num">${winrate}%</span><span class="fut-stat-label">WR</span></div>
+                        <div class="fut-stat-item" title="Partidos 1v1 jugados"><span class="fut-stat-num">${pj1v1}</span><span class="fut-stat-label">PJ</span></div>
+                        <div class="fut-stat-item" title="Partidos 1v1 ganados"><span class="fut-stat-num">${pg1v1}</span><span class="fut-stat-label">PG</span></div>
+                        <div class="fut-stat-item" title="Efectividad en 1v1 (% victorias)"><span class="fut-stat-num">${winrate}%</span><span class="fut-stat-label">WR</span></div>
                         <div class="fut-stat-item" title="Experiencia total"><span class="fut-stat-num">${xpTxt}</span><span class="fut-stat-label">XP</span></div>
                     </div>
                 </div>
@@ -1622,6 +1649,14 @@ const miniTrophiesHTML = copasCount > 0
     ? `<div class="palmares-mini-strip">${(userStats.copasGanadas || []).slice(-3).map(c => `<img src="trofeo.webp" class="mini-cup-img" alt="Copa" title="${c.nombre || 'Copa Ganada'}">`).join('')}</div>` 
     : '';
 
+const maxScorePropio = userStats.maxScore || 0;
+const maxTxtPropio = maxScorePropio > 999 
+    ? (maxScorePropio / 1000).toFixed(1) + 'K' 
+    : (maxScorePropio > 0 ? maxScorePropio : '-');
+const pj1v1Propio = Math.max(userStats.partidasVersus || 0, userStats.partidasGanadas || 0);
+const pg1v1Propio = userStats.partidasGanadas || 0;
+const wrPropio = pj1v1Propio > 0 ? Math.round((pg1v1Propio / pj1v1Propio) * 100) : (pg1v1Propio > 0 ? 100 : 0);
+const xpTxtPropio = userStats.xpTotal > 999 ? (userStats.xpTotal / 1000).toFixed(1) + 'K' : (userStats.xpTotal || 0);
 
 document.getElementById('profile-modal-body').innerHTML=`
     <div class="split-profile-layout">
@@ -1639,11 +1674,11 @@ document.getElementById('profile-modal-body').innerHTML=`
                         </div>
                         <div class="fut-name" id="fut-name-display" title="Tu apodo">${savedNick || nombreDefault}</div>
                         <div class="fut-stats-row">
-                            <div class="fut-stat-item" title="Votos realizados"><span class="fut-stat-num">${userStats.votosRealizados}</span><span class="fut-stat-label">VOT</span></div>
-                            <div class="fut-stat-item" title="Trivias descubiertas"><span class="fut-stat-num">${userStats.triviasVistas}</span><span class="fut-stat-label">TRV</span></div>
-                            <div class="fut-stat-item" title="Partidas jugadas"><span class="fut-stat-num">${userStats.partidasJugadas}</span><span class="fut-stat-label">PJ</span></div>
-                            <div class="fut-stat-item" title="Partidos ganados 1v1"><span class="fut-stat-num">${userStats.partidasGanadas || 0}</span><span class="fut-stat-label">PG</span></div>
-                            <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${userStats.xpTotal>999?(userStats.xpTotal/1000).toFixed(1)+'K':userStats.xpTotal}</span><span class="fut-stat-label">XP</span></div>
+                            <div class="fut-stat-item" title="Récord máximo en StadiumGuessr"><span class="fut-stat-num">${maxTxtPropio}</span><span class="fut-stat-label">MAX</span></div>
+                            <div class="fut-stat-item" title="Partidos 1v1 jugados"><span class="fut-stat-num">${pj1v1Propio}</span><span class="fut-stat-label">PJ</span></div>
+                            <div class="fut-stat-item" title="Partidos 1v1 ganados"><span class="fut-stat-num">${pg1v1Propio}</span><span class="fut-stat-label">PG</span></div>
+                            <div class="fut-stat-item" title="Efectividad en 1v1 (% victorias)"><span class="fut-stat-num">${wrPropio}%</span><span class="fut-stat-label">WR</span></div>
+                            <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">${xpTxtPropio}</span><span class="fut-stat-label">XP</span></div>
                         </div>
                     </div>
 

@@ -1994,6 +1994,7 @@ async function finalizarJuegoGuessr(){
         const u = obtenerUsuarioLogueado();
         const nombreLocal = obtenerNombreDisplay().trim();
         userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
+        userStats.partidasVersus = (userStats.partidasVersus || 0) + 1;
 
         let nombreRivalFinal = (versusRivalNombre || "RIVAL").toUpperCase();
         let cartelResultado = "";
@@ -2025,14 +2026,14 @@ async function finalizarJuegoGuessr(){
             colorResultado = "#ff4757";
             showToast("Derrota. ¡A entrenar para la revancha! ⚽", "ph-x-circle", "danger");
             registrarH2HMutual(versusRivalNombre, 'loss');
+            guardarStats();
             
-            if (ligaJugada) {
-                try { await supabaseClient.from('derrotas_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
-            }
+            try { await supabaseClient.from('derrotas_versus').insert([{ id_usuario: id, nombre: nombreLocal, liga: ligaJugada }]); } catch(err) {}
         } else {
             cartelResultado = "<span>¡EMPATE DE CRACKS!</span> 🤝";
             colorResultado = "#2979ff";
             registrarH2HMutual(versusRivalNombre, 'draw');
+            guardarStats();
         }
 
         versusLigaOrigen = null;
@@ -2090,6 +2091,7 @@ async function finalizarJuegoGuessr(){
     if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
     if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
     if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;
+    userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
     guardarStats();
 
     let multXP = 1.0;
@@ -2583,9 +2585,9 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 ? Number(rankingCompleto[miPuestoIdx].victorias_acumuladas) 
                 : (userStats.partidasGanadas || 0);
 
-            // Ajustamos las jugadas para que el ratio nunca supere el 100%
-            const jugadasReales = Math.max(victoriasReales, userStats.partidasJugadas || 0);
-            const ratioReal = jugadasReales > 0 ? Math.round((victoriasReales / jugadasReales) * 100) : 0;
+            // Ajustamos las jugadas versus para que el ratio nunca supere el 100%
+            const duelosJugados = Math.max(victoriasReales, userStats.partidasVersus || 0);
+            const ratioReal = duelosJugados > 0 ? Math.round((victoriasReales / duelosJugados) * 100) : (victoriasReales > 0 ? 100 : 0);
 
             headerConfig = {
                 img: 'ranking-icon-1v1.webp',
@@ -2601,7 +2603,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill2Val: `${ratioReal}% W/L`,
                 pill2Icon: 'ph-chart-line-up',
                 pill3Label: 'DUELOS',
-                pill3Val: `${jugadasReales} Jugados`,
+                pill3Val: `${duelosJugados} Jugados`,
                 pill3Icon: 'ph-users-three'
             };
 
@@ -2817,6 +2819,7 @@ async function manejarAbandonoRival() {
     // 🏅 COMPUTACIÓN REGLAMENTARIA: Sumamos victoria al perfil local, XP y +2 SP
     userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
     userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
+    userStats.partidasVersus = (userStats.partidasVersus || 0) + 1;
     userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + 2;
     localStorage.setItem('ev_primera_partida_finalizada_' + id, 'true');
     localStorage.setItem('ev_primera_partida_finalizada_global', 'true');

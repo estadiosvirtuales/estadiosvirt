@@ -115,12 +115,17 @@ function cargarStats(){
 const id=getUserId();
 const stored=localStorage.getItem('ev_user_stats_'+id);
 if(stored){userStats=JSON.parse(stored);}
-else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,partidasGanadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
+else{userStats={votosRealizados:0,triviasVistas:0,partidasJugadas:0,partidasVersus:0,partidasGanadas:0,maxScore:0,medallaLocalista:false,rachaActual:1,xpTotal:0,nivelActual:0,guessrPerfecto:false,guessrUnKm:false,ligas5:new Set(),triviasDescubiertas:new Set(),topRanking:false,ordenPerfecto:false,primeraVez:true,vuelosAleatorios:0,ligasExploradas:new Set(),scoreMayor20000:false,scoreMayor10000:false,votadoTodosEstilos:false,nickPersonalizado:false,sesionesTotal:0,rachaMaxima:0,ordenSinFallar:false,guessrSeguidas:0, activeDates: []};}
 ['ligas5','triviasDescubiertas','ligasExploradas'].forEach(k=>{if(!userStats[k])userStats[k]=new Set();else if(Array.isArray(userStats[k]))userStats[k]=new Set(userStats[k]);else if(!(userStats[k] instanceof Set))userStats[k]=new Set();});
 if(!userStats.activeDates) userStats.activeDates = [];
 if(userStats.xpTotal===undefined)userStats.xpTotal=0;
 if(userStats.maxScore>25000) userStats.maxScore = 25000; // 🛡️ Corrige récords inflados por el acumulador de XP previo
 if(userStats.partidasGanadas===undefined) userStats.partidasGanadas = 0;
+if(userStats.partidasVersus===undefined) {
+    userStats.partidasVersus = Math.max(userStats.partidasGanadas || 0, 0);
+} else if(userStats.partidasVersus < (userStats.partidasGanadas || 0)) {
+    userStats.partidasVersus = userStats.partidasGanadas || 0;
+}
 if(userStats.puntosHabilidad===undefined) userStats.puntosHabilidad = 0;
 if(!userStats.mejorasJugadores || typeof userStats.mejorasJugadores !== 'object') userStats.mejorasJugadores = {};
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
