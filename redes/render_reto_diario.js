@@ -574,21 +574,21 @@ const RETOS_DATABASE = {
         rondas: [
             {
                 num: 1,
-                estadioNombre: 'MÂS MONUMENTAL',
-                clubNombre: 'RIVER PLATE',
-                ciudad: 'Buenos Aires, Argentina',
-                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4",
+                estadioNombre: 'ESTADIO MONUMENTAL',
+                clubNombre: 'COLO-COLO',
+                ciudad: 'Macul, Santiago de Chile',
+                videoPath: "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Monumental_ Club Social y Deportivo Colo-Colo.mp4",
                 clipStart: 3.0,
-                pista: '84.567 hinchas en Núñez, el coloso argentino',
-                targetLat: -34.5453,
-                targetLng: -58.4498,
-                userLat: -34.5435,
-                userLng: -58.4480,
+                pista: '47.017 hinchas en Macul, casa del Cacique campeón 1991',
+                targetLat: -33.5064,
+                targetLng: -70.6058,
+                userLat: -33.5048,
+                userLng: -70.6040,
                 distanciaTexto: '240 METROS',
                 puntosTexto: '+4.940 PTS 🔥',
                 puntos: 4940,
                 puntosAcumulados: 4940,
-                ubicacionBadge: '📍 Buenos Aires, Argentina · MÂS MONUMENTAL'
+                ubicacionBadge: '📍 Santiago de Chile · ESTADIO MONUMENTAL'
             },
             {
                 num: 2,
