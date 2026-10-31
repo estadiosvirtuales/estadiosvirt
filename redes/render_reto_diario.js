@@ -1487,11 +1487,20 @@ async function generarOverlaysYMapas(config, assetsDir) {
         </body>
         </html>`;
 
-        await page.setContent(mapHtml, { waitUntil: 'networkidle2' }).catch(() => {});
-        await new Promise(r => setTimeout(r, 2000));
-        const mapCardEl = await page.$('#map-card');
+        await page.setContent(mapHtml, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
+        await page.waitForSelector('#map-card', { timeout: 8000 }).catch(() => {});
+        await new Promise(r => setTimeout(r, 1500));
+        let mapCardEl = await page.$('#map-card');
+        if (!mapCardEl) {
+            await new Promise(r => setTimeout(r, 1000));
+            mapCardEl = await page.$('#map-card');
+        }
         const mapImgPath = path.join(assetsDir, `mapa_ronda_${r + 1}.png`);
-        await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
+        if (mapCardEl) {
+            await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
+        } else {
+            await page.screenshot({ path: mapImgPath, omitBackground: true });
+        }
         await page.close();
         console.log(`✅ Mapa Leaflet Ronda ${r + 1} (${item.estadioNombre}) capturado con OpenStreetMap nítido.`);
     }
@@ -2047,10 +2056,15 @@ async function generarOverlaysYMapas(config, assetsDir) {
     </html>
     `;
 
-    await finalPage.setContent(finalScreenHtml, { waitUntil: 'load' });
+    await finalPage.setContent(finalScreenHtml, { waitUntil: 'load', timeout: 15000 }).catch(() => {});
+    await finalPage.waitForSelector('#final-modal', { timeout: 8000 }).catch(() => {});
     const finalModalEl = await finalPage.$('#final-modal');
     const finalModalPath = path.join(assetsDir, 'ui_final_results_modal.png');
-    await finalModalEl.screenshot({ path: finalModalPath, omitBackground: true });
+    if (finalModalEl) {
+        await finalModalEl.screenshot({ path: finalModalPath, omitBackground: true });
+    } else {
+        await finalPage.screenshot({ path: finalModalPath, omitBackground: true });
+    }
     await finalPage.close();
     console.log('✅ Pantalla final de resultados Wordle generada.');
 
