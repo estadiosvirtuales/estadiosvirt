@@ -11,6 +11,13 @@ console.log('🚀 ========================================================\n');
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\RETO DIARIO";
 
+function getBase64Image(filePath) {
+    if (!fs.existsSync(filePath)) return '';
+    const ext = path.extname(filePath).toLowerCase();
+    const mime = ext === '.png' ? 'image/png' : (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg' : 'image/webp';
+    return `data:${mime};base64,${fs.readFileSync(filePath).toString('base64')}`;
+}
+
 // ==========================================
 // BASE DE DATOS OFICIAL DE RETOS DIARIOS
 // ==========================================
@@ -1071,7 +1078,8 @@ Mi resultado de hoy:
 ${config.grillaWordle}
 
 ¿Sos capaz de superar mi puntaje en las 5 canchas?
-👉 Jugalo 100% gratis en el link del perfil: estadiosvirtuales.com (Directo en el navegador, sin descargar nada).
+👉 Jugalo en el link del perfil: estadiosvirtuales.com
+Subí de nivel tu carta FUT y completá el reto todos los días 🏆⚽
 
 #estadiosvirtuales #stadiumguessr #retodiario #futbolargentino #futbol #geoguessr #wordle
 
@@ -1441,13 +1449,21 @@ async function generarOverlaysYMapas(config, assetsDir) {
     const finalPage = await browser.newPage();
     await finalPage.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
 
+    const logoSrc = getBase64Image(path.resolve(__dirname, '..', 'escudos', 'Logo.webp'));
+    const avatarSrc = getBase64Image(path.resolve(__dirname, '..', '1.webp'));
+    const maxScoreTxt = `${(config.puntuacionTotal / 1000).toFixed(1)}K`;
+    const ovrTxt = config.puntuacionTotal >= 24000 ? '98' : '95';
+
     const stadiumsRowsHtml = config.rondas.map(r => `
         <div class="stadium-summary-row">
             <div class="stadium-left">
                 <span class="round-tag">R${r.num}</span>
                 <span class="stadium-title">${r.estadioNombre}</span>
             </div>
-            <span class="club-badge">${r.clubNombre}</span>
+            <div class="stadium-right">
+                <span class="club-badge">${r.clubNombre}</span>
+                <span class="pts-badge">${(r.puntosTexto || '').replace('🔥', '').trim()}</span>
+            </div>
         </div>
     `).join('');
 
@@ -1458,98 +1474,279 @@ async function generarOverlaysYMapas(config, assetsDir) {
         <meta charset="utf-8">
         <style>
             * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-            body { width: 1080px; height: 1920px; background: transparent; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+            body { 
+                width: 1080px; 
+                height: 1920px; 
+                background: transparent; 
+                overflow: hidden; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+            }
             .endgame-modal {
                 width: 980px;
                 background: linear-gradient(135deg, rgba(14, 24, 40, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%);
-                border: 3.5px solid #00e676;
+                border: 3px solid #00e676;
                 border-radius: 36px;
-                padding: 34px 36px;
+                padding: 30px 32px 28px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 18px;
-                box-shadow: 0 20px 60px rgba(0, 230, 118, 0.35), 0 0 0 2px rgba(0,0,0,0.9);
+                gap: 16px;
+                box-shadow: 0 25px 70px rgba(0, 230, 118, 0.35), 0 0 0 2px rgba(0,0,0,0.9);
                 text-align: center;
+            }
+            .modal-header-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: 0 8px;
             }
             .brand-badge {
                 display: inline-flex;
                 align-items: center;
-                gap: 10px;
+                gap: 8px;
                 background: rgba(0, 230, 118, 0.12);
                 border: 1.5px solid #00e676;
                 color: #00e676;
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: 900;
-                padding: 5px 18px;
-                border-radius: 30px;
-                letter-spacing: 1px;
-            }
-            .modal-title {
-                color: #ffffff;
-                font-size: 46px;
-                font-weight: 900;
-                letter-spacing: -1px;
-                line-height: 1.1;
-            }
-            .rank-score-row {
-                display: flex;
-                align-items: center;
-                gap: 16px;
+                padding: 5px 16px;
+                border-radius: 20px;
+                letter-spacing: 1.5px;
             }
             .rank-pill {
                 background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
                 color: #000;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 900;
-                padding: 6px 20px;
+                padding: 5px 18px;
                 border-radius: 20px;
-                box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             }
-            .score-pill {
-                color: #00e676;
-                font-size: 34px;
-                font-weight: 900;
-                letter-spacing: -0.5px;
-                text-shadow: 0 0 25px rgba(0, 230, 118, 0.5);
-            }
-            .score-sub {
-                font-size: 19px;
-                color: #94a3b8;
-                font-weight: 700;
-            }
-            .wordle-grid {
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 16px;
-                padding: 10px 28px;
-                font-size: 32px;
-                letter-spacing: 10px;
+            .modal-title-row {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                gap: 14px;
+                margin-top: -4px;
             }
-            .summary-section {
+            .modal-title {
+                color: #ffffff;
+                font-size: 40px;
+                font-weight: 900;
+                letter-spacing: -0.5px;
+            }
+            .wordle-grid {
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 12px;
+                padding: 5px 18px;
+                font-size: 24px;
+                letter-spacing: 6px;
+            }
+
+            /* --- LAYOUT CENTRAL EN 2 COLUMNAS --- */
+            .central-split {
+                display: flex;
+                align-items: stretch;
+                justify-content: space-between;
                 width: 100%;
+                gap: 22px;
+                margin-top: 4px;
+            }
+
+            /* COLUMNA IZQUIERDA: CARTA FUT */
+            .card-column {
+                width: 340px;
+                flex-shrink: 0;
                 display: flex;
                 flex-direction: column;
-                gap: 8px;
-                margin-top: 2px;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+            .fut-card-wrapper {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .fut-card {
+                width: 320px;
+                height: 460px;
+                position: relative;
+                border-radius: 24px;
+                padding: 16px 18px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-sizing: border-box;
+                overflow: hidden;
+                background: linear-gradient(135deg, #ffd700 0%, #fff2a3 35%, #e6a100 70%, #996300 100%);
+                color: #1a1000;
+                border: 3.5px solid #ffffff;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 35px rgba(255, 215, 0, 0.45);
+            }
+            .fut-card-shine {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(255,255,255,0.15) 100%);
+                pointer-events: none;
+            }
+            .fut-top {
+                display: flex;
+                width: 100%;
+                height: 54%;
+                position: relative;
+                z-index: 2;
+            }
+            .fut-badge-meta {
+                width: 35%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                line-height: 1;
+                padding-top: 4px;
+            }
+            .fut-ovr { font-size: 2.8rem; font-weight: 900; letter-spacing: -2px; }
+            .fut-pos { font-size: 1.15rem; font-weight: 900; text-transform: uppercase; opacity: 0.9; margin-top: 2px; }
+            .fut-club-icon { width: 44px; height: 44px; margin-top: 10px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+            .fut-avatar-container {
+                width: 65%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
+            }
+            .ac-avatar-full {
+                position: absolute;
+                bottom: -5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
+            }
+            .ac-avatar-img-full {
+                width: auto;
+                height: 98%;
+                max-width: 140%;
+                object-fit: contain;
+                object-position: bottom center;
+                filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
+            }
+            .fut-name {
+                width: 100%;
+                text-align: center;
+                font-size: 1.45rem;
+                font-weight: 900;
+                margin: 8px 0 6px;
+                text-transform: uppercase;
+                letter-spacing: -0.5px;
+                border-bottom: 2px solid rgba(0,0,0,0.3);
+                padding-bottom: 4px;
+                white-space: nowrap;
+                z-index: 2;
+            }
+            .fut-stats-row {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                width: 100%;
+                gap: 4px 12px;
+                margin-top: 4px;
+                z-index: 2;
+            }
+            .fut-stat-item { display: flex; gap: 6px; justify-content: center; align-items: baseline; }
+            .fut-stat-num { font-weight: 900; font-size: 1.25rem; }
+            .fut-stat-label { opacity: 0.85; font-size: 0.85rem; font-weight: 900; }
+            .card-sub-pill {
+                margin-top: 10px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255, 215, 0, 0.15);
+                border: 1.5px solid #ffd700;
+                color: #ffd700;
+                font-size: 14px;
+                font-weight: 900;
+                padding: 4px 14px;
+                border-radius: 14px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+            }
+
+            /* COLUMNA DERECHA: RESUMEN DEL RETO */
+            .summary-column {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                text-align: left;
+            }
+            .score-highlight-card {
+                background: rgba(0, 230, 118, 0.08);
+                border: 1.5px solid rgba(0, 230, 118, 0.4);
+                border-radius: 16px;
+                padding: 10px 18px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .score-label-group {
+                display: flex;
+                flex-direction: column;
+            }
+            .score-small-title {
+                color: #94a3b8;
+                font-size: 13px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+            .score-big-num {
+                color: #00e676;
+                font-size: 32px;
+                font-weight: 900;
+                letter-spacing: -0.5px;
+                text-shadow: 0 0 20px rgba(0, 230, 118, 0.5);
+                line-height: 1.1;
+            }
+            .score-max-tag {
+                font-size: 18px;
+                color: #94a3b8;
+                font-weight: 700;
+            }
+            .score-xp-badge {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                background: #00e676;
+                color: #041409;
+                font-size: 15px;
+                font-weight: 900;
+                padding: 6px 14px;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 230, 118, 0.4);
             }
             .summary-header {
                 color: #38bdf8;
-                font-size: 18px;
+                font-size: 15px;
                 font-weight: 900;
-                letter-spacing: 2px;
+                letter-spacing: 1.5px;
                 text-transform: uppercase;
-                text-align: left;
-                padding-left: 4px;
+                margin-top: 8px;
+                margin-bottom: 2px;
             }
             .summary-list {
-                width: 100%;
                 display: flex;
                 flex-direction: column;
-                gap: 7px;
+                gap: 6px;
             }
             .stadium-summary-row {
                 display: flex;
@@ -1558,50 +1755,60 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 background: rgba(255, 255, 255, 0.04);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 12px;
-                padding: 8px 16px;
+                padding: 8px 14px;
             }
             .stadium-left {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                gap: 10px;
             }
             .round-tag {
                 background: #00e676;
                 color: #000;
                 font-weight: 900;
-                font-size: 15px;
+                font-size: 14px;
                 padding: 3px 8px;
-                border-radius: 7px;
+                border-radius: 6px;
             }
             .stadium-title {
                 color: #ffffff;
                 font-weight: 800;
-                font-size: 21px;
+                font-size: 18px;
                 letter-spacing: -0.3px;
+            }
+            .stadium-right {
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
             .club-badge {
                 color: #ffd700;
                 font-weight: 800;
-                font-size: 17px;
+                font-size: 15px;
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
             }
+            .pts-badge {
+                color: #00e676;
+                font-weight: 900;
+                font-size: 15px;
+            }
+
+            /* --- FOOTER CTA --- */
             .cta-card {
                 width: 100%;
                 background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
                 color: #041409;
                 border: 2px solid #ffffff;
-                font-size: 26px;
+                font-size: 24px;
                 font-weight: 900;
-                padding: 16px 24px;
-                border-radius: 22px;
+                padding: 14px 22px;
+                border-radius: 20px;
                 box-shadow: 0 10px 30px rgba(0, 230, 118, 0.5);
                 line-height: 1.25;
-                margin-top: 4px;
             }
             .cta-sub {
                 display: block;
-                font-size: 18px;
+                font-size: 17px;
                 font-weight: 800;
                 margin-top: 3px;
                 color: #002e1b;
@@ -1613,35 +1820,77 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 background: rgba(255, 215, 0, 0.12);
                 border: 1.5px solid #ffd700;
                 color: #ffd700;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 800;
-                padding: 8px 24px;
-                border-radius: 18px;
-                letter-spacing: 0.5px;
+                padding: 6px 20px;
+                border-radius: 16px;
             }
         </style>
     </head>
     <body>
         <div class="endgame-modal" id="final-modal">
-            <div class="brand-badge">ESTADIOSVIRTUALES.COM · RETO DIARIO</div>
-            <div class="modal-title">🏆 ¡RETO COMPLETADO!</div>
-            <div class="rank-score-row">
-                <span class="rank-pill">${config.rangoFinal}</span>
-                <span class="score-pill">${config.puntuacionTotal.toLocaleString('es-AR')} <span class="score-sub">/ 25.000 PTS</span></span>
+            <div class="modal-header-top">
+                <div class="brand-badge">ESTADIOSVIRTUALES.COM · RETO DIARIO</div>
+                <div class="rank-pill">${config.rangoFinal}</div>
             </div>
-            <div class="wordle-grid">${config.grillaWordle}</div>
+            
+            <div class="modal-title-row">
+                <div class="modal-title">🏆 ¡RETO COMPLETADO!</div>
+                <div class="wordle-grid">${config.grillaWordle}</div>
+            </div>
 
-            <!-- SECCIÓN ESTADIOS DEL RETO -->
-            <div class="summary-section">
-                <div class="summary-header">🏟️ ESTADIOS DE ESTE RETO:</div>
-                <div class="summary-list">
-                    ${stadiumsRowsHtml}
+            <div class="central-split">
+                <!-- COLUMNA IZQUIERDA: CARTA FUT -->
+                <div class="card-column">
+                    <div class="fut-card-wrapper">
+                        <div class="fut-card">
+                            <div class="fut-card-shine"></div>
+                            <div class="fut-top">
+                                <div class="fut-badge-meta">
+                                    <div class="fut-ovr">${ovrTxt}</div>
+                                    <div class="fut-pos">DT</div>
+                                    <img src="${logoSrc}" class="fut-club-icon">
+                                </div>
+                                <div class="fut-avatar-container">
+                                    <div class="ac-avatar-full">
+                                        <img src="${avatarSrc}" class="ac-avatar-img-full">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fut-name">TU CARTA FUT</div>
+                            <div class="fut-stats-row">
+                                <div class="fut-stat-item"><span class="fut-stat-num">${maxScoreTxt}</span><span class="fut-stat-label">MAX</span></div>
+                                <div class="fut-stat-item"><span class="fut-stat-num">52</span><span class="fut-stat-label">PJ</span></div>
+                                <div class="fut-stat-item"><span class="fut-stat-num">42</span><span class="fut-stat-label">PG</span></div>
+                                <div class="fut-stat-item"><span class="fut-stat-num">81%</span><span class="fut-stat-label">WR</span></div>
+                            </div>
+                        </div>
+                        <div class="card-sub-pill">⭐ Rango Galáctico Desbloqueado</div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: RESUMEN -->
+                <div class="summary-column">
+                    <div class="score-highlight-card">
+                        <div class="score-label-group">
+                            <span class="score-small-title">Puntuación Total</span>
+                            <div class="score-big-num">${config.puntuacionTotal.toLocaleString('es-AR')} <span class="score-max-tag">/ 25.000 PTS</span></div>
+                        </div>
+                        <div class="score-xp-badge">
+                            ⚡ +${config.puntuacionTotal.toLocaleString('es-AR')} XP
+                        </div>
+                    </div>
+
+                    <div class="summary-header">🏟️ ESTADIOS DE ESTE RETO:</div>
+                    <div class="summary-list">
+                        ${stadiumsRowsHtml}
+                    </div>
                 </div>
             </div>
 
             <div class="cta-card">
-                👉 ¿PODÉS SUPERAR MI PUNTAJE DE HOY? 👀
-                <span class="cta-sub">JUGALO GRATIS EN WWW.ESTADIOSVIRTUALES.COM</span>
+                👉 ¿PODÉS SUPERAR MI PUNTAJE Y MEJORAR TU CARTA? 👀
+                <span class="cta-sub">JUGALO EN WWW.ESTADIOSVIRTUALES.COM</span>
             </div>
 
             <div class="follow-sub-pill">
