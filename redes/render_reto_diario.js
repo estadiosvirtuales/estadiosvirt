@@ -1557,81 +1557,120 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 margin-top: 4px;
             }
 
-            /* COLUMNA IZQUIERDA: CARTA FUT */
+            /* ========================================================
+               CARTA FUT OFICIAL DE ESTADIOS VIRTUALES (100% IDÉNTICA)
+               ======================================================== */
             .card-column {
-                width: 340px;
+                width: 320px;
                 flex-shrink: 0;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                position: relative;
+                filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.75));
             }
             .fut-card-wrapper {
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                transform: scale(1.12);
+                transform-origin: center center;
+                margin: 15px 0 20px 0;
             }
             .fut-card {
-                width: 320px;
-                height: 460px;
                 position: relative;
-                border-radius: 24px;
-                padding: 16px 18px;
+                width: 250px;
+                height: 385px;
+                background-size: cover;
+                padding: 24px 18px 25px 18px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                box-sizing: border-box;
-                overflow: hidden;
-                background: linear-gradient(135deg, #ffd700 0%, #fff2a3 35%, #e6a100 70%, #996300 100%);
-                color: #1a1000;
-                border: 3.5px solid #ffffff;
-                box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 35px rgba(255, 215, 0, 0.45);
+                color: #000;
+                font-family: 'Arial Black', Gadget, sans-serif;
+                user-select: none;
+                flex-shrink: 0;
+
+                /* 🛡️ Silueta de Pelé idéntica a estilos.css */
+                clip-path: path('M 0,32 C 0,24 10,18 25,14 C 65,8 105,5 115,3 C 120,2 122,0 125,0 C 128,0 130,2 135,3 C 145,5 185,8 225,14 C 240,18 250,24 250,32 L 250,305 C 250,335 180,365 125,385 C 70,365 0,335 0,305 Z');
+            }
+            .fut-card > * {
+                position: relative;
+                z-index: 2;
+            }
+            .fut-card::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: 
+                    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.35) 0%, transparent 60%),
+                    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 2px, transparent 2px, transparent 12px);
+                pointer-events: none;
+                z-index: 1;
+            }
+            .fut-card.arg {
+                background: linear-gradient(135deg, #74acdf 0%, #ffffff 50%, #74acdf 100%);
+                color: #000;
             }
             .fut-card-shine {
                 position: absolute;
                 inset: 0;
-                background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(255,255,255,0.15) 100%);
+                background: linear-gradient(135deg, rgba(255,255,255,.08) 0%, transparent 50%, rgba(255,255,255,.04) 100%);
                 pointer-events: none;
             }
             .fut-top {
                 display: flex;
                 width: 100%;
-                height: 54%;
-                position: relative;
-                z-index: 2;
+                height: 50%;
+                margin-top: 15px;
             }
             .fut-badge-meta {
                 width: 35%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: flex-start;
+                justify-content: center;
                 line-height: 1;
-                padding-top: 4px;
             }
-            .fut-ovr { font-size: 2.8rem; font-weight: 900; letter-spacing: -2px; }
-            .fut-pos { font-size: 1.15rem; font-weight: 900; text-transform: uppercase; opacity: 0.9; margin-top: 2px; }
-            .fut-club-icon { width: 44px; height: 44px; margin-top: 10px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
+            .fut-ovr {
+                font-size: 2.8rem;
+                font-weight: 900;
+                letter-spacing: -1px;
+            }
+            .fut-pos {
+                font-size: 1rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                opacity: .8;
+                margin-top: -2px;
+            }
+            .fut-club-icon {
+                width: 40px;
+                height: 40px;
+                margin-top: 10px;
+                object-fit: contain;
+            }
             .fut-avatar-container {
                 width: 65%;
                 height: 100%;
                 position: relative;
                 display: flex;
-                align-items: flex-end;
-                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                overflow: visible;
             }
-            .ac-avatar-full {
-                position: absolute;
-                bottom: -5px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-                height: 100%;
+            .ac-avatar-full { 
+                position: absolute; 
+                bottom: -5px; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                width: 100%; 
+                height: 100%; 
                 display: flex;
-                align-items: flex-end;
                 justify-content: center;
+                align-items: flex-end;
+                pointer-events: none;
+                overflow: hidden;
+                -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
             }
             .ac-avatar-img-full {
                 width: auto;
@@ -1639,34 +1678,64 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 max-width: 140%;
                 object-fit: contain;
                 object-position: bottom center;
-                filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
             }
             .fut-name {
                 width: 100%;
                 text-align: center;
-                font-size: 1.45rem;
+                font-size: 1.35rem;
                 font-weight: 900;
-                margin: 8px 0 6px;
+                margin: 12px 0 8px;
                 text-transform: uppercase;
-                letter-spacing: -0.5px;
-                border-bottom: 2px solid rgba(0,0,0,0.3);
-                padding-bottom: 4px;
+                letter-spacing: -.5px;
+                border-bottom: 1px solid rgba(0,0,0,.3);
+                padding-bottom: 6px;
                 white-space: nowrap;
-                z-index: 2;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .fut-stats-row {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
-                width: 100%;
-                gap: 4px 12px;
-                margin-top: 4px;
-                z-index: 2;
+                width: 95%;
+                font-size: .95rem;
+                gap: 8px 15px;
+                margin-top: 5px;
+                position: relative;
             }
-            .fut-stat-item { display: flex; gap: 6px; justify-content: center; align-items: baseline; }
-            .fut-stat-num { font-weight: 900; font-size: 1.25rem; }
-            .fut-stat-label { opacity: 0.85; font-size: 0.85rem; font-weight: 900; }
+            .fut-stats-row::after {
+                content: 'ESTADIOS VIRTUALES';
+                position: absolute;
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.35rem;
+                font-weight: 900;
+                letter-spacing: 2px;
+                color: rgba(0, 0, 0, 0.20);
+                pointer-events: none;
+                white-space: nowrap;
+                z-index: -1;
+            }
+            .fut-stats-row .fut-stat-item:last-child {
+                grid-column: span 2;
+            }
+            .fut-stat-item {
+                display: flex;
+                gap: 6px;
+                justify-content: center;
+                align-items: baseline;
+            }
+            .fut-stat-num {
+                font-weight: 900;
+                font-size: 1.15rem;
+            }
+            .fut-stat-label {
+                opacity: .8;
+                font-size: .8rem;
+                align-self: flex-end;
+                margin-bottom: 1px;
+            }
             .card-sub-pill {
-                margin-top: 10px;
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
@@ -1679,6 +1748,7 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 border-radius: 14px;
                 letter-spacing: 0.5px;
                 text-transform: uppercase;
+                margin-top: -6px;
             }
 
             /* COLUMNA DERECHA: RESUMEN DEL RETO */
@@ -1840,10 +1910,10 @@ async function generarOverlaysYMapas(config, assetsDir) {
             </div>
 
             <div class="central-split">
-                <!-- COLUMNA IZQUIERDA: CARTA FUT -->
+                <!-- COLUMNA IZQUIERDA: CARTA FUT 100% IDÉNTICA AL JUEGO -->
                 <div class="card-column">
                     <div class="fut-card-wrapper">
-                        <div class="fut-card">
+                        <div class="fut-card arg">
                             <div class="fut-card-shine"></div>
                             <div class="fut-top">
                                 <div class="fut-badge-meta">
@@ -1853,20 +1923,21 @@ async function generarOverlaysYMapas(config, assetsDir) {
                                 </div>
                                 <div class="fut-avatar-container">
                                     <div class="ac-avatar-full">
-                                        <img src="${avatarSrc}" class="ac-avatar-img-full">
+                                        <img src="${avatarSrc}" class="ac-avatar-img-full" alt="Avatar">
                                     </div>
                                 </div>
                             </div>
-                            <div class="fut-name">TU CARTA FUT</div>
+                            <div class="fut-name">TU APODO</div>
                             <div class="fut-stats-row">
-                                <div class="fut-stat-item"><span class="fut-stat-num">${maxScoreTxt}</span><span class="fut-stat-label">MAX</span></div>
-                                <div class="fut-stat-item"><span class="fut-stat-num">52</span><span class="fut-stat-label">PJ</span></div>
-                                <div class="fut-stat-item"><span class="fut-stat-num">42</span><span class="fut-stat-label">PG</span></div>
-                                <div class="fut-stat-item"><span class="fut-stat-num">81%</span><span class="fut-stat-label">WR</span></div>
+                                <div class="fut-stat-item" title="Récord máximo en StadiumGuessr"><span class="fut-stat-num">${maxScoreTxt}</span><span class="fut-stat-label">MAX</span></div>
+                                <div class="fut-stat-item" title="Partidos 1v1 jugados"><span class="fut-stat-num">52</span><span class="fut-stat-label">PJ</span></div>
+                                <div class="fut-stat-item" title="Partidos 1v1 ganados"><span class="fut-stat-num">42</span><span class="fut-stat-label">PG</span></div>
+                                <div class="fut-stat-item" title="Efectividad en 1v1 (% victorias)"><span class="fut-stat-num">81%</span><span class="fut-stat-label">WR</span></div>
+                                <div class="fut-stat-item" title="XP total acumulado"><span class="fut-stat-num">38.2K</span><span class="fut-stat-label">XP</span></div>
                             </div>
                         </div>
-                        <div class="card-sub-pill">⭐ Rango Galáctico Desbloqueado</div>
                     </div>
+                    <div class="card-sub-pill">⭐ Rango Galáctico Desbloqueado</div>
                 </div>
 
                 <!-- COLUMNA DERECHA: RESUMEN -->
