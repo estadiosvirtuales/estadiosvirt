@@ -4133,7 +4133,7 @@ window.renderizarRankingCarrera = function() {
             : `Desafiar a su Once (Modo Recreativo · Límite de 3 SP diarios completado)`;
 
         const accionBtnHTML = esMio
-            ? ''
+            ? '<span class="carrera-action-self"><i class="ph-bold ph-shield-check"></i> <span>TU CLUB</span></span>'
             : `<button type="button" class="btn-desafiar-row" onclick="desafiarDesdeRankingCarrera('${item.nombre.replace(/'/g, "\\'")}')" title="${duelTooltip}">
                    <img src="liga-icon-historial.webp" alt="Desafiar" class="carrera-mini-swords">
                    <span>DUELO</span>
