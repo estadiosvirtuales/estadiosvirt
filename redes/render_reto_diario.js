@@ -32,6 +32,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24510,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: '1.webp',
+        cardTheme: 'arg',
+        cardPos: 'DC',
+        cardNombre: 'MESSI',
         rondas: [
             {
                 num: 1,
@@ -135,6 +139,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24600,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: '24.webp',
+        cardTheme: 'arg',
+        cardPos: 'POR',
+        cardNombre: 'DIBU MARTÍNEZ',
         rondas: [
             {
                 num: 1,
@@ -238,6 +246,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24740,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: '5.webp',
+        cardTheme: 'eng',
+        cardPos: 'DC',
+        cardNombre: 'HAALAND',
         rondas: [
             {
                 num: 1,
@@ -341,6 +353,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24720,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: 'Lamine Yamal.webp',
+        cardTheme: 'esp',
+        cardPos: 'ED',
+        cardNombre: 'LAMINE YAMAL',
         rondas: [
             {
                 num: 1,
@@ -444,6 +460,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24710,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: '4.webp',
+        cardTheme: 'fra',
+        cardPos: 'DC',
+        cardNombre: 'MBAPPÉ',
         rondas: [
             {
                 num: 1,
@@ -547,6 +567,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24720,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: '31.webp',
+        cardTheme: 'bra',
+        cardPos: 'MCO',
+        cardNombre: 'RONALDINHO',
         rondas: [
             {
                 num: 1,
@@ -651,6 +675,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24740,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: '2.webp',
+        cardTheme: 'por',
+        cardPos: 'DC',
+        cardNombre: 'CRISTIANO',
         rondas: [
             {
                 num: 1,
@@ -754,6 +782,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24690,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: 'Guilermo memo Ochoa.webp',
+        cardTheme: 'mex',
+        cardPos: 'POR',
+        cardNombre: 'MEMO OCHOA',
         rondas: [
             {
                 num: 1,
@@ -857,6 +889,10 @@ const RETOS_DATABASE = {
         puntuacionTotal: 24710,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
+        cardAvatar: 'Alessandro del piero.webp',
+        cardTheme: 'ita',
+        cardPos: 'SD',
+        cardNombre: 'DEL PIERO',
         rondas: [
             {
                 num: 1,
@@ -1467,7 +1503,11 @@ async function generarOverlaysYMapas(config, assetsDir) {
     await finalPage.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
 
     const logoSrc = getBase64Image(path.resolve(__dirname, '..', 'escudos', 'Logo.webp'));
-    const avatarSrc = getBase64Image(path.resolve(__dirname, '..', '1.webp'));
+    const avatarFile = config.cardAvatar || '1.webp';
+    const avatarSrc = getBase64Image(path.resolve(__dirname, '..', avatarFile));
+    const cardTheme = config.cardTheme || 'arg';
+    const cardPos = config.cardPos || 'DC';
+    const cardNombre = config.cardNombre || 'TU APODO';
     const maxScoreTxt = `${(config.puntuacionTotal / 1000).toFixed(1)}K`;
     const ovrTxt = config.puntuacionTotal >= 24000 ? '98' : '95';
 
@@ -1621,9 +1661,24 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 pointer-events: none;
                 z-index: 1;
             }
-            .fut-card.arg {
-                background: linear-gradient(135deg, #74acdf 0%, #ffffff 50%, #74acdf 100%);
-                color: #000;
+            /* TEMAS OFICIALES DE CARTAS */
+            .fut-card.arg { background: linear-gradient(135deg, #74acdf 0%, #ffffff 50%, #74acdf 100%); color: #000; }
+            .fut-card.bra { background: linear-gradient(135deg, #009c3b 0%, #ffdf00 45%, #002776 100%); color: #fff; }
+            .fut-card.esp { background: linear-gradient(135deg, #aa151b 0%, #f1bf00 45%, #aa151b 100%); color: #000; }
+            .fut-card.ita { background: linear-gradient(135deg, #009246 0%, #ffffff 50%, #ce2b37 100%); color: #000; }
+            .fut-card.fra { background: linear-gradient(135deg, #002395 0%, #ffffff 50%, #ed2939 100%); color: #000; }
+            .fut-card.eng { background: linear-gradient(135deg, #ffffff 0%, #ce1126 100%); color: #000; }
+            .fut-card.por { background: linear-gradient(135deg, #046a38 0%, #ff0000 100%); color: #fff; }
+            .fut-card.mex { background: linear-gradient(135deg, #006847 0%, #ffffff 50%, #ce1126 100%); color: #000; }
+            .fut-card.ger { background: linear-gradient(135deg, #000000 0%, #dd0000 50%, #ffce00 100%); color: #fff; }
+
+            .fut-card.bra .fut-name,
+            .fut-card.por .fut-name {
+                border-bottom-color: rgba(255, 255, 255, 0.4);
+            }
+            .fut-card.bra .fut-stats-row::after,
+            .fut-card.por .fut-stats-row::after {
+                color: rgba(255, 255, 255, 0.25);
             }
             .fut-card-shine {
                 position: absolute;
@@ -1934,12 +1989,12 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 <!-- COLUMNA IZQUIERDA: CARTA FUT 100% IDÉNTICA AL JUEGO -->
                 <div class="card-column">
                     <div class="fut-card-wrapper">
-                        <div class="fut-card arg">
+                        <div class="fut-card ${cardTheme}">
                             <div class="fut-card-shine"></div>
                             <div class="fut-top">
                                 <div class="fut-badge-meta">
                                     <div class="fut-ovr">${ovrTxt}</div>
-                                    <div class="fut-pos">DT</div>
+                                    <div class="fut-pos">${cardPos}</div>
                                     <img src="${logoSrc}" class="fut-club-icon">
                                 </div>
                                 <div class="fut-avatar-container">
@@ -1948,7 +2003,7 @@ async function generarOverlaysYMapas(config, assetsDir) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="fut-name">TU APODO</div>
+                            <div class="fut-name">${cardNombre}</div>
                             <div class="fut-stats-row">
                                 <div class="fut-stat-item" title="Récord máximo en StadiumGuessr"><span class="fut-stat-num">${maxScoreTxt}</span><span class="fut-stat-label">MAX</span></div>
                                 <div class="fut-stat-item" title="Partidos 1v1 jugados"><span class="fut-stat-num">52</span><span class="fut-stat-label">PJ</span></div>
@@ -2321,7 +2376,7 @@ async function main() {
     let args = process.argv.slice(2);
     if (args.length === 0) args = ['2'];
     if (args.includes('all')) {
-        args = ['1', '2', '3', '4', '5', '6', '7'];
+        args = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     }
 
     for (let i = 0; i < args.length; i++) {
