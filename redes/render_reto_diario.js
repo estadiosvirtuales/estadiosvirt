@@ -467,21 +467,21 @@ const RETOS_DATABASE = {
         rondas: [
             {
                 num: 1,
-                estadioNombre: 'LA BOMBONERA',
-                clubNombre: 'BOCA JUNIORS',
-                ciudad: 'Buenos Aires, Argentina',
-                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4",
+                estadioNombre: 'EMIRATES STADIUM',
+                clubNombre: 'ARSENAL FC',
+                ciudad: 'Londres, Inglaterra',
+                videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Emirates Stadium_ Arsenal.mp4",
                 clipStart: 3.0,
-                pista: '57.200 hinchas en Brandsen 805, La Boca',
-                targetLat: -34.6356,
-                targetLng: -58.3648,
-                userLat: -34.6340,
-                userLng: -58.3630,
+                pista: '60.704 hinchas en Holloway, la casa de los Gunners',
+                targetLat: 51.5549,
+                targetLng: -0.1084,
+                userLat: 51.5532,
+                userLng: -0.1068,
                 distanciaTexto: '240 METROS',
                 puntosTexto: '+4.940 PTS 🔥',
                 puntos: 4940,
                 puntosAcumulados: 4940,
-                ubicacionBadge: '📍 Buenos Aires, Argentina · LA BOMBONERA'
+                ubicacionBadge: '📍 Londres, Inglaterra · EMIRATES STADIUM'
             },
             {
                 num: 2,
