@@ -1634,11 +1634,11 @@ async function generarOverlaysYMapas(config, assetsDir) {
             .fut-top {
                 display: flex;
                 width: 100%;
-                height: 54%;
-                margin-top: 10px;
+                height: 51%;
+                margin-top: 13px;
             }
             .fut-badge-meta {
-                width: 32%;
+                width: 34%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -1658,13 +1658,13 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 margin-top: -2px;
             }
             .fut-club-icon {
-                width: 42px;
-                height: 42px;
+                width: 40px;
+                height: 40px;
                 margin-top: 10px;
                 object-fit: contain;
             }
             .fut-avatar-container {
-                width: 68%;
+                width: 66%;
                 height: 100%;
                 position: relative;
                 display: flex;
@@ -1679,7 +1679,7 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 left: 50%; 
                 transform: translateX(-50%); 
                 width: 100%; 
-                height: 105%; 
+                height: 100%; 
                 display: flex;
                 justify-content: center;
                 align-items: flex-end;
@@ -1689,10 +1689,10 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
             }
             .ac-avatar-img-full {
-                width: 118%;
-                height: 108%;
+                width: 108%;
+                height: 100%;
                 object-fit: cover;
-                object-position: center 12%;
+                object-position: center 15%;
                 filter: none;
             }
             .fut-name {

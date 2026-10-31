@@ -4087,7 +4087,7 @@
     gap: 8px !important;
     max-height: 52vh !important;
     overflow-y: auto !important;
-    padding: 0 4px 8px 0 !important;
+    padding: 0 0 8px 0 !important;
     scrollbar-width: thin !important;
     scrollbar-color: rgba(255, 255, 255, 0.22) transparent !important;
 }
@@ -4117,7 +4117,7 @@
 .carrera-table-header {
     display: grid !important;
     align-items: center !important;
-    padding: 10px 24px 10px 14px !important;
+    padding: 10px 14px !important;
     border-left: 1.5px solid transparent !important;
     border-right: 1.5px solid transparent !important;
     border-bottom: 1.5px solid rgba(255, 255, 255, 0.08) !important;
@@ -5038,7 +5038,7 @@
     .carrera-table-header.carrera-tab-versus {
         grid-template-columns: 32px 1fr 64px 74px !important;
         gap: 6px !important;
-        padding: 8px 14px 8px 10px !important;
+        padding: 8px 10px !important;
         font-size: 0.64rem !important;
         display: grid !important;
     }
