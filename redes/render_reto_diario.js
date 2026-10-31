@@ -1394,6 +1394,10 @@ async function generarOverlaysYMapas(config, assetsDir) {
         const item = config.rondas[r];
         const page = await browser.newPage();
         await page.setViewport({ width: 960, height: 460, deviceScaleFactor: 2 });
+        await page.setExtraHTTPHeaders({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 EstadiosVirtuales/1.0',
+            'Referer': 'https://www.estadiosvirtuales.com/'
+        });
 
         const mapHtml = `
         <!DOCTYPE html>
@@ -1414,7 +1418,7 @@ async function generarOverlaysYMapas(config, assetsDir) {
                     border: 4px solid #00e676;
                     box-shadow: 0 16px 50px rgba(0, 230, 118, 0.4), 0 0 0 2px rgba(0,0,0,0.8);
                 }
-                #map { width: 100%; height: 100%; background: #111; }
+                #map { width: 100%; height: 100%; background: #e5e3df; }
                 .score-badge {
                     position: absolute;
                     top: 16px;
@@ -1468,13 +1472,18 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 <div class="bottom-badge">${item.ubicacionBadge}</div>
             </div>
             <script>
+                window.tilesDone = false;
                 const userPos = [${item.userLat}, ${item.userLng}];
                 const targetPos = [${item.targetLat}, ${item.targetLng}];
                 const centerLat = (userPos[0] + targetPos[0]) / 2;
                 const centerLng = (userPos[1] + targetPos[1]) / 2;
 
                 const map = L.map('map', { attributionControl: false, zoomControl: false }).setView([centerLat, centerLng], 15);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+                const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+
+                tileLayer.on('load', () => {
+                    window.tilesDone = true;
+                });
 
                 L.polyline([userPos, targetPos], { color: '#ff3b30', weight: 4, dashArray: '8, 8', opacity: 0.95 }).addTo(map);
 
@@ -1489,7 +1498,12 @@ async function generarOverlaysYMapas(config, assetsDir) {
 
         await page.setContent(mapHtml, { waitUntil: 'domcontentloaded', timeout: 15000 }).catch(() => {});
         await page.waitForSelector('#map-card', { timeout: 8000 }).catch(() => {});
-        await new Promise(r => setTimeout(r, 1500));
+        try {
+            await page.waitForFunction(() => window.tilesDone === true, { timeout: 12000 });
+        } catch (e) {
+            await new Promise(r => setTimeout(r, 2000));
+        }
+        await new Promise(r => setTimeout(r, 800));
         let mapCardEl = await page.$('#map-card');
         if (!mapCardEl) {
             await new Promise(r => setTimeout(r, 1000));
