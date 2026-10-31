@@ -35,7 +35,7 @@ const RETOS_DATABASE = {
         cardAvatar: '1.webp',
         cardTheme: 'arg',
         cardPos: 'DC',
-        cardNombre: 'MESSI',
+        cardNombre: 'LA PULGA',
         rondas: [
             {
                 num: 1,
@@ -142,7 +142,7 @@ const RETOS_DATABASE = {
         cardAvatar: '24.webp',
         cardTheme: 'arg',
         cardPos: 'POR',
-        cardNombre: 'DIBU MARTÍNEZ',
+        cardNombre: 'EL GUARDIÁN',
         rondas: [
             {
                 num: 1,
@@ -249,7 +249,7 @@ const RETOS_DATABASE = {
         cardAvatar: '5.webp',
         cardTheme: 'eng',
         cardPos: 'DC',
-        cardNombre: 'HAALAND',
+        cardNombre: 'EL ANDROIDE',
         rondas: [
             {
                 num: 1,
@@ -356,7 +356,7 @@ const RETOS_DATABASE = {
         cardAvatar: 'Lamine Yamal.webp',
         cardTheme: 'esp',
         cardPos: 'ED',
-        cardNombre: 'LAMINE YAMAL',
+        cardNombre: 'LA JOYA',
         rondas: [
             {
                 num: 1,
@@ -463,7 +463,7 @@ const RETOS_DATABASE = {
         cardAvatar: '4.webp',
         cardTheme: 'fra',
         cardPos: 'DC',
-        cardNombre: 'MBAPPÉ',
+        cardNombre: 'KIKI',
         rondas: [
             {
                 num: 1,
@@ -570,7 +570,7 @@ const RETOS_DATABASE = {
         cardAvatar: '31.webp',
         cardTheme: 'bra',
         cardPos: 'MCO',
-        cardNombre: 'RONALDINHO',
+        cardNombre: 'DINHO',
         rondas: [
             {
                 num: 1,
@@ -678,7 +678,7 @@ const RETOS_DATABASE = {
         cardAvatar: '2.webp',
         cardTheme: 'por',
         cardPos: 'DC',
-        cardNombre: 'CRISTIANO',
+        cardNombre: 'EL BICHO',
         rondas: [
             {
                 num: 1,
@@ -785,7 +785,7 @@ const RETOS_DATABASE = {
         cardAvatar: 'Guilermo memo Ochoa.webp',
         cardTheme: 'mex',
         cardPos: 'POR',
-        cardNombre: 'MEMO OCHOA',
+        cardNombre: 'MEMO',
         rondas: [
             {
                 num: 1,
@@ -892,7 +892,7 @@ const RETOS_DATABASE = {
         cardAvatar: 'Alessandro del piero.webp',
         cardTheme: 'ita',
         cardPos: 'SD',
-        cardNombre: 'DEL PIERO',
+        cardNombre: 'PINTURICCHIO',
         rondas: [
             {
                 num: 1,
