@@ -1147,15 +1147,15 @@ async function generarOverlaysYMapas(config, assetsDir) {
         const page = await browser.newPage();
         await page.setViewport({ width: 1080, height: 320, deviceScaleFactor: 1 });
 
-        // Generamos los 5 dots de progreso
+        // Generamos los 5 dots de progreso con círculos delicados y suaves
         let dotsHtml = '';
         for (let d = 0; d < 5; d++) {
             if (d < r) {
-                dotsHtml += `<div class="dot-pill done">🟩 R${d + 1}</div>`;
+                dotsHtml += `<div class="dot-pill done"><span class="pill-circle done"></span> R${d + 1}</div>`;
             } else if (d === r) {
-                dotsHtml += `<div class="dot-pill current">🟢 R${d + 1}</div>`;
+                dotsHtml += `<div class="dot-pill current"><span class="pill-circle current"></span> R${d + 1}</div>`;
             } else {
-                dotsHtml += `<div class="dot-pill future">⚪ R${d + 1}</div>`;
+                dotsHtml += `<div class="dot-pill future"><span class="pill-circle future"></span> R${d + 1}</div>`;
             }
         }
 
@@ -1248,7 +1248,24 @@ async function generarOverlaysYMapas(config, assetsDir) {
                     border-radius: 10px;
                     display: flex;
                     align-items: center;
-                    gap: 5px;
+                    gap: 7px;
+                }
+                .pill-circle {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    display: inline-block;
+                }
+                .pill-circle.done {
+                    background: #00e676;
+                    box-shadow: 0 0 8px rgba(0, 230, 118, 0.8);
+                }
+                .pill-circle.current {
+                    background: #38bdf8;
+                    box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+                }
+                .pill-circle.future {
+                    background: #64748b;
                 }
                 .dot-pill.done { background: rgba(0, 230, 118, 0.2); color: #00e676; border: 1px solid #00e676; }
                 .dot-pill.current { background: rgba(56, 189, 248, 0.25); color: #38bdf8; border: 1.5px solid #38bdf8; }
@@ -1499,7 +1516,7 @@ async function generarOverlaysYMapas(config, assetsDir) {
             .modal-header-top {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: center;
                 width: 100%;
                 padding: 0 8px;
             }
@@ -1512,18 +1529,9 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 color: #00e676;
                 font-size: 16px;
                 font-weight: 900;
-                padding: 5px 16px;
-                border-radius: 20px;
-                letter-spacing: 1.5px;
-            }
-            .rank-pill {
-                background: linear-gradient(135deg, #ffd700 0%, #ff8800 100%);
-                color: #000;
-                font-size: 18px;
-                font-weight: 900;
                 padding: 5px 18px;
                 border-radius: 20px;
-                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+                letter-spacing: 1.5px;
             }
             .modal-title-row {
                 display: flex;
@@ -1538,13 +1546,21 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 font-weight: 900;
                 letter-spacing: -0.5px;
             }
-            .wordle-grid {
-                background: rgba(255, 255, 255, 0.06);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 12px;
-                padding: 5px 18px;
-                font-size: 24px;
-                letter-spacing: 6px;
+            .rounds-circles-row {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                background: rgba(0, 230, 118, 0.08);
+                border: 1px solid rgba(0, 230, 118, 0.35);
+                border-radius: 20px;
+                padding: 8px 18px;
+            }
+            .round-circle-dot {
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: #00e676;
+                box-shadow: 0 0 10px rgba(0, 230, 118, 0.8), 0 0 4px #00e676;
             }
 
             /* --- LAYOUT CENTRAL EN 2 COLUMNAS --- */
@@ -1901,12 +1917,17 @@ async function generarOverlaysYMapas(config, assetsDir) {
         <div class="endgame-modal" id="final-modal">
             <div class="modal-header-top">
                 <div class="brand-badge">ESTADIOSVIRTUALES.COM · RETO DIARIO</div>
-                <div class="rank-pill">${config.rangoFinal}</div>
             </div>
             
             <div class="modal-title-row">
                 <div class="modal-title">🏆 ¡RETO COMPLETADO!</div>
-                <div class="wordle-grid">${config.grillaWordle}</div>
+                <div class="rounds-circles-row">
+                    <div class="round-circle-dot"></div>
+                    <div class="round-circle-dot"></div>
+                    <div class="round-circle-dot"></div>
+                    <div class="round-circle-dot"></div>
+                    <div class="round-circle-dot"></div>
+                </div>
             </div>
 
             <div class="central-split">
@@ -1937,7 +1958,6 @@ async function generarOverlaysYMapas(config, assetsDir) {
                             </div>
                         </div>
                     </div>
-                    <div class="card-sub-pill">⭐ Rango Galáctico Desbloqueado</div>
                 </div>
 
                 <!-- COLUMNA DERECHA: RESUMEN -->
