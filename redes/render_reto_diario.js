@@ -1634,11 +1634,11 @@ async function generarOverlaysYMapas(config, assetsDir) {
             .fut-top {
                 display: flex;
                 width: 100%;
-                height: 50%;
-                margin-top: 15px;
+                height: 54%;
+                margin-top: 10px;
             }
             .fut-badge-meta {
-                width: 35%;
+                width: 32%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -1658,13 +1658,13 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 margin-top: -2px;
             }
             .fut-club-icon {
-                width: 40px;
-                height: 40px;
+                width: 42px;
+                height: 42px;
                 margin-top: 10px;
                 object-fit: contain;
             }
             .fut-avatar-container {
-                width: 65%;
+                width: 68%;
                 height: 100%;
                 position: relative;
                 display: flex;
@@ -1679,21 +1679,21 @@ async function generarOverlaysYMapas(config, assetsDir) {
                 left: 50%; 
                 transform: translateX(-50%); 
                 width: 100%; 
-                height: 100%; 
+                height: 105%; 
                 display: flex;
                 justify-content: center;
                 align-items: flex-end;
                 pointer-events: none;
                 overflow: hidden;
-                -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
-                mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
             }
             .ac-avatar-img-full {
-                width: auto;
-                height: 98%;
-                max-width: 140%;
-                object-fit: contain;
-                object-position: bottom center;
+                width: 118%;
+                height: 108%;
+                object-fit: cover;
+                object-position: center 12%;
+                filter: none;
             }
             .fut-name {
                 width: 100%;
