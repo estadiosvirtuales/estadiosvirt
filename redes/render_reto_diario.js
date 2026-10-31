@@ -29,7 +29,7 @@ const RETOS_DATABASE = {
         subtituloPortada: '5 ESTADIOS · 25.000 PUNTOS EN JUEGO',
         videoFileName: 'Reto_Diario_01_Argentina.mp4',
         portadaFileName: 'Portada_Reto_Diario_01.jpg',
-        puntuacionTotal: 24510,
+        puntuacionTotal: 24530,
         rangoFinal: '👑 GALÁCTICO ABSOLUTO',
         grillaWordle: '🟩 🟩 🟩 🟩 🟩',
         cardAvatar: '1.webp',
@@ -39,21 +39,21 @@ const RETOS_DATABASE = {
         rondas: [
             {
                 num: 1,
-                estadioNombre: 'EL PALACIO DUCÓ',
-                clubNombre: 'HURACÁN',
-                ciudad: 'Parque Patricios, CABA',
-                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\huracan.mp4",
+                estadioNombre: 'NUEVO GASÓMETRO',
+                clubNombre: 'SAN LORENZO',
+                ciudad: 'Bajo Flores, CABA',
+                videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\casla.mp4",
                 clipStart: 3.0,
-                pista: 'Capacidad para 48.314 hinchas con su torre Art Déco',
-                targetLat: -34.6433,
-                targetLng: -58.3965,
-                userLat: -34.6415,
-                userLng: -58.3945,
-                distanciaTexto: '260 METROS',
-                puntosTexto: '+4.920 PTS 🔥',
-                puntos: 4920,
-                puntosAcumulados: 4920,
-                ubicacionBadge: '📍 Parque Patricios, CABA · EL PALACIO DUCÓ'
+                pista: 'Capacidad para 47.964 hinchas en el Bajo Flores',
+                targetLat: -34.6522,
+                targetLng: -58.4400,
+                userLat: -34.6502,
+                userLng: -58.4378,
+                distanciaTexto: '240 METROS',
+                puntosTexto: '+4.940 PTS 🔥',
+                puntos: 4940,
+                puntosAcumulados: 4940,
+                ubicacionBadge: '📍 Bajo Flores, CABA · NUEVO GASÓMETRO'
             },
             {
                 num: 2,
@@ -70,7 +70,7 @@ const RETOS_DATABASE = {
                 distanciaTexto: '230 METROS',
                 puntosTexto: '+4.940 PTS 🔥',
                 puntos: 4940,
-                puntosAcumulados: 9860,
+                puntosAcumulados: 9880,
                 ubicacionBadge: '📍 Rosario, Santa Fe · COLOSO MARCELO BIELSA'
             },
             {
@@ -88,7 +88,7 @@ const RETOS_DATABASE = {
                 distanciaTexto: '320 METROS',
                 puntosTexto: '+4.810 PTS 🔥',
                 puntos: 4810,
-                puntosAcumulados: 14670,
+                puntosAcumulados: 14690,
                 ubicacionBadge: '📍 Lanús, Buenos Aires · LA FORTALEZA'
             },
             {
@@ -106,7 +106,7 @@ const RETOS_DATABASE = {
                 distanciaTexto: '280 METROS',
                 puntosTexto: '+4.880 PTS 🔥',
                 puntos: 4880,
-                puntosAcumulados: 19550,
+                puntosAcumulados: 19570,
                 ubicacionBadge: '📍 San Miguel de Tucumán · MONUMENTAL JOSÉ FIERRO'
             },
             {
@@ -124,7 +124,7 @@ const RETOS_DATABASE = {
                 distanciaTexto: '240 METROS',
                 puntosTexto: '+4.960 PTS 🔥',
                 puntos: 4960,
-                puntosAcumulados: 24510,
+                puntosAcumulados: 24530,
                 ubicacionBadge: '📍 Rosario, Santa Fe · GIGANTE DE ARROYITO'
             }
         ]
@@ -2214,14 +2214,14 @@ async function renderizarRetoDiario(targetKey = '2') {
     const outFolder = path.join(BASE_OUTPUT_DIR, config.id);
     if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
-    const assetsDir = path.join(__dirname, 'assets_reto_diario_master');
+    const assetsDir = path.join(__dirname, `temp_${config.id.toLowerCase()}_assets`);
     if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
     // 1. Guardar textos de publicación
     generarArchivoTextos(config, outFolder);
     console.log('✅ Archivo TEXTOS_PUBLICACION.txt generado.');
 
-    // 2. Extraer frame de fondo para portada desde la primera cancha (Huracán)
+    // 2. Extraer frame de fondo para portada desde la primera cancha
     const bgFramePath = path.join(assetsDir, 'raw_bg_frame.jpg');
     await new Promise((resolve) => {
         const p = spawn('ffmpeg', [
@@ -2242,6 +2242,7 @@ async function renderizarRetoDiario(targetKey = '2') {
     await generarOverlaysYMapas(config, assetsDir);
 
     // 5. Generar Audio Procedural de 35.0s
+    if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
     const audioPath = path.join(assetsDir, 'audio_reto_diario.wav');
     fs.writeFileSync(audioPath, generarAudioProcedural(35.0));
     console.log('✅ Audio procedural (35s) sintetizado (cero whoosh, campanas y fanfarria).');
