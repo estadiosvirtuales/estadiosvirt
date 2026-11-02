@@ -210,8 +210,8 @@ window.mostrarPasoDificultad = function(modo, extra = null) {
 
     if (title) title.textContent = 'Elegí la Dificultad';
     if (sub) {
-        if (modo === 'solo') sub.textContent = 'Modo Individual';
-        else if (modo === 'versus_global') sub.textContent = '1 vs 1 Global (Emparejamiento por dificultad)';
+        if (modo === 'solo') sub.textContent = 'Modo Individual · 5 Rondas';
+        else if (modo === 'versus_global') sub.textContent = '1 vs 1 Global · Emparejamiento por nivel';
         else if (modo === 'sala_privada') sub.textContent = 'Sala Privada por Link';
         else if (modo === 'reto_amigo') sub.textContent = `Desafío contra ${extra || 'tu amigo'}`;
     }
@@ -232,10 +232,10 @@ window.volverAModosGuessr = function() {
         return;
     }
 
-    if (vModos) vModos.style.display = 'flex';
+    if (vModos) vModos.style.display = '';
     if (vDiff) vDiff.style.display = 'none';
-    if (title) title.textContent = 'StadiumGuessr';
-    if (sub) sub.textContent = 'Elegí un modo de reconocimiento.';
+    if (title) title.innerHTML = 'STADIUM<span class="text-accent">GUESSR</span>';
+    if (sub) sub.textContent = 'Ubicá los estadios más icónicos en el mapa. Elegí tu desafío:';
     destinoDificultadActual = { modo: '', extra: null };
 };
 

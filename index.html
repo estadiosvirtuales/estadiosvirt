@@ -227,10 +227,10 @@
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="estilos.css?v=20261031_2">
+<link rel="stylesheet" href="estilos.css?v=20261031_3">
 <link rel="stylesheet" href="css/guessr.css">
 <link rel="stylesheet" href="css/perfil.css">
-<link rel="stylesheet" href="css/carrera.css?v=20261031_2">
+<link rel="stylesheet" href="css/carrera.css?v=20261031_3">
 
 <!-- 🚀 PRECARGA DE ALTA PRIORIDAD (CERO ESPERA / CERO PARPADEO) -->
 <link rel="preload" as="image" href="estadios_virtuales1.webp" fetchpriority="high">
@@ -1043,53 +1043,100 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 </div>
 </div>
 <div class="modal-overlay" id="guessr-modal" style="display:none;">
-    <div class="modal-content" style="max-width: 620px; max-height: 88vh; overflow-y: auto; padding: 26px 30px;">
+    <div class="modal-content guessr-modal-arcade">
         <!-- Botón de cerrar cruz -->
         <div class="close-btn" onclick="cerrarModalGuessr()"><i class="ph-bold ph-x"></i></div>
         
-        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 4px auto 22px auto; padding: 0 8px;">
-            <div style="width: 105px; height: 100px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 20px rgba(0, 255, 119, 0.75));">
-                <img src="mundo.webp" alt="StadiumGuessr" style="width: 100%; height: 100%; object-fit: contain;">
+        <!-- Header Arcade -->
+        <div class="guessr-arcade-header" id="guessr-arcade-header-box">
+            <div class="guessr-arcade-eyebrow">
+                <i class="ph-bold ph-globe-hemisphere-west"></i> RECONOCIMIENTO SATELITAL
             </div>
-            <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                <h2 id="guessr-modal-title" style="font-size: 1.65rem; font-weight: 900; color: var(--text-main); text-transform: uppercase; letter-spacing: -0.5px; margin: 0 0 3px 0; line-height: 1.15;">StadiumGuessr</h2>
-                <p id="guessr-modal-sub" style="color: var(--text-muted); font-size: 0.86rem; font-weight: 600; margin: 0; line-height: 1.35;">Elegí un modo de reconocimiento.</p>
-            </div>
+            <h2 id="guessr-modal-title" class="guessr-arcade-title">
+                STADIUM<span class="text-accent">GUESSR</span>
+            </h2>
+            <p id="guessr-modal-sub" class="guessr-arcade-sub">
+                Ubicá los estadios más icónicos en el mapa. Elegí tu desafío:
+            </p>
         </div>
 
-        <!-- VISTA 1: MENÚ PRINCIPAL DE MODOS -->
-        <div class="guessr-menu-container" id="guessr-view-modos" style="display: flex; flex-direction: column; gap: 14px;">
-            <button onclick="mostrarPasoDificultad('solo')" class="guessr-option-btn btn-opt-solo">
-                <div class="guessr-option-icon"><img src="icono-individual.webp" alt="Individual" style="width: 100%; height: 100%; object-fit: contain;"></div>
-                <div class="guessr-option-text">
-                    <strong>Modo Individual</strong>
-                    <span>Adiviná estadios a tu propio ritmo y sumá XP</span>
+        <!-- VISTA 1: MENÚ PRINCIPAL DE MODOS ARCADE -->
+        <div class="guessr-menu-container guessr-modes-arcade-grid" id="guessr-view-modos">
+            
+            <!-- Card 1: 1v1 Versus Global -->
+            <button type="button" onclick="mostrarPasoDificultad('versus_global')" class="arcade-mode-card card-versus">
+                <div class="arcade-card-icon-box icon-versus">
+                    <img src="icono-1v1.webp" alt="1v1">
                 </div>
+                <div class="arcade-card-body">
+                    <div class="arcade-card-top-row">
+                        <strong class="arcade-card-title">Duelo 1 vs 1</strong>
+                        <span class="arcade-card-badge badge-versus">
+                            <span class="live-dot-pulse"></span> EN VIVO
+                        </span>
+                    </div>
+                    <span class="arcade-card-desc">Partida rápida multijugador en tiempo real. El pin más cercano gana la serie.</span>
+                    <div class="arcade-card-footer footer-versus">
+                        <i class="ph-fill ph-trophy"></i> Suma victorias al ranking DT
+                    </div>
+                </div>
+                <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
             </button>
 
-            <button onclick="mostrarPasoDificultad('versus_global')" class="guessr-option-btn btn-opt-versus">
-                <div class="guessr-option-icon"><img src="icono-1v1.webp" alt="1v1" style="width: 100%; height: 100%; object-fit: contain;"></div>
-                <div class="guessr-option-text">
-                    <strong>1 vs 1 Global</strong>
-                    <span>Partida rápida multijugador en vivo</span>
+            <!-- Card 2: Modo Individual -->
+            <button type="button" onclick="mostrarPasoDificultad('solo')" class="arcade-mode-card card-solo">
+                <div class="arcade-card-icon-box icon-solo">
+                    <img src="icono-individual.webp" alt="Individual">
                 </div>
+                <div class="arcade-card-body">
+                    <div class="arcade-card-top-row">
+                        <strong class="arcade-card-title">Modo Individual</strong>
+                        <span class="arcade-card-badge badge-solo">🎯 CLÁSICO</span>
+                    </div>
+                    <span class="arcade-card-desc">5 estadios al azar a tu propio ritmo. Poné a prueba tu puntería geográfica y sumá XP.</span>
+                    <div class="arcade-card-footer footer-solo">
+                        <i class="ph-bold ph-target"></i> Hasta 25.000 pts en juego
+                    </div>
+                </div>
+                <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
             </button>
 
-            <button onclick="mostrarPasoDificultad('sala_privada')" class="guessr-option-btn btn-opt-privada">
-                <div class="guessr-option-icon"><img src="icono-privada.webp" alt="Sala Privada" style="width: 100%; height: 100%; object-fit: contain;"></div>
-                <div class="guessr-option-text">
-                    <strong>Sala Privada</strong>
-                    <span>Creá una sala y retá a tus amigos por link</span>
+            <!-- Card 3: Sala Privada -->
+            <button type="button" onclick="mostrarPasoDificultad('sala_privada')" class="arcade-mode-card card-privada">
+                <div class="arcade-card-icon-box icon-privada">
+                    <img src="icono-privada.webp" alt="Sala Privada">
                 </div>
+                <div class="arcade-card-body">
+                    <div class="arcade-card-top-row">
+                        <strong class="arcade-card-title">Sala con Amigos</strong>
+                        <span class="arcade-card-badge badge-privada">💬 POR LINK</span>
+                    </div>
+                    <span class="arcade-card-desc">Creá una sala y compartí el link directo por WhatsApp para jugar un 1v1 con amigos.</span>
+                    <div class="arcade-card-footer footer-privada">
+                        <i class="ph-fill ph-share-network"></i> Desafío directo 1 contra 1
+                    </div>
+                </div>
+                <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
             </button>
 
-            <button onclick="cerrarModalGuessr(); abrirModalRanking()" class="guessr-option-btn btn-opt-ranking">
-                <div class="guessr-option-icon"><img src="icono-ranking.webp" alt="Ranking" style="width: 100%; height: 100%; object-fit: contain;"></div>
-                <div class="guessr-option-text">
-                    <strong>Tabla de Posiciones</strong>
-                    <span>Mirá los mejores puntajes del ranking global</span>
+            <!-- Card 4: Tabla de Posiciones -->
+            <button type="button" onclick="cerrarModalGuessr(); abrirModalRanking()" class="arcade-mode-card card-ranking">
+                <div class="arcade-card-icon-box icon-ranking">
+                    <img src="icono-ranking.webp" alt="Ranking">
                 </div>
+                <div class="arcade-card-body">
+                    <div class="arcade-card-top-row">
+                        <strong class="arcade-card-title">Tabla de Posiciones</strong>
+                        <span class="arcade-card-badge badge-ranking">👑 TOP 50</span>
+                    </div>
+                    <span class="arcade-card-desc">Mirá quiénes son los mejores exploradores del mundo y tu posición en el ranking general.</span>
+                    <div class="arcade-card-footer footer-ranking">
+                        <i class="ph-bold ph-medal"></i> Récords y estadísticas en vivo
+                    </div>
+                </div>
+                <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
             </button>
+
         </div>
 
         <!-- VISTA 2: SELECCIÓN DE DIFICULTAD (PASO 2) -->

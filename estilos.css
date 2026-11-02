@@ -3727,6 +3727,363 @@ body.video-abierto .hero-section {
     background: rgba(0, 140, 70, 0.15) !important;
     box-shadow: 0 8px 20px rgba(0, 140, 70, 0.25) !important;
 }
+/* ========================================================
+   🕹️ REDISEÑO ARCADE MODAL STADIUMGUESSR
+   ======================================================== */
+.guessr-modal-arcade {
+    max-width: 780px !important;
+    padding: 28px 32px 32px !important;
+    background: linear-gradient(165deg, rgba(16, 25, 42, 0.98) 0%, rgba(9, 14, 25, 0.99) 100%) !important;
+    border: 1.5px solid rgba(0, 230, 118, 0.35) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 230, 118, 0.12) !important;
+    height: auto !important;
+    min-height: fit-content !important;
+}
+
+.guessr-arcade-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.guessr-arcade-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(0, 230, 118, 0.10);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #00e676;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.guessr-arcade-title {
+    font-size: 1.85rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    margin: 0 0 4px 0 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.guessr-arcade-title .text-accent {
+    color: #00e676;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
+}
+
+.guessr-arcade-sub {
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.35;
+}
+
+.guessr-modes-arcade-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+}
+
+.arcade-mode-card {
+    position: relative;
+    border-radius: 18px;
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 145px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.arcade-mode-card:hover {
+    transform: translateY(-4px) scale(1.01);
+}
+
+.arcade-mode-card:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+.arcade-card-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.arcade-mode-card:hover .arcade-card-icon-box {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+.arcade-card-icon-box img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.arcade-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.arcade-card-title {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.arcade-card-desc {
+    display: block;
+    font-size: 0.73rem;
+    color: #94a3b8;
+    line-height: 1.35;
+    margin-bottom: 10px;
+}
+
+.arcade-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 8px;
+}
+
+.arcade-card-chevron {
+    display: none;
+}
+
+.live-dot-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 6px #38bdf8;
+    animation: livePulseDot 1.5s infinite;
+}
+
+@keyframes livePulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* 🔵 Card 1: Versus Global */
+.card-versus {
+    background: linear-gradient(145deg, rgba(20, 35, 60, 0.88) 0%, rgba(10, 18, 32, 0.96) 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.35);
+}
+.card-versus:hover {
+    border-color: #38bdf8;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.25);
+}
+.icon-versus {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.badge-versus {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.footer-versus {
+    color: #38bdf8;
+}
+
+/* 🟢 Card 2: Modo Individual */
+.card-solo {
+    background: linear-gradient(145deg, rgba(14, 38, 28, 0.88) 0%, rgba(8, 22, 16, 0.96) 100%);
+    border: 1.5px solid rgba(0, 230, 118, 0.4);
+}
+.card-solo:hover {
+    border-color: #00e676;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 230, 118, 0.25);
+}
+.icon-solo {
+    background: rgba(0, 230, 118, 0.15);
+    border: 1px solid rgba(0, 230, 118, 0.4);
+}
+.badge-solo {
+    background: rgba(0, 230, 118, 0.15);
+    color: #00e676;
+    border: 1px solid rgba(0, 230, 118, 0.4);
+}
+.footer-solo {
+    color: #00e676;
+}
+
+/* 🟣 Card 3: Sala Privada */
+.card-privada {
+    background: linear-gradient(145deg, rgba(34, 20, 52, 0.88) 0%, rgba(18, 10, 28, 0.96) 100%);
+    border: 1.5px solid rgba(168, 85, 247, 0.35);
+}
+.card-privada:hover {
+    border-color: #c084fc;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(168, 85, 247, 0.25);
+}
+.icon-privada {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+.badge-privada {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+.footer-privada {
+    color: #c084fc;
+}
+
+/* 🟡 Card 4: Ranking */
+.card-ranking {
+    background: linear-gradient(145deg, rgba(42, 32, 16, 0.88) 0%, rgba(22, 16, 8, 0.96) 100%);
+    border: 1.5px solid rgba(251, 191, 36, 0.35);
+}
+.card-ranking:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(251, 191, 36, 0.25);
+}
+.icon-ranking {
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.badge-ranking {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.footer-ranking {
+    color: #fbbf24;
+}
+
+/* Modo Claro */
+[data-theme="light"] .guessr-modal-arcade {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12) !important;
+}
+[data-theme="light"] .guessr-arcade-title {
+    color: #0f172a !important;
+    text-shadow: none !important;
+}
+[data-theme="light"] .card-versus {
+    background: #f0f9ff !important;
+    border-color: #bae6fd !important;
+}
+[data-theme="light"] .card-solo {
+    background: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+}
+[data-theme="light"] .card-privada {
+    background: #faf5ff !important;
+    border-color: #e9d5ff !important;
+}
+[data-theme="light"] .card-ranking {
+    background: #fefce8 !important;
+    border-color: #fef08a !important;
+}
+[data-theme="light"] .arcade-card-title {
+    color: #0f172a !important;
+}
+[data-theme="light"] .arcade-card-desc {
+    color: #475569 !important;
+}
+[data-theme="light"] .arcade-card-footer {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 📱 Responsive Móvil para el Menú Arcade */
+@media (max-width: 768px) {
+    .guessr-modal-arcade {
+        padding: 20px 16px 18px !important;
+        border-radius: 20px !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .guessr-arcade-header {
+        margin-bottom: 14px !important;
+    }
+    .guessr-arcade-title {
+        font-size: 1.45rem !important;
+    }
+    .guessr-arcade-sub {
+        font-size: 0.78rem !important;
+    }
+    .guessr-modes-arcade-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .arcade-mode-card {
+        min-height: auto !important;
+        padding: 12px 14px !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        border-radius: 16px !important;
+    }
+    .arcade-card-body {
+        flex: 1;
+        min-width: 0;
+    }
+    .arcade-card-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px !important;
+    }
+    .arcade-card-title {
+        font-size: 0.92rem !important;
+        margin-bottom: 0 !important;
+    }
+    .arcade-card-badge {
+        font-size: 0.58rem !important;
+        padding: 2px 6px !important;
+    }
+    .arcade-card-desc {
+        font-size: 0.70rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+    .arcade-card-footer {
+        border-top: none !important;
+        padding-top: 0 !important;
+        font-size: 0.62rem !important;
+    }
+    .arcade-card-chevron {
+        display: flex !important;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    [data-theme="light"] .arcade-card-chevron {
+        color: #94a3b8 !important;
+    }
+}
+
 /* Que el menú de selección abrace el contenido y no deje espacio negro abajo */
 #guessr-modal .modal-content {
     height: auto !important;
@@ -9272,6 +9629,19 @@ html[data-theme="light"] .xp-bar-big-fill {
     letter-spacing: 0.5px !important;
     text-transform: uppercase !important;
     background: rgba(0, 0, 0, 0.3) !important;
+    overflow-y: scroll !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: transparent transparent !important;
+}
+
+.carrera-table-header::-webkit-scrollbar {
+    width: 6px !important;
+}
+.carrera-table-header::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+.carrera-table-header::-webkit-scrollbar-thumb {
+    background: transparent !important;
 }
 
 .carrera-table-header span.carrera-col-pos {
@@ -15376,6 +15746,363 @@ body.video-abierto .hero-section {
     background: rgba(0, 140, 70, 0.15) !important;
     box-shadow: 0 8px 20px rgba(0, 140, 70, 0.25) !important;
 }
+/* ========================================================
+   🕹️ REDISEÑO ARCADE MODAL STADIUMGUESSR
+   ======================================================== */
+.guessr-modal-arcade {
+    max-width: 780px !important;
+    padding: 28px 32px 32px !important;
+    background: linear-gradient(165deg, rgba(16, 25, 42, 0.98) 0%, rgba(9, 14, 25, 0.99) 100%) !important;
+    border: 1.5px solid rgba(0, 230, 118, 0.35) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 230, 118, 0.12) !important;
+    height: auto !important;
+    min-height: fit-content !important;
+}
+
+.guessr-arcade-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.guessr-arcade-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(0, 230, 118, 0.10);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #00e676;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.guessr-arcade-title {
+    font-size: 1.85rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    margin: 0 0 4px 0 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.guessr-arcade-title .text-accent {
+    color: #00e676;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
+}
+
+.guessr-arcade-sub {
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.35;
+}
+
+.guessr-modes-arcade-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    width: 100%;
+}
+
+.arcade-mode-card {
+    position: relative;
+    border-radius: 18px;
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 145px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.arcade-mode-card:hover {
+    transform: translateY(-4px) scale(1.01);
+}
+
+.arcade-mode-card:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+.arcade-card-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.arcade-mode-card:hover .arcade-card-icon-box {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+.arcade-card-icon-box img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.arcade-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.arcade-card-title {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.arcade-card-desc {
+    display: block;
+    font-size: 0.73rem;
+    color: #94a3b8;
+    line-height: 1.35;
+    margin-bottom: 10px;
+}
+
+.arcade-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 8px;
+}
+
+.arcade-card-chevron {
+    display: none;
+}
+
+.live-dot-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 6px #38bdf8;
+    animation: livePulseDot 1.5s infinite;
+}
+
+@keyframes livePulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* 🔵 Card 1: Versus Global */
+.card-versus {
+    background: linear-gradient(145deg, rgba(20, 35, 60, 0.88) 0%, rgba(10, 18, 32, 0.96) 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.35);
+}
+.card-versus:hover {
+    border-color: #38bdf8;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.25);
+}
+.icon-versus {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.badge-versus {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+}
+.footer-versus {
+    color: #38bdf8;
+}
+
+/* 🟢 Card 2: Modo Individual */
+.card-solo {
+    background: linear-gradient(145deg, rgba(14, 38, 28, 0.88) 0%, rgba(8, 22, 16, 0.96) 100%);
+    border: 1.5px solid rgba(0, 230, 118, 0.4);
+}
+.card-solo:hover {
+    border-color: #00e676;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 230, 118, 0.25);
+}
+.icon-solo {
+    background: rgba(0, 230, 118, 0.15);
+    border: 1px solid rgba(0, 230, 118, 0.4);
+}
+.badge-solo {
+    background: rgba(0, 230, 118, 0.15);
+    color: #00e676;
+    border: 1px solid rgba(0, 230, 118, 0.4);
+}
+.footer-solo {
+    color: #00e676;
+}
+
+/* 🟣 Card 3: Sala Privada */
+.card-privada {
+    background: linear-gradient(145deg, rgba(34, 20, 52, 0.88) 0%, rgba(18, 10, 28, 0.96) 100%);
+    border: 1.5px solid rgba(168, 85, 247, 0.35);
+}
+.card-privada:hover {
+    border-color: #c084fc;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(168, 85, 247, 0.25);
+}
+.icon-privada {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+.badge-privada {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+.footer-privada {
+    color: #c084fc;
+}
+
+/* 🟡 Card 4: Ranking */
+.card-ranking {
+    background: linear-gradient(145deg, rgba(42, 32, 16, 0.88) 0%, rgba(22, 16, 8, 0.96) 100%);
+    border: 1.5px solid rgba(251, 191, 36, 0.35);
+}
+.card-ranking:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(251, 191, 36, 0.25);
+}
+.icon-ranking {
+    background: rgba(251, 191, 36, 0.15);
+    border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.badge-ranking {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.footer-ranking {
+    color: #fbbf24;
+}
+
+/* Modo Claro */
+[data-theme="light"] .guessr-modal-arcade {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12) !important;
+}
+[data-theme="light"] .guessr-arcade-title {
+    color: #0f172a !important;
+    text-shadow: none !important;
+}
+[data-theme="light"] .card-versus {
+    background: #f0f9ff !important;
+    border-color: #bae6fd !important;
+}
+[data-theme="light"] .card-solo {
+    background: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+}
+[data-theme="light"] .card-privada {
+    background: #faf5ff !important;
+    border-color: #e9d5ff !important;
+}
+[data-theme="light"] .card-ranking {
+    background: #fefce8 !important;
+    border-color: #fef08a !important;
+}
+[data-theme="light"] .arcade-card-title {
+    color: #0f172a !important;
+}
+[data-theme="light"] .arcade-card-desc {
+    color: #475569 !important;
+}
+[data-theme="light"] .arcade-card-footer {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 📱 Responsive Móvil para el Menú Arcade */
+@media (max-width: 768px) {
+    .guessr-modal-arcade {
+        padding: 20px 16px 18px !important;
+        border-radius: 20px !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .guessr-arcade-header {
+        margin-bottom: 14px !important;
+    }
+    .guessr-arcade-title {
+        font-size: 1.45rem !important;
+    }
+    .guessr-arcade-sub {
+        font-size: 0.78rem !important;
+    }
+    .guessr-modes-arcade-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .arcade-mode-card {
+        min-height: auto !important;
+        padding: 12px 14px !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        border-radius: 16px !important;
+    }
+    .arcade-card-body {
+        flex: 1;
+        min-width: 0;
+    }
+    .arcade-card-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px !important;
+    }
+    .arcade-card-title {
+        font-size: 0.92rem !important;
+        margin-bottom: 0 !important;
+    }
+    .arcade-card-badge {
+        font-size: 0.58rem !important;
+        padding: 2px 6px !important;
+    }
+    .arcade-card-desc {
+        font-size: 0.70rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+    }
+    .arcade-card-footer {
+        border-top: none !important;
+        padding-top: 0 !important;
+        font-size: 0.62rem !important;
+    }
+    .arcade-card-chevron {
+        display: flex !important;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    [data-theme="light"] .arcade-card-chevron {
+        color: #94a3b8 !important;
+    }
+}
+
 /* Que el menú de selección abrace el contenido y no deje espacio negro abajo */
 #guessr-modal .modal-content {
     height: auto !important;
