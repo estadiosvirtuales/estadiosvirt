@@ -3785,7 +3785,7 @@ body.video-abierto .hero-section {
     line-height: 1.35;
 }
 
-.guessr-modes-arcade-grid {
+#guessr-modal .guessr-modes-arcade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
@@ -15804,7 +15804,7 @@ body.video-abierto .hero-section {
     line-height: 1.35;
 }
 
-.guessr-modes-arcade-grid {
+#guessr-modal .guessr-modes-arcade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
