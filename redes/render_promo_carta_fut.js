@@ -285,7 +285,344 @@ Armá la tuya con el club que quieras en el enlace de mi perfil 👉 www.estadio
 💬 PRIMER COMENTARIO FIJADO (Pinned Comment sugerido):
 👉 Creá tu carta FUT con el escudo de tu equipo acá: www.estadiosvirtuales.com (Link directo en mi perfil 📲) ¿De qué club la vas a armar? Te leo 👇
 `
+    },
+    'promo-03-premier': {
+        slug: 'PROMO-03-PREMIER-LEAGUE',
+        videoName: 'Promo_03_Premier_League_Carta_FUT.mp4',
+        portadaName: 'Portada_Promo_03_Premier.jpg',
+        titleMain: '¿QUIÉN DOMINA LA PREMIER?<br>CREÁ TU CARTA FUT',
+        titleSub: 'Manchester City vs Liverpool · Premier League 🏴󠁧󠁢󠁥󠁮󠁧󠁿👑',
+        drone1: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Etihad Stadium_ Manchester City.mp4",
+        drone2: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Anfield_ Liverpool FC.mp4",
+        hookCards: {
+            left: {
+                theme: 'eng',
+                ovr: '91',
+                pos: 'DC',
+                escudo: 'manchestercity.webp',
+                avatar: 'Erling Haaland.webp',
+                name: 'EL ANDROIDE',
+                stats: [['96', 'MAX'], ['92', 'PG'], ['91%', 'WR'], ['42K', 'XP']]
+            },
+            center: {
+                theme: 'gold',
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Logo.webp',
+                avatar: '1.webp',
+                name: 'LA PULGA',
+                stats: [['99', 'MAX'], ['99', 'PG'], ['98%', 'WR'], ['50K', 'XP']]
+            },
+            right: {
+                theme: 'eng',
+                ovr: '90',
+                pos: 'ED',
+                escudo: 'liverpool.webp',
+                avatar: 'Mohamed Salah.webp',
+                name: 'EL FARAÓN',
+                stats: [['94', 'MAX'], ['89', 'PG'], ['87%', 'WR'], ['38K', 'XP']]
+            }
+        },
+        step1: {
+            eyebrow: 'PASO 1 DE 3 · PREMIER LEAGUE',
+            title: 'ELEGÍ TU CLUB Y TU POSICIÓN',
+            subtitle: 'City, Liverpool, Arsenal, Chelsea y los gigantes de Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+            centerCard: {
+                theme: 'eng',
+                ovr: '93',
+                pos: 'DC',
+                escudo: 'manchestercity.webp',
+                avatar: 'Erling Haaland.webp',
+                name: 'TU JUGADOR',
+                stats: [['93', 'MAX'], ['42', 'PJ'], ['36', 'PG'], ['85%', 'WR']]
+            },
+            carousel: [
+                { name: 'CITY', escudo: 'manchestercity.webp', active: true },
+                { name: 'LIVERPOOL', escudo: 'liverpool.webp' },
+                { name: 'ARSENAL', escudo: 'arsenal.webp' },
+                { name: 'CHELSEA', escudo: 'chelsea.webp' },
+                { name: 'UNITED', escudo: 'manchesterunited.webp' }
+            ]
+        },
+        step2: {
+            eyebrow: 'PASO 2 DE 3 · STATS DE JUEGO',
+            title: 'SE DESBLOQUEAN TUS STATS',
+            subtitle: 'Adiviná estadios de la Premier y acumulá nivel XP 🏟️🔥',
+            card: {
+                theme: 'gold',
+                ovr: '95',
+                pos: 'DC',
+                escudo: 'manchestercity.webp',
+                avatar: 'Erling Haaland.webp',
+                name: 'HAALAND_FAN #9',
+                stats: [['24.9K', 'MAX'], ['70', 'PJ'], ['61', 'PG'], ['87%', 'WR'], ['45.2K', 'XP TOTAL']]
+            }
+        },
+        step3: {
+            card: {
+                theme: 'gold',
+                ovr: '95',
+                pos: 'DC',
+                escudo: 'manchestercity.webp',
+                avatar: 'Erling Haaland.webp',
+                name: 'TU NOMBRE',
+                stats: [['25K', 'MAX'], ['70', 'PJ'], ['61', 'PG'], ['87%', 'WR']]
+            }
+        },
+        portada: {
+            titleHtml: 'CREÁ TU CARTA FUT<br><span style="color:#ffd700;">PREMIER LEAGUE 🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>',
+            subtitle: '¿Manchester City o Liverpool? ⚽👑',
+            card: {
+                ovr: '91',
+                pos: 'DC',
+                escudo: 'manchestercity.webp',
+                avatar: 'Erling Haaland.webp',
+                name: 'EL ANDROIDE',
+                stats: [['96', 'MAX'], ['92', 'PG'], ['91%', 'WR'], ['42K', 'XP']]
+            }
+        },
+        textos: `═══════════════════════════════════════════════════════════════
+PACK DE PUBLICACIÓN: PROMO-03-PREMIER · CARTA FUT
+Estadios Virtuales · www.estadiosvirtuales.com
+═══════════════════════════════════════════════════════════════
+
+📌 VARIANTE 1: PREMIER LEAGUE VIRAL
+🔥 ¿DE QUÉ CLUB DE LA PREMIER SOS? CREÁ TU PROPIA CARTA FUT 🏴󠁧󠁢󠁥󠁮󠁧󠁿👑
+
+Personalizá tu carta con el escudo de Manchester City, Liverpool, Arsenal, Chelsea o United, elegí tu posición en cancha y subí de nivel con tus aciertos en StadiumGuessr.
+
+📲 ¡Creá la tuya gratis en el link de mi perfil!
+👉 www.estadiosvirtuales.com
+
+👇 ¿Qué club de la Premier es el más grande? Dejalo en los comentarios.
+
+#PremierLeague #Haaland #Salah #ManchesterCity #LiverpoolFC #Arsenal #Chelsea #CartaFUT #StadiumGuessr #EstadiosVirtuales #Futbol`
+    },
+    'promo-04-superclasico': {
+        slug: 'PROMO-04-SUPERCLASICO',
+        videoName: 'Promo_04_Superclasico_Carta_FUT.mp4',
+        portadaName: 'Portada_Promo_04_Superclasico.jpg',
+        titleMain: '¿DE QUÉ LADO DE LA PASIÓN ESTÁS?<br>CREÁ TU CARTA FUT',
+        titleSub: 'Boca Juniors vs River Plate · Superclásico 🇦🇷🔥',
+        drone1: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4",
+        drone2: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\Sin título.mp4",
+        hookCards: {
+            left: {
+                theme: 'boca',
+                ovr: '88',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '27.webp',
+                name: 'EL MATADOR',
+                stats: [['92', 'MAX'], ['84', 'PG'], ['83%', 'WR'], ['29K', 'XP']]
+            },
+            center: {
+                theme: 'gold',
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Logo.webp',
+                avatar: '1.webp',
+                name: 'LA PULGA',
+                stats: [['99', 'MAX'], ['99', 'PG'], ['98%', 'WR'], ['50K', 'XP']]
+            },
+            right: {
+                theme: 'river',
+                ovr: '87',
+                pos: 'DEL',
+                escudo: 'River.webp',
+                avatar: '19.webp',
+                name: 'EL COLIBRÍ',
+                stats: [['91', 'MAX'], ['82', 'PG'], ['81%', 'WR'], ['27K', 'XP']]
+            }
+        },
+        step1: {
+            eyebrow: 'PASO 1 DE 3 · FÚTBOL ARGENTINO',
+            title: 'ELEGÍ TU CLUB Y TU POSICIÓN',
+            subtitle: 'Boca, River, Racing, Independiente, San Lorenzo y +100 clubes 🇦🇷',
+            centerCard: {
+                theme: 'boca',
+                ovr: '90',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '27.webp',
+                name: 'TU JUGADOR',
+                stats: [['90', 'MAX'], ['35', 'PJ'], ['28', 'PG'], ['80%', 'WR']]
+            },
+            carousel: [
+                { name: 'BOCA', escudo: 'Boca.webp', active: true },
+                { name: 'RIVER', escudo: 'River.webp' },
+                { name: 'RACING', escudo: 'Racing.webp' },
+                { name: 'ROJO', escudo: 'Independiente.webp' },
+                { name: 'CASLA', escudo: 'San Lorenzo.webp' }
+            ]
+        },
+        step2: {
+            eyebrow: 'PASO 2 DE 3 · STATS DE JUEGO',
+            title: 'SE DESBLOQUEAN TUS STATS',
+            subtitle: 'Adiviná estadios de Argentina y acumulá nivel XP 🏟️🔥',
+            card: {
+                theme: 'gold',
+                ovr: '94',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '27.webp',
+                name: 'BOSTERO_10',
+                stats: [['24.7K', 'MAX'], ['55', 'PJ'], ['46', 'PG'], ['83%', 'WR'], ['38.2K', 'XP TOTAL']]
+            }
+        },
+        step3: {
+            card: {
+                theme: 'gold',
+                ovr: '94',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '27.webp',
+                name: 'TU NOMBRE',
+                stats: [['25K', 'MAX'], ['55', 'PJ'], ['46', 'PG'], ['83%', 'WR']]
+            }
+        },
+        portada: {
+            titleHtml: 'CREÁ TU CARTA FUT<br><span style="color:#ffd700;">BOCA O RIVER 🇦🇷</span>',
+            subtitle: '¿De qué lado del Superclásico estás? ⚽🔥',
+            card: {
+                ovr: '88',
+                pos: 'DEL',
+                escudo: 'Boca.webp',
+                avatar: '27.webp',
+                name: 'EL MATADOR',
+                stats: [['92', 'MAX'], ['84', 'PG'], ['83%', 'WR'], ['29K', 'XP']]
+            }
+        },
+        textos: `═══════════════════════════════════════════════════════════════
+PACK DE PUBLICACIÓN: PROMO-04-SUPERCLASICO · CARTA FUT
+Estadios Virtuales · www.estadiosvirtuales.com
+═══════════════════════════════════════════════════════════════
+
+📌 VARIANTE 1: SUPERCLÁSICO VIRAL
+🔥 ¿DE QUÉ LADO DEL SUPERCLÁSICO ESTÁS? CREÁ TU PROPIA CARTA FUT 🇦🇷⚽
+
+¿Sos de Boca o de River? En www.estadiosvirtuales.com podés crear tu carta personalizada con tu escudo, tu posición y tus estadísticas reales adivinando estadios.
+
+📲 Entrá al link de la bio y armala en 30 segundos:
+👉 www.estadiosvirtuales.com
+
+👇 ¿Quién gana el próximo Superclásico? Dejalo en los comentarios.
+
+#Superclasico #BocaJuniors #RiverPlate #Bombonera #Monumental #CartaFUT #FutbolArgentino #StadiumGuessr #EstadiosVirtuales`
+    },
+    'promo-05-nextgen': {
+        slug: 'PROMO-05-NEXTGEN',
+        videoName: 'Promo_05_NextGen_Carta_FUT.mp4',
+        portadaName: 'Portada_Promo_05_NextGen.jpg',
+        titleMain: '¿SOS EL PRÓXIMO GALÁCTICO?<br>CREÁ TU CARTA FUT',
+        titleSub: 'Lamine Yamal vs Jude Bellingham · Next Gen 🌟👑',
+        drone1: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4",
+        drone2: "E:\\Google earth studio\\Italia\\Subidos\\San siro.mp4",
+        hookCards: {
+            left: {
+                theme: 'real',
+                ovr: '90',
+                pos: 'MCO',
+                escudo: 'Real.webp',
+                avatar: '2.webp',
+                name: 'BELLI',
+                stats: [['93', 'MAX'], ['88', 'PG'], ['86%', 'WR'], ['36K', 'XP']]
+            },
+            center: {
+                theme: 'gold',
+                ovr: '99',
+                pos: 'DEL',
+                escudo: 'Logo.webp',
+                avatar: '1.webp',
+                name: 'LA PULGA',
+                stats: [['99', 'MAX'], ['99', 'PG'], ['98%', 'WR'], ['50K', 'XP']]
+            },
+            right: {
+                theme: 'barca',
+                ovr: '91',
+                pos: 'DEL',
+                escudo: 'Barca.webp',
+                avatar: 'Lamine Yamal.webp',
+                name: 'LA JOYA',
+                stats: [['92', 'MAX'], ['88', 'PG'], ['86%', 'WR'], ['31K', 'XP']]
+            }
+        },
+        step1: {
+            eyebrow: 'PASO 1 DE 3 · NEXT GENERATION',
+            title: 'ELEGÍ TU CLUB Y TU POSICIÓN',
+            subtitle: 'Real Madrid, Barcelona, Como 1907, PSG y las joyas mundiales 🌟',
+            centerCard: {
+                theme: 'barca',
+                ovr: '91',
+                pos: 'DEL',
+                escudo: 'Barca.webp',
+                avatar: 'Lamine Yamal.webp',
+                name: 'TU JUGADOR',
+                stats: [['91', 'MAX'], ['36', 'PJ'], ['30', 'PG'], ['83%', 'WR']]
+            },
+            carousel: [
+                { name: 'BARÇA', escudo: 'Barca.webp', active: true },
+                { name: 'MADRID', escudo: 'Real.webp' },
+                { name: 'COMO', escudo: 'como.webp' },
+                { name: 'PSG', escudo: 'psg.webp' },
+                { name: 'CITY', escudo: 'manchestercity.webp' }
+            ]
+        },
+        step2: {
+            eyebrow: 'PASO 2 DE 3 · STATS DE JUEGO',
+            title: 'SE DESBLOQUEAN TUS STATS',
+            subtitle: 'Adiviná estadios del mundo y demostrá tu IQ futbolero 🏟️🔥',
+            card: {
+                theme: 'gold',
+                ovr: '94',
+                pos: 'DEL',
+                escudo: 'Barca.webp',
+                avatar: 'Lamine Yamal.webp',
+                name: 'YAMAL_FUT',
+                stats: [['24.8K', 'MAX'], ['58', 'PJ'], ['49', 'PG'], ['84%', 'WR'], ['40.1K', 'XP TOTAL']]
+            }
+        },
+        step3: {
+            card: {
+                theme: 'gold',
+                ovr: '94',
+                pos: 'DEL',
+                escudo: 'Barca.webp',
+                avatar: 'Lamine Yamal.webp',
+                name: 'TU NOMBRE',
+                stats: [['25K', 'MAX'], ['58', 'PJ'], ['49', 'PG'], ['84%', 'WR']]
+            }
+        },
+        portada: {
+            titleHtml: 'CREÁ TU CARTA FUT<br><span style="color:#ffd700;">NEXT GEN 🌟</span>',
+            subtitle: '¿Lamine Yamal o Bellingham? ⚽👑',
+            card: {
+                ovr: '91',
+                pos: 'DEL',
+                escudo: 'Barca.webp',
+                avatar: 'Lamine Yamal.webp',
+                name: 'LA JOYA',
+                stats: [['92', 'MAX'], ['88', 'PG'], ['86%', 'WR'], ['31K', 'XP']]
+            }
+        },
+        textos: `═══════════════════════════════════════════════════════════════
+PACK DE PUBLICACIÓN: PROMO-05-NEXTGEN · CARTA FUT
+Estadios Virtuales · www.estadiosvirtuales.com
+═══════════════════════════════════════════════════════════════
+
+📌 VARIANTE 1: NEXT GEN VIRAL
+🔥 ¿SOS LA PRÓXIMA PROMESA DEL FÚTBOL? CREÁ TU CARTA FUT 🌟⚽
+
+Personalizá tu carta con tu avatar, tu club y tus estadísticas oficiales de juego en StadiumGuessr.
+
+📲 ¡Creala gratis en el link del perfil!
+👉 www.estadiosvirtuales.com
+
+👇 ¿Quién va a ganar más Balones de Oro: Lamine Yamal o Bellingham? Dejalo en los comentarios.
+
+#LamineYamal #Bellingham #NextGen #CartaFUT #RealMadrid #Barcelona #Como1907 #StadiumGuessr #EstadiosVirtuales #Futbol`
     }
+
 };
 
 // ==========================================
@@ -1141,5 +1478,8 @@ async function renderizarPromo(promoKey = 'promo-02-laliga') {
     } catch (_) {}
 }
 
-const promoArg = process.argv[2] || 'promo-02-laliga';
-renderizarPromo(promoArg).catch(console.error);
+if (require.main === module) {
+    const promoArg = process.argv[2] || 'promo-02-laliga';
+    renderizarPromo(promoArg).catch(console.error);
+}
+module.exports = { renderizarPromo, CONFIG_PROMOS };

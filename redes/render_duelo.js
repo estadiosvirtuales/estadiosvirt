@@ -934,7 +934,428 @@ El Superclásico del fútbol chileno: Estadio Nacional de Ñuñoa vs Estadio Mon
 🎮 Poné a prueba tus conocimientos en: estadiosvirtuales.com
 
 #UdeChile #ColoColo #Superclasico #Chile #EstadioNacional #EstadioMonumental #FutbolChileno #EstadiosVirtuales`
+    },
+    'belgrano-talleres': {
+        slug: 'BELGRANO-VS-TALLERES',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Cordobés',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El Gigante de Alberdi vs El Mario Alberto Kempes',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Belgrano_vs_Talleres.mp4',
+        portadaFileName: 'Portada_Duelo_Belgrano_Talleres.jpg',
+        bannerDiferencia: '¡EL KEMPES POR +23.000 LUGARES!',
+        team1: {
+            id: 'belgrano',
+            nombre: 'BELGRANO',
+            estadio: 'Julio César Villagra',
+            apodo: 'Gigante de Alberdi',
+            capacidadNum: 34000,
+            capacidadTexto: '34.000 esp.',
+            escudoFile: 'Belgrano.webp',
+            borderColor: '#38bdf8',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\belgrano.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'talleres',
+            nombre: 'TALLERES',
+            estadio: 'Mario Alberto Kempes',
+            apodo: 'El Coloso Cordobés',
+            capacidadNum: 57000,
+            capacidadTexto: '57.000 esp.',
+            escudoFile: 'Talleres.webp',
+            borderColor: '#002244',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\kempes.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿BELGRANO O TALLERES? 🏟️🔥
+El clásico cordobés: el Gigante de Alberdi vs el Estadio Mario Alberto Kempes. ¿Cuál tiene mayor capacidad de público?
+
+👉 Dejá tu voto en los comentarios.
+🎮 Desafiá tu conocimiento de estadios en: estadiosvirtuales.com
+
+#Belgrano #Talleres #ClasicoCordobes #Kempes #GiganteDeAlberdi #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'platense-tigre': {
+        slug: 'PLATENSE-VS-TIGRE',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico de la Zona Norte',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Vicente López vs Coliseo de Victoria',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Platense_vs_Tigre.mp4',
+        portadaFileName: 'Portada_Duelo_Platense_Tigre.jpg',
+        bannerDiferencia: '¡PLATENSE POR +7.700 LUGARES!',
+        team1: {
+            id: 'platense',
+            nombre: 'PLATENSE',
+            estadio: 'Ciudad de Vicente López',
+            apodo: 'El Templo Calamar',
+            capacidadNum: 34000,
+            capacidadTexto: '34.000 esp.',
+            escudoFile: 'Platense.webp',
+            borderColor: '#8b4513',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\platense.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'tigre',
+            nombre: 'TIGRE',
+            estadio: 'José Dellagiovanna',
+            apodo: 'El Coliseo de Victoria',
+            capacidadNum: 26282,
+            capacidadTexto: '26.282 esp.',
+            escudoFile: 'Tigre.webp',
+            borderColor: '#003399',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\tigre.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿PLATENSE O TIGRE? 🏟️🔥
+El clásico de la Zona Norte: Vicente López vs Victoria. ¿Cuál de los dos estadios tiene mayor capacidad oficial?
+
+👉 Dejá tu respuesta en los comentarios.
+🎮 Jugá gratis en: estadiosvirtuales.com
+
+#Platense #Tigre #ClasicoDeLaZonaNorte #VicenteLopez #Victoria #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'velez-ferro': {
+        slug: 'VELEZ-VS-FERRO',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico del Oeste',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'José Amalfitani vs Ricardo Etcheverri',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Velez_vs_Ferro.mp4',
+        portadaFileName: 'Portada_Duelo_Velez_Ferro.jpg',
+        bannerDiferencia: '¡VÉLEZ POR +25.000 LUGARES!',
+        team1: {
+            id: 'velez',
+            nombre: 'VÉLEZ SARSFIELD',
+            estadio: 'José Amalfitani',
+            apodo: 'El Fortín de Liniers',
+            capacidadNum: 49540,
+            capacidadTexto: '49.540 esp.',
+            escudoFile: 'Velez.webp',
+            borderColor: '#0055a5',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\velez.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'ferro',
+            nombre: 'FERRO CARRIL OESTE',
+            estadio: 'Ricardo Etcheverri',
+            apodo: 'El Templo de Caballito',
+            capacidadNum: 24442,
+            capacidadTexto: '24.442 esp.',
+            escudoFile: 'Ferro.webp',
+            borderColor: '#008000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Ferro.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿VÉLEZ O FERRO? 🏟️🔥
+El histórico Clásico del Oeste: El Fortín de Liniers vs El templo verde de Caballito.
+
+👉 ¿Sabías cuál era más grande? Votá en los comentarios.
+🎮 Desafiá tu conocimiento futbolero en: estadiosvirtuales.com
+
+#VelezSarsfield #Ferro #ClasicoDelOeste #Amalfitani #Caballito #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'defensa-quilmes': {
+        slug: 'DEFENSA-VS-QUILMES',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico del Sur',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Norberto Tomaghello vs Estadio Centenario',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Defensa_vs_Quilmes.mp4',
+        portadaFileName: 'Portada_Duelo_Defensa_Quilmes.jpg',
+        bannerDiferencia: '¡QUILMES POR +12.200 LUGARES!',
+        team1: {
+            id: 'defensa',
+            nombre: 'DEFENSA Y JUSTICIA',
+            estadio: 'Norberto Tomaghello',
+            apodo: 'El Halcón de Varela',
+            capacidadNum: 20000,
+            capacidadTexto: '20.000 esp.',
+            escudoFile: 'defensa.webp',
+            borderColor: '#008000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\defensa.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'quilmes',
+            nombre: 'QUILMES AC',
+            estadio: 'Estadio Centenario',
+            apodo: 'El Templo Cervecero',
+            capacidadNum: 32200,
+            capacidadTexto: '32.200 esp.',
+            escudoFile: 'Quilmes.webp',
+            borderColor: '#002244',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Quilmes 2.0.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿DEFENSA Y JUSTICIA O QUILMES? 🏟️🔥
+El choque del conurbano sur: Florencio Varela vs Quilmes.
+
+👉 Dejá tu respuesta en los comentarios.
+🎮 Desafiá tus conocimientos en: estadiosvirtuales.com
+
+#DefensaYJusticia #Quilmes #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'moron-almirante': {
+        slug: 'MORON-VS-ALMIRANTE-BROWN',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico del Oeste',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Nuevo Francisco Urbano vs Fragata Sarmiento',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Moron_vs_Almirante.mp4',
+        portadaFileName: 'Portada_Duelo_Moron_Almirante.jpg',
+        bannerDiferencia: '¡MORÓN POR +7.000 LUGARES!',
+        team1: {
+            id: 'moron',
+            nombre: 'DEPORTIVO MORÓN',
+            estadio: 'Nuevo Francisco Urbano',
+            apodo: 'El Gallinero del Oeste',
+            capacidadNum: 32000,
+            capacidadTexto: '32.000 esp.',
+            escudoFile: 'Moron.webp',
+            borderColor: '#cc0000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Dep Moron 2.0.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'almirante',
+            nombre: 'ALMIRANTE BROWN',
+            estadio: 'Fragata Presidente Sarmiento',
+            apodo: 'La Fragata de Casanova',
+            capacidadNum: 25000,
+            capacidadTexto: '25.000 esp.',
+            escudoFile: 'Almirante.webp',
+            borderColor: '#ffd700',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Almirante Brown.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿MORÓN O ALMIRANTE BROWN? 🏟️🔥
+La máxima rivalidad del ascenso en el Oeste: Morón vs Casanova.
+
+👉 Votá en los comentarios cuál pensabas que era más grande.
+🎮 Jugá gratis en: estadiosvirtuales.com
+
+#DeportivoMoron #AlmiranteBrown #ClasicoDelOeste #AscensoArgentino #EstadiosVirtuales`
+    },
+    'lafc-lagalaxy': {
+        slug: 'LAFC-VS-LA-GALAXY',
+        pais: 'Estados Unidos',
+        tituloBadge: '🥊 Duelo de Capacidad · El Tráfico MLS',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'BMO Stadium vs Dignity Health Sports Park',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_LAFC_vs_LAGalaxy.mp4',
+        portadaFileName: 'Portada_Duelo_LAFC_LAGalaxy.jpg',
+        bannerDiferencia: '¡LA GALAXY POR +5.000 LUGARES!',
+        team1: {
+            id: 'lafc',
+            nombre: 'LOS ANGELES FC',
+            estadio: 'BMO Stadium',
+            apodo: 'The Heart of LA',
+            capacidadNum: 22000,
+            capacidadTexto: '22.000 esp.',
+            escudoFile: 'losangeles.webp',
+            borderColor: '#d4af37',
+            videoPath: "E:\\Google earth studio\\MLS\\BMO Stadium LAFC (Los Angeles Football Club).mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'lagalaxy',
+            nombre: 'LA GALAXY',
+            estadio: 'Dignity Health Sports Park',
+            apodo: 'Carson Stadium',
+            capacidadNum: 27000,
+            capacidadTexto: '27.000 esp.',
+            escudoFile: 'losangelesgalaxy.webp',
+            borderColor: '#00245d',
+            videoPath: "E:\\Google earth studio\\MLS\\Dignity Health Sports Park Los Angeles FC.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿LAFC O LA GALAXY? 🏟️🔥
+El Tráfico de Los Ángeles: BMO Stadium vs Dignity Health Sports Park. ¿Cuál tiene mayor capacidad?
+
+👉 Dejá tu respuesta en los comentarios.
+🎮 Desafiá tu conocimiento en: estadiosvirtuales.com
+
+#LAFC #LAGalaxy #ElTrafico #MLS #Soccer #EstadiosVirtuales`
+    },
+    'intermiami-orlando': {
+        slug: 'INTER-MIAMI-VS-ORLANDO-CITY',
+        pais: 'Estados Unidos',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico del Sol',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Chase Stadium vs Inter&Co Stadium',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Inter_Miami_vs_Orlando.mp4',
+        portadaFileName: 'Portada_Duelo_Inter_Miami_Orlando.jpg',
+        bannerDiferencia: '¡ORLANDO CITY POR +3.950 LUGARES!',
+        team1: {
+            id: 'intermiami',
+            nombre: 'INTER MIAMI CF',
+            estadio: 'Chase Stadium',
+            apodo: 'Fort Lauderdale Stadium',
+            capacidadNum: 21550,
+            capacidadTexto: '21.550 esp.',
+            escudoFile: 'intermiami.webp',
+            borderColor: '#f7b5cd',
+            videoPath: "E:\\Google earth studio\\MLS\\Chase Stadium Inter Miami.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'orlando',
+            nombre: 'ORLANDO CITY',
+            estadio: 'Inter&Co Stadium',
+            apodo: 'The Wall Orlando',
+            capacidadNum: 25500,
+            capacidadTexto: '25.500 esp.',
+            escudoFile: 'orlandocity.webp',
+            borderColor: '#61259e',
+            videoPath: "E:\\Google earth studio\\MLS\\Inter.co Stadium Orlando City.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿INTER MIAMI O ORLANDO CITY? 🏟️🔥
+El Clásico de Florida: La casa de Messi vs el estadio de los Leones púrpuras.
+
+👉 ¿Sabías cuál tenía más capacidad? Votá abajo 👇
+🎮 Ponete a prueba en: estadiosvirtuales.com
+
+#InterMiami #OrlandoCity #Messi #MLS #ClasicoDelSol #EstadiosVirtuales`
+    },
+    'nycfc-nyredbulls': {
+        slug: 'NYCFC-VS-NY-REDBULLS',
+        pais: 'Estados Unidos',
+        tituloBadge: '🥊 Duelo de Capacidad · Hudson River Derby',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Yankee Stadium vs Red Bull Arena',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_NYCFC_vs_NYRedBulls.mp4',
+        portadaFileName: 'Portada_Duelo_NYCFC_NYRedBulls.jpg',
+        bannerDiferencia: '¡YANKEE STADIUM POR +22.300 LUGARES!',
+        team1: {
+            id: 'nycfc',
+            nombre: 'NEW YORK CITY FC',
+            estadio: 'Yankee Stadium',
+            apodo: 'The Bronx Colossus',
+            capacidadNum: 47309,
+            capacidadTexto: '47.309 esp.',
+            escudoFile: 'newyorkcity.webp',
+            borderColor: '#6caddf',
+            videoPath: "E:\\Google earth studio\\MLS\\Yankee Stadium New York City FC.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'nyredbulls',
+            nombre: 'NEW YORK RED BULLS',
+            estadio: 'Sports Illustrated Stadium / Red Bull Arena',
+            apodo: 'The Arena',
+            capacidadNum: 25000,
+            capacidadTexto: '25.000 esp.',
+            escudoFile: 'newyork.webp',
+            borderColor: '#ed1e24',
+            videoPath: "E:\\Google earth studio\\MLS\\Sports Illustrated Stadium New York RB.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿NYCFC O NY RED BULLS? 🏟️🔥
+El derbi neoyorquino: El mítico Yankee Stadium de El Bronx vs la Red Bull Arena de Nueva Jersey.
+
+👉 ¿Cuál pensabas que ganaba? Comentá abajo 👇
+🎮 Jugá gratis en: estadiosvirtuales.com
+
+#NYCFC #NYRedBulls #HudsonRiverDerby #MLS #NewYork #EstadiosVirtuales`
+    },
+    'metlife-azteca': {
+        slug: 'METLIFE-VS-ESTADIO-AZTECA',
+        pais: 'Mundial 2026',
+        tituloBadge: '🥊 Duelo de Capacidad · Titanes Mundial 2026',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La Sede de la Final vs La Sede Inaugural',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_MetLife_vs_Estadio_Azteca.mp4',
+        portadaFileName: 'Portada_Duelo_MetLife_Estadio_Azteca.jpg',
+        bannerDiferencia: '¡EL AZTECA POR SOLO 764 LUGARES!',
+        team1: {
+            id: 'metlife',
+            nombre: 'METLIFE STADIUM',
+            estadio: 'MetLife Stadium (NY/NJ)',
+            apodo: 'Sede Gran Final 2026',
+            capacidadNum: 82500,
+            capacidadTexto: '82.500 esp.',
+            escudoFile: 'usa.webp',
+            borderColor: '#00205b',
+            videoPath: "E:\\Google earth studio\\Mundial 2026\\EEUU\\Met life new jersey.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'azteca',
+            nombre: 'ESTADIO AZTECA',
+            estadio: 'Estadio Azteca (CDMX)',
+            apodo: 'El Coloso de Santa Úrsula',
+            capacidadNum: 83264,
+            capacidadTexto: '83.264 esp.',
+            escudoFile: 'mexico.webp',
+            borderColor: '#006847',
+            videoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿METLIFE STADIUM O ESTADIO AZTECA? 🏟️🔥
+Los dos templos máximos del Mundial 2026: La sede de la Final en New York vs la sede Inaugural en México. ¡La diferencia es milimétrica! 😱
+
+👉 ¿Te imaginabas este resultado? Dejanos tu voto 👇
+🎮 Adiviná los estadios del Mundial en: estadiosvirtuales.com
+
+#Mundial2026 #MetLifeStadium #EstadioAzteca #WorldCup2026 #FIFAWorldCup #EstadiosVirtuales`
+    },
+    'sofi-attdallas': {
+        slug: 'SOFI-STADIUM-VS-ATT-DALLAS',
+        pais: 'Mundial 2026',
+        tituloBadge: '🥊 Duelo de Capacidad · Megaconstrucciones USA',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'SoFi Stadium (Los Ángeles) vs AT&T Stadium (Dallas)',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_SoFi_vs_ATTDallas.mp4',
+        portadaFileName: 'Portada_Duelo_SoFi_ATTDallas.jpg',
+        bannerDiferencia: '¡AT&T DALLAS POR +9.760 LUGARES!',
+        team1: {
+            id: 'sofi',
+            nombre: 'SOFI STADIUM',
+            estadio: 'SoFi Stadium (Inglewood)',
+            apodo: 'La Joya de Los Ángeles',
+            capacidadNum: 70240,
+            capacidadTexto: '70.240 esp.',
+            escudoFile: 'usa.webp',
+            borderColor: '#003594',
+            videoPath: "E:\\Google earth studio\\Mundial 2026\\SoFi Stadium_LA Rams - Chargers.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'attdallas',
+            nombre: 'AT&T STADIUM',
+            estadio: 'AT&T Stadium (Arlington)',
+            apodo: 'El Templo de Dallas',
+            capacidadNum: 80000,
+            capacidadTexto: '80.000 esp.',
+            escudoFile: 'usa.webp',
+            borderColor: '#041e42',
+            videoPath: "E:\\Google earth studio\\Mundial 2026\\EEUU\\AT&T Stadium (Dallas Stadium).mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿SOFI STADIUM O AT&T DALLAS? 🏟️🔥
+Los dos estadios más impresionantes y tecnológicos de Estados Unidos para el Mundial 2026.
+
+👉 ¿Cuál de los dos te parece más imponente? Votá abajo 👇
+🎮 Jugá gratis en: estadiosvirtuales.com
+
+#SoFiStadium #ATTStadium #Dallas #LosAngeles #Mundial2026 #EstadiosVirtuales`
     }
+
 };
 
 // ==========================================
@@ -1519,4 +1940,7 @@ async function main() {
     }
 }
 
-main().catch(console.error);
+if (require.main === module) {
+    main().catch(console.error);
+}
+module.exports = { renderizarDuelo, CONFIG_DUELOS };

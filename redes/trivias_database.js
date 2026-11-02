@@ -2449,6 +2449,1468 @@ const TRIVIAS_DATABASE = [
       "paisHashtag": "#colocolo #vamoscacique #chile #monumental #stadiumguessr #futbol",
       "extraPista": "Vista majestuosa a la Cordillera de los Andes desde las tribunas."
     }
+  },
+{
+    "id": "chase_stadium_inter_miami",
+    "folderName": "Estados Unidos\\CHASE-STADIUM-INTER-MIAMI",
+    "nombreMostrar": "CHASE STADIUM",
+    "clubMostrar": "INTER MIAMI CF",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Chase_Stadium_Inter_Miami.mp4",
+    "coverFileName": "Portada_Chase_Stadium_Inter_Miami.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\Chase Stadium Inter Miami.mp4",
+    "targetLat": 26.1927,
+    "targetLng": -80.1609,
+    "userLat": 26.1945,
+    "userLng": -80.1625,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Fort Lauderdale, Florida · CHASE STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 21.550 espectadores en Fort Lauderdale.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🦩",
+        "tag": "PISTA 2:",
+        "text": "Diseño modular icónico en color negro y rosa.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🐐",
+        "tag": "PISTA 3:",
+        "text": "La casa donde juega Lionel Messi en la MLS.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "CHASE STADIUM · INTER MIAMI CF",
+    "copys": {
+      "club": "INTER MIAMI CF",
+      "paisHashtag": "#intermiami #messi #leomessi #mls #chasestadium #stadiumguessr #futbol",
+      "extraPista": "El templo rosa y negro donde brilla Lionel Messi."
+    }
+  },
+  {
+    "id": "bmo_stadium_lafc",
+    "folderName": "Estados Unidos\\BMO-STADIUM-LAFC",
+    "nombreMostrar": "BMO STADIUM",
+    "clubMostrar": "LOS ANGELES FC",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_BMO_Stadium_LAFC.mp4",
+    "coverFileName": "Portada_BMO_Stadium_LAFC.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\BMO Stadium LAFC (Los Angeles Football Club).mp4",
+    "targetLat": 34.0128,
+    "targetLng": -118.2849,
+    "userLat": 34.0112,
+    "userLng": -118.2831,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Los Ángeles, California · BMO STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 22.000 hinchas en Exposition Park.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 2:",
+        "text": "La famosa tribuna popular de pie 'The 3252'.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "👑",
+        "tag": "PISTA 3:",
+        "text": "El hogar dorado y negro de Los Angeles FC.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "BMO STADIUM · LOS ANGELES FC",
+    "copys": {
+      "club": "LOS ANGELES FC",
+      "paisHashtag": "#lafc #bmostadium #losangeles #mls #the3252 #stadiumguessr #futbol",
+      "extraPista": "La caldera de Exposition Park en pleno corazón de Los Ángeles."
+    }
+  },
+  {
+    "id": "dignity_health_la_galaxy",
+    "folderName": "Estados Unidos\\DIGNITY-HEALTH-LA-GALAXY",
+    "nombreMostrar": "DIGNITY HEALTH SPORTS PARK",
+    "clubMostrar": "LA GALAXY",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Dignity_Health_LA_Galaxy.mp4",
+    "coverFileName": "Portada_Dignity_Health_LA_Galaxy.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\Dignity Health Sports Park Los Angeles FC.mp4",
+    "targetLat": 33.8644,
+    "targetLng": -118.2611,
+    "userLat": 33.866,
+    "userLng": -118.263,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.920 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Carson, California · DIGNITY HEALTH SPORTS PARK",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 27.000 espectadores en Carson, CA.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 2:",
+        "text": "El club más ganador de la historia con 5 MLS Cups.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "El estadio donde brillaron Beckham e Ibrahimovic.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "DIGNITY HEALTH · LA GALAXY",
+    "copys": {
+      "club": "LA GALAXY",
+      "paisHashtag": "#lagalaxy #carson #mls #beckham #ibrahimovic #stadiumguessr #futbol",
+      "extraPista": "La catedral de las 5 MLS Cups en Carson, California."
+    }
+  },
+  {
+    "id": "yankee_stadium_nycfc",
+    "folderName": "Estados Unidos\\YANKEE-STADIUM-NYCFC",
+    "nombreMostrar": "YANKEE STADIUM",
+    "clubMostrar": "NEW YORK CITY FC",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Yankee_Stadium_NYCFC.mp4",
+    "coverFileName": "Portada_Yankee_Stadium_NYCFC.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\Yankee Stadium New York City FC.mp4",
+    "targetLat": 40.8296,
+    "targetLng": -73.9262,
+    "userLat": 40.828,
+    "userLng": -73.9245,
+    "distanciaTexto": "230 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Bronx, New York · YANKEE STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 47.309 espectadores en El Bronx.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⚾",
+        "tag": "PISTA 2:",
+        "text": "La catedral del béisbol convertida a campo de fútbol.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🗽",
+        "tag": "PISTA 3:",
+        "text": "La casa celeste de New York City FC.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "YANKEE STADIUM · NYCFC",
+    "copys": {
+      "club": "NEW YORK CITY FC",
+      "paisHashtag": "#nycfc #yankeestadium #newyork #thebronx #mls #stadiumguessr #futbol",
+      "extraPista": "Fútbol y béisbol unidos en el mítico Bronx neoyorquino."
+    }
+  },
+  {
+    "id": "red_bull_arena_ny",
+    "folderName": "Estados Unidos\\RED-BULL-ARENA",
+    "nombreMostrar": "RED BULL ARENA",
+    "clubMostrar": "NEW YORK RED BULLS",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Red_Bull_Arena_NY.mp4",
+    "coverFileName": "Portada_Red_Bull_Arena_NY.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\Sports Illustrated Stadium New York RB.mp4",
+    "targetLat": 40.7368,
+    "targetLng": -74.1503,
+    "userLat": 40.735,
+    "userLng": -74.1485,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Harrison, New Jersey · RED BULL ARENA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 25.000 hinchas con techo curvo translúcido.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 2:",
+        "text": "Famoso por su acústica europea en Harrison, NJ.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "El templo de los New York Red Bulls donde jugó Thierry Henry.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "RED BULL ARENA · NY RED BULLS",
+    "copys": {
+      "club": "NEW YORK RED BULLS",
+      "paisHashtag": "#nyredbulls #redbullarena #mls #thierryhenry #stadiumguessr #futbol",
+      "extraPista": "El estadio con diseño europeo en Harrison, New Jersey."
+    }
+  },
+  {
+    "id": "lumen_field_seattle",
+    "folderName": "Estados Unidos\\LUMEN-FIELD-SEATTLE",
+    "nombreMostrar": "LUMEN FIELD",
+    "clubMostrar": "SEATTLE SOUNDERS",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Lumen_Field_Seattle.mp4",
+    "coverFileName": "Portada_Lumen_Field_Seattle.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\EEUU\\Lumen Field - Seattle Locación- Seattle_ Washington_ Estados Unidos Capacidad- 69.000 Inauguración- _2002.mp4",
+    "targetLat": 47.5952,
+    "targetLng": -122.3316,
+    "userLat": 47.5935,
+    "userLng": -122.33,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Seattle, Washington · LUMEN FIELD",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 68.740 espectadores con arcos monumentales.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🔊",
+        "tag": "PISTA 2:",
+        "text": "Récord mundial Guinness al estadio más ruidoso del planeta.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🌲",
+        "tag": "PISTA 3:",
+        "text": "La caldera esmeralda de Seattle Sounders y sede Mundial 2026.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "LUMEN FIELD · SEATTLE SOUNDERS",
+    "copys": {
+      "club": "SEATTLE SOUNDERS",
+      "paisHashtag": "#seattlesounders #lumenfield #seattle #mls #mundial2026 #stadiumguessr",
+      "extraPista": "El estadio más ruidoso del mundo con vista a la bahía de Seattle."
+    }
+  },
+  {
+    "id": "q2_stadium_austin",
+    "folderName": "Estados Unidos\\Q2-STADIUM-AUSTIN",
+    "nombreMostrar": "Q2 STADIUM",
+    "clubMostrar": "AUSTIN FC",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Q2_Stadium_Austin.mp4",
+    "coverFileName": "Portada_Q2_Stadium_Austin.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\Q2 Stadium Austin FC.mp4",
+    "targetLat": 30.388,
+    "targetLng": -97.7197,
+    "userLat": 30.3862,
+    "userLng": -97.718,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Austin, Texas · Q2 STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 20.738 hinchas en la capital de Texas.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌳",
+        "tag": "PISTA 2:",
+        "text": "Techo canopy diseñado para brindar sombra y ventilación natural.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🟩",
+        "tag": "PISTA 3:",
+        "text": "El hogar de 'Los Verdes' de Austin FC.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Q2 STADIUM · AUSTIN FC",
+    "copys": {
+      "club": "AUSTIN FC",
+      "paisHashtag": "#austinfc #q2stadium #austin #texas #mls #stadiumguessr #futbol",
+      "extraPista": "La joya verde de Texas con un ambiente festivo inigualable."
+    }
+  },
+  {
+    "id": "providence_park_portland",
+    "folderName": "Estados Unidos\\PROVIDENCE-PARK-PORTLAND",
+    "nombreMostrar": "PROVIDENCE PARK",
+    "clubMostrar": "PORTLAND TIMBERS",
+    "pais": "Estados Unidos",
+    "videoFileName": "Estadio_Providence_Park_Portland.mp4",
+    "coverFileName": "Portada_Providence_Park_Portland.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\MLS\\Providence Park Timbers.mp4",
+    "targetLat": 45.5216,
+    "targetLng": -122.6917,
+    "userLat": 45.52,
+    "userLng": -122.69,
+    "distanciaTexto": "230 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Portland, Oregón · PROVIDENCE PARK",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 25.218 espectadores en el centro de Portland.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🪓",
+        "tag": "PISTA 2:",
+        "text": "La tradición de cortar un tronco con motosierra tras cada gol.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🌲",
+        "tag": "PISTA 3:",
+        "text": "El histórico templo de la Timbers Army fundado en 1926.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "PROVIDENCE PARK · TIMBERS",
+    "copys": {
+      "club": "PORTLAND TIMBERS",
+      "paisHashtag": "#portlandtimbers #providencepark #timbersarmy #mls #stadiumguessr #futbol",
+      "extraPista": "El estadio más tradicional de USA con la motosierra de Timber Joey."
+    }
+  },
+  {
+    "id": "metlife_stadium_final2026",
+    "folderName": "Mundial 2026\\METLIFE-STADIUM",
+    "nombreMostrar": "METLIFE STADIUM",
+    "clubMostrar": "SEDE GRAN FINAL 2026",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_MetLife_Stadium_Final_2026.mp4",
+    "coverFileName": "Portada_MetLife_Stadium_Final_2026.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\EEUU\\Met life new jersey.mp4",
+    "targetLat": 40.8128,
+    "targetLng": -74.0742,
+    "userLat": 40.8145,
+    "userLng": -74.0725,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 New Jersey / NY · METLIFE STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad colosal para 82.500 espectadores.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 2:",
+        "text": "¡La sede oficial de la Gran Final de la Copa del Mundo 2026!",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🗽",
+        "tag": "PISTA 3:",
+        "text": "Ubicado en East Rutherford, frente al skyline de Manhattan.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "METLIFE STADIUM · SEDE FINAL 2026",
+    "copys": {
+      "club": "SEDE FINAL MUNDIAL 2026",
+      "paisHashtag": "#metlifestadium #mundial2026 #worldcup2026 #newyork #newjersey #fifa",
+      "extraPista": "El coloso donde se coronará al próximo Campeón del Mundo."
+    }
+  },
+  {
+    "id": "sofi_stadium_los_angeles",
+    "folderName": "Mundial 2026\\SOFI-STADIUM",
+    "nombreMostrar": "SOFI STADIUM",
+    "clubMostrar": "SEDE MUNDIALISTA LA",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_SoFi_Stadium_Los_Angeles.mp4",
+    "coverFileName": "Portada_SoFi_Stadium_Los_Angeles.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\SoFi Stadium_LA Rams - Chargers.mp4",
+    "targetLat": 33.9535,
+    "targetLng": -118.339,
+    "userLat": 33.9518,
+    "userLng": -118.3372,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Inglewood, California · SOFI STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 70.240 hinchas con techo translúcido y lago artificial.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "📺",
+        "tag": "PISTA 2:",
+        "text": "Posee 'The Infinity Screen', la pantalla 4K colgante más grande del mundo.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "💰",
+        "tag": "PISTA 3:",
+        "text": "El estadio más caro de la historia humana (5.500 millones de USD).",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "SOFI STADIUM · LOS ANGELES",
+    "copys": {
+      "club": "SOFI STADIUM LA",
+      "paisHashtag": "#sofistadium #losangeles #mundial2026 #worldcup2026 #fifa #stadiumguessr",
+      "extraPista": "La mayor maravilla arquitectónica deportiva del planeta."
+    }
+  },
+  {
+    "id": "att_stadium_dallas",
+    "folderName": "Mundial 2026\\ATT-STADIUM-DALLAS",
+    "nombreMostrar": "AT&T STADIUM",
+    "clubMostrar": "SEDE MUNDIALISTA DALLAS",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_ATT_Stadium_Dallas.mp4",
+    "coverFileName": "Portada_ATT_Stadium_Dallas.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\EEUU\\AT&T Stadium (Dallas Stadium).mp4",
+    "targetLat": 32.7473,
+    "targetLng": -97.0945,
+    "userLat": 32.749,
+    "userLng": -97.0928,
+    "distanciaTexto": "230 METROS",
+    "puntosTexto": "4.960 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Arlington, Texas · AT&T STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad ampliable hasta 100.000 espectadores con techo retráctil.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 2:",
+        "text": "Conocido mundialmente como el 'Jerry World' en Arlington.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 3:",
+        "text": "Sede de Semifinales de la Copa Mundial 2026.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "AT&T STADIUM · DALLAS",
+    "copys": {
+      "club": "AT&T STADIUM DALLAS",
+      "paisHashtag": "#attstadium #dallas #texas #mundial2026 #worldcup2026 #fifa #stadiumguessr",
+      "extraPista": "El gigante techado texano que romperá récords de asistencia."
+    }
+  },
+  {
+    "id": "mercedes_benz_atlanta",
+    "folderName": "Mundial 2026\\MERCEDES-BENZ-ATLANTA",
+    "nombreMostrar": "MERCEDES-BENZ STADIUM",
+    "clubMostrar": "SEDE MUNDIALISTA ATLANTA",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_Mercedes_Benz_Atlanta.mp4",
+    "coverFileName": "Portada_Mercedes_Benz_Atlanta.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\EEUU\\Estadio Atlanta_ Ubicación- Atlanta_ Georgia_ Estados Unidos Capacidad- 75.000 Inauguración-_ 2017.mp4",
+    "targetLat": 33.7554,
+    "targetLng": -84.4008,
+    "userLat": 33.7538,
+    "userLng": -84.399,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Atlanta, Georgia · MERCEDES-BENZ STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 75.000 hinchas en el corazón de Georgia.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⚙️",
+        "tag": "PISTA 2:",
+        "text": "Techo retráctil de 8 pétalos que abre como el diafragma de una cámara.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭕",
+        "tag": "PISTA 3:",
+        "text": "Pantalla Halo Board de 360 grados y sede de Semifinal 2026.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "MERCEDES-BENZ · ATLANTA",
+    "copys": {
+      "club": "MERCEDES-BENZ STADIUM",
+      "paisHashtag": "#mercedesbenzstadium #atlanta #mundial2026 #worldcup2026 #fifa #stadiumguessr",
+      "extraPista": "Ingeniería de vanguardia con techo de pétalos retráctiles y pantalla 360."
+    }
+  },
+  {
+    "id": "arrowhead_stadium_kansas",
+    "folderName": "Mundial 2026\\ARROWHEAD-STADIUM",
+    "nombreMostrar": "ARROWHEAD STADIUM",
+    "clubMostrar": "SEDE MUNDIALISTA KANSAS",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_Arrowhead_Stadium_Kansas.mp4",
+    "coverFileName": "Portada_Arrowhead_Stadium_Kansas.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\EEUU\\Arrowhead Stadium.mp4",
+    "targetLat": 39.0489,
+    "targetLng": -94.4839,
+    "userLat": 39.0472,
+    "userLng": -94.482,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Kansas City, Missouri · ARROWHEAD STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 76.416 fanáticos al aire libre.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🔊",
+        "tag": "PISTA 2:",
+        "text": "Posee el récord del estadio descubierto con más decibeles (142.2 dB).",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🍖",
+        "tag": "PISTA 3:",
+        "text": "Famoso por su cultura de tailgating y barbacoa en Missouri.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ARROWHEAD · KANSAS CITY",
+    "copys": {
+      "club": "ARROWHEAD STADIUM",
+      "paisHashtag": "#arrowheadstadium #kansascity #mundial2026 #worldcup2026 #fifa #stadiumguessr",
+      "extraPista": "El rugido ensordecedor de Kansas City en el Mundial 2026."
+    }
+  },
+  {
+    "id": "lincoln_financial_filadelfia",
+    "folderName": "Mundial 2026\\LINCOLN-FINANCIAL-FIELD",
+    "nombreMostrar": "LINCOLN FINANCIAL FIELD",
+    "clubMostrar": "SEDE MUNDIALISTA FILADELFIA",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_Lincoln_Financial_Filadelfia.mp4",
+    "coverFileName": "Portada_Lincoln_Financial_Filadelfia.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\EEUU\\Lincoln Financial Field - Filadelfia Locación- Philadelphia_ Pennsylvania_ Estados Unidos Capacidad- 69.000 Inauguración-_ 2003.mp4",
+    "targetLat": 39.9008,
+    "targetLng": -75.1675,
+    "userLat": 39.899,
+    "userLng": -75.1658,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Filadelfia, Pensilvania · LINCOLN FINANCIAL FIELD",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 69.796 espectadores en Pensilvania.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🦅",
+        "tag": "PISTA 2:",
+        "text": "Conocido popularmente como 'The Linc', casa de los Philadelphia Eagles.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔔",
+        "tag": "PISTA 3:",
+        "text": "Sede de Cuartos de Final en la cuna de la independencia estadounidense.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "THE LINC · FILADELFIA",
+    "copys": {
+      "club": "LINCOLN FINANCIAL FIELD",
+      "paisHashtag": "#lincolnfinancialfield #philadelphia #mundial2026 #worldcup2026 #fifa #stadiumguessr",
+      "extraPista": "El estadio con energía renovable y pasión desbordante en Filadelfia."
+    }
+  },
+  {
+    "id": "bc_place_vancouver",
+    "folderName": "Mundial 2026\\BC-PLACE-VANCOUVER",
+    "nombreMostrar": "BC PLACE",
+    "clubMostrar": "SEDE MUNDIALISTA CANADÁ",
+    "pais": "Mundial 2026",
+    "videoFileName": "Estadio_BC_Place_Vancouver.mp4",
+    "coverFileName": "Portada_BC_Place_Vancouver.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\Canadá\\Estadio BC Place Vancouver Ubicación- Vancouver_ Columbia británica_ Canadá Capacidad- 54.000 Inauguración- _1983.mp4",
+    "targetLat": 49.2768,
+    "targetLng": -123.112,
+    "userLat": 49.275,
+    "userLng": -123.1102,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Vancouver, Canadá · BC PLACE",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 54.500 espectadores con techo retráctil de cables.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🇨🇦",
+        "tag": "PISTA 2:",
+        "text": "El estadio principal de Columbia Británica y de los Vancouver Whitecaps.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🍁",
+        "tag": "PISTA 3:",
+        "text": "Sede oficial de Canadá para la Copa Mundial de la FIFA 2026.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "BC PLACE · VANCOUVER",
+    "copys": {
+      "club": "BC PLACE VANCOUVER",
+      "paisHashtag": "#bcplace #vancouver #canada #mundial2026 #worldcup2026 #fifa #stadiumguessr",
+      "extraPista": "El coloso canadiense entre montañas y el Océano Pacífico."
+    }
+  },
+  {
+    "id": "estadio_universitario_tigres",
+    "folderName": "México\\ESTADIO-UNIVERSITARIO-TIGRES",
+    "nombreMostrar": "ESTADIO UNIVERSITARIO",
+    "clubMostrar": "TIGRES UANL",
+    "pais": "México",
+    "videoFileName": "Estadio_Universitario_Tigres_UANL.mp4",
+    "coverFileName": "Portada_Universitario_Tigres_UANL.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Mundial 2026\\México\\Estadio Universitario_ Tigres de la UANL.mp4",
+    "targetLat": 25.7246,
+    "targetLng": -100.3122,
+    "userLat": 25.7228,
+    "userLng": -100.3105,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 San Nicolás de los Garza, Nuevo León · EL VOLCÁN",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 41.886 hinchas en San Nicolás de los Garza.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌋",
+        "tag": "PISTA 2:",
+        "text": "Apodado mundialmente como 'El Volcán' por su ensordecedora afición.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🐯",
+        "tag": "PISTA 3:",
+        "text": "La cuna donde nació la famosa 'Ola Mexicana' en el Mundial 1986.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "EL VOLCÁN · TIGRES UANL",
+    "copys": {
+      "club": "TIGRES UANL",
+      "paisHashtag": "#tigresuanl #elvolcan #monterrey #ligamx #incomparables #stadiumguessr #futbol",
+      "extraPista": "La casa de la afición incomparable donde nació la Ola Mexicana."
+    }
+  },
+  {
+    "id": "mario_alberto_kempes_talleres",
+    "folderName": "Argentina\\Primera División\\TALLERES-KEMPES",
+    "nombreMostrar": "MARIO ALBERTO KEMPES",
+    "clubMostrar": "TALLERES DE CÓRDOBA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Mario_Alberto_Kempes_Talleres.mp4",
+    "coverFileName": "Portada_Kempes_Talleres_Cordoba.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\kempes.mp4",
+    "targetLat": -31.3686,
+    "targetLng": -64.2464,
+    "userLat": -31.3668,
+    "userLng": -64.2445,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Córdoba Capital · MARIO ALBERTO KEMPES",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 57.000 espectadores, el segundo mayor de Argentina.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 2:",
+        "text": "Inaugurado como Estadio Córdoba para la Copa del Mundo 1978.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔵",
+        "tag": "PISTA 3:",
+        "text": "El coloso donde hace de local la 'T' de Talleres de Córdoba.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "MARIO ALBERTO KEMPES · TALLERES",
+    "copys": {
+      "club": "TALLERES DE CÓRDOBA",
+      "paisHashtag": "#talleresdecordoba #kempes #cordoba #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "El coloso del Chateau Carreras con la mística del Matador Kempes."
+    }
+  },
+  {
+    "id": "gigante_de_alberdi_belgrano",
+    "folderName": "Argentina\\Primera División\\BELGRANO-ALBERDI",
+    "nombreMostrar": "JULIO CÉSAR VILLAGRA",
+    "clubMostrar": "BELGRANO DE CÓRDOBA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Julio_Cesar_Villagra_Belgrano.mp4",
+    "coverFileName": "Portada_Gigante_Alberdi_Belgrano.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\belgrano.mp4",
+    "targetLat": -31.4042,
+    "targetLng": -64.2056,
+    "userLat": -31.4025,
+    "userLng": -64.2038,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Barrio Alberdi, Córdoba · GIGANTE DE ALBERDI",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 34.000 hinchas en Arturo Orgaz 550, Barrio Alberdi.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏴‍☠️",
+        "tag": "PISTA 2:",
+        "text": "Conocido por todo el fútbol argentino como 'El Gigante de Alberdi'.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🩵",
+        "tag": "PISTA 3:",
+        "text": "La guarida pirata de Belgrano de Córdoba.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "GIGANTE DE ALBERDI · BELGRANO",
+    "copys": {
+      "club": "BELGRANO DE CÓRDOBA",
+      "paisHashtag": "#belgranodecordoba #gigantedealberdi #piratas #cordoba #futbolargentino",
+      "extraPista": "El calor y folclore del barrio Alberdi copado de banderas celestes."
+    }
+  },
+  {
+    "id": "coliseo_de_victoria_tigre",
+    "folderName": "Argentina\\Primera División\\TIGRE-VICTORIA",
+    "nombreMostrar": "JOSÉ DELLAGIOVANNA",
+    "clubMostrar": "CLUB ATLÉTICO TIGRE",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Jose_Dellagiovanna_Tigre.mp4",
+    "coverFileName": "Portada_Jose_Dellagiovanna_Tigre.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\tigre.mp4",
+    "targetLat": -34.4447,
+    "targetLng": -58.5369,
+    "userLat": -34.443,
+    "userLng": -58.535,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Victoria, San Fernando · COLISEO DE VICTORIA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 26.282 espectadores en Guido Spano y Perón.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🐯",
+        "tag": "PISTA 2:",
+        "text": "Apodado el 'Coliseo de Victoria', orgullo de la Zona Norte.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔵",
+        "tag": "PISTA 3:",
+        "text": "La fortaleza azul y roja del Club Atlético Tigre.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "COLISEO DE VICTORIA · TIGRE",
+    "copys": {
+      "club": "CLUB ATLÉTICO TIGRE",
+      "paisHashtag": "#catigre #victoria #matador #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "El Templo del Matador en Victoria, San Fernando."
+    }
+  },
+  {
+    "id": "ciudad_de_vicente_lopez_platense",
+    "folderName": "Argentina\\Primera División\\PLATENSE-VICENTE-LOPEZ",
+    "nombreMostrar": "CIUDAD DE VICENTE LÓPEZ",
+    "clubMostrar": "CLUB ATLÉTICO PLATENSE",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Ciudad_De_Vicente_Lopez_Platense.mp4",
+    "coverFileName": "Portada_Ciudad_Vicente_Lopez_Platense.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\platense.mp4",
+    "targetLat": -34.5422,
+    "targetLng": -58.4811,
+    "userLat": -34.5405,
+    "userLng": -58.4792,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Florida, Vicente López · CIUDAD DE VICENTE LÓPEZ",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 34.000 hinchas pegado a la Avenida General Paz.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🦑",
+        "tag": "PISTA 2:",
+        "text": "La histórica casa marrón y blanca del Calamar.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "El estadio de Platense en Zufriategui 2021, Florida.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "VICENTE LÓPEZ · PLATENSE",
+    "copys": {
+      "club": "CLUB ATLÉTICO PLATENSE",
+      "paisHashtag": "#platense #calamar #vicentelopez #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "La casa del Calamar junto a la General Paz."
+    }
+  },
+  {
+    "id": "norberto_tomaghello_defensa",
+    "folderName": "Argentina\\Primera División\\DEFENSA-TOMAGHELLO",
+    "nombreMostrar": "NORBERTO TOMAGHELLO",
+    "clubMostrar": "DEFENSA Y JUSTICIA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Norberto_Tomaghello_Defensa.mp4",
+    "coverFileName": "Portada_Norberto_Tomaghello_Defensa.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\defensa.mp4",
+    "targetLat": -34.8214,
+    "targetLng": -58.2861,
+    "userLat": -34.8198,
+    "userLng": -58.2842,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Florencio Varela · NORBERTO TOMAGHELLO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 20.000 espectadores en Gobernador Costa.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🦅",
+        "tag": "PISTA 2:",
+        "text": "El nido del Halcón, campeón de Copa y Recopa Sudamericana.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🟢",
+        "tag": "PISTA 3:",
+        "text": "El templo verde y amarillo de Defensa y Justicia en Florencio Varela.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "TOMAGHELLO · DEFENSA Y JUSTICIA",
+    "copys": {
+      "club": "DEFENSA Y JUSTICIA",
+      "paisHashtag": "#defensayjusticia #elhalcon #florenciovarela #futbolargentino #stadiumguessr",
+      "extraPista": "El humilde estadio de barrio que conquistó América."
+    }
+  },
+  {
+    "id": "monumental_alta_cordoba_instituto",
+    "folderName": "Argentina\\Primera División\\INSTITUTO-ALTA-CORDOBA",
+    "nombreMostrar": "MONUMENTAL DE ALTA CÓRDOBA",
+    "clubMostrar": "INSTITUTO ACC",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Monumental_De_Alta_Cordoba_Instituto.mp4",
+    "coverFileName": "Portada_Alta_Cordoba_Instituto.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\instituto.mp4",
+    "targetLat": -31.3853,
+    "targetLng": -64.1803,
+    "userLat": -31.3835,
+    "userLng": -64.1785,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Alta Córdoba · MONUMENTAL DE ALTA CÓRDOBA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 26.000 hinchas en Jujuy y Calderón de la Barca.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 2:",
+        "text": "La cuna donde debutó y brilló Mario Alberto Kempes en 1972.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 3:",
+        "text": "El reducto albirrojo de la 'Gloria' cordobesa.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ALTA CÓRDOBA · INSTITUTO",
+    "copys": {
+      "club": "INSTITUTO ACC",
+      "paisHashtag": "#institutoacc #lagloria #altacordoba #cordoba #futbolargentino #stadiumguessr",
+      "extraPista": "El Templo de La Gloria en el corazón de Alta Córdoba."
+    }
+  },
+  {
+    "id": "feliciano_gambarte_godoy_cruz",
+    "folderName": "Argentina\\Primera División\\GODOY-CRUZ-GAMBARTE",
+    "nombreMostrar": "FELICIANO GAMBARTE",
+    "clubMostrar": "GODOY CRUZ ANTONIO TOMBA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Feliciano_Gambarte_Godoy_Cruz.mp4",
+    "coverFileName": "Portada_Feliciano_Gambarte_Godoy_Cruz.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\godoy cruz.mp4",
+    "targetLat": -32.9239,
+    "targetLng": -68.8419,
+    "userLat": -32.922,
+    "userLng": -68.84,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Godoy Cruz, Mendoza · FELICIANO GAMBARTE",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 18.000 hinchas en Balcarce 477, Gran Mendoza.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🍇",
+        "tag": "PISTA 2:",
+        "text": "Conocido con orgullo por su gente como 'La Bodega'.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔵",
+        "tag": "PISTA 3:",
+        "text": "El hogar histórico del Expreso y Tomba mendocino.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "LA BODEGA · GODOY CRUZ",
+    "copys": {
+      "club": "GODOY CRUZ",
+      "paisHashtag": "#godoycruz #tomba #labodega #mendoza #futbolargentino #stadiumguessr",
+      "extraPista": "La histórica Bodega en el corazón de Godoy Cruz, Mendoza."
+    }
+  },
+  {
+    "id": "estadio_nacional_de_chile",
+    "folderName": "Chile\\ESTADIO-NACIONAL",
+    "nombreMostrar": "ESTADIO NACIONAL",
+    "clubMostrar": "SELECCIÓN DE CHILE",
+    "pais": "Chile",
+    "videoFileName": "Estadio_Nacional_Julio_Martinez_Chile.mp4",
+    "coverFileName": "Portada_Estadio_Nacional_Chile.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Nacional Julio Martínez Prádanos.mp4",
+    "targetLat": -33.4644,
+    "targetLng": -70.6106,
+    "userLat": -33.4628,
+    "userLng": -70.6088,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Ñuñoa, Santiago de Chile · ESTADIO NACIONAL",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 48.665 espectadores en la comuna de Ñuñoa.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 2:",
+        "text": "Sede de la Final del Mundial 1962 y de la Copa América 2015.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🇨🇱",
+        "tag": "PISTA 3:",
+        "text": "El coloso principal y monumento nacional de Chile.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ESTADIO NACIONAL · CHILE",
+    "copys": {
+      "club": "SELECCIÓN DE CHILE",
+      "paisHashtag": "#laroja #chile #estadionacional #nunoa #copaamerica #stadiumguessr #futbol",
+      "extraPista": "El escenario donde La Roja levantó su histórica primera Copa América."
+    }
+  },
+  {
+    "id": "claro_arena_universidad_catolica",
+    "folderName": "Chile\\CLARO-ARENA-UCATOLICA",
+    "nombreMostrar": "CLARO ARENA / SAN CARLOS",
+    "clubMostrar": "UNIVERSIDAD CATÓLICA",
+    "pais": "Chile",
+    "videoFileName": "Estadio_Claro_Arena_Universidad_Catolica.mp4",
+    "coverFileName": "Portada_Claro_Arena_Universidad_Catolica.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Claro Arena_ Club Deportivo Universidad Católica.mp4",
+    "targetLat": -33.3957,
+    "targetLng": -70.4996,
+    "userLat": -33.394,
+    "userLng": -70.4978,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Las Condes, Santiago · CLARO ARENA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 20.000 hinchas a los pies de la Cordillera de los Andes.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏔️",
+        "tag": "PISTA 2:",
+        "text": "Ubicado en el exclusivo sector de San Carlos de Apoquindo.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⚪",
+        "tag": "PISTA 3:",
+        "text": "La renovada fortaleza de los Cruzados de Universidad Católica.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "SAN CARLOS · U. CATÓLICA",
+    "copys": {
+      "club": "UNIVERSIDAD CATÓLICA",
+      "paisHashtag": "#cruzados #ucatolica #sancarlos #claroarena #chile #stadiumguessr #futbol",
+      "extraPista": "La moderna fortaleza cruzada con vista a la cordillera nevada."
+    }
+  },
+  {
+    "id": "estadio_sausalito_everton",
+    "folderName": "Chile\\SAUSALITO-EVERTON",
+    "nombreMostrar": "ESTADIO SAUSALITO",
+    "clubMostrar": "EVERTON DE VIÑA DEL MAR",
+    "pais": "Chile",
+    "videoFileName": "Estadio_Sausalito_Everton_Vina.mp4",
+    "coverFileName": "Portada_Sausalito_Everton_Vina.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Chile1\\Sausalito Everton CD.mp4",
+    "targetLat": -33.0135,
+    "targetLng": -71.5369,
+    "userLat": -33.0118,
+    "userLng": -71.535,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Viña del Mar, Chile · ESTADIO SAUSALITO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 23.000 hinchas a orillas de la laguna Sausalito.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌊",
+        "tag": "PISTA 2:",
+        "text": "Uno de los estadios más pintorescos de la Ciudad Jardín.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🇺🇦",
+        "tag": "PISTA 3:",
+        "text": "El hogar oro y cielo de Everton de Viña del Mar.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "SAUSALITO · EVERTON VIÑA",
+    "copys": {
+      "club": "EVERTON DE VIÑA DEL MAR",
+      "paisHashtag": "#evertonvina #sausalito #vinadelmar #chile #stadiumguessr #futbol",
+      "extraPista": "El encanto de la laguna y el fútbol junto al mar."
+    }
+  },
+  {
+    "id": "estadio_santa_laura_union_espanola",
+    "folderName": "Chile\\SANTA-LAURA-UNION-ESP",
+    "nombreMostrar": "ESTADIO SANTA LAURA",
+    "clubMostrar": "UNIÓN ESPAÑOLA",
+    "pais": "Chile",
+    "videoFileName": "Estadio_Santa_Laura_Union_Espanola.mp4",
+    "coverFileName": "Portada_Santa_Laura_Union_Espanola.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Chile1\\Subidos\\Unión española chile.mp4",
+    "targetLat": -33.4042,
+    "targetLng": -70.6586,
+    "userLat": -33.4025,
+    "userLng": -70.6568,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Independencia, Santiago · SANTA LAURA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 19.887 hinchas en la comuna de Independencia.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🇪🇸",
+        "tag": "PISTA 2:",
+        "text": "Inaugurado en 1923, es el estadio en funcionamiento más antiguo de Chile.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 3:",
+        "text": "La 'Catedral' del fútbol chileno y hogar de los Hispanos.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "SANTA LAURA · UNIÓN ESPAÑOLA",
+    "copys": {
+      "club": "UNIÓN ESPAÑOLA",
+      "paisHashtag": "#unionespanola #santalaura #independencia #chile #futbolchileno #stadiumguessr",
+      "extraPista": "La Catedral más antigua del fútbol chileno en Plaza Chacabuco."
+    }
+  },
+  {
+    "id": "el_teniente_ohiggins",
+    "folderName": "Chile\\EL-TENIENTE-OHIGGINS",
+    "nombreMostrar": "ESTADIO EL TENIENTE",
+    "clubMostrar": "O'HIGGINS DE RANCAGUA",
+    "pais": "Chile",
+    "videoFileName": "Estadio_El_Teniente_OHiggins.mp4",
+    "coverFileName": "Portada_El_Teniente_OHiggins.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Chile1\\El Teniente OHiggins.mp4",
+    "targetLat": -34.1778,
+    "targetLng": -70.7381,
+    "userLat": -34.176,
+    "userLng": -70.7362,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Rancagua, Chile · ESTADIO EL TENIENTE",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 14.087 hinchas en la Región de O'Higgins.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⛏️",
+        "tag": "PISTA 2:",
+        "text": "Nombrado en honor a la mina de cobre subterránea más grande del planeta.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🩵",
+        "tag": "PISTA 3:",
+        "text": "Histórica sede del Mundial 1962 y hogar del Capo de Provincia.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "EL TENIENTE · O'HIGGINS",
+    "copys": {
+      "club": "O'HIGGINS DE RANCAGUA",
+      "paisHashtag": "#ohiggins #elteniente #rancagua #capodeprovincia #chile #stadiumguessr",
+      "extraPista": "El templo del Capo de Provincia con herencia minera y mundialista."
+    }
+  },
+  {
+    "id": "artemio_franchi_fiorentina",
+    "folderName": "Italia\\ARTEMIO-FRANCHI-FIORENTINA",
+    "nombreMostrar": "ARTEMIO FRANCHI",
+    "clubMostrar": "ACF FIORENTINA",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Artemio_Franchi_Fiorentina.mp4",
+    "coverFileName": "Portada_Artemio_Franchi_Fiorentina.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Artemio Franchi Fiorentina.mp4",
+    "targetLat": 43.7808,
+    "targetLng": 11.2828,
+    "userLat": 43.779,
+    "userLng": 11.281,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Florencia, Italia · ARTEMIO FRANCHI",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 43.147 hinchas en el distrito de Campo di Marte.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🗼",
+        "tag": "PISTA 2:",
+        "text": "Famoso por su icónica Torre di Maratona de 70 metros de altura.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "💜",
+        "tag": "PISTA 3:",
+        "text": "La casa violeta donde brilló Gabriel Omar Batistuta.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "ARTEMIO FRANCHI · FIORENTINA",
+    "copys": {
+      "club": "ACF FIORENTINA",
+      "paisHashtag": "#fiorentina #artemiofranchi #firenze #batistuta #seriea #calcio #stadiumguessr",
+      "extraPista": "La joya arquitectónica de Florencia donde reinó Batigol."
+    }
+  },
+  {
+    "id": "giuseppe_sinigaglia_como",
+    "folderName": "Italia\\SINIGAGLIA-COMO",
+    "nombreMostrar": "GIUSEPPE SINIGAGLIA",
+    "clubMostrar": "COMO 1907",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Giuseppe_Sinigaglia_Como.mp4",
+    "coverFileName": "Portada_Giuseppe_Sinigaglia_Como.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Subidos\\Como Nico Paz.mp4",
+    "targetLat": 45.8142,
+    "targetLng": 9.0747,
+    "userLat": 45.8125,
+    "userLng": 9.073,
+    "distanciaTexto": "230 METROS",
+    "puntosTexto": "4.960 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Como, Lombardía · GIUSEPPE SINIGAGLIA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 13.602 espectadores directamente a orillas del agua.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌊",
+        "tag": "PISTA 2:",
+        "text": "Ubicado frente al mundialmente famoso Lago de Como.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "💎",
+        "tag": "PISTA 3:",
+        "text": "El equipo revelación de la Serie A con Nico Paz y Cesc Fàbregas.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "SINIGAGLIA · COMO 1907",
+    "copys": {
+      "club": "COMO 1907",
+      "paisHashtag": "#como1907 #nicopaz #cescfabregas #lagodicomo #seriea #calcio #stadiumguessr",
+      "extraPista": "El estadio más cinematográfico del fútbol mundial al borde del Lago de Como."
+    }
+  },
+  {
+    "id": "gewiss_stadium_atalanta",
+    "folderName": "Italia\\GEWISS-STADIUM-ATALANTA",
+    "nombreMostrar": "GEWISS STADIUM",
+    "clubMostrar": "ATALANTA BC",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Gewiss_Stadium_Atalanta.mp4",
+    "coverFileName": "Portada_Gewiss_Stadium_Atalanta.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Subidos\\Gewiss Stadium Atalanta.mp4",
+    "targetLat": 45.7089,
+    "targetLng": 9.6806,
+    "userLat": 45.7072,
+    "userLng": -9.6788,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Bérgamo, Lombardía · GEWISS STADIUM",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 24.950 hinchas tras su espectacular remodelación.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏆",
+        "tag": "PISTA 2:",
+        "text": "El fortín de la 'Dea', campeona de la UEFA Europa League.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🖤",
+        "tag": "PISTA 3:",
+        "text": "El templo nerazzurro de Bérgamo donde brilló el Papu Gómez.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "GEWISS STADIUM · ATALANTA",
+    "copys": {
+      "club": "ATALANTA BC",
+      "paisHashtag": "#atalanta #gewissstadium #bergamo #seriea #calcio #europaleague #stadiumguessr",
+      "extraPista": "La caldera de Bérgamo donde la Dea conquistó Europa."
+    }
+  },
+  {
+    "id": "renato_dallara_bologna",
+    "folderName": "Italia\\RENATO-DALLARA-BOLOGNA",
+    "nombreMostrar": "RENATO DALL'ARA",
+    "clubMostrar": "BOLOGNA FC",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Renato_DallAra_Bologna.mp4",
+    "coverFileName": "Portada_Renato_DallAra_Bologna.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Renato DallAra Bologna.mp4",
+    "targetLat": 44.4922,
+    "targetLng": 11.3097,
+    "userLat": 44.4938,
+    "userLng": 11.3115,
+    "distanciaTexto": "230 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Bolonia, Emilia-Romaña · RENATO DALL'ARA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 36.462 hinchas en la histórica Bolonia.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🧱",
+        "tag": "PISTA 2:",
+        "text": "Inconfundible estructura de ladrillo rojo y su famosa Torre de Maratona.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 3:",
+        "text": "La casa rossoblù del Bologna FC, histórico de Italia.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "RENATO DALL'ARA · BOLOGNA",
+    "copys": {
+      "club": "BOLOGNA FC",
+      "paisHashtag": "#bolognafc #renatodallara #bologna #seriea #calcio #stadiumguessr #futbol",
+      "extraPista": "La icónica torre de ladrillo rojo del fútbol italiano."
+    }
+  },
+  {
+    "id": "luigi_ferraris_genoa",
+    "folderName": "Italia\\LUIGI-FERRARIS-GENOA",
+    "nombreMostrar": "LUIGI FERRARIS",
+    "clubMostrar": "GENOA CFC / SAMPDORIA",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Luigi_Ferraris_Genoa.mp4",
+    "coverFileName": "Portada_Luigi_Ferraris_Genoa.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Subidos\\Luigi Ferraris_Genoa.mp4",
+    "targetLat": 44.4164,
+    "targetLng": 8.9525,
+    "userLat": 44.4148,
+    "userLng": 8.9508,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.950 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Marassi, Génova · LUIGI FERRARIS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 36.599 espectadores en el barrio de Marassi.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏰",
+        "tag": "PISTA 2:",
+        "text": "Arquitectura inglesa con 4 torres angulares de ladrillo rojo.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⚔️",
+        "tag": "PISTA 3:",
+        "text": "El coloso compartido del Derby della Lanterna (Genoa y Sampdoria).",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "MARASSI · GENOA / SAMPDORIA",
+    "copys": {
+      "club": "GENOA / SAMPDORIA",
+      "paisHashtag": "#luigiferraris #marassi #genoa #sampdoria #derbydellalanterna #seriea",
+      "extraPista": "El estadio estilo británico más antiguo de Italia en el barrio de Marassi."
+    }
+  },
+  {
+    "id": "pier_luigi_penzo_venezia",
+    "folderName": "Italia\\PIER-LUIGI-PENZO-VENEZIA",
+    "nombreMostrar": "PIER LUIGI PENZO",
+    "clubMostrar": "VENEZIA FC",
+    "pais": "Italia",
+    "videoFileName": "Estadio_Pier_Luigi_Penzo_Venezia.mp4",
+    "coverFileName": "Portada_Pier_Luigi_Penzo_Venezia.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Italia\\Pier Luigi Penzo Venezia FC.mp4",
+    "targetLat": 45.4286,
+    "targetLng": 12.3619,
+    "userLat": 45.427,
+    "userLng": 12.3602,
+    "distanciaTexto": "230 METROS",
+    "puntosTexto": "4.960 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Isla de Sant'Elena, Venecia · PIER LUIGI PENZO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 11.150 espectadores en la isla de Sant'Elena.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🚤",
+        "tag": "PISTA 2:",
+        "text": "¡El único estadio del mundo al que los hinchas y jugadores llegan en barco!",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🎭",
+        "tag": "PISTA 3:",
+        "text": "El hogar de los 'Arancioneroverdi' del Venezia FC en la laguna véneta.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "PIER LUIGI PENZO · VENEZIA",
+    "copys": {
+      "club": "VENEZIA FC",
+      "paisHashtag": "#veneziafc #pierluigipenzo #venezia #venice #calcio #seriea #stadiumguessr",
+      "extraPista": "El estadio insular rodeado por los canales de Venecia."
+    }
   }
 ];
 
