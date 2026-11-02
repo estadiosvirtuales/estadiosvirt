@@ -991,6 +991,7 @@ function comprobarRecompensaNivel(nivelActual) {
 }
 
 function cerrarModalRecompensa() {
+    if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     document.getElementById('modal-recompensa-avatar').style.display = 'none';
 
     // Si hubo más de un fichaje desbloqueado en la misma subida de nivel, abre el siguiente
@@ -1978,15 +1979,15 @@ function abrirModalOpcionesCompartir() {
                     <i class="ph-fill ph-whatsapp-logo" style="color:#25d366; font-size:1.4rem;"></i>
                     <div class="share-opt-text">
                         <strong>Enviar por WhatsApp</strong>
-                        <span>Desafío directo con mensaje y enlace a tu perfil</span>
+                        <span>Compartí tu carta y desafiá a tus amigos</span>
                     </div>
                     <i class="ph-bold ph-caret-right" style="color:var(--text-muted); margin-left:auto;"></i>
                 </button>
                 <button type="button" class="share-opt-btn btn-opt-poster" onclick="generarYDescargarPosterFUT(); cerrarModalOpcionesCompartir();">
                     <i class="ph-duotone ph-image" style="color:#38bdf8; font-size:1.4rem;"></i>
                     <div class="share-opt-text">
-                        <strong>Descargar Historia 9:16</strong>
-                        <span>Imagen HD lista para Instagram, TikTok o Estados</span>
+                        <strong>Guardar Carta</strong>
+                        <span>Descargá tu carta oficial con tus estadísticas y desafío</span>
                     </div>
                     <i class="ph-bold ph-caret-right" style="color:var(--text-muted); margin-left:auto;"></i>
                 </button>
@@ -2299,7 +2300,7 @@ async function generarYDescargarPosterFUT() {
         return;
     }
 
-    showToast("Preparando tu carta", "ph-hourglass", "info");
+    showToast("Guardando tu carta...", "ph-hourglass", "info");
 
     const nivelIdx = calcularNivelIdx(userStats.xpTotal);
     const nivel = NIVELES[nivelIdx];
@@ -2313,7 +2314,7 @@ async function generarYDescargarPosterFUT() {
     // 1. Contenedor anclado a (0,0) detrás de la interfaz para captura exacta sin desfasajes
     const poster = document.createElement('div');
     poster.id = 'poster-export-container';
-    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: #090e15; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
+    poster.style.cssText = 'position: fixed; left: 0; top: 0; width: 450px; height: 800px; z-index: -9999; opacity: 1; pointer-events: none; background: radial-gradient(circle at 50% 28%, #0d2724 0%, #0c1626 55%, #060a10 100%); overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 24px 20px 20px; box-sizing: border-box; font-family: "Segoe UI", system-ui, sans-serif; color: #ffffff;';
 
     const logoHeaderUrl = new URL('escudos/Logo.webp', window.location.href).href;
     const nivelIconUrl = new URL(nivel.iconUrl || 'pelota.webp', window.location.href).href;
@@ -2331,6 +2332,7 @@ async function generarYDescargarPosterFUT() {
         </div>
 
         <div class="poster-card-wrapper" style="position:relative; display:flex; justify-content:center; align-items:center; margin:6px 0; width:100%; height:455px;">
+            <div style="position:absolute; width:280px; height:380px; border-radius:24px; background:radial-gradient(circle, rgba(0,230,118,0.18) 0%, transparent 70%); filter:blur(16px); z-index:1;"></div>
             <div id="poster-card-clone-container" style="z-index:5;"></div>
         </div>
 
@@ -2375,9 +2377,10 @@ async function generarYDescargarPosterFUT() {
     // Clon de la carta FUT
     const cardClone = cardElement.cloneNode(true);
     cardClone.id = "fut-card-clone";
-    cardClone.style.transform = 'scale(1.16)';
+    cardClone.style.transform = 'scale(1.0)';
     cardClone.style.transformOrigin = 'center center';
     cardClone.style.margin = '0';
+    cardClone.style.boxShadow = '0 12px 35px rgba(0,0,0,0.6)';
     poster.querySelector('#poster-card-clone-container').appendChild(cardClone);
 
     try {
@@ -2439,7 +2442,7 @@ async function generarYDescargarPosterFUT() {
             document.body.appendChild(link);
             link.click();
             link.remove();
-            showToast("¡Póster descargado con éxito! 🏆", "ph-check-circle", "success");
+            showToast("¡Tu carta fue guardada con éxito! 🏆", "ph-check-circle", "success");
         };
 
         const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -2473,7 +2476,7 @@ async function generarYDescargarPosterFUT() {
     } catch (error) {
         console.error("Error al exportar el póster de la carta FUT:", error);
         if (poster && poster.parentNode) poster.remove();
-        showToast("Error al generar la imagen. Intentá de nuevo.", "ph-warning-circle", "danger");
+        showToast("Error al guardar la carta. Intentá de nuevo.", "ph-warning-circle", "danger");
     }
 }
 

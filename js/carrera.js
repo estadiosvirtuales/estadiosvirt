@@ -988,6 +988,7 @@ window.saltarSimulacionCompleta = function() {
 };
 
 window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
+    if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
     if (simIntervalo) { clearInterval(simIntervalo); simIntervalo = null; }
     if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
@@ -5805,6 +5806,7 @@ window.reclamarRecompensaCofreTemporada = function() {
 
     const modal = document.getElementById('modal-cofre-temporada');
     if (modal) modal.style.display = 'none';
+    if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
 
     showToast(`¡Acreditaste +${spGanado} SP y +${cofreTemporadaPendiente.xp.toLocaleString('es-AR')} XP a tu club! ⚡🏆`, "ph-lightning", "success");
 

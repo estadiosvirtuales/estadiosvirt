@@ -257,6 +257,7 @@ dispararEfectoLucesGaming();
 setTimeout(() => { if (typeof lanzarConfetti === 'function') lanzarConfetti('oro'); }, 200);
 }
 function cerrarLevelUp(){
+    if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     document.getElementById('levelup-overlay').classList.remove('active');
     setTimeout(() => {
         if (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) {
@@ -288,6 +289,7 @@ window.mostrarModalPremio = function(data) {
 };
 
 window.cerrarModalPremio = function() {
+    if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     const overlay = document.getElementById('reward-overlay');
     if (overlay) {
         overlay.classList.remove('active');
@@ -525,10 +527,10 @@ async function verificarPremiosPendientes() {
             rotationSpeed: (Math.random() - 0.5) * 5.5,
             wobble: Math.random() * 10,
             wobbleSpeed: 0.06 + Math.random() * 0.08,
-            gravity: (0.16 + Math.random() * 0.09) * dpr,
+            gravity: (0.24 + Math.random() * 0.1) * dpr,
             drag: 0.984,
             opacity: 1,
-            fadeSpeed: 0.003 + Math.random() * 0.0028
+            fadeSpeed: 0.007 + Math.random() * 0.004
         };
     }
 
@@ -687,6 +689,19 @@ async function verificarPremiosPendientes() {
             animFrameId = requestAnimationFrame(animar);
         }
     };
+
+    window.detenerConfetti = function() {
+        particles = [];
+        if (animFrameId) {
+            cancelAnimationFrame(animFrameId);
+            animFrameId = null;
+        }
+        if (activeCanvas) {
+            activeCanvas.remove();
+            activeCanvas = null;
+            activeCtx = null;
+        }
+    };
 })();
 
 
@@ -754,5 +769,6 @@ window.mostrarModalPremio = mostrarModalPremio;
 window.cerrarModalPremio = cerrarModalPremio;
 window.verificarPremiosPendientes = verificarPremiosPendientes;
 window.lanzarConfetti = lanzarConfetti;
+window.detenerConfetti = window.detenerConfetti;
 window.showToast = showToast;
 window.toggleTheme = toggleTheme;
