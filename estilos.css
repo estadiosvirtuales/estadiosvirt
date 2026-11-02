@@ -3785,11 +3785,33 @@ body.video-abierto .hero-section {
     line-height: 1.35;
 }
 
-#guessr-modal .guessr-modes-arcade-grid {
+#guessr-modal .guessr-modes-arcade-grid,
+#carrera-modal .guessr-modes-arcade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     width: 100%;
+}
+
+.carrera-hub-stats-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+[data-theme="light"] .carrera-hub-stats-pill {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
 }
 
 .arcade-mode-card {
@@ -15804,11 +15826,33 @@ body.video-abierto .hero-section {
     line-height: 1.35;
 }
 
-#guessr-modal .guessr-modes-arcade-grid {
+#guessr-modal .guessr-modes-arcade-grid,
+#carrera-modal .guessr-modes-arcade-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     width: 100%;
+}
+
+.carrera-hub-stats-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+[data-theme="light"] .carrera-hub-stats-pill {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
 }
 
 .arcade-mode-card {

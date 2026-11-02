@@ -146,7 +146,7 @@ window.iniciarDesafioOnceRivalDirecto = function() {
     if (!rival) return;
 
     if ((rival.nivelActual || 0) < 4) {
-        showToast(`${rival.custom_nick} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 4) 🔒`, "ph-lock-key", "warning");
+        showToast(`${rival.custom_nick} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 4)`, "ph-lock-key", "warning");
         return;
     }
 
@@ -161,7 +161,7 @@ window.iniciarDesafioOnceRivalDirecto = function() {
     }
 
     if (countUser < 11) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -430,7 +430,7 @@ window.clickBotonTorneoOnce = function() {
 
     const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
     if (miNivel < 4 || count < 11) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -750,15 +750,15 @@ window.seleccionarCopaParaJugar = function(tierKey) {
     const copas = userStats.copasGanadas || [];
 
     if (tierKey === 'continental' && ovrEquipo < 70 && !copas.some(c => c.tier === 'nacional')) {
-        showToast("Tu equipo necesita al menos 70 GRL o ganar la Copa Desafío para clasificar 🔒", "ph-lock-key", "warning");
+        showToast("Tu equipo necesita al menos 70 GRL o ganar la Copa Desafío para clasificar", "ph-lock-key", "warning");
         return;
     }
     if (tierKey === 'mundial_clubes' && ovrEquipo < 80 && !copas.some(c => c.tier === 'continental')) {
-        showToast("El Mundial de Clubes requiere al menos 80 GRL o ganar la Copa Continental 🔒", "ph-lock-key", "warning");
+        showToast("El Mundial de Clubes requiere al menos 80 GRL o ganar la Copa Continental", "ph-lock-key", "warning");
         return;
     }
     if (tierKey === 'mundial' && ovrEquipo < 85 && !copas.some(c => c.tier === 'mundial_clubes')) {
-        showToast("La Copa del Mundo requiere un Once Galáctico de 85+ GRL o ganar el Mundial de Clubes 👑🔒", "ph-lock-key", "warning");
+        showToast("La Copa del Mundo requiere un Once Galáctico de 85+ GRL o ganar el Mundial de Clubes", "ph-lock-key", "warning");
         return;
     }
 
@@ -2493,7 +2493,7 @@ window.asignarJugadorAOnce = function(avatarId) {
     const nivelReq = obtenerNivelAvatar(avatarId);
     const nivelUser = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
     if (nivelUser < nivelReq) {
-        showToast(`¡Este futbolista se desbloquea en el Nivel ${nivelReq}! 🔒`, "ph-lock-key", "warning");
+        showToast(`¡Este futbolista se desbloquea en el Nivel ${nivelReq}!`, "ph-lock-key", "warning");
         return;
     }
 
@@ -3574,7 +3574,7 @@ window.cerrarModalModoCarrera = function() {
 window.clickJugarCopaDesdeCarrera = function() {
     const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
     if (miNivel < 4) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -3586,7 +3586,7 @@ window.clickJugarCopaDesdeCarrera = function() {
     }
 
     if (count < 11) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -3597,7 +3597,7 @@ window.clickJugarCopaDesdeCarrera = function() {
 window.clickJugarLigaDesdeCarrera = function() {
     const miNivel = (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) ? userStats.nivelActual : 0;
     if (miNivel < 4) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -3609,7 +3609,7 @@ window.clickJugarLigaDesdeCarrera = function() {
     }
 
     if (count < 11) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -3657,22 +3657,22 @@ window.abrirPalmaresDesdeCarrera = function() {
                 <div class="palmares-cup-item ${ganoNac ? 'unlocked' : 'locked'}" style="padding:14px 10px;">
                     <img src="medalla-bronce.webp" alt="Copa Desafío" class="palmares-cup-img" style="width:52px; height:52px;">
                     <strong style="font-size:0.86rem; margin-top:4px;">Copa Desafío</strong>
-                    <span style="font-size:0.72rem;">${ganoNac ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
+                    <span style="font-size:0.72rem; display:inline-flex; align-items:center; gap:4px;">${ganoNac ? '<i class="ph-bold ph-trophy" style="color:#fbbf24;"></i> Campeón' : '<i class="ph-bold ph-lock-key" style="color:var(--text-muted);"></i> Sin ganar'}</span>
                 </div>
                 <div class="palmares-cup-item ${ganoCont ? 'unlocked' : 'locked'}" style="padding:14px 10px;">
                     <img src="medalla-plata.webp" alt="Copa Continental" class="palmares-cup-img" style="width:52px; height:52px;">
                     <strong style="font-size:0.86rem; margin-top:4px;">Copa Continental</strong>
-                    <span style="font-size:0.72rem;">${ganoCont ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
+                    <span style="font-size:0.72rem; display:inline-flex; align-items:center; gap:4px;">${ganoCont ? '<i class="ph-bold ph-trophy" style="color:#fbbf24;"></i> Campeón' : '<i class="ph-bold ph-lock-key" style="color:var(--text-muted);"></i> Sin ganar'}</span>
                 </div>
                 <div class="palmares-cup-item ${ganoClubes ? 'unlocked' : 'locked'}" style="padding:14px 10px;">
                     <img src="medalla-oro.webp" alt="Mundial de Clubes" class="palmares-cup-img" style="width:52px; height:52px;">
                     <strong style="font-size:0.86rem; margin-top:4px;">Mundial de Clubes</strong>
-                    <span style="font-size:0.72rem;">${ganoClubes ? '🏆 Campeón' : '🔒 Sin ganar'}</span>
+                    <span style="font-size:0.72rem; display:inline-flex; align-items:center; gap:4px;">${ganoClubes ? '<i class="ph-bold ph-trophy" style="color:#fbbf24;"></i> Campeón' : '<i class="ph-bold ph-lock-key" style="color:var(--text-muted);"></i> Sin ganar'}</span>
                 </div>
                 <div class="palmares-cup-item ${ganoMundial ? 'unlocked' : 'locked'}" style="padding:14px 10px;">
                     <img src="estrella.webp" alt="Copa del Mundo" class="palmares-cup-img" style="width:52px; height:52px;">
                     <strong style="font-size:0.86rem; margin-top:4px;">Copa del Mundo</strong>
-                    <span style="font-size:0.72rem;">${ganoMundial ? '👑 Campeón' : '🔒 Sin ganar'}</span>
+                    <span style="font-size:0.72rem; display:inline-flex; align-items:center; gap:4px;">${ganoMundial ? '<i class="ph-bold ph-crown" style="color:#fbbf24;"></i> Campeón' : '<i class="ph-bold ph-lock-key" style="color:var(--text-muted);"></i> Sin ganar'}</span>
                 </div>
             </div>
 
@@ -4441,7 +4441,7 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
     }
 
     if (countUser < 11) {
-        showToast("Subí al Nivel 4 para desbloquear este modo 🔒", "ph-lock-key", "warning");
+        showToast("Subí al Nivel 4 para desbloquear este modo", "ph-lock-key", "warning");
         return;
     }
 
@@ -4497,7 +4497,7 @@ window.desafiarDesdeRankingCarrera = async function(nombreRival) {
     }
 
     if (datosRival.nivelActual < 4) {
-        showToast(`${nombreRival} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 4) 🔒`, "ph-lock-key", "warning");
+        showToast(`${nombreRival} todavía no tiene los 11 titulares desbloqueados (Requiere Nivel 4)`, "ph-lock-key", "warning");
         return;
     }
 
