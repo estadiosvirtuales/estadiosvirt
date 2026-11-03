@@ -2087,10 +2087,13 @@ async function finalizarJuegoGuessr(){
         localStorage.setItem('ev_reto_diario_fecha_' + idUsuario, fechaHoyStr);
     }
 
-    if(guessrPuntosTotales>userStats.maxScore)userStats.maxScore=guessrPuntosTotales;
-    if(guessrPuntosTotales>=20000)userStats.scoreMayor20000=true;
-    if(guessrPuntosTotales>=10000)userStats.scoreMayor10000=true;
-    if(guessrHistorialRondas.length===5&&guessrHistorialRondas.every(r=>r.puntos>=4000))userStats.guessrPerfecto=true;
+    const diffActualPartida = guessrDificultad || 'medio';
+    const statKeyDiff = 'maxScore_' + diffActualPartida;
+    if (guessrPuntosTotales > (userStats[statKeyDiff] || 0)) userStats[statKeyDiff] = guessrPuntosTotales;
+    if (guessrPuntosTotales > userStats.maxScore) userStats.maxScore = guessrPuntosTotales;
+    if (guessrPuntosTotales >= 20000) userStats.scoreMayor20000 = true;
+    if (guessrPuntosTotales >= 10000) userStats.scoreMayor10000 = true;
+    if (guessrHistorialRondas.length === 5 && guessrHistorialRondas.every(r => r.puntos >= 4000)) userStats.guessrPerfecto = true;
     userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
     guardarStats();
 
@@ -2110,7 +2113,7 @@ async function finalizarJuegoGuessr(){
     userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + spGanados;
 
     pendingScore = guessrPuntosTotales;
-    pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : 'guessr';
+    pendingScoreType = eraRetoDiario ? ('diario_' + fechaHoyStr) : ('guessr_' + diffActualPartida);
 
     // 🚀 AUTO-GUARDADO SILENCIOSO EN SERVIDOR
     const esAutomatizado = typeof navigator !== 'undefined' && (navigator.webdriver || window.__TIKTOK_RECORDER__);
@@ -2160,7 +2163,7 @@ async function finalizarJuegoGuessr(){
     
     let botonCompartirDiario = '';
     let botonRejugar = '';
-    const paramRanking = eraRetoDiario ? "'diario'" : "'solo'";
+    const paramRanking = eraRetoDiario ? "'diario'" : `'solo', '${diffActualPartida}'`;
 
     if (eraRetoDiario) {
         botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share" style="width:100%; padding:9px 12px; font-size:.82rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
@@ -2235,7 +2238,10 @@ async function finalizarJuegoGuessr(){
 
 function guardarScoreGuessr(btn){
     pendingScore = guessrPuntosTotales;
-    if (!pendingScoreType) pendingScoreType = 'guessr';
+    if (!pendingScoreType) {
+        const diff = guessrDificultad || 'medio';
+        pendingScoreType = 'guessr_' + diff;
+    }
     guardarScorePendiente(btn);
 }
 window.cambiarApodoDesdePantallaFinal = async function() {
@@ -2333,16 +2339,26 @@ function esRegistroBot(nombre, puntaje) {
 }
 window.esRegistroBot = esRegistroBot;
 
-async function abrirModalRanking(modoEspecifico = 'solo') {
+async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) {
     const body = document.getElementById('ranking-modal-body');
     body.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--text-muted);"><i class="ph-duotone ph-circle-notch" style="font-size:2.5rem;color:var(--accent-color);animation:spinSlow 1s linear infinite;"></i><br><br>Conectando...</div>';
     document.getElementById('ranking-modal').style.display = 'flex';
     await precargarAvataresComunidad();
 
-    let activeSolo = modoEspecifico === 'solo' ? 'active' : '';
-    let activeVHist = modoEspecifico === 'v_historico' ? 'active' : '';
-    let activeVSem = modoEspecifico === 'v_semanal' ? 'active' : '';
-    let activeDiario = modoEspecifico === 'diario' ? 'active' : '';
+    let modo = modoEspecifico || 'solo';
+    let diffActual = subDificultad;
+    if (modo.startsWith('solo_')) {
+        diffActual = modo.replace('solo_', '');
+        modo = 'solo';
+    }
+    if (modo === 'solo' && !diffActual) {
+        diffActual = 'medio';
+    }
+
+    let activeSolo = modo === 'solo' ? 'active' : '';
+    let activeVHist = modo === 'v_historico' ? 'active' : '';
+    let activeVSem = modo === 'v_semanal' ? 'active' : '';
+    let activeDiario = modo === 'diario' ? 'active' : '';
 
     const u = obtenerUsuarioLogueado();
     const miNombre = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos');
@@ -2356,7 +2372,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
 
     let subMenuHTML = `
     <div class="liga-tabs-row ranking-tabs-row">
-        <button class="liga-tab-btn tab-btn-solo ${activeSolo}" onclick="abrirModalRanking('solo')">
+        <button class="liga-tab-btn tab-btn-solo ${activeSolo}" onclick="abrirModalRanking('solo', '${diffActual || 'medio'}')">
             <img src="ranking-icon-solo.webp" alt="Solo" class="ranking-tab-img"> <span>Individual</span>
         </button>
         <button class="liga-tab-btn tab-btn-versus ${activeVHist}" onclick="abrirModalRanking('v_historico')">
@@ -2389,7 +2405,7 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             return `<span class="ranking-pos-slot"><span class="ranking-pos-num">${idx + 1}</span></span>`;
         };
 
-        if (modoEspecifico === 'diario') {
+        if (modo === 'diario') {
             const hoy = new Date();
             const fechaHoy = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
             const fechaVisual = String(hoy.getDate()).padStart(2, '0') + '/' + String(hoy.getMonth() + 1).padStart(2, '0');
@@ -2483,13 +2499,23 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
 
             htmlContenido += '</div>';
 
-        } else if (modoEspecifico === 'solo') {
-            const { data: rankingRaw, error } = await supabaseClient
+        } else if (modo === 'solo') {
+            const diffElegida = diffActual || 'medio';
+            let query = supabaseClient
                 .from('ranking')
                 .select('nombre, puntaje')
-                .eq('juego', 'guessr')
                 .order('puntaje', { ascending: false })
                 .limit(500);
+
+            if (diffElegida === 'dificil') {
+                query = query.eq('juego', 'guessr_dificil');
+            } else if (diffElegida === 'facil') {
+                query = query.eq('juego', 'guessr_facil');
+            } else {
+                query = query.in('juego', ['guessr_medio', 'guessr']);
+            }
+
+            const { data: rankingRaw, error } = await query;
             if (error) throw error;
 
             const mejorPorJugador = {};
@@ -2510,22 +2536,64 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
             const miPuestoIdx = todosOrdenados.findIndex(f => (f.nombre || '').trim().toLowerCase() === miApodo);
             const miFila = miPuestoIdx !== -1 ? todosOrdenados[miPuestoIdx] : null;
 
-            // 🎯 Récord personal exclusivo del usuario (de su propia fila en el ranking o de su sesión local)
+            // 🎯 Récord personal exclusivo del usuario para esta dificultad
             let recordReal = miFila ? (miFila.puntaje || 0) : 0;
-            if (userStats.maxScore && userStats.maxScore <= 25000 && userStats.maxScore > recordReal) {
-                recordReal = userStats.maxScore;
+            let maxLocal = 0;
+            if (diffElegida === 'dificil') {
+                maxLocal = userStats.maxScore_dificil || 0;
+            } else if (diffElegida === 'facil') {
+                maxLocal = userStats.maxScore_facil || 0;
+            } else {
+                maxLocal = userStats.maxScore_medio || userStats.maxScore || 0;
+            }
+            if (maxLocal > recordReal && maxLocal <= 25000) {
+                recordReal = maxLocal;
             }
 
             const textoRecord = recordReal > 0 ? `${recordReal.toLocaleString('es-AR')} pts` : 'Sin récord';
 
+            let diffSubTitulo = 'Individual · Crack';
+            let diffColor = '#eab308';
+            let diffGlow = 'glow-gold';
+            let pillLabelRecord = 'RÉCORD CRACK';
+            let noticeBannerHTML = '';
+
+            if (diffElegida === 'dificil') {
+                diffSubTitulo = 'Individual · Leyenda';
+                diffColor = '#ff4757';
+                diffGlow = 'glow-ruby';
+                pillLabelRecord = 'RÉCORD LEYENDA';
+                noticeBannerHTML = `
+                <div class="ranking-reward-notice dificil">
+                    <i class="ph-fill ph-lightning"></i>
+                    <span><b>Dificultad Leyenda (Hardcore):</b> Récords sin pistas de ayuda bajo cuenta regresiva estricta de 45 segundos por ronda (1.5x XP).</span>
+                </div>`;
+            } else if (diffElegida === 'facil') {
+                diffSubTitulo = 'Individual · Promesa';
+                diffColor = '#00e676';
+                diffGlow = 'glow-green';
+                pillLabelRecord = 'RÉCORD PROMESA';
+                noticeBannerHTML = `
+                <div class="ranking-reward-notice facil">
+                    <i class="ph-fill ph-info"></i>
+                    <span><b>Dificultad Promesa (Inicial):</b> Partidas con globito interactivo de pistas de país y capacidad (0.8x XP).</span>
+                </div>`;
+            } else {
+                noticeBannerHTML = `
+                <div class="ranking-reward-notice medio">
+                    <i class="ph-fill ph-shield-star"></i>
+                    <span><b>Dificultad Crack (Estándar):</b> Vuelo libre sin pistas de ubicación ni límite de tiempo (1.0x XP).</span>
+                </div>`;
+            }
+
             headerConfig = {
                 img: 'liga-trofeo-header.webp',
-                glowClass: 'glow-green',
+                glowClass: diffGlow,
                 badgeImg: 'ranking-icon-solo.webp',
                 badgeTitle: 'Top 50 Global',
-                badgeSub: 'Individual',
-                badgeColor: '#00ff77',
-                pill1Label: 'TU MEJOR PARTIDA',
+                badgeSub: diffSubTitulo,
+                badgeColor: diffColor,
+                pill1Label: pillLabelRecord,
                 pill1Val: textoRecord,
                 pill1Icon: 'ph-trophy',
                 pill2Label: 'TU RANGO',
@@ -2536,9 +2604,44 @@ async function abrirModalRanking(modoEspecifico = 'solo') {
                 pill3Icon: 'ph-game-controller'
             };
 
+            const activeLeyenda = diffElegida === 'dificil' ? 'active' : '';
+            const activeCrack = diffElegida === 'medio' ? 'active' : '';
+            const activePromesa = diffElegida === 'facil' ? 'active' : '';
+
+            // Pastillas limpias de dificultad (SIN ICONOS, SÓLO TIPOGRAFÍA PULIDA)
+            const diffFilterBarHTML = `
+            <div class="ranking-diff-filter-bar">
+                <button type="button" class="rank-diff-btn diff-dificil ${activeLeyenda}" onclick="abrirModalRanking('solo', 'dificil')">
+                    <div class="diff-btn-labels">
+                        <strong class="diff-title">Leyenda</strong>
+                        <span class="diff-tag">45s · 1.5x XP</span>
+                    </div>
+                </button>
+                <button type="button" class="rank-diff-btn diff-medio ${activeCrack}" onclick="abrirModalRanking('solo', 'medio')">
+                    <div class="diff-btn-labels">
+                        <strong class="diff-title">Crack</strong>
+                        <span class="diff-tag">Libre · 1.0x XP</span>
+                    </div>
+                </button>
+                <button type="button" class="rank-diff-btn diff-facil ${activePromesa}" onclick="abrirModalRanking('solo', 'facil')">
+                    <div class="diff-btn-labels">
+                        <strong class="diff-title">Promesa</strong>
+                        <span class="diff-tag">Pistas · 0.8x XP</span>
+                    </div>
+                </button>
+            </div>`;
+
+            htmlContenido += diffFilterBarHTML;
+            htmlContenido += noticeBannerHTML;
+
             htmlContenido += `<div class="liga-table-card"><div class="ranking-rows-scroll">`;
             if (!ranking || !ranking.length) {
-                htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:30px;">Aún no hay registros solitarios.</p>`;
+                const emptyMsg = diffElegida === 'dificil'
+                    ? 'Aún no hay récords en dificultad Leyenda.<br>¡Completá una partida en 45s para inaugurar el podio!'
+                    : diffElegida === 'facil'
+                    ? 'Aún no hay récords en dificultad Promesa.<br>¡Jugá una partida para registrar tu nombre en el ranking!'
+                    : 'Aún no hay registros en dificultad Crack.';
+                htmlContenido += `<p style="color:var(--text-muted);text-align:center;padding:35px 20px;line-height:1.4;">${emptyMsg}</p>`;
             } else {
                 ranking.forEach((f, i) => {
                     const med = renderRankSlot(i);

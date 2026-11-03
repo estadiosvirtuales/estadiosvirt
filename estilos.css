@@ -7914,6 +7914,21 @@ body.video-abierto .hero-section {
         gap: 6px !important;
     }
 
+    .ranking-diff-filter-bar {
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+    }
+    .rank-diff-btn {
+        padding: 6px 4px !important;
+        border-radius: 10px !important;
+    }
+    .diff-btn-labels .diff-title {
+        font-size: 0.72rem !important;
+    }
+    .diff-btn-labels .diff-tag {
+        font-size: 0.54rem !important;
+    }
+
     .ranking-rows-scroll {
         max-height: 54vh !important;
     }
@@ -10553,6 +10568,207 @@ html[data-theme="light"] .xp-bar-big-fill {
     background: #fefce8 !important;
     border-color: #facc15 !important;
     color: #854d0e !important;
+}
+
+/* 🎛️ BARRA SELECTORA DE DIFICULTAD EN RANKING INDIVIDUAL */
+.ranking-diff-filter-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.rank-diff-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(14, 24, 40, 0.75);
+    border: 1.5px solid rgba(255, 255, 255, 0.10);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.rank-diff-btn:hover {
+    background: rgba(22, 38, 64, 0.85);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.diff-btn-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    line-height: 1.15;
+    width: 100%;
+}
+
+.diff-btn-labels .diff-title {
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.diff-btn-labels .diff-tag {
+    font-size: 0.62rem;
+    font-weight: 700;
+    opacity: 0.8;
+    letter-spacing: 0.3px;
+    margin-top: 1px;
+}
+
+/* Estado Activo: Leyenda (Difícil) - Ruby Red */
+.rank-diff-btn.diff-dificil.active {
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.22) 0%, rgba(20, 10, 16, 0.95) 100%) !important;
+    border: 1.5px solid #ff4757 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(255, 71, 87, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+.rank-diff-btn.diff-dificil.active .diff-title {
+    color: #ff4757 !important;
+    text-shadow: 0 0 10px rgba(255, 71, 87, 0.6);
+}
+.rank-diff-btn.diff-dificil.active .diff-tag {
+    color: #ffb8b8 !important;
+}
+
+/* Estado Activo: Crack (Medio) - Gold Amber */
+.rank-diff-btn.diff-medio.active {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.22) 0%, rgba(24, 20, 10, 0.95) 100%) !important;
+    border: 1.5px solid #eab308 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(234, 179, 8, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+.rank-diff-btn.diff-medio.active .diff-title {
+    color: #eab308 !important;
+    text-shadow: 0 0 10px rgba(234, 179, 8, 0.6);
+}
+.rank-diff-btn.diff-medio.active .diff-tag {
+    color: #fef08a !important;
+}
+
+/* Estado Activo: Promesa (Fácil) - Emerald Green */
+.rank-diff-btn.diff-facil.active {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.22) 0%, rgba(10, 26, 18, 0.95) 100%) !important;
+    border: 1.5px solid #00e676 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(0, 230, 118, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+.rank-diff-btn.diff-facil.active .diff-title {
+    color: #00e676 !important;
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.6);
+}
+.rank-diff-btn.diff-facil.active .diff-tag {
+    color: #bbf7d0 !important;
+}
+
+/* Glow ruby para el trofeo en dificultad leyenda */
+.trophy-glow-backdrop.glow-ruby {
+    background: radial-gradient(circle, rgba(255, 71, 87, 0.35) 0%, rgba(255, 71, 87, 0.08) 55%, transparent 75%) !important;
+}
+
+/* Banners de aviso para cada dificultad */
+.ranking-reward-notice.dificil {
+    background: rgba(255, 71, 87, 0.12);
+    border: 1px solid rgba(255, 71, 87, 0.4);
+    color: #ffb8b8;
+    box-shadow: 0 4px 14px rgba(255, 71, 87, 0.12);
+}
+.ranking-reward-notice.dificil i {
+    color: #ff4757;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(255, 71, 87, 0.6));
+}
+
+.ranking-reward-notice.medio {
+    background: rgba(234, 179, 8, 0.12);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    color: #fef08a;
+    box-shadow: 0 4px 14px rgba(234, 179, 8, 0.12);
+}
+.ranking-reward-notice.medio i {
+    color: #eab308;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.6));
+}
+
+.ranking-reward-notice.facil {
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px solid rgba(0, 230, 118, 0.4);
+    color: #bbf7d0;
+    box-shadow: 0 4px 14px rgba(0, 230, 118, 0.12);
+}
+.ranking-reward-notice.facil i {
+    color: #00e676;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 6px rgba(0, 230, 118, 0.6));
+}
+
+/* ☀️ Modo Claro para las dificultades */
+[data-theme="light"] .ranking-diff-filter-bar .rank-diff-btn {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #64748b;
+}
+[data-theme="light"] .rank-diff-btn.diff-dificil.active {
+    background: #fef2f2 !important;
+    border-color: #ef4444 !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-dificil.active .diff-title {
+    color: #dc2626 !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-dificil.active .diff-tag {
+    color: #b91c1c !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-medio.active {
+    background: #fefce8 !important;
+    border-color: #eab308 !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-medio.active .diff-title {
+    color: #ca8a04 !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-medio.active .diff-tag {
+    color: #a16207 !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-facil.active {
+    background: #f0fdf4 !important;
+    border-color: #22c55e !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-facil.active .diff-title {
+    color: #16a34a !important;
+}
+[data-theme="light"] .rank-diff-btn.diff-facil.active .diff-tag {
+    color: #15803d !important;
+}
+
+[data-theme="light"] .ranking-reward-notice.dificil {
+    background: #fef2f2 !important;
+    border-color: #f87171 !important;
+    color: #b91c1c !important;
+}
+[data-theme="light"] .ranking-reward-notice.medio {
+    background: #fefce8 !important;
+    border-color: #facc15 !important;
+    color: #854d0e !important;
+}
+[data-theme="light"] .ranking-reward-notice.facil {
+    background: #f0fdf4 !important;
+    border-color: #4ade80 !important;
+    color: #166534 !important;
 }
 /* 📱 AJUSTE RESPONSIVE PASTILLAS DEL RANKING EN CELULAR */
 .pill-val-mobile {
