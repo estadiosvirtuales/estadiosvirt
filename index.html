@@ -703,20 +703,32 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <div class="catalogo-layout" id="catalogo-layout">
 <section class="section-ligas">
 <div class="ligas-header">
-<div class="ligas-title-area">
-<i class="ph-fill ph-list-dashes" style="font-size:1.1rem;color:var(--accent-color);flex-shrink:0;"></i>
-<span id="texto-titulo-grilla">EXPLORÁ EL CATÁLOGO</span>
-<div class="liga-elegida-badge" id="liga-elegida-badge">
-<div class="badge-dot" id="liga-badge-dot"></div>
-<span id="liga-badge-nombre"></span>
+<div class="ligas-title-area modern-cat-header">
+    <div class="cat-title-badge">
+        <i class="ph-bold ph-compass"></i>
+        <span>EXPLORADOR</span>
+    </div>
+    <h2 class="cat-main-title">CATÁLOGO <span class="text-accent">DE ESTADIOS</span></h2>
+    <div class="cat-active-pill" id="cat-active-pill" style="display:none;">
+        <span class="active-pill-dot" id="active-pill-dot"></span>
+        <span class="active-pill-text" id="active-pill-text"></span>
+        <span class="active-pill-count" id="active-pill-count"></span>
+    </div>
+    <!-- Compatibilidad con selectores previos -->
+    <span id="texto-titulo-grilla" style="display:none;"></span>
+    <div class="liga-elegida-badge" id="liga-elegida-badge" style="display:none;"><div class="badge-dot" id="liga-badge-dot"></div><span id="liga-badge-nombre"></span></div>
 </div>
+<div class="cat-header-actions">
+    <button id="btn-cambiar-liga-mobile" class="btn-cat-action secondary" onclick="toggleSelectorLigasMobile()" title="Elegir liga">
+        <i class="ph-bold ph-caret-down"></i> <span id="txt-btn-cambiar-liga">Elegir Liga</span>
+    </button>
+    <button id="btn-volver-ligas" class="btn-cat-action secondary" onclick="mostrarLigas()" style="display:none;" title="Volver a ligas">
+        <i class="ph-bold ph-arrow-left"></i> Volver
+    </button>
+    <button id="btn-cerrar-catalogo" class="btn-cat-action close" onclick="cerrarCatalogo()" title="Cerrar catálogo">
+        <i class="ph-bold ph-x"></i>
+    </button>
 </div>
-<button id="btn-volver-ligas" class="btn-3d secondary" onclick="mostrarLigas()">
-<i class="ph-bold ph-arrow-left"></i> Volver
-</button>
-<button id="btn-cerrar-catalogo" class="btn-3d secondary" onclick="cerrarCatalogo()" title="Cerrar catálogo">
-<i class="ph-bold ph-x"></i>
-</button>
 </div>
 <div class="ligas-dropdown-panel" id="ligas-dropdown-panel">
 <div class="ligas-panel-inner">
@@ -909,7 +921,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 <!-- INTERNACIONAL -->
 <div class="liga-country-group">
 <button class="liga-country-btn" onclick="toggleLigaCountryGroup(this)">
-<span style="font-size:1.2rem;line-height:1;margin-right:2px;">🌍</span>
+<i class="ph-bold ph-globe" style="font-size:1.15rem;margin-right:4px;color:#38bdf8;"></i>
 <span class="country-name">Internacional</span>
 <i class="ph-bold ph-caret-down chevron"></i>
 </button>

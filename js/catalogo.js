@@ -626,11 +626,20 @@ document.addEventListener('click', (e) => {
     if (btn && panel && !btn.contains(e.target) && !panel.contains(e.target)) cerrarLigasPanel();
 });
 
+window.toggleSelectorLigasMobile = function() {
+    const p = document.getElementById('ligas-dropdown-panel');
+    if (p) p.classList.toggle('mobile-open');
+};
+
 window.mostrarLigas = function() {
     const bVolver = document.getElementById('btn-volver-ligas');
     if (bVolver) bVolver.style.display = 'none';
     const bBadge = document.getElementById('liga-elegida-badge');
     if (bBadge) bBadge.style.display = 'none';
+    const activePill = document.getElementById('cat-active-pill');
+    if (activePill) activePill.style.display = 'none';
+    const panel = document.getElementById('ligas-dropdown-panel');
+    if (panel) panel.classList.add('mobile-open');
     const tit = document.getElementById('texto-titulo-grilla');
     if (tit) tit.textContent = 'EXPLORÁ EL CATÁLOGO';
     const labelLiga = document.getElementById('liga-selector-label');
@@ -663,6 +672,22 @@ function activarLiga(gid, nombre) {
     if (dot) dot.style.background = LIGA_COLORS[gid] || 'var(--accent-color)';
     if (nom) nom.textContent = nombre;
     if (badge) badge.style.display = 'inline-flex';
+
+    // 🌟 Actualización del chip activo arcade
+    const activePill = document.getElementById('cat-active-pill'),
+          pDot = document.getElementById('active-pill-dot'),
+          pText = document.getElementById('active-pill-text');
+    if (pDot) pDot.style.background = LIGA_COLORS[gid] || 'var(--accent-color)';
+    const grupoPais = tab ? tab.closest('.liga-country-group') : null;
+    const paisNombre = grupoPais ? (grupoPais.querySelector('.country-name')?.textContent || '') : '';
+    const textoCompleto = paisNombre ? `${paisNombre} · ${nombre}` : nombre;
+    if (pText) pText.textContent = textoCompleto;
+    if (activePill) activePill.style.display = 'inline-flex';
+
+    // En celulares, repliega el panel de países para que las canchas se vean inmediatamente
+    const panel = document.getElementById('ligas-dropdown-panel');
+    if (panel) panel.classList.remove('mobile-open');
+
     localStorage.setItem('ev_last_gid', gid);
     if (typeof userStats !== 'undefined' && userStats.ligasExploradas) {
         userStats.ligasExploradas.add(gid);
@@ -984,6 +1009,9 @@ function renderizarTarjetas(lista) {
     const estadiosVisitados = JSON.parse(localStorage.getItem('ev_estadios_visitados') || '[]');
     const estadiosDeseados = JSON.parse(localStorage.getItem('ev_estadios_deseados') || '[]');
 
+    const countPill = document.getElementById('active-pill-count');
+    if (countPill) countPill.textContent = `${lista.length} canchas`;
+
     lista.forEach((fila, idx) => {
         const estadio = bscarPropiedad(fila, 'Estadio'),
               club = bscarPropiedad(fila, 'Club');
@@ -1063,7 +1091,7 @@ function renderizarTarjetas(lista) {
         t.className = 'card animate-fade-up';
         t.style.animationDelay = `${idx * .04}s`;
         t.dataset.linkVideo = linkVideo;
-        t.innerHTML = `<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-fill ph-play-circle"></i> Ver Estadio</button><div class="fan-checklist-row"><button type="button" class="fan-badge-btn fan-fui ${yaFui ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'yaFui')"><i class="ph-bold ph-map-pin"></i> <span>Ya fui</span></button><button type="button" class="fan-badge-btn fan-quiero ${quieroIr ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'quieroIr')"><i class="ph-bold ph-star"></i> <span>Quiero ir</span></button></div><div class="rating-box"><span class="rating-title">${lRating}</span>${estrellasHTML}</div></div>`;
+        t.innerHTML = `<div class="estadio-foto-container" style="background:${fond};" onclick="toggleTriviaPopup(event,this)"><div class="trivia-hint" title="Dato curioso"><i class="ph-fill ph-lightbulb"></i></div>${imgHTML}<div class="trivia-balloon" onclick="event.stopPropagation()"><div class="balloon-tabs"><button class="b-tab active" onclick="switchTab(event,this,'trivia')">Trivia</button><button class="b-tab" data-estadio="${estadioSafe}" data-pais="${paisSafe}" data-lat="${latR}" data-lng="${lngR}" onclick="switchTabMapa(event,this)">Mapa</button></div><div class="b-content b-trivia active"><p>${datoL}</p></div><div class="b-content b-mapa"></div></div></div><div class="card-content"><h2 class="card-title">${estadio}</h2><p class="card-subtitle">${club} · ${pais}</p><button onclick="abrirVideoDesdeCard(event,this)" class="btn-view"><i class="ph-bold ph-play"></i> Ver Estadio</button><div class="fan-checklist-row"><button type="button" class="fan-badge-btn fan-fui ${yaFui ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'yaFui')"><i class="ph-bold ph-map-pin"></i> <span>Ya fui</span></button><button type="button" class="fan-badge-btn fan-quiero ${quieroIr ? 'active' : ''}" onclick="toggleFanChecklist(event, '${estadioSafe}', 'quieroIr')"><i class="ph-bold ph-star"></i> <span>Quiero ir</span></button></div><div class="rating-box"><span class="rating-title">${lRating}</span>${estrellasHTML}</div></div>`;
         gr.appendChild(t);
     });
 }

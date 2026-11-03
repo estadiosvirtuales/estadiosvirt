@@ -20516,3 +20516,437 @@ body.video-abierto .hero-section {
     color: #0f172a !important;
     border-color: #cbd5e1 !important;
 }
+
+/* ========================================================
+   🏟️ CATÁLOGO DE ESTADIOS ARCADE (MODERNIZACIÓN INTEGRAL)
+   ======================================================== */
+#liga-elegida-badge,
+#btn-volver-ligas {
+    display: none !important;
+}
+
+.ligas-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
+}
+
+.modern-cat-header {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+}
+
+.cat-title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(0, 230, 118, 0.12);
+    border: 1px solid rgba(0, 230, 118, 0.35);
+    border-radius: 999px;
+    color: #00e676;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.cat-main-title {
+    font-size: 1.35rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.cat-main-title .text-accent {
+    color: #00e676 !important;
+}
+
+.cat-active-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+}
+
+.active-pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor;
+}
+
+.active-pill-text {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #e2e8f0;
+}
+
+.active-pill-count {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #94a3b8;
+    padding-left: 6px;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.cat-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cat-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(30, 41, 59, 0.7);
+    color: #f1f5f9;
+}
+
+.btn-cat-action:hover {
+    background: rgba(51, 65, 85, 0.9);
+    border-color: rgba(0, 230, 118, 0.4);
+    color: #00e676;
+    transform: translateY(-1px);
+}
+
+.btn-cat-action.close {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* 🏆 PANEL LATERAL DE LIGAS (ELEVADO Y COMPACTO) */
+.ligas-panel-inner {
+    background: linear-gradient(180deg, rgba(20, 26, 38, 0.92) 0%, rgba(13, 17, 26, 0.96) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    padding: 16px !important;
+}
+
+.ligas-panel-label {
+    color: #94a3b8 !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 1.5px !important;
+}
+
+.liga-country-btn {
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    font-size: 0.88rem !important;
+}
+
+.tab {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 10px !important;
+    padding: 9px 14px !important;
+    color: #cbd5e1 !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.tab.active {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.15) 0%, rgba(0, 176, 255, 0.15) 100%) !important;
+    border: 1px solid #00e676 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(0, 230, 118, 0.25) !important;
+}
+
+.tab.active .tab-dot {
+    background: #00e676 !important;
+    box-shadow: 0 0 8px #00e676 !important;
+}
+
+/* 🏟️ TARJETAS DEL CATÁLOGO ARCADE (.card) */
+.card {
+    background: linear-gradient(180deg, rgba(26, 32, 46, 0.95) 0%, rgba(15, 20, 30, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+    transition: transform 0.24s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.24s ease, border-color 0.24s ease !important;
+}
+
+.card:hover {
+    transform: translateY(-4px) !important;
+    border-color: rgba(0, 230, 118, 0.35) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 118, 0.12) !important;
+}
+
+.estadio-foto-container {
+    position: relative !important;
+    height: 125px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    overflow: hidden !important;
+}
+
+.estadio-foto-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+}
+
+.card-img-logo {
+    max-height: 82px !important;
+    max-width: 82px !important;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65)) !important;
+    transition: transform 0.25s ease !important;
+    z-index: 2 !important;
+}
+
+.card:hover .card-img-logo {
+    transform: scale(1.08) !important;
+}
+
+.trivia-hint {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    width: 30px !important;
+    height: 30px !important;
+    background: rgba(15, 23, 42, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #fbbf24 !important;
+    font-size: 0.9rem !important;
+    backdrop-filter: blur(8px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+    z-index: 3 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.trivia-hint:hover {
+    background: #fbbf24 !important;
+    color: #0f172a !important;
+    transform: scale(1.1) !important;
+}
+
+.card-content {
+    padding: 14px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+.card-title {
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    color: #f8fafc !important;
+    margin: 0 !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.card-subtitle {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: #94a3b8 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Botón Ver Estadio: Modern Arcade Glow */
+.btn-view {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.15) 0%, rgba(0, 176, 255, 0.15) 100%) !important;
+    border: 1px solid rgba(0, 230, 118, 0.45) !important;
+    color: #00e676 !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.btn-view:hover {
+    background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%) !important;
+    color: #051a14 !important;
+    border-color: #00e676 !important;
+    box-shadow: 0 6px 18px rgba(0, 230, 118, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Fan Checklist: Ya fui / Quiero ir */
+.fan-checklist-row {
+    display: flex !important;
+    gap: 8px !important;
+}
+
+.fan-badge-btn {
+    flex: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    padding: 5px 8px !important;
+    border-radius: 9px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.fan-badge-btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.fan-badge-btn.fan-fui.active {
+    background: rgba(56, 189, 248, 0.15) !important;
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+}
+
+.fan-badge-btn.fan-quiero.active {
+    background: rgba(251, 191, 36, 0.15) !important;
+    border-color: #fbbf24 !important;
+    color: #fbbf24 !important;
+}
+
+/* Rating Box */
+.rating-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-top: 6px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.rating-title {
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Mobile Adaptations */
+@media (max-width: 768px) {
+    #btn-cambiar-liga-mobile {
+        display: inline-flex !important;
+    }
+    #ligas-dropdown-panel:not(.mobile-open) {
+        display: none !important;
+    }
+    #ligas-dropdown-panel.mobile-open {
+        display: block !important;
+        animation: dropPanel .22s cubic-bezier(.4,0,.2,1) forwards;
+        margin-bottom: 16px !important;
+    }
+    .section-ligas {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+    .ligas-header {
+        margin-bottom: 14px !important;
+        padding-bottom: 12px !important;
+        gap: 10px !important;
+    }
+    .modern-cat-header {
+        gap: 6px !important;
+    }
+    .cat-main-title {
+        font-size: 1.12rem !important;
+    }
+    .cat-active-pill {
+        padding: 3px 8px !important;
+        font-size: 0.72rem !important;
+    }
+    .active-pill-text {
+        font-size: 0.72rem !important;
+    }
+    .active-pill-count {
+        font-size: 0.65rem !important;
+    }
+    .estadio-foto-container {
+        height: 95px !important;
+    }
+    .card-img-logo {
+        max-height: 58px !important;
+        max-width: 58px !important;
+    }
+    .card-content {
+        padding: 10px 10px !important;
+        gap: 5px !important;
+    }
+    .card-title {
+        font-size: 0.82rem !important;
+    }
+    .card-subtitle {
+        font-size: 0.66rem !important;
+    }
+    .btn-view {
+        font-size: 0.72rem !important;
+        padding: 6px 8px !important;
+    }
+    .fan-badge-btn {
+        padding: 4px 4px !important;
+        font-size: 0.62rem !important;
+    }
+}
+
+@media (min-width: 769px) {
+    #btn-cambiar-liga-mobile {
+        display: none !important;
+    }
+    #ligas-dropdown-panel {
+        display: block !important;
+    }
+}
