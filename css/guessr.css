@@ -5261,13 +5261,16 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-sizing: border-box !important;
     }
 
-    /* Placa de Puntaje y Ronda Centrada */
-    #game-title {
+    /* Placa de Puntaje y Ronda Centrada (solo individual / reto diario) */
+    .guessr-top-hud:not(.hud-versus-active) #game-title {
         margin: 0 auto !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
+    }
+    .guessr-top-hud.hud-versus-active #game-title {
+        display: none !important;
     }
 
     /* Dock de emojis arcade compacto (EXCLUSIVO MODO VERSUS) */
@@ -5303,18 +5306,22 @@ html[data-theme="light"] .xp-bar-big-fill {
         flex: 1 !important;
     }
 
-    /* Progreso de rondas */
-    .guessr-top-hud #rounds-progress,
-    .guessr-top-hud.hud-versus-active #rounds-progress {
+    /* Progreso de rondas: oculto en 1v1 y sala privada en celular porque ya está en el scoreboard */
+    .guessr-top-hud:not(.hud-versus-active) #rounds-progress {
         display: flex !important;
         margin: 2px auto !important;
         width: 100% !important;
         max-width: 320px !important;
     }
+    .guessr-top-hud.hud-versus-active #rounds-progress {
+        display: none !important;
+    }
 
-    /* Cajita de puntajes de los participantes (Classic Battle Card) */
-    .guessr-top-hud #versus-live-scoreboard,
-    .guessr-top-hud .versus-scoreboard-box,
+    /* Cajita de puntajes de los participantes (Classic Battle Card - Exclusivo Versus) */
+    .guessr-top-hud:not(.hud-versus-active) #versus-live-scoreboard,
+    .guessr-top-hud:not(.hud-versus-active) .versus-scoreboard-box {
+        display: none !important;
+    }
     .guessr-top-hud.hud-versus-active #versus-live-scoreboard,
     .guessr-top-hud.hud-versus-active .versus-scoreboard-box {
         display: flex !important;

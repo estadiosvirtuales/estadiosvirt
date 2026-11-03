@@ -10909,6 +10909,14 @@ html[data-theme="light"] .xp-bar-big-fill {
         display: none !important;
     }
 
+    /* ⚔️ EXCLUSIVO MODO 1 VS 1 Y SALA PRIVADA EN CELULAR:
+       Ocultar pastillas de rondas y título/puntaje porque ya están resumidos en el scoreboard */
+    .guessr-top-hud.hud-versus-active #rounds-progress,
+    .guessr-top-hud.hud-versus-active .rounds-progress,
+    .guessr-top-hud.hud-versus-active #game-title {
+        display: none !important;
+    }
+
     #rounds-progress {
         margin: 2px auto !important;
         width: 100% !important;
@@ -10919,8 +10927,12 @@ html[data-theme="light"] .xp-bar-big-fill {
         height: 3px !important;
     }
 
-    .guessr-top-hud #versus-live-scoreboard,
-    .guessr-top-hud .versus-scoreboard-box {
+    .guessr-top-hud:not(.hud-versus-active) #versus-live-scoreboard,
+    .guessr-top-hud:not(.hud-versus-active) .versus-scoreboard-box {
+        display: none !important;
+    }
+    .guessr-top-hud.hud-versus-active #versus-live-scoreboard,
+    .guessr-top-hud.hud-versus-active .versus-scoreboard-box {
         order: 1 !important;
         margin: 2px auto !important;
         padding: 4px 10px !important;

@@ -1242,7 +1242,7 @@ function mostrarResultadosMutuosVersus() {
     renderizarScoreboardVersus();
 
     const miDistT = isNaN(miDist) ? '?' : (miDist < 1 ? `${Math.round(miDist * 1000)} m` : `${miDist.toFixed(1)} km`);
-    const emoji = miDist < 50 ? '🎯' : miDist < 200 ? '✈️' : miDist < 800 ? '🗺️' : '🌍';
+    const iconoDist = miDist < 50 ? '<i class="ph-bold ph-target" style="color:var(--accent-color);"></i>' : miDist < 200 ? '<i class="ph-bold ph-airplane-tilt"></i>' : miDist < 800 ? '<i class="ph-bold ph-map-pin"></i>' : '<i class="ph-bold ph-globe"></i>';
 
     let segundosRestantes = 3;
     const textoAccion = guessrRondaActual < 5 ? 'Próxima ronda en' : 'Resultados en';
@@ -1263,10 +1263,10 @@ function mostrarResultadosMutuosVersus() {
     btn.innerHTML = `
     <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
         <span class="btn-action-stats">
-            ${emoji} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b>
+            ${iconoDist} <b>${miDistT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${misPts} pts</b>
         </span>
         <span class="btn-action-text" id="versus-round-countdown" style="font-size:0.78rem; font-weight:900; opacity:0.95; white-space:nowrap;">
-            ⏱️ ${textoAccion} <b style="color:#ffffff;">${segundosRestantes}s</b>
+            <i class="ph-bold ph-timer"></i> ${textoAccion} <b style="color:#ffffff;">${segundosRestantes}s</b>
         </span>
     </div>`;
     
@@ -1764,7 +1764,7 @@ abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim
             if (typeof reproducirSonido === 'function') reproducirSonido('pin');
             const hint = document.getElementById('map-hint-overlay');
             if (hint) hint.style.opacity = '0';
-            btn.innerHTML = `<i class="ph-fill ph-rocket-launch"></i> ¡Confirmar ubicación!`;
+            btn.innerHTML = `<i class="ph-bold ph-paper-plane-tilt"></i> Confirmar`;
             btn.className = "btn-3d primary";
             btn.disabled = false;
         });
@@ -1877,13 +1877,15 @@ let marcasParaEncuadrar = [guessrTargetMarker];
 if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
 guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(),{padding:[40,40]});
 document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
-const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`),emoji=dist<50?'🎯':dist<200?'✈️':dist<800?'🗺️':'🌍',esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
+const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`);
+const iconoDist = dist < 50 ? '<i class="ph-bold ph-target" style="color:var(--accent-color);"></i>' : dist < 200 ? '<i class="ph-bold ph-airplane-tilt"></i>' : dist < 800 ? '<i class="ph-bold ph-map-pin"></i>' : '<i class="ph-bold ph-globe"></i>';
+const esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
 const textoBotonSolitario = guessrRondaActual < 5 ? 'SIGUIENTE' : 'FINAL';
-const iconoBotonSolitario = guessrRondaActual < 5 ? '<i class="ph-bold ph-arrow-right"></i>' : '🏁';
+const iconoBotonSolitario = guessrRondaActual < 5 ? '<i class="ph-bold ph-arrow-right"></i>' : '<i class="ph-bold ph-flag-checkered"></i>';
 btn.innerHTML=`
 <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
     <span class="btn-action-stats">
-        ${emoji} <b>${distT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${pts} pts</b>
+        ${iconoDist} <b>${distT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${pts} pts</b>
     </span>
     <span class="btn-action-text">
         ${textoBotonSolitario} ${iconoBotonSolitario}
