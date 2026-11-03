@@ -41,7 +41,7 @@ const CONFIG_DUELOS = {
             capacidadTexto: '48.314 esp.',
             escudoFile: 'Huracan.webp',
             borderColor: '#ffffff',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\huracan(listo)x2\\huracan.mp4",
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\huracan(listo)x2\\Huracan 3.mp4",
             esGanador: true
         },
         copy: `🥊 DUELO DE CAPACIDAD: ¿SAN LORENZO O HURACÁN? 🏟️🔥
