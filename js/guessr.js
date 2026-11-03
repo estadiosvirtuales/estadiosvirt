@@ -168,8 +168,10 @@ function cerrarModalVideo(){
     document.querySelectorAll('.stamp-badge, #versus-next-round-banner, .taunt-arcade-burst').forEach(el => { try { el.remove(); } catch(e) {} });
     const sb = document.getElementById('versus-live-scoreboard');
     if (sb) sb.style.display = 'none';
+    const soloCapsule = document.getElementById('guessr-solo-hud-capsule');
+    if (soloCapsule) soloCapsule.style.display = 'none';
     const gt = document.getElementById('game-title');
-    if (gt) gt.style.display = 'inline-flex';
+    if (gt) gt.style.display = 'none';
     const hud = document.querySelector('.guessr-top-hud');
     if (hud) hud.classList.remove('hud-versus-active');
     document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');document.getElementById('modal-card').classList.remove('resultado-final');
@@ -909,14 +911,17 @@ function renderizarScoreboardVersus(alerta = null) {
     if (!sb) return;
 
     const hud = document.querySelector('.guessr-top-hud');
+    const soloCapsule = document.getElementById('guessr-solo-hud-capsule');
     if (!esModoVersus) {
         sb.style.display = 'none';
-        if (gt) gt.style.display = 'inline-flex';
+        if (soloCapsule) soloCapsule.style.display = 'inline-flex';
         if (hud) hud.classList.remove('hud-versus-active');
+        if (typeof actualizarHUDSoloGuessr === 'function') actualizarHUDSoloGuessr();
         return;
     }
 
     sb.style.display = 'flex';
+    if (soloCapsule) soloCapsule.style.display = 'none';
     if (gt) gt.style.display = 'none';
     if (hud) hud.classList.add('hud-versus-active');
 
@@ -1699,20 +1704,23 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
         renderizarScoreboardVersus();
         const taunts = document.getElementById('taunts-container');
         if (taunts) taunts.style.display = 'flex';
+        const soloCapsule = document.getElementById('guessr-solo-hud-capsule');
+        if (soloCapsule) soloCapsule.style.display = 'none';
     } else {
         const sb = document.getElementById('versus-live-scoreboard');
         if (sb) sb.style.display = 'none';
         const gt = document.getElementById('game-title');
-        if (gt) gt.style.display = 'inline-flex';
+        if (gt) gt.style.display = 'none';
         const taunts = document.getElementById('taunts-container');
         if (taunts) taunts.style.display = 'none';
         const hud = document.querySelector('.guessr-top-hud');
         if (hud) hud.classList.remove('hud-versus-active');
+        actualizarHUDSoloGuessr();
     }
 
 if (guessrDificultad === 'dificil' && !esModoDiario) {
     if (!esModoVersus) {
-        document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
+        actualizarHUDSoloGuessr();
     }
     
     guessrTimerIndividualInterval = setInterval(() => {
@@ -1729,10 +1737,7 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
                 sec.classList.toggle('timer-urgent-pulse', isUrgent);
             }
         } else {
-            const gt = document.getElementById('game-title');
-            if (gt) {
-                gt.innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5 &nbsp;·&nbsp; <span class="${isUrgent ? 'timer-urgent-pulse' : ''}" style="color:var(--danger-color); font-weight:900;">⏱️ ${guessrTiempoRestanteIndividual}s</span>`;
-            }
+            actualizarHUDSoloGuessr();
         }
         
         if (guessrTiempoRestanteIndividual <= 0) {
@@ -1744,7 +1749,7 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
         }
     }, 1000);
 } else if (!esModoVersus) {
-    document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
+    actualizarHUDSoloGuessr();
 }
 const btn=document.getElementById('game-action-btn');btn.style.background='';btn.style.color='';btn.style.boxShadow='';btn.style.border='';btn.style.borderTop='';btn.innerHTML=`<i class="ph-duotone ph-map-pin"></i> Clavá un pin en el mapa`;btn.className="btn-3d secondary";btn.style.width="100%";btn.disabled=true;btn.setAttribute('data-estado','juego');btn.onclick=()=>btn.getAttribute('data-estado')==='juego'?procesarArriesgoGuessr():avanzarDeRondaGuessr();
 abrirModalVideo(null,bscarPropiedad(guessrEstadioCorrecto,'Link del Video').trim(),true);
@@ -1880,7 +1885,7 @@ guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[
 let marcasParaEncuadrar = [guessrTargetMarker];
 if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
 guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(),{padding:[40,40]});
-document.getElementById('game-title').innerHTML = `<span style="color:var(--accent-color); font-weight:900;">${guessrPuntosTotales} PTS</span> &nbsp;·&nbsp; RONDA ${guessrRondaActual} DE 5`;
+actualizarHUDSoloGuessr();
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`);
 const iconoDist = dist < 50 ? '<i class="ph-bold ph-target" style="color:var(--accent-color);"></i>' : dist < 200 ? '<i class="ph-bold ph-airplane-tilt"></i>' : dist < 800 ? '<i class="ph-bold ph-map-pin"></i>' : '<i class="ph-bold ph-globe"></i>';
 const esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
@@ -2898,17 +2903,71 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
 
 // --- Ayudantes de UI y Abandono ---
 
+function actualizarHUDSoloGuessr() {
+    const capsule = document.getElementById('guessr-solo-hud-capsule');
+    if (!capsule) return;
+
+    if (esModoVersus) {
+        capsule.style.display = 'none';
+        return;
+    }
+
+    capsule.style.display = 'inline-flex';
+
+    // Round label
+    const rLabel = document.getElementById('hud-round-label');
+    if (rLabel) rLabel.textContent = `Ronda ${guessrRondaActual}/5`;
+
+    // Round dots
+    const dotsContainer = document.getElementById('hud-round-dots-bar');
+    if (dotsContainer) {
+        let dotsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            let cls = 'hud-mini-dot';
+            if (i < guessrRondaActual) cls += ' done';
+            else if (i === guessrRondaActual) cls += ' current';
+            dotsHtml += `<span class="${cls}"></span>`;
+        }
+        dotsContainer.innerHTML = dotsHtml;
+    }
+
+    // Score
+    const scoreVal = document.getElementById('hud-score-val');
+    if (scoreVal) scoreVal.textContent = (guessrPuntosTotales || 0).toLocaleString('es-AR');
+
+    // Timer (Leyenda / Difícil)
+    const timerBadge = document.getElementById('hud-timer-badge');
+    const timerDivider = document.getElementById('hud-timer-divider');
+    const timerVal = document.getElementById('hud-timer-val');
+
+    if (guessrDificultad === 'dificil' && !esModoDiario) {
+        if (timerBadge) timerBadge.style.display = 'inline-flex';
+        if (timerDivider) timerDivider.style.display = 'block';
+        if (timerVal) {
+            timerVal.textContent = guessrTiempoRestanteIndividual + 's';
+            const isUrgent = guessrTiempoRestanteIndividual <= 5 && guessrTiempoRestanteIndividual > 0;
+            timerBadge.classList.toggle('timer-urgent-pulse', isUrgent);
+        }
+    } else {
+        if (timerBadge) timerBadge.style.display = 'none';
+        if (timerDivider) timerDivider.style.display = 'none';
+    }
+}
+window.actualizarHUDSoloGuessr = actualizarHUDSoloGuessr;
+
 function actualizarDotsProgreso(){
     const c=document.getElementById('rounds-progress');
-    if(!c)return;
-    let html='';
-    for(let i=1;i<=5;i++){
-        let cls='round-dot';
-        if(i<guessrRondaActual)cls+=' done';
-        else if(i===guessrRondaActual)cls+=' current';
-        html+=`<div class="${cls}"></div>`;
+    if(c){
+        let html='';
+        for(let i=1;i<=5;i++){
+            let cls='round-dot';
+            if(i<guessrRondaActual)cls+=' done';
+            else if(i===guessrRondaActual)cls+=' current';
+            html+=`<div class="${cls}"></div>`;
+        }
+        c.innerHTML=html;
     }
-    c.innerHTML=html;
+    actualizarHUDSoloGuessr();
 }
 
 async function manejarAbandonoRival() {

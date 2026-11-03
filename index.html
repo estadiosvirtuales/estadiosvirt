@@ -988,8 +988,34 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
         <button type="button" onclick="mandarTaunt('👑')" class="taunt-btn" title="¡Soy el rey!">👑</button>
         <button type="button" onclick="mandarTaunt('🤡')" class="taunt-btn" title="Payaso">🤡</button>
     </div>
-    <div class="rounds-progress" id="rounds-progress"></div>
-    <h3 id="game-title">0 PTS &nbsp;·&nbsp; RONDA 1 DE 5</h3>
+    <!-- 🏆 CÁPSULA ARCADE MODERNA PARA MODO INDIVIDUAL Y RETO DIARIO -->
+    <div id="guessr-solo-hud-capsule" class="guessr-hud-capsule">
+        <div class="hud-pill-segment">
+            <i class="ph-bold ph-flag"></i>
+            <div class="hud-round-info">
+                <span class="hud-round-title" id="hud-round-label">Ronda 1/5</span>
+                <div class="hud-round-dots" id="hud-round-dots-bar">
+                    <span class="hud-mini-dot current"></span>
+                    <span class="hud-mini-dot"></span>
+                    <span class="hud-mini-dot"></span>
+                    <span class="hud-mini-dot"></span>
+                    <span class="hud-mini-dot"></span>
+                </div>
+            </div>
+        </div>
+        <div class="hud-divider"></div>
+        <div class="hud-score-badge">
+            <i class="ph-bold ph-trophy"></i>
+            <strong id="hud-score-val">0</strong> <small>PTS</small>
+        </div>
+        <div class="hud-divider" id="hud-timer-divider" style="display:none;"></div>
+        <div class="hud-timer-badge" id="hud-timer-badge" style="display:none;">
+            <i class="ph-bold ph-timer"></i>
+            <strong id="hud-timer-val">45s</strong>
+        </div>
+    </div>
+    <div class="rounds-progress" id="rounds-progress" style="display:none !important;"></div>
+    <h3 id="game-title" style="display:none !important;">0 PTS &nbsp;·&nbsp; RONDA 1 DE 5</h3>
     <!-- ⚔️ SCOREBOARD EN TIEMPO REAL PARA DUELOS 1 VS 1 -->
     <div id="versus-live-scoreboard" class="versus-scoreboard-box" style="display:none;"></div>
     <div id="guessr-hud-hints" class="guessr-hud-hints" style="display:none;"></div>

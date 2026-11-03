@@ -5261,16 +5261,51 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-sizing: border-box !important;
     }
 
-    /* Placa de Puntaje y Ronda Centrada (solo individual / reto diario) */
-    .guessr-top-hud:not(.hud-versus-active) #game-title {
-        margin: 0 auto !important;
+    #game-title, #rounds-progress {
+        display: none !important;
+    }
+    .guessr-top-hud:not(.hud-versus-active) #guessr-solo-hud-capsule {
+        display: inline-flex !important;
+    }
+    .guessr-top-hud.hud-versus-active #guessr-solo-hud-capsule {
+        display: none !important;
+    }
+
+    /* 🏆 Cápsula Arcade en Móvil */
+    .guessr-hud-capsule {
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
+        padding: 4px 10px !important;
+        gap: 8px !important;
+        border-radius: 20px !important;
+        max-width: 96% !important;
     }
-    .guessr-top-hud.hud-versus-active #game-title {
-        display: none !important;
+    .hud-pill-segment i {
+        font-size: 0.90rem !important;
+    }
+    .hud-round-title {
+        font-size: 0.62rem !important;
+    }
+    .hud-mini-dot {
+        width: 10px !important;
+        height: 3px !important;
+    }
+    .hud-score-badge {
+        padding: 2px 7px !important;
+        gap: 4px !important;
+    }
+    .hud-score-badge strong {
+        font-size: 0.78rem !important;
+    }
+    .hud-timer-badge {
+        padding: 2px 7px !important;
+        gap: 3px !important;
+    }
+    .hud-timer-badge strong {
+        font-size: 0.74rem !important;
+    }
+    .hud-divider {
+        height: 16px !important;
     }
 
     /* Dock de emojis arcade compacto (EXCLUSIVO MODO VERSUS) */
@@ -6850,5 +6885,129 @@ html[data-theme="light"] .xp-bar-big-fill {
     .map-header-mini-bar .map-expand-label {
         font-size: 0.55rem !important;
     }
+}
+
+/* 🏆 CÁPSULA ARCADE MODERNA DE STADIUMGUESSR (DESKTOP) */
+.guessr-hud-capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, rgba(12, 20, 34, 0.94) 0%, rgba(6, 11, 20, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    border-top: 2px solid #00ff77;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 119, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    pointer-events: auto;
+    user-select: none;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+.hud-pill-segment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.hud-pill-segment i {
+    font-size: 1.05rem;
+    color: var(--accent-color);
+}
+
+.hud-round-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.hud-round-title {
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 1;
+}
+.hud-round-dots {
+    display: flex;
+    gap: 4px;
+}
+.hud-mini-dot {
+    width: 14px;
+    height: 4px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    transition: all 0.25s ease;
+}
+.hud-mini-dot.done {
+    background: #00ff77;
+    box-shadow: 0 0 6px #00ff77;
+}
+.hud-mini-dot.current {
+    background: #00ff77;
+    box-shadow: 0 0 8px #00ff77;
+    animation: miniDotGlow 1.4s ease-in-out infinite;
+}
+@keyframes miniDotGlow {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 0 4px #00ff77); }
+    50% { opacity: 0.6; filter: drop-shadow(0 0 1px #00ff77); }
+}
+
+.hud-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.hud-score-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    background: rgba(0, 255, 119, 0.12);
+    border: 1px solid rgba(0, 255, 119, 0.35);
+    border-radius: 14px;
+}
+.hud-score-badge i {
+    font-size: 0.88rem;
+    color: var(--accent-color);
+}
+.hud-score-badge strong {
+    font-size: 0.88rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.2px;
+}
+.hud-score-badge small {
+    font-size: 0.62rem;
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+.hud-timer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: rgba(255, 71, 87, 0.15);
+    border: 1px solid rgba(255, 71, 87, 0.45);
+    border-radius: 14px;
+}
+.hud-timer-badge i {
+    font-size: 0.90rem;
+    color: #ff4757;
+}
+.hud-timer-badge strong {
+    font-size: 0.84rem;
+    font-weight: 900;
+    color: #ff4757;
+}
+.hud-timer-badge.timer-urgent-pulse {
+    animation: timerPulse 0.6s infinite alternate ease-in-out;
+}
+@keyframes timerPulse {
+    from { transform: scale(1); filter: drop-shadow(0 0 3px #ff4757); }
+    to { transform: scale(1.08); filter: drop-shadow(0 0 10px #ff4757); }
 }
 /* ==========================================================================
