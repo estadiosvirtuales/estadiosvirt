@@ -3248,7 +3248,7 @@ function renderizarOnceInicial() {
                 <span class="once-shield-edit-tag"><i class="ph-bold ph-pencil-simple"></i></span>
             </div>
             <div class="once-title-text-wrap">
-                <h2>Tu Once Inicial</h2>
+                <h2>PIZARRA <span class="text-accent" style="color:#00e676; text-shadow:0 0 16px rgba(0,230,118,0.6);">TÁCTICA</span></h2>
                 ${textoClub}
             </div>
         `;
