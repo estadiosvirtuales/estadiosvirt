@@ -1581,6 +1581,10 @@ window.toggleExpandirMapaGuessr = function(forzarEstado = null, event = null) {
     if (icon) {
         icon.className = estaExpandido ? 'ph-bold ph-arrows-in-simple' : 'ph-bold ph-arrows-out-simple';
     }
+    const expandText = document.getElementById('map-expand-text');
+    if (expandText) {
+        expandText.textContent = estaExpandido ? 'Contraer' : 'Expandir';
+    }
 
     setTimeout(() => {
         if (guessrMapInstance) guessrMapInstance.invalidateSize();
