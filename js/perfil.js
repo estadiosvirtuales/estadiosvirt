@@ -149,12 +149,12 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
         mejorasJugadores: {}
     };
 
-    if (supabaseClient) {
+    if (typeof supabaseClient !== 'undefined' && supabaseClient) {
         try {
             const { data: perfiles } = await supabaseClient
                 .from('perfiles')
                 .select('experiencia, datos_juego')
-                .limit(200);
+                .limit(500);
 
             if (perfiles && perfiles.length > 0) {
                 const encontrado = perfiles.find(p => {
@@ -368,7 +368,7 @@ function renderizarModalInspeccion(datosRival) {
                     <div class="inspect-stat-pill">
                         <i class="ph-bold ph-sword" style="color:#3b82f6;"></i>
                         <span>Victorias</span>
-                        <strong>${pg} PG</strong>
+                        <strong>${pg1v1} PG</strong>
                     </div>
                 </div>
 
