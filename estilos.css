@@ -7915,18 +7915,25 @@ body.video-abierto .hero-section {
     }
 
     .ranking-diff-filter-bar {
-        gap: 6px !important;
-        margin-bottom: 8px !important;
+        gap: 5px !important;
+        margin-bottom: 6px !important;
     }
     .rank-diff-btn {
-        padding: 6px 4px !important;
-        border-radius: 10px !important;
+        padding: 4px 2px !important;
+        border-radius: 8px !important;
+        min-height: auto !important;
+    }
+    .diff-btn-labels {
+        line-height: 1.05 !important;
     }
     .diff-btn-labels .diff-title {
-        font-size: 0.72rem !important;
+        font-size: 0.60rem !important;
+        letter-spacing: 0.3px !important;
     }
     .diff-btn-labels .diff-tag {
-        font-size: 0.54rem !important;
+        font-size: 0.46rem !important;
+        opacity: 0.75 !important;
+        margin-top: 1px !important;
     }
 
     .ranking-rows-scroll {
