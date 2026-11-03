@@ -138,6 +138,12 @@ function abrirModalVideo(event,link,esJuego=false){
 function cerrarModalVideo(){
     document.body.classList.remove('video-abierto');
     
+    // 👇 LIMPIEZA DE TIMERS DE AUTO-AVANCE Y CUENTAS REGRESIVAS 👇
+    if (window.guessrSoloAdvanceTimeout) clearTimeout(window.guessrSoloAdvanceTimeout);
+    if (window.guessrSoloCountdownInterval) clearInterval(window.guessrSoloCountdownInterval);
+    window.guessrSoloAdvanceTimeout = null;
+    window.guessrSoloCountdownInterval = null;
+
     // 👇 OCULTAMOS LA BOTONERA DE REACCIONES AL CERRAR LA CANCHA 👇
     if (document.getElementById('taunts-container')) {
         document.getElementById('taunts-container').style.display = 'none';
@@ -168,8 +174,8 @@ function cerrarModalVideo(){
     document.querySelectorAll('.stamp-badge, #versus-next-round-banner, .taunt-arcade-burst').forEach(el => { try { el.remove(); } catch(e) {} });
     const sb = document.getElementById('versus-live-scoreboard');
     if (sb) sb.style.display = 'none';
-    const soloCapsule = document.getElementById('guessr-solo-hud-capsule');
-    if (soloCapsule) soloCapsule.style.display = 'none';
+    const soloDock = document.getElementById('guessr-solo-dock');
+    if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
     const gt = document.getElementById('game-title');
     if (gt) gt.style.display = 'none';
     const hud = document.querySelector('.guessr-top-hud');
@@ -911,17 +917,17 @@ function renderizarScoreboardVersus(alerta = null) {
     if (!sb) return;
 
     const hud = document.querySelector('.guessr-top-hud');
-    const soloCapsule = document.getElementById('guessr-solo-hud-capsule');
+    const soloDock = document.getElementById('guessr-solo-dock');
     if (!esModoVersus) {
         sb.style.display = 'none';
-        if (soloCapsule) soloCapsule.style.display = 'inline-flex';
+        if (soloDock) soloDock.style.setProperty('display', 'inline-flex', 'important');
         if (hud) hud.classList.remove('hud-versus-active');
         if (typeof actualizarHUDSoloGuessr === 'function') actualizarHUDSoloGuessr();
         return;
     }
 
     sb.style.display = 'flex';
-    if (soloCapsule) soloCapsule.style.display = 'none';
+    if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
     if (gt) gt.style.display = 'none';
     if (hud) hud.classList.add('hud-versus-active');
 
@@ -1666,7 +1672,7 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
             const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} espectadores` : 'No especificada';
             const triviaEstadio = (bscarPropiedad(guessrEstadioCorrecto, 'Dato Curioso') || '¡Este estadio esconde grandes historias del fútbol mundial!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
 
-            hintsBox.style.display = 'block';
+            hintsBox.style.display = 'inline-flex';
             hintsBox.innerHTML = `
                 <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir pistas">
                     <i class="ph-fill ph-lightbulb" style="color:var(--accent-color); font-size: 1rem;"></i>
@@ -1704,8 +1710,8 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
         renderizarScoreboardVersus();
         const taunts = document.getElementById('taunts-container');
         if (taunts) taunts.style.display = 'flex';
-        const soloCapsule = document.getElementById('guessr-solo-hud-capsule');
-        if (soloCapsule) soloCapsule.style.display = 'none';
+        const soloDock = document.getElementById('guessr-solo-dock');
+        if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
     } else {
         const sb = document.getElementById('versus-live-scoreboard');
         if (sb) sb.style.display = 'none';
@@ -1889,17 +1895,22 @@ actualizarHUDSoloGuessr();
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`);
 const iconoDist = dist < 50 ? '<i class="ph-bold ph-target" style="color:var(--accent-color);"></i>' : dist < 200 ? '<i class="ph-bold ph-airplane-tilt"></i>' : dist < 800 ? '<i class="ph-bold ph-map-pin"></i>' : '<i class="ph-bold ph-globe"></i>';
 const esExc=!isNaN(dist)&&dist<100,esBien=!isNaN(dist)&&dist<500;
-const textoBotonSolitario = guessrRondaActual < 5 ? 'SIGUIENTE' : 'FINAL';
-const iconoBotonSolitario = guessrRondaActual < 5 ? '<i class="ph-bold ph-arrow-right"></i>' : '<i class="ph-bold ph-flag-checkered"></i>';
-btn.innerHTML=`
-<div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
-    <span class="btn-action-stats">
-        ${iconoDist} <b>${distT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${pts} pts</b>
-    </span>
-    <span class="btn-action-text">
-        ${textoBotonSolitario} ${iconoBotonSolitario}
-    </span>
-</div>`;
+const textoBotonSolitario = guessrRondaActual < 5 ? 'Siguiente ronda en' : 'Resultados en';
+let segsRestantes = 3;
+
+const actualizarBtnSolitarioCountdown = () => {
+    btn.innerHTML = `
+    <div class="btn-action-wrapper" style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 0.85rem; gap: 6px;">
+        <span class="btn-action-stats">
+            ${iconoDist} <b>${distT}</b> <span style="opacity: 0.4;">|</span> <b style="font-size: 0.92rem; font-weight: 900;">+${pts} pts</b>
+        </span>
+        <span class="btn-action-text" style="font-size:0.78rem; font-weight:900; opacity:0.95; white-space:nowrap;">
+            <i class="ph-bold ph-timer"></i> ${textoBotonSolitario} <b style="color:#ffffff;">${segsRestantes}s</b>
+        </span>
+    </div>`;
+};
+actualizarBtnSolitarioCountdown();
+
 if(esExc){
     btn.style.background="linear-gradient(135deg, rgba(12, 38, 26, 0.95) 0%, rgba(8, 22, 16, 0.98) 100%)";
     btn.style.color="#ffffff";
@@ -1921,10 +1932,35 @@ if(esExc){
 }
 // 👇 SPRINT VIRAL - PASO 3: EFECTOS JUICY EN SOLITARIO 👇
 dispararJuicinessRonda(dist);
-btn.setAttribute('data-estado','resultado');btn.disabled=false;
+btn.setAttribute('data-estado','resultado');
+btn.disabled=false;
+
+// ⏱️ AUTO-AVANCE A LOS 3 SEGUNDOS (Igual que en Versus, pasando sola o tocando el botón)
+if (window.guessrSoloAdvanceTimeout) clearTimeout(window.guessrSoloAdvanceTimeout);
+if (window.guessrSoloCountdownInterval) clearInterval(window.guessrSoloCountdownInterval);
+
+window.guessrSoloCountdownInterval = setInterval(() => {
+    segsRestantes--;
+    if (segsRestantes > 0) {
+        actualizarBtnSolitarioCountdown();
+    } else {
+        clearInterval(window.guessrSoloCountdownInterval);
+    }
+}, 1000);
+
+window.guessrSoloAdvanceTimeout = setTimeout(() => {
+    clearInterval(window.guessrSoloCountdownInterval);
+    window.guessrSoloAdvanceTimeout = null;
+    avanzarDeRondaGuessr();
+}, 3000);
 }
 
 function avanzarDeRondaGuessr(){
+    if (window.guessrSoloAdvanceTimeout) clearTimeout(window.guessrSoloAdvanceTimeout);
+    if (window.guessrSoloCountdownInterval) clearInterval(window.guessrSoloCountdownInterval);
+    window.guessrSoloAdvanceTimeout = null;
+    window.guessrSoloCountdownInterval = null;
+
     document.querySelectorAll('.stamp-badge, #versus-next-round-banner, .taunt-arcade-burst').forEach(el => { try { el.remove(); } catch(e) {} });
     [guessrUserMarker,guessrTargetMarker,guessrPolyline].forEach(m=>{try{if(m)m.remove();}catch(e){}});
     guessrUserMarker=guessrTargetMarker=guessrPolyline=null;
@@ -2904,15 +2940,15 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
 // --- Ayudantes de UI y Abandono ---
 
 function actualizarHUDSoloGuessr() {
-    const capsule = document.getElementById('guessr-solo-hud-capsule');
-    if (!capsule) return;
+    const dock = document.getElementById('guessr-solo-dock');
+    if (!dock) return;
 
     if (esModoVersus) {
-        capsule.style.display = 'none';
+        dock.style.setProperty('display', 'none', 'important');
         return;
     }
 
-    capsule.style.display = 'inline-flex';
+    dock.style.setProperty('display', 'inline-flex', 'important');
 
     // Round label
     const rLabel = document.getElementById('hud-round-label');
@@ -2937,12 +2973,10 @@ function actualizarHUDSoloGuessr() {
 
     // Timer (Leyenda / Difícil)
     const timerBadge = document.getElementById('hud-timer-badge');
-    const timerDivider = document.getElementById('hud-timer-divider');
     const timerVal = document.getElementById('hud-timer-val');
 
     if (guessrDificultad === 'dificil' && !esModoDiario) {
         if (timerBadge) timerBadge.style.display = 'inline-flex';
-        if (timerDivider) timerDivider.style.display = 'block';
         if (timerVal) {
             timerVal.textContent = guessrTiempoRestanteIndividual + 's';
             const isUrgent = guessrTiempoRestanteIndividual <= 5 && guessrTiempoRestanteIndividual > 0;
@@ -2950,7 +2984,6 @@ function actualizarHUDSoloGuessr() {
         }
     } else {
         if (timerBadge) timerBadge.style.display = 'none';
-        if (timerDivider) timerDivider.style.display = 'none';
     }
 }
 window.actualizarHUDSoloGuessr = actualizarHUDSoloGuessr;

@@ -1381,54 +1381,60 @@ body.video-abierto .hero-section {
     font-family: 'Outfit', sans-serif !important;
 }
 
-/* 🏆 CÁPSULA ARCADE MODERNA DE STADIUMGUESSR (MODO INDIVIDUAL Y RETO DIARIO) */
-.guessr-hud-capsule {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 6px 16px;
-    background: linear-gradient(135deg, rgba(12, 20, 34, 0.94) 0%, rgba(6, 11, 20, 0.98) 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.14);
-    border-top: 2px solid #00ff77;
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 119, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    pointer-events: auto;
-    user-select: none;
-    box-sizing: border-box;
+/* ========================================================
+   📍 DOCK SUPERIOR IZQUIERDO DE STADIUMGUESSR (MODO INDIVIDUAL Y RETO DIARIO)
+   Posicionado sobre el tapatítulo (.yt-title-mask) para NO tapar espacio del video
+   ======================================================== */
+.guessr-solo-dock {
+    position: absolute !important;
+    top: 13px !important;
+    left: 16px !important;
+    z-index: 2025 !important;
+    display: none;
+    align-items: center !important;
+    gap: 8px !important;
+    pointer-events: auto !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    font-family: 'Outfit', sans-serif !important;
     transition: all 0.25s ease;
 }
 
-.hud-pill-segment {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.hud-pill-segment i {
-    font-size: 1.05rem;
-    color: var(--accent-color);
+.guessr-solo-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    background: linear-gradient(135deg, rgba(14, 23, 40, 0.92) 0%, rgba(8, 13, 24, 0.97) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1.5px solid rgba(0, 255, 119, 0.65) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    color: #ffffff !important;
+    font-family: 'Outfit', sans-serif !important;
+    box-sizing: border-box !important;
+    user-select: none !important;
 }
 
-.hud-round-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+.solo-round-label {
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
 }
-.hud-round-title {
-    font-size: 0.72rem;
-    font-weight: 900;
-    letter-spacing: 0.8px;
-    color: #ffffff;
-    text-transform: uppercase;
-    line-height: 1;
+
+.solo-round-dots {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
 }
-.hud-round-dots {
-    display: flex;
-    gap: 4px;
-}
+
 .hud-mini-dot {
-    width: 14px;
+    width: 12px;
     height: 4px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.15);
@@ -1448,56 +1454,61 @@ body.video-abierto .hero-section {
     50% { opacity: 0.6; filter: drop-shadow(0 0 1px #00ff77); }
 }
 
-.hud-divider {
-    width: 1px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.15);
+.solo-divider {
+    width: 1px !important;
+    height: 16px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
-.hud-score-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 10px;
-    background: rgba(0, 255, 119, 0.12);
-    border: 1px solid rgba(0, 255, 119, 0.35);
-    border-radius: 14px;
+.solo-score-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    white-space: nowrap !important;
 }
-.hud-score-badge i {
-    font-size: 0.88rem;
-    color: var(--accent-color);
+.solo-score-badge strong {
+    color: var(--accent-color, #00ff77) !important;
+    font-weight: 900 !important;
 }
-.hud-score-badge strong {
-    font-size: 0.88rem;
-    font-weight: 900;
-    color: #ffffff;
-    letter-spacing: -0.2px;
-}
-.hud-score-badge small {
-    font-size: 0.62rem;
-    font-weight: 800;
-    color: var(--accent-color);
+.solo-score-badge small {
+    font-size: 0.68rem !important;
+    color: #94a3b8 !important;
+    font-weight: 800 !important;
 }
 
-.hud-timer-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    background: rgba(255, 71, 87, 0.15);
-    border: 1px solid rgba(255, 71, 87, 0.45);
-    border-radius: 14px;
+/* ⏱️ Segundero a su derecha en modo difícil (Leyenda) */
+.guessr-solo-timer-pill {
+    display: none;
+    align-items: center !important;
+    gap: 6px !important;
+    height: 38px !important;
+    padding: 0 13px !important;
+    background: linear-gradient(135deg, rgba(38, 14, 18, 0.94) 0%, rgba(20, 8, 12, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 71, 87, 0.45) !important;
+    border-top: 1.5px solid #ff4757 !important;
+    border-radius: 20px !important;
+    color: #fca5a5 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.84rem !important;
+    font-weight: 900 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(255, 71, 87, 0.2) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-sizing: border-box !important;
 }
-.hud-timer-badge i {
-    font-size: 0.90rem;
+.guessr-solo-timer-pill i {
+    font-size: 0.95rem;
     color: #ff4757;
 }
-.hud-timer-badge strong {
-    font-size: 0.84rem;
-    font-weight: 900;
-    color: #ff4757;
+.guessr-solo-timer-pill strong {
+    color: #ffffff !important;
+    font-size: 0.92rem !important;
+    font-weight: 900 !important;
 }
-.hud-timer-badge.timer-urgent-pulse {
+.guessr-solo-timer-pill.timer-urgent-pulse {
     animation: timerPulse 0.6s infinite alternate ease-in-out;
 }
 @keyframes timerPulse {
@@ -1505,24 +1516,40 @@ body.video-abierto .hero-section {
     to { transform: scale(1.08); filter: drop-shadow(0 0 10px #ff4757); }
 }
 
-/* Light Theme */
-[data-theme="light"] .guessr-hud-capsule {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.98) 100%);
-    border-color: #cbd5e1;
-    border-top-color: #00cc66;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+/* 💡 Botón de pistas a su derecha en modo fácil */
+.guessr-solo-dock .guessr-hud-hints {
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    position: relative !important;
 }
-[data-theme="light"] .hud-round-title {
-    color: #0f172a;
+.guessr-solo-dock .guessr-hint-btn {
+    height: 38px !important;
+    border-radius: 20px !important;
+    padding: 0 13px !important;
+    font-size: 0.82rem !important;
+    box-sizing: border-box !important;
+}
+
+/* Light Theme */
+[data-theme="light"] .guessr-solo-pill {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.98) 100%) !important;
+    border-color: #cbd5e1 !important;
+    border-top-color: #00cc66 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+    color: #0f172a !important;
+}
+[data-theme="light"] .solo-round-label {
+    color: #0f172a !important;
+}
+[data-theme="light"] .solo-score-badge {
+    color: #0f172a !important;
+}
+[data-theme="light"] .solo-divider {
+    background: #cbd5e1 !important;
 }
 [data-theme="light"] .hud-mini-dot {
     background: rgba(15, 23, 42, 0.15);
-}
-[data-theme="light"] .hud-divider {
-    background: #cbd5e1;
-}
-[data-theme="light"] .hud-score-badge strong {
-    color: #0f172a;
 }
 
 /* 🟢 Segmentos de Progreso de Rondas */
@@ -11180,42 +11207,36 @@ html[data-theme="light"] .xp-bar-big-fill {
         font-size: 0.55rem !important;
     }
 
-    /* 🏆 Cápsula Arcade en Móvil */
-    .guessr-hud-capsule {
-        padding: 4px 10px !important;
-        gap: 8px !important;
-        border-radius: 20px !important;
-        max-width: 96% !important;
-    }
-    .hud-pill-segment i {
-        font-size: 0.90rem !important;
-    }
-    .hud-round-title {
-        font-size: 0.62rem !important;
+    /* 📍 Dock Top-Left en Móvil */
+    .guessr-solo-dock { top: 14px !important; left: 8px !important; gap: 5px !important; height: 34px !important; }
+    .guessr-solo-pill { height: 34px !important; padding: 0 8px !important; gap: 5px !important; border-radius: 18px !important; }
+    .solo-round-label {
+        font-size: 0.74rem !important;
     }
     .hud-mini-dot {
         width: 10px !important;
         height: 3px !important;
     }
-    .hud-score-badge {
-        padding: 2px 7px !important;
+    .solo-score-badge {
+        font-size: 0.74rem !important;
         gap: 4px !important;
     }
-    .hud-score-badge strong {
+    .solo-score-badge strong {
         font-size: 0.78rem !important;
     }
-    .hud-timer-badge {
-        padding: 2px 7px !important;
-        gap: 3px !important;
+    .guessr-solo-timer-pill {
+        height: 34px !important;
+        padding: 0 9px !important;
+        font-size: 0.76rem !important;
+        border-radius: 18px !important;
     }
-    .hud-timer-badge strong {
-        font-size: 0.74rem !important;
+    .guessr-solo-dock .guessr-hint-btn { height: 34px !important; padding: 0 8px !important; font-size: 0.72rem !important; border-radius: 18px !important; }
+    .solo-divider {
+        height: 14px !important;
     }
-    .hud-divider {
-        height: 16px !important;
-    }
-    .guessr-top-hud.hud-versus-active #guessr-solo-hud-capsule {
+    .yt-badge-pill {
         display: none !important;
+    }
     }
 }
 /* ========================================================
@@ -14015,54 +14036,60 @@ body.video-abierto .hero-section {
     font-family: 'Outfit', sans-serif !important;
 }
 
-/* 🏆 CÁPSULA ARCADE MODERNA DE STADIUMGUESSR (MODO INDIVIDUAL Y RETO DIARIO) */
-.guessr-hud-capsule {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 6px 16px;
-    background: linear-gradient(135deg, rgba(12, 20, 34, 0.94) 0%, rgba(6, 11, 20, 0.98) 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.14);
-    border-top: 2px solid #00ff77;
-    border-radius: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 119, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    pointer-events: auto;
-    user-select: none;
-    box-sizing: border-box;
+/* ========================================================
+   📍 DOCK SUPERIOR IZQUIERDO DE STADIUMGUESSR (MODO INDIVIDUAL Y RETO DIARIO)
+   Posicionado sobre el tapatítulo (.yt-title-mask) para NO tapar espacio del video
+   ======================================================== */
+.guessr-solo-dock {
+    position: absolute !important;
+    top: 13px !important;
+    left: 16px !important;
+    z-index: 2025 !important;
+    display: none;
+    align-items: center !important;
+    gap: 8px !important;
+    pointer-events: auto !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+    font-family: 'Outfit', sans-serif !important;
     transition: all 0.25s ease;
 }
 
-.hud-pill-segment {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.hud-pill-segment i {
-    font-size: 1.05rem;
-    color: var(--accent-color);
+.guessr-solo-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    background: linear-gradient(135deg, rgba(14, 23, 40, 0.92) 0%, rgba(8, 13, 24, 0.97) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-top: 1.5px solid rgba(0, 255, 119, 0.65) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    color: #ffffff !important;
+    font-family: 'Outfit', sans-serif !important;
+    box-sizing: border-box !important;
+    user-select: none !important;
 }
 
-.hud-round-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+.solo-round-label {
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.2px !important;
+    white-space: nowrap !important;
 }
-.hud-round-title {
-    font-size: 0.72rem;
-    font-weight: 900;
-    letter-spacing: 0.8px;
-    color: #ffffff;
-    text-transform: uppercase;
-    line-height: 1;
+
+.solo-round-dots {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
 }
-.hud-round-dots {
-    display: flex;
-    gap: 4px;
-}
+
 .hud-mini-dot {
-    width: 14px;
+    width: 12px;
     height: 4px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.15);
@@ -14082,56 +14109,61 @@ body.video-abierto .hero-section {
     50% { opacity: 0.6; filter: drop-shadow(0 0 1px #00ff77); }
 }
 
-.hud-divider {
-    width: 1px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.15);
+.solo-divider {
+    width: 1px !important;
+    height: 16px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
-.hud-score-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 10px;
-    background: rgba(0, 255, 119, 0.12);
-    border: 1px solid rgba(0, 255, 119, 0.35);
-    border-radius: 14px;
+.solo-score-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    white-space: nowrap !important;
 }
-.hud-score-badge i {
-    font-size: 0.88rem;
-    color: var(--accent-color);
+.solo-score-badge strong {
+    color: var(--accent-color, #00ff77) !important;
+    font-weight: 900 !important;
 }
-.hud-score-badge strong {
-    font-size: 0.88rem;
-    font-weight: 900;
-    color: #ffffff;
-    letter-spacing: -0.2px;
-}
-.hud-score-badge small {
-    font-size: 0.62rem;
-    font-weight: 800;
-    color: var(--accent-color);
+.solo-score-badge small {
+    font-size: 0.68rem !important;
+    color: #94a3b8 !important;
+    font-weight: 800 !important;
 }
 
-.hud-timer-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    background: rgba(255, 71, 87, 0.15);
-    border: 1px solid rgba(255, 71, 87, 0.45);
-    border-radius: 14px;
+/* ⏱️ Segundero a su derecha en modo difícil (Leyenda) */
+.guessr-solo-timer-pill {
+    display: none;
+    align-items: center !important;
+    gap: 6px !important;
+    height: 38px !important;
+    padding: 0 13px !important;
+    background: linear-gradient(135deg, rgba(38, 14, 18, 0.94) 0%, rgba(20, 8, 12, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 71, 87, 0.45) !important;
+    border-top: 1.5px solid #ff4757 !important;
+    border-radius: 20px !important;
+    color: #fca5a5 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.84rem !important;
+    font-weight: 900 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(255, 71, 87, 0.2) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-sizing: border-box !important;
 }
-.hud-timer-badge i {
-    font-size: 0.90rem;
+.guessr-solo-timer-pill i {
+    font-size: 0.95rem;
     color: #ff4757;
 }
-.hud-timer-badge strong {
-    font-size: 0.84rem;
-    font-weight: 900;
-    color: #ff4757;
+.guessr-solo-timer-pill strong {
+    color: #ffffff !important;
+    font-size: 0.92rem !important;
+    font-weight: 900 !important;
 }
-.hud-timer-badge.timer-urgent-pulse {
+.guessr-solo-timer-pill.timer-urgent-pulse {
     animation: timerPulse 0.6s infinite alternate ease-in-out;
 }
 @keyframes timerPulse {
@@ -14139,24 +14171,40 @@ body.video-abierto .hero-section {
     to { transform: scale(1.08); filter: drop-shadow(0 0 10px #ff4757); }
 }
 
-/* Light Theme */
-[data-theme="light"] .guessr-hud-capsule {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.98) 100%);
-    border-color: #cbd5e1;
-    border-top-color: #00cc66;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+/* 💡 Botón de pistas a su derecha en modo fácil */
+.guessr-solo-dock .guessr-hud-hints {
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    position: relative !important;
 }
-[data-theme="light"] .hud-round-title {
-    color: #0f172a;
+.guessr-solo-dock .guessr-hint-btn {
+    height: 38px !important;
+    border-radius: 20px !important;
+    padding: 0 13px !important;
+    font-size: 0.82rem !important;
+    box-sizing: border-box !important;
+}
+
+/* Light Theme */
+[data-theme="light"] .guessr-solo-pill {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.98) 100%) !important;
+    border-color: #cbd5e1 !important;
+    border-top-color: #00cc66 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+    color: #0f172a !important;
+}
+[data-theme="light"] .solo-round-label {
+    color: #0f172a !important;
+}
+[data-theme="light"] .solo-score-badge {
+    color: #0f172a !important;
+}
+[data-theme="light"] .solo-divider {
+    background: #cbd5e1 !important;
 }
 [data-theme="light"] .hud-mini-dot {
     background: rgba(15, 23, 42, 0.15);
-}
-[data-theme="light"] .hud-divider {
-    background: #cbd5e1;
-}
-[data-theme="light"] .hud-score-badge strong {
-    color: #0f172a;
 }
 
 /* 🟢 Segmentos de Progreso de Rondas */

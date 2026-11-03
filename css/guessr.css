@@ -4966,17 +4966,19 @@ html[data-theme="light"] .xp-bar-big-fill {
     .guessr-top-hud.hud-versus-active {
         position: absolute !important;
         top: 64px !important;
-        left: 20px !important;
-        right: 20px !important;
-        width: calc(100% - 40px) !important;
-        max-width: none !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: max-content !important;
+        max-width: calc(100% - 32px) !important;
         display: flex !important;
-        flex-direction: row !important;
+        flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 12px !important;
+        gap: 6px !important;
         z-index: 25 !important;
         pointer-events: auto !important;
+        box-sizing: border-box !important;
     }
 
     /* Ocultamos la barra de rondas flotante en versus porque ya está el VS R2/5 y la barra de duelo */
@@ -4984,11 +4986,11 @@ html[data-theme="light"] .xp-bar-big-fill {
         display: none !important;
     }
 
-    /* El dock de taunts queda alineado horizontalmente con altura idéntica */
+    /* El dock de taunts queda centrado horizontalmente arriba del marcador */
     .guessr-top-hud.hud-versus-active .taunts-dock {
-        order: -2 !important;
         display: inline-flex !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
+        justify-content: center !important;
         height: 38px !important;
         padding: 2px 8px !important;
         border-radius: 20px !important;
@@ -4996,30 +4998,13 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-sizing: border-box !important;
     }
 
-    /* 💡 En 1v1 PC: Botón de pistas ubicado a la izquierda del marcador para no cortarse jamás */
-    .guessr-top-hud.hud-versus-active #guessr-hud-hints {
-        order: -1 !important;
-        margin: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        flex-shrink: 0 !important;
-        height: 38px !important;
-        position: relative !important;
-        z-index: 35 !important;
-    }
-    .guessr-top-hud.hud-versus-active #guessr-hud-hints .guessr-hint-btn {
-        height: 38px !important;
-        box-sizing: border-box !important;
-    }
-
-    /* El Scoreboard Ribbon se expande horizontalmente con altura fija de 38px */
+    /* El Scoreboard Ribbon se centra horizontalmente con altura fija de 38px */
     .guessr-top-hud.hud-versus-active .versus-scoreboard-box {
-        order: 0 !important;
-        flex: 1 !important;
+        margin: 0 auto !important;
         max-width: 680px !important;
+        width: auto !important;
         height: 38px !important;
         padding: 0 14px !important;
-        margin: 0 !important;
         border-radius: 20px !important;
         display: flex !important;
         flex-direction: row !important;
@@ -5263,25 +5248,6 @@ html[data-theme="light"] .xp-bar-big-fill {
 
     #game-title, #rounds-progress {
         display: none !important;
-    }
-    .guessr-top-hud:not(.hud-versus-active) #guessr-solo-hud-capsule {
-        display: inline-flex !important;
-    }
-    .guessr-top-hud.hud-versus-active #guessr-solo-hud-capsule {
-        display: none !important;
-    }
-
-    /* 🏆 Cápsula Arcade en Móvil */
-    .guessr-hud-capsule {
-        display: inline-flex !important;
-        align-items: center !important;
-        padding: 4px 10px !important;
-        gap: 8px !important;
-        border-radius: 20px !important;
-        max-width: 96% !important;
-    }
-    .hud-pill-segment i {
-        font-size: 0.90rem !important;
     }
     .hud-round-title {
         font-size: 0.62rem !important;
@@ -6985,29 +6951,5 @@ html[data-theme="light"] .xp-bar-big-fill {
     color: var(--accent-color);
 }
 
-.hud-timer-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    background: rgba(255, 71, 87, 0.15);
-    border: 1px solid rgba(255, 71, 87, 0.45);
-    border-radius: 14px;
-}
-.hud-timer-badge i {
-    font-size: 0.90rem;
-    color: #ff4757;
-}
-.hud-timer-badge strong {
-    font-size: 0.84rem;
-    font-weight: 900;
-    color: #ff4757;
-}
-.hud-timer-badge.timer-urgent-pulse {
-    animation: timerPulse 0.6s infinite alternate ease-in-out;
-}
-@keyframes timerPulse {
-    from { transform: scale(1); filter: drop-shadow(0 0 3px #ff4757); }
-    to { transform: scale(1.08); filter: drop-shadow(0 0 10px #ff4757); }
-}
+
 /* ==========================================================================
