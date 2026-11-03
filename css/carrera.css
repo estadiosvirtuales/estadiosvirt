@@ -48,26 +48,326 @@
     flex-direction: column !important;
     overflow: hidden !important;
     box-sizing: border-box !important;
+    transition: background 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+/* ========================================================
+   📺 CABECERA BROADCAST MATCHDAY (OPCIÓN 3 EXCLUSIVA PARA PC)
+   ======================================================== */
+.once-header-broadcast-deck {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(10, 16, 28, 0.95) 0%, rgba(6, 10, 18, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-top: 2px solid rgba(0, 230, 118, 0.6);
+    border-radius: 16px;
+    padding: 7px 46px 7px 16px;
+    gap: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.opt3-brand-col {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.opt3-brand-col .once-team-shield-box {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.opt3-shield {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.opt3-brand-col .once-team-shield-box:hover .opt3-shield {
+    transform: scale(1.08);
+}
+
+.opt3-brand-col .once-shield-edit-tag {
+    position: absolute;
+    bottom: -2px;
+    right: -3px;
+    background: #00e676;
+    color: #04101c;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.opt3-title-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.opt3-title-wrap h2 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    margin: 0;
+    color: var(--text-main, #ffffff);
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+}
+
+.opt3-title-wrap .once-team-name-tag {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #00e676;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 2px;
+}
+
+.opt3-center-kpi {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 5px 16px;
+}
+
+.opt3-hero-ovr {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    cursor: default;
+}
+
+.opt3-hero-ovr small {
+    font-size: 0.62rem;
+    font-weight: 900;
+    color: #38bdf8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.opt3-hero-ovr strong {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.opt3-kpi-pipe {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 0.85rem;
+    user-select: none;
+}
+
+.opt3-lines-badge {
+    display: flex;
+    gap: 10px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: default;
+}
+
+.opt3-lines-badge span b {
+    color: #ffffff;
+    margin-left: 2px;
+    font-weight: 900;
+}
+
+.opt3-res-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: #ffffff;
+    cursor: default;
+}
+
+.opt3-res-badge b {
+    font-weight: 900;
+}
+
+.opt3-tools-col {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.opt3-form-select-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.opt3-forms-dropdown {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(0, 230, 118, 0.4);
+    color: #00e676;
+    font-size: 0.76rem;
+    font-weight: 900;
+    padding: 6px 24px 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.opt3-forms-dropdown:hover,
+.opt3-forms-dropdown:focus {
+    border-color: #00e676;
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.35);
+}
+
+.opt3-forms-dropdown option {
+    background: #0b121e;
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.opt3-form-caret {
+    position: absolute;
+    right: 8px;
+    pointer-events: none;
+    color: #00e676;
+    font-size: 0.75rem;
+}
+
+.opt3-btn {
+    height: 32px;
+    padding: 0 11px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.opt3-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
+}
+
+.opt3-btn.primary {
+    background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+    color: #06101c;
+    border: none;
+    font-weight: 900;
+    box-shadow: 0 2px 10px rgba(0, 230, 118, 0.3);
+}
+
+.opt3-btn.primary:hover {
+    box-shadow: 0 4px 16px rgba(0, 230, 118, 0.5);
+}
+
+.opt3-btn.danger {
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+.opt3-btn.danger:hover {
+    background: rgba(248, 113, 113, 0.15);
+    border-color: #f87171;
+}
+
+/* Soporte Tema Claro */
+[data-theme="light"] .once-header-broadcast-deck {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 244, 248, 0.98) 100%);
+    border-color: rgba(0, 0, 0, 0.1);
+    border-top-color: #00c853;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .opt3-title-wrap h2 {
+    color: #0f172a;
+}
+[data-theme="light"] .opt3-center-kpi {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .opt3-hero-ovr strong {
+    color: #0f172a;
+}
+[data-theme="light"] .opt3-kpi-pipe {
+    color: rgba(0, 0, 0, 0.2);
+}
+[data-theme="light"] .opt3-lines-badge span b {
+    color: #0f172a;
+}
+[data-theme="light"] .opt3-res-badge {
+    color: #0f172a;
+}
+[data-theme="light"] .opt3-forms-dropdown {
+    background: #ffffff;
+    border-color: rgba(0, 200, 83, 0.5);
+    color: #00a843;
+}
+[data-theme="light"] .opt3-forms-dropdown option {
+    background: #ffffff;
+    color: #0f172a;
+}
+[data-theme="light"] .opt3-btn {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #0f172a;
+}
+[data-theme="light"] .opt3-btn.primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, #00c853 0%, #0091ea 100%);
+}
+
+/* ========================================================
+   📱 SEGREGACIÓN RESPONSIVE: PC (>=861px) vs CELULAR (<=860px)
+   ======================================================== */
+@media (min-width: 861px) {
+    .once-header-broadcast-deck {
+        display: grid !important;
+    }
+    .once-header-mobile-deck {
+        display: none !important;
+    }
+}
+
+@media (max-width: 860px) {
+    .once-header-broadcast-deck {
+        display: none !important;
+    }
+    .once-header-mobile-deck {
+        display: flex !important;
+        flex-direction: column !important;
+    }
 }
 
 .once-modal-header {
     text-align: center;
     margin-bottom: 10px;
     flex-shrink: 0;
-}
-
-.once-modal-box {
-    max-width: 1080px !important;
-    width: 94% !important;
-    height: 88vh !important;
-    max-height: 88vh !important;
-    padding: 20px 24px !important;
-    border-radius: 24px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-    transition: background 0.4s ease, box-shadow 0.4s ease !important;
 }
 
 .once-title-group {

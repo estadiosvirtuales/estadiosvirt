@@ -1475,26 +1475,92 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
     <div class="modal-content once-modal-box">
         <button class="close-btn" onclick="cerrarModalOnceInicial()"><i class="ph-bold ph-x"></i></button>
 
-        <div class="once-modal-header">
-            <div class="once-title-group">
-                <i class="ph-fill ph-strategy" style="color:var(--accent-color); font-size:1.6rem;"></i>
-                <h2>Tu Once Inicial</h2>
+        <!-- 📺 CABECERA BROADCAST MATCHDAY (OPCIÓN 3 EXCLUSIVA PARA PC) -->
+        <div class="once-header-broadcast-deck" id="once-header-broadcast-deck">
+            <!-- Columna 1: Identidad del Club -->
+            <div class="opt3-brand-col">
+                <div class="once-team-shield-box" onclick="abrirSelectorEscudoParaOnce()" title="Elegir escudo de tu equipo">
+                    <img id="opt3-shield-img" src="clubes/ev.webp" alt="Escudo" class="opt3-shield">
+                    <span class="once-shield-edit-tag"><i class="ph-bold ph-pencil-simple"></i></span>
+                </div>
+                <div class="opt3-title-wrap">
+                    <h2>PIZARRA <span style="color:#00e676;">TÁCTICA</span></h2>
+                    <span class="once-team-name-tag" id="opt3-team-name">ESTADIOS VIRT.</span>
+                </div>
             </div>
-            <p id="once-stats-counter" class="once-stats-sub"></p>
-        </div>
 
-        <div class="once-top-actions-bar">
-            <div class="pitch-formations-bar" id="once-formation-tabs"></div>
-            <div class="once-quick-btns">
-                <button type="button" class="btn-3d once-quick-btn once-btn-micarta" onclick="cerrarModalOnceInicial(false); abrirModalPerfil();" title="Personalizar mi carta">
-                    <i class="ph-bold ph-identification-card"></i> <span>Mi Carta</span>
-                </button>
-                <button type="button" class="btn-3d once-quick-btn once-btn-auto" onclick="autocompletarOnceInicial()" title="Autocompletar con tus mejores jugadores">
+            <!-- Columna 2: Centro de Métricas / KPI del Equipo -->
+            <div class="opt3-center-kpi">
+                <div class="opt3-hero-ovr" title="GRL Promedio de tu Once Titular (con bonus de química global)">
+                    <small>GRL</small>
+                    <strong id="opt3-ovr-val">--</strong>
+                    <span id="opt3-bonus-val" style="font-size:0.65rem; color:#00e676; font-weight:900;"></span>
+                </div>
+                <span class="opt3-kpi-pipe">|</span>
+                <div class="opt3-lines-badge" title="Promedio por líneas tácticas">
+                    <span style="color:#60a5fa;">DEF<b id="opt3-def-score">0</b></span>
+                    <span style="color:#fbbf24;">MED<b id="opt3-med-score">0</b></span>
+                    <span style="color:#f87171;">DEL<b id="opt3-del-score">0</b></span>
+                </div>
+                <span class="opt3-kpi-pipe">|</span>
+                <div class="opt3-res-badge" title="Química de Equipo (Líneas tácticas y rombos por jugador)">
+                    <i class="ph-bold ph-diamonds-four" style="color:#00e676;"></i>
+                    <span id="opt3-chem-val">0<b>/33</b></span>
+                </div>
+                <span class="opt3-kpi-pipe">|</span>
+                <div class="opt3-res-badge" title="Puntos de Habilidad disponibles para entrenar jugadores">
+                    <i class="ph-fill ph-lightning" style="color:#facc15;"></i>
+                    <span><b id="opt3-sp-val">0</b> SP</span>
+                </div>
+            </div>
+
+            <!-- Columna 3: Formación y Herramientas Rápidas -->
+            <div class="opt3-tools-col">
+                <div class="opt3-form-select-wrap" title="Cambiar formación táctica">
+                    <i class="ph-bold ph-caret-down opt3-form-caret"></i>
+                    <select class="opt3-forms-dropdown" id="opt3-forms-dropdown" onchange="cambiarFormacionOnce(this.value)">
+                        <option value="4-3-3">4-3-3</option>
+                        <option value="4-4-2">4-4-2</option>
+                        <option value="3-5-2">3-5-2</option>
+                        <option value="4-2-3-1">4-2-3-1</option>
+                        <option value="5-3-2">5-3-2</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-3d opt3-btn primary" onclick="autocompletarOnceInicial()" title="Autocompletar con tus mejores jugadores">
                     <i class="ph-bold ph-magic-wand"></i> <span>Auto</span>
                 </button>
-                <button type="button" class="btn-3d once-quick-btn once-btn-trash" onclick="limpiarOnceInicial()" title="Vaciar cancha">
+                <button type="button" class="btn-3d opt3-btn" onclick="cerrarModalOnceInicial(false); abrirModalPerfil();" title="Personalizar mi carta">
+                    <i class="ph-bold ph-identification-card"></i> <span>Mi Carta</span>
+                </button>
+                <button type="button" class="btn-3d opt3-btn danger" onclick="limpiarOnceInicial()" title="Vaciar cancha">
                     <i class="ph-bold ph-trash"></i>
                 </button>
+            </div>
+        </div>
+
+        <!-- 📱 CABECERA CLÁSICA PRESERVADA PARA CELULAR -->
+        <div class="once-header-mobile-deck">
+            <div class="once-modal-header">
+                <div class="once-title-group">
+                    <i class="ph-fill ph-strategy" style="color:var(--accent-color); font-size:1.6rem;"></i>
+                    <h2>Tu Once Inicial</h2>
+                </div>
+                <p id="once-stats-counter" class="once-stats-sub"></p>
+            </div>
+
+            <div class="once-top-actions-bar">
+                <div class="pitch-formations-bar" id="once-formation-tabs"></div>
+                <div class="once-quick-btns">
+                    <button type="button" class="btn-3d once-quick-btn once-btn-micarta" onclick="cerrarModalOnceInicial(false); abrirModalPerfil();" title="Personalizar mi carta">
+                        <i class="ph-bold ph-identification-card"></i> <span>Mi Carta</span>
+                    </button>
+                    <button type="button" class="btn-3d once-quick-btn once-btn-auto" onclick="autocompletarOnceInicial()" title="Autocompletar con tus mejores jugadores">
+                        <i class="ph-bold ph-magic-wand"></i> <span>Auto</span>
+                    </button>
+                    <button type="button" class="btn-3d once-quick-btn once-btn-trash" onclick="limpiarOnceInicial()" title="Vaciar cancha">
+                        <i class="ph-bold ph-trash"></i>
+                    </button>
+                </div>
             </div>
         </div>
 

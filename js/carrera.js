@@ -3321,6 +3321,33 @@ function renderizarOnceInicial() {
         `).join('');
     }
 
+    // 📺 3.1 Sincronización Cabecera Broadcast Matchday (Opción 3 PC)
+    const opt3Shield = document.getElementById('opt3-shield-img');
+    const opt3TeamName = document.getElementById('opt3-team-name');
+    const opt3OvrVal = document.getElementById('opt3-ovr-val');
+    const opt3BonusVal = document.getElementById('opt3-bonus-val');
+    const opt3Def = document.getElementById('opt3-def-score');
+    const opt3Med = document.getElementById('opt3-med-score');
+    const opt3Del = document.getElementById('opt3-del-score');
+    const opt3Chem = document.getElementById('opt3-chem-val');
+    const opt3Sp = document.getElementById('opt3-sp-val');
+    const opt3FormDropdown = document.getElementById('opt3-forms-dropdown');
+
+    if (opt3Shield) opt3Shield.src = obtenerUrlEscudo(escudoClub);
+    if (opt3TeamName) opt3TeamName.innerText = (itemEscudo && escudoClub !== 'ev') ? nombreClub.toUpperCase() : 'ESTADIOS VIRT.';
+    if (opt3OvrVal) opt3OvrVal.innerText = ovrEquipo > 0 ? ovrEquipo : '--';
+    if (opt3BonusVal) opt3BonusVal.innerText = bonoQuimica > 0 ? `+${bonoQuimica}` : '';
+    if (opt3Def) opt3Def.innerText = ovrLineas.def;
+    if (opt3Med) opt3Med.innerText = ovrLineas.med;
+    if (opt3Del) opt3Del.innerText = ovrLineas.del;
+    if (opt3Chem) opt3Chem.innerHTML = `${quimicaFinal}<b>/33</b>`;
+    if (opt3Sp) opt3Sp.innerText = spDisponibles;
+    if (opt3FormDropdown) {
+        opt3FormDropdown.innerHTML = Object.keys(FORMACIONES_TACTICAS).map(k => `
+            <option value="${k}" ${k === formacionOnceActual ? 'selected' : ''}>${k}</option>
+        `).join('');
+    }
+
     // 4. Renderizado de los 11 titulares en la cancha con OVR integrado y rombos de química
     let htmlNodos = f.posiciones.map((item, idx) => {
         const avatarId = once[idx];
