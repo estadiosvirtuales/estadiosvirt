@@ -19229,6 +19229,11 @@ body.video-abierto .hero-section {
 .order-game-header.revealed .order-game-title {
     font-size: 1.08rem;
 }
+.order-game-header {
+    text-align: center;
+    padding: 0 36px 6px;
+    margin-bottom: 6px;
+}
 .order-game-header.revealed .order-game-subtitle {
     font-size: 0.78rem;
     margin-top: 2px;
@@ -19243,6 +19248,11 @@ body.video-abierto .hero-section {
     text-transform: uppercase;
     color: var(--text-main);
     letter-spacing: -0.3px;
+    margin: 0;
+}
+.order-game-title .accent-word {
+    color: #00e676;
+    text-shadow: 0 0 16px rgba(0, 230, 118, 0.6);
 }
 .order-game-subtitle {
     color: var(--text-muted);
@@ -19251,7 +19261,7 @@ body.video-abierto .hero-section {
     line-height: 1.4;
 }
 .order-game-subtitle b {
-    color: #fbbf24;
+    color: #00e676;
 }
 .order-endgame-pill {
     display: inline-flex;
@@ -19568,11 +19578,10 @@ body.video-abierto .hero-section {
     align-items: center;
     justify-content: space-between;
     border-radius: 12px !important;
-    background: linear-gradient(135deg, #00e5ff 0%, #2979ff 55%, #1a237e 100%) !important;
-    color: #ffffff !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
-    border-top: 2px solid rgba(255, 255, 255, 0.8) !important;
-    box-shadow: 0 4px 18px rgba(41, 121, 255, 0.45), 0 0 16px rgba(0, 229, 255, 0.35) !important;
+    background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%) !important;
+    color: #021a0e !important;
+    border: none !important;
+    box-shadow: 0 4px 18px rgba(0, 230, 118, 0.45) !important;
     cursor: pointer;
 }
 
@@ -19971,15 +19980,15 @@ body.video-abierto .hero-section {
         font-size: 0.80rem;
     }
     .order-tip-box i {
-        color: #fbbf24;
+        color: #00e676;
         font-size: 1.15rem;
     }
     .btn-confirm-order-desktop {
         padding: 9px 22px;
         border-radius: 12px;
         border: none;
-        background: linear-gradient(135deg, #00e5ff 0%, #2979ff 55%, #1a237e 100%);
-        color: #ffffff;
+        background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+        color: #021a0e;
         font-weight: 900;
         font-size: 0.88rem;
         text-transform: uppercase;
@@ -19987,13 +19996,13 @@ body.video-abierto .hero-section {
         display: flex;
         align-items: center;
         gap: 8px;
-        box-shadow: 0 4px 16px rgba(41, 121, 255, 0.45);
+        box-shadow: 0 4px 18px rgba(0, 230, 118, 0.45);
         cursor: pointer;
         transition: all 0.2s ease;
     }
     .btn-confirm-order-desktop:hover {
         transform: scale(1.02);
-        box-shadow: 0 6px 22px rgba(41, 121, 255, 0.65);
+        box-shadow: 0 6px 22px rgba(0, 230, 118, 0.65);
     }
 
     /* Centrar tarjeta de resumen final en desktop */

@@ -252,9 +252,9 @@ function abrirModalOrden() {
             <div style="width: 140px; height: 120px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 18px rgba(234, 179, 8, 0.75));">
                 <img src="podio.webp" alt="Ordenar Estadios" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
-            <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">Desafío de Capacidad</h2>
+            <h2 style="font-size: 1.45rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px;">ORDENAR <span style="color:#00e676; text-shadow:0 0 16px rgba(0,230,118,0.6);">CAPACIDAD</span></h2>
             <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 380px; line-height: 1.45; margin: 0 auto;">
-                Demostrá cuánto sabés del aforo de los estadios. Tocá dos tarjetas para intercambiarlas y ordenalas de mayor a menor capacidad.
+                Demostrá cuánto sabés del aforo de los estadios. Tocá dos tarjetas para intercambiarlas y ordenalas de <b style="color:#00e676;">Mayor a Menor</b> capacidad.
             </p>
         </div>
 
@@ -592,10 +592,10 @@ function renderJuegoOrden(revelar = false) {
     const body = document.getElementById('order-modal-body');
     if (!body) return;
 
-    const imgIcono = '<img src="capacidad.webp" alt="Capacidad" style="width:36px;height:36px;object-fit:contain;">';
-    const titulo = 'Mayor a Menor Capacidad';
-    const labelTopMobile = '⬆ MÁS GRANDE';
-    const labelBotMobile = '⬇ MÁS CHICO';
+    const imgIcono = '<img src="capacidad.webp" alt="Capacidad" style="width:32px;height:32px;object-fit:contain;">';
+    const titulo = 'ORDENAR <span class="accent-word" style="color:#00e676; text-shadow:0 0 16px rgba(0,230,118,0.6);">CAPACIDAD</span>';
+    const labelTopMobile = '↑ MÁS GRANDE';
+    const labelBotMobile = '↓ MÁS CHICO';
 
     const labelTopDesktop = '#1 MÁS GRANDE (Mayor Aforo)';
     const labelBotDesktop = '#5 MÁS CHICO (Menor Aforo)';
@@ -606,15 +606,15 @@ function renderJuegoOrden(revelar = false) {
         <div class="order-game-header">
             <h2 class="order-game-title">${imgIcono} ${titulo}</h2>
             <p class="order-game-subtitle">
-                Arrastrá o tocá las tarjetas para ordenarlas · de <b>Mayor a Menor</b> capacidad
+                Arrastrá o tocá las tarjetas para ordenarlas · de <b style="color:#00e676;">Mayor a Menor</b> aforo
             </p>
         </div>`;
     } else {
         const aciertos = orderList.filter((e, i) => i === e.correctIdx).length;
         const mensajeAciertos = aciertos === 5 
-            ? '👑 ¡Impecable! Orden perfecto de los 5 estadios' 
+            ? '¡Impecable! Orden perfecto de los 5 estadios' 
             : aciertos >= 3 
-            ? `⚽ ¡Muy bien! Acertaste ${aciertos} de 5 en su lugar exacto` 
+            ? `¡Muy bien! Acertaste ${aciertos} de 5 en su lugar exacto` 
             : `Acertaste ${aciertos} de 5 posiciones correctas`;
 
         cabeceraHTML = `
@@ -773,11 +773,11 @@ function renderJuegoOrden(revelar = false) {
         <!-- BOTÓN CONFIRMAR EN DESKTOP CON CONSEJO -->
         <div class="order-desktop-confirm-bar">
             <div class="order-tip-box">
-                <i class="ph-fill ph-lightbulb"></i>
+                <i class="ph-bold ph-info"></i>
                 <span><b>Consejo:</b> Arrastrá las tarjetas directamente a su lugar. Hacé clic en las fotos para ver tribunas.</span>
             </div>
             <button type="button" onclick="procesarResultadoOrden()" class="btn-confirm-order-desktop">
-                <i class="ph-fill ph-rocket-launch"></i>
+                <i class="ph-bold ph-check" style="font-size:1.15rem;"></i>
                 <span>¡Confirmar orden!</span>
                 <i class="ph-bold ph-arrow-right"></i>
             </button>
@@ -787,7 +787,7 @@ function renderJuegoOrden(revelar = false) {
         <div class="order-mobile-confirm-bar">
             <button type="button" onclick="procesarResultadoOrden()" class="btn-3d order-btn-confirm-mobile">
                 <span style="display: flex; align-items: center; gap: 8px;">
-                    <i class="ph-fill ph-rocket-launch" style="font-size: 1.15rem;"></i>
+                    <i class="ph-bold ph-check" style="font-size: 1.15rem;"></i>
                     <span>¡Confirmar orden!</span>
                 </span>
                 <i class="ph-bold ph-arrow-right" style="font-size: 1.05rem; opacity: 0.9;"></i>
