@@ -4802,7 +4802,7 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
             </div>
 
             <div class="desafio-timer-pill">
-                <i class="ph-bold ph-hourglass-high animate-pulse"></i> Válido por 24 horas · Mismas 5 canchas
+                <img src="icono-desafio-24h.webp" alt="24hs" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 6px rgba(168,85,247,0.6));"> Válido por 24 horas · Mismas 5 canchas
             </div>
 
             <p class="desafio-desc-text">
@@ -5133,7 +5133,7 @@ async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
 
                 <div class="desafio-info-pill-row">
                     <span class="desafio-diff-pill">Modo: ${(desafio.dificultad || 'medio').toUpperCase()}</span>
-                    <span class="desafio-time-pill"><i class="ph-bold ph-clock"></i> Quedan ${horasRestantes} hs</span>
+                    <span class="desafio-time-pill"><img src="icono-desafio-24h.webp" alt="24hs" style="width:14px; height:14px; object-fit:contain; vertical-align:middle; margin-right:3px;"> Quedan ${horasRestantes} hs</span>
                 </div>
 
                 <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:16px;">
