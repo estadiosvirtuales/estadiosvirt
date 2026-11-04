@@ -1278,9 +1278,30 @@ function mostrarResultadosMutuosVersus() {
 
     L.polyline([[rivalDataRonda.lat, rivalDataRonda.lng], [tLat, tLng]], {color: '#2979ff', weight: 2, dashArray: '4,6'}).addTo(guessrMapInstance);
 
-    let marcasParaEncuadrar = [guessrTargetMarker, rivalMarker];
+    let marcasParaEncuadrar = [guessrTargetMarker];
+    if (!guessrUserMarker && guessrSelectedLatLng && guessrMapInstance) {
+        try { guessrUserMarker = L.marker(guessrSelectedLatLng).addTo(guessrMapInstance); } catch(e) {}
+    }
     if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
-    guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(), {padding: [50, 50]});
+    if (rivalMarker && rivalDataRonda && rivalDataRonda.distancia < 9999 && !(rivalDataRonda.lat === 0 && rivalDataRonda.lng === 0)) {
+        marcasParaEncuadrar.push(rivalMarker);
+    }
+
+    const reencuadrarVersusMapa = () => {
+        if (!guessrMapInstance) return;
+        try {
+            guessrMapInstance.invalidateSize();
+            const group = L.featureGroup(marcasParaEncuadrar);
+            const b = group.getBounds();
+            if (b.isValid()) {
+                guessrMapInstance.fitBounds(b, { padding: [50, 50], maxZoom: 14 });
+            }
+        } catch(e) {}
+    };
+
+    reencuadrarVersusMapa();
+    setTimeout(reencuadrarVersusMapa, 150);
+    setTimeout(reencuadrarVersusMapa, 320);
 
     renderizarScoreboardVersus();
 
@@ -1936,7 +1957,7 @@ guessrTargetMarker=L.circleMarker([tLat,tLng],{radius:9,color:'#00e676',fillColo
 guessrPolyline=L.polyline([[guessrSelectedLatLng.lat,guessrSelectedLatLng.lng],[tLat,tLng]],{color:'#ff4757',weight:3,className:'animated-flight-path'}).addTo(guessrMapInstance);
 let marcasParaEncuadrar = [guessrTargetMarker];
 if (guessrUserMarker) marcasParaEncuadrar.push(guessrUserMarker);
-guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(),{padding:[40,40]});
+guessrMapInstance.fitBounds(L.featureGroup(marcasParaEncuadrar).getBounds(),{padding:[40,40], maxZoom: 14});
 actualizarHUDSoloGuessr();
 const distT=isNaN(dist)?'?':(dist<1?`${Math.round(dist*1000)} m`:`${dist.toFixed(1)} km`);
 const iconoDist = dist < 50 ? '<i class="ph-bold ph-target" style="color:var(--accent-color);"></i>' : dist < 200 ? '<i class="ph-bold ph-airplane-tilt"></i>' : dist < 800 ? '<i class="ph-bold ph-map-pin"></i>' : '<i class="ph-bold ph-globe"></i>';
