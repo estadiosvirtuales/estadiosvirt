@@ -1428,9 +1428,9 @@ body.video-abierto .hero-section {
 }
 
 .solo-round-dots {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 3px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
 }
 
 .hud-mini-dot {
@@ -1519,7 +1519,6 @@ body.video-abierto .hero-section {
 /* 💡 Botón de pistas a su derecha en modo fácil */
 .guessr-solo-dock .guessr-hud-hints {
     margin: 0 !important;
-    display: inline-flex !important;
     align-items: center !important;
     position: relative !important;
 }
@@ -11166,8 +11165,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 1px 5px !important;
     }
 
-    /* 💡 BOTÓN PISTAS CENTRADO EN CELULAR */
-    #guessr-hud-hints {
+    /* 💡 BOTÓN PISTAS CENTRADO EN CELULAR (SOLO DENTRO DE VERSUS TOP HUD) */
+    .guessr-top-hud #guessr-hud-hints {
         order: 2 !important;
         margin: 2px auto 0 auto !important;
         display: flex !important;
@@ -11207,36 +11206,79 @@ html[data-theme="light"] .xp-bar-big-fill {
         font-size: 0.55rem !important;
     }
 
-    /* 📍 Dock Top-Left en Móvil */
-    .guessr-solo-dock { top: 14px !important; left: 8px !important; gap: 5px !important; height: 34px !important; }
-    .guessr-solo-pill { height: 34px !important; padding: 0 8px !important; gap: 5px !important; border-radius: 18px !important; }
-    .solo-round-label {
-        font-size: 0.74rem !important;
+    /* 📍 Dock Top-Left en Móvil (Ultra compacto y con amplio margen libre respecto a la cruz de cierre) */
+    .guessr-solo-dock {
+        top: 8px !important;
+        left: 6px !important;
+        gap: 4px !important;
+        height: 30px !important;
+        max-width: calc(100% - 50px) !important;
     }
-    .hud-mini-dot {
-        width: 10px !important;
-        height: 3px !important;
+    .guessr-solo-pill {
+        height: 30px !important;
+        padding: 0 6px !important;
+        gap: 4px !important;
+        border-radius: 15px !important;
+    }
+    .guessr-solo-pill i {
+        font-size: 0.75rem !important;
+    }
+    .solo-round-label {
+        font-size: 0.70rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0px !important;
+    }
+    .solo-round-dots {
+        display: none !important;
     }
     .solo-score-badge {
-        font-size: 0.74rem !important;
-        gap: 4px !important;
+        font-size: 0.68rem !important;
+        gap: 3px !important;
+    }
+    .solo-score-badge i {
+        font-size: 0.72rem !important;
     }
     .solo-score-badge strong {
-        font-size: 0.78rem !important;
+        font-size: 0.68rem !important;
+    }
+    .solo-score-badge small {
+        font-size: 0.48rem !important;
     }
     .guessr-solo-timer-pill {
-        height: 34px !important;
-        padding: 0 9px !important;
-        font-size: 0.76rem !important;
-        border-radius: 18px !important;
+        height: 30px !important;
+        padding: 0 6px !important;
+        font-size: 0.66rem !important;
+        border-radius: 15px !important;
+        gap: 3px !important;
     }
-    .guessr-solo-dock .guessr-hint-btn { height: 34px !important; padding: 0 8px !important; font-size: 0.72rem !important; border-radius: 18px !important; }
+    .guessr-solo-timer-pill i {
+        font-size: 0.75rem !important;
+    }
+    .guessr-solo-timer-pill strong {
+        font-size: 0.70rem !important;
+    }
+    .guessr-solo-dock .guessr-hud-hints {
+        margin: 0 !important;
+        width: auto !important;
+    }
+    .guessr-solo-dock .guessr-hint-btn {
+        height: 30px !important;
+        min-height: 30px !important;
+        max-height: 30px !important;
+        padding: 0 7px !important;
+        font-size: 0.66rem !important;
+        border-radius: 15px !important;
+        gap: 3px !important;
+    }
+    .guessr-solo-dock .guessr-hint-btn i {
+        font-size: 0.85rem !important;
+    }
     .solo-divider {
-        height: 14px !important;
+        height: 10px !important;
+        margin: 0 1px !important;
     }
     .yt-badge-pill {
         display: none !important;
-    }
     }
 }
 /* ========================================================
@@ -14083,9 +14125,9 @@ body.video-abierto .hero-section {
 }
 
 .solo-round-dots {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 3px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
 }
 
 .hud-mini-dot {
@@ -14174,7 +14216,6 @@ body.video-abierto .hero-section {
 /* 💡 Botón de pistas a su derecha en modo fácil */
 .guessr-solo-dock .guessr-hud-hints {
     margin: 0 !important;
-    display: inline-flex !important;
     align-items: center !important;
     position: relative !important;
 }

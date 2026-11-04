@@ -5332,7 +5332,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         height: auto !important;
         min-height: auto !important;
         max-height: none !important;
-        margin: 2px 0 !important;
+        margin: 2px auto !important;
         padding: 5px 8px 5px !important;
         gap: 3px !important;
         border-radius: 14px !important;
@@ -5801,7 +5801,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     .guessr-top-hud #versus-live-scoreboard,
     .guessr-top-hud .versus-scoreboard-box {
         order: 1 !important;
-        margin: 2px 0 !important;
+        margin: 2px auto !important;
         padding: 5px 8px 4px !important;
         gap: 3px !important;
         border-radius: 12px !important;
@@ -5823,8 +5823,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 1px 5px !important;
     }
 
-    /* 💡 BOTÓN PISTAS ALINEADO Y CONTENIDO FUERA DEL VIDEO */
-    #guessr-hud-hints {
+    /* 💡 BOTÓN PISTAS ALINEADO Y CONTENIDO FUERA DEL VIDEO (SOLO EN TOP HUD) */
+    .guessr-top-hud #guessr-hud-hints {
         order: 2 !important;
         margin: 2px 0 0 0 !important;
         display: flex !important;

@@ -1528,13 +1528,17 @@ async function iniciarRetoDiario() {
 }
 
 // TU FUNCIÓN CLÁSICA DE SIEMPRE (Protegiendo el modo solitario y apagando la IA)
-function iniciarTrivia(dificultad = 'medio'){ 
+function iniciarTrivia(dificultad = null){ 
     cerrarLobbyEspera();
     
     esModoVersus = false; 
     esModoBot = false;
     esModoDiario = false;
-    guessrDificultad = dificultad;
+    if (dificultad) {
+        guessrDificultad = dificultad;
+    } else if (!guessrDificultad) {
+        guessrDificultad = 'medio';
+    }
 
     const tauntsTrivia = document.getElementById('taunts-container');
     if (tauntsTrivia) tauntsTrivia.style.display = 'none';
@@ -1672,7 +1676,7 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
             const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} espectadores` : 'No especificada';
             const triviaEstadio = (bscarPropiedad(guessrEstadioCorrecto, 'Dato Curioso') || '¡Este estadio esconde grandes historias del fútbol mundial!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
 
-            hintsBox.style.display = 'inline-flex';
+            hintsBox.style.setProperty('display', 'inline-flex', 'important');
             hintsBox.innerHTML = `
                 <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir pistas">
                     <i class="ph-fill ph-lightbulb" style="color:var(--accent-color); font-size: 1rem;"></i>
@@ -1694,7 +1698,7 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
                 </div>
             `;
         } else {
-            hintsBox.style.display = 'none';
+            hintsBox.style.setProperty('display', 'none', 'important');
             hintsBox.innerHTML = '';
         }
     }
@@ -2215,7 +2219,7 @@ async function finalizarJuegoGuessr(){
     if (eraRetoDiario) {
         botonCompartirDiario = `<button onclick="compartirRetoDiarioWordle()" class="btn-3d btn-endgame-daily-share" style="width:100%; padding:9px 12px; font-size:.82rem;"><i class="ph-bold ph-share-network"></i> Compartir Reto Diario</button>`;
     } else {
-        botonRejugar = `<button onclick="iniciarTrivia()" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.82rem; padding:9px 12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
+        botonRejugar = `<button onclick="iniciarTrivia(window.guessrDificultad || 'medio')" class="btn-3d btn-endgame-replay" style="flex:1; font-size:.82rem; padding:9px 12px;"><i class="ph-bold ph-arrow-counter-clockwise"></i> Rejugar</button>`;
     }
     
     container.innerHTML = `
@@ -2971,19 +2975,29 @@ function actualizarHUDSoloGuessr() {
     const scoreVal = document.getElementById('hud-score-val');
     if (scoreVal) scoreVal.textContent = (guessrPuntosTotales || 0).toLocaleString('es-AR');
 
+    // Pistas (Fácil / Promesa)
+    const hintsBox = document.getElementById('guessr-hud-hints');
+    if (hintsBox) {
+        if (guessrDificultad === 'facil' && !esModoDiario) {
+            hintsBox.style.setProperty('display', 'inline-flex', 'important');
+        } else {
+            hintsBox.style.setProperty('display', 'none', 'important');
+        }
+    }
+
     // Timer (Leyenda / Difícil)
     const timerBadge = document.getElementById('hud-timer-badge');
     const timerVal = document.getElementById('hud-timer-val');
 
     if (guessrDificultad === 'dificil' && !esModoDiario) {
-        if (timerBadge) timerBadge.style.display = 'inline-flex';
+        if (timerBadge) timerBadge.style.setProperty('display', 'inline-flex', 'important');
         if (timerVal) {
             timerVal.textContent = guessrTiempoRestanteIndividual + 's';
             const isUrgent = guessrTiempoRestanteIndividual <= 5 && guessrTiempoRestanteIndividual > 0;
             timerBadge.classList.toggle('timer-urgent-pulse', isUrgent);
         }
     } else {
-        if (timerBadge) timerBadge.style.display = 'none';
+        if (timerBadge) timerBadge.style.setProperty('display', 'none', 'important');
     }
 }
 window.actualizarHUDSoloGuessr = actualizarHUDSoloGuessr;
