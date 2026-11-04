@@ -44,8 +44,11 @@ async function cargarPromediosSupabase() {
 
 // Función para sincronizar la TOTALIDAD absoluta de la cuenta (Estadísticas + Identidad Visual)
 async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
-    if (!supabaseClient || !idUsuario || idUsuario === 'guest') return;
+    const idFinal = (idUsuario && idUsuario !== 'guest') ? idUsuario : (typeof obtenerIdNube === 'function' ? obtenerIdNube() : null);
+    if (!supabaseClient || !idFinal) return;
     try {
+        const customNick = getPref('ev_custom_nick', '') || (typeof obtenerNombreDisplay === 'function' ? obtenerNombreDisplay() : '') || 'Jugador';
+
         // Armamos el paquete masivo con estadísticas y toda la personalización de la carta
         const datosParaNube = {
             ...stats,
@@ -58,7 +61,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
             preferencias: {
                 user_pos: getPref('ev_user_pos', 'DT'),
                 card_theme: getPref('ev_card_theme', 'arg'),
-                custom_nick: getPref('ev_custom_nick', ''),
+                custom_nick: customNick,
                 avatar_hair: getPref('ev_avatar_hair', 'short'),
                 avatar_shirt: getPref('ev_avatar_shirt', 'solid'),
                 avatar_color: getPref('ev_avatar_color', '#00e676'),
@@ -72,8 +75,8 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
         const { error } = await supabaseClient
             .from('perfiles')
             .upsert({ 
-                id_usuario: idUsuario, 
-                experiencia: exp,
+                id_usuario: idFinal, 
+                experiencia: exp !== undefined ? exp : (userStats.xpTotal || 0),
                 datos_juego: datosParaNube, 
                 updated_at: new Date()
             }, { onConflict: 'id_usuario' });
@@ -81,7 +84,7 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
         if (error) {
             console.error("No se pudo sincronizar el perfil en la nube:", error);
         } else {
-            console.log("¡Cuenta unificada (Progreso + Avatar + Apodo) guardada con éxito!");
+            console.log("¡Cuenta unificada (Progreso + Avatar + Apodo) guardada con éxito en la nube!");
         }
     } catch (e) {
         console.error("Error aislado al sincronizar perfil:", e);
@@ -90,8 +93,8 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
 
 // Función para descargar la TOTALIDAD de la cuenta desde la nube
 async function cargarProgresoDesdeSupabase() {
-    const id = getUserId();
-    if (!supabaseClient || !id || id === 'guest') return;
+    const id = typeof obtenerIdNube === 'function' ? obtenerIdNube() : getUserId();
+    if (!supabaseClient || !id) return;
 
     try {
         const { data, error } = await supabaseClient

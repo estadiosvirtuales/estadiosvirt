@@ -313,9 +313,10 @@ window.filtrarJugadoresRanking = function(term) {
 // IDENTIFICADOR ÚNICO DE RED (ANTI-COLISIÓN DE INVITADOS)
 // ========================================================
 function obtenerIdRedVersus() {
+    if (typeof obtenerIdNube === 'function') return obtenerIdNube();
     const u = obtenerUsuarioLogueado();
     if (u && u.id && u.id !== 'guest') return u.id;
-    let guestId = sessionStorage.getItem('ev_guest_versus_id');
+    let guestId = localStorage.getItem('ev_cloud_anon_id') || sessionStorage.getItem('ev_guest_versus_id');
     if (!guestId) {
         guestId = 'guest_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
         sessionStorage.setItem('ev_guest_versus_id', guestId);

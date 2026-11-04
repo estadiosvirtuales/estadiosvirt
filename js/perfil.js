@@ -151,41 +151,58 @@ window.inspeccionarPerfilRival = async function(nombreRival) {
 
     if (typeof supabaseClient !== 'undefined' && supabaseClient) {
         try {
-            const { data: perfiles } = await supabaseClient
-                .from('perfiles')
-                .select('experiencia, datos_juego')
-                .limit(500);
+            let encontrado = null;
 
-            if (perfiles && perfiles.length > 0) {
-                const encontrado = perfiles.find(p => {
-                    const nick = p.datos_juego?.preferencias?.custom_nick;
-                    return nick && nick.trim().toLowerCase() === n.toLowerCase();
-                });
-
-                if (encontrado) {
-                    const dj = encontrado.datos_juego || {};
-                    const pref = dj.preferencias || {};
-                    datosRival.xpTotal = encontrado.experiencia || dj.xpTotal || 0;
-                    datosRival.nivelActual = calcularNivelIdx(datosRival.xpTotal);
-                    datosRival.ovr = NIVELES[datosRival.nivelActual]?.ovr || 60;
-                    datosRival.card_theme = pref.card_theme || 'arg';
-                    datosRival.avatar_hair = pref.avatar_hair || datosRival.avatar_hair;
-                    datosRival.user_pos = pref.user_pos || 'DC';
-                    datosRival.avatar_logo = pref.avatar_logo || 'ev';
-                    datosRival.rachaActual = dj.rachaActual || 1;
-                    datosRival.partidasGanadas = dj.partidasGanadas || 0;
-                    datosRival.partidasVersus = dj.partidasVersus || dj.partidasJugadas1v1 || 0;
-                    datosRival.votosRealizados = dj.votosRealizados || 0;
-                    datosRival.triviasVistas = dj.triviasVistas || 0;
-                    datosRival.partidasJugadas = dj.partidasJugadas || 0;
-                    datosRival.puntajeMaxGuessr = dj.maxScore || dj.recordPuntaje || dj.mejorPuntaje || dj.puntajeMax || dj.stats?.maxScore || 0;
-                    // 👥 Descarga de su Once Inicial real
-                    datosRival.onceInicial = dj.onceInicial || null;
-                    datosRival.onceCapitan = dj.onceCapitan || null;
-                    datosRival.onceEscudo = dj.onceEscudo || pref.avatar_logo || 'ev';
-                    datosRival.onceFormacion = dj.onceFormacion || pref.once_formacion || dj.formacionOnceActual || '4-3-3';
-                    datosRival.mejorasJugadores = dj.mejorasJugadores || {};
+            // 1. ⚡ Búsqueda directa en base de datos por apodo (rápida y sin límites)
+            try {
+                const { data: directos } = await supabaseClient
+                    .from('perfiles')
+                    .select('experiencia, datos_juego')
+                    .filter('datos_juego->preferencias->>custom_nick', 'ilike', n.trim())
+                    .limit(1);
+                if (directos && directos.length > 0) {
+                    encontrado = directos[0];
                 }
+            } catch (eDir) {}
+
+            // 2. Fallback de exploración en memoria si el filtro directo no coincidió
+            if (!encontrado) {
+                const { data: perfiles } = await supabaseClient
+                    .from('perfiles')
+                    .select('experiencia, datos_juego')
+                    .limit(1000);
+
+                if (perfiles && perfiles.length > 0) {
+                    encontrado = perfiles.find(p => {
+                        const nick = p.datos_juego?.preferencias?.custom_nick;
+                        return nick && nick.trim().toLowerCase() === n.toLowerCase();
+                    });
+                }
+            }
+
+            if (encontrado) {
+                const dj = encontrado.datos_juego || {};
+                const pref = dj.preferencias || {};
+                datosRival.xpTotal = encontrado.experiencia || dj.xpTotal || 0;
+                datosRival.nivelActual = calcularNivelIdx(datosRival.xpTotal);
+                datosRival.ovr = NIVELES[datosRival.nivelActual]?.ovr || 60;
+                datosRival.card_theme = pref.card_theme || 'arg';
+                datosRival.avatar_hair = pref.avatar_hair || datosRival.avatar_hair;
+                datosRival.user_pos = pref.user_pos || 'DC';
+                datosRival.avatar_logo = pref.avatar_logo || 'ev';
+                datosRival.rachaActual = dj.rachaActual || 1;
+                datosRival.partidasGanadas = dj.partidasGanadas || 0;
+                datosRival.partidasVersus = dj.partidasVersus || dj.partidasJugadas1v1 || 0;
+                datosRival.votosRealizados = dj.votosRealizados || 0;
+                datosRival.triviasVistas = dj.triviasVistas || 0;
+                datosRival.partidasJugadas = dj.partidasJugadas || 0;
+                datosRival.puntajeMaxGuessr = dj.maxScore || dj.recordPuntaje || dj.mejorPuntaje || dj.puntajeMax || dj.stats?.maxScore || 0;
+                // 👥 Descarga de su Once Inicial real
+                datosRival.onceInicial = dj.onceInicial || null;
+                datosRival.onceCapitan = dj.onceCapitan || null;
+                datosRival.onceEscudo = dj.onceEscudo || pref.avatar_logo || 'ev';
+                datosRival.onceFormacion = dj.onceFormacion || pref.once_formacion || dj.formacionOnceActual || '4-3-3';
+                datosRival.mejorasJugadores = dj.mejorasJugadores || {};
             }
 
             // 🎯 Verdad única: consultamos las estadísticas oficiales de 1v1 en Supabase
@@ -1218,7 +1235,7 @@ async function verificarApodoDisponible(apodoBuscado) {
 
     const u = obtenerUsuarioLogueado();
     const miEmail = (u && u.email) ? u.email.trim().toLowerCase() : '';
-    const miId = getUserId();
+    const miId = typeof obtenerIdNube === 'function' ? obtenerIdNube() : getUserId();
     const apodoLower = apodoLimpio.toLowerCase();
 
     try {
@@ -1252,8 +1269,8 @@ async function verificarApodoDisponible(apodoBuscado) {
                 for (const p of perfilesNube) {
                     const nickGuardado = (p.datos_juego?.preferencias?.custom_nick || '').trim().toLowerCase();
                     if (nickGuardado === apodoLower) {
-                        if (miId !== 'guest' && p.id_usuario === miId) {
-                            continue; // Es tu propio perfil autenticado
+                        if (p.id_usuario === miId) {
+                            continue; // Es tu propio perfil (autenticado o anónimo)
                         }
                         return false; // Apodo reservado por un perfil de la nube
                     }
@@ -1273,7 +1290,7 @@ async function verificarApodoDisponible(apodoBuscado) {
             const partidasVersus = [...(victorias || []), ...(derrotas || [])];
             for (const partida of partidasVersus) {
                 if ((partida.nombre || '').trim().toLowerCase() === apodoLower) {
-                    if (miId !== 'guest' && partida.id_usuario === miId) {
+                    if (partida.id_usuario === miId) {
                         continue;
                     }
                     return false; // Registrado en duelos 1v1 históricos
@@ -1355,8 +1372,8 @@ async function guardarPersonalizacion(){
     ancestralHeaderNivel();
     guardarStats(); 
 
-    const uId = getUserId();
-    if (uId && uId !== 'guest' && typeof sincronizarPerfilSupabase === 'function') {
+    const uId = typeof obtenerIdNube === 'function' ? obtenerIdNube() : getUserId();
+    if (uId && typeof sincronizarPerfilSupabase === 'function') {
         sincronizarPerfilSupabase(uId, userStats.xpTotal, userStats);
     } 
 

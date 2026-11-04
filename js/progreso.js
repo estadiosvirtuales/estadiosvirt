@@ -53,6 +53,21 @@ function obtenerUsuarioLogueado() {
     return usuarioLogueadoCache;
 }
 
+function obtenerIdNube() {
+    const u = obtenerUsuarioLogueado();
+    if (u && u.id && u.id !== 'guest') return u.id;
+    let anonId = localStorage.getItem('ev_cloud_anon_id');
+    if (!anonId || anonId === 'guest') {
+        anonId = localStorage.getItem('ev_guest_versus_id') || sessionStorage.getItem('ev_guest_versus_id');
+        if (!anonId || anonId === 'guest') {
+            anonId = 'guest_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+        }
+        localStorage.setItem('ev_cloud_anon_id', anonId);
+    }
+    return anonId;
+}
+window.obtenerIdNube = obtenerIdNube;
+
 function getUserId(){const u=obtenerUsuarioLogueado();return u?u.id:'guest';}
 function getPref(key,def){const id=getUserId();return localStorage.getItem(key+'_'+id)||def;}
 function setPref(key,val){const id=getUserId();localStorage.setItem(key+'_'+id,val);}
@@ -144,10 +159,11 @@ function guardarStats(){
     }; 
     localStorage.setItem('ev_user_stats_'+id, JSON.stringify(toSave));
 
-    // --- Sincronización automática, anónima y completa con la nube (CON ESCUDO) ---
-    if (typeof bloqueasSincronizacionNube !== 'undefined' && !bloqueasSincronizacionNube && id && id !== 'guest' && userStats && userStats.xpTotal !== undefined) {
-        if (typeof sincronizarPerfilSupabase === 'function') {
-            sincronizarPerfilSupabase(id, userStats.xpTotal, userStats);
+    // --- Sincronización automática con la nube (Libre para todos: Registrados y Anónimos) ---
+    if (typeof bloqueasSincronizacionNube !== 'undefined' && !bloqueasSincronizacionNube && userStats && userStats.xpTotal !== undefined) {
+        const idSincro = obtenerIdNube();
+        if (typeof sincronizarPerfilSupabase === 'function' && idSincro) {
+            sincronizarPerfilSupabase(idSincro, userStats.xpTotal, userStats);
         }
     }
 }
