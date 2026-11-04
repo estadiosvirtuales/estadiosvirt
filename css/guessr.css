@@ -5042,8 +5042,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     max-width: 740px !important;
     width: auto !important;
     height: 38px !important;
-    padding: 0 16px !important;
-    border-radius: 20px !important;
+    padding: 0 20px !important;
+    border-radius: 9999px !important;
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
@@ -5065,9 +5065,9 @@ html[data-theme="light"] .xp-bar-big-fill {
 .versus-scoreboard-box .vs-sb-duel-bar {
     position: absolute !important;
     bottom: 0 !important;
-    left: 14px !important;
-    right: 14px !important;
-    width: calc(100% - 28px) !important;
+    left: 22px !important;
+    right: 22px !important;
+    width: calc(100% - 44px) !important;
     height: 2.5px !important;
     margin: 0 !important;
     border-radius: 2px !important;
@@ -5149,13 +5149,14 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .versus-scoreboard-box .vs-sb-name {
-    max-width: 130px !important;
-    font-size: 0.78rem !important;
+    max-width: 170px !important;
+    font-size: 0.82rem !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     margin: 0 !important;
-    line-height: 1.1 !important;
+    line-height: 1.25 !important;
+    padding-bottom: 2px !important;
     color: #ffffff !important;
     font-weight: 800 !important;
     flex-shrink: 0 !important;
@@ -5408,9 +5409,9 @@ html[data-theme="light"] .xp-bar-big-fill {
         min-height: 58px !important;
         width: 100% !important;
         max-width: 100% !important;
-        padding: 8px 14px 7px 14px !important;
+        padding: 8px 18px 7px 18px !important;
         margin: 0 !important;
-        border-radius: 16px !important;
+        border-radius: 26px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -5444,7 +5445,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 0 !important;
         margin: 0 !important;
         min-width: 0 !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         background: transparent !important;
         border: none !important;
     }
@@ -5467,8 +5468,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         align-items: center !important;
         gap: 5px !important;
         max-width: 100% !important;
-        overflow: hidden !important;
-        line-height: 1 !important;
+        overflow: visible !important;
+        line-height: 1.25 !important;
     }
 
     .versus-match-row .vs-sb-col.user .vs-sb-meta {
@@ -5484,25 +5485,26 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 2px 5px !important;
         border-radius: 4px !important;
         font-weight: 900 !important;
-        line-height: 1.1 !important;
+        line-height: 1.2 !important;
         flex-shrink: 0 !important;
     }
 
     .versus-match-row .vs-sb-name {
         font-size: 0.84rem !important;
         font-weight: 800 !important;
-        max-width: 125px !important;
+        max-width: 135px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         color: #ffffff !important;
-        line-height: 1.1 !important;
+        line-height: 1.25 !important;
+        padding-bottom: 2px !important;
     }
 
     .versus-match-row .vs-lead-pill {
         font-size: 0.62rem !important;
         padding: 1px 4px !important;
-        line-height: 1.1 !important;
+        line-height: 1.2 !important;
         flex-shrink: 0 !important;
     }
 
@@ -5515,11 +5517,11 @@ html[data-theme="light"] .xp-bar-big-fill {
     .versus-scoreboard-box .vs-sb-sub-row {
         display: flex !important;
         flex-direction: row !important;
-        align-items: baseline !important;
+        align-items: center !important;
         gap: 6px !important;
-        line-height: 1 !important;
+        line-height: 1.25 !important;
         max-width: 100% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
     .versus-match-row .vs-sb-col.user .vs-sb-sub-row {
@@ -5534,9 +5536,10 @@ html[data-theme="light"] .xp-bar-big-fill {
         font-size: 0.94rem !important;
         font-weight: 900 !important;
         white-space: nowrap !important;
-        line-height: 1 !important;
+        line-height: 1.25 !important;
         letter-spacing: -0.2px !important;
         flex-shrink: 0 !important;
+        padding-bottom: 1px !important;
     }
 
     .versus-match-row .vs-sb-score small {
@@ -5555,13 +5558,13 @@ html[data-theme="light"] .xp-bar-big-fill {
 
     .versus-match-row .vs-status-tag {
         font-size: 0.58rem !important;
-        padding: 1.5px 5px !important;
-        border-radius: 5px !important;
+        padding: 1.5px 6px !important;
+        border-radius: 6px !important;
         white-space: nowrap !important;
-        line-height: 1.1 !important;
+        line-height: 1.25 !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        max-width: 80px !important;
+        max-width: 105px !important;
         flex-shrink: 0 !important;
     }
 
