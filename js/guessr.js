@@ -991,9 +991,9 @@ function renderizarScoreboardVersus(alerta = null) {
     let liderBadgeUser = '';
     let liderBadgeRival = '';
     if (guessrPuntosTotales > rivalPuntosTotales && guessrPuntosTotales > 0) {
-        liderBadgeUser = `<span class="vs-lead-pill" title="Liderás por ${diff} pts">👑 +${diff}</span>`;
+        liderBadgeUser = `<span class="vs-lead-pill" title="Liderás por ${diff} pts">👑<b class="vs-lead-diff"> +${diff}</b></span>`;
     } else if (rivalPuntosTotales > guessrPuntosTotales && rivalPuntosTotales > 0) {
-        liderBadgeRival = `<span class="vs-lead-pill rival" title="Lidera por ${diff} pts">👑 +${diff}</span>`;
+        liderBadgeRival = `<span class="vs-lead-pill rival" title="Lidera por ${diff} pts"><b class="vs-lead-diff">+${diff} </b>👑</span>`;
     }
 
     // Estados dinámicos de la ronda actual
@@ -1059,8 +1059,10 @@ function renderizarScoreboardVersus(alerta = null) {
                     <span class="vs-sb-name" title="${sanitizarHTML(miNombre)}">${sanitizarHTML(miNombre)}</span>
                     ${liderBadgeUser}
                 </div>
-                <div class="vs-sb-score">${guessrPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></div>
-                <div class="vs-sb-status-box">${statusUserHtml}</div>
+                <div class="vs-sb-sub-row">
+                    <div class="vs-sb-score">${guessrPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></div>
+                    <div class="vs-sb-status-box">${statusUserHtml}</div>
+                </div>
             </div>
 
             <div class="vs-sb-center">
@@ -1075,8 +1077,10 @@ function renderizarScoreboardVersus(alerta = null) {
                     <span class="vs-sb-name" title="${sanitizarHTML(rivalNombre)}">${sanitizarHTML(rivalNombre)}</span>
                     <span class="vs-sb-tag rival">RIVAL</span>
                 </div>
-                <div class="vs-sb-score">${rivalPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></div>
-                <div class="vs-sb-status-box">${statusRivalHtml}</div>
+                <div class="vs-sb-sub-row">
+                    <div class="vs-sb-status-box">${statusRivalHtml}</div>
+                    <div class="vs-sb-score">${rivalPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></div>
+                </div>
             </div>
         </div>
         <div class="vs-sb-duel-bar" title="Duelo de puntos">

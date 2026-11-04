@@ -5108,6 +5108,10 @@ html[data-theme="light"] .xp-bar-big-fill {
     justify-content: flex-end !important;
 }
 
+.versus-scoreboard-box .vs-sb-sub-row {
+    display: contents !important;
+}
+
 .versus-scoreboard-box .vs-sb-meta {
     margin: 0 !important;
     padding: 0 !important;
@@ -5282,28 +5286,294 @@ html[data-theme="light"] .xp-bar-big-fill {
 /* 📱 Responsive Móvil para el HUD centrado de 1v1 */
 @media (max-width: 768px) {
     .versus-center-hud {
-        top: 60px !important;
+        top: 50px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 6px !important;
-        width: max-content !important;
-        max-width: calc(100% - 12px) !important;
+        width: 100% !important;
+        max-width: calc(100% - 16px) !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         z-index: 2025 !important;
         position: absolute !important;
+        pointer-events: none !important;
+    }
+    .versus-center-hud > * {
+        pointer-events: auto !important;
     }
 
-    /* Fila 1: Emojis de Taunts Centrados */
+    /* Contenedor Vertical de Partida: Fila 1 (Pistas/Reloj) + Fila 2 (Scoreboard 2 líneas) */
+    .versus-match-row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        width: 100% !important;
+        max-width: 380px !important;
+        height: auto !important;
+        order: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Fila Superior 1: Botón de Pistas en 1v1 Fácil */
+    .versus-match-row #versus-hud-hints {
+        order: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        position: relative !important;
+    }
+
+    .versus-match-row .guessr-hint-btn {
+        height: 32px !important;
+        padding: 0 14px !important;
+        font-size: 0.78rem !important;
+        font-weight: 800 !important;
+        border-radius: 16px !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        box-shadow: 0 4px 14px rgba(255, 170, 0, 0.35) !important;
+    }
+
+    .versus-match-row .guessr-hint-btn i {
+        font-size: 0.95rem !important;
+    }
+
+    .versus-match-row .guessr-hint-balloon {
+        right: auto !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        top: calc(100% + 6px) !important;
+        width: min(290px, calc(100vw - 24px)) !important;
+        max-width: calc(100vw - 24px) !important;
+    }
+
+    /* Fila Superior 1: Reloj de 45s en 1v1 Difícil */
+    .versus-match-row #versus-timer-badge {
+        order: 1 !important;
+        height: 32px !important;
+        padding: 0 14px !important;
+        font-size: 0.82rem !important;
+        font-weight: 900 !important;
+        border-radius: 16px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        box-shadow: 0 4px 14px rgba(255, 71, 87, 0.4) !important;
+    }
+
+    .versus-match-row #versus-timer-badge i {
+        font-size: 0.95rem !important;
+    }
+
+    /* Fila Central 2: Scoreboard 1v1 en 2 Líneas Espaciosas */
+    .versus-match-row .versus-scoreboard-box,
+    #versus-live-scoreboard {
+        order: 2 !important;
+        height: 52px !important;
+        min-height: 52px !important;
+        width: 100% !important;
+        max-width: 380px !important;
+        padding: 4px 10px !important;
+        margin: 0 !important;
+        border-radius: 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        background: linear-gradient(135deg, rgba(14, 23, 40, 0.94) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        border-top: 1.5px solid rgba(0, 255, 119, 0.65) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 119, 0.15) !important;
+    }
+
+    .versus-match-row .vs-sb-main-row {
+        display: grid !important;
+        grid-template-columns: 1fr 44px 1fr !important;
+        grid-template-rows: 100% !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        gap: 4px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .versus-match-row .vs-sb-col {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .versus-match-row .vs-sb-col.user {
+        align-items: flex-start !important;
+    }
+
+    .versus-match-row .vs-sb-col.rival {
+        align-items: flex-end !important;
+    }
+
+    /* Línea 1: Metadatos (Tag Vos/Rival + Apodo + Corona) */
+    .versus-match-row .vs-sb-meta {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 4px !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        line-height: 1 !important;
+    }
+
+    .versus-match-row .vs-sb-col.user .vs-sb-meta {
+        justify-content: flex-start !important;
+    }
+
+    .versus-match-row .vs-sb-col.rival .vs-sb-meta {
+        justify-content: flex-end !important;
+    }
+
+    .versus-match-row .vs-sb-tag {
+        font-size: 0.58rem !important;
+        padding: 1.5px 5px !important;
+        border-radius: 4px !important;
+        font-weight: 900 !important;
+        line-height: 1.1 !important;
+        flex-shrink: 0 !important;
+    }
+
+    .versus-match-row .vs-sb-name {
+        font-size: 0.74rem !important;
+        font-weight: 800 !important;
+        max-width: 82px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        color: #ffffff !important;
+        line-height: 1.1 !important;
+    }
+
+    .versus-match-row .vs-lead-pill {
+        font-size: 0.58rem !important;
+        padding: 1px 3px !important;
+        line-height: 1.1 !important;
+        flex-shrink: 0 !important;
+    }
+
+    .versus-match-row .vs-lead-diff {
+        display: none !important;
+    }
+
+    /* Línea 2: Puntaje + Estado (Sin colisión ni solapamiento) */
+    .versus-match-row .vs-sb-sub-row {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 4px !important;
+        line-height: 1 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .versus-match-row .vs-sb-col.user .vs-sb-sub-row {
+        justify-content: flex-start !important;
+    }
+
+    .versus-match-row .vs-sb-col.rival .vs-sb-sub-row {
+        justify-content: flex-end !important;
+    }
+
+    .versus-match-row .vs-sb-score {
+        font-size: 0.88rem !important;
+        font-weight: 900 !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+        letter-spacing: -0.2px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .versus-match-row .vs-sb-col.user .vs-sb-score {
+        color: #00ff77 !important;
+    }
+
+    .versus-match-row .vs-sb-col.rival .vs-sb-score {
+        color: #2979ff !important;
+    }
+
+    .versus-match-row .vs-status-tag {
+        font-size: 0.54rem !important;
+        padding: 1px 4px !important;
+        border-radius: 4px !important;
+        white-space: nowrap !important;
+        line-height: 1.1 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 65px !important;
+        flex-shrink: 1 !important;
+    }
+
+    /* Centro: VS + Ronda R1/5 */
+    .versus-match-row .vs-sb-center {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 2px !important;
+        padding: 0 !important;
+        width: 44px !important;
+        min-width: 44px !important;
+    }
+
+    .versus-match-row .vs-sb-vs-badge {
+        font-size: 0.62rem !important;
+        padding: 1.5px 6px !important;
+        border-radius: 6px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+    }
+
+    .versus-match-row .vs-sb-round-badge {
+        font-size: 0.62rem !important;
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        color: #ffffff !important;
+    }
+
+    .versus-match-row .vs-sb-center-timer {
+        font-size: 0.62rem !important;
+        padding: 1px 5px !important;
+    }
+
+    /* Barra de Duelo en la base */
+    .versus-scoreboard-box .vs-sb-duel-bar {
+        left: 10px !important;
+        right: 10px !important;
+        width: calc(100% - 20px) !important;
+        bottom: 0 !important;
+        height: 2.5px !important;
+    }
+
+    /* Fila Inferior 3: Emojis de Taunts Centrados */
     .versus-center-hud .taunts-dock,
     #game-ui.versus-active #taunts-container,
     .hud-versus-active #taunts-container {
         position: static !important;
         transform: none !important;
         margin: 0 auto !important;
-        order: 1 !important;
+        order: 2 !important;
         height: 28px !important;
         min-height: 28px !important;
         max-height: 28px !important;
@@ -5337,118 +5607,6 @@ html[data-theme="light"] .xp-bar-big-fill {
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
-    }
-
-    /* Fila 2: Fila horizontal unificada de Marcador 1v1 + Pistas / Reloj */
-    .versus-match-row {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-        width: auto !important;
-        max-width: calc(100vw - 16px) !important;
-        height: 36px !important;
-        order: 2 !important;
-    }
-
-    .versus-match-row .versus-scoreboard-box,
-    #versus-live-scoreboard {
-        order: 1 !important;
-        height: 36px !important;
-        max-width: 275px !important;
-        padding: 0 8px !important;
-        margin: 0 !important;
-        border-radius: 14px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex-shrink: 1 !important;
-        position: relative !important;
-    }
-
-    .versus-match-row .vs-sb-main-row {
-        gap: 4px !important;
-    }
-
-    .versus-match-row .vs-sb-col {
-        padding: 1px 4px !important;
-        gap: 3px !important;
-    }
-
-    .versus-match-row .vs-sb-score {
-        font-size: 0.88rem !important;
-    }
-
-    .versus-match-row .vs-status-tag {
-        font-size: 0.56rem !important;
-        padding: 1px 5px !important;
-        border-radius: 6px !important;
-    }
-
-    .versus-match-row .vs-sb-center {
-        padding: 0 3px !important;
-    }
-
-    .versus-match-row .vs-sb-vs-badge {
-        font-size: 0.60rem !important;
-        padding: 1px 5px !important;
-    }
-
-    .versus-match-row .vs-sb-round-badge {
-        font-size: 0.60rem !important;
-    }
-
-    /* Botón de Pistas en 1v1 Fácil */
-    .versus-match-row #versus-hud-hints {
-        order: 2 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        margin: 0 !important;
-        flex-shrink: 0 !important;
-        position: relative !important;
-    }
-
-    .versus-match-row .guessr-hint-btn {
-        height: 36px !important;
-        padding: 0 9px !important;
-        font-size: 0.70rem !important;
-        font-weight: 800 !important;
-        border-radius: 12px !important;
-        white-space: nowrap !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-    }
-
-    .versus-match-row .guessr-hint-btn i {
-        font-size: 0.92rem !important;
-    }
-
-    .versus-match-row .guessr-hint-balloon {
-        right: 0 !important;
-        left: auto !important;
-        top: calc(100% + 6px) !important;
-        width: min(280px, calc(100vw - 24px)) !important;
-        max-width: calc(100vw - 24px) !important;
-    }
-
-    /* Reloj de 45s en 1v1 Difícil */
-    .versus-match-row #versus-timer-badge {
-        order: 2 !important;
-        height: 36px !important;
-        padding: 0 9px !important;
-        font-size: 0.74rem !important;
-        font-weight: 900 !important;
-        border-radius: 12px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        flex-shrink: 0 !important;
-    }
-
-    .versus-match-row #versus-timer-badge i {
-        font-size: 0.95rem !important;
     }
 
     /* Drop-chip alert (¡Falta poco! / ¡Rival ya eligió!) */
