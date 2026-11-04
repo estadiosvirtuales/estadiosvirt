@@ -7586,15 +7586,16 @@ html[data-theme="light"] .xp-bar-big-fill {
     margin: 4px auto 12px auto;
 }
 
+.btn-desafio-share,
 .btn-desafio-wa {
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%) !important;
+    color: #0b0f19 !important;
     font-size: 0.94rem !important;
     font-weight: 900 !important;
     padding: 12px 18px !important;
     border-radius: 14px !important;
     border: none !important;
-    box-shadow: 0 6px 22px rgba(37, 211, 102, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 6px 22px rgba(0, 230, 118, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -7603,9 +7604,10 @@ html[data-theme="light"] .xp-bar-big-fill {
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
+.btn-desafio-share:hover,
 .btn-desafio-wa:hover {
     transform: translateY(-2px) scale(1.02) !important;
-    box-shadow: 0 10px 28px rgba(37, 211, 102, 0.6) !important;
+    box-shadow: 0 10px 28px rgba(0, 230, 118, 0.65) !important;
 }
 
 .btn-desafio-copy {

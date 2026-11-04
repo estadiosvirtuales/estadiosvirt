@@ -18303,10 +18303,11 @@ body.video-abierto .hero-section {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
+.share-opt-btn.btn-opt-share:hover,
 .share-opt-btn.btn-opt-wa:hover {
-    border-color: #25d366;
-    background: rgba(37, 211, 102, 0.12);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
+    border-color: #00e676;
+    background: rgba(0, 230, 118, 0.12);
+    box-shadow: 0 6px 20px rgba(0, 230, 118, 0.25);
 }
 
 .share-opt-btn.btn-opt-poster:hover {

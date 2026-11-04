@@ -543,7 +543,7 @@ function ejecutarVotoBotDinamico() {
 }
 
 // ==========================================
-// MOTOR DE SALAS PRIVADAS (DESAFÍO POR WHATSAPP)
+// MOTOR DE SALAS PRIVADAS (DESAFÍO POR LINK)
 // ==========================================
 function crearSalaPrivada() {
     cerrarModalGuessr();
@@ -617,7 +617,7 @@ window.compartirLinkPrivado = async function(link) {
     }
 
     navigator.clipboard.writeText(msg).then(() => {
-        showToast('¡Link copiado! Pegalo con Ctrl + V en WhatsApp.', 'ph-check-circle', 'success');
+        showToast('¡Link copiado! Pegalo donde quieras compartirlo 📋', 'ph-check-circle', 'success');
         const btn = document.getElementById('btn-copiar-privado');
         if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Copiado!`;
     }).catch(() => {
@@ -3399,7 +3399,7 @@ window.compartirLinkLiga = async function(nombreLiga, rivalNombre = null) {
 
     if (navigator.clipboard) {
         navigator.clipboard.writeText(msg).then(() => {
-            showToast(`¡Link de ${nombreVisual} copiado! Pegalo en WhatsApp 📲`, 'ph-check-circle', 'success');
+            showToast(`¡Link de ${nombreVisual} copiado! Pegalo donde quieras compartirlo 📋`, 'ph-check-circle', 'success');
         }).catch(() => {
             showToast('Error al copiar el enlace.', 'ph-warning-circle', 'danger');
         });
@@ -3524,7 +3524,7 @@ document.addEventListener("visibilitychange", () => {
             timerAbandono = null;
         }
 
-        // Si estábamos en el lobby esperando rival y el WebSocket se durmió al salir a WhatsApp
+        // Si estábamos en el lobby esperando rival y el WebSocket se durmió al salir a otra app
         if (esModoVersus && !versusPartidaEnCurso && versusPartidaId) {
             console.log("[1v1] 🔄 Despertando y restableciendo conexión WebSocket...");
             conectarRealtimeVersus();
@@ -4671,7 +4671,7 @@ window.responderDesafio = function(aceptar, salaId) {
 
     versusLigaOrigen = nombreLigaActivaCache; // 🏆 Este duelo nació en la liga -> cuenta para el ranking de triunfos
     cerrarModalLigaAmigosPrivada(); // Cierra la tabla de la liga y apaga su canal de presencia
-    unirseSalaPrivada(salaId);      // Entra a la sala 1v1 que ya armó el rival (mismo motor que el link de WhatsApp)
+    unirseSalaPrivada(salaId);      // Entra a la sala 1v1 que ya armó el rival (mismo motor que el link compartido)
 };
 
 // 🚪 Salir de la liga actual: vuelve a mostrar el formulario de crear/unirse
@@ -4710,7 +4710,7 @@ async function salirLigaAmigos() {
 
 
 // =============================================================================
-// ⏳ MOTOR DE DESAFÍOS ASINCRÓNICOS 24 HORAS (JUGÁ CUANDO PUEDAS POR WHATSAPP)
+// ⏳ MOTOR DE DESAFÍOS ASINCRÓNICOS 24 HORAS (JUGÁ CUANDO PUEDAS POR LINK)
 // =============================================================================
 
 function iniciarDesafioAsincronico(diff = 'medio') {
@@ -4806,12 +4806,12 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
             </div>
 
             <p class="desafio-desc-text">
-                Compartile este link a tu amigo o al grupo de WhatsApp. Podrán jugar a su ritmo durante el día y ver quién gana mano a mano.
+                Compartile este link a tu rival. Podrán jugar a su propio ritmo durante el día y ver quién gana mano a mano.
             </p>
 
             <div class="desafio-actions-box">
-                <button type="button" onclick="compartirDesafioWhatsApp('${desafioAsincronicoActivo.id}', ${guessrPuntosTotales})" class="btn-3d btn-desafio-wa">
-                    <i class="ph-bold ph-whatsapp-logo"></i> Desafiar por WhatsApp
+                <button type="button" onclick="compartirDesafio('${desafioAsincronicoActivo.id}', ${guessrPuntosTotales})" class="btn-3d btn-desafio-share">
+                    <i class="ph-bold ph-share-network"></i> Compartir Desafío
                 </button>
                 <button type="button" id="btn-copy-desafio" onclick="copiarLinkDesafio('${desafioAsincronicoActivo.id}')" class="btn-3d secondary btn-desafio-copy">
                     <i class="ph-bold ph-copy"></i> Copiar enlace del reto
@@ -4950,8 +4950,8 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
         ${tablaH2H}
 
         <div class="desafio-actions-box" style="margin-top:10px;">
-            <button type="button" onclick="compartirResultadoDesafioWhatsApp('${desafioAsincronicoActivo.id}')" class="btn-3d btn-desafio-wa">
-                <i class="ph-bold ph-whatsapp-logo"></i> Mandar resultado a WhatsApp
+            <button type="button" onclick="compartirResultadoDesafio('${desafioAsincronicoActivo.id}')" class="btn-3d btn-desafio-share">
+                <i class="ph-bold ph-share-network"></i> Compartir Resultado
             </button>
             <div style="display:flex; gap:8px; width:100%;">
                 <button type="button" class="btn-3d primary" onclick="cerrarModalVideo(); abrirModalGuessr();" style="flex:1; padding:11px; font-size:.85rem;">
@@ -4969,7 +4969,7 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
     }
 }
 
-window.compartirDesafioWhatsApp = function(desafioId, puntos) {
+window.compartirDesafio = function(desafioId, puntos) {
     const urlLimpia = window.location.origin + window.location.pathname;
     const link = `${urlLimpia}?desafio=${desafioId}`;
     const ptsTexto = (puntos || 0).toLocaleString('es-AR');
@@ -4978,15 +4978,22 @@ window.compartirDesafioWhatsApp = function(desafioId, puntos) {
                 `Hice ${ptsTexto} puntos en 5 estadios. ¿Te animás a superarme en las mismas canchas?\n\n` +
                 `⏳ Tenés 24 horas para jugar en este link:\n${link}`;
 
-    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (esMobile && navigator.share) {
-        navigator.share({ title: 'Desafío StadiumGuessr ⚽', text: msg }).catch(() => {});
+    if (navigator.share) {
+        navigator.share({ title: 'Desafío StadiumGuessr ⚽', text: msg, url: link }).catch(() => {});
         return;
     }
 
-    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
-    window.open(waUrl, '_blank');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg).then(() => {
+            showToast("¡Enlace y desafío copiados! Pegalo para compartirlo 📋", "ph-check", "success");
+        }).catch(() => {
+            copiarLinkDesafio(desafioId);
+        });
+    } else {
+        copiarLinkDesafio(desafioId);
+    }
 };
+window.compartirDesafioWhatsApp = window.compartirDesafio;
 
 window.copiarLinkDesafio = function(desafioId) {
     const urlLimpia = window.location.origin + window.location.pathname;
@@ -5000,7 +5007,7 @@ window.copiarLinkDesafio = function(desafioId) {
     });
 };
 
-window.compartirResultadoDesafioWhatsApp = function(desafioId) {
+window.compartirResultadoDesafio = function(desafioId) {
     if (!desafioAsincronicoActivo) return;
     const urlLimpia = window.location.origin + window.location.pathname;
     const d = desafioAsincronicoActivo;
@@ -5022,15 +5029,20 @@ window.compartirResultadoDesafioWhatsApp = function(desafioId) {
                 `${veredicto}\n\n` +
                 `¿Querés la revancha o desafiar a tus amigos? Jugalo gratis en:\n${urlLimpia}`;
 
-    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (esMobile && navigator.share) {
-        navigator.share({ title: 'Resultado del Desafío StadiumGuessr 🏆', text: msg }).catch(() => {});
+    if (navigator.share) {
+        navigator.share({ title: 'Resultado del Desafío StadiumGuessr 🏆', text: msg, url: urlLimpia }).catch(() => {});
         return;
     }
 
-    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
-    window.open(waUrl, '_blank');
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(msg).then(() => {
+            showToast("¡Resultado copiado! Pegalo para compartirlo 📋", "ph-check", "success");
+        }).catch(() => {
+            showToast("Error al copiar resultado.", "ph-warning-circle", "danger");
+        });
+    }
 };
+window.compartirResultadoDesafioWhatsApp = window.compartirResultadoDesafio;
 
 async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
     if (!codigoDesafio) return;
@@ -5101,8 +5113,8 @@ async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
                         Le quedan <b>${horasRestantes} horas</b> para jugar el mano a mano.
                     </p>
                     <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:14px;">
-                        <button type="button" class="btn-3d btn-desafio-wa" onclick="compartirDesafioWhatsApp('${desafio.id}', ${desafio.creador_puntos})">
-                            <i class="ph-bold ph-whatsapp-logo"></i> Reenviar por WhatsApp
+                        <button type="button" class="btn-3d btn-desafio-share" onclick="compartirDesafio('${desafio.id}', ${desafio.creador_puntos})">
+                            <i class="ph-bold ph-share-network"></i> Compartir Desafío
                         </button>
                         <button type="button" class="btn-3d secondary" onclick="document.getElementById('desafio-creator-status-modal').remove()">
                             Cerrar
@@ -5283,8 +5295,8 @@ function mostrarPantallaComparativaH2HModal(desafio) {
             ${tablaH2H}
 
             <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:14px;">
-                <button type="button" class="btn-3d btn-desafio-wa" onclick="compartirResultadoDesafioWhatsApp('${desafio.id}')">
-                    <i class="ph-bold ph-whatsapp-logo"></i> Compartir a WhatsApp
+                <button type="button" class="btn-3d btn-desafio-share" onclick="compartirResultadoDesafio('${desafio.id}')">
+                    <i class="ph-bold ph-share-network"></i> Compartir Resultado
                 </button>
                 <button type="button" class="btn-3d secondary" onclick="document.getElementById('desafio-h2h-inspect-modal').remove()">
                     Cerrar
@@ -5366,7 +5378,9 @@ window.cerrarModalLigaAmigosPrivada = cerrarModalLigaAmigosPrivada;
 window.salirLigaAmigos = salirLigaAmigos;
 window.desafiarOnceDesdeLigaAmigos = desafiarOnceDesdeLigaAmigos;
 window.iniciarDesafioAsincronico = iniciarDesafioAsincronico;
-window.compartirDesafioWhatsApp = compartirDesafioWhatsApp;
+window.compartirDesafio = compartirDesafio;
+window.compartirDesafioWhatsApp = compartirDesafio;
 window.copiarLinkDesafio = copiarLinkDesafio;
-window.compartirResultadoDesafioWhatsApp = compartirResultadoDesafioWhatsApp;
+window.compartirResultadoDesafio = compartirResultadoDesafio;
+window.compartirResultadoDesafioWhatsApp = compartirResultadoDesafio;
 window.cargarYPresentarDesafioAsincronico = cargarYPresentarDesafioAsincronico;

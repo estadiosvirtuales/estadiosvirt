@@ -1957,19 +1957,30 @@ function inicializarEfectoHolograficoCarta() {
 }
 window.inicializarEfectoHolograficoCarta = inicializarEfectoHolograficoCarta;
 
-// 📲 COMPARTIR DIRECTO EN WHATSAPP CON DATOS OFICIALES DE CARTA
-function compartirCartaWhatsApp() {
+// 📲 COMPARTIR DIRECTO DE CARTA CON DATOS OFICIALES
+function compartirCarta() {
     if (typeof reproducirSonido === 'function') reproducirSonido('click');
     const customNick = getPref('ev_custom_nick', '') || (obtenerUsuarioLogueado() ? obtenerUsuarioLogueado().name.split(' ')[0] : 'Jugador');
     const nivelIdx = calcularNivelIdx(userStats.xpTotal);
     const nivel = NIVELES[nivelIdx];
     const texto = `¡Mirá mi carta oficial de Estadios Virtuales! 🏆⚽\n👤 Crack: ${customNick} (Nivel ${nivelIdx} - ${nivel.nombre})\n📍 ¿Podés superarme en el StadiumGuessr o ganarme un 1v1?\nJugá gratis acá: ${location.origin}`;
-    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
-    window.open(url, '_blank');
+    
+    if (navigator.share) {
+        navigator.share({ title: 'Mi Carta en Estadios Virtuales 🏆⚽', text: texto, url: location.origin }).catch(() => {});
+        return;
+    }
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(texto).then(() => {
+            if (typeof showToast === 'function') {
+                showToast("¡Enlace y datos de carta copiados! Pegalo para compartirlo 📋", "ph-check", "success");
+            }
+        });
+    }
 }
-window.compartirCartaWhatsApp = compartirCartaWhatsApp;
+window.compartirCarta = compartirCarta;
+window.compartirCartaWhatsApp = compartirCarta;
 
-// 📤 MODAL INTEGRADO DE OPCIONES PARA COMPARTIR CARTA (WHATSAPP, PÓSTER 9:16, COPIAR)
+// 📤 MODAL INTEGRADO DE OPCIONES PARA COMPARTIR CARTA (LINK, PÓSTER 9:16, COPIAR)
 function abrirModalOpcionesCompartir() {
     if (typeof reproducirSonido === 'function') reproducirSonido('click');
     let overlay = document.getElementById('share-options-overlay');
@@ -1992,11 +2003,11 @@ function abrirModalOpcionesCompartir() {
                 <p style="margin:0; font-size:0.8rem; color:var(--text-muted);">Desafiá a tus amigos o mostrá tu nivel</p>
             </div>
             <div class="share-options-list">
-                <button type="button" class="share-opt-btn btn-opt-wa" onclick="compartirCartaWhatsApp(); cerrarModalOpcionesCompartir();">
-                    <i class="ph-fill ph-whatsapp-logo" style="color:#25d366; font-size:1.4rem;"></i>
+                <button type="button" class="share-opt-btn btn-opt-share btn-opt-wa" onclick="compartirCarta(); cerrarModalOpcionesCompartir();">
+                    <i class="ph-bold ph-share-network" style="color:#00e676; font-size:1.4rem;"></i>
                     <div class="share-opt-text">
-                        <strong>Enviar por WhatsApp</strong>
-                        <span>Compartí tu carta y desafiá a tus amigos</span>
+                        <strong>Compartir con Amigos</strong>
+                        <span>Enviá tu carta y desafiá a tus amigos</span>
                     </div>
                     <i class="ph-bold ph-caret-right" style="color:var(--text-muted); margin-left:auto;"></i>
                 </button>
