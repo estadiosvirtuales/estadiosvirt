@@ -102,6 +102,8 @@ function abrirModalVideo(event,link,esJuego=false){
     }
     
     let url=link;
+    const mascaraHTML = esJuego ? `<div class="yt-title-mask"><div class="yt-badge-pill"><img src="mundo.webp" alt="Logo" class="yt-mask-icon"><span>STADIUMGUESSR</span></div></div>` : '';
+
     if(link.includes('youtube.com')||link.includes('youtu.be')){
         let vid='';
         
@@ -121,15 +123,14 @@ function abrirModalVideo(event,link,esJuego=false){
         
         // ⚡ SIN MARGEN NEGATIVO: El iframe se mantiene 100% visible para evitar el bloqueo del decodificador de Chrome Móvil
         const est="width:100%;height:100%;border:none;";
-        const mascaraHTML = esJuego ? `<div class="yt-title-mask"><div class="yt-badge-pill"><img src="mundo.webp" alt="Logo" class="yt-mask-icon"><span>STADIUMGUESSR</span></div></div>` : '';
         container.innerHTML=`${mascaraHTML}<iframe src="${url}" style="${est}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
         
     }else if(link.toLowerCase().endsWith('.mp4')||link.includes('.mp4?')){
         // Video MP4 nativo con playsinline para iOS
         const attr=esJuego?"autoplay loop muted playsinline":"controls autoplay playsinline";
-        container.innerHTML=`<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
+        container.innerHTML=`${mascaraHTML}<video ${attr} style="width:100%;height:100%;object-fit:cover;"><source src="${link}" type="video/mp4"></video>`;
     }else{
-        container.innerHTML=`<iframe src="${url}" style="width:100%;height:100%;border:none;" allow="autoplay; encrypted-media"></iframe>`;
+        container.innerHTML=`${mascaraHTML}<iframe src="${url}" style="width:100%;height:100%;border:none;" allow="autoplay; encrypted-media"></iframe>`;
     }
 
     modal.style.display='flex';
@@ -178,8 +179,12 @@ function cerrarModalVideo(){
     if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
     const gt = document.getElementById('game-title');
     if (gt) gt.style.display = 'none';
+    const taunts = document.getElementById('taunts-container');
+    if (taunts) taunts.style.display = 'none';
     const hud = document.querySelector('.guessr-top-hud');
     if (hud) hud.classList.remove('hud-versus-active');
+    const gameUi = document.getElementById('game-ui');
+    if (gameUi) gameUi.classList.remove('versus-active');
     document.getElementById('video-modal').style.display='none';document.getElementById('modal-video-container').innerHTML='';document.getElementById('game-ui').style.display='none';document.getElementById('modal-card').classList.remove('stadium-guessr-layout');document.getElementById('modal-card').classList.remove('resultado-final');
     try{if(guessrMapInstance){guessrMapInstance.remove();guessrMapInstance=null;}}catch(e){guessrMapInstance=null;}
     try{if(guessrUserMarker)guessrUserMarker.remove();}catch(e){}try{if(guessrTargetMarker)guessrTargetMarker.remove();}catch(e){}try{if(guessrPolyline)guessrPolyline.remove();}catch(e){}
@@ -918,18 +923,44 @@ function renderizarScoreboardVersus(alerta = null) {
 
     const hud = document.querySelector('.guessr-top-hud');
     const soloDock = document.getElementById('guessr-solo-dock');
+    const soloPill = document.getElementById('guessr-solo-pill');
+    const hintsBox = document.getElementById('guessr-hud-hints');
+    const timerBadge = document.getElementById('hud-timer-badge');
+    const taunts = document.getElementById('taunts-container');
+    const gameUi = document.getElementById('game-ui');
+
     if (!esModoVersus) {
-        sb.style.display = 'none';
+        if (sb) sb.style.setProperty('display', 'none', 'important');
+        if (soloPill) soloPill.style.setProperty('display', 'inline-flex', 'important');
         if (soloDock) soloDock.style.setProperty('display', 'inline-flex', 'important');
         if (hud) hud.classList.remove('hud-versus-active');
+        if (gameUi) gameUi.classList.remove('versus-active');
+        if (taunts) taunts.style.setProperty('display', 'none', 'important');
         if (typeof actualizarHUDSoloGuessr === 'function') actualizarHUDSoloGuessr();
         return;
     }
 
-    sb.style.display = 'flex';
-    if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
+    if (soloDock) soloDock.style.setProperty('display', 'inline-flex', 'important');
+    if (soloPill) soloPill.style.setProperty('display', 'none', 'important');
+    sb.style.setProperty('display', 'flex', 'important');
     if (gt) gt.style.display = 'none';
     if (hud) hud.classList.add('hud-versus-active');
+    if (gameUi) gameUi.classList.add('versus-active');
+    if (taunts) taunts.style.setProperty('display', 'inline-flex', 'important');
+
+    // Manejo de Pistas y Timer en 1 vs 1 según dificultad
+    if (guessrDificultad === 'facil' && !esModoDiario) {
+        if (hintsBox) hintsBox.style.setProperty('display', 'inline-flex', 'important');
+        if (timerBadge) timerBadge.style.setProperty('display', 'none', 'important');
+    } else if (guessrDificultad === 'dificil' && !esModoDiario) {
+        if (timerBadge) timerBadge.style.setProperty('display', 'inline-flex', 'important');
+        if (hintsBox) hintsBox.style.setProperty('display', 'none', 'important');
+        const timerVal = document.getElementById('hud-timer-val');
+        if (timerVal) timerVal.textContent = guessrTiempoRestanteIndividual + 's';
+    } else {
+        if (hintsBox) hintsBox.style.setProperty('display', 'none', 'important');
+        if (timerBadge) timerBadge.style.setProperty('display', 'none', 'important');
+    }
 
     const u = obtenerUsuarioLogueado();
     const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Vos')).trim();
@@ -986,7 +1017,7 @@ function renderizarScoreboardVersus(alerta = null) {
         pctRival = 100 - pctUser;
     }
 
-    // Segundero central dinámico (aparece prominentemente cuando un jugador arriesga)
+    // Segundero central dinámico cuando un jugador arriesga (reloj de 15s de duelo)
     let timerCenterHtml = '';
     if (versusTimerInterval && !miGuessConfirmado) {
         timerCenterHtml = `
@@ -997,11 +1028,6 @@ function renderizarScoreboardVersus(alerta = null) {
         timerCenterHtml = `
             <span class="vs-sb-center-timer wait" id="vs-sb-center-wait-badge" title="Esperando que tu rival confirme">
                 <i class="ph-bold ph-hourglass animate-spin"></i> <span id="vs-sb-wait-sec" class="vs-timer-val">${versusTiempoRestante}s</span>
-            </span>`;
-    } else if (guessrDificultad === 'dificil' && !miGuessConfirmado && !rivalGuessConfirmado && !resultadosRondaMostrados) {
-        timerCenterHtml = `
-            <span class="vs-sb-timer-badge" id="vs-sb-leyenda-timer">
-                <i class="ph-bold ph-timer"></i> <span id="vs-sb-leyenda-sec">${guessrTiempoRestanteIndividual}s</span>
             </span>`;
     }
 
@@ -1713,9 +1739,7 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
     if (esModoVersus) {
         renderizarScoreboardVersus();
         const taunts = document.getElementById('taunts-container');
-        if (taunts) taunts.style.display = 'flex';
-        const soloDock = document.getElementById('guessr-solo-dock');
-        if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
+        if (taunts) taunts.style.display = 'inline-flex';
     } else {
         const sb = document.getElementById('versus-live-scoreboard');
         if (sb) sb.style.display = 'none';
@@ -1725,12 +1749,19 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
         if (taunts) taunts.style.display = 'none';
         const hud = document.querySelector('.guessr-top-hud');
         if (hud) hud.classList.remove('hud-versus-active');
+        const gameUi = document.getElementById('game-ui');
+        if (gameUi) gameUi.classList.remove('versus-active');
         actualizarHUDSoloGuessr();
     }
 
 if (guessrDificultad === 'dificil' && !esModoDiario) {
     if (!esModoVersus) {
         actualizarHUDSoloGuessr();
+    } else {
+        const timerBadge = document.getElementById('hud-timer-badge');
+        const timerVal = document.getElementById('hud-timer-val');
+        if (timerBadge) timerBadge.style.setProperty('display', 'inline-flex', 'important');
+        if (timerVal) timerVal.textContent = guessrTiempoRestanteIndividual + 's';
     }
     
     guessrTimerIndividualInterval = setInterval(() => {
@@ -1740,15 +1771,10 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
             reproducirSonido('reloj');
         }
 
-        if (esModoVersus) {
-            const sec = document.getElementById('vs-sb-leyenda-sec');
-            if (sec) {
-                sec.textContent = guessrTiempoRestanteIndividual + 's';
-                sec.classList.toggle('timer-urgent-pulse', isUrgent);
-            }
-        } else {
-            actualizarHUDSoloGuessr();
-        }
+        const timerVal = document.getElementById('hud-timer-val');
+        const timerBadge = document.getElementById('hud-timer-badge');
+        if (timerVal) timerVal.textContent = guessrTiempoRestanteIndividual + 's';
+        if (timerBadge) timerBadge.classList.toggle('timer-urgent-pulse', isUrgent);
         
         if (guessrTiempoRestanteIndividual <= 0) {
             clearInterval(guessrTimerIndividualInterval);
@@ -2945,14 +2971,18 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
 
 function actualizarHUDSoloGuessr() {
     const dock = document.getElementById('guessr-solo-dock');
+    const soloPill = document.getElementById('guessr-solo-pill');
+    const sb = document.getElementById('versus-live-scoreboard');
     if (!dock) return;
 
     if (esModoVersus) {
-        dock.style.setProperty('display', 'none', 'important');
+        // En versus, renderizarScoreboardVersus maneja el dock
         return;
     }
 
     dock.style.setProperty('display', 'inline-flex', 'important');
+    if (soloPill) soloPill.style.setProperty('display', 'inline-flex', 'important');
+    if (sb) sb.style.setProperty('display', 'none', 'important');
 
     // Round label
     const rLabel = document.getElementById('hud-round-label');

@@ -4961,50 +4961,31 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* ========================================================
    🏆 CINTA HORIZONTAL SUPERIOR (SCOREBUG BROADCAST 1V1 PARA PC)
+   Ubicado sobre el tapatítulo:
+   - Marcador 1v1 + Pistas/Timer: A LA IZQUIERDA de STADIUMGUESSR
+   - Emojis taunts: A LA DERECHA de STADIUMGUESSR
+   - Video aéreo: 100% LIMPIO Y SIN OBSTÁCULOS
    ======================================================== */
 @media (min-width: 769px) {
-    .guessr-top-hud.hud-versus-active {
-        position: absolute !important;
-        top: 64px !important;
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%) !important;
-        width: max-content !important;
-        max-width: calc(100% - 32px) !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-        z-index: 25 !important;
-        pointer-events: auto !important;
-        box-sizing: border-box !important;
-    }
-
-    /* Ocultamos la barra de rondas flotante en versus porque ya está el VS R2/5 y la barra de duelo */
-    .guessr-top-hud.hud-versus-active #rounds-progress {
+    /* En PC, el contenedor flotante sobre el video queda oculto para dejarlo 100% visible */
+    .guessr-top-hud {
         display: none !important;
     }
 
-    /* El dock de taunts queda centrado horizontalmente arriba del marcador */
-    .guessr-top-hud.hud-versus-active .taunts-dock {
-        display: inline-flex !important;
-        margin: 0 auto !important;
-        justify-content: center !important;
-        height: 38px !important;
-        padding: 2px 8px !important;
-        border-radius: 20px !important;
-        flex-shrink: 0 !important;
-        box-sizing: border-box !important;
+    /* Cuando versus está activo, ocultar la pastilla solo en el dock */
+    .hud-versus-active .guessr-solo-pill,
+    #game-ui.versus-active .guessr-solo-pill {
+        display: none !important;
     }
 
-    /* El Scoreboard Ribbon se centra horizontalmente con altura fija de 38px */
-    .guessr-top-hud.hud-versus-active .versus-scoreboard-box {
-        margin: 0 auto !important;
-        max-width: 680px !important;
+    /* Scoreboard Ribbon 1v1 dentro del Dock Top-Left */
+    .guessr-solo-dock #versus-live-scoreboard,
+    .guessr-solo-dock .versus-scoreboard-box {
+        margin: 0 !important;
+        max-width: 370px !important;
         width: auto !important;
         height: 38px !important;
-        padding: 0 14px !important;
+        padding: 0 10px !important;
         border-radius: 20px !important;
         display: flex !important;
         flex-direction: row !important;
@@ -5014,10 +4995,17 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-sizing: border-box !important;
         position: relative !important;
         overflow: visible !important;
+        background: linear-gradient(135deg, rgba(14, 23, 40, 0.94) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        border-top: 1.5px solid rgba(0, 255, 119, 0.65) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        flex-shrink: 0 !important;
     }
 
-    /* Barra de duelo anclada al borde inferior sin empujar verticalmente el texto */
-    .guessr-top-hud.hud-versus-active .vs-sb-duel-bar {
+    /* Barra de duelo anclada al borde inferior */
+    .guessr-solo-dock .vs-sb-duel-bar {
         position: absolute !important;
         bottom: 0 !important;
         left: 14px !important;
@@ -5030,24 +5018,24 @@ html[data-theme="light"] .xp-bar-big-fill {
         pointer-events: none !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-main-row {
+    .guessr-solo-dock .vs-sb-main-row {
         display: grid !important;
         grid-template-columns: 1fr auto 1fr !important;
         grid-template-rows: 100% !important;
         align-items: center !important;
         align-content: center !important;
-        gap: 12px !important;
+        gap: 8px !important;
         height: 100% !important;
         width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-col {
+    .guessr-solo-dock .vs-sb-col {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
         padding: 0 !important;
         margin: 0 !important;
         background: transparent !important;
@@ -5057,63 +5045,76 @@ html[data-theme="light"] .xp-bar-big-fill {
         min-width: 0 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-col.user {
+    .guessr-solo-dock .vs-sb-col.user {
         justify-content: flex-start !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-col.rival {
+    .guessr-solo-dock .vs-sb-col.rival {
         justify-content: flex-end !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-meta {
+    .guessr-solo-dock .vs-sb-meta {
         margin: 0 !important;
         padding: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 5px !important;
+        gap: 4px !important;
         min-width: 0 !important;
         overflow: hidden !important;
         line-height: 1 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-tag {
+    .guessr-solo-dock .vs-sb-tag {
         margin: 0 !important;
         line-height: 1.1 !important;
+        font-size: 0.60rem !important;
+        padding: 2px 5px !important;
+        border-radius: 4px !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-lead-pill {
+    .guessr-solo-dock .vs-lead-pill {
         margin: 0 !important;
         line-height: 1.1 !important;
+        font-size: 0.60rem !important;
+        padding: 1px 4px !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-name {
-        max-width: 110px !important;
-        font-size: 0.76rem !important;
+    .guessr-solo-dock .vs-sb-name {
+        max-width: 80px !important;
+        font-size: 0.74rem !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         margin: 0 !important;
         line-height: 1.1 !important;
+        color: #ffffff !important;
+        font-weight: 800 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-score {
+    .guessr-solo-dock .vs-sb-score {
         margin: 0 !important;
         padding: 0 !important;
-        font-size: 1.05rem !important;
+        font-size: 0.82rem !important;
         white-space: nowrap !important;
         font-weight: 900 !important;
         line-height: 1 !important;
         display: inline-flex !important;
         align-items: baseline !important;
         gap: 2px !important;
+        color: #00ff77 !important;
+    }
+    .guessr-solo-dock .vs-sb-col.rival .vs-sb-score {
+        color: #38bdf8 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-score small {
+    .guessr-solo-dock .vs-sb-score small {
         margin: 0 !important;
         line-height: 1 !important;
+        font-size: 0.60rem !important;
+        color: #94a3b8 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-status-box {
+    .guessr-solo-dock .vs-sb-status-box {
         margin: 0 !important;
         padding: 0 !important;
         min-height: auto !important;
@@ -5122,37 +5123,44 @@ html[data-theme="light"] .xp-bar-big-fill {
         line-height: 1 !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-status-tag {
+    .guessr-solo-dock .vs-status-tag {
         font-size: 0.58rem !important;
-        padding: 1px 6px !important;
+        padding: 1px 5px !important;
         margin: 0 !important;
         line-height: 1.1 !important;
+        white-space: nowrap !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-center {
+    .guessr-solo-dock .vs-sb-center {
         display: inline-flex !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 4px !important;
         flex-shrink: 0 !important;
         height: 100% !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 0 4px !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-vs-badge {
+    .guessr-solo-dock .vs-sb-vs-badge {
         margin: 0 !important;
-        line-height: 1 !important;
+        line-height: 1.1 !important;
+        font-size: 0.68rem !important;
+        padding: 1px 5px !important;
+        border-radius: 6px !important;
     }
 
-    .guessr-top-hud.hud-versus-active .vs-sb-round-badge {
+    .guessr-solo-dock .vs-sb-round-badge {
         margin: 0 !important;
-        line-height: 1 !important;
+        line-height: 1.1 !important;
+        font-size: 0.68rem !important;
+        font-weight: 800 !important;
+        color: #94a3b8 !important;
     }
 
     /* Alerta Drop-Chip Flotante debajo de la cinta (sin alterar la altura ni desplazar elementos) */
-    .guessr-top-hud.hud-versus-active .vs-sb-alert {
+    .guessr-solo-dock .vs-sb-alert {
         position: absolute !important;
         top: calc(100% + 6px) !important;
         left: 50% !important;
@@ -5172,15 +5180,58 @@ html[data-theme="light"] .xp-bar-big-fill {
         gap: 6px !important;
         animation: alertDropSlide 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
     }
-    .guessr-top-hud.hud-versus-active .vs-sb-alert.urgent-drop {
+    .guessr-solo-dock .vs-sb-alert.urgent-drop {
         border: 1px solid rgba(255, 71, 87, 0.6) !important;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 71, 87, 0.35) !important;
         color: #fecaca !important;
     }
-    .guessr-top-hud.hud-versus-active .vs-sb-alert.wait-drop {
+    .guessr-solo-dock .vs-sb-alert.wait-drop {
         border: 1px solid rgba(56, 189, 248, 0.5) !important;
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), 0 0 18px rgba(56, 189, 248, 0.25) !important;
         color: #bae6fd !important;
+    }
+
+    /* 🎮 DOCK DE TAUNTS (A LA DERECHA DE STADIUMGUESSR EN EL TAPATÍTULO) */
+    #taunts-container.taunts-dock {
+        position: absolute !important;
+        top: 13px !important;
+        left: calc(50% + 115px) !important;
+        height: 38px !important;
+        display: none;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        padding: 0 10px !important;
+        background: linear-gradient(135deg, rgba(14, 23, 40, 0.92) 0%, rgba(8, 13, 24, 0.97) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        border-top: 1.5px solid rgba(0, 255, 119, 0.65) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 119, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        z-index: 2025 !important;
+        pointer-events: auto !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+    #taunts-container.taunts-dock .taunt-btn {
+        height: 30px !important;
+        width: 30px !important;
+        font-size: 1.15rem !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 15px !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer !important;
+        line-height: 1 !important;
+        transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.15s ease !important;
+    }
+    #taunts-container.taunts-dock .taunt-btn:hover {
+        transform: scale(1.25) translateY(-2px) !important;
+        background: rgba(255, 255, 255, 0.12) !important;
     }
 }
 
@@ -5799,37 +5850,73 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .guessr-top-hud #versus-live-scoreboard,
-    .guessr-top-hud .versus-scoreboard-box {
+    .guessr-top-hud .versus-scoreboard-box,
+    #versus-live-scoreboard {
         order: 1 !important;
         margin: 2px auto !important;
         padding: 5px 8px 4px !important;
         gap: 3px !important;
         border-radius: 12px !important;
     }
-    .guessr-top-hud .vs-sb-score {
+    .hud-versus-active #guessr-solo-dock,
+    #game-ui.versus-active #guessr-solo-dock {
+        top: 100px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        max-width: calc(100% - 16px) !important;
+        height: auto !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+    }
+    .hud-versus-active #taunts-container,
+    #game-ui.versus-active #taunts-container {
+        position: absolute !important;
+        top: 66px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
+        gap: 6px !important;
+        padding: 2px 8px !important;
+        width: auto !important;
+        max-width: 220px !important;
+        box-sizing: border-box !important;
+        border-radius: 20px !important;
+        z-index: 2025 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .guessr-top-hud .vs-sb-score,
+    .guessr-solo-dock .vs-sb-score {
         font-size: 1.05rem !important;
         line-height: 1 !important;
     }
-    .guessr-top-hud .vs-sb-status-box {
+    .guessr-top-hud .vs-sb-status-box,
+    .guessr-solo-dock .vs-sb-status-box {
         margin-top: 1px !important;
         min-height: 14px !important;
     }
-    .guessr-top-hud .vs-sb-duel-bar {
+    .guessr-top-hud .vs-sb-duel-bar,
+    .guessr-solo-dock .vs-sb-duel-bar {
         height: 2.5px !important;
         margin-top: 2px !important;
     }
-    .guessr-top-hud .vs-status-tag {
+    .guessr-top-hud .vs-status-tag,
+    .guessr-solo-dock .vs-status-tag {
         font-size: 0.58rem !important;
         padding: 1px 5px !important;
     }
 
-    /* 💡 BOTÓN PISTAS ALINEADO Y CONTENIDO FUERA DEL VIDEO (SOLO EN TOP HUD) */
-    .guessr-top-hud #guessr-hud-hints {
+    /* 💡 BOTÓN PISTAS ALINEADO Y CONTENIDO FUERA DEL VIDEO */
+    .guessr-top-hud #guessr-hud-hints,
+    .guessr-solo-dock #guessr-hud-hints {
         order: 2 !important;
-        margin: 2px 0 0 0 !important;
+        margin: 2px auto 0 auto !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
         width: 100% !important;
         box-sizing: border-box !important;
     }
