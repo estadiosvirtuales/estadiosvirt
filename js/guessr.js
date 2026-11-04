@@ -3983,7 +3983,7 @@ function renderizarCuerpoLiga(lista, nombreVisualLiga, miNombreRanking, tipoVist
             ${esOnce 
                 ? 'Todavía no hay equipos registrados en esta liga.'
                 : (tipoVista === 'triunfos'
-                    ? 'Todavía nadie disputó duelos ⚔️ en esta liga. ¡Desafiá a alguien que esté online!'
+                    ? 'Todavía nadie disputó duelos en esta liga. ¡Desafiá a alguien que esté online!'
                     : 'Todavía nadie registró partidas en esta liga.')}
         </div>`;
     } else {
@@ -4822,7 +4822,7 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
 
         container.innerHTML = `
         <div class="desafio-endgame-container">
-            <div class="desafio-endgame-badge"><img src="icono-1v1.webp" alt="Duelo" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));"> DESAFÍO 24 HORAS CREADO</div>
+            <div class="desafio-endgame-badge"><img src="ranking-icon-1v1.webp" alt="Duelo" style="width:18px; height:18px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 6px rgba(168, 85, 247, 0.5));"> DESAFÍO 24 HORAS CREADO</div>
             <h2 class="desafio-endgame-title">¡PUNTAJE REGISTRADO!</h2>
             <div class="desafio-score-box">
                 <span class="desafio-score-label">Tu marca a superar:</span>
@@ -4965,7 +4965,7 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
 
     container.innerHTML = `
     <div class="desafio-endgame-container">
-        <div class="desafio-endgame-badge"><img src="icono-1v1.webp" alt="Duelo" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));"> CARA A CARA FINAL · 24 HORAS</div>
+        <div class="desafio-endgame-badge"><img src="ranking-icon-1v1.webp" alt="Duelo" style="width:18px; height:18px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 6px rgba(168, 85, 247, 0.5));"> CARA A CARA FINAL · 24 HORAS</div>
         <h2 class="desafio-endgame-title" style="color:${colorVeredicto};">${bannerTitulo}</h2>
         <p class="desafio-endgame-sub">${bannerSub}</p>
 
@@ -5161,7 +5161,7 @@ async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
         popup.className = 'desafio-welcome-overlay';
         popup.innerHTML = `
             <div class="desafio-welcome-card">
-                <div class="desafio-welcome-badge"><img src="icono-1v1.webp" alt="Duelo" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));"> DESAFÍO 24 HORAS RECIBIDO</div>
+                <div class="desafio-welcome-badge"><img src="ranking-icon-1v1.webp" alt="Duelo" style="width:18px; height:18px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 6px rgba(168, 85, 247, 0.5));"> DESAFÍO 24 HORAS RECIBIDO</div>
                 <h3 class="desafio-welcome-title">¡${sanitizarHTML(desafio.creador_nombre)} te desafió!</h3>
                 <p class="desafio-welcome-sub">
                     Jugó 5 estadios y logró una marca de:<br>
@@ -5237,7 +5237,7 @@ window.comenzarPartidaDesafioRival = async function() {
 
     window.history.replaceState({}, document.title, window.location.pathname);
 
-    showToast(`⚔️ ¡Mano a mano contra ${desafioAsincronicoActivo.creador_nombre}! Objetivo: ${(desafioAsincronicoActivo.creador_puntos || 0).toLocaleString('es-AR')} pts`, "ph-flag-banner", "info");
+    showToast(`¡Mano a mano contra ${desafioAsincronicoActivo.creador_nombre}! Objetivo: ${(desafioAsincronicoActivo.creador_puntos || 0).toLocaleString('es-AR')} pts`, "ph-flag-banner", "info");
     lanzarRondaGuessr();
 };
 
