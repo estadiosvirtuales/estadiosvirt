@@ -5633,14 +5633,19 @@ html[data-theme="light"] .xp-bar-big-fill {
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
     }
 
-    /* Fila 4: Emojis de Taunts Centrados y Desahogados */
+    /* Fila 3: Emojis de Taunts Centrados y Desahogados justo debajo del Scoreboard */
     .versus-center-hud .taunts-dock,
+    .versus-center-hud #taunts-container,
     #game-ui.versus-active #taunts-container,
     .hud-versus-active #taunts-container {
         position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
         z-index: 10 !important;
         transform: none !important;
-        margin: 10px auto 0 auto !important;
+        margin: 8px auto 0 auto !important;
         order: 2 !important;
         height: 36px !important;
         min-height: 36px !important;
@@ -5649,6 +5654,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        align-self: center !important;
         gap: 10px !important;
         border-radius: 24px !important;
         background: rgba(10, 18, 30, 0.90) !important;
@@ -5658,15 +5664,19 @@ html[data-theme="light"] .xp-bar-big-fill {
         -webkit-backdrop-filter: blur(14px) !important;
         width: auto !important;
         max-width: 240px !important;
+        box-sizing: border-box !important;
     }
 
     .versus-center-hud .taunts-dock .taunt-btn,
+    .versus-center-hud #taunts-container .taunt-btn,
     #game-ui.versus-active #taunts-container .taunt-btn,
     .hud-versus-active #taunts-container .taunt-btn {
         height: 28px !important;
         width: 28px !important;
         min-height: 28px !important;
         max-height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
         font-size: 1.20rem !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -5675,8 +5685,46 @@ html[data-theme="light"] .xp-bar-big-fill {
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
+        margin: 0 !important;
         cursor: pointer !important;
         transition: transform 0.15s ease !important;
+        flex: 0 0 auto !important;
+    }
+
+    /* 💥 BURBUJA ARCADE DE TAUNT EN CELULAR:
+       Animación HACIA ABAJO (translateY positivo) para despejar el botón superior y el scoreboard */
+    .taunt-arcade-burst {
+        position: absolute !important;
+        top: calc(100% + 4px) !important;
+        bottom: auto !important;
+        pointer-events: none !important;
+        z-index: 70 !important;
+        animation: tauntArcadePopMobileDown 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+    }
+    .taunt-arcade-burst.es-mio {
+        left: 10px !important;
+        right: auto !important;
+    }
+    .taunt-arcade-burst.es-rival {
+        right: 10px !important;
+        left: auto !important;
+    }
+    .taunt-arcade-burst.taunt-fallback {
+        top: 140px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+    .taunt-arcade-burst .taunt-emoji {
+        font-size: 1.85rem !important;
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.85)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7)) !important;
+    }
+
+    @keyframes tauntArcadePopMobileDown {
+        0% { transform: translateY(-8px) scale(0.3); opacity: 0; }
+        25% { transform: translateY(8px) scale(1.3); opacity: 1; }
+        45% { transform: translateY(16px) scale(1.1); opacity: 1; }
+        75% { transform: translateY(28px) scale(1); opacity: 1; }
+        100% { transform: translateY(44px) scale(0.65); opacity: 0; }
     }
 }
 
@@ -6338,21 +6386,24 @@ html[data-theme="light"] .xp-bar-big-fill {
         gap: 4px !important;
     }
     .guessr-top-hud #taunts-container {
-        position: absolute !important;
-        top: 66px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        margin: 0 !important;
-        gap: 6px !important;
-        padding: 2px 8px !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        margin: 8px auto 0 auto !important;
+        gap: 10px !important;
+        padding: 4px 14px !important;
         width: auto !important;
-        max-width: 220px !important;
+        max-width: 240px !important;
         box-sizing: border-box !important;
-        border-radius: 20px !important;
+        border-radius: 24px !important;
         z-index: 2025 !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        align-self: center !important;
     }
     .guessr-top-hud .vs-sb-score,
     .guessr-solo-dock .vs-sb-score {

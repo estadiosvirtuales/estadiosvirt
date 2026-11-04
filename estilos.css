@@ -11167,21 +11167,24 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
     .hud-versus-active #taunts-container,
     #game-ui.versus-active #taunts-container {
-        position: absolute !important;
-        top: 66px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        margin: 0 !important;
-        gap: 6px !important;
-        padding: 2px 8px !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        margin: 8px auto 0 auto !important;
+        gap: 10px !important;
+        padding: 4px 14px !important;
         width: auto !important;
-        max-width: 220px !important;
+        max-width: 240px !important;
         box-sizing: border-box !important;
-        border-radius: 20px !important;
+        border-radius: 24px !important;
         z-index: 2025 !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        align-self: center !important;
     }
     .guessr-top-hud .vs-sb-score,
     .guessr-solo-dock .vs-sb-score {
