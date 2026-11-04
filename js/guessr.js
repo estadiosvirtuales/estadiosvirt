@@ -43,6 +43,10 @@ var versusLigaOrigen = null;
 
 var esModoVersus = false;
 var esModoDiario = false;
+var esModoDesafioAsincronico = false;
+var desafioAsincronicoActivo = null;
+var desafioEsRival = false;
+var desafioRondasDetalle = [];
 var estadiosDiariosList = [];
 var versusPartidaId = null;
 var versusRol = null;
@@ -166,6 +170,8 @@ function cerrarModalVideo(){
         handshakeInterval = versusTimerInterval = botAntesTimer = null;
         
         esModoVersus = false;
+        esModoDesafioAsincronico = false;
+        desafioEsRival = false;
         versusPartidaEnCurso = false;
     }
 
@@ -212,22 +218,43 @@ function cerrarModalGuessr() {
     document.getElementById('guessr-modal').style.display = 'none';
 }
 
-window.mostrarPasoDificultad = function(modo, extra = null) {
-    destinoDificultadActual = { modo: modo, extra: extra };
-    
+window.mostrarPasoTipoSala = function() {
+    destinoDificultadActual = { modo: '', extra: null };
     const vModos = document.getElementById('guessr-view-modos');
+    const vTipoSala = document.getElementById('guessr-view-tipo-sala');
     const vDiff = document.getElementById('guessr-view-dificultad');
     const title = document.getElementById('guessr-modal-title');
     const sub = document.getElementById('guessr-modal-sub');
 
     if (vModos) vModos.style.display = 'none';
+    if (vDiff) vDiff.style.display = 'none';
+    if (vTipoSala) vTipoSala.style.display = 'flex';
+
+    if (title) title.innerHTML = 'Duelo con <span class="text-accent">Amigos</span>';
+    if (sub) sub.textContent = 'Elegí cómo querés desafiar a tu rival:';
+
+    document.getElementById('guessr-modal').style.display = 'flex';
+};
+
+window.mostrarPasoDificultad = function(modo, extra = null) {
+    destinoDificultadActual = { modo: modo, extra: extra };
+    
+    const vModos = document.getElementById('guessr-view-modos');
+    const vTipoSala = document.getElementById('guessr-view-tipo-sala');
+    const vDiff = document.getElementById('guessr-view-dificultad');
+    const title = document.getElementById('guessr-modal-title');
+    const sub = document.getElementById('guessr-modal-sub');
+
+    if (vModos) vModos.style.display = 'none';
+    if (vTipoSala) vTipoSala.style.display = 'none';
     if (vDiff) vDiff.style.display = 'flex';
 
     if (title) title.textContent = 'Elegí la Dificultad';
     if (sub) {
         if (modo === 'solo') sub.textContent = 'Modo Individual · 5 Rondas';
         else if (modo === 'versus_global') sub.textContent = '1 vs 1 Global · Emparejamiento por nivel';
-        else if (modo === 'sala_privada') sub.textContent = 'Sala Privada por Link';
+        else if (modo === 'sala_privada') sub.textContent = '1 vs 1 En Vivo · Mano a Mano simultáneo';
+        else if (modo === 'desafio_asincronico') sub.textContent = 'Desafío 24 Horas · Jugá tus 5 canchas y compartí el link';
         else if (modo === 'reto_amigo') sub.textContent = `Desafío contra ${extra || 'tu amigo'}`;
     }
 
@@ -236,6 +263,7 @@ window.mostrarPasoDificultad = function(modo, extra = null) {
 
 window.volverAModosGuessr = function() {
     const vModos = document.getElementById('guessr-view-modos');
+    const vTipoSala = document.getElementById('guessr-view-tipo-sala');
     const vDiff = document.getElementById('guessr-view-dificultad');
     const title = document.getElementById('guessr-modal-title');
     const sub = document.getElementById('guessr-modal-sub');
@@ -247,7 +275,15 @@ window.volverAModosGuessr = function() {
         return;
     }
 
+    // Si viene de elegir dificultad para sala_privada o desafío asincrónico, vuelve a la elección de formato
+    if (destinoDificultadActual.modo === 'sala_privada' || destinoDificultadActual.modo === 'desafio_asincronico') {
+        destinoDificultadActual = { modo: '', extra: null };
+        mostrarPasoTipoSala();
+        return;
+    }
+
     if (vModos) vModos.style.display = '';
+    if (vTipoSala) vTipoSala.style.display = 'none';
     if (vDiff) vDiff.style.display = 'none';
     if (title) title.innerHTML = 'STADIUM<span class="text-accent">GUESSR</span>';
     if (sub) sub.textContent = 'Ubicá los estadios más icónicos en el mapa. Elegí tu desafío:';
@@ -268,6 +304,8 @@ window.confirmarDificultadYEliminarModal = function(diff) {
         buscarPartidaVersus();
     } else if (modo === 'sala_privada') {
         crearSalaPrivada();
+    } else if (modo === 'desafio_asincronico') {
+        iniciarDesafioAsincronico(diff);
     } else if (modo === 'reto_amigo') {
         ejecutarDesafioAmigoDirecto(extra, diff);
     }
@@ -1726,6 +1764,19 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
         const taunts = document.getElementById('taunts-container');
         if (taunts) taunts.style.display = 'none';
 
+    } else if (esModoDesafioAsincronico && desafioAsincronicoActivo) {
+        // ⏳ LÓGICA DESAFÍO 24 HORAS (CREADOR O RIVAL)
+        const nombreEstadioDesafio = (desafioAsincronicoActivo.estadios || [])[guessrRondaActual - 1];
+        guessrEstadioCorrecto = poolActual.find(e => bscarPropiedad(e, 'Estadio') === nombreEstadioDesafio);
+        if (!guessrEstadioCorrecto) {
+            showToast("Error al cargar estadio del desafío 🚨", "ph-warning-circle", "danger");
+            cerrarModalVideo();
+            return;
+        }
+        guessrEstadiosJugados.push(nombreEstadioDesafio);
+        const taunts = document.getElementById('taunts-container');
+        if (taunts) taunts.style.display = 'none';
+
     } else {
         // LÓGICA CLÁSICA: MODO INDIVIDUAL ALEATORIO
         if(!disp.length){showToast('¡Completaste todas las ubicaciones!');cerrarModalVideo();return;}
@@ -1956,13 +2007,17 @@ if (supabaseClient) {
 }
 
 guessrPuntosTotales += pts;
-guessrHistorialRondas.push({
+const rondaDataObj = {
     ronda: guessrRondaActual,
     estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
     club: bscarPropiedad(guessrEstadioCorrecto, 'Club'),
     distancia: dist,
     puntos: pts
-});
+};
+guessrHistorialRondas.push(rondaDataObj);
+if (esModoDesafioAsincronico) {
+    desafioRondasDetalle.push(rondaDataObj);
+}
 // 👇 AGREGAMOS ESTE BLOQUE PARA GUARDAR EL TIRO CRUDO 👇
 guessrHistorialCoordenadas.push({
     estadio: bscarPropiedad(guessrEstadioCorrecto, 'Estadio'),
@@ -2109,6 +2164,14 @@ async function finalizarJuegoGuessr(){
         </div>`;
     });
     histHTML+='</div>';
+
+    // ==========================================
+    // CIERRE MODO DESAFÍO 24 HORAS (ASINCRÓNICO)
+    // ==========================================
+    if (esModoDesafioAsincronico) {
+        await manejarFinPartidaDesafioAsincronico(container, histHTML);
+        return;
+    }
 
     // ==========================================
     // CIERRE MODO VERSUS (1v1, SALA PRIVADA Y LIGAS)
@@ -4647,6 +4710,616 @@ async function salirLigaAmigos() {
 
 
 // =============================================================================
+// ⏳ MOTOR DE DESAFÍOS ASINCRÓNICOS 24 HORAS (JUGÁ CUANDO PUEDAS POR WHATSAPP)
+// =============================================================================
+
+function iniciarDesafioAsincronico(diff = 'medio') {
+    cerrarLobbyEspera();
+    cerrarModalGuessr();
+
+    const misEstadios = obtener5EstadiosVersus();
+    if (!misEstadios || misEstadios.length < 5) {
+        showToast("Cargando el catálogo de estadios... ⚽", "ph-circle-notch", "warning");
+        return;
+    }
+
+    esModoVersus = false;
+    esModoDiario = false;
+    esModoDesafioAsincronico = true;
+    desafioEsRival = false;
+    desafioRondasDetalle = [];
+    guessrDificultad = diff;
+
+    const idDesafio = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name : 'Jugador')).trim();
+
+    desafioAsincronicoActivo = {
+        id: idDesafio,
+        creador_id: getUserId(),
+        creador_nombre: miNombre,
+        creador_avatar: getPref('ev_avatar_hair', 'short'),
+        dificultad: diff,
+        estadios: misEstadios.map(e => bscarPropiedad(e, 'Estadio')),
+        creado_en: new Date().toISOString(),
+        expira_en: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        creador_puntos: 0,
+        creador_rondas: [],
+        rival: null
+    };
+
+    guessrEstadiosPartida = [...misEstadios];
+    guessrRondaActual = 1;
+    guessrPuntosTotales = 0;
+    guessrHistorialRondas = [];
+
+    showToast("🎯 ¡Desafío 24hs iniciado! Jugá tus 5 canchas para generar el link.", "ph-flag-banner", "info");
+    lanzarRondaGuessr();
+}
+
+async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
+    esModoDesafioAsincronico = false;
+    const u = obtenerUsuarioLogueado();
+    const miNombre = (getPref('ev_custom_nick', '') || (u ? u.name : 'Jugador')).trim();
+    const miAvatar = getPref('ev_avatar_hair', 'short');
+
+    let multXP = 1.0;
+    if (guessrDificultad === 'facil') multXP = 0.8;
+    else if (guessrDificultad === 'dificil') multXP = 1.5;
+    const xpGanada = Math.round(guessrPuntosTotales * multXP);
+    agregarXP(xpGanada);
+    userStats.partidasJugadas = (userStats.partidasJugadas || 0) + 1;
+    guardarStats();
+
+    // 1. CASO CREADOR: Acaba de jugar sus 5 canchas
+    if (!desafioEsRival) {
+        desafioAsincronicoActivo.creador_nombre = miNombre;
+        desafioAsincronicoActivo.creador_avatar = miAvatar;
+        desafioAsincronicoActivo.creador_puntos = guessrPuntosTotales;
+        desafioAsincronicoActivo.creador_rondas = [...desafioRondasDetalle];
+
+        if (supabaseClient) {
+            try {
+                await supabaseClient.from('perfiles').upsert({
+                    id_usuario: 'desafio_' + desafioAsincronicoActivo.id,
+                    experiencia: 0,
+                    datos_juego: desafioAsincronicoActivo,
+                    updated_at: new Date().toISOString()
+                });
+            } catch(e) {
+                console.error("Error guardando desafío en Supabase:", e);
+            }
+        }
+        localStorage.setItem('ev_mi_desafio_' + desafioAsincronicoActivo.id, JSON.stringify(desafioAsincronicoActivo));
+
+        container.innerHTML = `
+        <div class="desafio-endgame-container">
+            <div class="desafio-endgame-badge">⚔️ DESAFÍO 24 HORAS CREADO</div>
+            <h2 class="desafio-endgame-title">¡PUNTAJE REGISTRADO!</h2>
+            <div class="desafio-score-box">
+                <span class="desafio-score-label">Tu marca a superar:</span>
+                <strong class="desafio-score-val">${guessrPuntosTotales.toLocaleString('es-AR')} <small>PTS</small></strong>
+            </div>
+
+            <div class="desafio-timer-pill">
+                <i class="ph-bold ph-hourglass-high animate-pulse"></i> Válido por 24 horas · Mismas 5 canchas
+            </div>
+
+            <p class="desafio-desc-text">
+                Compartile este link a tu amigo o al grupo de WhatsApp. Podrán jugar a su ritmo durante el día y ver quién gana mano a mano.
+            </p>
+
+            <div class="desafio-actions-box">
+                <button type="button" onclick="compartirDesafioWhatsApp('${desafioAsincronicoActivo.id}', ${guessrPuntosTotales})" class="btn-3d btn-desafio-wa">
+                    <i class="ph-bold ph-whatsapp-logo"></i> Desafiar por WhatsApp
+                </button>
+                <button type="button" id="btn-copy-desafio" onclick="copiarLinkDesafio('${desafioAsincronicoActivo.id}')" class="btn-3d secondary btn-desafio-copy">
+                    <i class="ph-bold ph-copy"></i> Copiar enlace del reto
+                </button>
+            </div>
+
+            <div style="width:100%; margin-top:8px;">
+                ${histHTML}
+            </div>
+
+            <button type="button" class="btn-3d secondary" onclick="cerrarModalVideo()" style="width:100%; padding:10px; font-size:.84rem; margin-top:6px;">
+                <i class="ph-bold ph-house"></i> Volver al Inicio
+            </button>
+        </div>`;
+
+        setTimeout(() => lanzarConfetti(document.getElementById('modal-card')), 250);
+        return;
+    }
+
+    // 2. CASO RIVAL: Acaba de terminar de jugar contra el creador
+    const rivalData = {
+        id: getUserId(),
+        nombre: miNombre,
+        avatar: miAvatar,
+        puntos: guessrPuntosTotales,
+        rondas: [...desafioRondasDetalle],
+        jugado_en: new Date().toISOString()
+    };
+
+    desafioAsincronicoActivo.rival = rivalData;
+    if (!desafioAsincronicoActivo.rivales) desafioAsincronicoActivo.rivales = [];
+    desafioAsincronicoActivo.rivales.push(rivalData);
+
+    if (supabaseClient) {
+        try {
+            await supabaseClient.from('perfiles').upsert({
+                id_usuario: 'desafio_' + desafioAsincronicoActivo.id,
+                experiencia: 0,
+                datos_juego: desafioAsincronicoActivo,
+                updated_at: new Date().toISOString()
+            });
+        } catch(e) {
+            console.error("Error asentando resultado rival en Supabase:", e);
+        }
+    }
+
+    const creadorPts = (desafioAsincronicoActivo.creador_puntos !== undefined) 
+        ? desafioAsincronicoActivo.creador_puntos 
+        : (desafioAsincronicoActivo.creadorPuntos || 0);
+    const rivalPts = guessrPuntosTotales;
+    const diff = Math.abs(rivalPts - creadorPts);
+    const creadorNombre = desafioAsincronicoActivo.creador_nombre || desafioAsincronicoActivo.creadorNombre || 'Rival';
+
+    let bannerTitulo = '';
+    let bannerSub = '';
+    let colorVeredicto = '#ffea00';
+    let ganoRival = false;
+
+    if (rivalPts > creadorPts) {
+        ganoRival = true;
+        colorVeredicto = '#00e676';
+        bannerTitulo = `<span>¡LE GANASTE EL DESAFÍO!</span> 👑🔥`;
+        bannerSub = `Superaste a ${creadorNombre} por +${diff.toLocaleString('es-AR')} pts`;
+        userStats.partidasGanadas = (userStats.partidasGanadas || 0) + 1;
+        guardarStats();
+    } else if (rivalPts < creadorPts) {
+        colorVeredicto = '#ff4757';
+        bannerTitulo = `<span>¡GANÓ ${creadorNombre.toUpperCase()}!</span> ⚽`;
+        bannerSub = `Te faltaron ${diff.toLocaleString('es-AR')} pts para alcanzarlo`;
+    } else {
+        colorVeredicto = '#2979ff';
+        bannerTitulo = `<span>¡EMPATE DE CRACKS!</span> 🤝`;
+        bannerSub = `Ambos lograron exactamente ${rivalPts.toLocaleString('es-AR')} puntos`;
+    }
+
+    let tablaH2H = `<div class="desafio-h2h-table">
+        <div class="desafio-h2h-header-row">
+            <span>Ronda / Cancha</span>
+            <span>Vos</span>
+            <span>${creadorNombre}</span>
+        </div>`;
+
+    const rondasCreador = desafioAsincronicoActivo.creador_rondas || desafioAsincronicoActivo.creadorRondas || [];
+    const listaRondasRival = (desafioRondasDetalle && desafioRondasDetalle.length > 0)
+        ? desafioRondasDetalle
+        : (desafioAsincronicoActivo.rival_rondas || desafioAsincronicoActivo.rivalRondas || []);
+    for (let r = 1; r <= 5; r++) {
+        const itemRival = listaRondasRival.find(x => x.ronda === r) || listaRondasRival[r - 1] || {};
+        const itemCreador = rondasCreador.find(x => x.ronda === r) || rondasCreador[r - 1] || {};
+
+        const ptsR = itemRival.puntos || 0;
+        const ptsC = itemCreador.puntos || 0;
+
+        const dRVal = itemRival.distancia !== undefined ? itemRival.distancia : (itemRival.distanciaM !== undefined ? itemRival.distanciaM / 1000 : null);
+        const dCVal = itemCreador.distancia !== undefined ? itemCreador.distancia : (itemCreador.distanciaM !== undefined ? itemCreador.distanciaM / 1000 : null);
+
+        const distRStr = (dRVal === null || isNaN(dRVal)) ? '?' : (dRVal < 1 ? `${Math.round(dRVal * 1000)}m` : `${dRVal.toFixed(1)}km`);
+        const distCStr = (dCVal === null || isNaN(dCVal)) ? '?' : (dCVal < 1 ? `${Math.round(dCVal * 1000)}m` : `${dCVal.toFixed(1)}km`);
+
+        const esGanadorRival = ptsR > ptsC;
+        const esGanadorCreador = ptsC > ptsR;
+
+        const nombreEst = itemRival.estadio || itemRival.estadioNombre || itemCreador.estadio || itemCreador.estadioNombre || 'Estadio';
+        const nombreClub = itemRival.club || itemCreador.club || '';
+
+        tablaH2H += `
+        <div class="desafio-h2h-row">
+            <div class="desafio-h2h-cell-stadium">
+                <strong>R${r}: ${nombreEst}</strong>
+                <small>${nombreClub}</small>
+            </div>
+            <div class="desafio-h2h-cell-player ${esGanadorRival ? 'cell-winner' : ''}">
+                <b class="h2h-pts">${ptsR.toLocaleString('es-AR')}</b>
+                <span class="h2h-dist">${distRStr}</span>
+            </div>
+            <div class="desafio-h2h-cell-player ${esGanadorCreador ? 'cell-winner' : ''}">
+                <b class="h2h-pts">${ptsC.toLocaleString('es-AR')}</b>
+                <span class="h2h-dist">${distCStr}</span>
+            </div>
+        </div>`;
+    }
+    tablaH2H += `</div>`;
+
+    container.innerHTML = `
+    <div class="desafio-endgame-container">
+        <div class="desafio-endgame-badge">⚔️ CARA A CARA FINAL · 24 HORAS</div>
+        <h2 class="desafio-endgame-title" style="color:${colorVeredicto};">${bannerTitulo}</h2>
+        <p class="desafio-endgame-sub">${bannerSub}</p>
+
+        <div class="vs-card-banner" style="display:flex; align-items:center; gap:16px; background:var(--surface-color); border:2px solid var(--border-strong); padding:10px 18px; border-radius:14px; width:100%; box-sizing:border-box; justify-content:center; margin:8px 0 12px 0;">
+            <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">VOS</div><strong class="vs-user-score" style="font-size:1.55rem; font-weight:900; color:#00e676;">${rivalPts.toLocaleString('es-AR')}</strong></div>
+            <div class="vs-text-divider" style="font-size:1.1rem; font-weight:900; color:var(--text-muted);">VS</div>
+            <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">${creadorNombre.toUpperCase()}</div><strong class="vs-rival-score" style="font-size:1.55rem; font-weight:900; color:#2979ff;">${creadorPts.toLocaleString('es-AR')}</strong></div>
+        </div>
+
+        ${tablaH2H}
+
+        <div class="desafio-actions-box" style="margin-top:10px;">
+            <button type="button" onclick="compartirResultadoDesafioWhatsApp('${desafioAsincronicoActivo.id}')" class="btn-3d btn-desafio-wa">
+                <i class="ph-bold ph-whatsapp-logo"></i> Mandar resultado a WhatsApp
+            </button>
+            <div style="display:flex; gap:8px; width:100%;">
+                <button type="button" class="btn-3d primary" onclick="cerrarModalVideo(); abrirModalGuessr();" style="flex:1; padding:11px; font-size:.85rem;">
+                    <i class="ph-bold ph-sword"></i> Crear mi Desafío
+                </button>
+                <button type="button" class="btn-3d secondary" onclick="cerrarModalVideo()" style="flex:1; padding:11px; font-size:.85rem;">
+                    <i class="ph-bold ph-house"></i> Inicio
+                </button>
+            </div>
+        </div>
+    </div>`;
+
+    if (ganoRival) {
+        setTimeout(() => lanzarConfetti(document.getElementById('modal-card')), 250);
+    }
+}
+
+window.compartirDesafioWhatsApp = function(desafioId, puntos) {
+    const urlLimpia = window.location.origin + window.location.pathname;
+    const link = `${urlLimpia}?desafio=${desafioId}`;
+    const ptsTexto = (puntos || 0).toLocaleString('es-AR');
+
+    const msg = `⚽ ¡Te desafío en StadiumGuessr! 🌍\n` +
+                `Hice ${ptsTexto} puntos en 5 estadios. ¿Te animás a superarme en las mismas canchas?\n\n` +
+                `⏳ Tenés 24 horas para jugar en este link:\n${link}`;
+
+    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (esMobile && navigator.share) {
+        navigator.share({ title: 'Desafío StadiumGuessr ⚽', text: msg }).catch(() => {});
+        return;
+    }
+
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+};
+
+window.copiarLinkDesafio = function(desafioId) {
+    const urlLimpia = window.location.origin + window.location.pathname;
+    const link = `${urlLimpia}?desafio=${desafioId}`;
+    navigator.clipboard.writeText(link).then(() => {
+        showToast("¡Enlace copiado al portapapeles! 📋", "ph-check", "success");
+        const btn = document.getElementById('btn-copy-desafio');
+        if (btn) btn.innerHTML = `<i class="ph-bold ph-check"></i> ¡Copiado!`;
+    }).catch(() => {
+        showToast("Error al copiar enlace.", "ph-warning-circle", "danger");
+    });
+};
+
+window.compartirResultadoDesafioWhatsApp = function(desafioId) {
+    if (!desafioAsincronicoActivo) return;
+    const urlLimpia = window.location.origin + window.location.pathname;
+    const d = desafioAsincronicoActivo;
+    const creadorNombre = d.creador_nombre || 'Rival';
+    const creadorPts = (d.creador_puntos || 0).toLocaleString('es-AR');
+    const rivalNombre = d.rival?.nombre || 'Yo';
+    const rivalPts = (d.rival?.puntos || 0).toLocaleString('es-AR');
+    
+    let veredicto = '';
+    if ((d.rival?.puntos || 0) > (d.creador_puntos || 0)) {
+        veredicto = `👑 ¡Ganó ${rivalNombre}! (${rivalPts} vs ${creadorPts} pts) 🔥`;
+    } else if ((d.rival?.puntos || 0) < (d.creador_puntos || 0)) {
+        veredicto = `👑 ¡Ganó ${creadorNombre}! (${creadorPts} vs ${rivalPts} pts) ⚽`;
+    } else {
+        veredicto = `🤝 ¡Empate de cracks! (${rivalPts} pts cada uno)`;
+    }
+
+    const msg = `🏆 ¡Terminó el Desafío en StadiumGuessr! ⚽\n\n` +
+                `${veredicto}\n\n` +
+                `¿Querés la revancha o desafiar a tus amigos? Jugalo gratis en:\n${urlLimpia}`;
+
+    const esMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (esMobile && navigator.share) {
+        navigator.share({ title: 'Resultado del Desafío StadiumGuessr 🏆', text: msg }).catch(() => {});
+        return;
+    }
+
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+};
+
+async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
+    if (!codigoDesafio) return;
+
+    showToast("Cargando Desafío 24 Horas... ⚽", "ph-circle-notch", "info");
+
+    let intentos = 0;
+    while (!supabaseClient && intentos < 30) {
+        await new Promise(r => setTimeout(r, 150));
+        intentos++;
+    }
+
+    let intentosCat = 0;
+    while ((!catalogoGlobal || catalogoGlobal.length === 0) && (!estadiosCargados || estadiosCargados.length === 0) && intentosCat < 30) {
+        await new Promise(r => setTimeout(r, 150));
+        intentosCat++;
+    }
+
+    if (!supabaseClient) {
+        showToast("Error de conexión al cargar el desafío.", "ph-warning-circle", "danger");
+        return;
+    }
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('perfiles')
+            .select('datos_juego')
+            .eq('id_usuario', 'desafio_' + codigoDesafio)
+            .single();
+
+        if (error || !data || !data.datos_juego) {
+            showToast("El desafío no existe o ya no está disponible ❌", "ph-warning-circle", "danger");
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return;
+        }
+
+        const desafio = data.datos_juego;
+        const ahora = new Date().getTime();
+        const expira = new Date(desafio.expira_en).getTime();
+
+        if (ahora > expira) {
+            alert(`⏰ Este desafío de 24 horas creado por ${desafio.creador_nombre} ya expiró. ¡Podés crear uno nuevo para retarlo!`);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return;
+        }
+
+        desafioAsincronicoActivo = desafio;
+        const miId = getUserId();
+
+        // Si ya fue jugado por este rival o el creador lo está inspeccionando y ya hay rival:
+        if (desafio.rival && (desafio.rival.id === miId || desafio.creador_id === miId)) {
+            mostrarPantallaComparativaH2HModal(desafio);
+            return;
+        }
+
+        // Si el creador abre su propio link y el rival todavía no jugó:
+        if (desafio.creador_id === miId) {
+            const horasRestantes = Math.max(1, Math.round((expira - ahora) / (1000 * 60 * 60)));
+            const popup = document.createElement('div');
+            popup.id = 'desafio-creator-status-modal';
+            popup.className = 'desafio-welcome-overlay';
+            popup.innerHTML = `
+                <div class="desafio-welcome-card">
+                    <div class="desafio-welcome-badge">⏳ TU DESAFÍO SIGUE ACTIVO</div>
+                    <h3 class="desafio-welcome-title">Esperando a tu rival...</h3>
+                    <p class="desafio-welcome-sub">
+                        Tu marca registrada es de <strong style="color:var(--accent-color);">${(desafio.creador_puntos || 0).toLocaleString('es-AR')} PTS</strong>.<br>
+                        Le quedan <b>${horasRestantes} horas</b> para jugar el mano a mano.
+                    </p>
+                    <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:14px;">
+                        <button type="button" class="btn-3d btn-desafio-wa" onclick="compartirDesafioWhatsApp('${desafio.id}', ${desafio.creador_puntos})">
+                            <i class="ph-bold ph-whatsapp-logo"></i> Reenviar por WhatsApp
+                        </button>
+                        <button type="button" class="btn-3d secondary" onclick="document.getElementById('desafio-creator-status-modal').remove()">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(popup);
+            return;
+        }
+
+        // Caso Rival: Mostrar Modal de Bienvenida para aceptar el reto
+        const horasRestantes = Math.max(1, Math.round((expira - ahora) / (1000 * 60 * 60)));
+        const popup = document.createElement('div');
+        popup.id = 'desafio-welcome-modal';
+        popup.className = 'desafio-welcome-overlay';
+        popup.innerHTML = `
+            <div class="desafio-welcome-card">
+                <div class="desafio-welcome-badge">⚔️ DESAFÍO 24 HORAS RECIBIDO</div>
+                <h3 class="desafio-welcome-title">¡${sanitizarHTML(desafio.creador_nombre)} te desafió!</h3>
+                <p class="desafio-welcome-sub">
+                    Jugó 5 estadios y logró una marca de:<br>
+                    <strong style="color:var(--accent-color); font-size:1.6rem; display:block; margin:6px 0;">
+                        ${(desafio.creador_puntos || 0).toLocaleString('es-AR')} PTS
+                    </strong>
+                    ¿Te animás a superarlo jugando en las <b>mismas 5 canchas</b>?
+                </p>
+
+                <div class="desafio-info-pill-row">
+                    <span class="desafio-diff-pill">Modo: ${(desafio.dificultad || 'medio').toUpperCase()}</span>
+                    <span class="desafio-time-pill"><i class="ph-bold ph-clock"></i> Quedan ${horasRestantes} hs</span>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:16px;">
+                    <button type="button" class="btn-3d primary btn-accept-desafio" onclick="comenzarPartidaDesafioRival()">
+                        <i class="ph-bold ph-play"></i> ¡Aceptar Desafío y Jugar!
+                    </button>
+                    <button type="button" class="btn-3d secondary" onclick="document.getElementById('desafio-welcome-modal').remove()">
+                        Ahora no
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+    } catch(err) {
+        console.error("Error al cargar desafío asincrónico:", err);
+    }
+}
+
+window.comenzarPartidaDesafioRival = async function() {
+    const welcome = document.getElementById('desafio-welcome-modal');
+    if (welcome) welcome.remove();
+
+    if (!desafioAsincronicoActivo) return;
+
+    let nickExistente = getPref('ev_custom_nick', '');
+    if (!nickExistente && (!obtenerUsuarioLogueado() || obtenerUsuarioLogueado().id === 'guest')) {
+        let nuevoNick = prompt(`🏆 ¡Vas a jugar contra ${desafioAsincronicoActivo.creador_nombre}! Ingresá tu apodo para la cancha:`);
+        if (nuevoNick === null) return;
+        nuevoNick = nuevoNick.trim() || ("Rival_" + Math.random().toString(36).substring(2, 6).toUpperCase());
+        if (nuevoNick.length > 16) nuevoNick = nuevoNick.substring(0, 16);
+        setPref('ev_custom_nick', nuevoNick);
+    }
+
+    const pool = (catalogoGlobal.length > 0 ? catalogoGlobal : estadiosCargados);
+    const estadiosMatch = [];
+    (desafioAsincronicoActivo.estadios || []).forEach(nom => {
+        const est = pool.find(e => bscarPropiedad(e, 'Estadio').trim().toLowerCase() === nom.trim().toLowerCase());
+        if (est) estadiosMatch.push(est);
+    });
+
+    if (estadiosMatch.length < 5) {
+        showToast("Error cargando los estadios del desafío.", "ph-warning-circle", "danger");
+        return;
+    }
+
+    cerrarLobbyEspera();
+    cerrarModalGuessr();
+
+    esModoVersus = false;
+    esModoDiario = false;
+    esModoDesafioAsincronico = true;
+    desafioEsRival = true;
+    desafioRondasDetalle = [];
+    guessrDificultad = desafioAsincronicoActivo.dificultad || 'medio';
+
+    guessrEstadiosPartida = [...estadiosMatch];
+    guessrRondaActual = 1;
+    guessrPuntosTotales = 0;
+    guessrHistorialRondas = [];
+
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    showToast(`⚔️ ¡Mano a mano contra ${desafioAsincronicoActivo.creador_nombre}! Objetivo: ${(desafioAsincronicoActivo.creador_puntos || 0).toLocaleString('es-AR')} pts`, "ph-flag-banner", "info");
+    lanzarRondaGuessr();
+};
+
+function mostrarPantallaComparativaH2HModal(desafio) {
+    const creadorPts = desafio.creador_puntos || 0;
+    const rivalPts = desafio.rival?.puntos || 0;
+    const creadorNombre = desafio.creador_nombre || 'Creador';
+    const rivalNombre = desafio.rival?.nombre || 'Rival';
+
+    let bannerTitulo = '';
+    let colorVeredicto = '#ffea00';
+    if (rivalPts > creadorPts) {
+        colorVeredicto = '#00e676';
+        bannerTitulo = `¡GANÓ ${rivalNombre.toUpperCase()}! 👑`;
+    } else if (rivalPts < creadorPts) {
+        colorVeredicto = '#00e676';
+        bannerTitulo = `¡GANÓ ${creadorNombre.toUpperCase()}! 👑`;
+    } else {
+        colorVeredicto = '#2979ff';
+        bannerTitulo = `¡EMPATE DE CRACKS! 🤝`;
+    }
+
+    let tablaH2H = `<div class="desafio-h2h-table">
+        <div class="desafio-h2h-header-row">
+            <span>Ronda / Cancha</span>
+            <span>${rivalNombre}</span>
+            <span>${creadorNombre}</span>
+        </div>`;
+
+    const rondasCreador = desafio.creador_rondas || desafio.creadorRondas || [];
+    const rondasRival = desafio.rival?.rondas || desafio.rival_rondas || [];
+    for (let r = 1; r <= 5; r++) {
+        const itemR = rondasRival.find(x => x.ronda === r) || rondasRival[r - 1] || {};
+        const itemC = rondasCreador.find(x => x.ronda === r) || rondasCreador[r - 1] || {};
+
+        const ptsR = itemR.puntos || 0;
+        const ptsC = itemC.puntos || 0;
+
+        const dRVal = itemR.distancia !== undefined ? itemR.distancia : (itemR.distanciaM !== undefined ? itemR.distanciaM / 1000 : null);
+        const dCVal = itemC.distancia !== undefined ? itemC.distancia : (itemC.distanciaM !== undefined ? itemC.distanciaM / 1000 : null);
+
+        const distRStr = (dRVal === null || isNaN(dRVal)) ? '?' : (dRVal < 1 ? `${Math.round(dRVal * 1000)}m` : `${dRVal.toFixed(1)}km`);
+        const distCStr = (dCVal === null || isNaN(dCVal)) ? '?' : (dCVal < 1 ? `${Math.round(dCVal * 1000)}m` : `${dCVal.toFixed(1)}km`);
+
+        const esGanadorR = ptsR > ptsC;
+        const esGanadorC = ptsC > ptsR;
+
+        const nombreEst = itemR.estadio || itemR.estadioNombre || itemC.estadio || itemC.estadioNombre || 'Estadio';
+        const nombreClub = itemR.club || itemC.club || '';
+
+        tablaH2H += `
+        <div class="desafio-h2h-row">
+            <div class="desafio-h2h-cell-stadium">
+                <strong>R${r}: ${nombreEst}</strong>
+                <small>${nombreClub}</small>
+            </div>
+            <div class="desafio-h2h-cell-player ${esGanadorR ? 'cell-winner' : ''}">
+                <b class="h2h-pts">${ptsR.toLocaleString('es-AR')}</b>
+                <span class="h2h-dist">${distRStr}</span>
+            </div>
+            <div class="desafio-h2h-cell-player ${esGanadorC ? 'cell-winner' : ''}">
+                <b class="h2h-pts">${ptsC.toLocaleString('es-AR')}</b>
+                <span class="h2h-dist">${distCStr}</span>
+            </div>
+        </div>`;
+    }
+    tablaH2H += `</div>`;
+
+    const popup = document.createElement('div');
+    popup.id = 'desafio-h2h-inspect-modal';
+    popup.className = 'desafio-welcome-overlay';
+    popup.innerHTML = `
+        <div class="desafio-welcome-card" style="max-width: 480px;">
+            <div class="desafio-welcome-badge">🏆 DUELO 24HS COMPLETADO</div>
+            <h3 class="desafio-welcome-title" style="color:${colorVeredicto};">${bannerTitulo}</h3>
+            
+            <div class="vs-card-banner" style="display:flex; align-items:center; gap:16px; background:var(--surface-color); border:2px solid var(--border-strong); padding:10px 18px; border-radius:14px; width:100%; box-sizing:border-box; justify-content:center; margin:8px 0 12px 0;">
+                <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">${rivalNombre.toUpperCase()}</div><strong class="vs-user-score" style="font-size:1.55rem; font-weight:900; color:#00e676;">${rivalPts.toLocaleString('es-AR')}</strong></div>
+                <div class="vs-text-divider" style="font-size:1.1rem; font-weight:900; color:var(--text-muted);">VS</div>
+                <div style="text-align:center;"><div style="font-size:.72rem; color:var(--text-muted); font-weight:800; letter-spacing:1px;">${creadorNombre.toUpperCase()}</div><strong class="vs-rival-score" style="font-size:1.55rem; font-weight:900; color:#2979ff;">${creadorPts.toLocaleString('es-AR')}</strong></div>
+            </div>
+
+            ${tablaH2H}
+
+            <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:14px;">
+                <button type="button" class="btn-3d btn-desafio-wa" onclick="compartirResultadoDesafioWhatsApp('${desafio.id}')">
+                    <i class="ph-bold ph-whatsapp-logo"></i> Compartir a WhatsApp
+                </button>
+                <button type="button" class="btn-3d secondary" onclick="document.getElementById('desafio-h2h-inspect-modal').remove()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+}
+
+// 🔍 VERIFICADOR UNIFICADO DE PARÁMETROS URL (?desafio=, ?sala=, ?liga=)
+async function verificarParametrosURL() {
+    const params = new URLSearchParams(window.location.search);
+    const salaId = params.get('sala');
+    const desafioId = params.get('desafio');
+    const ligaNombre = params.get('liga');
+
+    if (desafioId) {
+        await cargarYPresentarDesafioAsincronico(desafioId);
+    } else if (salaId) {
+        if (typeof unirseSalaPrivada === 'function') {
+            await unirseSalaPrivada(salaId);
+        }
+    } else if (ligaNombre) {
+        if (typeof unirseALigaPorLink === 'function') {
+            await unirseALigaPorLink(ligaNombre);
+        }
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(verificarParametrosURL, 700);
+});
+
+// =============================================================================
 // 🌐 EXPORTACIÓN AL ÁMBITO GLOBAL (WINDOW) PARA INTEGRACIÓN Y EVENTOS ONCLICK
 // =============================================================================
 window.guessrRondaActual = guessrRondaActual;
@@ -4692,3 +5365,8 @@ window.abrirModalLigaAmigosPrivada = abrirModalLigaAmigosPrivada;
 window.cerrarModalLigaAmigosPrivada = cerrarModalLigaAmigosPrivada;
 window.salirLigaAmigos = salirLigaAmigos;
 window.desafiarOnceDesdeLigaAmigos = desafiarOnceDesdeLigaAmigos;
+window.iniciarDesafioAsincronico = iniciarDesafioAsincronico;
+window.compartirDesafioWhatsApp = compartirDesafioWhatsApp;
+window.copiarLinkDesafio = copiarLinkDesafio;
+window.compartirResultadoDesafioWhatsApp = compartirResultadoDesafioWhatsApp;
+window.cargarYPresentarDesafioAsincronico = cargarYPresentarDesafioAsincronico;

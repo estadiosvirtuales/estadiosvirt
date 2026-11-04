@@ -1150,19 +1150,19 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
             </button>
 
-            <!-- Card 3: Sala Privada -->
-            <button type="button" onclick="mostrarPasoDificultad('sala_privada')" class="arcade-mode-card card-privada">
+            <!-- Card 3: Sala Privada / Duelo con Amigos -->
+            <button type="button" onclick="mostrarPasoTipoSala()" class="arcade-mode-card card-privada">
                 <div class="arcade-card-icon-box icon-privada">
                     <img src="icono-privada.webp" alt="Sala Privada">
                 </div>
                 <div class="arcade-card-body">
                     <div class="arcade-card-top-row">
-                        <strong class="arcade-card-title">Sala con Amigos</strong>
+                        <strong class="arcade-card-title">Duelo con Amigos</strong>
                         <span class="arcade-card-badge badge-privada">POR LINK</span>
                     </div>
-                    <span class="arcade-card-desc">Creá una sala y compartí el link directo por WhatsApp para jugar un 1v1 con amigos.</span>
+                    <span class="arcade-card-desc">Desafiá a un amigo por link de WhatsApp: mano a mano en vivo o desafío de 24 horas.</span>
                     <div class="arcade-card-footer footer-privada">
-                        Desafío directo 1 contra 1
+                        En vivo o asincrónico por 24hs
                     </div>
                 </div>
                 <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
@@ -1186,6 +1186,53 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                 <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
             </button>
 
+        </div>
+
+        <!-- VISTA INTERMEDIA: ELEGIR FORMATO DE SALA (EN VIVO O DESAFÍO 24HS) -->
+        <div id="guessr-view-tipo-sala" style="display:none; flex-direction:column; gap:12px;">
+            <div class="guessr-modes-arcade-grid" style="grid-template-columns: 1fr; gap: 10px;">
+                
+                <!-- Opción 1: En Vivo Simultáneo -->
+                <button type="button" onclick="mostrarPasoDificultad('sala_privada')" class="arcade-mode-card card-versus">
+                    <div class="arcade-card-icon-box icon-versus">
+                        <img src="icono-1v1.webp" alt="En Vivo">
+                    </div>
+                    <div class="arcade-card-body">
+                        <div class="arcade-card-top-row">
+                            <strong class="arcade-card-title">1 vs 1 En Vivo</strong>
+                            <span class="arcade-card-badge badge-versus"><span class="live-dot-pulse"></span> SIMULTÁNEO</span>
+                        </div>
+                        <span class="arcade-card-desc">Conectate al mismo tiempo con tu amigo por link de WhatsApp, con chat de emojis y reloj de presión en vivo.</span>
+                        <div class="arcade-card-footer footer-versus">
+                            Duelo en tiempo real
+                        </div>
+                    </div>
+                    <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
+                </button>
+
+                <!-- Opción 2: Desafío 24 Horas (Asincrónico) -->
+                <button type="button" onclick="mostrarPasoDificultad('desafio_asincronico')" class="arcade-mode-card card-privada">
+                    <div class="arcade-card-icon-box icon-privada" style="background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.05) 70%);">
+                        <i class="ph-duotone ph-hourglass-high" style="font-size:2.2rem; color:#fbbf24;"></i>
+                    </div>
+                    <div class="arcade-card-body">
+                        <div class="arcade-card-top-row">
+                            <strong class="arcade-card-title">Desafío 24 Horas</strong>
+                            <span class="arcade-card-badge" style="background:rgba(251, 191, 36, 0.18); color:#fbbf24; border:1px solid rgba(251, 191, 36, 0.4);">JUGÁ CUANDO PUEDAS</span>
+                        </div>
+                        <span class="arcade-card-desc">Jugá tus 5 canchas ahora a tu ritmo y mandale el link a tu amigo para que juegue cuando pueda hoy. Al final se comparan los puntos.</span>
+                        <div class="arcade-card-footer" style="color:#fbbf24;">
+                            Ideal para enviar a grupos de WhatsApp
+                        </div>
+                    </div>
+                    <i class="ph-bold ph-caret-right arcade-card-chevron"></i>
+                </button>
+
+            </div>
+
+            <button type="button" class="btn-3d secondary" onclick="volverAModosGuessr()" style="width:100%; padding:10px; font-size:0.85rem; margin-top:4px;">
+                <i class="ph-bold ph-arrow-left"></i> Volver a los modos
+            </button>
         </div>
 
         <!-- VISTA 2: SELECCIÓN DE DIFICULTAD (PASO 2) -->
