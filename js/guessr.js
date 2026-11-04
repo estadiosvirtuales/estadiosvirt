@@ -679,8 +679,9 @@ async function buscarPartidaVersus() {
     if (versusTimeoutBusqueda) clearTimeout(versusTimeoutBusqueda); 
     
     if (versusChannel) {
-        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+        const canalViejo = versusChannel;
         versusChannel = null;
+        try { supabaseClient.removeChannel(canalViejo); } catch(e) {}
     }
     
     versusPartidaEnCurso = false;
@@ -761,8 +762,9 @@ function conectarRealtimeVersus() {
     }
 
     if (versusChannel) {
-        try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
+        const canalViejo = versusChannel;
         versusChannel = null;
+        try { supabaseClient.removeChannel(canalViejo); } catch(e) {}
     }
 
     console.log(`[1v1] 📡 Conectando canal: sala_${versusPartidaId} | Rol: ${versusRol} | ID: ${idRed}`);
@@ -779,7 +781,11 @@ function conectarRealtimeVersus() {
             console.log("[1v1] 🚨 Desconexión de socket detectada:", leftPresences);
             const partidaYaFinalizada = guessrRondaActual > 5 || (guessrRondaActual === 5 && resultadosRondaMostrados);
             if (versusPartidaEnCurso && !esModoBot && !partidaYaFinalizada) {
-                manejarAbandonoRival();
+                const idRedActual = obtenerIdRedVersus();
+                const rivalSeFue = Array.isArray(leftPresences) && leftPresences.some(p => p.id && p.id !== idRedActual);
+                if (rivalSeFue) {
+                    manejarAbandonoRival();
+                }
             }
         })
         .on('broadcast', { event: 'invitado_unido' }, (response) => {
@@ -808,11 +814,18 @@ function conectarRealtimeVersus() {
                 if (data.estadios && data.estadios.length > 0) versusEstadios = data.estadios;
                 if (data.dificultad) guessrDificultad = data.dificultad;
 
-                versusChannel.send({
-                    type: 'broadcast',
-                    event: 'partida_confirmada',
-                    payload: { id: idRed, nombre: miNombreLocal } 
-                });
+                const enviarConfirmacion = () => {
+                    if (versusChannel) {
+                        versusChannel.send({
+                            type: 'broadcast',
+                            event: 'partida_confirmada',
+                            payload: { id: idRed, nombre: miNombreLocal } 
+                        });
+                    }
+                };
+                enviarConfirmacion();
+                setTimeout(enviarConfirmacion, 200);
+                setTimeout(enviarConfirmacion, 500);
 
                 if (!versusPartidaEnCurso) {
                     versusPartidaEnCurso = true;
@@ -3446,10 +3459,6 @@ document.addEventListener("visibilitychange", () => {
         // Si estábamos en el lobby esperando rival y el WebSocket se durmió al salir a WhatsApp
         if (esModoVersus && !versusPartidaEnCurso && versusPartidaId) {
             console.log("[1v1] 🔄 Despertando y restableciendo conexión WebSocket...");
-            if (versusChannel) {
-                try { supabaseClient.removeChannel(versusChannel); } catch(e) {}
-                versusChannel = null;
-            }
             conectarRealtimeVersus();
         }
         return;
