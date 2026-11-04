@@ -175,6 +175,8 @@ function cerrarModalVideo(){
     document.querySelectorAll('.stamp-badge, #versus-next-round-banner, .taunt-arcade-burst').forEach(el => { try { el.remove(); } catch(e) {} });
     const sb = document.getElementById('versus-live-scoreboard');
     if (sb) sb.style.display = 'none';
+    const versusHud = document.getElementById('versus-center-hud');
+    if (versusHud) versusHud.style.setProperty('display', 'none', 'important');
     const soloDock = document.getElementById('guessr-solo-dock');
     if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
     const gt = document.getElementById('game-title');
@@ -921,15 +923,18 @@ function renderizarScoreboardVersus(alerta = null) {
     const gt = document.getElementById('game-title');
     if (!sb) return;
 
-    const hud = document.querySelector('.guessr-top-hud');
+    const versusHud = document.getElementById('versus-center-hud');
     const soloDock = document.getElementById('guessr-solo-dock');
     const soloPill = document.getElementById('guessr-solo-pill');
-    const hintsBox = document.getElementById('guessr-hud-hints');
-    const timerBadge = document.getElementById('hud-timer-badge');
     const taunts = document.getElementById('taunts-container');
+    const versusHints = document.getElementById('versus-hud-hints');
+    const versusTimer = document.getElementById('versus-timer-badge');
+    const versusTimerVal = document.getElementById('versus-timer-val');
     const gameUi = document.getElementById('game-ui');
+    const hud = document.querySelector('.guessr-top-hud');
 
     if (!esModoVersus) {
+        if (versusHud) versusHud.style.setProperty('display', 'none', 'important');
         if (sb) sb.style.setProperty('display', 'none', 'important');
         if (soloPill) soloPill.style.setProperty('display', 'inline-flex', 'important');
         if (soloDock) soloDock.style.setProperty('display', 'inline-flex', 'important');
@@ -940,8 +945,10 @@ function renderizarScoreboardVersus(alerta = null) {
         return;
     }
 
-    if (soloDock) soloDock.style.setProperty('display', 'inline-flex', 'important');
+    // ⚔️ MODO 1 VS 1 ACTIVO: Ocultar completamente el dock individual
+    if (soloDock) soloDock.style.setProperty('display', 'none', 'important');
     if (soloPill) soloPill.style.setProperty('display', 'none', 'important');
+    if (versusHud) versusHud.style.setProperty('display', 'flex', 'important');
     sb.style.setProperty('display', 'flex', 'important');
     if (gt) gt.style.display = 'none';
     if (hud) hud.classList.add('hud-versus-active');
@@ -950,16 +957,15 @@ function renderizarScoreboardVersus(alerta = null) {
 
     // Manejo de Pistas y Timer en 1 vs 1 según dificultad
     if (guessrDificultad === 'facil' && !esModoDiario) {
-        if (hintsBox) hintsBox.style.setProperty('display', 'inline-flex', 'important');
-        if (timerBadge) timerBadge.style.setProperty('display', 'none', 'important');
+        if (versusHints) versusHints.style.setProperty('display', 'inline-flex', 'important');
+        if (versusTimer) versusTimer.style.setProperty('display', 'none', 'important');
     } else if (guessrDificultad === 'dificil' && !esModoDiario) {
-        if (timerBadge) timerBadge.style.setProperty('display', 'inline-flex', 'important');
-        if (hintsBox) hintsBox.style.setProperty('display', 'none', 'important');
-        const timerVal = document.getElementById('hud-timer-val');
-        if (timerVal) timerVal.textContent = guessrTiempoRestanteIndividual + 's';
+        if (versusTimer) versusTimer.style.setProperty('display', 'inline-flex', 'important');
+        if (versusHints) versusHints.style.setProperty('display', 'none', 'important');
+        if (versusTimerVal) versusTimerVal.textContent = guessrTiempoRestanteIndividual + 's';
     } else {
-        if (hintsBox) hintsBox.style.setProperty('display', 'none', 'important');
-        if (timerBadge) timerBadge.style.setProperty('display', 'none', 'important');
+        if (versusHints) versusHints.style.setProperty('display', 'none', 'important');
+        if (versusTimer) versusTimer.style.setProperty('display', 'none', 'important');
     }
 
     const u = obtenerUsuarioLogueado();
@@ -1695,38 +1701,44 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
 
     // 💡 PISTAS EN MODO FÁCIL CON GLOBITO INTERACTIVO (PAÍS, CAPACIDAD Y TRIVIA)
     const hintsBox = document.getElementById('guessr-hud-hints');
-    if (hintsBox) {
-        if (guessrDificultad === 'facil' && !esModoDiario) {
-            const paisEstadio = bscarPropiedad(guessrEstadioCorrecto, 'País') || 'Internacional';
-            const capEstadio = String(bscarPropiedad(guessrEstadioCorrecto, 'Capacidad')).replace(/[^0-9]/g, '');
-            const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} espectadores` : 'No especificada';
-            const triviaEstadio = (bscarPropiedad(guessrEstadioCorrecto, 'Dato Curioso') || '¡Este estadio esconde grandes historias del fútbol mundial!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
+    const versusHints = document.getElementById('versus-hud-hints');
+    if (guessrDificultad === 'facil' && !esModoDiario) {
+        const paisEstadio = bscarPropiedad(guessrEstadioCorrecto, 'País') || 'Internacional';
+        const capEstadio = String(bscarPropiedad(guessrEstadioCorrecto, 'Capacidad')).replace(/[^0-9]/g, '');
+        const capTexto = capEstadio ? `${parseInt(capEstadio).toLocaleString('es-AR')} espectadores` : 'No especificada';
+        const triviaEstadio = (bscarPropiedad(guessrEstadioCorrecto, 'Dato Curioso') || '¡Este estadio esconde grandes historias del fútbol mundial!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
 
-            hintsBox.style.setProperty('display', 'inline-flex', 'important');
-            hintsBox.innerHTML = `
-                <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir pistas">
-                    <i class="ph-fill ph-lightbulb" style="color:var(--accent-color); font-size: 1rem;"></i>
-                    <span>Pistas</span>
-                </button>
-                <div class="guessr-hint-balloon" id="guessr-hint-balloon" onclick="event.stopPropagation()">
-                    <div class="guessr-hint-row">
-                        <img src="mundo.webp" class="hint-icon" alt="País">
-                        <span>País: <b style="color:var(--accent-color);">${paisEstadio}</b></span>
-                    </div>
-                    <div class="guessr-hint-row">
-                        <img src="capacidad.webp" class="hint-icon" alt="Capacidad">
-                        <span>Capacidad: <b style="color:var(--accent-color);">${capTexto}</b></span>
-                    </div>
-                    <div class="guessr-hint-trivia">
-                        <b style="color:var(--text-main); display:block; margin-bottom:3px;"><i class="ph-bold ph-sparkle" style="color:var(--accent-color);"></i> Trivia:</b>
-                        ${triviaEstadio}
-                    </div>
+        const hintsHtml = `
+            <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir pistas">
+                <i class="ph-fill ph-lightbulb" style="color:var(--accent-color); font-size: 1rem;"></i>
+                <span>Pistas</span>
+            </button>
+            <div class="guessr-hint-balloon" id="guessr-hint-balloon" onclick="event.stopPropagation()">
+                <div class="guessr-hint-row">
+                    <img src="mundo.webp" class="hint-icon" alt="País">
+                    <span>País: <b style="color:var(--accent-color);">${paisEstadio}</b></span>
                 </div>
-            `;
-        } else {
-            hintsBox.style.setProperty('display', 'none', 'important');
-            hintsBox.innerHTML = '';
+                <div class="guessr-hint-row">
+                    <img src="capacidad.webp" class="hint-icon" alt="Capacidad">
+                    <span>Capacidad: <b style="color:var(--accent-color);">${capTexto}</b></span>
+                </div>
+                <div class="guessr-hint-trivia">
+                    <b style="color:var(--text-main); display:block; margin-bottom:3px;"><i class="ph-bold ph-sparkle" style="color:var(--accent-color);"></i> Trivia:</b>
+                    ${triviaEstadio}
+                </div>
+            </div>
+        `;
+        if (hintsBox) {
+            hintsBox.innerHTML = hintsHtml;
+            if (!esModoVersus) hintsBox.style.setProperty('display', 'inline-flex', 'important');
         }
+        if (versusHints) {
+            versusHints.innerHTML = hintsHtml;
+            if (esModoVersus) versusHints.style.setProperty('display', 'inline-flex', 'important');
+        }
+    } else {
+        if (hintsBox) { hintsBox.style.setProperty('display', 'none', 'important'); hintsBox.innerHTML = ''; }
+        if (versusHints) { versusHints.style.setProperty('display', 'none', 'important'); versusHints.innerHTML = ''; }
     }
 
     // ⏱️ CONTRARRELOJ EN MODO DIFÍCIL / LEYENDA (45s)
@@ -1758,8 +1770,8 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
     if (!esModoVersus) {
         actualizarHUDSoloGuessr();
     } else {
-        const timerBadge = document.getElementById('hud-timer-badge');
-        const timerVal = document.getElementById('hud-timer-val');
+        const timerBadge = document.getElementById('versus-timer-badge');
+        const timerVal = document.getElementById('versus-timer-val');
         if (timerBadge) timerBadge.style.setProperty('display', 'inline-flex', 'important');
         if (timerVal) timerVal.textContent = guessrTiempoRestanteIndividual + 's';
     }
@@ -1773,8 +1785,12 @@ if (guessrDificultad === 'dificil' && !esModoDiario) {
 
         const timerVal = document.getElementById('hud-timer-val');
         const timerBadge = document.getElementById('hud-timer-badge');
+        const vTimerVal = document.getElementById('versus-timer-val');
+        const vTimerBadge = document.getElementById('versus-timer-badge');
         if (timerVal) timerVal.textContent = guessrTiempoRestanteIndividual + 's';
         if (timerBadge) timerBadge.classList.toggle('timer-urgent-pulse', isUrgent);
+        if (vTimerVal) vTimerVal.textContent = guessrTiempoRestanteIndividual + 's';
+        if (vTimerBadge) vTimerBadge.classList.toggle('timer-urgent-pulse', isUrgent);
         
         if (guessrTiempoRestanteIndividual <= 0) {
             clearInterval(guessrTimerIndividualInterval);
@@ -2972,17 +2988,18 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
 function actualizarHUDSoloGuessr() {
     const dock = document.getElementById('guessr-solo-dock');
     const soloPill = document.getElementById('guessr-solo-pill');
-    const sb = document.getElementById('versus-live-scoreboard');
+    const versusHud = document.getElementById('versus-center-hud');
     if (!dock) return;
 
     if (esModoVersus) {
-        // En versus, renderizarScoreboardVersus maneja el dock
+        dock.style.setProperty('display', 'none', 'important');
+        if (versusHud) versusHud.style.setProperty('display', 'flex', 'important');
         return;
     }
 
+    if (versusHud) versusHud.style.setProperty('display', 'none', 'important');
     dock.style.setProperty('display', 'inline-flex', 'important');
     if (soloPill) soloPill.style.setProperty('display', 'inline-flex', 'important');
-    if (sb) sb.style.setProperty('display', 'none', 'important');
 
     // Round label
     const rLabel = document.getElementById('hud-round-label');
