@@ -230,7 +230,7 @@ window.mostrarPasoTipoSala = function() {
     if (vDiff) vDiff.style.display = 'none';
     if (vTipoSala) vTipoSala.style.display = 'flex';
 
-    if (title) title.innerHTML = 'Duelo con <span class="text-accent">Amigos</span>';
+    if (title) title.innerHTML = 'Duelo con Amigos';
     if (sub) sub.textContent = 'Elegí cómo querés desafiar a tu rival:';
 
     document.getElementById('guessr-modal').style.display = 'flex';
