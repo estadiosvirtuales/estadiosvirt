@@ -5275,6 +5275,15 @@ html[data-theme="light"] .xp-bar-big-fill {
     font-size: 0.82rem !important;
     box-sizing: border-box !important;
 }
+.versus-match-row .guessr-hud-hints .guessr-hint-balloon {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: 2050 !important;
+    pointer-events: auto !important;
+}
 
 /* Reloj 45s en 1v1 Difícil */
 .versus-match-row .versus-timer-pill {
@@ -5304,8 +5313,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         align-items: center !important;
         justify-content: flex-start !important;
         gap: 8px !important;
-        width: min(440px, calc(100vw - 20px)) !important;
-        max-width: calc(100vw - 20px) !important;
+        width: calc(100vw - 24px) !important;
+        max-width: 480px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         z-index: 2025 !important;
@@ -5329,6 +5338,8 @@ html[data-theme="light"] .xp-bar-big-fill {
         order: 1 !important;
         margin: 0 !important;
         padding: 0 !important;
+        position: relative !important;
+        z-index: 50 !important;
     }
 
     /* Fila Superior 1: Botón de Pistas en 1v1 Fácil */
@@ -5339,6 +5350,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         justify-content: center !important;
         margin: 0 !important;
         position: relative !important;
+        z-index: 100 !important;
     }
 
     .versus-match-row .guessr-hint-btn {
@@ -5363,9 +5375,10 @@ html[data-theme="light"] .xp-bar-big-fill {
         left: 50% !important;
         transform: translateX(-50%) !important;
         top: calc(100% + 8px) !important;
-        width: min(290px, calc(100vw - 24px)) !important;
+        width: min(310px, calc(100vw - 24px)) !important;
         max-width: calc(100vw - 24px) !important;
-        z-index: 2050 !important;
+        z-index: 3000 !important;
+        pointer-events: auto !important;
     }
 
     /* Fila Superior 1: Reloj de 45s en 1v1 Difícil */
@@ -5395,7 +5408,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         min-height: 58px !important;
         width: 100% !important;
         max-width: 100% !important;
-        padding: 8px 12px 7px 12px !important;
+        padding: 8px 14px 7px 14px !important;
         margin: 0 !important;
         border-radius: 16px !important;
         display: flex !important;
@@ -5446,8 +5459,6 @@ html[data-theme="light"] .xp-bar-big-fill {
         align-items: flex-end !important;
         flex-direction: column !important;
     }
-        align-items: flex-end !important;
-    }
 
     /* Línea 1: Metadatos (Tag Vos/Rival + Apodo + Corona) */
     .versus-match-row .vs-sb-meta {
@@ -5480,7 +5491,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     .versus-match-row .vs-sb-name {
         font-size: 0.84rem !important;
         font-weight: 800 !important;
-        max-width: 110px !important;
+        max-width: 125px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -5623,7 +5634,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     .versus-center-hud .taunts-dock,
     #game-ui.versus-active #taunts-container,
     .hud-versus-active #taunts-container {
-        position: static !important;
+        position: relative !important;
+        z-index: 10 !important;
         transform: none !important;
         margin: 10px auto 0 auto !important;
         order: 2 !important;

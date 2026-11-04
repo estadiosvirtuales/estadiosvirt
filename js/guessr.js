@@ -1799,11 +1799,11 @@ const disp=poolActual.filter(f=>{const l=bscarPropiedad(f,'Link del Video').toSt
         const triviaEstadio = (bscarPropiedad(guessrEstadioCorrecto, 'Dato Curioso') || '¡Este estadio esconde grandes historias del fútbol mundial!').replace(/'/g, "\u2019").replace(/"/g, "\u201C");
 
         const hintsHtml = `
-            <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir pistas">
+            <button type="button" class="guessr-hint-btn" onclick="toggleGuessrHintBalloon(event)" title="Abrir ayuda">
                 <i class="ph-fill ph-lightbulb" style="color:var(--accent-color); font-size: 1rem;"></i>
-                <span>Pistas</span>
+                <span>Ayuda</span>
             </button>
-            <div class="guessr-hint-balloon" id="guessr-hint-balloon" onclick="event.stopPropagation()">
+            <div class="guessr-hint-balloon" onclick="event.stopPropagation()">
                 <div class="guessr-hint-row">
                     <img src="mundo.webp" class="hint-icon" alt="País">
                     <span>País: <b style="color:var(--accent-color);">${paisEstadio}</b></span>
@@ -3240,10 +3240,38 @@ async function manejarAbandonoRival() {
 }
 
 window.toggleGuessrHintBalloon = function(event) {
-    if (event) event.stopPropagation();
-    const balloon = document.getElementById('guessr-hint-balloon');
-    if (balloon) balloon.classList.toggle('active');
+    if (event) {
+        event.stopPropagation();
+    }
+    const btn = event && (event.currentTarget || (event.target && event.target.closest('.guessr-hint-btn')));
+    let container = btn ? btn.closest('.guessr-hud-hints') || btn.parentElement : null;
+    let balloon = container ? container.querySelector('.guessr-hint-balloon') : null;
+    if (!balloon) {
+        // Fallback dinámico al contenedor de pistas actualmente visible en pantalla
+        const hintsVisible = Array.from(document.querySelectorAll('.guessr-hud-hints')).find(el => {
+            const style = window.getComputedStyle(el);
+            return style && style.display !== 'none' && style.visibility !== 'hidden';
+        });
+        balloon = (hintsVisible && hintsVisible.querySelector('.guessr-hint-balloon')) || document.querySelector('.guessr-hint-balloon');
+    }
+    if (balloon) {
+        const estaActivo = balloon.classList.contains('active');
+        document.querySelectorAll('.guessr-hint-balloon').forEach(b => b.classList.remove('active'));
+        if (!estaActivo) {
+            balloon.classList.add('active');
+        }
+    }
 };
+
+// Cierre automático del globo de ayuda al hacer click fuera
+if (!window._guessrHintBalloonDismissListener) {
+    window._guessrHintBalloonDismissListener = true;
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.guessr-hint-btn') && !e.target.closest('.guessr-hint-balloon')) {
+            document.querySelectorAll('.guessr-hint-balloon.active').forEach(b => b.classList.remove('active'));
+        }
+    });
+}
 
 // --- Invitaciones de Ligas y Enlaces ---
 
@@ -4794,7 +4822,7 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
 
         container.innerHTML = `
         <div class="desafio-endgame-container">
-            <div class="desafio-endgame-badge">⚔️ DESAFÍO 24 HORAS CREADO</div>
+            <div class="desafio-endgame-badge"><img src="icono-1v1.webp" alt="Duelo" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));"> DESAFÍO 24 HORAS CREADO</div>
             <h2 class="desafio-endgame-title">¡PUNTAJE REGISTRADO!</h2>
             <div class="desafio-score-box">
                 <span class="desafio-score-label">Tu marca a superar:</span>
@@ -4937,7 +4965,7 @@ async function manejarFinPartidaDesafioAsincronico(container, histHTML) {
 
     container.innerHTML = `
     <div class="desafio-endgame-container">
-        <div class="desafio-endgame-badge">⚔️ CARA A CARA FINAL · 24 HORAS</div>
+        <div class="desafio-endgame-badge"><img src="icono-1v1.webp" alt="Duelo" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));"> CARA A CARA FINAL · 24 HORAS</div>
         <h2 class="desafio-endgame-title" style="color:${colorVeredicto};">${bannerTitulo}</h2>
         <p class="desafio-endgame-sub">${bannerSub}</p>
 
@@ -5106,7 +5134,7 @@ async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
             popup.className = 'desafio-welcome-overlay';
             popup.innerHTML = `
                 <div class="desafio-welcome-card">
-                    <div class="desafio-welcome-badge">⏳ TU DESAFÍO SIGUE ACTIVO</div>
+                    <div class="desafio-welcome-badge"><img src="icono-desafio-24h.webp" alt="24hs" style="width:14px; height:14px; object-fit:contain; vertical-align:middle; margin-right:4px;"> TU DESAFÍO SIGUE ACTIVO</div>
                     <h3 class="desafio-welcome-title">Esperando a tu rival...</h3>
                     <p class="desafio-welcome-sub">
                         Tu marca registrada es de <strong style="color:var(--accent-color);">${(desafio.creador_puntos || 0).toLocaleString('es-AR')} PTS</strong>.<br>
@@ -5133,7 +5161,7 @@ async function cargarYPresentarDesafioAsincronico(codigoDesafio) {
         popup.className = 'desafio-welcome-overlay';
         popup.innerHTML = `
             <div class="desafio-welcome-card">
-                <div class="desafio-welcome-badge">⚔️ DESAFÍO 24 HORAS RECIBIDO</div>
+                <div class="desafio-welcome-badge"><img src="icono-1v1.webp" alt="Duelo" style="width:16px; height:16px; object-fit:contain; vertical-align:middle; margin-right:4px; filter:drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));"> DESAFÍO 24 HORAS RECIBIDO</div>
                 <h3 class="desafio-welcome-title">¡${sanitizarHTML(desafio.creador_nombre)} te desafió!</h3>
                 <p class="desafio-welcome-sub">
                     Jugó 5 estadios y logró una marca de:<br>
