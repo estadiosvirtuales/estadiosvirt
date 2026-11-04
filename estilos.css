@@ -18091,7 +18091,7 @@ body.video-abierto .hero-section {
 }
 @media (max-width: 768px) {
     .stamp-badge {
-        top: clamp(174px, 22.5vh, 195px) !important;
+        top: clamp(218px, 27vh, 240px) !important;
         left: 0 !important;
         right: 0 !important;
         margin: 0 auto !important;
@@ -18103,6 +18103,7 @@ body.video-abierto .hero-section {
         border-width: 2.5px !important;
         white-space: nowrap !important;
         text-align: center !important;
+        z-index: 2100 !important;
     }
 }
 .stamp-badge.animate-stamp {

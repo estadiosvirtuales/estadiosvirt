@@ -1,5 +1,5 @@
 // Service Worker ultraliviano para Estadios Virtuales
-const CACHE_NAME = 'estadios-virtuales-pwa-v2';
+const CACHE_NAME = 'estadios-virtuales-pwa-v3';
 
 self.addEventListener('install', (event) => {
     self.skipWaiting();
