@@ -5283,17 +5283,17 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: none !important;
 }
 
-/* 📱 Responsive Móvil para el HUD centrado de 1v1 */
+/* 📱 Responsive Móvil para el HUD centrado de 1v1 (OPCIÓN 1: HUD en Cascada Desahogado) */
 @media (max-width: 768px) {
     .versus-center-hud {
-        top: 50px !important;
+        top: 20px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: center !important;
-        gap: 6px !important;
-        width: 100% !important;
-        max-width: calc(100% - 16px) !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        width: min(390px, calc(100vw - 20px)) !important;
+        max-width: calc(100vw - 20px) !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         z-index: 2025 !important;
@@ -5310,9 +5310,9 @@ html[data-theme="light"] .xp-bar-big-fill {
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 8px !important;
         width: 100% !important;
-        max-width: 380px !important;
+        max-width: 100% !important;
         height: auto !important;
         order: 1 !important;
         margin: 0 !important;
@@ -5330,79 +5330,80 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .versus-match-row .guessr-hint-btn {
-        height: 32px !important;
-        padding: 0 14px !important;
-        font-size: 0.78rem !important;
+        height: 34px !important;
+        padding: 0 16px !important;
+        font-size: 0.82rem !important;
         font-weight: 800 !important;
-        border-radius: 16px !important;
+        border-radius: 18px !important;
         white-space: nowrap !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 5px !important;
-        box-shadow: 0 4px 14px rgba(255, 170, 0, 0.35) !important;
+        gap: 6px !important;
+        box-shadow: 0 4px 16px rgba(255, 170, 0, 0.4) !important;
     }
 
     .versus-match-row .guessr-hint-btn i {
-        font-size: 0.95rem !important;
+        font-size: 1rem !important;
     }
 
     .versus-match-row .guessr-hint-balloon {
         right: auto !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        top: calc(100% + 6px) !important;
+        top: calc(100% + 8px) !important;
         width: min(290px, calc(100vw - 24px)) !important;
         max-width: calc(100vw - 24px) !important;
+        z-index: 2050 !important;
     }
 
     /* Fila Superior 1: Reloj de 45s en 1v1 Difícil */
     .versus-match-row #versus-timer-badge {
         order: 1 !important;
-        height: 32px !important;
-        padding: 0 14px !important;
-        font-size: 0.82rem !important;
+        height: 34px !important;
+        padding: 0 16px !important;
+        font-size: 0.88rem !important;
         font-weight: 900 !important;
-        border-radius: 16px !important;
+        border-radius: 18px !important;
         display: inline-flex !important;
         align-items: center !important;
-        gap: 5px !important;
-        box-shadow: 0 4px 14px rgba(255, 71, 87, 0.4) !important;
+        gap: 6px !important;
+        box-shadow: 0 4px 16px rgba(255, 71, 87, 0.45) !important;
+        margin: 0 !important;
     }
 
     .versus-match-row #versus-timer-badge i {
-        font-size: 0.95rem !important;
+        font-size: 1rem !important;
     }
 
     /* Fila Central 2: Scoreboard 1v1 en 2 Líneas Espaciosas */
     .versus-match-row .versus-scoreboard-box,
     #versus-live-scoreboard {
         order: 2 !important;
-        height: 52px !important;
-        min-height: 52px !important;
+        height: auto !important;
+        min-height: 58px !important;
         width: 100% !important;
-        max-width: 380px !important;
-        padding: 4px 10px !important;
+        max-width: 100% !important;
+        padding: 8px 12px 7px 12px !important;
         margin: 0 !important;
         border-radius: 16px !important;
         display: flex !important;
+        flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
         box-sizing: border-box !important;
         position: relative !important;
-        background: linear-gradient(135deg, rgba(14, 23, 40, 0.94) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.14) !important;
-        border-top: 1.5px solid rgba(0, 255, 119, 0.65) !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(0, 255, 119, 0.15) !important;
+        background: linear-gradient(135deg, rgba(14, 23, 40, 0.95) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.14) !important;
+        border-top: 2px solid rgba(0, 255, 119, 0.7) !important;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.75), 0 0 16px rgba(0, 255, 119, 0.15) !important;
     }
 
     .versus-match-row .vs-sb-main-row {
         display: grid !important;
         grid-template-columns: 1fr 44px 1fr !important;
-        grid-template-rows: 100% !important;
         align-items: center !important;
         width: 100% !important;
-        height: 100% !important;
-        gap: 4px !important;
+        gap: 8px !important;
         padding: 0 !important;
         margin: 0 !important;
     }
@@ -5411,12 +5412,13 @@ html[data-theme="light"] .xp-bar-big-fill {
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
-        gap: 2px !important;
+        gap: 3px !important;
         padding: 0 !important;
         margin: 0 !important;
-        height: 100% !important;
         min-width: 0 !important;
         overflow: hidden !important;
+        background: transparent !important;
+        border: none !important;
     }
 
     .versus-match-row .vs-sb-col.user {
@@ -5432,7 +5434,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
-        gap: 4px !important;
+        gap: 5px !important;
         max-width: 100% !important;
         overflow: hidden !important;
         line-height: 1 !important;
@@ -5447,8 +5449,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .versus-match-row .vs-sb-tag {
-        font-size: 0.58rem !important;
-        padding: 1.5px 5px !important;
+        font-size: 0.60rem !important;
+        padding: 2px 5px !important;
         border-radius: 4px !important;
         font-weight: 900 !important;
         line-height: 1.1 !important;
@@ -5456,9 +5458,9 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .versus-match-row .vs-sb-name {
-        font-size: 0.74rem !important;
+        font-size: 0.84rem !important;
         font-weight: 800 !important;
-        max-width: 82px !important;
+        max-width: 110px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -5467,8 +5469,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .versus-match-row .vs-lead-pill {
-        font-size: 0.58rem !important;
-        padding: 1px 3px !important;
+        font-size: 0.62rem !important;
+        padding: 1px 4px !important;
         line-height: 1.1 !important;
         flex-shrink: 0 !important;
     }
@@ -5481,8 +5483,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     .versus-match-row .vs-sb-sub-row {
         display: flex !important;
         flex-direction: row !important;
-        align-items: center !important;
-        gap: 4px !important;
+        align-items: baseline !important;
+        gap: 6px !important;
         line-height: 1 !important;
         max-width: 100% !important;
         overflow: hidden !important;
@@ -5497,12 +5499,18 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .versus-match-row .vs-sb-score {
-        font-size: 0.88rem !important;
+        font-size: 0.94rem !important;
         font-weight: 900 !important;
         white-space: nowrap !important;
         line-height: 1 !important;
         letter-spacing: -0.2px !important;
         flex-shrink: 0 !important;
+    }
+
+    .versus-match-row .vs-sb-score small {
+        font-size: 0.65rem !important;
+        color: var(--text-muted) !important;
+        font-weight: 700 !important;
     }
 
     .versus-match-row .vs-sb-col.user .vs-sb-score {
@@ -5514,15 +5522,15 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     .versus-match-row .vs-status-tag {
-        font-size: 0.54rem !important;
-        padding: 1px 4px !important;
-        border-radius: 4px !important;
+        font-size: 0.58rem !important;
+        padding: 1.5px 5px !important;
+        border-radius: 5px !important;
         white-space: nowrap !important;
         line-height: 1.1 !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        max-width: 65px !important;
-        flex-shrink: 1 !important;
+        max-width: 80px !important;
+        flex-shrink: 0 !important;
     }
 
     /* Centro: VS + Ronda R1/5 */
@@ -5533,104 +5541,130 @@ html[data-theme="light"] .xp-bar-big-fill {
         justify-content: center !important;
         gap: 2px !important;
         padding: 0 !important;
-        width: 44px !important;
-        min-width: 44px !important;
+        width: 46px !important;
+        min-width: 46px !important;
     }
 
     .versus-match-row .vs-sb-vs-badge {
-        font-size: 0.62rem !important;
-        padding: 1.5px 6px !important;
+        font-size: 0.66rem !important;
+        padding: 2px 6px !important;
         border-radius: 6px !important;
         font-weight: 900 !important;
         line-height: 1 !important;
     }
 
     .versus-match-row .vs-sb-round-badge {
-        font-size: 0.62rem !important;
+        font-size: 0.64rem !important;
         font-weight: 800 !important;
         line-height: 1 !important;
         color: #ffffff !important;
+        margin-top: 1px !important;
     }
 
     .versus-match-row .vs-sb-center-timer {
-        font-size: 0.62rem !important;
-        padding: 1px 5px !important;
+        display: none !important;
     }
 
     /* Barra de Duelo en la base */
     .versus-scoreboard-box .vs-sb-duel-bar {
-        left: 10px !important;
-        right: 10px !important;
-        width: calc(100% - 20px) !important;
-        bottom: 0 !important;
-        height: 2.5px !important;
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: auto !important;
+        width: 100% !important;
+        height: 3px !important;
+        margin: 6px 0 0 0 !important;
+        border-radius: 2px !important;
+        overflow: hidden !important;
     }
 
-    /* Fila Inferior 3: Emojis de Taunts Centrados */
+    /* Fila 3: Alerta de 15 Segundos en Flujo Natural (NUNCA TAPA LOS EMOJIS) */
+    .versus-match-row .vs-sb-alert {
+        position: static !important;
+        transform: none !important;
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        margin: 7px 0 0 0 !important;
+        padding: 5px 12px !important;
+        font-size: 0.70rem !important;
+        font-weight: 800 !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    /* Fila 4: Emojis de Taunts Centrados y Desahogados */
     .versus-center-hud .taunts-dock,
     #game-ui.versus-active #taunts-container,
     .hud-versus-active #taunts-container {
         position: static !important;
         transform: none !important;
-        margin: 0 auto !important;
+        margin: 10px auto 0 auto !important;
         order: 2 !important;
-        height: 28px !important;
-        min-height: 28px !important;
-        max-height: 28px !important;
-        padding: 2px 8px !important;
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
+        padding: 4px 14px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
-        border-radius: 20px !important;
-        background: rgba(10, 18, 30, 0.88) !important;
-        border: 1px solid rgba(255, 255, 255, 0.14) !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+        gap: 10px !important;
+        border-radius: 24px !important;
+        background: rgba(10, 18, 30, 0.90) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6) !important;
         backdrop-filter: blur(14px) !important;
         -webkit-backdrop-filter: blur(14px) !important;
         width: auto !important;
-        max-width: 220px !important;
+        max-width: 240px !important;
     }
 
     .versus-center-hud .taunts-dock .taunt-btn,
     #game-ui.versus-active #taunts-container .taunt-btn,
     .hud-versus-active #taunts-container .taunt-btn {
-        height: 24px !important;
-        width: 24px !important;
-        min-height: 24px !important;
-        max-height: 24px !important;
-        font-size: 1rem !important;
+        height: 28px !important;
+        width: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+        font-size: 1.20rem !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
-    }
-
-    /* Drop-chip alert (¡Falta poco! / ¡Rival ya eligió!) */
-    .versus-match-row .vs-sb-alert {
-        top: calc(100% + 5px) !important;
-        font-size: 0.65rem !important;
-        padding: 3px 10px !important;
+        cursor: pointer !important;
+        transition: transform 0.15s ease !important;
     }
 }
 
 @media (max-width: 360px) {
     .versus-match-row .versus-scoreboard-box,
     #versus-live-scoreboard {
-        max-width: 255px !important;
-        padding: 0 5px !important;
+        max-width: calc(100vw - 16px) !important;
+        padding: 6px 8px 5px !important;
+    }
+    .versus-match-row .vs-sb-name {
+        max-width: 78px !important;
+        font-size: 0.76rem !important;
+    }
+    .versus-match-row .vs-sb-score {
+        font-size: 0.90rem !important;
     }
     .versus-match-row .vs-status-tag {
         font-size: 0.52rem !important;
-        padding: 1px 3px !important;
+        padding: 1.5px 4px !important;
     }
     .versus-match-row .guessr-hint-btn,
     .versus-match-row #versus-timer-badge {
-        padding: 0 7px !important;
-        font-size: 0.66rem !important;
+        padding: 0 10px !important;
+        font-size: 0.75rem !important;
     }
 }
 

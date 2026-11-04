@@ -1051,7 +1051,7 @@ function renderizarScoreboardVersus(alerta = null) {
 
         if (rivalGuessConfirmado) {
             if (versusTimerInterval && !miGuessConfirmado) {
-                statusRivalHtml = `<span class="vs-status-tag hurry"><i class="ph-bold ph-lightning"></i> ¡Arriesgó! (<span id="vs-sb-rival-tag-sec" class="vs-timer-val">${versusTiempoRestante}s</span>)</span>`;
+                statusRivalHtml = `<span class="vs-status-tag hurry"><i class="ph-bold ph-lightning"></i> Arriesgó</span>`;
             } else {
                 statusRivalHtml = `<span class="vs-status-tag ready rival"><i class="ph-bold ph-check"></i> Listo</span>`;
             }
