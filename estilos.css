@@ -11150,7 +11150,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         padding: 8px 12px 7px 12px !important;
         gap: 6px !important;
         width: 100% !important;
-        max-width: min(390px, calc(100vw - 20px)) !important;
+        max-width: min(440px, calc(100vw - 20px)) !important;
         justify-content: center !important;
     }
     .hud-versus-active #guessr-solo-dock,

@@ -4961,38 +4961,37 @@ html[data-theme="light"] .xp-bar-big-fill {
 
 /* ========================================================
    ⚔️ HUD CENTRADO EXCLUSIVO PARA MODO 1 VS 1 (PC Y MÓVIL)
-   Centrado perfecto en pantalla para las 3 dificultades:
-   - Fila 1: Emojis de taunt centrados
-   - Fila 2: Marcador 1v1 + Pistas (Fácil) o Reloj (Difícil) centrados
-   - En Solo: Solo Dock a la izquierda y Versus HUD 100% oculto
+   - ESCRITORIO (>= 769px): 1 sola línea horizontal centrada
+     [Chat Emojis] - [Scoreboard 1v1] - [Pistas/Reloj]
    ======================================================== */
+@media (min-width: 769px) {
 .versus-center-hud {
     position: absolute !important;
     top: 66px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     display: none;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 12px !important;
     z-index: 2025 !important;
     pointer-events: auto !important;
     width: max-content !important;
-    max-width: calc(100% - 24px) !important;
+    max-width: calc(100% - 32px) !important;
     box-sizing: border-box !important;
     user-select: none !important;
     font-family: 'Outfit', sans-serif !important;
 }
 
-/* Fila de Taunts (Emojis de chat) Centrados */
+/* Fila de Taunts (Emojis de chat) a la izquierda de la pastilla */
 .versus-center-hud .taunts-dock {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    padding: 2px 8px !important;
-    height: 30px !important;
+    padding: 0 10px !important;
+    height: 38px !important;
     background: rgba(10, 18, 30, 0.88) !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
     border-radius: 20px !important;
@@ -5000,16 +4999,17 @@ html[data-theme="light"] .xp-bar-big-fill {
     -webkit-backdrop-filter: blur(14px) !important;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
     margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .versus-center-hud .taunts-dock .taunt-btn {
-    height: 26px !important;
-    width: 26px !important;
-    font-size: 1.05rem !important;
+    height: 28px !important;
+    width: 28px !important;
+    font-size: 1.15rem !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    border-radius: 13px !important;
+    border-radius: 14px !important;
     padding: 0 !important;
     background: transparent !important;
     border: none !important;
@@ -5028,19 +5028,21 @@ html[data-theme="light"] .xp-bar-big-fill {
     flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 12px !important;
     width: auto !important;
     height: 38px !important;
+    margin: 0 !important;
 }
 
 /* Ribbon Scoreboard 1v1 Centrado */
 .versus-match-row .versus-scoreboard-box,
 #versus-live-scoreboard {
     margin: 0 !important;
-    max-width: 520px !important;
+    min-width: 560px !important;
+    max-width: 740px !important;
     width: auto !important;
     height: 38px !important;
-    padding: 0 14px !important;
+    padding: 0 16px !important;
     border-radius: 20px !important;
     display: flex !important;
     flex-direction: row !important;
@@ -5079,7 +5081,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     grid-template-rows: 100% !important;
     align-items: center !important;
     align-content: center !important;
-    gap: 10px !important;
+    gap: 14px !important;
     height: 100% !important;
     width: 100% !important;
     margin: 0 !important;
@@ -5090,7 +5092,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 7px !important;
+    gap: 8px !important;
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
@@ -5105,7 +5107,9 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .versus-scoreboard-box .vs-sb-col.rival {
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
+    flex-direction: row-reverse !important;
+    gap: 8px !important;
 }
 
 .versus-scoreboard-box .vs-sb-sub-row {
@@ -5117,10 +5121,16 @@ html[data-theme="light"] .xp-bar-big-fill {
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 5px !important;
+    gap: 6px !important;
     min-width: 0 !important;
     overflow: hidden !important;
     line-height: 1 !important;
+}
+
+.versus-scoreboard-box .vs-sb-col.rival .vs-sb-meta {
+    flex-direction: row !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
 }
 
 .versus-scoreboard-box .vs-sb-tag {
@@ -5139,8 +5149,8 @@ html[data-theme="light"] .xp-bar-big-fill {
 }
 
 .versus-scoreboard-box .vs-sb-name {
-    max-width: 90px !important;
-    font-size: 0.74rem !important;
+    max-width: 130px !important;
+    font-size: 0.78rem !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -5148,6 +5158,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     line-height: 1.1 !important;
     color: #ffffff !important;
     font-weight: 800 !important;
+    flex-shrink: 0 !important;
 }
 
 .versus-scoreboard-box .vs-sb-score {
@@ -5275,6 +5286,7 @@ html[data-theme="light"] .xp-bar-big-fill {
     display: inline-flex !important;
     align-items: center !important;
 }
+} /* Fin @media (min-width: 769px) */
 
 /* En Modo Versus, el dock individual está siempre 100% oculto */
 .versus-active #guessr-solo-dock,
@@ -5292,7 +5304,7 @@ html[data-theme="light"] .xp-bar-big-fill {
         align-items: center !important;
         justify-content: flex-start !important;
         gap: 8px !important;
-        width: min(390px, calc(100vw - 20px)) !important;
+        width: min(440px, calc(100vw - 20px)) !important;
         max-width: calc(100vw - 20px) !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
@@ -5408,7 +5420,10 @@ html[data-theme="light"] .xp-bar-big-fill {
         margin: 0 !important;
     }
 
-    .versus-match-row .vs-sb-col {
+    .versus-match-row .vs-sb-col,
+    .versus-scoreboard-box .vs-sb-col,
+    .versus-scoreboard-box .vs-sb-col.rival,
+    .versus-scoreboard-box .vs-sb-col.user {
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
@@ -5421,11 +5436,16 @@ html[data-theme="light"] .xp-bar-big-fill {
         border: none !important;
     }
 
-    .versus-match-row .vs-sb-col.user {
+    .versus-match-row .vs-sb-col.user,
+    .versus-scoreboard-box .vs-sb-col.user {
         align-items: flex-start !important;
     }
 
-    .versus-match-row .vs-sb-col.rival {
+    .versus-match-row .vs-sb-col.rival,
+    .versus-scoreboard-box .vs-sb-col.rival {
+        align-items: flex-end !important;
+        flex-direction: column !important;
+    }
         align-items: flex-end !important;
     }
 
@@ -5480,7 +5500,8 @@ html[data-theme="light"] .xp-bar-big-fill {
     }
 
     /* Línea 2: Puntaje + Estado (Sin colisión ni solapamiento) */
-    .versus-match-row .vs-sb-sub-row {
+    .versus-match-row .vs-sb-sub-row,
+    .versus-scoreboard-box .vs-sb-sub-row {
         display: flex !important;
         flex-direction: row !important;
         align-items: baseline !important;
