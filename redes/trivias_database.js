@@ -179,7 +179,7 @@ const TRIVIAS_DATABASE = [
     "pais": "Argentina",
     "videoFileName": "Estadio_Florencio_Sola_Banfield.mp4",
     "coverFileName": "Portada_Florencio_Sola_Banfield.jpg",
-    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\banfield.mp4",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\banfield(listo)x2\\banfield.mp4",
     "targetLat": -34.7509,
     "targetLng": -58.3876,
     "userLat": -34.7493,
@@ -207,7 +207,7 @@ const TRIVIAS_DATABASE = [
         "color": "#ffd700"
       }
     ],
-    "portadaClue": "FLORENCIO SOLA · CLUB ATLÉTICO BANFIELD",
+    "portadaClue": "Capacidad 34.900 hinchas · Campeón Apertura 2009 · Peña y Arenales",
     "copys": {
       "club": "CLUB ATLÉTICO BANFIELD",
       "paisHashtag": "#clubatlticobanfield #estadios #stadiumguessr #futbol #geoguessr",
