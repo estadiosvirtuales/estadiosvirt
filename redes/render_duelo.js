@@ -1649,6 +1649,858 @@ El Clássico Ba-Vi, la pasión más encendida de Salvador de Bahía: la mundiali
 🎮 Poné a prueba cuánto sabés de canchas en: estadiosvirtuales.com
 
 #AthleticoParanaense #Coritiba #Atletiba #LiggaArena #CoutoPereira #Curitiba #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+
+    // ==========================================
+    // ESPAÑA (Nuevos 7 duelos)
+    // ==========================================
+    'athletic-sociedad': {
+        slug: 'ATHLETIC-VS-REAL-SOCIEDAD',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Capacidad · El Derbi Vasco',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La mayor pasión del fútbol del norte',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Athletic_vs_Real_Sociedad.mp4',
+        portadaFileName: 'Portada_Duelo_Athletic_Real_Sociedad.jpg',
+        bannerDiferencia: '¡SAN MAMÉS POR +14.000 LUGARES!',
+        team1: {
+            id: 'athletic',
+            nombre: 'ATHLETIC CLUB',
+            estadio: 'San Mamés',
+            apodo: 'La Catedral',
+            capacidadNum: 53331,
+            capacidadTexto: '53.331 esp.',
+            escudoFile: 'AtlClub.webp',
+            borderColor: '#ee2523',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio de San Mamés_ Athletic Club.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'sociedad',
+            nombre: 'REAL SOCIEDAD',
+            estadio: 'Reale Arena',
+            apodo: 'Anoeta',
+            capacidadNum: 39313,
+            capacidadTexto: '39.313 esp.',
+            escudoFile: 'Sociedad.webp',
+            borderColor: '#004d98',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio de Anoeta_ Real Sociedad de Fútbol.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿ATHLETIC CLUB O REAL SOCIEDAD? 🏟️🔥
+El Derbi Vasco: San Mamés frente al Reale Arena de San Sebastián. ¿Cuál de los dos estadios vascos tiene mayor capacidad de público? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Adiviná estadios de todo el mundo gratis en: estadiosvirtuales.com
+
+#AthleticClub #RealSociedad #DerbiVasco #SanMames #Anoeta #LaLiga #Estadios #EstadiosVirtuales`
+    },
+    'barcelona-espanyol': {
+        slug: 'BARCELONA-VS-ESPANYOL',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi Barcelonés',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La histórica rivalidad de Cataluña',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Barcelona_vs_Espanyol.mp4',
+        portadaFileName: 'Portada_Duelo_Barcelona_Espanyol.jpg',
+        bannerDiferencia: '¡CAMP NOU POR +59.300 LUGARES!',
+        team1: {
+            id: 'barcelona',
+            nombre: 'FC BARCELONA',
+            estadio: 'Spotify Camp Nou',
+            apodo: 'El Coliseo Culer',
+            capacidadNum: 99354,
+            capacidadTexto: '99.354 esp.',
+            escudoFile: 'Barca.webp',
+            borderColor: '#a50044',
+            videoPath: "E:\\Google earth studio\\España\\Spotify Camp Nou_ Barcelona.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'espanyol',
+            nombre: 'RCD ESPANYOL',
+            estadio: 'RCDE Stadium',
+            apodo: 'Cornellà-El Prat',
+            capacidadNum: 40000,
+            capacidadTexto: '40.000 esp.',
+            escudoFile: 'Espanyol.webp',
+            borderColor: '#007fc8',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\RCDE Stadium_ Espanyol.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿FC BARCELONA O RCD ESPANYOL? 🏟️🔥
+El clásico de la ciudad de Barcelona: el Spotify Camp Nou frente al RCDE Stadium. ¿Sabías la diferencia real de lugares entre ambos recintos? 😱
+
+👉 ¿Te sorprendió el resultado? Dejanos tu comentario.
+🎮 Jugá la trivia diaria de canchas en el link del perfil: estadiosvirtuales.com
+
+#Barcelona #Espanyol #DerbiBarcelones #CampNou #RCDEStadium #LaLiga #Estadios #EstadiosVirtuales`
+    },
+    'valencia-levante': {
+        slug: 'VALENCIA-VS-LEVANTE',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi del Turia',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El gran clásico de la ciudad de Valencia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Valencia_vs_Levante.mp4',
+        portadaFileName: 'Portada_Duelo_Valencia_Levante.jpg',
+        bannerDiferencia: '¡VALENCIA POR +23.000 LUGARES!',
+        team1: {
+            id: 'valencia',
+            nombre: 'VALENCIA CF',
+            estadio: 'Mestalla',
+            apodo: 'El Templo Che',
+            capacidadNum: 49430,
+            capacidadTexto: '49.430 esp.',
+            escudoFile: 'Valencia.webp',
+            borderColor: '#ff6600',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Mestalla_ Valencia.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'levante',
+            nombre: 'LEVANTE UD',
+            estadio: 'Ciutat de València',
+            apodo: 'Orriols',
+            capacidadNum: 26354,
+            capacidadTexto: '26.354 esp.',
+            escudoFile: 'Levante.webp',
+            borderColor: '#002f6c',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Ciudad de Valencia_ Levante.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿VALENCIA O LEVANTE? 🏟️🔥
+El Derbi del Turia: el centenario Mestalla frente al Estadio Ciutat de València. ¿Cuál de las dos canchas valencianas alberga más espectadores? 😱
+
+👉 Comentá tu voto antes de que termine la cuenta regresiva.
+🎮 Poné a prueba cuánto sabés de estadios en: estadiosvirtuales.com
+
+#ValenciaCF #LevanteUD #DerbiValenciano #Mestalla #CiutatDeValencia #LaLiga #Estadios #EstadiosVirtuales`
+    },
+    'oviedo-sporting': {
+        slug: 'OVIEDO-VS-SPORTING-GIJON',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Capacidad · El Derbi Asturiano',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: '¡Diferencia de apenas 500 lugares!',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Oviedo_vs_Sporting.mp4',
+        portadaFileName: 'Portada_Duelo_Oviedo_Sporting.jpg',
+        bannerDiferencia: '¡OVIEDO POR SOLO 500 LUGARES!',
+        team1: {
+            id: 'oviedo',
+            nombre: 'REAL OVIEDO',
+            estadio: 'Carlos Tartiere',
+            apodo: 'El Fortín Carbayón',
+            capacidadNum: 30500,
+            capacidadTexto: '30.500 esp.',
+            escudoFile: 'Realoviedo.webp',
+            borderColor: '#0047bb',
+            videoPath: "E:\\Google earth studio\\España\\Segunda divi\\Estadio Carlos Tartiere_Real Oviedo.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'sporting',
+            nombre: 'SPORTING DE GIJÓN',
+            estadio: 'El Molinón',
+            apodo: 'El Más Antiguo de España',
+            capacidadNum: 30000,
+            capacidadTexto: '30.000 esp.',
+            escudoFile: 'sporting.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\España\\Segunda divi\\Estadio Municipal El Molinón-Enrique Castro Quini Real Sporting de Gijón.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿REAL OVIEDO O SPORTING DE GIJÓN? 🏟️🔥
+¡El Derbi Asturiano más parejo que nunca! Dos de los estadios más históricos de España separados por solo 500 localidades. ¿Quién se lleva el duelo? 😱
+
+👉 ¿Acertaste o pensabas que ganaba El Molinón? Dejanos tu comentario.
+🎮 Jugá y descubrí estadios del mundo en: estadiosvirtuales.com
+
+#RealOviedo #SportingGijon #DerbiAsturiano #CarlosTartiere #ElMolinon #Asturias #LaLigaHypermotion #EstadiosVirtuales`
+    },
+    'atletico-barcelona': {
+        slug: 'ATLETICO-MADRID-VS-BARCELONA',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Gigantes · LaLiga',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Metropolitano vs Spotify Camp Nou',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Atletico_vs_Barcelona.mp4',
+        portadaFileName: 'Portada_Duelo_Atletico_Barcelona.jpg',
+        bannerDiferencia: '¡BARCELONA POR +28.800 LUGARES!',
+        team1: {
+            id: 'barcelona',
+            nombre: 'FC BARCELONA',
+            estadio: 'Spotify Camp Nou',
+            apodo: 'El Coliseo Culer',
+            capacidadNum: 99354,
+            capacidadTexto: '99.354 esp.',
+            escudoFile: 'Barca.webp',
+            borderColor: '#a50044',
+            videoPath: "E:\\Google earth studio\\España\\Spotify Camp Nou_ Barcelona.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'atletico',
+            nombre: 'ATLÉTICO DE MADRID',
+            estadio: 'Riyadh Air Metropolitano',
+            apodo: 'El Templo Colchonero',
+            capacidadNum: 70460,
+            capacidadTexto: '70.460 esp.',
+            escudoFile: 'AMadrid.webp',
+            borderColor: '#cb3524',
+            videoPath: "E:\\Google earth studio\\España\\Riyadh Air Metropolitano Club Atlético de Madrid.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE GIGANTES: ¿ATLÉTICO DE MADRID O FC BARCELONA? 🏟️🔥
+El imponente Metropolitano de Madrid frente al mítico Spotify Camp Nou. ¿Cuál de los dos colosos del fútbol español tiene mayor aforo? 😱
+
+👉 ¿Sabías la respuesta? Dejanos tu voto en comentarios.
+🎮 Superá el reto diario de estadios en el link de la bio: estadiosvirtuales.com
+
+#Atleti #Barcelona #Metropolitano #CampNou #LaLiga #Colchoneros #Culés #EstadiosVirtuales`
+    },
+    'valencia-villarreal': {
+        slug: 'VALENCIA-VS-VILLARREAL',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi de la Comunitat',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Mestalla frente a La Cerámica',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Valencia_vs_Villarreal.mp4',
+        portadaFileName: 'Portada_Duelo_Valencia_Villarreal.jpg',
+        bannerDiferencia: '¡VALENCIA POR +25.900 LUGARES!',
+        team1: {
+            id: 'valencia',
+            nombre: 'VALENCIA CF',
+            estadio: 'Mestalla',
+            apodo: 'El Coliseo Che',
+            capacidadNum: 49430,
+            capacidadTexto: '49.430 esp.',
+            escudoFile: 'Valencia.webp',
+            borderColor: '#ff6600',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Mestalla_ Valencia.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'villarreal',
+            nombre: 'VILLARREAL CF',
+            estadio: 'Estadio de la Cerámica',
+            apodo: 'El Submarino Amarillo',
+            capacidadNum: 23500,
+            capacidadTexto: '23.500 esp.',
+            escudoFile: 'Villarreal.webp',
+            borderColor: '#ffe000',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio de la Cerámica_ Villarreal FC.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿VALENCIA O VILLARREAL? 🏟️🔥
+El Derbi de la Comunitat Valenciana: el histórico Mestalla contra la moderna remodelación del Estadio de la Cerámica. ¿Cuál alberga más público? 😱
+
+👉 Dejanos tu comentario.
+🎮 Jugá gratis con estadios de todo el mundo en: estadiosvirtuales.com
+
+#ValenciaCF #VillarrealCF #Mestalla #EstadioDeLaCeramica #LaLiga #SubmarinoAmarillo #EstadiosVirtuales`
+    },
+    'getafe-leganes': {
+        slug: 'GETAFE-VS-LEGANES',
+        pais: 'España',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi del Sur de Madrid',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La rivalidad obrera del sur madrileño',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Getafe_vs_Leganes.mp4',
+        portadaFileName: 'Portada_Duelo_Getafe_Leganes.jpg',
+        bannerDiferencia: '¡GETAFE POR +4.000 LUGARES!',
+        team1: {
+            id: 'getafe',
+            nombre: 'GETAFE CF',
+            estadio: 'Coliseum',
+            apodo: 'El Fortín Azulón',
+            capacidadNum: 16500,
+            capacidadTexto: '16.500 esp.',
+            escudoFile: 'Getafe.webp',
+            borderColor: '#004d98',
+            videoPath: "E:\\Google earth studio\\España\\Bloque A\\Estadio Coliseum_ Getafe.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'leganes',
+            nombre: 'CD LEGANÉS',
+            estadio: 'Municipal de Butarque',
+            apodo: 'La Fortaleza Pepinera',
+            capacidadNum: 12454,
+            capacidadTexto: '12.454 esp.',
+            escudoFile: 'leganes.webp',
+            borderColor: '#005ba3',
+            videoPath: "E:\\Google earth studio\\España\\Municipal de Butarque_ CD Leganés.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿GETAFE O LEGANÉS? 🏟️🔥
+El clásico del sur de Madrid: el Coliseum frente al Municipal de Butarque. ¿Cuál de los dos recintos madrileños tiene mayor aforo oficial? 😱
+
+👉 ¿Acertaste? Dejanos tu voto en los comentarios.
+🎮 Adiviná canchas en: estadiosvirtuales.com
+
+#GetafeCF #CDLeganes #DerbiHistorico #Coliseum #Butarque #Madrid #LaLiga #EstadiosVirtuales`
+    },
+
+    // ==========================================
+    // INGLATERRA (Nuevos 7 duelos)
+    // ==========================================
+    'liverpool-everton': {
+        slug: 'LIVERPOOL-VS-EVERTON',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Capacidad · Merseyside Derby',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico citadino más antiguo de Inglaterra',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Liverpool_vs_Everton.mp4',
+        portadaFileName: 'Portada_Duelo_Liverpool_Everton.jpg',
+        bannerDiferencia: '¡LIVERPOOL POR +21.700 LUGARES!',
+        team1: {
+            id: 'liverpool',
+            nombre: 'LIVERPOOL FC',
+            estadio: 'Anfield',
+            apodo: 'The Kop',
+            capacidadNum: 61276,
+            capacidadTexto: '61.276 esp.',
+            escudoFile: 'liverpool.webp',
+            borderColor: '#c8102e',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Anfield_ Liverpool FC.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'everton',
+            nombre: 'EVERTON FC',
+            estadio: 'Goodison Park',
+            apodo: 'The Grand Old Lady',
+            capacidadNum: 39572,
+            capacidadTexto: '39.572 esp.',
+            escudoFile: 'Everton.webp',
+            borderColor: '#003399',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Goodison Park_ Everton.mp4",
+            esGanador: false
+        },
+        copy: `🥊 MERSEYSIDE DERBY: ¿LIVERPOOL O EVERTON? 🏟️🔥
+Anfield frente a Goodison Park, separados por apenas unos metros a través de Stanley Park. ¿Cuál de los dos templos de Liverpool tiene mayor capacidad oficial? 😱
+
+👉 ¿Sabías la diferencia tras la ampliación de Anfield? Comentá abajo.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#Liverpool #Everton #MerseysideDerby #Anfield #GoodisonPark #PremierLeague #Estadios #EstadiosVirtuales`
+    },
+    'arsenal-chelsea': {
+        slug: 'ARSENAL-VS-CHELSEA',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi de Londres',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Los dos clubes más ganadores de la capital',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Arsenal_vs_Chelsea.mp4',
+        portadaFileName: 'Portada_Duelo_Arsenal_Chelsea.jpg',
+        bannerDiferencia: '¡ARSENAL POR +20.300 LUGARES!',
+        team1: {
+            id: 'arsenal',
+            nombre: 'ARSENAL FC',
+            estadio: 'Emirates Stadium',
+            apodo: 'The Gunners',
+            capacidadNum: 60704,
+            capacidadTexto: '60.704 esp.',
+            escudoFile: 'arsenal.webp',
+            borderColor: '#db0007',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Emirates Stadium_ Arsenal.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'chelsea',
+            nombre: 'CHELSEA FC',
+            estadio: 'Stamford Bridge',
+            apodo: 'The Blues',
+            capacidadNum: 40341,
+            capacidadTexto: '40.341 esp.',
+            escudoFile: 'chelsea.webp',
+            borderColor: '#034694',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Stamford Bridge_ Chelsea FC.mp4",
+            esGanador: false
+        },
+        copy: `🥊 LONDON DERBY: ¿ARSENAL O CHELSEA? 🏟️🔥
+El Emirates Stadium del norte de Londres frente al histórico Stamford Bridge en el oeste de la capital. ¿Cuál de los dos recintos alberga más hinchas? 😱
+
+👉 ¿Acertaste o te sorprendió? Dejanos tu voto en los comentarios.
+🎮 Jugá gratis con canchas de la Premier en: estadiosvirtuales.com
+
+#Arsenal #Chelsea #LondonDerby #EmiratesStadium #StamfordBridge #PremierLeague #Estadios #EstadiosVirtuales`
+    },
+    'chelsea-tottenham': {
+        slug: 'CHELSEA-VS-TOTTENHAM',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi de Londres',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Battle of the Bridge',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Chelsea_vs_Tottenham.mp4',
+        portadaFileName: 'Portada_Duelo_Chelsea_Tottenham.jpg',
+        bannerDiferencia: '¡TOTTENHAM POR +22.500 LUGARES!',
+        team1: {
+            id: 'tottenham',
+            nombre: 'TOTTENHAM HOTSPUR',
+            estadio: 'Tottenham Hotspur Stadium',
+            apodo: 'New White Hart Lane',
+            capacidadNum: 62850,
+            capacidadTexto: '62.850 esp.',
+            escudoFile: 'tottenham.webp',
+            borderColor: '#132257',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Tottenham Hotspur Stadium.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'chelsea',
+            nombre: 'CHELSEA FC',
+            estadio: 'Stamford Bridge',
+            apodo: 'The Blues',
+            capacidadNum: 40341,
+            capacidadTexto: '40.341 esp.',
+            escudoFile: 'chelsea.webp',
+            borderColor: '#034694',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Stamford Bridge_ Chelsea FC.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DERBI DE LONDRES: ¿CHELSEA O TOTTENHAM? 🏟️🔥
+La clásica 'Battle of the Bridge': el ultra moderno Tottenham Hotspur Stadium frente a la mística de Stamford Bridge. ¿Cuál tiene más capacidad oficial? 😱
+
+👉 Comentá tu respuesta antes de que termine la cuenta regresiva.
+🎮 Desafiate con el reto diario en: estadiosvirtuales.com
+
+#Chelsea #Tottenham #Spurs #StamfordBridge #TottenhamStadium #PremierLeague #Estadios #EstadiosVirtuales`
+    },
+    'mancity-liverpool': {
+        slug: 'MANCHESTER-CITY-VS-LIVERPOOL',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Titanes · Premier League',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El gran clásico de la década',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_ManCity_vs_Liverpool.mp4',
+        portadaFileName: 'Portada_Duelo_ManCity_Liverpool.jpg',
+        bannerDiferencia: '¡LIVERPOOL POR +7.800 LUGARES!',
+        team1: {
+            id: 'liverpool',
+            nombre: 'LIVERPOOL FC',
+            estadio: 'Anfield',
+            apodo: 'The Kop',
+            capacidadNum: 61276,
+            capacidadTexto: '61.276 esp.',
+            escudoFile: 'liverpool.webp',
+            borderColor: '#c8102e',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Anfield_ Liverpool FC.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'mancity',
+            nombre: 'MANCHESTER CITY',
+            estadio: 'Etihad Stadium',
+            apodo: 'City of Manchester',
+            capacidadNum: 53400,
+            capacidadTexto: '53.400 esp.',
+            escudoFile: 'manchestercity.webp',
+            borderColor: '#6cabdd',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Etihad Stadium_ Manchester City.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO SUPREMO: ¿MANCHESTER CITY O LIVERPOOL? 🏟️🔥
+El choque más vibrante y disputado de la era moderna: el Etihad Stadium frente a Anfield Road. ¿Cuál de los dos colosos del fútbol inglés tiene mayor capacidad oficial? 😱
+
+👉 ¿Acertaste? Dejanos tu voto en los comentarios.
+🎮 Jugá gratis con canchas de todo el planeta en: estadiosvirtuales.com
+
+#ManCity #Liverpool #EtihadStadium #Anfield #Guardiola #PremierLeague #Estadios #EstadiosVirtuales`
+    },
+    'newcastle-sunderland': {
+        slug: 'NEWCASTLE-VS-SUNDERLAND',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Capacidad · Tyne-Wear Derby',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La rivalidad más caliente del norte inglés',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Newcastle_vs_Sunderland.mp4',
+        portadaFileName: 'Portada_Duelo_Newcastle_Sunderland.jpg',
+        bannerDiferencia: '¡NEWCASTLE POR +3.300 LUGARES!',
+        team1: {
+            id: 'newcastle',
+            nombre: 'NEWCASTLE UNITED',
+            estadio: 'St James’ Park',
+            apodo: 'The Magpies',
+            capacidadNum: 52305,
+            capacidadTexto: '52.305 esp.',
+            escudoFile: 'newcastle.webp',
+            borderColor: '#241f20',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\St James’ Park_ Newcastle.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'sunderland',
+            nombre: 'SUNDERLAND AFC',
+            estadio: 'Stadium of Light',
+            apodo: 'The Black Cats',
+            capacidadNum: 49000,
+            capacidadTexto: '49.000 esp.',
+            escudoFile: 'sunderland.webp',
+            borderColor: '#eb172b',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Estadio de Luz_ Sunderland AFC.mp4",
+            esGanador: false
+        },
+        copy: `🥊 TYNE-WEAR DERBY: ¿NEWCASTLE O SUNDERLAND? 🏟️🔥
+La rivalidad más feroz del norte de Inglaterra: St James' Park frente al Stadium of Light. Dos catedrales de alrededor de 50.000 asientos. ¿Cuál es más grande? 😱
+
+👉 ¿Pensabas que era al revés? Dejanos tu voto en comentarios.
+🎮 Poné a prueba tus conocimientos en: estadiosvirtuales.com
+
+#Newcastle #Sunderland #TyneWearDerby #StJamesPark #StadiumOfLight #PremierLeague #Championship #EstadiosVirtuales`
+    },
+    'westham-tottenham': {
+        slug: 'WEST-HAM-VS-TOTTENHAM',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Capacidad · Derbi de Londres',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: '¡Diferencia milimétrica de solo 350 asientos!',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_West_Ham_vs_Tottenham.mp4',
+        portadaFileName: 'Portada_Duelo_West_Ham_Tottenham.jpg',
+        bannerDiferencia: '¡TOTTENHAM POR SOLO 350 LUGARES!',
+        team1: {
+            id: 'tottenham',
+            nombre: 'TOTTENHAM HOTSPUR',
+            estadio: 'Tottenham Hotspur Stadium',
+            apodo: 'New White Hart Lane',
+            capacidadNum: 62850,
+            capacidadTexto: '62.850 esp.',
+            escudoFile: 'tottenham.webp',
+            borderColor: '#132257',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Tottenham Hotspur Stadium.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'westham',
+            nombre: 'WEST HAM UNITED',
+            estadio: 'London Stadium',
+            apodo: 'The Hammers',
+            capacidadNum: 62500,
+            capacidadTexto: '62.500 esp.',
+            escudoFile: 'westham.webp',
+            borderColor: '#7a263a',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\West Ham United Football Club.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DERBI DE LONDRES: ¿WEST HAM O TOTTENHAM? 🏟️🔥
+¡El duelo más parejo de la Premier League! El Estadio Olímpico de Londres frente a la joya arquitectónica del Tottenham. ¡Una diferencia de apenas 350 asientos! 😱
+
+👉 ¿Sabías este dato? Comentá abajo antes de la revelación.
+🎮 Adiviná estadios de todo el mundo gratis en: estadiosvirtuales.com
+
+#WestHam #Tottenham #LondonStadium #TottenhamHotspur #LondonDerby #PremierLeague #Estadios #EstadiosVirtuales`
+    },
+    'astonvilla-wolves': {
+        slug: 'ASTON-VILLA-VS-WOLVES',
+        pais: 'Inglaterra',
+        tituloBadge: '🥊 Duelo de Capacidad · West Midlands Derby',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La batalla de las Midlands Occidentales',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Aston_Villa_vs_Wolves.mp4',
+        portadaFileName: 'Portada_Duelo_Aston_Villa_Wolves.jpg',
+        bannerDiferencia: '¡ASTON VILLA POR +10.500 LUGARES!',
+        team1: {
+            id: 'astonvilla',
+            nombre: 'ASTON VILLA',
+            estadio: 'Villa Park',
+            apodo: 'The Villans',
+            capacidadNum: 42640,
+            capacidadTexto: '42.640 esp.',
+            escudoFile: 'astonvilla.webp',
+            borderColor: '#95bfe5',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Villa Park_ Aston Villa Football Club.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'wolves',
+            nombre: 'WOLVERHAMPTON',
+            estadio: 'Molineux Stadium',
+            apodo: 'The Wolves',
+            capacidadNum: 32050,
+            capacidadTexto: '32.050 esp.',
+            escudoFile: 'wolves.webp',
+            borderColor: '#fdb913',
+            videoPath: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Molineux Stadium_ Wolves.mp4",
+            esGanador: false
+        },
+        copy: `🥊 WEST MIDLANDS DERBY: ¿ASTON VILLA O WOLVES? 🏟️🔥
+Villa Park frente al Molineux Stadium en la tradicional batalla de las Midlands. ¿Cuál de los dos históricos de Inglaterra tiene mayor capacidad? 😱
+
+👉 Dejanos tu voto en los comentarios.
+🎮 Jugá la trivia diaria de canchas en el link del perfil: estadiosvirtuales.com
+
+#AstonVilla #Wolves #VillaPark #Molineux #PremierLeague #WestMidlands #Estadios #EstadiosVirtuales`
+    },
+
+    // ==========================================
+    // ITALIA (Nuevos 6 duelos)
+    // ==========================================
+    'juventus-torino': {
+        slug: 'JUVENTUS-VS-TORINO',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo de Capacidad · Derby della Mole',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico de Turín, el más antiguo de Italia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Juventus_vs_Torino.mp4',
+        portadaFileName: 'Portada_Duelo_Juventus_Torino.jpg',
+        bannerDiferencia: '¡JUVENTUS POR +13.300 LUGARES!',
+        team1: {
+            id: 'juventus',
+            nombre: 'JUVENTUS',
+            estadio: 'Allianz Stadium',
+            apodo: 'La Vecchia Signora',
+            capacidadNum: 41507,
+            capacidadTexto: '41.507 esp.',
+            escudoFile: 'juventus.webp',
+            borderColor: '#000000',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Juventus.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'torino',
+            nombre: 'TORINO FC',
+            estadio: 'Olimpico Grande Torino',
+            apodo: 'Il Toro',
+            capacidadNum: 28177,
+            capacidadTexto: '28.177 esp.',
+            escudoFile: 'torino.webp',
+            borderColor: '#8a1c22',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Olimpico Grande Torino Torino.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DERBY DELLA MOLE: ¿JUVENTUS O TORINO? 🏟️🔥
+El clásico de la ciudad de Turín: el moderno Allianz Stadium frente al histórico Stadio Olimpico Grande Torino. ¿Cuál de las dos canchas tiene mayor capacidad oficial? 😱
+
+👉 ¿Acertaste? Dejanos tu respuesta en comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en: estadiosvirtuales.com
+
+#Juventus #Torino #DerbyDellaMole #AllianzStadium #StadioOlimpicoGrandeTorino #SerieA #Estadios #EstadiosVirtuales`
+    },
+    'roma-napoli': {
+        slug: 'ROMA-VS-NAPOLI',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo de Capacidad · Derby del Sole',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El gran clásico del centro y sur de Italia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Roma_vs_Napoli.mp4',
+        portadaFileName: 'Portada_Duelo_Roma_Napoli.jpg',
+        bannerDiferencia: '¡ROMA POR +15.900 LUGARES!',
+        team1: {
+            id: 'roma',
+            nombre: 'AS ROMA',
+            estadio: 'Stadio Olimpico',
+            apodo: 'I Giallorossi',
+            capacidadNum: 70634,
+            capacidadTexto: '70.634 esp.',
+            escudoFile: 'roma.webp',
+            borderColor: '#8e1f2f',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Stadio Olimpico.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'napoli',
+            nombre: 'SSC NAPOLI',
+            estadio: 'Diego Armando Maradona',
+            apodo: 'Gli Azzurri',
+            capacidadNum: 54726,
+            capacidadTexto: '54.726 esp.',
+            escudoFile: 'napoli.webp',
+            borderColor: '#12a0d7',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Diego Armando Maradona_Napoli.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DERBY DEL SOLE: ¿AS ROMA O SSC NAPOLI? 🏟️🔥
+La gran rivalidad del centro y sur de Italia: el monumental Stadio Olimpico de Roma frente al mítico Diego Armando Maradona de Nápoles. ¿Cuál tiene más localidades? 😱
+
+👉 ¿Pensabas que era más parejo? Comentá tu voto abajo.
+🎮 Jugá gratis todas las trivias de estadios en: estadiosvirtuales.com
+
+#Roma #Napoli #DerbyDelSole #StadioOlimpico #DiegoArmandoMaradona #SerieA #Calcio #EstadiosVirtuales`
+    },
+    'milan-juventus': {
+        slug: 'MILAN-VS-JUVENTUS',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo de Gigantes · Serie A',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Los dos clubes más laureados de Italia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Milan_vs_Juventus.mp4',
+        portadaFileName: 'Portada_Duelo_Milan_Juventus.jpg',
+        bannerDiferencia: '¡MILAN POR +34.300 LUGARES!',
+        team1: {
+            id: 'milan',
+            nombre: 'AC MILAN',
+            estadio: 'San Siro',
+            apodo: 'La Scala del Calcio',
+            capacidadNum: 75817,
+            capacidadTexto: '75.817 esp.',
+            escudoFile: 'milan.webp',
+            borderColor: '#fb090b',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\San siro.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'juventus',
+            nombre: 'JUVENTUS',
+            estadio: 'Allianz Stadium',
+            apodo: 'La Vecchia Signora',
+            capacidadNum: 41507,
+            capacidadTexto: '41.507 esp.',
+            escudoFile: 'juventus.webp',
+            borderColor: '#000000',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Juventus.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAMPEONES: ¿AC MILAN O JUVENTUS? 🏟️🔥
+Los dos gigantes con más títulos de Italia cara a cara: San Siro de Milán frente al Allianz Stadium de Turín. ¿Sabías la impactante diferencia de aforo? 😱
+
+👉 ¿Acertaste? Dejanos tu comentario.
+🎮 Recorré estadios de todo el mundo en el link del perfil: estadiosvirtuales.com
+
+#ACMilan #Juventus #SanSiro #AllianzStadium #SerieA #Rossoneri #Bianconeri #EstadiosVirtuales`
+    },
+    'sansiro-olimpico': {
+        slug: 'SAN-SIRO-VS-STADIO-OLIMPICO',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo Supremo · Los 2 Colosos de Italia',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Milán vs Roma (Top 1 vs Top 2)',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_San_Siro_vs_Stadio_Olimpico.mp4',
+        portadaFileName: 'Portada_Duelo_San_Siro_Olimpico.jpg',
+        bannerDiferencia: '¡SAN SIRO POR +5.100 LUGARES!',
+        team1: {
+            id: 'sansiro',
+            nombre: 'SAN SIRO',
+            estadio: 'Giuseppe Meazza',
+            apodo: 'Milán',
+            capacidadNum: 75817,
+            capacidadTexto: '75.817 esp.',
+            escudoFile: 'inter.webp',
+            borderColor: '#0066b2',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\San siro.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'olimpico',
+            nombre: 'STADIO OLIMPICO',
+            estadio: 'Olimpico di Roma',
+            apodo: 'Roma',
+            capacidadNum: 70634,
+            capacidadTexto: '70.634 esp.',
+            escudoFile: 'roma.webp',
+            borderColor: '#8e1f2f',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Stadio Olimpico.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO SUPREMO: ¿SAN SIRO O STADIO OLIMPICO? 🏟️🔥
+Los dos estadios más grandes y emblemáticos del fútbol italiano. Milán vs Roma frente a frente. ¿Cuál de los dos colosos tiene mayor aforo oficial? 😱
+
+👉 ¿Sabías la diferencia o pensabas que ganaba Roma? Comentá abajo.
+🎮 Adiviná canchas de todo el planeta en: estadiosvirtuales.com
+
+#SanSiro #StadioOlimpico #Milan #Roma #SerieA #Calcio #Estadios #EstadiosVirtuales`
+    },
+    'napoli-juventus': {
+        slug: 'NAPOLI-VS-JUVENTUS',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo de Capacidad · Norte vs Sur',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La rivalidad más apasionada de Italia',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Napoli_vs_Juventus.mp4',
+        portadaFileName: 'Portada_Duelo_Napoli_Juventus.jpg',
+        bannerDiferencia: '¡NAPOLI POR +13.200 LUGARES!',
+        team1: {
+            id: 'napoli',
+            nombre: 'SSC NAPOLI',
+            estadio: 'Diego Armando Maradona',
+            apodo: 'Gli Azzurri',
+            capacidadNum: 54726,
+            capacidadTexto: '54.726 esp.',
+            escudoFile: 'napoli.webp',
+            borderColor: '#12a0d7',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Diego Armando Maradona_Napoli.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'juventus',
+            nombre: 'JUVENTUS',
+            estadio: 'Allianz Stadium',
+            apodo: 'La Vecchia Signora',
+            capacidadNum: 41507,
+            capacidadTexto: '41.507 esp.',
+            escudoFile: 'juventus.webp',
+            borderColor: '#000000',
+            videoPath: "E:\\Google earth studio\\Italia\\Subidos\\Juventus.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO NORTE VS SUR: ¿NAPOLI O JUVENTUS? 🏟️🔥
+La máxima rivalidad del fútbol italiano: el Diego Armando Maradona de Nápoles frente al Allianz Stadium de Turín. ¿Cuál tiene mayor capacidad de hinchas? 😱
+
+👉 ¿Acertaste o te sorprendió? Dejanos tu voto en los comentarios.
+🎮 Desafiate adivinando estadios en: estadiosvirtuales.com
+
+#Napoli #Juventus #DiegoArmandoMaradona #AllianzStadium #SerieA #Calcio #Estadios #EstadiosVirtuales`
+    },
+    'fiorentina-bologna': {
+        slug: 'FIORENTINA-VS-BOLOGNA',
+        pais: 'Italia',
+        tituloBadge: '🥊 Duelo de Capacidad · Derby dell’Appennino',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico de los Apeninos toscano-emiliano',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Fiorentina_vs_Bologna.mp4',
+        portadaFileName: 'Portada_Duelo_Fiorentina_Bologna.jpg',
+        bannerDiferencia: '¡FIORENTINA POR +4.800 LUGARES!',
+        team1: {
+            id: 'fiorentina',
+            nombre: 'ACF FIORENTINA',
+            estadio: 'Artemio Franchi',
+            apodo: 'La Viola',
+            capacidadNum: 43147,
+            capacidadTexto: '43.147 esp.',
+            escudoFile: 'fiorentina.webp',
+            borderColor: '#4f2d7f',
+            videoPath: "E:\\Google earth studio\\Italia\\Artemio Franchi Fiorentina.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'bologna',
+            nombre: 'BOLOGNA FC',
+            estadio: 'Renato Dall’Ara',
+            apodo: 'I Rossoblù',
+            capacidadNum: 38279,
+            capacidadTexto: '38.279 esp.',
+            escudoFile: 'bologna.webp',
+            borderColor: '#1a2b4c',
+            videoPath: "E:\\Google earth studio\\Italia\\Renato DallAra Bologna.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DERBY DELL’APPENNINO: ¿FIORENTINA O BOLOGNA? 🏟️🔥
+El choque tradicional que cruza los Apeninos: el Artemio Franchi de Florencia frente al histórico Renato Dall'Ara de Bolonia. ¿Cuál de los dos alberga más público? 😱
+
+👉 ¿Pensabas que era al revés? Dejanos tu voto en comentarios.
+🎮 Jugá la trivia diaria de canchas en el link de la bio: estadiosvirtuales.com
+
+#Fiorentina #Bologna #DerbyDellAppennino #ArtemioFranchi #RenatoDallAra #SerieA #EstadiosVirtuales`
     }
 };
 
@@ -2169,6 +3021,37 @@ async function renderizarDuelo(dueloKey) {
 // ==========================================
 async function main() {
     const target = process.argv[2] || 'bloque1';
+    const ESPANA_NUEVOS_KEYS = [
+        'athletic-sociedad',
+        'barcelona-espanyol',
+        'valencia-levante',
+        'oviedo-sporting',
+        'atletico-barcelona',
+        'valencia-villarreal',
+        'getafe-leganes'
+    ];
+    const INGLATERRA_NUEVOS_KEYS = [
+        'liverpool-everton',
+        'arsenal-chelsea',
+        'chelsea-tottenham',
+        'mancity-liverpool',
+        'newcastle-sunderland',
+        'westham-tottenham',
+        'astonvilla-wolves'
+    ];
+    const ITALIA_NUEVOS_KEYS = [
+        'juventus-torino',
+        'roma-napoli',
+        'milan-juventus',
+        'sansiro-olimpico',
+        'napoli-juventus',
+        'fiorentina-bologna'
+    ];
+    const EURO_KEYS = [
+        ...ESPANA_NUEVOS_KEYS,
+        ...INGLATERRA_NUEVOS_KEYS,
+        ...ITALIA_NUEVOS_KEYS
+    ];
     const BRASIL_KEYS = [
         'flamengo-vasco',
         'flamengo-botafogo',
@@ -2197,7 +3080,43 @@ async function main() {
         'allboys-atlanta'
     ];
 
-    if (target === 'brasil' || target === 'bra' || target === 'lote-brasil') {
+    if (target === 'espana' || target === 'esp' || target === 'lote-espana') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS ESPAÑA (${ESPANA_NUEVOS_KEYS.length} videos)...\n`);
+        for (let i = 0; i < ESPANA_NUEVOS_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${ESPANA_NUEVOS_KEYS.length}] PROCESANDO DUELO: ${ESPANA_NUEVOS_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(ESPANA_NUEVOS_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE ESPAÑA FINALIZADO CON ÉXITO!`);
+    } else if (target === 'inglaterra' || target === 'eng' || target === 'lote-inglaterra') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS INGLATERRA (${INGLATERRA_NUEVOS_KEYS.length} videos)...\n`);
+        for (let i = 0; i < INGLATERRA_NUEVOS_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${INGLATERRA_NUEVOS_KEYS.length}] PROCESANDO DUELO: ${INGLATERRA_NUEVOS_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(INGLATERRA_NUEVOS_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE INGLATERRA FINALIZADO CON ÉXITO!`);
+    } else if (target === 'italia' || target === 'ita' || target === 'lote-italia') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS ITALIA (${ITALIA_NUEVOS_KEYS.length} videos)...\n`);
+        for (let i = 0; i < ITALIA_NUEVOS_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${ITALIA_NUEVOS_KEYS.length}] PROCESANDO DUELO: ${ITALIA_NUEVOS_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(ITALIA_NUEVOS_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE ITALIA FINALIZADO CON ÉXITO!`);
+    } else if (target === 'euro' || target === 'europa' || target === 'todos-euro') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS EUROPA (${EURO_KEYS.length} videos)...\n`);
+        for (let i = 0; i < EURO_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${EURO_KEYS.length}] PROCESANDO DUELO: ${EURO_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(EURO_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE EUROPA (20 VIDEOS) FINALIZADO CON ÉXITO!`);
+    } else if (target === 'brasil' || target === 'bra' || target === 'lote-brasil') {
         console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS BRASIL (${BRASIL_KEYS.length} videos)...\n`);
         for (let i = 0; i < BRASIL_KEYS.length; i++) {
             console.log(`\n========================================================`);
