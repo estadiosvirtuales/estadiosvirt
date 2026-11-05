@@ -203,22 +203,15 @@ async function generarOverlaysPresentacion(assetsDir) {
             <div class="header-sub">16 Templos de América · 1 Solo Campeón</div>
         </div>
 
-        <div style="position:absolute; top:720px; left:50px; width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.97) 0%, rgba(8, 14, 24, 0.99) 100%); border:2.5px solid rgba(255, 215, 0, 0.8); border-radius:32px; padding:35px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.92), 0 0 40px rgba(255, 215, 0, 0.35);">
+        <div style="position:absolute; top:740px; left:50px; width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.97) 0%, rgba(8, 14, 24, 0.99) 100%); border:2.5px solid rgba(255, 215, 0, 0.8); border-radius:32px; padding:40px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.92), 0 0 40px rgba(255, 215, 0, 0.35);">
             <div style="display:inline-block; background:rgba(0, 230, 118, 0.15); border:1.5px solid #00e676; color:#00ff77; font-size:20px; font-weight:900; letter-spacing:2px; padding:6px 24px; border-radius:24px; text-transform:uppercase; margin-bottom:16px;">🔥 COMIENZA LA COMPETENCIA</div>
             
-            <div style="color:#ffffff; font-size:52px; font-weight:900; line-height:1.1; margin-bottom:14px; text-transform:uppercase; letter-spacing:-0.5px;">
+            <div style="color:#ffffff; font-size:52px; font-weight:900; line-height:1.1; margin-bottom:16px; text-transform:uppercase; letter-spacing:-0.5px;">
                 ¿CUÁL ES EL MEJOR ESTADIO DEL CONTINENTE?
             </div>
             
-            <div style="color:#ffd700; font-size:26px; font-weight:800; margin-bottom:20px;">
+            <div style="color:#ffd700; font-size:27px; font-weight:800;">
                 Votás vos en los comentarios de cada cruce 🗳️
-            </div>
-
-            <div style="display:flex; justify-content:center; gap:16px; margin-top:10px;">
-                <span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:8px 18px; border-radius:16px; color:#cbd5e1; font-size:18px; font-weight:800;">🇦🇷 Argentina</span>
-                <span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:8px 18px; border-radius:16px; color:#cbd5e1; font-size:18px; font-weight:800;">🇧🇷 Brasil</span>
-                <span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:8px 18px; border-radius:16px; color:#cbd5e1; font-size:18px; font-weight:800;">🇲🇽 México</span>
-                <span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); padding:8px 18px; border-radius:16px; color:#cbd5e1; font-size:18px; font-weight:800;">🇨🇱 Chile</span>
             </div>
         </div>
 
@@ -231,6 +224,7 @@ async function generarOverlaysPresentacion(assetsDir) {
 
     // ==========================================
     // OVERLAY 2: CRITERIOS DE VOTACIÓN (7s a 17s)
+    // El video central (y=656 a 1264) queda 100% libre y visible
     // ==========================================
     const htmlCriterios = getBaseHTML(`
         <div id="header-box">
@@ -239,46 +233,35 @@ async function generarOverlaysPresentacion(assetsDir) {
             <div class="header-sub">Analizá cada punto antes de dejar tu voto 🗳️</div>
         </div>
 
-        <div style="position:absolute; top:310px; left:50px; width:980px; display:flex; flex-direction:column; gap:18px;">
+        <!-- 4 Criterios ubicados debajo del video (top: 1290px), sin tapar la toma aérea -->
+        <div style="position:absolute; top:1290px; left:50px; width:980px; display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
             
             <!-- Criterio 1: Capacidad -->
-            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(0, 230, 118, 0.5); border-left:8px solid #00e676; border-radius:22px; padding:20px 26px; display:flex; align-items:center; gap:20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
-                <div style="width:68px; height:68px; border-radius:18px; background:rgba(0, 230, 118, 0.15); border:2px solid #00e676; display:flex; align-items:center; justify-content:center; font-size:36px;">👥</div>
-                <div style="flex:1;">
-                    <div style="color:#00ff77; font-size:28px; font-weight:900; letter-spacing:0.5px;">1. CAPACIDAD & CONVOCATORIA</div>
-                    <div style="color:#cbd5e1; font-size:19px; font-weight:600; line-height:1.2; margin-top:4px;">Aforo oficial de público y el impacto de llenar semejante coloso.</div>
-                </div>
+            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.97) 0%, rgba(8, 14, 24, 0.99) 100%); border:2px solid rgba(0, 230, 118, 0.5); border-left:7px solid #00e676; border-radius:20px; padding:16px 20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
+                <div style="color:#00ff77; font-size:22px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">1. CAPACIDAD</div>
+                <div style="color:#cbd5e1; font-size:16px; font-weight:600; line-height:1.25; margin-top:6px;">Aforo oficial y presión del público.</div>
             </div>
 
             <!-- Criterio 2: Estética -->
-            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(255, 215, 0, 0.5); border-left:8px solid #ffd700; border-radius:22px; padding:20px 26px; display:flex; align-items:center; gap:20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
-                <div style="width:68px; height:68px; border-radius:18px; background:rgba(255, 215, 0, 0.15); border:2px solid #ffd700; display:flex; align-items:center; justify-content:center; font-size:36px;">🎨</div>
-                <div style="flex:1;">
-                    <div style="color:#ffd700; font-size:28px; font-weight:900; letter-spacing:0.5px;">2. ESTÉTICA & VISTA AÉREA</div>
-                    <div style="color:#cbd5e1; font-size:19px; font-weight:600; line-height:1.2; margin-top:4px;">Belleza visual, armonía de colores y cómo luce la cancha desde el cielo.</div>
-                </div>
+            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.97) 0%, rgba(8, 14, 24, 0.99) 100%); border:2px solid rgba(255, 215, 0, 0.5); border-left:7px solid #ffd700; border-radius:20px; padding:16px 20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
+                <div style="color:#ffd700; font-size:22px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">2. ESTÉTICA</div>
+                <div style="color:#cbd5e1; font-size:16px; font-weight:600; line-height:1.25; margin-top:6px;">Belleza visual y vista desde el cielo.</div>
             </div>
 
             <!-- Criterio 3: Arquitectura -->
-            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(0, 176, 255, 0.5); border-left:8px solid #00b0ff; border-radius:22px; padding:20px 26px; display:flex; align-items:center; gap:20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
-                <div style="width:68px; height:68px; border-radius:18px; background:rgba(0, 176, 255, 0.15); border:2px solid #00b0ff; display:flex; align-items:center; justify-content:center; font-size:36px;">🏛️</div>
-                <div style="flex:1;">
-                    <div style="color:#00b0ff; font-size:28px; font-weight:900; letter-spacing:0.5px;">3. ARQUITECTURA & DISEÑO</div>
-                    <div style="color:#cbd5e1; font-size:19px; font-weight:600; line-height:1.2; margin-top:4px;">Estructura de tribunas, techos, innovación y valor histórico.</div>
-                </div>
+            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.97) 0%, rgba(8, 14, 24, 0.99) 100%); border:2px solid rgba(0, 176, 255, 0.5); border-left:7px solid #00b0ff; border-radius:20px; padding:16px 20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
+                <div style="color:#00b0ff; font-size:22px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">3. ARQUITECTURA</div>
+                <div style="color:#cbd5e1; font-size:16px; font-weight:600; line-height:1.25; margin-top:6px;">Historia, tribunas y estructura.</div>
             </div>
 
             <!-- Criterio 4: Acústica -->
-            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(255, 51, 68, 0.5); border-left:8px solid #ff3344; border-radius:22px; padding:20px 26px; display:flex; align-items:center; gap:20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
-                <div style="width:68px; height:68px; border-radius:18px; background:rgba(255, 51, 68, 0.15); border:2px solid #ff3344; display:flex; align-items:center; justify-content:center; font-size:36px;">🔊</div>
-                <div style="flex:1;">
-                    <div style="color:#ff3344; font-size:28px; font-weight:900; letter-spacing:0.5px;">4. ACÚSTICA & PRESIÓN DE CALDERA</div>
-                    <div style="color:#cbd5e1; font-size:19px; font-weight:600; line-height:1.2; margin-top:4px;">Mística, cercanía de tribunas y el eco ensordecedor de los cantos.</div>
-                </div>
+            <div style="background:linear-gradient(135deg, rgba(14, 26, 42, 0.97) 0%, rgba(8, 14, 24, 0.99) 100%); border:2px solid rgba(255, 51, 68, 0.5); border-left:7px solid #ff3344; border-radius:20px; padding:16px 20px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
+                <div style="color:#ff3344; font-size:22px; font-weight:900; letter-spacing:0.5px; text-transform:uppercase;">4. ACÚSTICA</div>
+                <div style="color:#cbd5e1; font-size:16px; font-weight:600; line-height:1.25; margin-top:6px;">Mística, caldera y eco del aliento.</div>
             </div>
         </div>
 
-        <div style="position:absolute; bottom:180px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:10px; background:linear-gradient(135deg, #ffd700 0%, #ff8800 100%); border:2px solid #ffffff; padding:12px 32px; border-radius:24px; color:#0b111e; font-size:22px; font-weight:900; box-shadow:0 10px 30px rgba(255,180,0,0.6); white-space:nowrap; text-transform:uppercase;">
+        <div style="position:absolute; bottom:160px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:10px; background:linear-gradient(135deg, #ffd700 0%, #ff8800 100%); border:2px solid #ffffff; padding:12px 32px; border-radius:24px; color:#0b111e; font-size:22px; font-weight:900; box-shadow:0 10px 30px rgba(255,180,0,0.6); white-space:nowrap; text-transform:uppercase;">
             <span>👉 A CONTINUACIÓN: EL CUADRO DE OCTAVOS</span>
         </div>
     `);
@@ -423,9 +406,8 @@ async function generarPortada(outFolder, bgFramePath) {
             .sub-title { color: #ffd700; font-size: 28px; font-weight: 800; }
 
             .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; margin: 15px 0; }
-            .feature-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%); border: 1.5px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.8); text-align: left; }
-            .feature-icon { font-size: 32px; }
-            .feature-text { color: #ffffff; font-size: 20px; font-weight: 800; }
+            .feature-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%); border: 1.5px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(0,0,0,0.8); text-align: center; }
+            .feature-text { color: #ffffff; font-size: 22px; font-weight: 900; letter-spacing: 0.5px; }
             
             .cta-card { width: 100%; background: linear-gradient(135deg, rgba(14, 26, 42, 0.95) 0%, rgba(8, 14, 24, 0.98) 100%); border: 2px solid rgba(255, 215, 0, 0.5); border-radius: 24px; padding: 18px; display: flex; align-items: center; justify-content: center; gap: 14px; box-shadow: 0 12px 30px rgba(0,0,0,0.8); }
             .cta-text { color: #ffd700; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -448,20 +430,16 @@ async function generarPortada(outFolder, bgFramePath) {
 
                 <div class="feature-grid">
                     <div class="feature-card">
-                        <span class="feature-icon">👥</span>
-                        <span class="feature-text">Capacidad</span>
+                        <span class="feature-text">1. CAPACIDAD</span>
                     </div>
                     <div class="feature-card">
-                        <span class="feature-icon">🎨</span>
-                        <span class="feature-text">Estética</span>
+                        <span class="feature-text">2. ESTÉTICA</span>
                     </div>
                     <div class="feature-card">
-                        <span class="feature-icon">🏛️</span>
-                        <span class="feature-text">Arquitectura</span>
+                        <span class="feature-text">3. ARQUITECTURA</span>
                     </div>
                     <div class="feature-card">
-                        <span class="feature-icon">🔊</span>
-                        <span class="feature-text">Acústica</span>
+                        <span class="feature-text">4. ACÚSTICA</span>
                     </div>
                 </div>
             </div>

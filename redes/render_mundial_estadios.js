@@ -387,20 +387,6 @@ const CONFIG_MUNDIAL = {
 
 #MundialDeEstadios #RiverPlate #ColoColo #Monumental #DavidArellano #FutbolSudamericano #EstadiosVirtuales`
     }
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (8/8) 🔥
-¡ÚLTIMO BOLETO A CUARTOS! El imponente Estadio Akron con su diseño volcánico se enfrenta a la historia y caldera del Monumental de Colo-Colo.
-
-🏟️ CRUCE 8:
-1️⃣ ESTADIO AKRON (Chivas · México)
-2️⃣ MONUMENTAL DAVID ARELLANO (Colo-Colo · Chile)
-
-👉 COMENTÁ "1" O "2" para clasificar al último integrante de los Cuartos de Final. 🗳️
-⚔️ El ganador se medirá ante el vencedor de Rosario Central vs Cruzeiro.
-
-🎮 Poné a prueba cuánto sabés en: estadiosvirtuales.com
-
-#MundialDeEstadios #Chivas #ColoColo #EstadioAkron #MonumentalColoColo #LigaMX #FutbolChileno #EstadiosVirtuales`
-    }
 };
 
 // ==========================================
