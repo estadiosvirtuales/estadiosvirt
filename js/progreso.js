@@ -358,8 +358,9 @@ async function verificarPremiosPendientes() {
                 rankingAyer.forEach(row => {
                     const n = (row.nombre || '').trim();
                     const p = row.puntaje || 0;
+                    if (!n) return;
                     const k = n.toLowerCase();
-                    if (k === 'bruja_test') return;
+                    if (k.includes('test') || k.includes('prueba')) return;
                     if (typeof esRegistroBot === 'function' && esRegistroBot(n, p)) return;
                     if (n && (!mejorPorJugador[k] || p > mejorPorJugador[k].puntaje)) {
                         mejorPorJugador[k] = { nombre: n, puntaje: p };

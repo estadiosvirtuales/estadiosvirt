@@ -46,8 +46,9 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
         (rankingRaw || []).forEach(row => {
             const n = (row.nombre || 'Anónimo').trim();
             const p = row.puntaje || 0;
+            if (!n || n === 'Anónimo') return;
             const clave = n.toLowerCase();
-            if (clave === 'bruja_test') return;
+            if (clave.includes('test') || clave.includes('prueba')) return;
             if (typeof esRegistroBot === 'function' && esRegistroBot(n, p)) return;
             if (!mejorPorJugador[clave] || p > mejorPorJugador[clave].puntaje) {
                 mejorPorJugador[clave] = { nombre: n, puntaje: p };

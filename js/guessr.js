@@ -2517,13 +2517,17 @@ function compartirRetoDiarioWordle() {
 
 // 🛡️ FILTRO DE INTEGRIDAD: Descarta registros de bots y pruebas históricas
 function esRegistroBot(nombre, puntaje) {
-    if (!nombre) return false;
+    if (!nombre) return true;
     const n = String(nombre).trim();
+    if (!n) return true;
     const p = Number(puntaje) || 0;
     const nLower = n.toLowerCase();
 
+    // 0. Cualquier nick de prueba o desarrollo
+    if (nLower.includes('test') || nLower.includes('prueba')) return true;
+
     // 1. Bots explícitos reportados y archivo histórico de pruebas
-    const botsExcluidos = ['bruja_test', 'pibe_241', 'capitan_174', 'capitan_494', 'dt_668', 'hincha_652', 'hincha_333', 'dt_744', 'capitan_739'];
+    const botsExcluidos = ['pibe_241', 'capitan_174', 'capitan_494', 'dt_668', 'hincha_652', 'hincha_333', 'dt_744', 'capitan_739'];
     if (botsExcluidos.includes(nLower)) return true;
 
     // 2. Patrón de nicks autogenerados de bots con puntajes anómalos o irreales
@@ -2875,7 +2879,10 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
             const { data: rankingRaw, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'historico' });
             if (error) throw error;
 
-            const rankingCompleto = (rankingRaw || []).filter(f => !esRegistroBot(f.nombre_jugador, f.victorias_acumuladas));
+            const rankingCompleto = (rankingRaw || []).filter(f => {
+                const nom = (f.nombre_jugador || '').trim();
+                return nom && !esRegistroBot(nom, f.victorias_acumuladas);
+            });
             const ranking = rankingCompleto.slice(0, 50); // ⚡ TOP 50
             const miPuestoIdx = rankingCompleto.findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
 
@@ -2947,7 +2954,10 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
             const { data: rankingRaw, error } = await supabaseClient.rpc('obtener_ranking_versus_global', { p_tipo: 'semanal' });
             if (error) throw error;
 
-            const rankingCompleto = (rankingRaw || []).filter(f => !esRegistroBot(f.nombre_jugador, f.victorias_acumuladas));
+            const rankingCompleto = (rankingRaw || []).filter(f => {
+                const nom = (f.nombre_jugador || '').trim();
+                return nom && !esRegistroBot(nom, f.victorias_acumuladas);
+            });
             const ranking = rankingCompleto.slice(0, 50); // ⚡ TOP 50
             const miIdx = rankingCompleto.findIndex(f => (f.nombre_jugador || '').trim().toLowerCase() === miNombre.toLowerCase());
             const miPuestoSemanal = miIdx !== -1 ? `#${miIdx + 1}` : 'Sin clasif.';
