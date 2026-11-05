@@ -1354,8 +1354,302 @@ Los dos estadios más impresionantes y tecnológicos de Estados Unidos para el M
 🎮 Jugá gratis en: estadiosvirtuales.com
 
 #SoFiStadium #ATTStadium #Dallas #LosAngeles #Mundial2026 #EstadiosVirtuales`
-    }
+    },
 
+    'flamengo-vasco': {
+        slug: 'FLAMENGO-VS-VASCO',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo de Capacidad · Clássico dos Milhões',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más popular de Río de Janeiro',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Flamengo_vs_Vasco.mp4',
+        portadaFileName: 'Portada_Duelo_Flamengo_Vasco.jpg',
+        bannerDiferencia: '¡FLAMENGO POR +56.900 LUGARES!',
+        team1: {
+            id: 'flamengo',
+            nombre: 'FLAMENGO',
+            estadio: 'Maracanã',
+            apodo: 'El Templo Sagrado',
+            capacidadNum: 78838,
+            capacidadTexto: '78.838 esp.',
+            escudoFile: 'Flamengo.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Maracaná.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'vasco',
+            nombre: 'VASCO DA GAMA',
+            estadio: 'São Januário',
+            apodo: 'Colina Histórica',
+            capacidadNum: 21880,
+            capacidadTexto: '21.880 esp.',
+            escudoFile: 'VascoGama.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Brasil\\Vasco Da Gama.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿FLAMENGO O VASCO DA GAMA? 🏟️🔥
+¿Sabías cuál de los dos estadios del emblemático Clássico dos Milhões tiene mayor capacidad oficial? ¡La diferencia entre el coloso de Río y la Colina Histórica es impactante! 😱
+
+👉 ¿Acertaste o pensabas que era diferente? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#Flamengo #VascoDaGama #ClassicoDosMilhoes #Maracana #SaoJanuario #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+    'flamengo-botafogo': {
+        slug: 'FLAMENGO-VS-BOTAFOGO',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo de Capacidad · Clássico da Rivalidade',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más antiguo de Río de Janeiro',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Flamengo_vs_Botafogo.mp4',
+        portadaFileName: 'Portada_Duelo_Flamengo_Botafogo.jpg',
+        bannerDiferencia: '¡FLAMENGO POR +34.100 LUGARES!',
+        team1: {
+            id: 'flamengo',
+            nombre: 'FLAMENGO',
+            estadio: 'Maracanã',
+            apodo: 'El Templo Sagrado',
+            capacidadNum: 78838,
+            capacidadTexto: '78.838 esp.',
+            escudoFile: 'Flamengo.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Maracaná.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'botafogo',
+            nombre: 'BOTAFOGO',
+            estadio: 'Nilton Santos',
+            apodo: 'Engenhão',
+            capacidadNum: 44661,
+            capacidadTexto: '44.661 esp.',
+            escudoFile: 'Botafogo.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Brasil\\Botafogo.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿FLAMENGO O BOTAFOGO? 🏟️🔥
+El Maracanã frente al Estadio Nilton Santos. ¿Cuál de estos dos grandes escenarios cariocas puede albergar más hinchas? 😱
+
+👉 Dejanos tu voto en los comentarios.
+🎮 Jugá la trivia diaria y recorré estadios de todo el mundo en el link del perfil: estadiosvirtuales.com
+
+#Flamengo #Botafogo #ClassicoDaRivalidade #Maracana #NiltonSantos #Engenhao #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+    'botafogo-vasco': {
+        slug: 'BOTAFOGO-VS-VASCO',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo de Capacidad · Clássico da Amizade',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Los dos reductos propios más tradicionales de Río',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Botafogo_vs_Vasco.mp4',
+        portadaFileName: 'Portada_Duelo_Botafogo_Vasco.jpg',
+        bannerDiferencia: '¡BOTAFOGO POR +22.700 LUGARES!',
+        team1: {
+            id: 'botafogo',
+            nombre: 'BOTAFOGO',
+            estadio: 'Nilton Santos',
+            apodo: 'Engenhão',
+            capacidadNum: 44661,
+            capacidadTexto: '44.661 esp.',
+            escudoFile: 'Botafogo.webp',
+            borderColor: '#000000',
+            videoPath: "E:\\Google earth studio\\Brasil\\Botafogo.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'vasco',
+            nombre: 'VASCO DA GAMA',
+            estadio: 'São Januário',
+            apodo: 'Colina Histórica',
+            capacidadNum: 21880,
+            capacidadTexto: '21.880 esp.',
+            escudoFile: 'VascoGama.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Brasil\\Vasco Da Gama.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿BOTAFOGO O VASCO DA GAMA? 🏟️🔥
+El Olímpico Nilton Santos frente al histórico São Januário. ¿Cuál de estas dos canchas tradicionales de Río de Janeiro tiene mayor capacidad? 😱
+
+👉 ¿Acertaste o te sorprendió? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de canchas en el link de la bio: estadiosvirtuales.com
+
+#Botafogo #VascoDaGama #ClassicoDaAmizade #NiltonSantos #SaoJanuario #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+    'maracana-morumbi': {
+        slug: 'MARACANA-VS-MORUMBI',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo Supremo · Los 2 Colosos de Brasil',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Río de Janeiro vs São Paulo',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Maracana_vs_Morumbi.mp4',
+        portadaFileName: 'Portada_Duelo_Maracana_Morumbi.jpg',
+        bannerDiferencia: '¡MARACANÃ POR +12.000 LUGARES!',
+        team1: {
+            id: 'maracana',
+            nombre: 'MARACANÃ',
+            estadio: 'Jornalista Mário Filho',
+            apodo: 'El Templo Mundialista',
+            capacidadNum: 78838,
+            capacidadTexto: '78.838 esp.',
+            escudoFile: 'Flamengo.webp',
+            borderColor: '#ffd700',
+            videoPath: "E:\\Google earth studio\\Brasil\\Maracaná.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'morumbi',
+            nombre: 'MORUMBI',
+            estadio: 'Cícero Pompeu de Toledo',
+            apodo: 'El Coloso Paulista',
+            capacidadNum: 66795,
+            capacidadTexto: '66.795 esp.',
+            escudoFile: 'SaoPaulo.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO SUPREMO: ¿EL MARACANÃ O EL MORUMBI? 🏟️🔥
+Los dos estadios más grandes y emblemáticos del fútbol brasileño frente a frente. ¿Cuál de los dos colosos tiene hoy mayor capacidad oficial de espectadores? 😱
+
+👉 ¿Sabías la diferencia o pensabas que era al revés? Dejanos tu respuesta en comentarios.
+🎮 Desafiate adivinando estadios en: estadiosvirtuales.com
+
+#Maracana #Morumbi #Brasil #RioDeJaneiro #SaoPaulo #Flamengo #SaoPauloFC #Estadios #EstadiosVirtuales`
+    },
+    'saopaulo-corinthians': {
+        slug: 'SAO-PAULO-VS-CORINTHIANS',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo de Capacidad · O Majestoso',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El clásico más imponente de São Paulo',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Sao_Paulo_vs_Corinthians.mp4',
+        portadaFileName: 'Portada_Duelo_Sao_Paulo_Corinthians.jpg',
+        bannerDiferencia: '¡SÃO PAULO POR +17.500 LUGARES!',
+        team1: {
+            id: 'saopaulo',
+            nombre: 'SÃO PAULO',
+            estadio: 'Morumbi',
+            apodo: 'El Coloso',
+            capacidadNum: 66795,
+            capacidadTexto: '66.795 esp.',
+            escudoFile: 'SaoPaulo.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'corinthians',
+            nombre: 'CORINTHIANS',
+            estadio: 'Neo Química Arena',
+            apodo: 'Itaquerão',
+            capacidadNum: 49205,
+            capacidadTexto: '49.205 esp.',
+            escudoFile: 'Corinthians.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Brasil\\Neo Química Arena_ Corinthians.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿SÃO PAULO O CORINTHIANS? 🏟️🔥
+El Morumbi frente a la moderna Neo Química Arena en el clásico 'Majestoso'. ¿Cuál de los dos recintos paulistas tiene mayor capacidad oficial? 😱
+
+👉 ¿Acertaste? Dejanos tu voto en comentarios.
+🎮 Jugá gratis todas las trivias de estadios en: estadiosvirtuales.com
+
+#SaoPaulo #Corinthians #Majestoso #Morumbi #NeoQuimicaArena #Tricolor #Timao #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+    'bahia-vitoria': {
+        slug: 'BAHIA-VS-VITORIA',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo de Capacidad · Clássico Ba-Vi',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'La mayor rivalidad del Nordeste brasileño',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Bahia_vs_Vitoria.mp4',
+        portadaFileName: 'Portada_Duelo_Bahia_Vitoria.jpg',
+        bannerDiferencia: '¡BAHIA POR +18.100 LUGARES!',
+        team1: {
+            id: 'bahia',
+            nombre: 'BAHIA',
+            estadio: 'Arena Fonte Nova',
+            apodo: 'El Gigante de Salvador',
+            capacidadNum: 48902,
+            capacidadTexto: '48.902 esp.',
+            escudoFile: 'Bahia.webp',
+            borderColor: '#004080',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Itaipava Arena Fonte Nova_ Esporte Clube Bahia.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'vitoria',
+            nombre: 'VITÓRIA',
+            estadio: 'Barradão',
+            apodo: 'Manoel Barradas',
+            capacidadNum: 30793,
+            capacidadTexto: '30.793 esp.',
+            escudoFile: 'Vitoria.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Barradão Vitória.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿BAHIA O VITÓRIA? 🏟️🔥
+El Clássico Ba-Vi, la pasión más encendida de Salvador de Bahía: la mundialista Arena Fonte Nova vs la caldera del Barradão. ¿Cuál es más grande? 😱
+
+👉 ¿Sabías la respuesta? Comentá abajo.
+🎮 Adiviná estadios de todo el mundo gratis en: estadiosvirtuales.com
+
+#Bahia #Vitoria #BaVi #ArenaFonteNova #Barradao #Salvador #Nordeste #Brasileirao #Estadios #EstadiosVirtuales`
+    },
+    'paranaense-coritiba': {
+        slug: 'PARANAENSE-VS-CORITIBA',
+        pais: 'Brasil',
+        tituloBadge: '🥊 Duelo de Capacidad · O Atletiba',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'El gran clásico de Curitiba (¡Diferencia mínima!)',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Paranaense_vs_Coritiba.mp4',
+        portadaFileName: 'Portada_Duelo_Paranaense_Coritiba.jpg',
+        bannerDiferencia: '¡ATHLETICO POR SOLO 1.868 LUGARES!',
+        team1: {
+            id: 'paranaense',
+            nombre: 'ATHLETICO PARANAENSE',
+            estadio: 'Ligga Arena',
+            apodo: 'Arena da Baixada',
+            capacidadNum: 42370,
+            capacidadTexto: '42.370 esp.',
+            escudoFile: 'Paranaense.webp',
+            borderColor: '#c60b1e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Arena da Baixada_ Atlético Paranaense.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'coritiba',
+            nombre: 'CORITIBA',
+            estadio: 'Couto Pereira',
+            apodo: 'Alto da Glória',
+            capacidadNum: 40502,
+            capacidadTexto: '40.502 esp.',
+            escudoFile: 'Coritiba.webp',
+            borderColor: '#009c3b',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Couto Pereira_ Coritiba Foot Ball Club.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿ATHLETICO PARANAENSE O CORITIBA? 🏟️🔥
+¡El clásico 'Atletiba' de Curitiba! Dos templos imponentes del fútbol brasileño con una diferencia de menos de 1.900 lugares. ¿Cuál tiene más capacidad oficial? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de canchas en: estadiosvirtuales.com
+
+#AthleticoParanaense #Coritiba #Atletiba #LiggaArena #CoutoPereira #Curitiba #Brasileirao #Estadios #EstadiosVirtuales`
+    }
 };
 
 // ==========================================
@@ -1875,6 +2169,15 @@ async function renderizarDuelo(dueloKey) {
 // ==========================================
 async function main() {
     const target = process.argv[2] || 'bloque1';
+    const BRASIL_KEYS = [
+        'flamengo-vasco',
+        'flamengo-botafogo',
+        'botafogo-vasco',
+        'maracana-morumbi',
+        'saopaulo-corinthians',
+        'bahia-vitoria',
+        'paranaense-coritiba'
+    ];
     const PREMIER_KEYS = ['man-united-man-city', 'tottenham-arsenal', 'man-united-liverpool'];
     const TOP5_KEYS = ['river-maracana', 'madrid-barca', 'corinthians-palmeiras', 'betis-sevilla', 'madrid-atleti'];
     const NUEVOS_INTERNACIONALES_KEYS = [
@@ -1894,7 +2197,16 @@ async function main() {
         'allboys-atlanta'
     ];
 
-    if (target === 'argentina' || target === 'arg' || target === 'lote-argentina') {
+    if (target === 'brasil' || target === 'bra' || target === 'lote-brasil') {
+        console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS BRASIL (${BRASIL_KEYS.length} videos)...\n`);
+        for (let i = 0; i < BRASIL_KEYS.length; i++) {
+            console.log(`\n========================================================`);
+            console.log(`🥊 [${i + 1}/${BRASIL_KEYS.length}] PROCESANDO DUELO: ${BRASIL_KEYS[i]}`);
+            console.log(`========================================================`);
+            await renderizarDuelo(BRASIL_KEYS[i]);
+        }
+        console.log(`\n🎉 ¡LOTE BRASIL FINALIZADO CON ÉXITO!`);
+    } else if (target === 'argentina' || target === 'arg' || target === 'lote-argentina') {
         console.log(`🚀 INICIANDO PRODUCCIÓN DE DUELOS ARGENTINA (${ARG_KEYS.length} videos)...\n`);
         for (let i = 0; i < ARG_KEYS.length; i++) {
             console.log(`\n========================================================`);
