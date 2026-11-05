@@ -269,52 +269,140 @@ async function generarOverlaysPresentacion(assetsDir) {
     await page.screenshot({ path: path.join(assetsDir, 'overlay_criterios.png'), omitBackground: true });
 
     // ==========================================
-    // OVERLAY 3: CUADRO OFICIAL DE OCTAVOS (17s a 27s)
+    // OVERLAY 3: CUADRO OFICIAL DE PLAYOFFS (17s a 27s)
+    // Árbol eliminatorio tipo llave de Copa Libertadores / Champions League
     // ==========================================
-    const renderMatchPill = (num, e1, n1, e2, n2) => `
-        <div style="background:rgba(255,255,255,0.06); border:1.5px solid rgba(255,255,255,0.18); border-radius:16px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
-            <div style="display:flex; align-items:center; gap:6px; flex:1;">
-                <img src="${e1}" style="width:28px;height:28px;object-fit:contain;">
-                <span style="color:#ffffff; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${n1}</span>
+    const renderMatchCard = (num, e1, n1, c1, e2, n2, c2, side = 'left', yPos) => {
+        const borderSide = side === 'left' ? 'border-left: 5px solid #00e676;' : 'border-right: 5px solid #ffd700;';
+        const badgeColor = side === 'left' ? '#00e676' : '#ffd700';
+        return `
+        <div style="position:absolute; top:${yPos}px; ${side === 'left' ? 'left:25px;' : 'right:25px;'} width:250px; height:92px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%); border:1.5px solid rgba(255,255,255,0.2); ${borderSide} border-radius:16px; padding:8px 12px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 10px 25px rgba(0,0,0,0.88); z-index:5;">
+            <!-- Equipo 1 -->
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${e1}" style="width:26px; height:26px; object-fit:contain; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.8));">
+                <span style="color:#ffffff; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1;">${n1}</span>
+                <span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:1px 5px; font-size:11px; font-weight:800; color:#94a3b8;">${c1}</span>
             </div>
-            <span style="background:rgba(255,215,0,0.2); color:#ffd700; border:1px solid #ffd700; border-radius:8px; font-size:11px; font-weight:900; padding:2px 6px;">VS</span>
-            <div style="display:flex; align-items:center; gap:6px; flex:1; justify-content:flex-end;">
-                <span style="color:#ffffff; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${n2}</span>
-                <img src="${e2}" style="width:28px;height:28px;object-fit:contain;">
+            <!-- Divisor con etiqueta del Cruce -->
+            <div style="height:1px; background:rgba(255,255,255,0.14); position:relative; margin:2px 0;">
+                <span style="position:absolute; top:-8px; ${side === 'left' ? 'right:8px;' : 'left:8px;'} background:#090f1a; color:${badgeColor}; font-size:10px; font-weight:900; padding:1px 6px; border-radius:6px; border:1px solid rgba(255,255,255,0.2);">CRUCE ${num}</span>
             </div>
+            <!-- Equipo 2 -->
+            <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${e2}" style="width:26px; height:26px; object-fit:contain; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.8));">
+                <span style="color:#ffffff; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1;">${n2}</span>
+                <span style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:1px 5px; font-size:11px; font-weight:800; color:#94a3b8;">${c2}</span>
+            </div>
+        </div>
+        `;
+    };
+
+    const renderStageNode = (text, x, y, width, height, borderColor, textColor) => `
+        <div style="position:absolute; left:${x}px; top:${y}px; width:${width}px; height:${height}px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%); border:1.8px solid ${borderColor}; border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,0.8); z-index:5;">
+            <span style="color:${textColor}; font-size:11px; font-weight:900; letter-spacing:0.6px; text-transform:uppercase;">${text}</span>
         </div>
     `;
 
+    const bY1 = 300, bY2 = 620, bY3 = 980, bY4 = 1300;
+    const bCY1 = bY1 + 46; // 346
+    const bCY2 = bY2 + 46; // 666
+    const bCY3 = bY3 + 46; // 1026
+    const bCY4 = bY4 + 46; // 1346
+    const bCYC1 = (bCY1 + bCY2) / 2; // 506
+    const bCYC2 = (bCY3 + bCY4) / 2; // 1186
+    const bCYSemi = (bCYC1 + bCYC2) / 2; // 846
+
     const htmlCuadro = getBaseHTML(`
+        <!-- HEADER -->
         <div id="header-box">
-            <div class="header-badge">FIXTURE OFICIAL · 16 CLUBS</div>
-            <div class="header-title">OCTAVOS DE FINAL</div>
-            <div class="header-sub">El camino hacia la Gran Final de América 🏆</div>
+            <div class="header-badge">FIXTURE OFICIAL · ELIMINATORIAS</div>
+            <div class="header-title">🏆 CUADRO DE PLAYOFFS 🏆</div>
+            <div class="header-sub">El camino hacia la Gran Final de América</div>
         </div>
 
-        <div style="position:absolute; top:280px; left:50px; width:980px; display:flex; gap:16px;">
-            
-            <!-- LLAVE A -->
-            <div style="flex:1; background:linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(0, 230, 118, 0.6); border-top:4px solid #00ff77; border-radius:24px; padding:16px; display:flex; flex-direction:column; gap:10px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
-                <div style="color:#00ff77; font-size:18px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; text-align:center;">🟢 LLAVE A</div>
-                ${renderMatchPill('1', escudos.boca, 'Boca Juniors', escudos.palmeiras, 'Palmeiras')}
-                ${renderMatchPill('2', escudos.saopaulo, 'São Paulo', escudos.atlas, 'Atlas FC')}
-                ${renderMatchPill('3', escudos.flamengo, 'Flamengo', escudos.independiente, 'Independiente')}
-                ${renderMatchPill('4', escudos.santos, 'Santos FC', escudos.pumas, 'Pumas UNAM')}
-            </div>
+        <!-- BARRA GUÍA DE FASES -->
+        <div style="position:absolute; top:230px; left:25px; right:25px; display:flex; justify-content:space-between; align-items:center; padding:8px 20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:14px;">
+            <span style="color:#00ff77; width:250px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">🟢 OCTAVOS (A)</span>
+            <span style="color:#00b0ff; width:70px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">CUARTOS</span>
+            <span style="color:#ffd700; width:130px; text-align:center; font-size:14px; font-weight:900; background:rgba(255,215,0,0.18); padding:4px 10px; border-radius:10px; border:1px solid #ffd700; text-transform:uppercase;">🏆 FINAL</span>
+            <span style="color:#00b0ff; width:70px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">CUARTOS</span>
+            <span style="color:#ffd700; width:250px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">🟡 OCTAVOS (B)</span>
+        </div>
 
-            <!-- LLAVE B -->
-            <div style="flex:1; background:linear-gradient(135deg, rgba(14, 26, 42, 0.96) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(255, 215, 0, 0.6); border-top:4px solid #ffd700; border-radius:24px; padding:16px; display:flex; flex-direction:column; gap:10px; box-shadow:0 12px 30px rgba(0,0,0,0.85);">
-                <div style="color:#ffd700; font-size:18px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; text-align:center;">🟡 LLAVE B</div>
-                ${renderMatchPill('5', escudos.america, 'Club América', escudos.cruzeiro, 'Cruzeiro')}
-                ${renderMatchPill('6', escudos.racing, 'Racing Club', escudos.corinthians, 'Corinthians')}
-                ${renderMatchPill('7', escudos.chivas, 'Chivas', escudos.central, 'Rosario Central')}
-                ${renderMatchPill('8', escudos.river, 'River Plate', escudos.colocolo, 'Colo-Colo')}
+        <!-- SVG DE LÍNEAS CONECTORAS DEL BRACKET -->
+        <svg style="position:absolute; top:0; left:0; width:1080px; height:1920px; z-index:2; pointer-events:none;">
+            <!-- LLAVE IZQUIERDA (LLAVE A) -->
+            <path d="M 275 ${bCY1} L 295 ${bCY1} L 295 ${bCY2} L 275 ${bCY2}" fill="none" stroke="rgba(0, 230, 118, 0.75)" stroke-width="2.5" />
+            <path d="M 295 ${bCYC1} L 315 ${bCYC1}" fill="none" stroke="rgba(0, 230, 118, 0.95)" stroke-width="2.5" />
+
+            <path d="M 275 ${bCY3} L 295 ${bCY3} L 295 ${bCY4} L 275 ${bCY4}" fill="none" stroke="rgba(0, 230, 118, 0.75)" stroke-width="2.5" />
+            <path d="M 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="rgba(0, 230, 118, 0.95)" stroke-width="2.5" />
+
+            <path d="M 385 ${bCYC1} L 398 ${bCYC1} L 398 ${bCYC2} L 385 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
+            <path d="M 398 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.95)" stroke-width="2.5" />
+
+            <path d="M 463 ${bCYSemi} L 475 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
+
+            <!-- LLAVE DERECHA (LLAVE B) -->
+            <path d="M 805 ${bCY1} L 785 ${bCY1} L 785 ${bCY2} L 805 ${bCY2}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
+            <path d="M 785 ${bCYC1} L 765 ${bCYC1}" fill="none" stroke="rgba(255, 215, 0, 0.95)" stroke-width="2.5" />
+
+            <path d="M 805 ${bCY3} L 785 ${bCY3} L 785 ${bCY4} L 805 ${bCY4}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
+            <path d="M 785 ${bCYC2} L 765 ${bCYC2}" fill="none" stroke="rgba(255, 215, 0, 0.95)" stroke-width="2.5" />
+
+            <path d="M 695 ${bCYC1} L 682 ${bCYC1} L 682 ${bCYC2} L 695 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
+            <path d="M 682 ${bCYSemi} L 672 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.95)" stroke-width="2.5" />
+
+            <path d="M 617 ${bCYSemi} L 605 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
+        </svg>
+
+        <!-- CRUCES DE OCTAVOS (IZQUIERDA) -->
+        ${renderMatchCard('1', escudos.boca, 'Boca Juniors', 'ARG', escudos.palmeiras, 'Palmeiras', 'BRA', 'left', bY1)}
+        ${renderMatchCard('2', escudos.saopaulo, 'São Paulo', 'BRA', escudos.atlas, 'Atlas FC', 'MEX', 'left', bY2)}
+        ${renderMatchCard('3', escudos.flamengo, 'Flamengo', 'BRA', escudos.independiente, 'Independiente', 'ARG', 'left', bY3)}
+        ${renderMatchCard('4', escudos.santos, 'Santos FC', 'BRA', escudos.pumas, 'Pumas UNAM', 'MEX', 'left', bY4)}
+
+        <!-- NODOS DE CUARTOS (IZQUIERDA) -->
+        ${renderStageNode('CUARTOS 1', 315, bCYC1 - 20, 70, 40, 'rgba(0,230,118,0.7)', '#00ff77')}
+        ${renderStageNode('CUARTOS 2', 315, bCYC2 - 20, 70, 40, 'rgba(0,230,118,0.7)', '#00ff77')}
+
+        <!-- NODO DE SEMIFINAL 1 (IZQUIERDA) -->
+        ${renderStageNode('SEMI 1', 408, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff')}
+
+        <!-- NODO CENTRAL: GRAN FINAL -->
+        <div style="position:absolute; left:475px; top:${bCYSemi - 115}px; width:130px; height:230px; background:linear-gradient(135deg, rgba(20, 32, 50, 0.99) 0%, rgba(9, 14, 23, 1) 100%); border:2.5px solid #ffd700; border-radius:24px; padding:14px 8px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; text-align:center; box-shadow:0 14px 40px rgba(0,0,0,0.92), 0 0 35px rgba(255,215,0,0.45); z-index:10;">
+            <div style="background:rgba(255,215,0,0.22); border:1px solid #ffd700; border-radius:8px; padding:2px 8px; color:#ffd700; font-size:11px; font-weight:900; letter-spacing:1px;">COPA</div>
+            <div style="font-size:56px; line-height:1; filter:drop-shadow(0 4px 12px rgba(255,215,0,0.7));">🏆</div>
+            <div>
+                <div style="color:#ffffff; font-size:13px; font-weight:900; line-height:1.15; text-transform:uppercase;">GRAN<br>FINAL</div>
+                <div style="color:#00ff77; font-size:10px; font-weight:900; margin-top:5px; letter-spacing:0.5px;">1 CAMPEÓN</div>
             </div>
         </div>
 
-        <div style="position:absolute; bottom:200px; left:50%; transform:translateX(-50%); width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.95) 0%, rgba(8, 14, 24, 0.98) 100%); border:2px solid rgba(255, 215, 0, 0.5); border-radius:20px; padding:14px; text-align:center; box-shadow:0 8px 25px rgba(0,0,0,0.85);">
-            <span style="color:#ffd700; font-size:21px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px;">🔥 Cada día se publica un cruce para votar en comentarios</span>
+        <!-- NODO DE SEMIFINAL 2 (DERECHA) -->
+        ${renderStageNode('SEMI 2', 617, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff')}
+
+        <!-- NODOS DE CUARTOS (DERECHA) -->
+        ${renderStageNode('CUARTOS 3', 695, bCYC1 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700')}
+        ${renderStageNode('CUARTOS 4', 695, bCYC2 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700')}
+
+        <!-- CRUCES DE OCTAVOS (DERECHA) -->
+        ${renderMatchCard('5', escudos.america, 'Club América', 'MEX', escudos.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1)}
+        ${renderMatchCard('6', escudos.racing, 'Racing Club', 'ARG', escudos.corinthians, 'Corinthians', 'BRA', 'right', bY2)}
+        ${renderMatchCard('7', escudos.chivas, 'Chivas', 'MEX', escudos.central, 'Rosario Central', 'ARG', 'right', bY3)}
+        ${renderMatchCard('8', escudos.river, 'River Plate', 'ARG', escudos.colocolo, 'Colo-Colo', 'CHI', 'right', bY4)}
+
+        <!-- BANNER DE INFO (y: 1480) -->
+        <div style="position:absolute; top:1480px; left:50%; transform:translateX(-50%); width:980px; background:rgba(14, 26, 42, 0.94); border:1.5px solid rgba(255,215,0,0.45); border-radius:18px; padding:12px 20px; display:flex; align-items:center; justify-content:center; gap:16px; box-shadow:0 8px 25px rgba(0,0,0,0.8);">
+            <span style="color:#00ff77; font-size:17px; font-weight:900;">🟢 LLAVE A</span>
+            <span style="color:#ffffff; font-size:15px; font-weight:700;">· 16 Estadios Legendarios de América ·</span>
+            <span style="color:#ffd700; font-size:17px; font-weight:900;">🟡 LLAVE B</span>
+        </div>
+
+        <!-- BOTÓN FOOTER COMUNIDAD (ELEVADO Y CLARO) -->
+        <div style="position:absolute; bottom:160px; left:50%; transform:translateX(-50%); width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%); border:2px solid #ffd700; border-radius:22px; padding:16px 24px; display:flex; align-items:center; justify-content:center; gap:12px; box-shadow:0 12px 35px rgba(0,0,0,0.9), 0 0 25px rgba(255,215,0,0.25);">
+            <span style="font-size:26px;">🗳️</span>
+            <span style="color:#ffd700; font-size:22px; font-weight:900; text-transform:uppercase; letter-spacing:0.8px;">VOTÁS EN COMENTARIOS QUIÉN AVANZA EN CADA CRUCE</span>
         </div>
     `);
     await page.setContent(htmlCuadro, { timeout: 5000 });
