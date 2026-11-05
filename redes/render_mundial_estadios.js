@@ -30,7 +30,7 @@ const CONFIG_MUNDIAL = {
             capacidadTexto: '57.200 esp.',
             escudoFile: 'Boca.webp',
             borderColor: '#0044cc',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\Boca 2.mp4"
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\La bombonera 3.mp4"
         },
         team2: {
             numero: '2',
@@ -199,30 +199,18 @@ const CONFIG_MUNDIAL = {
 #MundialDeEstadios #SantosFC #PumasUNAM #VilaBelmiro #OlimpicoUniversitario #LigaMX #Brasileirao #EstadiosVirtuales`
     },
     'octavos-5': {
-        slug: '05-RIVER-VS-AMERICA',
+        slug: '05-AMERICA-VS-CRUZEIRO',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 5 / 8',
         cruceSiguiente: 'Racing Club vs. Corinthians',
         tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 5/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
-        subtitulo: 'River Plate vs. Club América',
+        subtitulo: 'Club América vs. Cruzeiro',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_05_River_vs_America.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_05_River_America.jpg',
+        videoFileName: 'Mundial_Octavos_05_America_vs_Cruzeiro.mp4',
+        portadaFileName: 'Portada_Mundial_Octavos_05_America_Cruzeiro.jpg',
         team1: {
             numero: '1',
-            nombre: 'RIVER PLATE',
-            estadio: 'Mâs Monumental',
-            apodo: 'El Monumental Renovado',
-            ciudadPais: 'Buenos Aires, Argentina',
-            capacidadTexto: '84.567 esp.',
-            escudoFile: 'River.webp',
-            borderColor: '#ff2233',
-            customCrop: 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\River_Monumental_Renovado_16x9.mp4"
-        },
-        team2: {
-            numero: '2',
             nombre: 'CLUB AMÉRICA',
             estadio: 'Estadio Azteca',
             apodo: 'Coloso de Santa Úrsula',
@@ -232,25 +220,36 @@ const CONFIG_MUNDIAL = {
             borderColor: '#ffd700',
             videoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4"
         },
+        team2: {
+            numero: '2',
+            nombre: 'CRUZEIRO',
+            estadio: 'Governador Magalhães Pinto',
+            apodo: 'Estadio Mineirão',
+            ciudadPais: 'Belo Horizonte, Brasil',
+            capacidadTexto: '61.846 esp.',
+            escudoFile: 'cruzeiro.webp',
+            borderColor: '#004bb6',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4"
+        },
         copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (5/8) 🔥
-¡EL DUELO MÁS GIGANTE DEL CONTINENTE! Los dos estadios con más de 84.000 espectadores se cruzan en una batalla épica.
+¡Coloso mundialista vs templo brasileño! El histórico Estadio Azteca se mide al imponente Mineirão de Belo Horizonte por un lugar en Cuartos.
 
 🏟️ CRUCE 5:
-1️⃣ MÂS MONUMENTAL (River Plate · Argentina)
-2️⃣ ESTADIO AZTECA (Club América · México)
+1️⃣ ESTADIO AZTECA (Club América · México)
+2️⃣ ESTADIO MINEIRÃO (Cruzeiro · Brasil)
 
-👉 ¿Cuál es el mejor estadio de América? Comentá "1" o "2" para definir al clasificado a Cuartos. 🗳️
-⚔️ El ganador se medirá ante el vencedor de Racing vs Corinthians.
+👉 COMENTÁ "1" O "2" para darle tu voto al que debe avanzar de fase. 🗳️
+⚔️ El clasificado enfrentará al ganador del cruce Racing vs Corinthians.
 
-🎮 Poné a prueba cuánto sabés de canchas en: estadiosvirtuales.com
+🎮 Demostrá tus conocimientos de canchas en: estadiosvirtuales.com
 
-#MundialDeEstadios #RiverPlate #ClubAmerica #Monumental #EstadioAzteca #FutbolArgentino #LigaMX #EstadiosVirtuales`
+#MundialDeEstadios #ClubAmerica #Cruzeiro #EstadioAzteca #Mineirao #LigaMX #Brasileirao #EstadiosVirtuales`
     },
     'octavos-6': {
         slug: '06-RACING-VS-CORINTHIANS',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 6 / 8',
-        cruceSiguiente: 'River Plate vs. Club América',
+        cruceSiguiente: 'Club América vs. Cruzeiro',
         tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 6/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Racing Club vs. Corinthians',
@@ -287,70 +286,23 @@ const CONFIG_MUNDIAL = {
 2️⃣ NEO QUÍMICA ARENA (Corinthians · Brasil)
 
 👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Cuartos de Final. 🗳️
-⚔️ El clasificado enfrentará al ganador del cruce River vs América.
+⚔️ El clasificado enfrentará al ganador de América vs Cruzeiro.
 
 🎮 Jugá la trivia de estadios gratis en: estadiosvirtuales.com
 
 #MundialDeEstadios #RacingClub #Corinthians #ElCilindro #NeoQuimicaArena #Timao #LaAcademia #EstadiosVirtuales`
     },
     'octavos-7': {
-        slug: '07-ROSARIO-CENTRAL-VS-CRUZEIRO',
+        slug: '07-CHIVAS-VS-ROSARIO-CENTRAL',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 7 / 8',
-        cruceSiguiente: 'Chivas vs. Colo-Colo',
+        cruceSiguiente: 'River Plate vs. Colo-Colo',
         tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 7/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
-        subtitulo: 'Rosario Central vs. Cruzeiro',
+        subtitulo: 'Chivas de Guadalajara vs. Rosario Central',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_07_Rosario_Central_vs_Cruzeiro.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_07_Rosario_Central_Cruzeiro.jpg',
-        team1: {
-            numero: '1',
-            nombre: 'ROSARIO CENTRAL',
-            estadio: 'Gigante de Arroyito',
-            apodo: 'El Gigante',
-            ciudadPais: 'Rosario, Argentina',
-            capacidadTexto: '46.955 esp.',
-            escudoFile: 'Rosario Central.webp',
-            borderColor: '#ffc700',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Gigante(listo)x2\\gigante.mp4"
-        },
-        team2: {
-            numero: '2',
-            nombre: 'CRUZEIRO',
-            estadio: 'Governador Magalhães Pinto',
-            apodo: 'Estadio Mineirão',
-            ciudadPais: 'Belo Horizonte, Brasil',
-            capacidadTexto: '61.846 esp.',
-            escudoFile: 'cruzeiro.webp',
-            borderColor: '#004bb6',
-            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4"
-        },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (7/8) 🔥
-¡Presión y pasión sudamericana en estado puro! El ensordecedor Gigante de Arroyito frente al monumental Mineirão de Belo Horizonte.
-
-🏟️ CRUCE 7:
-1️⃣ GIGANTE DE ARROYITO (Rosario Central · Argentina)
-2️⃣ ESTADIO MINEIRÃO (Cruzeiro · Brasil)
-
-👉 COMENTÁ "1" O "2" para decidir quién avanza de fase. ¡Tu voto cuenta! 🗳️
-⚔️ El clasificado jugará contra el ganador de Chivas vs Colo-Colo.
-
-🎮 Desafiá cuánto sabés de canchas en: estadiosvirtuales.com
-
-#MundialDeEstadios #RosarioCentral #Cruzeiro #GiganteDeArroyito #Mineirao #FutbolArgentino #Brasileirao #EstadiosVirtuales`
-    },
-    'octavos-8': {
-        slug: '08-CHIVAS-VS-COLOCOLO',
-        fase: 'OCTAVOS DE FINAL',
-        llaveNumero: 'LLAVE 8 / 8',
-        cruceSiguiente: 'Rosario Central vs. Cruzeiro',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 8/8',
-        pregunta: '¿QUIÉN AVANZA A CUARTOS?',
-        subtitulo: 'Chivas de Guadalajara vs. Colo-Colo',
-        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_08_Chivas_vs_ColoColo.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_08_Chivas_ColoColo.jpg',
+        videoFileName: 'Mundial_Octavos_07_Chivas_vs_Rosario_Central.mp4',
+        portadaFileName: 'Portada_Mundial_Octavos_07_Chivas_Rosario_Central.jpg',
         team1: {
             numero: '1',
             nombre: 'CHIVAS DE GUADALAJARA',
@@ -364,6 +316,54 @@ const CONFIG_MUNDIAL = {
         },
         team2: {
             numero: '2',
+            nombre: 'ROSARIO CENTRAL',
+            estadio: 'Gigante de Arroyito',
+            apodo: 'El Gigante',
+            ciudadPais: 'Rosario, Argentina',
+            capacidadTexto: '46.955 esp.',
+            escudoFile: 'Rosario Central.webp',
+            borderColor: '#ffc700',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Gigante(listo)x2\\gigante.mp4"
+        },
+        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (7/8) 🔥
+¡Dos canchas que arden de pasión! La imponente arquitectura moderna del Estadio Akron frente a la caldera del Gigante de Arroyito.
+
+🏟️ CRUCE 7:
+1️⃣ ESTADIO AKRON (Chivas · México)
+2️⃣ GIGANTE DE ARROYITO (Rosario Central · Argentina)
+
+👉 COMENTÁ "1" O "2" para sumar tu voto al que merece pasar a Cuartos. 🗳️
+⚔️ El clasificado jugará contra el ganador del Duelo de Monumentales: River vs Colo-Colo.
+
+🎮 Desafiá cuánto sabés de canchas en: estadiosvirtuales.com
+
+#MundialDeEstadios #Chivas #RosarioCentral #EstadioAkron #GiganteDeArroyito #LigaMX #FutbolArgentino #EstadiosVirtuales`
+    },
+    'octavos-8': {
+        slug: '08-RIVER-VS-COLOCOLO',
+        fase: 'OCTAVOS DE FINAL',
+        llaveNumero: 'LLAVE 8 / 8',
+        cruceSiguiente: 'Chivas vs. Rosario Central',
+        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 8/8',
+        pregunta: '¿QUIÉN AVANZA A CUARTOS?',
+        subtitulo: 'River Plate vs. Colo-Colo',
+        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
+        videoFileName: 'Mundial_Octavos_08_River_vs_ColoColo.mp4',
+        portadaFileName: 'Portada_Mundial_Octavos_08_River_ColoColo.jpg',
+        team1: {
+            numero: '1',
+            nombre: 'RIVER PLATE',
+            estadio: 'Mâs Monumental',
+            apodo: 'El Monumental Renovado',
+            ciudadPais: 'Buenos Aires, Argentina',
+            capacidadTexto: '84.567 esp.',
+            escudoFile: 'River.webp',
+            borderColor: '#ff2233',
+            customCrop: 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\River_Monumental_Renovado_16x9.mp4"
+        },
+        team2: {
+            numero: '2',
             nombre: 'COLO-COLO',
             estadio: 'Monumental David Arellano',
             apodo: 'La Ruca',
@@ -373,6 +373,20 @@ const CONFIG_MUNDIAL = {
             borderColor: '#ffffff',
             videoPath: "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Monumental_ Club Social y Deportivo Colo-Colo.mp4"
         },
+        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (8/8) 🔥
+¡EL DUELO DE MONUMENTALES! El Mâs Monumental renovado de River Plate se enfrenta a La Ruca de Colo-Colo por el último boleto a Cuartos de Final.
+
+🏟️ CRUCE 8:
+1️⃣ MÂS MONUMENTAL (River Plate · Argentina)
+2️⃣ MONUMENTAL DAVID ARELLANO (Colo-Colo · Chile)
+
+👉 ¿Cuál de los dos Monumentales avanza a Cuartos? Comentá "1" o "2" abajo. 🗳️
+⚔️ El ganador se medirá ante el vencedor de Chivas vs Rosario Central.
+
+🎮 Poné a prueba cuánto sabés en: estadiosvirtuales.com
+
+#MundialDeEstadios #RiverPlate #ColoColo #Monumental #DavidArellano #FutbolSudamericano #EstadiosVirtuales`
+    }
         copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (8/8) 🔥
 ¡ÚLTIMO BOLETO A CUARTOS! El imponente Estadio Akron con su diseño volcánico se enfrenta a la historia y caldera del Monumental de Colo-Colo.
 
