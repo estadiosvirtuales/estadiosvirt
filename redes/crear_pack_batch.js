@@ -737,6 +737,15 @@ async function main() {
 
     if (arg === 'all' || arg === '--all') {
         queue = TRIVIAS_DATABASE.filter(s => s.id !== 'argentinos_diego_maradona');
+    } else if (arg === 'ultimos-5' || arg === 'cinco' || arg === '5-finales') {
+        const idsCinco = [
+            'renato_dallara_bologna',
+            'luigi_ferraris_genoa',
+            'pier_luigi_penzo_venezia',
+            'francisco_cabases_talleres',
+            'riestra_guillermo_laza'
+        ];
+        queue = TRIVIAS_DATABASE.filter(s => idsCinco.includes(s.id));
     } else if (arg === 'nacional-13' || arg === 'b-nacional' || arg === 'primera-nacional') {
         const idsNacional = [
             'all_boys_islas_malvinas',
