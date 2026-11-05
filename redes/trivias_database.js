@@ -4084,6 +4084,566 @@ const TRIVIAS_DATABASE = [
       "extraPista": "la cercanía increíble con el Nuevo Gasómetro, el ascenso a Primera y el reducto de Pompeya"
     }
   }
+,
+  {
+    "id": "all_boys_islas_malvinas",
+    "folderName": "Argentina\\Primera Nacional\\ALL-BOYS-ISLAS-MALVINAS",
+    "nombreMostrar": "ISLAS MALVINAS",
+    "clubMostrar": "CLUB ATLÉTICO ALL BOYS",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Islas_Malvinas_All_Boys.mp4",
+    "coverFileName": "Portada_Islas_Malvinas_All_Boys.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\All boys 2.mp4",
+    "targetLat": -34.6186,
+    "targetLng": -58.4894,
+    "userLat": -34.6204,
+    "userLng": -58.4912,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Floresta, CABA · ISLAS MALVINAS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 21.500 espectadores en el barrio porteño de Floresta.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⚽",
+        "tag": "PISTA 2:",
+        "text": "El Albo de Jonte y Mercedes, testigo de ascensos históricos a Primera.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🤍",
+        "tag": "PISTA 3:",
+        "text": "La casa del Club Atlético All Boys, fundada con su gloriosa tribuna Chivilcoy.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 21.500 espectadores · Barrio de Floresta · Mística del Albo",
+    "copys": {
+      "club": "CLUB ATLÉTICO ALL BOYS",
+      "paisHashtag": "#allboys #floresta #islasmalvinas #elalbo #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el corazón de Floresta, la mística de Jonte y Mercedes y la pasión del Albo"
+    }
+  },
+  {
+    "id": "almagro_tres_de_febrero",
+    "folderName": "Argentina\\Primera Nacional\\ALMAGRO-TRES-DE-FEBRERO",
+    "nombreMostrar": "TRES DE FEBRERO",
+    "clubMostrar": "CLUB ALMAGRO",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Tres_De_Febrero_Almagro.mp4",
+    "coverFileName": "Portada_Tres_De_Febrero_Almagro.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Almagro.mp4",
+    "targetLat": -34.6169,
+    "targetLng": -58.5375,
+    "userLat": -34.6187,
+    "userLng": -58.5393,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 José Ingenieros, Buenos Aires · TRES DE FEBRERO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 19.000 hinchas en la localidad de José Ingenieros.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🟦",
+        "tag": "PISTA 2:",
+        "text": "El estadio tricolor que vibró con memorables campañas en Primera División.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⚔️",
+        "tag": "PISTA 3:",
+        "text": "El hogar y fortaleza del Club Almagro a metros de la Avenida General Paz.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 19.000 hinchas · José Ingenieros · La casa del Tricolor",
+    "copys": {
+      "club": "CLUB ALMAGRO",
+      "paisHashtag": "#almagro #clubalmagro #tresdefebrero #joseingenieros #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el tricolor de José Ingenieros, las tardes de Primera y la pasión incondicional"
+    }
+  },
+  {
+    "id": "colegiales_libertarios_unidos",
+    "folderName": "Argentina\\Primera Nacional\\COLEGIALES-LIBERTARIOS-UNIDOS",
+    "nombreMostrar": "LIBERTARIOS UNIDOS",
+    "clubMostrar": "CLUB ATLÉTICO COLEGIALES",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Libertarios_Unidos_Colegiales.mp4",
+    "coverFileName": "Portada_Libertarios_Unidos_Colegiales.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Club atletico colegiales.mp4",
+    "targetLat": -34.5361,
+    "targetLng": -58.5147,
+    "userLat": -34.5379,
+    "userLng": -58.5165,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Munro, Vicente López · LIBERTARIOS UNIDOS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Estadio con capacidad para 8.500 personas en la esquina de Malaver y Posadas.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🚂",
+        "tag": "PISTA 2:",
+        "text": "Ubicado en Munro, bastión inexpugnable del fútbol de ascenso bonaerense.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 3:",
+        "text": "La emblemática cancha del Tricolor de Munro, el Club Atlético Colegiales.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Malaver y Posadas · Munro · Bastión histórico del ascenso",
+    "copys": {
+      "club": "CLUB ATLÉTICO COLEGIALES",
+      "paisHashtag": "#colegiales #munro #libertariosunidos #tricolor #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "la esquina de Malaver y Posadas, la fiesta de Munro y el ascenso a la Primera Nacional"
+    }
+  },
+  {
+    "id": "defensores_belgrano_juan_pasquale",
+    "folderName": "Argentina\\Primera Nacional\\DEFENSORES-BELGRANO-JUAN-PASQUALE",
+    "nombreMostrar": "JUAN PASQUALE",
+    "clubMostrar": "DEFENSORES DE BELGRANO",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Juan_Pasquale_Defensores_Belgrano.mp4",
+    "coverFileName": "Portada_Juan_Pasquale_Defensores_Belgrano.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Defensores de belgrano(listo)x2\\Defensores de Belgrano.mp4",
+    "targetLat": -34.5422,
+    "targetLng": -58.4558,
+    "userLat": -34.544,
+    "userLng": -58.4576,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Núñez, CABA · JUAN PASQUALE",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 9.000 hinchas en Comodoro Rivadavia y Libertador.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 2:",
+        "text": "El 'Nido del Dragón' en el barrio porteño de Núñez, a pocas cuadras del río.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🐉",
+        "tag": "PISTA 3:",
+        "text": "El templo histórico rojinegro del Club Atlético Defensores de Belgrano.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "El Nido del Dragón · Comodoro Rivadavia y Libertador · Núñez",
+    "copys": {
+      "club": "DEFENSORES DE BELGRANO",
+      "paisHashtag": "#defensoresdebelgrano #juanpasquale #eldragon #nuñez #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el Nido del Dragón en Núñez, la tradición del Bajo y el empuje de la hinchada rojinegra"
+    }
+  },
+  {
+    "id": "estudiantes_caseros_ciudad_caseros",
+    "folderName": "Argentina\\Primera Nacional\\ESTUDIANTES-CASEROS",
+    "nombreMostrar": "CIUDAD DE CASEROS",
+    "clubMostrar": "ESTUDIANTES DE CASEROS",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Ciudad_De_Caseros_Estudiantes.mp4",
+    "coverFileName": "Portada_Ciudad_De_Caseros_Estudiantes.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Estudiantes de Caseros.mp4",
+    "targetLat": -34.6056,
+    "targetLng": -58.5639,
+    "userLat": -34.6074,
+    "userLng": -58.5657,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Caseros, Tres de Febrero · CIUDAD DE CASEROS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 16.740 espectadores en Tres de Febrero.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⚪",
+        "tag": "PISTA 2:",
+        "text": "El coloso albinegro que albergó semifinales memorables de Copa Argentina.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🦁",
+        "tag": "PISTA 3:",
+        "text": "El reducto histórico del 'Pincha de Caseros', el Club Atlético Estudiantes.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 16.740 espectadores · Caseros · Templo del Pincha",
+    "copys": {
+      "club": "ESTUDIANTES DE CASEROS",
+      "paisHashtag": "#estudiantesdecaseros #pincha #ciudaddecaseros #tresdefebrero #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "las noches de gloria de Copa Argentina, la fiesta de Caseros y el sentimiento albinegro"
+    }
+  },
+  {
+    "id": "gimnasia_tiro_gigante_del_norte",
+    "folderName": "Argentina\\Primera Nacional\\GIMNASIA-TIRO-SALTA",
+    "nombreMostrar": "EL GIGANTE DEL NORTE",
+    "clubMostrar": "GIMNASIA Y TIRO DE SALTA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Gigante_Del_Norte_Gimnasia_Tiro.mp4",
+    "coverFileName": "Portada_Gigante_Del_Norte_Gimnasia_Tiro.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Gimnasia Salta(listo)x2\\Gigante del Norte 2.mp4",
+    "targetLat": -24.7831,
+    "targetLng": -65.4056,
+    "userLat": -24.7849,
+    "userLng": -65.4074,
+    "distanciaTexto": "270 METROS",
+    "puntosTexto": "4.890 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Salta Capital · EL GIGANTE DEL NORTE",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 24.300 hinchas, inaugurado en la década de 1920.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏔️",
+        "tag": "PISTA 2:",
+        "text": "Ubicado junto al Cerro San Bernardo, el estadio de club más grande de Salta.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🩵",
+        "tag": "PISTA 3:",
+        "text": "El histórico hogar del 'Albo' millonario de Gimnasia y Tiro de Salta.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 24.300 hinchas · Al pie del Cerro San Bernardo · Salta",
+    "copys": {
+      "club": "GIMNASIA Y TIRO DE SALTA",
+      "paisHashtag": "#gimnasiaytiro #salta #gigantedelnorte #elalbo #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "la vista postal del Cerro San Bernardo, las tardes de Primera y la pasión del Albo salteño"
+    }
+  },
+  {
+    "id": "racing_cordoba_miguel_sancho",
+    "folderName": "Argentina\\Primera Nacional\\RACING-CORDOBA-MIGUEL-SANCHO",
+    "nombreMostrar": "MIGUEL SANCHO",
+    "clubMostrar": "RACING DE CÓRDOBA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Miguel_Sancho_Racing_Cordoba.mp4",
+    "coverFileName": "Portada_Miguel_Sancho_Racing_Cordoba.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Racing de Córdoba\\Estadio Miguel Sancho_ Club Atlético Racing.mp4",
+    "targetLat": -31.3917,
+    "targetLng": -64.1506,
+    "userLat": -31.3935,
+    "userLng": -64.1524,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Barrio Nueva Italia, Córdoba · MIGUEL SANCHO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 18.000 espectadores en el tradicional barrio Nueva Italia.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🥈",
+        "tag": "PISTA 2:",
+        "text": "Cuna del glorioso subcampeón del Torneo Nacional 1980 de Primera División.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🎓",
+        "tag": "PISTA 3:",
+        "text": "La fortaleza albiceleste de 'La Academia' cordobesa, Racing de Córdoba.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Barrio Nueva Italia · Subcampeón Nacional 1980 · Córdoba",
+    "copys": {
+      "club": "RACING DE CÓRDOBA",
+      "paisHashtag": "#racingdecordoba #nuevaitalia #miguelsancho #laacademia #cordoba #primeranacional #stadiumguessr #estadios",
+      "extraPista": "la hazaña del subcampeonato Nacional de 1980, el misticismo de Nueva Italia y la pasión académica"
+    }
+  },
+  {
+    "id": "san_martin_sj_hilario_sanchez",
+    "folderName": "Argentina\\Primera Nacional\\SAN-MARTIN-SAN-JUAN",
+    "nombreMostrar": "HILARIO SÁNCHEZ",
+    "clubMostrar": "SAN MARTÍN DE SAN JUAN",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Hilario_Sanchez_San_Martin_SJ.mp4",
+    "coverFileName": "Portada_Hilario_Sanchez_San_Martin_SJ.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Estadio Hilario Sanchez San Juan.mp4",
+    "targetLat": -31.5175,
+    "targetLng": -68.5306,
+    "userLat": -31.5193,
+    "userLng": -68.5324,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Concepción, San Juan · HILARIO SÁNCHEZ",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 19.000 espectadores en el barrio de Concepción.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏜️",
+        "tag": "PISTA 2:",
+        "text": "El reducto cuyano donde cayeron varios de los cinco grandes del fútbol argentino.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🟢",
+        "tag": "PISTA 3:",
+        "text": "El fortín verdinegro del Club Atlético San Martín de San Juan.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 19.000 espectadores · Concepción · Fortín Cuyano",
+    "copys": {
+      "club": "SAN MARTÍN DE SAN JUAN",
+      "paisHashtag": "#sanmartinsj #hilariosanchez #sanjuan #elverdinegro #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el fervor cuyano en Concepción, las grandes victorias en Primera y el orgullo verdinegro"
+    }
+  },
+  {
+    "id": "san_martin_tucuman_la_ciudadela",
+    "folderName": "Argentina\\Primera Nacional\\SAN-MARTIN-TUCUMAN-CIUDADELA",
+    "nombreMostrar": "LA CIUDADELA",
+    "clubMostrar": "SAN MARTÍN DE TUCUMÁN",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_La_Ciudadela_San_Martin_Tucuman.mp4",
+    "coverFileName": "Portada_La_Ciudadela_San_Martin_Tucuman.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\San Martin de tucuman(listo)x2\\San Martin de Tucuman 25.mp4",
+    "targetLat": -26.8378,
+    "targetLng": -65.2319,
+    "userLat": -26.8396,
+    "userLng": -65.2337,
+    "distanciaTexto": "270 METROS",
+    "puntosTexto": "4.890 PUNTOS 🔥",
+    "ubicacionBadge": "📍 San Miguel de Tucumán · LA CIUDADELA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 30.250 hinchas, famosa por su atmósfera y acústica ensordecedora.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🔴",
+        "tag": "PISTA 2:",
+        "text": "Ubicado en Ciudadela, club que logró el histórico 6 a 1 a Boca en La Bombonera.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⚔️",
+        "tag": "PISTA 3:",
+        "text": "La caldera albirroja y templo sagrado de los 'Cirujas' de San Martín de Tucumán.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 30.250 hinchas · Caldera del Norte · San Miguel de Tucumán",
+    "copys": {
+      "club": "SAN MARTÍN DE TUCUMÁN",
+      "paisHashtag": "#sanmartintucuman #laciudadela #cirujas #tucuman #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "la fiesta más caliente del Norte argentino, el banderazo albirrojo y la leyenda de la Ciudadela"
+    }
+  },
+  {
+    "id": "san_telmo_osvaldo_baletto",
+    "folderName": "Argentina\\Primera Nacional\\SAN-TELMO-OSVALDO-BALETTO",
+    "nombreMostrar": "DR. OSVALDO BALETTO",
+    "clubMostrar": "CLUB ATLÉTICO SAN TELMO",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Osvaldo_Baletto_San_Telmo.mp4",
+    "coverFileName": "Portada_Osvaldo_Baletto_San_Telmo.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\San Telmo(listo)\\San Telmo.mp4",
+    "targetLat": -34.6417,
+    "targetLng": -58.3564,
+    "userLat": -34.6435,
+    "userLng": -58.3582,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Isla Maciel, Avellaneda · DR. OSVALDO BALETTO",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 10.000 espectadores a orillas del Riachuelo.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌊",
+        "tag": "PISTA 2:",
+        "text": "Ubicado en la emblemática Isla Maciel, una de las canchas con más identidad del país.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🔵",
+        "tag": "PISTA 3:",
+        "text": "La casa de los 'Candomberos' del Club Atlético San Telmo.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "A orillas del Riachuelo · La mística de la Isla Maciel · 10.000 hinchas",
+    "copys": {
+      "club": "CLUB ATLÉTICO SAN TELMO",
+      "paisHashtag": "#santelmo #islamaciel #candomberos #osvaldobaletto #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el puente Nicolás Avellaneda de fondo, la magia de la Isla Maciel y la pasión candombera"
+    }
+  },
+  {
+    "id": "san_miguel_malvinas_argentinas",
+    "folderName": "Argentina\\Primera Nacional\\SAN-MIGUEL-MALVINAS-ARGENTINAS",
+    "nombreMostrar": "MALVINAS ARGENTINAS",
+    "clubMostrar": "CLUB ATLÉTICO SAN MIGUEL",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Malvinas_Argentinas_San_Miguel.mp4",
+    "coverFileName": "Portada_Malvinas_Argentinas_San_Miguel.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\San Miguel(listo)x2\\San Miguel.mp4",
+    "targetLat": -34.5239,
+    "targetLng": -58.7058,
+    "userLat": -34.5257,
+    "userLng": -58.7076,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Los Polvorines, Buenos Aires · MALVINAS ARGENTINAS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Estadio con capacidad para más de 7.100 hinchas en Los Polvorines.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "⚡",
+        "tag": "PISTA 2:",
+        "text": "Famoso por su muro perimetral y el fervor incondicional en su tribuna olímpica.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🟢",
+        "tag": "PISTA 3:",
+        "text": "El reducto inexpugnable del 'Trueno Verde', el Club Atlético San Miguel.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Los Polvorines · El Templo del Trueno Verde · Mística del conurbano",
+    "copys": {
+      "club": "CLUB ATLÉTICO SAN MIGUEL",
+      "paisHashtag": "#sanmiguel #truenoverde #lospolvorines #malvinasargentinas #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el rugido del Trueno Verde en Los Polvorines, las banderas verdes y blancas y la fiesta del ascenso"
+    }
+  },
+  {
+    "id": "central_norte_padre_martearena",
+    "folderName": "Argentina\\Primera Nacional\\CENTRAL-NORTE-SALTA",
+    "nombreMostrar": "PADRE ERNESTO MARTEARENA",
+    "clubMostrar": "CENTRAL NORTE DE SALTA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Padre_Martearena_Central_Norte.mp4",
+    "coverFileName": "Portada_Padre_Martearena_Central_Norte.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque A\\Central norte salta.mp4",
+    "targetLat": -24.8197,
+    "targetLng": -65.4344,
+    "userLat": -24.8215,
+    "userLng": -65.4362,
+    "distanciaTexto": "270 METROS",
+    "puntosTexto": "4.890 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Salta Capital · PADRE MARTEARENA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 20.400 hinchas, sede de la Copa América 2011 y Copa Argentina.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏟️",
+        "tag": "PISTA 2:",
+        "text": "El estadio provincial donde se reúne la multitudinaria hinchada del Cuervo salteño.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⚫",
+        "tag": "PISTA 3:",
+        "text": "El gran escenario de las victorias del Club Atlético Central Norte de Salta.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 20.400 hinchas · Sede Copa América 2011 · Salta",
+    "copys": {
+      "club": "CENTRAL NORTE DE SALTA",
+      "paisHashtag": "#centralnorte #salta #padremartearena #elcuervo #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "el gran Martearena colmado por la marea azabache y el festejo del Cuervo salteño"
+    }
+  },
+  {
+    "id": "acassuso_la_quema",
+    "folderName": "Argentina\\Primera Nacional\\ACASSUSO-LA-QUEMA",
+    "nombreMostrar": "LA QUEMA",
+    "clubMostrar": "CLUB ATLÉTICO ACASSUSO",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_La_Quema_Acassuso.mp4",
+    "coverFileName": "Portada_La_Quema_Acassuso.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Estadio La Quema_ Acassuso.mp4",
+    "targetLat": -34.4989,
+    "targetLng": -58.5522,
+    "userLat": -34.5007,
+    "userLng": -58.554,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Boulogne Sur Mer, San Isidro · LA QUEMA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Cancha histórica y predio deportivo del club en Boulogne Sur Mer.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🌿",
+        "tag": "PISTA 2:",
+        "text": "Ubicado en el partido de San Isidro, tradicional baluarte de la zona norte bonaerense.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🟦",
+        "tag": "PISTA 3:",
+        "text": "El hogar de los 'Quemeros' del Club Atlético Acassuso.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "San Isidro · Boulogne Sur Mer · Tradición de la Zona Norte",
+    "copys": {
+      "club": "CLUB ATLÉTICO ACASSUSO",
+      "paisHashtag": "#acassuso #laquema #sanisidro #boulognesurmer #futbolargentino #primeranacional #stadiumguessr #estadios",
+      "extraPista": "la tradición de Boulogne Sur Mer, el azul y blanco de San Isidro y el corazón quemero"
+    }
+  }
 ];
 
 module.exports = { TRIVIAS_DATABASE };
