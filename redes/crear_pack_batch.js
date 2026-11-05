@@ -737,6 +737,23 @@ async function main() {
 
     if (arg === 'all' || arg === '--all') {
         queue = TRIVIAS_DATABASE.filter(s => s.id !== 'argentinos_diego_maradona');
+    } else if (arg === 'nacional-13' || arg === 'b-nacional' || arg === 'primera-nacional') {
+        const idsNacional = [
+            'all_boys_islas_malvinas',
+            'almagro_tres_de_febrero',
+            'colegiales_libertarios_unidos',
+            'defensores_belgrano_juan_pasquale',
+            'estudiantes_caseros_ciudad_caseros',
+            'gimnasia_tiro_gigante_del_norte',
+            'racing_cordoba_miguel_sancho',
+            'san_martin_sj_hilario_sanchez',
+            'san_martin_tucuman_la_ciudadela',
+            'san_telmo_osvaldo_baletto',
+            'san_miguel_malvinas_argentinas',
+            'central_norte_padre_martearena',
+            'acassuso_la_quema'
+        ];
+        queue = TRIVIAS_DATABASE.filter(s => idsNacional.includes(s.id));
     } else if (arg === 'sin-spoilers' || arg === '--sin-spoilers' || arg === 'spoilers') {
         const idsSinSpoilers = [
             'allianz_arena',
