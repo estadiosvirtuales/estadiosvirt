@@ -2523,7 +2523,8 @@ function esRegistroBot(nombre, puntaje) {
     const p = Number(puntaje) || 0;
     const nLower = n.toLowerCase();
 
-    // 0. Cualquier nick de prueba o desarrollo
+    // 0. Cualquier nick anónimo, sin nombre o de prueba
+    if (nLower === 'anónimo' || nLower === 'anonimo') return true;
     if (nLower.includes('test') || nLower.includes('prueba')) return true;
 
     // 1. Bots explícitos reportados y archivo histórico de pruebas
@@ -2622,7 +2623,8 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
 
             const mejorPorJugador = {};
             (rankingRaw || []).forEach(row => {
-                const n = (row.nombre || 'Anónimo').trim();
+                const n = (row.nombre || '').trim();
+                if (!n || n.toLowerCase() === 'anónimo' || n.toLowerCase() === 'anonimo') return;
                 const p = row.puntaje || 0;
                 if (esRegistroBot(n, p)) return;
                 const clave = n.toLowerCase();
@@ -2720,7 +2722,8 @@ async function abrirModalRanking(modoEspecifico = 'solo', subDificultad = null) 
 
             const mejorPorJugador = {};
             (rankingRaw || []).forEach(row => {
-                const n = (row.nombre || 'Anónimo').trim();
+                const n = (row.nombre || '').trim();
+                if (!n || n.toLowerCase() === 'anónimo' || n.toLowerCase() === 'anonimo') return;
                 const p = row.puntaje || 0;
                 if (esRegistroBot(n, p)) return;
                 const clave = n.toLowerCase();
@@ -4604,7 +4607,8 @@ async function abrirModalLigaAmigosPrivada() {
         // 🧹 Agrupamos sin distinción de mayúsculas/minúsculas y conservamos el puntaje récord
         const mejorPorIntegrante = {};
         (data || []).forEach(row => {
-            const n = (row.nombre || 'Anónimo').trim();
+            const n = (row.nombre || '').trim();
+            if (!n || n.toLowerCase() === 'anónimo' || n.toLowerCase() === 'anonimo') return;
             const p = row.puntaje || 0;
             if (typeof esRegistroBot === 'function' && esRegistroBot(n, p)) return;
             const clave = n.toLowerCase();

@@ -44,9 +44,9 @@ async function abrirModalRankingOrden(modo = 'capacidad') {
 
         const mejorPorJugador = {};
         (rankingRaw || []).forEach(row => {
-            const n = (row.nombre || 'Anónimo').trim();
+            const n = (row.nombre || '').trim();
             const p = row.puntaje || 0;
-            if (!n || n === 'Anónimo') return;
+            if (!n || n.toLowerCase() === 'anónimo' || n.toLowerCase() === 'anonimo') return;
             const clave = n.toLowerCase();
             if (clave.includes('test') || clave.includes('prueba')) return;
             if (typeof esRegistroBot === 'function' && esRegistroBot(n, p)) return;
