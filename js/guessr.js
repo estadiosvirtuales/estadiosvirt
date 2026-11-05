@@ -2515,18 +2515,15 @@ function compartirRetoDiarioWordle() {
     }
 }
 
-// 🛡️ FILTRO DE INTEGRIDAD: Descarta registros de bots y cuentas de desarrollo personal de rankings públicos
+// 🛡️ FILTRO DE INTEGRIDAD: Descarta registros de bots y pruebas históricas
 function esRegistroBot(nombre, puntaje) {
     if (!nombre) return false;
     const n = String(nombre).trim();
     const p = Number(puntaje) || 0;
     const nLower = n.toLowerCase();
 
-    // 0. Cuenta personal de administración / desarrollo (se preserva todo su progreso en la base de datos pero no se muestra en rankings públicos)
-    if (nLower === 'bruja') return true;
-
-    // 1. Bots explícitos reportados de grabaciones/pruebas pasadas
-    const botsExcluidos = ['pibe_241', 'capitan_174', 'capitan_494', 'dt_668', 'hincha_652', 'hincha_333', 'dt_744', 'capitan_739'];
+    // 1. Bots explícitos reportados y archivo histórico de pruebas
+    const botsExcluidos = ['bruja_test', 'pibe_241', 'capitan_174', 'capitan_494', 'dt_668', 'hincha_652', 'hincha_333', 'dt_744', 'capitan_739'];
     if (botsExcluidos.includes(nLower)) return true;
 
     // 2. Patrón de nicks autogenerados de bots con puntajes anómalos o irreales
