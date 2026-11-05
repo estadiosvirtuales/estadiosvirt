@@ -3287,7 +3287,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 34.000 hinchas pegado a la Avenida General Paz.",
+        "text": "Capacidad para 30.000 hinchas pegado a la Avenida General Paz.",
         "color": "#00ff77"
       },
       {
@@ -3299,7 +3299,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "El estadio de Platense en Zufriategui 2021, Florida.",
+        "text": "La emblemática cancha de Zufriategui 2021, a pasos de la Panamericana y General Paz.",
         "color": "#ffd700"
       }
     ],
