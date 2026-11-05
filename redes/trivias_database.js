@@ -3997,6 +3997,92 @@ const TRIVIAS_DATABASE = [
       "paisHashtag": "#talleres #talleresdecordoba #laboutique #barriojardin #cordoba #futbolargentino #stadiumguessr #estadios",
       "extraPista": "la elegancia art decó de Barrio Jardín, la historia de la Boutique y la pasión albiazul"
     }
+  },
+  {
+    "id": "velez_jose_amalfitani",
+    "folderName": "Argentina\\Primera División\\VELEZ-JOSE-AMALFITANI",
+    "nombreMostrar": "JOSÉ AMALFITANI",
+    "clubMostrar": "VÉLEZ SARSFIELD",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Jose_Amalfitani_Velez.mp4",
+    "coverFileName": "Portada_Jose_Amalfitani_Velez.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\velez.mp4",
+    "targetLat": -34.6354,
+    "targetLng": -58.5207,
+    "userLat": -34.6372,
+    "userLng": -58.5225,
+    "distanciaTexto": "260 METROS",
+    "puntosTexto": "4.910 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Liniers, CABA · JOSÉ AMALFITANI",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 49.540 hinchas, sede del Mundial 78 y recitales míticos.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🛡️",
+        "tag": "PISTA 2:",
+        "text": "Conocido como 'El Fortín', cuna del campeón del mundo de 1994.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "💙",
+        "tag": "PISTA 3:",
+        "text": "El templo de la 'V' azulada de Vélez Sarsfield en el barrio de Liniers.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad 49.540 espectadores · Sede Mundial 78 · Mística de Liniers",
+    "copys": {
+      "club": "VÉLEZ SARSFIELD",
+      "paisHashtag": "#velez #velezsarsfield #joseamalfitani #elfortin #liniers #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "el campeón del mundo de 1994, la acústica imponente de Liniers y la gloria del Fortín"
+    }
+  },
+  {
+    "id": "riestra_guillermo_laza",
+    "folderName": "Argentina\\Primera División\\RIESTRA-GUILLERMO-LAZA",
+    "nombreMostrar": "GUILLERMO LAZA",
+    "clubMostrar": "DEPORTIVO RIESTRA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Guillermo_Laza_Riestra.mp4",
+    "coverFileName": "Portada_Guillermo_Laza_Riestra.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\riestra.mp4",
+    "targetLat": -34.6547,
+    "targetLng": -58.4419,
+    "userLat": -34.6565,
+    "userLng": -58.4435,
+    "distanciaTexto": "250 METROS",
+    "puntosTexto": "4.930 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Villa Soldati, CABA · GUILLERMO LAZA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Estadio con capacidad para 3.200 hinchas, uno de los más particulares de Primera.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏟️",
+        "tag": "PISTA 2:",
+        "text": "Ubicado a escasos metros del Nuevo Gasómetro de San Lorenzo en el Bajo Flores.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⚡",
+        "tag": "PISTA 3:",
+        "text": "La casa de los 'Malevos de Pompeya' del Club Deportivo Riestra.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Capacidad para 3.200 hinchas · Frente al Nuevo Gasómetro · Singularidad total",
+    "copys": {
+      "club": "DEPORTIVO RIESTRA",
+      "paisHashtag": "#deportivoriestra #riestra #guillermolaza #malevos #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "la cercanía increíble con el Nuevo Gasómetro, el ascenso a Primera y el reducto de Pompeya"
+    }
   }
 ];
 
