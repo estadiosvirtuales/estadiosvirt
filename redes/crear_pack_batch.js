@@ -737,6 +737,49 @@ async function main() {
 
     if (arg === 'all' || arg === '--all') {
         queue = TRIVIAS_DATABASE.filter(s => s.id !== 'argentinos_diego_maradona');
+    } else if (arg === 'sin-spoilers' || arg === '--sin-spoilers' || arg === 'spoilers') {
+        const idsSinSpoilers = [
+            'allianz_arena',
+            'benito_villamarin_betis',
+            'vila_belmiro_santos',
+            'portugal_estadio_da_luz',
+            'holanda_de_kuip_feyenoord',
+            'bmo_stadium_lafc',
+            'yankee_stadium_nycfc',
+            'red_bull_arena_ny',
+            'lumen_field_seattle',
+            'q2_stadium_austin',
+            'providence_park_portland',
+            'mario_alberto_kempes_talleres',
+            'gigante_de_alberdi_belgrano',
+            'coliseo_de_victoria_tigre',
+            'norberto_tomaghello_defensa',
+            'feliciano_gambarte_godoy_cruz',
+            'claro_arena_universidad_catolica',
+            'estadio_sausalito_everton',
+            'el_teniente_ohiggins',
+            'renato_dallara_bologna',
+            'luigi_ferraris_genoa',
+            'pier_luigi_penzo_venezia',
+            'jose_maria_minella_aldosivi',
+            'francisco_cabases_talleres',
+            'riestra_guillermo_laza',
+            'all_boys_islas_malvinas',
+            'almagro_tres_de_febrero',
+            'colegiales_libertarios_unidos',
+            'defensores_belgrano_juan_pasquale',
+            'estudiantes_caseros_ciudad_caseros',
+            'gimnasia_tiro_gigante_del_norte',
+            'racing_cordoba_miguel_sancho',
+            'san_martin_sj_hilario_sanchez',
+            'san_martin_tucuman_la_ciudadela',
+            'san_telmo_osvaldo_baletto',
+            'san_miguel_malvinas_argentinas',
+            'central_norte_padre_martearena',
+            'acassuso_la_quema',
+            'mineirao_belo_horizonte'
+        ];
+        queue = TRIVIAS_DATABASE.filter(s => idsSinSpoilers.includes(s.id));
     } else if (arg === 'nuevos' || arg === '--nuevos') {
         const idsNuevos = [
             'mexico_estadio_akron',
