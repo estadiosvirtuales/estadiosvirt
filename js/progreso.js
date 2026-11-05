@@ -359,6 +359,8 @@ async function verificarPremiosPendientes() {
                     const n = (row.nombre || '').trim();
                     const p = row.puntaje || 0;
                     const k = n.toLowerCase();
+                    if (k === 'bruja') return;
+                    if (typeof esRegistroBot === 'function' && esRegistroBot(n, p)) return;
                     if (n && (!mejorPorJugador[k] || p > mejorPorJugador[k].puntaje)) {
                         mejorPorJugador[k] = { nombre: n, puntaje: p };
                     }

@@ -3809,6 +3809,7 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
             const pref = dj.preferencias || {};
             const nick = (pref.custom_nick || '').trim();
             if (!nick) return;
+            if (nick.toLowerCase() === 'bruja') return;
 
             const exp = p.experiencia || dj.xpTotal || 0;
             const nivelDt = typeof calcularNivelIdx === 'function' ? calcularNivelIdx(exp) : 1;
