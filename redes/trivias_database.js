@@ -4030,7 +4030,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💙",
         "tag": "PISTA 3:",
-        "text": "El templo de la 'V' azulada de Vélez Sarsfield en el barrio de Liniers.",
+        "text": "El templo de la histórica 'V' azulada ubicado en Liniers, junto a las vías del Sarmiento.",
         "color": "#ffd700"
       }
     ],
