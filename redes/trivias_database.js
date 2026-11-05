@@ -3911,6 +3911,92 @@ const TRIVIAS_DATABASE = [
       "paisHashtag": "#veneziafc #pierluigipenzo #venezia #venice #calcio #seriea #stadiumguessr",
       "extraPista": "El estadio insular rodeado por los canales de Venecia."
     }
+  },
+  {
+    "id": "jose_maria_minella_aldosivi",
+    "folderName": "Argentina\\Primera División\\ALDOSIVI-JOSE-MARIA-MINELLA",
+    "nombreMostrar": "JOSÉ MARÍA MINELLA",
+    "clubMostrar": "ALDOSIVI",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Jose_Maria_Minella_Aldosivi.mp4",
+    "coverFileName": "Portada_Jose_Maria_Minella_Aldosivi.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\Minella(listo)\\Minella.mp4",
+    "targetLat": -38.0179,
+    "targetLng": -57.5824,
+    "userLat": -38.0198,
+    "userLng": -57.5843,
+    "distanciaTexto": "270 METROS",
+    "puntosTexto": "4.890 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Mar del Plata, Buenos Aires · JOSÉ MARÍA MINELLA",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 35.000 hinchas, inaugurado para el Mundial 1978.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏖️",
+        "tag": "PISTA 2:",
+        "text": "Escenario histórico de los inolvidables Torneos de Verano en 'La Feliz'.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "🦈",
+        "tag": "PISTA 3:",
+        "text": "El coloso marplatense donde hace de local el Tiburón de Aldosivi.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "35.000 hinchas · Sede Mundial 1978 · La Feliz",
+    "copys": {
+      "club": "ALDOSIVI",
+      "paisHashtag": "#aldosivi #minella #josemariaminella #mardelplata #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "los torneos de verano de La Feliz, el Mundial 78 y la fiesta del Tiburón en Mar del Plata"
+    }
+  },
+  {
+    "id": "francisco_cabases_talleres",
+    "folderName": "Argentina\\Primera División\\TALLERES-FRANCISCO-CABASES",
+    "nombreMostrar": "FRANCISCO CABASÉS",
+    "clubMostrar": "TALLERES DE CÓRDOBA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Francisco_Cabases_Talleres.mp4",
+    "coverFileName": "Portada_Francisco_Cabases_Talleres.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\A\\talleres\\talleres.mp4",
+    "targetLat": -31.4492,
+    "targetLng": -64.1753,
+    "userLat": -31.4509,
+    "userLng": -64.1769,
+    "distanciaTexto": "240 METROS",
+    "puntosTexto": "4.940 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Córdoba Capital · FRANCISCO CABASÉS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Ubicado en Barrio Jardín, joya arquitectónica art decó inaugurada en 1931.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏛️",
+        "tag": "PISTA 2:",
+        "text": "Conocido popularmente como 'La Boutique', templo histórico albiazul.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "👕",
+        "tag": "PISTA 3:",
+        "text": "La casa propia y cuna de la pasión de la 'T' de Talleres de Córdoba.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "Joya Art Decó de 1931 · Barrio Jardín · Mística cordobesa",
+    "copys": {
+      "club": "TALLERES DE CÓRDOBA",
+      "paisHashtag": "#talleres #talleresdecordoba #laboutique #barriojardin #cordoba #futbolargentino #stadiumguessr #estadios",
+      "extraPista": "la elegancia art decó de Barrio Jardín, la historia de la Boutique y la pasión albiazul"
+    }
   }
 ];
 

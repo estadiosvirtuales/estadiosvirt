@@ -299,7 +299,10 @@ async function procesarEstadio(item, index, total) {
             const centerLng = (userPos[1] + targetPos[1]) / 2;
 
             const map = L.map('map', { attributionControl: false, zoomControl: false }).setView([centerLat, centerLng], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+            window.tilesDone = false;
+            const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+            tileLayer.on('load', () => { window.tilesDone = true; });
+            setTimeout(() => { window.tilesDone = true; }, 3500);
 
             L.polyline([userPos, targetPos], { color: '#ff3b30', weight: 4, dashArray: '8, 8', opacity: 0.95 }).addTo(map);
 
@@ -313,7 +316,10 @@ async function procesarEstadio(item, index, total) {
     </html>`;
 
     await page.setContent(mapHtml, { waitUntil: 'domcontentloaded' });
-    await new Promise(r => setTimeout(r, 1400));
+    try {
+        await page.waitForFunction(() => window.tilesDone === true, { timeout: 6000 });
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 600));
     const mapCardEl = await page.$('#map-card');
     const mapImgPath = path.join(__dirname, `mapa_${item.id}_card.png`);
     await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
@@ -562,6 +568,7 @@ async function procesarEstadio(item, index, total) {
 
     const ffmpegArgs = [
         '-y',
+        '-stream_loop', '-1',
         '-t', '25',
         '-i', item.inputVideoPath,
         '-i', tempAudio,
@@ -759,6 +766,9 @@ async function main() {
             'allianz_parque_palmeiras'
         ];
         queue = TRIVIAS_DATABASE.filter(s => idsCorregidos.includes(s.id));
+    } else if (arg && arg.includes(',')) {
+        const parts = arg.split(',').map(p => p.trim().toLowerCase());
+        queue = TRIVIAS_DATABASE.filter(s => parts.some(p => s.id.toLowerCase().includes(p)));
     } else if (arg) {
         const filtered = TRIVIAS_DATABASE.filter(s =>
             s.id.toLowerCase().includes(arg.toLowerCase()) ||
