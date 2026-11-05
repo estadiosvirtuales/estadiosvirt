@@ -31,7 +31,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "La fortaleza bávara del Bayern Múnich.",
+        "text": "La imponente fortaleza del gigante bávaro, rey indiscutido del fútbol alemán.",
         "color": "#ffd700"
       }
     ],
@@ -1149,7 +1149,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "El coloso de Belo Horizonte y escenario del clásico Mineiro.",
+        "text": "El coloso de Belo Horizonte y escenario del mayor clásico de Minas Gerais.",
         "color": "#ffd700"
       }
     ],
@@ -1309,7 +1309,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "El mítico Alçapão en la ciudad portuaria de Santos.",
+        "text": "El mítico e histórico Alçapão ubicado en el litoral del estado de São Paulo.",
         "color": "#00ff77"
       },
       {
@@ -1364,7 +1364,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "La pasión de las trece barras y el «¡Viva el Betis manque pierda!».",
+        "text": "La incondicional pasión de las trece barras verdiblancas en el barrio de Heliópolis.",
         "color": "#ffd700"
       }
     ],
@@ -2267,7 +2267,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "La fortaleza roja del SL Benfica y de la leyenda Eusébio.",
+        "text": "La fortaleza roja de 'Las Águilas' de Lisboa y santuario del legendario Eusébio.",
         "color": "#ffd700"
       }
     ],
@@ -2396,7 +2396,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "La caldera más ruidosa de los Países Bajos, cuna del Feyenoord.",
+        "text": "La caldera más ruidosa de los Países Bajos y corazón portuario de Róterdam.",
         "color": "#ffd700"
       }
     ],
@@ -2525,7 +2525,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "👑",
         "tag": "PISTA 3:",
-        "text": "El hogar dorado y negro de Los Angeles FC.",
+        "text": "El vibrante hogar dorado y negro de la hinchada '3252' en California.",
         "color": "#ffd700"
       }
     ],
@@ -2611,7 +2611,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🗽",
         "tag": "PISTA 3:",
-        "text": "La casa celeste de New York City FC.",
+        "text": "La casa celeste y emblemático diamante de The Bronx adaptado para el 'soccer'.",
         "color": "#ffd700"
       }
     ],
@@ -2654,7 +2654,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⭐",
         "tag": "PISTA 3:",
-        "text": "El templo de los New York Red Bulls donde jugó Thierry Henry.",
+        "text": "El moderno estadio de Nueva Jersey donde deslumbró la categoría de Thierry Henry.",
         "color": "#ffd700"
       }
     ],
@@ -2697,7 +2697,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🌲",
         "tag": "PISTA 3:",
-        "text": "La caldera esmeralda de Seattle Sounders y sede Mundial 2026.",
+        "text": "La caldera esmeralda récord de decibeles en el noroeste y sede del Mundial 2026.",
         "color": "#ffd700"
       }
     ],
@@ -2740,7 +2740,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🟩",
         "tag": "PISTA 3:",
-        "text": "El hogar de 'Los Verdes' de Austin FC.",
+        "text": "El moderno e innovador fortín de 'Los Verdes' en la capital texana.",
         "color": "#ffd700"
       }
     ],
@@ -2771,7 +2771,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 25.218 espectadores en el centro de Portland.",
+        "text": "Capacidad para 25.218 espectadores en el estado de Oregón.",
         "color": "#00ff77"
       },
       {
@@ -2783,7 +2783,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🌲",
         "tag": "PISTA 3:",
-        "text": "El histórico templo de la Timbers Army fundado en 1926.",
+        "text": "El histórico templo de la apasionada hinchada verde fundado en 1926.",
         "color": "#ffd700"
       }
     ],
@@ -3170,7 +3170,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🔵",
         "tag": "PISTA 3:",
-        "text": "El coloso donde hace de local la 'T' de Talleres de Córdoba.",
+        "text": "El coloso mundialista donde hace de local el pueblo albiazul de Barrio Jardín.",
         "color": "#ffd700"
       }
     ],
@@ -3213,7 +3213,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🩵",
         "tag": "PISTA 3:",
-        "text": "La guarida pirata de Belgrano de Córdoba.",
+        "text": "La legendaria guarida del 'Pirata' en el corazón del barrio Alberdi.",
         "color": "#ffd700"
       }
     ],
@@ -3256,7 +3256,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🔵",
         "tag": "PISTA 3:",
-        "text": "La fortaleza azul y roja del Club Atlético Tigre.",
+        "text": "La fortaleza azul y roja de 'El Matador' en el norte bonaerense.",
         "color": "#ffd700"
       }
     ],
@@ -3342,7 +3342,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🟢",
         "tag": "PISTA 3:",
-        "text": "El templo verde y amarillo de Defensa y Justicia en Florencio Varela.",
+        "text": "El templo verde y amarillo de 'El Halcón' en Florencio Varela, campeón internacional.",
         "color": "#ffd700"
       }
     ],
@@ -3428,7 +3428,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🔵",
         "tag": "PISTA 3:",
-        "text": "El hogar histórico del Expreso y Tomba mendocino.",
+        "text": "El hogar histórico y corazón barrial de 'El Expreso' de la tierra del sol y del buen vino.",
         "color": "#ffd700"
       }
     ],
@@ -3514,7 +3514,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⚪",
         "tag": "PISTA 3:",
-        "text": "La renovada fortaleza de los Cruzados de Universidad Católica.",
+        "text": "La moderna y renovada fortaleza de 'Los Cruzados' en Las Condes.",
         "color": "#ffd700"
       }
     ],
@@ -3557,7 +3557,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🇺🇦",
         "tag": "PISTA 3:",
-        "text": "El hogar oro y cielo de Everton de Viña del Mar.",
+        "text": "El emblemático hogar oro y cielo ubicado junto a la laguna en la Ciudad Jardín.",
         "color": "#ffd700"
       }
     ],
@@ -3631,7 +3631,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 14.087 hinchas en la Región de O'Higgins.",
+        "text": "Capacidad para 14.087 hinchas en la histórica ciudad minera de Rancagua.",
         "color": "#00ff77"
       },
       {
@@ -3815,7 +3815,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🔴",
         "tag": "PISTA 3:",
-        "text": "La casa rossoblù del Bologna FC, histórico de Italia.",
+        "text": "La histórica casa rossoblù con su famosa Torre di Maratona en Emilia-Romaña.",
         "color": "#ffd700"
       }
     ],
@@ -3858,7 +3858,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⚔️",
         "tag": "PISTA 3:",
-        "text": "El coloso compartido del Derby della Lanterna (Genoa y Sampdoria).",
+        "text": "El coloso de estilo inglés compartido por los dos grandes rivales del mítico Derby della Lanterna.",
         "color": "#ffd700"
       }
     ],
@@ -3901,7 +3901,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🎭",
         "tag": "PISTA 3:",
-        "text": "El hogar de los 'Arancioneroverdi' del Venezia FC en la laguna véneta.",
+        "text": "El hogar de los 'Arancioneroverdi', al que solo se llega en barco o vaporetti cruzando la laguna.",
         "color": "#ffd700"
       }
     ],
@@ -3944,7 +3944,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🦈",
         "tag": "PISTA 3:",
-        "text": "El coloso marplatense donde hace de local el Tiburón de Aldosivi.",
+        "text": "El coloso marplatense donde hace de local el temible 'Tiburón' del puerto.",
         "color": "#ffd700"
       }
     ],
@@ -3987,7 +3987,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "👕",
         "tag": "PISTA 3:",
-        "text": "La casa propia y cuna de la pasión de la 'T' de Talleres de Córdoba.",
+        "text": "La casa propia y cuna histórica de la pasión albiazul en Barrio Jardín.",
         "color": "#ffd700"
       }
     ],
@@ -4073,7 +4073,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⚡",
         "tag": "PISTA 3:",
-        "text": "La casa de los 'Malevos de Pompeya' del Club Deportivo Riestra.",
+        "text": "La singular casa de los 'Malevos de Pompeya', a pasitos de la cancha de San Lorenzo.",
         "color": "#ffd700"
       }
     ],
@@ -4117,7 +4117,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🤍",
         "tag": "PISTA 3:",
-        "text": "La casa del Club Atlético All Boys, fundada con su gloriosa tribuna Chivilcoy.",
+        "text": "El bastión del Albo de Floresta, fundado con su gloriosa tribuna Chivilcoy.",
         "color": "#ffd700"
       }
     ],
@@ -4160,7 +4160,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⚔️",
         "tag": "PISTA 3:",
-        "text": "El hogar y fortaleza del Club Almagro a metros de la Avenida General Paz.",
+        "text": "El hogar y fortaleza del Tricolor de José Ingenieros, a metros de la Avenida General Paz.",
         "color": "#ffd700"
       }
     ],
@@ -4203,7 +4203,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🔴",
         "tag": "PISTA 3:",
-        "text": "La emblemática cancha del Tricolor de Munro, el Club Atlético Colegiales.",
+        "text": "La emblemática e inconfundible cancha del Tricolor de Munro en Vicente López.",
         "color": "#ffd700"
       }
     ],
@@ -4246,7 +4246,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🐉",
         "tag": "PISTA 3:",
-        "text": "El templo histórico rojinegro del Club Atlético Defensores de Belgrano.",
+        "text": "El templo histórico de 'El Dragón' rojinegro, a pocas cuadras de la Avenida del Libertador.",
         "color": "#ffd700"
       }
     ],
@@ -4289,7 +4289,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🦁",
         "tag": "PISTA 3:",
-        "text": "El reducto histórico del 'Pincha de Caseros', el Club Atlético Estudiantes.",
+        "text": "El reducto histórico del 'Pincha de Caseros', protagonista de inolvidables campañas coperas.",
         "color": "#ffd700"
       }
     ],
@@ -4332,7 +4332,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🩵",
         "tag": "PISTA 3:",
-        "text": "El histórico hogar del 'Albo' millonario de Gimnasia y Tiro de Salta.",
+        "text": "El histórico hogar del 'Albo' millonario a los pies del Cerro San Bernardo.",
         "color": "#ffd700"
       }
     ],
@@ -4375,7 +4375,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🎓",
         "tag": "PISTA 3:",
-        "text": "La fortaleza albiceleste de 'La Academia' cordobesa, Racing de Córdoba.",
+        "text": "La fortaleza albiceleste de 'La Academia' cordobesa en el corazón de Nueva Italia.",
         "color": "#ffd700"
       }
     ],
@@ -4418,7 +4418,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🟢",
         "tag": "PISTA 3:",
-        "text": "El fortín verdinegro del Club Atlético San Martín de San Juan.",
+        "text": "El inexpugnable fortín verdinegro de Concepción en territorio sanjuanino.",
         "color": "#ffd700"
       }
     ],
@@ -4461,7 +4461,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⚔️",
         "tag": "PISTA 3:",
-        "text": "La caldera albirroja y templo sagrado de los 'Cirujas' de San Martín de Tucumán.",
+        "text": "La caldera albirroja y templo sagrado de los 'Cirujas' en el corazón de la capital tucumana.",
         "color": "#ffd700"
       }
     ],
@@ -4504,7 +4504,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🔵",
         "tag": "PISTA 3:",
-        "text": "La casa de los 'Candomberos' del Club Atlético San Telmo.",
+        "text": "La mítica casa de los 'Candomberos', con su inconfundible puente y estilo portuario.",
         "color": "#ffd700"
       }
     ],
@@ -4547,7 +4547,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🟢",
         "tag": "PISTA 3:",
-        "text": "El reducto inexpugnable del 'Trueno Verde', el Club Atlético San Miguel.",
+        "text": "El reducto inexpugnable del 'Trueno Verde' en Los Polvorines.",
         "color": "#ffd700"
       }
     ],
@@ -4590,7 +4590,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "⚫",
         "tag": "PISTA 3:",
-        "text": "El gran escenario de las victorias del Club Atlético Central Norte de Salta.",
+        "text": "El gran coloso provincial que vibra con la multitudinaria pasión del 'Cuervo' azabache.",
         "color": "#ffd700"
       }
     ],
@@ -4633,7 +4633,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "🟦",
         "tag": "PISTA 3:",
-        "text": "El hogar de los 'Quemeros' del Club Atlético Acassuso.",
+        "text": "El tradicional predio y hogar del conjunto sanisidrense en Boulogne Sur Mer.",
         "color": "#ffd700"
       }
     ],
