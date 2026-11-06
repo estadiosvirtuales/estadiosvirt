@@ -111,6 +111,16 @@ async function generarOverlaysPresentacion(assetsDir) {
 
     const logoEv = 'data:image/webp;base64,' + fs.readFileSync(path.join(__dirname, '..', 'escudos', 'Logo.webp')).toString('base64');
 
+    // Copa oficial del sitio (Modo Carrera / Jugar Copas)
+    let trofeoCopa = '';
+    const croppedCupPath = path.join(__dirname, 'trofeo_cropped.webp');
+    const rawCupPath = path.join(__dirname, '..', 'trofeo.webp');
+    if (fs.existsSync(croppedCupPath)) {
+        trofeoCopa = 'data:image/webp;base64,' + fs.readFileSync(croppedCupPath).toString('base64');
+    } else if (fs.existsSync(rawCupPath)) {
+        trofeoCopa = 'data:image/webp;base64,' + fs.readFileSync(rawCupPath).toString('base64');
+    }
+
     // Escudos de los 16 equipos para el cuadro
     const getEscudo = (file) => 'data:image/webp;base64,' + fs.readFileSync(path.join(__dirname, '..', 'escudos', file)).toString('base64');
     const escudos = {
@@ -369,13 +379,16 @@ async function generarOverlaysPresentacion(assetsDir) {
         <!-- NODO DE SEMIFINAL 1 (IZQUIERDA) -->
         ${renderStageNode('SEMI 1', 408, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff')}
 
-        <!-- NODO CENTRAL: GRAN FINAL -->
-        <div style="position:absolute; left:475px; top:${bCYSemi - 115}px; width:130px; height:230px; background:linear-gradient(135deg, rgba(20, 32, 50, 0.99) 0%, rgba(9, 14, 23, 1) 100%); border:2.5px solid #ffd700; border-radius:24px; padding:14px 8px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; text-align:center; box-shadow:0 14px 40px rgba(0,0,0,0.92), 0 0 35px rgba(255,215,0,0.45); z-index:10;">
+        <!-- NODO CENTRAL: GRAN FINAL (CON LA COPA REAL DE ESTADIOS VIRTUALES) -->
+        <div style="position:absolute; left:475px; top:${bCYSemi - 115}px; width:130px; height:230px; background:linear-gradient(135deg, rgba(20, 32, 50, 0.99) 0%, rgba(9, 14, 23, 1) 100%); border:2.5px solid #ffd700; border-radius:24px; padding:12px 6px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; text-align:center; box-shadow:0 14px 40px rgba(0,0,0,0.92), 0 0 35px rgba(255,215,0,0.45); z-index:10;">
             <div style="background:rgba(255,215,0,0.22); border:1px solid #ffd700; border-radius:8px; padding:2px 8px; color:#ffd700; font-size:11px; font-weight:900; letter-spacing:1px;">COPA</div>
-            <div style="font-size:56px; line-height:1; filter:drop-shadow(0 4px 12px rgba(255,215,0,0.7));">🏆</div>
+            <div style="width:115px; height:108px; display:flex; align-items:center; justify-content:center; position:relative; margin:2px 0;">
+                <div style="position:absolute; width:85px; height:85px; background:radial-gradient(circle, rgba(255,215,0,0.55) 0%, transparent 70%); border-radius:50%; filter:blur(10px);"></div>
+                <img src="${trofeoCopa}" style="width:100%; height:100%; object-fit:contain; position:relative; z-index:2; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 22px rgba(255,215,0,0.75));">
+            </div>
             <div>
                 <div style="color:#ffffff; font-size:13px; font-weight:900; line-height:1.15; text-transform:uppercase;">GRAN<br>FINAL</div>
-                <div style="color:#00ff77; font-size:10px; font-weight:900; margin-top:5px; letter-spacing:0.5px;">1 CAMPEÓN</div>
+                <div style="color:#00ff77; font-size:10px; font-weight:900; margin-top:4px; letter-spacing:0.5px;">1 CAMPEÓN</div>
             </div>
         </div>
 
@@ -418,8 +431,11 @@ async function generarOverlaysPresentacion(assetsDir) {
             <div class="header-sub">Tu voto decide quién clasifica a Cuartos 🏆</div>
         </div>
 
-        <div style="position:absolute; top:680px; left:50px; width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%); border:2.5px solid rgba(0, 230, 118, 0.8); border-radius:32px; padding:35px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.92), 0 0 40px rgba(0, 230, 118, 0.35);">
-            <div style="font-size:55px; margin-bottom:10px;">🏆</div>
+        <div style="position:absolute; top:670px; left:50px; width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%); border:2.5px solid rgba(0, 230, 118, 0.8); border-radius:32px; padding:30px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.92), 0 0 40px rgba(0, 230, 118, 0.35);">
+            <div style="width:110px; height:95px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; position:relative;">
+                <div style="position:absolute; width:85px; height:85px; background:radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%); border-radius:50%; filter:blur(12px);"></div>
+                <img src="${trofeoCopa}" style="width:100%; height:100%; object-fit:contain; position:relative; z-index:2; filter:drop-shadow(0 10px 22px rgba(0,0,0,0.85)) drop-shadow(0 0 25px rgba(255,215,0,0.8));">
+            </div>
             <div style="color:#ffffff; font-size:42px; font-weight:900; line-height:1.1; margin-bottom:12px; text-transform:uppercase;">
                 ¿QUÉ ESTADIO GANARÁ LA COPA AMÉRICA?
             </div>
@@ -471,6 +487,16 @@ async function generarPortada(outFolder, bgFramePath) {
     }
 
     const logoEv = 'data:image/webp;base64,' + fs.readFileSync(path.join(__dirname, '..', 'escudos', 'Logo.webp')).toString('base64');
+
+    // Copa oficial del sitio (Modo Carrera / Jugar Copas)
+    let trofeoCopa = '';
+    const croppedCupPath = path.join(__dirname, 'trofeo_cropped.webp');
+    const rawCupPath = path.join(__dirname, '..', 'trofeo.webp');
+    if (fs.existsSync(croppedCupPath)) {
+        trofeoCopa = 'data:image/webp;base64,' + fs.readFileSync(croppedCupPath).toString('base64');
+    } else if (fs.existsSync(rawCupPath)) {
+        trofeoCopa = 'data:image/webp;base64,' + fs.readFileSync(rawCupPath).toString('base64');
+    }
 
     const html = `
     <!DOCTYPE html>
