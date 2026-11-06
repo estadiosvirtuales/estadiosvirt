@@ -102,17 +102,21 @@ Promociona la funcionalidad de la web para crear cartas FUT personalizadas con e
    - **14.5 a 20s (Paso 3 - CTA Final):** Póster oficial de la web con mini carta, código QR (`78x78px`), desafío `¿Te animás a ganarme?`, icono de espaditas 1v1 (`78x78px` simétrico al QR) y botón CTA inferior elevado a zona segura (`y=1680`): `👉 TOCÁ EL LINK EN MI PERFIL DE TIKTOK 📲`.
    - **Motor:** `redes/render_promo_carta_fut.js` (20.0s).
 
-### Formato 5: Copa América de Estadios («Torneo Continental con Votación de la Comunidad»)
+### Formato 5: Torneos de Estadios (Copa América, Eurocopa y Mundial)
 1. **Presentación Oficial (35.0s):**
-   - Hook inicial con pregunta central («¿Cuál es el mejor estadio de América? Votás vos en los comentarios de cada cruce 🗳️»).
-   - 4 Criterios de evaluación (Capacidad, Estética, Arquitectura, Acústica) con toma aérea de La Bombonera 100% limpia y visible.
-   - Árbol eliminatorio de Playoffs completo (Llave A vs Llave B, Cuartos, Semis y Trofeo central de la Gran Final con badges de país ARG, BRA, MEX, CHI).
+   - Hook inicial con pregunta central («¿Cuál es el mejor estadio de América / Europa? Votás vos en los comentarios de cada cruce 🗳️»).
+   - 4 Criterios de evaluación (Capacidad, Estética, Arquitectura, Acústica) con toma aérea 100% limpia y visible.
+   - Árbol eliminatorio de Playoffs completo con la Copa Dorada 3D oficial en el hub de la Gran Final (`redes/trofeo_cropped.webp`), cabeceras limpias `OCTAVOS (LLAVE A)` y `OCTAVOS (LLAVE B)` y badges de países.
    - Pantalla de comunidad y llamado a la acción.
-   - **Motor:** `redes/render_presentacion_mundial.js`.
+   - **Motores:**
+     - Copa América: `redes/render_presentacion_mundial.js`
+     - Eurocopa: `redes/render_presentacion_eurocopa.js`
 2. **Cruces Mano a Mano de Octavos de Final (20.0s):**
    - Split-screen 50/50 vertical de dos estadios legendarios enfrentados.
    - Votación activa (0-12s), cuenta regresiva (12-15s) y revelación del próximo cruce (15-20s).
-   - **Motor:** `redes/render_mundial_estadios.js`.
+   - **Motores:**
+     - Copa América: `redes/render_mundial_estadios.js`
+     - Eurocopa: `redes/render_eurocopa_estadios.js`
 
 ---
 
@@ -132,6 +136,7 @@ Promociona la funcionalidad de la web para crear cartas FUT personalizadas con e
      - Reto Diario: `E:\Google earth studio\videos para mostrar\RETO DIARIO\[RETO]\`
      - Cartas FUT: `E:\Google earth studio\videos para mostrar\CARTAS FUT\[PACK]\`
      - Copa América de Estadios: `E:\Google earth studio\videos para mostrar\COPA AMERICA DE ESTADIOS\`
+     - Eurocopa de Estadios: `E:\Google earth studio\videos para mostrar\EUROCOPA DE ESTADIOS\`
    - Contenido exacto del pack: Video MP4, Portada JPG y `TEXTOS_PUBLICACION.txt` (4 variantes + comentarios fijados). Prohibido dejar archivos temporales.
 
 4. **Frases Detonantes:**

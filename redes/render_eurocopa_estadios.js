@@ -88,7 +88,7 @@ const CONFIG_EUROCOPA = {
             capacidadTexto: '81.365 esp.',
             escudoFile: 'borussiadortmund.webp',
             borderColor: '#fde100',
-            videoPath: "E:\\Google earth studio\\Bundesliga\Subidos\\Borussia.mp4"
+            videoPath: "E:\\Google earth studio\\Bundesliga\\Subidos\\Borussia.mp4"
         },
         copy: `🏆 EUROCOPA DE ESTADIOS | OCTAVOS DE FINAL (2/8) 🇪🇺
 ¡Duelo de calderas y mística en Europa!
@@ -902,6 +902,17 @@ async function renderizarMatchEurocopa(matchKey) {
     }
 
     const outFolder = path.join(BASE_OUTPUT_DIR, 'OCTAVOS DE FINAL', matchConfig.slug);
+    const videoOutPath = path.join(outFolder, matchConfig.videoFileName);
+    const portadaPath = path.join(outFolder, matchConfig.portadaFileName);
+    const textosPath = path.join(outFolder, 'TEXTOS_PUBLICACION.txt');
+
+    if (fs.existsSync(videoOutPath) && fs.statSync(videoOutPath).size > 1000000 &&
+        fs.existsSync(portadaPath) && fs.statSync(portadaPath).size > 10000 &&
+        fs.existsSync(textosPath)) {
+        console.log(`⏩ Cruce ya completado anteriormente (${matchConfig.slug}). Omitiendo renderizado.`);
+        return;
+    }
+
     if (!fs.existsSync(outFolder)) {
         fs.mkdirSync(outFolder, { recursive: true });
     }
@@ -945,7 +956,6 @@ async function renderizarMatchEurocopa(matchKey) {
     fs.writeFileSync(audioPath, generarAudioProcedural(20.0));
 
     // 5. Composición de Video 1080x1920 Split-Screen 50/50 vertical
-    const videoOutPath = path.join(outFolder, matchConfig.videoFileName);
     const ovFase1 = path.join(assetsDir, 'overlay_fase1.png');
     const ovFase2 = path.join(assetsDir, 'overlay_fase2.png');
 
