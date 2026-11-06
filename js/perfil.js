@@ -1345,12 +1345,7 @@ async function guardarPersonalizacion(){
     if (futName) {
         futName.textContent = nickNuevo || (u ? u.name.split(' ')[0] : 'Jugador');
     }
-    if (nickNuevo) {
-        let avVal = (hairInput?.value || document.getElementById('avatar-hair-input')?.value || '1.webp').replace(/\.png$/i, '.webp');
-        if (!avVal.includes('.')) avVal += '.webp';
-        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = avVal;
-    }
-    
+
     const hairInput = document.getElementById('avatar-hair-input');
     if (hairInput) {
         const nivelReq = obtenerNivelAvatar(hairInput.value);
@@ -1361,6 +1356,12 @@ async function guardarPersonalizacion(){
         }
         setPref('ev_avatar_hair', hairInput.value);
         localStorage.setItem('ev_avatar_seleccionado_' + getUserId(), hairInput.value);
+    }
+
+    if (nickNuevo) {
+        let avVal = (hairInput?.value || document.getElementById('avatar-hair-input')?.value || '1.webp').replace(/\.png$/i, '.webp');
+        if (!avVal.includes('.')) avVal += '.webp';
+        cacheAvataresUsuarios[nickNuevo.toLowerCase()] = avVal;
     }
 
     const logoInput = document.getElementById('avatar-logo-input');
