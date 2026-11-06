@@ -330,13 +330,13 @@ async function generarOverlaysPresentacion(assetsDir) {
             <div class="header-sub">El camino a la Gran Final de la Copa América</div>
         </div>
 
-        <!-- BARRA GUÍA DE FASES -->
-        <div style="position:absolute; top:230px; left:25px; right:25px; display:flex; justify-content:space-between; align-items:center; padding:8px 20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:14px;">
-            <span style="color:#00ff77; width:250px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">🟢 OCTAVOS (A)</span>
-            <span style="color:#00b0ff; width:70px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">CUARTOS</span>
-            <span style="color:#ffd700; width:130px; text-align:center; font-size:14px; font-weight:900; background:rgba(255,215,0,0.18); padding:4px 10px; border-radius:10px; border:1px solid #ffd700; text-transform:uppercase;">🏆 FINAL</span>
-            <span style="color:#00b0ff; width:70px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">CUARTOS</span>
-            <span style="color:#ffd700; width:250px; text-align:center; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">🟡 OCTAVOS (B)</span>
+        <!-- CABECERAS DE OCTAVOS DE FINAL (CUARTOS, SEMIS Y FINAL YA ESTÁN EN LA PROPIA LLAVE) -->
+        <div style="position:absolute; top:236px; left:25px; width:250px; text-align:center; background:linear-gradient(135deg, rgba(0, 230, 118, 0.22) 0%, rgba(0, 230, 118, 0.08) 100%); border:1.8px solid #00e676; border-radius:12px; padding:7px 10px; box-shadow:0 8px 20px rgba(0,0,0,0.7);">
+            <span style="color:#00ff77; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">🟩 OCTAVOS (LLAVE A)</span>
+        </div>
+
+        <div style="position:absolute; top:236px; left:805px; width:250px; text-align:center; background:linear-gradient(135deg, rgba(255, 215, 0, 0.22) 0%, rgba(255, 215, 0, 0.08) 100%); border:1.8px solid #ffd700; border-radius:12px; padding:7px 10px; box-shadow:0 8px 20px rgba(0,0,0,0.7);">
+            <span style="color:#ffd700; font-size:13px; font-weight:900; letter-spacing:1px; text-transform:uppercase;">🟨 OCTAVOS (LLAVE B)</span>
         </div>
 
         <!-- SVG DE LÍNEAS CONECTORAS DEL BRACKET -->
