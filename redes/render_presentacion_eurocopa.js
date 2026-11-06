@@ -11,7 +11,7 @@ const OUT_FOLDER = path.join(BASE_OUTPUT_DIR, "00-PRESENTACION-EUROCOPA");
 const BG_VIDEOS = [
     { name: 'Bernabeu', path: "E:\\Google earth studio\\España\\Bloque A\\bernabeu.mp4" },
     { name: 'SanSiro', path: "E:\\Google earth studio\\Italia\\Subidos\\San Siro 2.mp4" },
-    { name: 'Wembley', path: "E:\\Google earth studio\\Inglaterra\\Wembley Stadium_ Inglaterra.mp4" },
+    { name: 'OldTrafford', path: "E:\\Google earth studio\\Inglaterra\\Bloque A\\Old Trafford_ Manchester United.mp4" },
     { name: 'Borussia', path: "E:\\Google earth studio\\Bundesliga\\Subidos\\Borussia.mp4" },
     { name: 'Allianz', path: "E:\\Google earth studio\\Bundesliga\\Subidos\\Allianz Arena.mp4" }
 ];
@@ -650,25 +650,25 @@ Llegó la competencia de los colosos del Viejo Continente: 16 templos legendario
     const videoOutPath = path.join(OUT_FOLDER, "Presentacion_Oficial_Eurocopa_Estadios.mp4");
 
     const filterComplex = [
-        // Escalado vertical cinematográfico con boxblur difuminado de fondo y video 16:9 centrado
+        // Escalado vertical cinematográfico con boxblur difuminado de fondo y video 16:9 centrado (1080x608 ancho completo)
         `[0:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.25[bg0]`,
-        `[0:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=decrease[fg0]`,
+        `[0:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=increase,crop=1080:608[fg0]`,
         `[bg0][fg0]overlay=0:656[v0]`,
 
         `[1:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.25[bg1]`,
-        `[1:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=decrease[fg1]`,
+        `[1:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=increase,crop=1080:608[fg1]`,
         `[bg1][fg1]overlay=0:656[v1]`,
 
         `[2:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.25[bg2]`,
-        `[2:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=decrease[fg2]`,
+        `[2:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=increase,crop=1080:608[fg2]`,
         `[bg2][fg2]overlay=0:656[v2]`,
 
         `[3:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.25[bg3]`,
-        `[3:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=decrease[fg3]`,
+        `[3:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=increase,crop=1080:608[fg3]`,
         `[bg3][fg3]overlay=0:656[v3]`,
 
         `[4:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=25:5,eq=brightness=-0.25[bg4]`,
-        `[4:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=decrease[fg4]`,
+        `[4:v]fps=30,trim=0:12,setpts=PTS-STARTPTS,scale=1080:608:force_original_aspect_ratio=increase,crop=1080:608[fg4]`,
         `[bg4][fg4]overlay=0:656[v4]`,
 
         // Transiciones XFADE suaves de 0.8s
