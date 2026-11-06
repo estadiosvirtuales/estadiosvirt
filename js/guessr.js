@@ -1494,6 +1494,28 @@ async function arrancarPartidoVersus() {
     
     cerrarLobbyEspera();
 
+    // 🛡️ CIERRE AUTOMÁTICO DE MODALES: Si el usuario estaba navegando el ranking, su perfil o desafíos mientras buscaba partida,
+    // cerramos automáticamente cualquier ventana abierta para llevarlo directamente a la cancha sin perder segundos.
+    const modalesACerrar = [
+        'ranking-modal',
+        'profile-modal',
+        'order-modal',
+        'guessr-modal',
+        'carrera-modal',
+        'ranking-carrera-modal',
+        'liga-amigos-modal',
+        'inspect-profile-modal',
+        'once-inicial-modal',
+        'torneo-copas-modal',
+        'simulador-partido-modal',
+        'avatar-selector-modal',
+        'selector-escudos-modal'
+    ];
+    modalesACerrar.forEach(id => {
+        const m = document.getElementById(id);
+        if (m) m.style.display = 'none';
+    });
+
     let intentos = 0;
     while ((!catalogoGlobal || catalogoGlobal.length === 0) && intentos < 25) {
         await new Promise(r => setTimeout(r, 150));
