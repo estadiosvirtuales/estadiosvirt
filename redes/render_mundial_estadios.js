@@ -4,23 +4,23 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\MUNDIAL DE ESTADIOS";
+const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS";
 
 // ==========================================
-// CONFIGURACIÓN DE CRUCES - MUNDIAL DE ESTADIOS
+// CONFIGURACIÓN DE CRUCES - COPA AMÉRICA DE ESTADIOS
 // ==========================================
-const CONFIG_MUNDIAL = {
+const CONFIG_COPA_AMERICA = {
     'octavos-1': {
         slug: '01-BOCA-VS-PALMEIRAS',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 1 / 8',
         cruceSiguiente: 'São Paulo vs. Atlas',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 1/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 1/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Boca Juniors vs. Palmeiras',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_01_Boca_vs_Palmeiras.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_01_Boca_Palmeiras.jpg',
+        videoFileName: 'CopaAmerica_Octavos_01_Boca_vs_Palmeiras.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_01_Boca_Palmeiras.jpg',
         team1: {
             numero: '1',
             nombre: 'BOCA JUNIORS',
@@ -43,7 +43,7 @@ const CONFIG_MUNDIAL = {
             borderColor: '#006437',
             videoPath: "E:\\Google earth studio\\Brasil\\Allianz Parque_ Sociedade Esportiva Palmeiras.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (1/8) 🔥
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (1/8) 🔥
 ¡Llegó el torneo más esperado! 16 estadios icónicos compiten por la gloria continental y VOS decidís quién avanza de ronda.
 
 🏟️ CRUCE 1:
@@ -55,19 +55,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Poné a prueba tus conocimientos de estadios en el link del perfil: estadiosvirtuales.com
 
-#MundialDeEstadios #BocaJuniors #Palmeiras #LaBombonera #AllianzParque #Estadios #FutbolSudamericano #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #Palmeiras #LaBombonera #AllianzParque #Estadios #FutbolSudamericano #EstadiosVirtuales`
     },
     'octavos-2': {
         slug: '02-SAOPAULO-VS-ATLAS',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 2 / 8',
         cruceSiguiente: 'Boca Juniors vs. Palmeiras',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 2/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 2/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'São Paulo vs. Atlas FC',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_02_SaoPaulo_vs_Atlas.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_02_SaoPaulo_Atlas.jpg',
+        videoFileName: 'CopaAmerica_Octavos_02_SaoPaulo_vs_Atlas.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_02_SaoPaulo_Atlas.jpg',
         team1: {
             numero: '1',
             nombre: 'SÃO PAULO FC',
@@ -90,8 +90,8 @@ const CONFIG_MUNDIAL = {
             borderColor: '#d4001f',
             videoPath: "E:\\Google earth studio\\México\\Estadio Jalisco Atlas.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (2/8) 🔥
-¡Duelo de titanes entre Brasil y México! Dos colosos con enorme historia mundialista cara a cara por un boleto a Cuartos.
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (2/8) 🔥
+¡Duelo de titanes entre Brasil y México! Dos colosos con enorme historia cara a cara por un boleto a Cuartos.
 
 🏟️ CRUCE 2:
 1️⃣ ESTADIO MORUMBÍ (São Paulo FC · Brasil)
@@ -102,19 +102,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Jugá gratis en: estadiosvirtuales.com
 
-#MundialDeEstadios #SaoPaulo #AtlasFC #Morumbi #EstadioJalisco #LigaMX #Brasileirao #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #SaoPaulo #AtlasFC #Morumbi #EstadioJalisco #LigaMX #Brasileirao #EstadiosVirtuales`
     },
     'octavos-3': {
         slug: '03-FLAMENGO-VS-INDEPENDIENTE',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 3 / 8',
         cruceSiguiente: 'Santos FC vs. Pumas UNAM',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 3/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 3/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Flamengo vs. Independiente',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_03_Flamengo_vs_Independiente.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_03_Flamengo_Independiente.jpg',
+        videoFileName: 'CopaAmerica_Octavos_03_Flamengo_vs_Independiente.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_03_Flamengo_Independiente.jpg',
         team1: {
             numero: '1',
             nombre: 'FLAMENGO',
@@ -137,8 +137,8 @@ const CONFIG_MUNDIAL = {
             borderColor: '#e11d2e',
             videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (3/8) 🔥
-¡Clásico de la Copa Libertadores! El mítico Maracaná de Río de Janeiro se enfrenta a la mística copera del Libertadores de América.
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (3/8) 🔥
+¡Clásico de gigantes continentales! El mítico Maracaná de Río de Janeiro se enfrenta a la mística copera del Libertadores de América.
 
 🏟️ CRUCE 3:
 1️⃣ ESTADIO MARACANÁ (Flamengo · Brasil)
@@ -149,19 +149,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Demostrá cuánto sabés en: estadiosvirtuales.com
 
-#MundialDeEstadios #Flamengo #Independiente #Maracana #LibertadoresDeAmerica #TodoRojo #Mengao #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #Flamengo #Independiente #Maracana #LibertadoresDeAmerica #TodoRojo #Mengao #EstadiosVirtuales`
     },
     'octavos-4': {
         slug: '04-SANTOS-VS-PUMAS',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 4 / 8',
         cruceSiguiente: 'Flamengo vs. Independiente',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 4/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 4/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Santos FC vs. Pumas UNAM',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_04_Santos_vs_Pumas.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_04_Santos_Pumas.jpg',
+        videoFileName: 'CopaAmerica_Octavos_04_Santos_vs_Pumas.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_04_Santos_Pumas.jpg',
         team1: {
             numero: '1',
             nombre: 'SANTOS FC',
@@ -184,7 +184,7 @@ const CONFIG_MUNDIAL = {
             borderColor: '#d4af37',
             videoPath: "E:\\Google earth studio\\México\\Estadio Olimpico Universitario Pumas.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (4/8) 🔥
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (4/8) 🔥
 ¡La cuna de Pelé y Neymar frente al templo universitario mexicano! Dos canchas legendarias con estilos totalmente únicos.
 
 🏟️ CRUCE 4:
@@ -196,19 +196,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Trivia de estadios en el link del perfil: estadiosvirtuales.com
 
-#MundialDeEstadios #SantosFC #PumasUNAM #VilaBelmiro #OlimpicoUniversitario #LigaMX #Brasileirao #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #SantosFC #PumasUNAM #VilaBelmiro #OlimpicoUniversitario #LigaMX #Brasileirao #EstadiosVirtuales`
     },
     'octavos-5': {
         slug: '05-AMERICA-VS-CRUZEIRO',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 5 / 8',
         cruceSiguiente: 'Racing Club vs. Corinthians',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 5/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 5/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Club América vs. Cruzeiro',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_05_America_vs_Cruzeiro.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_05_America_Cruzeiro.jpg',
+        videoFileName: 'CopaAmerica_Octavos_05_America_vs_Cruzeiro.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_05_America_Cruzeiro.jpg',
         team1: {
             numero: '1',
             nombre: 'CLUB AMÉRICA',
@@ -231,8 +231,8 @@ const CONFIG_MUNDIAL = {
             borderColor: '#004bb6',
             videoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (5/8) 🔥
-¡Coloso mundialista vs templo brasileño! El histórico Estadio Azteca se mide al imponente Mineirão de Belo Horizonte por un lugar en Cuartos.
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (5/8) 🔥
+¡Coloso histórico vs templo brasileño! El legendario Estadio Azteca se mide al imponente Mineirão de Belo Horizonte por un lugar en Cuartos.
 
 🏟️ CRUCE 5:
 1️⃣ ESTADIO AZTECA (Club América · México)
@@ -243,19 +243,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Demostrá tus conocimientos de canchas en: estadiosvirtuales.com
 
-#MundialDeEstadios #ClubAmerica #Cruzeiro #EstadioAzteca #Mineirao #LigaMX #Brasileirao #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #ClubAmerica #Cruzeiro #EstadioAzteca #Mineirao #LigaMX #Brasileirao #EstadiosVirtuales`
     },
     'octavos-6': {
         slug: '06-RACING-VS-CORINTHIANS',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 6 / 8',
         cruceSiguiente: 'Club América vs. Cruzeiro',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 6/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 6/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Racing Club vs. Corinthians',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_06_Racing_vs_Corinthians.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_06_Racing_Corinthians.jpg',
+        videoFileName: 'CopaAmerica_Octavos_06_Racing_vs_Corinthians.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_06_Racing_Corinthians.jpg',
         team1: {
             numero: '1',
             nombre: 'RACING CLUB',
@@ -278,7 +278,7 @@ const CONFIG_MUNDIAL = {
             borderColor: '#ffffff',
             videoPath: "E:\\Google earth studio\\Brasil\\Neo Química Arena_ Corinthians.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (6/8) 🔥
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (6/8) 🔥
 ¡Arquitectura histórica vs modernidad de vanguardia! El majestuoso Cilindro de Avellaneda se bate a duelo con la imponente Neo Química Arena.
 
 🏟️ CRUCE 6:
@@ -290,19 +290,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Jugá la trivia de estadios gratis en: estadiosvirtuales.com
 
-#MundialDeEstadios #RacingClub #Corinthians #ElCilindro #NeoQuimicaArena #Timao #LaAcademia #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #RacingClub #Corinthians #ElCilindro #NeoQuimicaArena #Timao #LaAcademia #EstadiosVirtuales`
     },
     'octavos-7': {
         slug: '07-CHIVAS-VS-ROSARIO-CENTRAL',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 7 / 8',
         cruceSiguiente: 'River Plate vs. Colo-Colo',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 7/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 7/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'Chivas de Guadalajara vs. Rosario Central',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_07_Chivas_vs_Rosario_Central.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_07_Chivas_Rosario_Central.jpg',
+        videoFileName: 'CopaAmerica_Octavos_07_Chivas_vs_Rosario_Central.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_07_Chivas_Rosario_Central.jpg',
         team1: {
             numero: '1',
             nombre: 'CHIVAS DE GUADALAJARA',
@@ -325,7 +325,7 @@ const CONFIG_MUNDIAL = {
             borderColor: '#ffc700',
             videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Gigante(listo)x2\\gigante.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (7/8) 🔥
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (7/8) 🔥
 ¡Dos canchas que arden de pasión! La imponente arquitectura moderna del Estadio Akron frente a la caldera del Gigante de Arroyito.
 
 🏟️ CRUCE 7:
@@ -337,19 +337,19 @@ const CONFIG_MUNDIAL = {
 
 🎮 Desafiá cuánto sabés de canchas en: estadiosvirtuales.com
 
-#MundialDeEstadios #Chivas #RosarioCentral #EstadioAkron #GiganteDeArroyito #LigaMX #FutbolArgentino #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #Chivas #RosarioCentral #EstadioAkron #GiganteDeArroyito #LigaMX #FutbolArgentino #EstadiosVirtuales`
     },
     'octavos-8': {
         slug: '08-RIVER-VS-COLOCOLO',
         fase: 'OCTAVOS DE FINAL',
         llaveNumero: 'LLAVE 8 / 8',
         cruceSiguiente: 'Chivas vs. Rosario Central',
-        tituloBadge: '🏆 MUNDIAL DE ESTADIOS · OCTAVOS 8/8',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · OCTAVOS 8/8',
         pregunta: '¿QUIÉN AVANZA A CUARTOS?',
         subtitulo: 'River Plate vs. Colo-Colo',
         subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
-        videoFileName: 'Mundial_Octavos_08_River_vs_ColoColo.mp4',
-        portadaFileName: 'Portada_Mundial_Octavos_08_River_ColoColo.jpg',
+        videoFileName: 'CopaAmerica_Octavos_08_River_vs_ColoColo.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Octavos_08_River_ColoColo.jpg',
         team1: {
             numero: '1',
             nombre: 'RIVER PLATE',
@@ -373,7 +373,7 @@ const CONFIG_MUNDIAL = {
             borderColor: '#ffffff',
             videoPath: "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Monumental_ Club Social y Deportivo Colo-Colo.mp4"
         },
-        copy: `🏆 MUNDIAL DE ESTADIOS DE AMÉRICA | OCTAVOS DE FINAL (8/8) 🔥
+        copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (8/8) 🔥
 ¡EL DUELO DE MONUMENTALES! El Mâs Monumental renovado de River Plate se enfrenta a La Ruca de Colo-Colo por el último boleto a Cuartos de Final.
 
 🏟️ CRUCE 8:
@@ -385,7 +385,7 @@ const CONFIG_MUNDIAL = {
 
 🎮 Poné a prueba cuánto sabés en: estadiosvirtuales.com
 
-#MundialDeEstadios #RiverPlate #ColoColo #Monumental #DavidArellano #FutbolSudamericano #EstadiosVirtuales`
+#CopaAmericaDeEstadios #CopaAmerica #RiverPlate #ColoColo #Monumental #DavidArellano #FutbolSudamericano #EstadiosVirtuales`
     }
 };
 
@@ -815,22 +815,22 @@ async function generarPortada(duelo, outFolder, bgFramePath) {
 // ==========================================
 // 4. RENDERIZAR VIDEO FINAL CON FFMPEG
 // ==========================================
-async function renderizarMundialDuelo(dueloKey) {
-    const duelo = CONFIG_MUNDIAL[dueloKey];
+async function renderizarCopaAmericaDuelo(dueloKey) {
+    const duelo = CONFIG_COPA_AMERICA[dueloKey];
     if (!duelo) {
-        console.error(`❌ Cruce de mundial no encontrado: ${dueloKey}`);
+        console.error(`❌ Cruce de Copa América no encontrado: ${dueloKey}`);
         return;
     }
 
     console.log(`\n🏆 ========================================================`);
-    console.log(`🏆 PRODUCCIÓN MUNDIAL DE ESTADIOS: ${duelo.slug}`);
+    console.log(`🏆 PRODUCCIÓN COPA AMÉRICA DE ESTADIOS: ${duelo.slug}`);
     console.log(`🏆 ========================================================\n`);
 
     const outFolder = path.join(BASE_OUTPUT_DIR, duelo.fase, duelo.slug);
     if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
     // Carpeta temporal de assets
-    const assetsDir = path.join(__dirname, `assets_mundial_${dueloKey}`);
+    const assetsDir = path.join(__dirname, `assets_copa_america_${dueloKey}`);
     if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
     // 1. Guardar texto y copy
@@ -940,18 +940,18 @@ async function main() {
     const target = process.argv[2] || 'octavos-1';
 
     if (target === 'octavos-all') {
-        const keys = Object.keys(CONFIG_MUNDIAL);
+        const keys = Object.keys(CONFIG_COPA_AMERICA);
         console.log(`🚀 Iniciando renderizado en ráfaga de los ${keys.length} cruces de Octavos de Final...`);
         for (const k of keys) {
-            await renderizarMundialDuelo(k);
+            await renderizarCopaAmericaDuelo(k);
         }
-        console.log(`\n🏆🏆 ¡LOS 8 VIDEOS DEL MUNDIAL DE ESTADIOS HAN SIDO COMPLETADOS CON ÉXITO! 🏆🏆\n`);
-    } else if (CONFIG_MUNDIAL[target]) {
-        await renderizarMundialDuelo(target);
+        console.log(`\n🏆🏆 ¡LOS 8 VIDEOS DE LA COPA AMÉRICA DE ESTADIOS HAN SIDO COMPLETADOS CON ÉXITO! 🏆🏆\n`);
+    } else if (CONFIG_COPA_AMERICA[target]) {
+        await renderizarCopaAmericaDuelo(target);
     } else {
         console.log(`Comando no reconocido: ${target}`);
         console.log(`Opciones disponibles:`);
-        Object.keys(CONFIG_MUNDIAL).forEach(k => console.log(` - ${k}`));
+        Object.keys(CONFIG_COPA_AMERICA).forEach(k => console.log(` - ${k}`));
         console.log(` - octavos-all (renderiza los 8 cruces en serie)`);
     }
 }

@@ -4,8 +4,8 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\MUNDIAL DE ESTADIOS";
-const OUT_FOLDER = path.join(BASE_OUTPUT_DIR, "00-PRESENTACION-MUNDIAL");
+const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS";
+const OUT_FOLDER = path.join(BASE_OUTPUT_DIR, "00-PRESENTACION-COPA-AMERICA");
 
 // Estadios emblemáticos para el montaje de fondo cinemático
 const BG_VIDEOS = [
@@ -199,7 +199,7 @@ async function generarOverlaysPresentacion(assetsDir) {
     const htmlHook = getBaseHTML(`
         <div id="header-box">
             <div class="header-badge">ESTADIOS VIRTUALES · PRESENTACIÓN OFICIAL</div>
-            <div class="header-title">🏆 MUNDIAL DE ESTADIOS 🌎</div>
+            <div class="header-title">🏆 COPA AMÉRICA DE ESTADIOS 🌎</div>
             <div class="header-sub">16 Templos de América · 1 Solo Campeón</div>
         </div>
 
@@ -317,7 +317,7 @@ async function generarOverlaysPresentacion(assetsDir) {
         <div id="header-box">
             <div class="header-badge">FIXTURE OFICIAL · ELIMINATORIAS</div>
             <div class="header-title">🏆 CUADRO DE PLAYOFFS 🏆</div>
-            <div class="header-sub">El camino hacia la Gran Final de América</div>
+            <div class="header-sub">El camino a la Gran Final de la Copa América</div>
         </div>
 
         <!-- BARRA GUÍA DE FASES -->
@@ -413,7 +413,7 @@ async function generarOverlaysPresentacion(assetsDir) {
     // ==========================================
     const htmlCta = getBaseHTML(`
         <div id="header-box">
-            <div class="header-badge">ESTADIOS VIRTUALES · COMUNIDAD</div>
+            <div class="header-badge">ESTADIOS VIRTUALES · COPA AMÉRICA</div>
             <div class="header-title">¡EL TORNEO YA EMPEZÓ!</div>
             <div class="header-sub">Tu voto decide quién clasifica a Cuartos 🏆</div>
         </div>
@@ -421,7 +421,7 @@ async function generarOverlaysPresentacion(assetsDir) {
         <div style="position:absolute; top:680px; left:50px; width:980px; background:linear-gradient(135deg, rgba(14, 26, 42, 0.98) 0%, rgba(8, 14, 24, 0.99) 100%); border:2.5px solid rgba(0, 230, 118, 0.8); border-radius:32px; padding:35px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.92), 0 0 40px rgba(0, 230, 118, 0.35);">
             <div style="font-size:55px; margin-bottom:10px;">🏆</div>
             <div style="color:#ffffff; font-size:42px; font-weight:900; line-height:1.1; margin-bottom:12px; text-transform:uppercase;">
-                ¿QUÉ ESTADIO LEVANTARÁ LA COPA?
+                ¿QUÉ ESTADIO GANARÁ LA COPA AMÉRICA?
             </div>
             
             <div style="color:#ffd700; font-size:24px; font-weight:800; line-height:1.3; margin-bottom:20px;">
@@ -508,7 +508,7 @@ async function generarPortada(outFolder, bgFramePath) {
         <div class="safe-zone">
             <div class="brand-badge">
                 <img src="${logoEv}" style="width: 32px; height: 32px; border-radius: 6px;">
-                <span>MUNDIAL DE ESTADIOS · PRESENTACIÓN</span>
+                <span>COPA AMÉRICA DE ESTADIOS · PRESENTACIÓN</span>
             </div>
 
             <div class="main-box">
@@ -541,7 +541,7 @@ async function generarPortada(outFolder, bgFramePath) {
     `;
 
     await page.setContent(html, { timeout: 5000 });
-    const portadaPath = path.join(outFolder, "Portada_Presentacion_Mundial_Estadios.jpg");
+    const portadaPath = path.join(outFolder, "Portada_Presentacion_Copa_America_Estadios.jpg");
     await page.screenshot({ path: portadaPath, type: 'jpeg', quality: 95 });
     await browser.close();
     console.log(`✅ Portada guardada: ${portadaPath}`);
@@ -552,16 +552,16 @@ async function generarPortada(outFolder, bgFramePath) {
 // ==========================================
 async function renderizarVideoPresentacion() {
     console.log(`\n🏆 ========================================================`);
-    console.log(`🏆 PRODUCCIÓN: VIDEO DE PRESENTACIÓN MUNDIAL DE ESTADIOS (35s)`);
+    console.log(`🏆 PRODUCCIÓN: VIDEO DE PRESENTACIÓN COPA AMÉRICA DE ESTADIOS (35s)`);
     console.log(`🏆 ========================================================\n`);
 
     if (!fs.existsSync(OUT_FOLDER)) fs.mkdirSync(OUT_FOLDER, { recursive: true });
 
-    const assetsDir = path.join(__dirname, "assets_presentacion_mundial");
+    const assetsDir = path.join(__dirname, "assets_presentacion_copa_america");
     if (!fs.existsSync(assetsDir)) fs.mkdirSync(assetsDir, { recursive: true });
 
     // 1. Guardar copy de publicación
-    const copy = `🏆 ¡GRAN MUNDIAL DE ESTADIOS DE AMÉRICA! 🌎🔥
+    const copy = `🏆 ¡GRAN COPA AMÉRICA DE ESTADIOS! 🌎🔥
 Llegó el torneo más esperado: 16 templos históricos se enfrentan cara a cara por la corona continental y VOS vas a definir al campeón con tus votos.
 
 📊 LOS 4 CRITERIOS OFICIALES PARA ELEGIR:
@@ -586,7 +586,7 @@ Llegó el torneo más esperado: 16 templos históricos se enfrentan cara a cara 
 👉 ¿Quién es tu gran candidato al título? Dejanos tu pronóstico en comentarios 👇
 🎮 Poné a prueba cuánto sabés de canchas en: estadiosvirtuales.com
 
-#MundialDeEstadios #Estadios #FutbolSudamericano #FutbolArgentino #Brasileirao #LigaMX #EstadiosVirtuales`;
+#CopaAmericaDeEstadios #CopaAmerica #Estadios #FutbolSudamericano #FutbolArgentino #Brasileirao #LigaMX #EstadiosVirtuales`;
 
     fs.writeFileSync(path.join(OUT_FOLDER, 'TEXTOS_PUBLICACION.txt'), copy, 'utf8');
     console.log('✅ Archivo TEXTOS_PUBLICACION.txt guardado.');
@@ -619,7 +619,7 @@ Llegó el torneo más esperado: 16 templos históricos se enfrentan cara a cara 
     // 6. Composición con FFmpeg
     // 5 videos de fondo con tomas aéreas:
     // 0:v (River), 1:v (Boca), 2:v (Azteca), 3:v (Maracana), 4:v (Allianz)
-    const videoOutPath = path.join(OUT_FOLDER, "Presentacion_Oficial_Mundial_Estadios.mp4");
+    const videoOutPath = path.join(OUT_FOLDER, "Presentacion_Oficial_Copa_America_Estadios.mp4");
 
     const filterComplex = [
         // Escalado vertical cinematográfico con boxblur difuminado de fondo y video 16:9 centrado (normalizado a 30 fps)
