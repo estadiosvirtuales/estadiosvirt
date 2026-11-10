@@ -2416,7 +2416,7 @@
     border-top: 2px solid #a7f3d0 !important;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 255, 119, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
     cursor: pointer !important;
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
@@ -2428,8 +2428,7 @@
 }
 
 .sim-main-btn.sim-hidden,
-.sim-main-btn[style*="display: none"],
-.sim-actions-footer:has(.sim-in-game-bar:not([style*="display: none"])) .sim-main-btn {
+.sim-main-btn[style*="display: none"] {
     display: none !important;
 }
 
@@ -3880,8 +3879,7 @@
     text-shadow: none !important;
 }
 [data-theme="light"] .sim-main-btn.sim-hidden,
-.sim-main-btn[style*="display: none"],
-.sim-actions-footer:has(.sim-in-game-bar:not([style*="display: none"])) .sim-main-btn {
+[data-theme="light"] .sim-main-btn[style*="display: none"] {
     display: none !important;
 }
 
