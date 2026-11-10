@@ -3772,6 +3772,44 @@
         font-size: 0.68rem !important;
         border-radius: 16px !important;
     }
+
+    /* ⚡ Momentos Clave Compactos para Cancha en Celular (208px de alto) */
+    .sim-momento-card {
+        max-width: 294px !important;
+        padding: 7px 10px !important;
+        border-radius: 14px !important;
+    }
+    .sim-momento-badge {
+        font-size: 0.58rem !important;
+        padding: 2px 6px !important;
+        margin-bottom: 2px !important;
+    }
+    .sim-momento-title {
+        font-size: 0.88rem !important;
+        margin: 2px 0 2px 0 !important;
+    }
+    .sim-momento-sub {
+        font-size: 0.66rem !important;
+        margin: 0 0 5px 0 !important;
+    }
+    .sim-momento-timer-track {
+        height: 4px !important;
+        margin-bottom: 6px !important;
+    }
+    .sim-momento-options {
+        gap: 6px !important;
+    }
+    .sim-momento-btn {
+        padding: 5px 3px !important;
+        border-radius: 10px !important;
+        gap: 2px !important;
+    }
+    .sim-momento-btn .opt-icon {
+        font-size: 1.05rem !important;
+    }
+    .sim-momento-btn .opt-label {
+        font-size: 0.65rem !important;
+    }
 }
 
 /* ========================================================
@@ -3810,6 +3848,16 @@
         padding: 8px 12px !important;
         font-size: 0.74rem !important;
         min-height: 40px !important;
+    }
+    .sim-momento-card {
+        max-width: 380px !important;
+        padding: 12px 16px !important;
+    }
+    .sim-momento-title {
+        font-size: 1.1rem !important;
+    }
+    .sim-momento-btn {
+        padding: 8px 6px !important;
     }
 }
 
@@ -6453,6 +6501,159 @@
     color: #ffffff;
     box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
 }
+
+/* ========================================================
+   ⚡ MOMENTOS CLAVE INTERACTIVOS (PENALES Y TIROS LIBRES EN VIVO)
+   ======================================================== */
+.sim-momento-clave-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 55;
+    background: rgba(3, 7, 18, 0.72);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: inherit;
+    pointer-events: auto;
+    animation: simMomentoFadeIn 0.22s ease-out;
+}
+
+.sim-momento-card {
+    width: 90%;
+    max-width: 440px;
+    background: linear-gradient(155deg, rgba(15, 23, 42, 0.97) 0%, rgba(9, 14, 26, 0.98) 100%);
+    border: 1.5px solid rgba(251, 191, 36, 0.55);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.85), 0 0 25px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 16px 20px;
+    box-sizing: border-box;
+    text-align: center;
+    animation: simMomentoPop 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sim-momento-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.70rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fde047;
+    background: rgba(234, 179, 8, 0.16);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-bottom: 4px;
+}
+
+.sim-momento-badge i {
+    color: #fbbf24;
+    animation: pulse 1s infinite alternate;
+}
+
+.sim-momento-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 4px 0 2px 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.sim-momento-sub {
+    font-size: 0.80rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+}
+
+.sim-momento-timer-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.10);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.sim-momento-timer-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #f59e0b 60%, #ef4444 100%);
+    border-radius: 99px;
+    transition: width 0.08s linear;
+}
+
+.sim-momento-options {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+}
+
+.sim-momento-btn {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 8px;
+    background: rgba(30, 41, 59, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    color: #f8fafc;
+    font-weight: 800;
+    font-size: 0.80rem;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.sim-momento-btn:hover {
+    background: rgba(30, 41, 59, 1);
+    border-color: #38bdf8;
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.35), 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.sim-momento-btn:active {
+    transform: scale(0.96);
+}
+
+.sim-momento-btn .opt-icon {
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.sim-momento-btn .opt-label {
+    font-size: 0.76rem;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+@keyframes simMomentoFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes simMomentoPop {
+    0% { opacity: 0; transform: scale(0.88); }
+    100% { opacity: 1; transform: scale(1); }
+}
 /* ========================================================
    ⚡ TEMPORADA DE LIGA: SIMULACIÓN RÁPIDA, GOLEADORES Y SP
    ======================================================== */
@@ -7460,6 +7661,31 @@
     border-color: #ea580c !important;
     color: #c2410c !important;
     box-shadow: 0 0 10px rgba(234, 88, 12, 0.25) !important;
+}
+[data-theme="light"] .sim-momento-clave-overlay {
+    background: rgba(15, 23, 42, 0.45) !important;
+}
+[data-theme="light"] .sim-momento-card {
+    background: #ffffff !important;
+    border-color: #fbbf24 !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16) !important;
+}
+[data-theme="light"] .sim-momento-title {
+    color: #0f172a !important;
+    text-shadow: none !important;
+}
+[data-theme="light"] .sim-momento-sub {
+    color: #64748b !important;
+}
+[data-theme="light"] .sim-momento-btn {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+}
+[data-theme="light"] .sim-momento-btn:hover {
+    background: #e2e8f0 !important;
+    border-color: #0284c7 !important;
+    color: #0369a1 !important;
 }
 [data-theme="light"] .sim-stage-badge {
     background: #e8f5e9 !important;

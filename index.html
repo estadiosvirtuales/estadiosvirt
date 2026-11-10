@@ -1916,6 +1916,38 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                             <div class="sim-goal-post bottom"></div>
                         </div>
                     </div>
+
+                    <!-- ⚡ OVERLAY INTERACTIVO DE MOMENTOS CLAVE (PENALES, TIROS LIBRES Y TANDAS) -->
+                    <div class="sim-momento-clave-overlay" id="sim-momento-clave" style="display:none;">
+                        <div class="sim-momento-card">
+                            <div class="sim-momento-badge" id="sim-momento-badge">
+                                <i class="ph-bold ph-lightning"></i> <span id="sim-momento-tipo">MOMENTO CLAVE</span>
+                            </div>
+                            <h4 class="sim-momento-title" id="sim-momento-title">¡PENAL A FAVOR!</h4>
+                            <p class="sim-momento-sub" id="sim-momento-sub">Elegí a qué palo rematar</p>
+
+                            <!-- BARRA DE TIEMPO / ADRENALINA -->
+                            <div class="sim-momento-timer-track">
+                                <div class="sim-momento-timer-fill" id="sim-momento-timer-fill"></div>
+                            </div>
+
+                            <!-- 3 OPCIONES INTERACTIVAS -->
+                            <div class="sim-momento-options" id="sim-momento-options">
+                                <button type="button" class="sim-momento-btn" id="btn-momento-opt0" onclick="resolverMomentoClave(0)">
+                                    <span class="opt-icon" id="opt-icon-0">⬅️</span>
+                                    <span class="opt-label" id="opt-lbl-0">Izquierda</span>
+                                </button>
+                                <button type="button" class="sim-momento-btn" id="btn-momento-opt1" onclick="resolverMomentoClave(1)">
+                                    <span class="opt-icon" id="opt-icon-1">⬆️</span>
+                                    <span class="opt-label" id="opt-lbl-1">Al Medio</span>
+                                </button>
+                                <button type="button" class="sim-momento-btn" id="btn-momento-opt2" onclick="resolverMomentoClave(2)">
+                                    <span class="opt-icon" id="opt-icon-2">➡️</span>
+                                    <span class="opt-label" id="opt-lbl-2">Derecha</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -34,6 +34,10 @@ var simJugadaTimer = null;
 var simRafId = null;
 var simVelocidadMult = 1;
 var simTacticaActual = 'equilibrado';
+var momentoClaveActivo = false;
+var momentoClaveTimer = null;
+var momentoClaveResolutor = null;
+var momentoClaveTipo = null;
 var cofreTemporadaPendiente = null;
 
 
@@ -1017,6 +1021,142 @@ window.saltarSimulacionCompleta = function() {
     }
 };
 
+// ========================================================
+// ⚡ MOMENTOS CLAVE INTERACTIVOS (PENALES Y TIROS LIBRES EN VIVO)
+// ========================================================
+function mostrarMomentoClave(tipo, data = {}, onResuelto) {
+    if (typeof onResuelto !== 'function') return;
+
+    // Si la simulación fue saltada o está en velocidad turbo 3x, auto-resolver de inmediato sin bloquear
+    const overlay = document.getElementById('sim-momento-clave');
+    if (!overlay || simVelocidadMult >= 3 || (torneoEstado && torneoEstado.terminado)) {
+        onResuelto(Math.floor(Math.random() * 3));
+        return;
+    }
+
+    if (momentoClaveTimer) {
+        clearInterval(momentoClaveTimer);
+        momentoClaveTimer = null;
+    }
+
+    momentoClaveActivo = true;
+    momentoClaveResolutor = onResuelto;
+    momentoClaveTipo = tipo;
+
+    const badgeEl = document.getElementById('sim-momento-tipo');
+    const titleEl = document.getElementById('sim-momento-title');
+    const subEl = document.getElementById('sim-momento-sub');
+    const fillEl = document.getElementById('sim-momento-timer-fill');
+
+    const icon0 = document.getElementById('opt-icon-0');
+    const lbl0 = document.getElementById('opt-lbl-0');
+    const icon1 = document.getElementById('opt-icon-1');
+    const lbl1 = document.getElementById('opt-lbl-1');
+    const icon2 = document.getElementById('opt-icon-2');
+    const lbl2 = document.getElementById('opt-lbl-2');
+
+    if (tipo === 'penal_favor') {
+        if (badgeEl) badgeEl.textContent = 'PENAL A FAVOR';
+        if (titleEl) titleEl.textContent = '¡PENAL A FAVOR!';
+        if (subEl) subEl.innerHTML = `Elegí a qué palo rematar con <b>${data.tirador ? data.tirador.nombre : 'tu jugador'}</b>`;
+        if (icon0) icon0.textContent = '⬅️';
+        if (lbl0) lbl0.textContent = 'Izquierda';
+        if (icon1) icon1.textContent = '⬆️';
+        if (lbl1) lbl1.textContent = 'Al Medio';
+        if (icon2) icon2.textContent = '➡️';
+        if (lbl2) lbl2.textContent = 'Derecha';
+    } else if (tipo === 'penal_contra') {
+        if (badgeEl) badgeEl.textContent = 'PENAL EN CONTRA';
+        if (titleEl) titleEl.textContent = '¡PENAL EN CONTRA!';
+        if (subEl) subEl.innerHTML = `¡Adiviná a dónde tirarte con <b>${data.portero ? data.portero.nombre : 'tu arquero'}</b>!`;
+        if (icon0) icon0.textContent = '⬅️';
+        if (lbl0) lbl0.textContent = 'Tirarse a Izq.';
+        if (icon1) icon1.textContent = '⬆️';
+        if (lbl1) lbl1.textContent = 'Al Medio';
+        if (icon2) icon2.textContent = '➡️';
+        if (lbl2) lbl2.textContent = 'Tirarse a Der.';
+    } else if (tipo === 'tiro_libre') {
+        if (badgeEl) badgeEl.textContent = 'TIRO LIBRE PELIGROSO';
+        if (titleEl) titleEl.textContent = '¡TIRO LIBRE AL BORDE DEL ÁREA!';
+        if (subEl) subEl.innerHTML = `Elegí el disparo con <b>${data.tirador ? data.tirador.nombre : 'tu especialista'}</b>`;
+        if (icon0) icon0.textContent = '🎯';
+        if (lbl0) lbl0.textContent = 'Al Ángulo';
+        if (icon1) icon1.textContent = '🌪️';
+        if (lbl1) lbl1.textContent = 'Comba Barrera';
+        if (icon2) icon2.textContent = '💥';
+        if (lbl2) lbl2.textContent = 'Fuerte al Palo';
+    } else if (tipo === 'penal_tanda') {
+        if (badgeEl) badgeEl.textContent = 'TANDA DE PENALES';
+        if (titleEl) titleEl.textContent = '¡EL 5º PENAL DECISIVO!';
+        if (subEl) subEl.innerHTML = `Serie 4-4: ¡Elegí a qué palo asegurar la clasificación!`;
+        if (icon0) icon0.textContent = '⬅️';
+        if (lbl0) lbl0.textContent = 'Izquierda';
+        if (icon1) icon1.textContent = '⬆️';
+        if (lbl1) lbl1.textContent = 'Al Medio';
+        if (icon2) icon2.textContent = '➡️';
+        if (lbl2) lbl2.textContent = 'Derecha';
+    }
+
+    if (fillEl) fillEl.style.width = '100%';
+    overlay.style.display = 'flex';
+
+    if (typeof reproducirSonido === 'function') {
+        reproducirSonido('acierto');
+    }
+
+    // Cuenta regresiva de adrenalina (5 segundos)
+    const durTotal = 5000;
+    const inicio = Date.now();
+    let ultimoBeep = 5;
+
+    momentoClaveTimer = setInterval(() => {
+        const transcurrido = Date.now() - inicio;
+        const restante = Math.max(0, durTotal - transcurrido);
+        const pct = (restante / durTotal) * 100;
+
+        if (fillEl) fillEl.style.width = pct + '%';
+
+        const segRestante = Math.ceil(restante / 1000);
+        if (segRestante < ultimoBeep && segRestante <= 3 && segRestante > 0) {
+            ultimoBeep = segRestante;
+            if (typeof reproducirSonido === 'function') reproducirSonido('reloj');
+        }
+
+        if (restante <= 0) {
+            clearInterval(momentoClaveTimer);
+            momentoClaveTimer = null;
+            // Auto-elección si se agota el tiempo
+            window.resolverMomentoClave(Math.floor(Math.random() * 3));
+        }
+    }, 50);
+}
+window.mostrarMomentoClave = mostrarMomentoClave;
+
+window.resolverMomentoClave = function(opcion) {
+    if (!momentoClaveActivo) return;
+
+    if (momentoClaveTimer) {
+        clearInterval(momentoClaveTimer);
+        momentoClaveTimer = null;
+    }
+
+    momentoClaveActivo = false;
+
+    const overlay = document.getElementById('sim-momento-clave');
+    if (overlay) overlay.style.display = 'none';
+
+    if (typeof reproducirSonido === 'function') {
+        reproducirSonido('click');
+    }
+
+    const callback = momentoClaveResolutor;
+    momentoClaveResolutor = null;
+
+    if (typeof callback === 'function') {
+        callback(opcion);
+    }
+};
+
 window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
@@ -1025,6 +1165,12 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
     if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
     
+    if (momentoClaveTimer) { clearInterval(momentoClaveTimer); momentoClaveTimer = null; }
+    momentoClaveActivo = false;
+    momentoClaveResolutor = null;
+    const momentoOverlay = document.getElementById('sim-momento-clave');
+    if (momentoOverlay) momentoOverlay.style.display = 'none';
+
     simVelocidadMult = 1;
     simActualizarTacticaEnPartido = null;
     const inGameBar = document.getElementById('sim-in-game-bar');
@@ -1603,7 +1749,12 @@ window.iniciarSimulacionEnVivo = function() {
         const r = Math.random();
         let res, dx, dy, ky, kx = xPor;
 
-        if (r < pGol) {
+        if (o.resExacto) {
+            res = o.resExacto;
+            dy = o.targetY !== undefined ? o.targetY : 50;
+            dx = o.targetX !== undefined ? o.targetX : (gx === 100 ? (res === 'gol' ? 101.5 : (res === 'atajada' ? xPor : 102.5)) : (res === 'gol' ? -1.5 : (res === 'atajada' ? xPor : -2.5)));
+            ky = o.keeperY !== undefined ? o.keeperY : 50;
+        } else if (r < pGol) {
             res = 'gol';
             dy = 50 + (Math.random() < 0.5 ? -1 : 1) * rnd(3, 5.5);
             dx = gx === 100 ? 101.5 : -1.5;
@@ -1847,22 +1998,88 @@ window.iniciarSimulacionEnVivo = function() {
         const rv = rivalDe(eq), gx = golX(eq), sent = gx === 100 ? -1 : 1;
         const xP = gx === 100 ? 89 : 11;
         const tirador = rematadorPrincipal(eq);
+        const portero = porteroDe(rv);
         colocarBalon(50, xP, eq);
         const mapa = {};
         const otros = [...equipos[eq], ...equipos[rv]].filter(j => j !== tirador && j.linea !== 'por');
         otros.forEach((j, i) => {
             mapa[j.id] = [12 + i * (76 / (otros.length - 1)), gx === 100 ? 74 - (i % 2) * 3 : 26 + (i % 2) * 3];
         });
-        mapa[porteroDe(rv).id] = [50, gx === 100 ? 96.5 : 3.5];
+        mapa[portero.id] = [50, gx === 100 ? 96.5 : 3.5];
         mapa[tirador.id] = [50, xP + sent * 5];
         mostrarTag('¡PENAL!', eq === 'user' ? 'user-tag' : 'rival-tag', 50, gx === 100 ? 80 : 20, 2.0);
         narrar('falta', `¡PENAL! <b>${tirador.nombre}</b> se prepara para patear desde los doce pasos.`);
-        entrarRepos(mapa, 2.3, () => tirar(tirador, { tipo: 'penal', pGol: 0.74, pArco: 0.17, sinPresion: true, vel: 120 }));
+        entrarRepos(mapa, 1.4, () => {
+            if (eq === 'user') {
+                mostrarMomentoClave('penal_favor', { tirador, portero, eq }, (opcion) => {
+                    const targetY = opcion === 0 ? 44.5 : opcion === 2 ? 55.5 : 50.0;
+                    const gkPalo = Math.floor(Math.random() * 3);
+                    const gkY = gkPalo === 0 ? 44.5 : gkPalo === 2 ? 55.5 : 50.0;
+                    let resExacto = 'gol';
+                    let finalKy = gkY;
+
+                    if (gkPalo === opcion) {
+                        if (Math.random() < 0.72) {
+                            resExacto = 'atajada';
+                            finalKy = targetY;
+                        } else {
+                            resExacto = 'gol';
+                            finalKy = targetY + (opcion === 1 ? (Math.random() < 0.5 ? -1.5 : 1.5) : (opcion === 0 ? 2 : -2));
+                        }
+                    } else {
+                        resExacto = 'gol';
+                        finalKy = gkY;
+                    }
+
+                    tirar(tirador, {
+                        tipo: 'penal',
+                        resExacto,
+                        targetY,
+                        targetX: 101.5,
+                        keeperY: finalKy,
+                        vel: 125,
+                        sinPresion: true
+                    });
+                });
+            } else {
+                mostrarMomentoClave('penal_contra', { tirador, portero, eq }, (opcion) => {
+                    const userKy = opcion === 0 ? 44.5 : opcion === 2 ? 55.5 : 50.0;
+                    const rivalPalo = Math.floor(Math.random() * 3);
+                    const targetY = rivalPalo === 0 ? 44.5 : rivalPalo === 2 ? 55.5 : 50.0;
+                    let resExacto = 'gol';
+                    let finalKy = userKy;
+
+                    if (opcion === rivalPalo) {
+                        if (Math.random() < 0.78) {
+                            resExacto = 'atajada';
+                            finalKy = targetY;
+                        } else {
+                            resExacto = 'gol';
+                            finalKy = targetY + (opcion === 1 ? (Math.random() < 0.5 ? -1.5 : 1.5) : (opcion === 0 ? 2 : -2));
+                        }
+                    } else {
+                        resExacto = 'gol';
+                        finalKy = userKy;
+                    }
+
+                    tirar(tirador, {
+                        tipo: 'penal',
+                        resExacto,
+                        targetY,
+                        targetX: -1.5,
+                        keeperY: finalKy,
+                        vel: 125,
+                        sinPresion: true
+                    });
+                });
+            }
+        });
     };
 
     const ejecutarTiroLibre = (eq, y, x, dGol) => {
         const rv = rivalDe(eq), gx = golX(eq), dirA = dirDe(eq);
         const tirador = rematadorPrincipal(eq);
+        const portero = porteroDe(rv);
         colocarBalon(y, x, eq);
         const mapa = {};
         const centro = dGol > 24 && Math.random() < 0.55;
@@ -1877,9 +2094,71 @@ window.iniciarSimulacionEnVivo = function() {
         }
         mapa[tirador.id] = [y - 2, x - dirA * 2.5];
         mostrarTag(eq === 'user' ? 'TIRO LIBRE' : 'TIRO LIBRE RIVAL', eq === 'user' ? 'user-tag' : 'rival-tag', clamp(y - 8, 6, 94), x, 1.8);
-        entrarRepos(mapa, 1.9, () => {
-            if (centro) { darPosesion(tirador); lanzarCentro(tirador, cands); }
-            else tirar(tirador, { tipo: 'tiro_libre', pGol: 0.075, pArco: 0.30, sinPresion: true });
+        entrarRepos(mapa, 1.5, () => {
+            if (centro) {
+                darPosesion(tirador);
+                lanzarCentro(tirador, cands);
+            } else if (eq === 'user' && dGol < 26) {
+                mostrarMomentoClave('tiro_libre', { tirador, portero, eq, dGol }, (opcion) => {
+                    let targetY, targetX = 101.5, resExacto, keeperY;
+                    const r = Math.random();
+                    if (opcion === 0) {
+                        targetY = Math.random() < 0.5 ? 44.0 : 56.0;
+                        if (r < 0.38) {
+                            resExacto = 'gol';
+                            keeperY = targetY + (targetY < 50 ? 2.5 : -2.5);
+                        } else if (r < 0.65) {
+                            resExacto = 'atajada';
+                            keeperY = targetY;
+                        } else if (r < 0.85) {
+                            resExacto = 'palo';
+                            targetY = targetY < 50 ? 44.5 : 55.5;
+                            keeperY = 50;
+                        } else {
+                            resExacto = 'afuera';
+                            targetY = targetY < 50 ? 41.0 : 59.0;
+                            keeperY = 50;
+                        }
+                    } else if (opcion === 1) {
+                        targetY = y < 50 ? 46.5 : 53.5;
+                        if (r < 0.36) {
+                            resExacto = 'gol';
+                            keeperY = 50;
+                        } else if (r < 0.75) {
+                            resExacto = 'atajada';
+                            keeperY = targetY;
+                        } else {
+                            resExacto = 'afuera';
+                            targetY = y < 50 ? 42.0 : 58.0;
+                            keeperY = 50;
+                        }
+                    } else {
+                        targetY = 50 + (Math.random() < 0.5 ? -3 : 3);
+                        if (r < 0.30) {
+                            resExacto = 'gol';
+                            keeperY = targetY + (Math.random() < 0.5 ? -2 : 2);
+                        } else if (r < 0.80) {
+                            resExacto = 'atajada';
+                            keeperY = targetY;
+                        } else {
+                            resExacto = 'afuera';
+                            targetY = 50 + (Math.random() < 0.5 ? -10 : 10);
+                            keeperY = 50;
+                        }
+                    }
+                    tirar(tirador, {
+                        tipo: 'tiro_libre',
+                        resExacto,
+                        targetY,
+                        targetX,
+                        keeperY,
+                        vel: 110,
+                        sinPresion: true
+                    });
+                });
+            } else {
+                tirar(tirador, { tipo: 'tiro_libre', pGol: 0.075, pArco: 0.30, sinPresion: true });
+            }
         });
     };
 
@@ -2131,6 +2410,16 @@ window.iniciarSimulacionEnVivo = function() {
         if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
         if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
 
+        if (momentoClaveTimer) { clearInterval(momentoClaveTimer); momentoClaveTimer = null; }
+        if (momentoClaveActivo && typeof momentoClaveResolutor === 'function') {
+            const res = momentoClaveResolutor;
+            momentoClaveActivo = false;
+            momentoClaveResolutor = null;
+            const momentoOverlay = document.getElementById('sim-momento-clave');
+            if (momentoOverlay) momentoOverlay.style.display = 'none';
+            res(1);
+        }
+
         estado = 'fin';
         relojPausado = true;
 
@@ -2341,193 +2630,216 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     }
 
     // 🏆 RAMA 2: PARTIDO DE COPA O DESAFÍO (ELIMINACIÓN DIRECTA)
-    let ganoUsuario = golesUser > golesRival;
-    let penalesTexto = '';
+    const resolverPostPartidoCopa = (ganoUsuarioFinal, penalesTextoFinal) => {
+        const rivalActual = torneoEstado.rivales[torneoEstado.rondaIdx];
+        torneoEstado.recorridoPartidos.push({
+            fase: RONDAS_NOMBRES[torneoEstado.rondaIdx],
+            rivalNombre: rivalActual.nombre,
+            rivalId: rivalActual.id,
+            golesUser: golesUser,
+            golesRival: golesRival,
+            penales: penalesTextoFinal
+        });
 
-    if (golesUser === golesRival) {
-        const penUser = 4 + Math.round(Math.random());
-        const penRival = penUser === 5 ? (Math.random() < 0.5 ? 4 : 3) : 5;
-        ganoUsuario = penUser > penRival;
-        penalesTexto = ` (${penUser}-${penRival} pen.)`;
+        if (ganoUsuarioFinal) {
+            if (typeof reproducirSonido === 'function') reproducirSonido('victoria');
+            if (torneoEstado.esDesafioAsincronico) {
+                const estadoSP = (typeof obtenerEstadoDuelosDiariosSP === 'function') 
+                    ? obtenerEstadoDuelosDiariosSP() 
+                    : { puedeGanarSP: true, ganadosConSP: 0, hoy: new Date().toISOString().slice(0, 10) };
+                const otorgaSP = estadoSP.puedeGanarSP;
+                const premio = otorgaSP ? (torneoEstado.config.premioSP || 2) : 0;
 
-        const penRow = document.createElement('div');
-        penRow.className = 'sim-event-row penales';
-        penRow.innerHTML = `<span class="sim-ev-min">PEN</span> <span class="sim-ev-text"><b>Definición por penales:</b> ${penUser} a ${penRival} (${ganoUsuario ? '¡Ganaste la tanda!' : 'Caíste en los penales'})</span>`;
-        timeline.appendChild(penRow);
-        timeline.scrollTop = timeline.scrollHeight;
-    }
+                if (otorgaSP && premio > 0) {
+                    userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
+                    const nuevoTotal = estadoSP.ganadosConSP + 1;
+                    const idUser = (typeof getUserId === 'function') ? getUserId() : 'default';
+                    const spKey = 'ev_duelos_sp_dia_' + idUser + '_' + estadoSP.hoy;
+                    localStorage.setItem(spKey, String(nuevoTotal));
+                    userStats.duelosSPDiarios = { fecha: estadoSP.hoy, count: nuevoTotal };
+                }
 
-    const rivalActual = torneoEstado.rivales[torneoEstado.rondaIdx];
-    torneoEstado.recorridoPartidos.push({
-        fase: RONDAS_NOMBRES[torneoEstado.rondaIdx],
-        rivalNombre: rivalActual.nombre,
-        rivalId: rivalActual.id,
-        golesUser: golesUser,
-        golesRival: golesRival,
-        penales: penalesTexto
-    });
-
-    if (ganoUsuario) {
-        if (typeof reproducirSonido === 'function') reproducirSonido('victoria');
-        if (torneoEstado.esDesafioAsincronico) {
-            const estadoSP = (typeof obtenerEstadoDuelosDiariosSP === 'function') 
-                ? obtenerEstadoDuelosDiariosSP() 
-                : { puedeGanarSP: true, ganadosConSP: 0, hoy: new Date().toISOString().slice(0, 10) };
-            const otorgaSP = estadoSP.puedeGanarSP;
-            const premio = otorgaSP ? (torneoEstado.config.premioSP || 2) : 0;
-
-            if (otorgaSP && premio > 0) {
-                userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
-                const nuevoTotal = estadoSP.ganadosConSP + 1;
-                const idUser = (typeof getUserId === 'function') ? getUserId() : 'default';
-                const spKey = 'ev_duelos_sp_dia_' + idUser + '_' + estadoSP.hoy;
-                localStorage.setItem(spKey, String(nuevoTotal));
-                userStats.duelosSPDiarios = { fecha: estadoSP.hoy, count: nuevoTotal };
-            }
-
-            userStats.duelosGanados = (userStats.duelosGanados || 0) + 1;
-            userStats.duelosJugados = (userStats.duelosJugados || 0) + 1;
-            guardarStats();
-
-            const sbCard = document.querySelector('.sim-scoreboard-card');
-            if (sbCard) sbCard.classList.add('campeon-glory');
-
-            const stageTitle = document.getElementById('sim-stage-title');
-            if (stageTitle) {
-                stageTitle.className = 'sim-stage-badge campeon';
-                stageTitle.innerHTML = otorgaSP 
-                    ? `<i class="ph-fill ph-trophy"></i> ¡VICTORIA EN EL DUELO!` 
-                    : `<i class="ph-fill ph-game-controller"></i> ¡VICTORIA EN DUELO RECREATIVO!`;
-            }
-
-            btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
-            btn.disabled = false;
-            if (otorgaSP && premio > 0) {
-                const nuevoTotal = estadoSP.ganadosConSP + 1;
-                btn.innerHTML = `<i class="ph-bold ph-trophy"></i> ¡RECLAMAR RECOMPENSA (+${premio} SP)! (${nuevoTotal}/3)`;
-                btn.onclick = () => {
-                    cerrarModalSimuladorPartido();
-                    showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Sumaste +${premio} SP 🔥 (${nuevoTotal}/3 diarios con premio)`, 'ph-trophy', 'success');
-                };
-            } else {
-                btn.innerHTML = `<i class="ph-bold ph-check"></i> FINALIZAR DUELO (RECREATIVO)`;
-                btn.onclick = () => {
-                    cerrarModalSimuladorPartido();
-                    showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Victoria amistosa registrada ⚔️ (Límite diario de 3 duelos con SP completado)`, 'ph-shield-check', 'info');
-                };
-            }
-
-            dispararEfectoLucesGaming();
-        } else {
-            const esFinal = torneoEstado.rondaIdx === 3;
-            if (esFinal) {
-                torneoEstado.terminado = true;
-                localStorage.removeItem('ev_torneo_guardado_' + getUserId());
-
-                const premio = torneoEstado.config.premioSP;
-                userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
-                if (!userStats.copasGanadas) userStats.copasGanadas = [];
-                userStats.copasGanadas.push({
-                    tier: torneoEstado.tier,
-                    nombre: torneoEstado.config.nombre,
-                    fecha: new Date().toISOString()
-                });
+                userStats.duelosGanados = (userStats.duelosGanados || 0) + 1;
+                userStats.duelosJugados = (userStats.duelosJugados || 0) + 1;
                 guardarStats();
 
                 const sbCard = document.querySelector('.sim-scoreboard-card');
                 if (sbCard) sbCard.classList.add('campeon-glory');
-                document.querySelector('.sim-match-layout')?.classList.add('campeon-view');
 
                 const stageTitle = document.getElementById('sim-stage-title');
                 if (stageTitle) {
                     stageTitle.className = 'sim-stage-badge campeon';
-                    stageTitle.innerHTML = `<i class="ph-fill ph-crown"></i> ¡CAMPEÓN DEL TORNEO!`;
+                    stageTitle.innerHTML = otorgaSP 
+                        ? `<i class="ph-fill ph-trophy"></i> ¡VICTORIA EN EL DUELO!` 
+                        : `<i class="ph-fill ph-game-controller"></i> ¡VICTORIA EN DUELO RECREATIVO!`;
                 }
-
-                const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
-                timeline.innerHTML = `
-                    <div class="sim-camino-wrapper">
-                        <div class="sim-camino-header">
-                            <i class="ph-fill ph-trophy"></i> EL CAMINO A LA GLORIA
-                        </div>
-                        <div class="sim-camino-list">
-                            ${torneoEstado.recorridoPartidos.map(p => `
-                                <div class="sim-camino-row">
-                                    <span class="sim-camino-fase">${p.fase}</span>
-                                    <div class="sim-camino-match">
-                                        <div class="sim-camino-team user">
-                                            <img src="${obtenerUrlEscudo(escudoUsuario)}" alt="Tu Club">
-                                            <span>Tu Once</span>
-                                        </div>
-                                        <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales}</span>
-                                        <div class="sim-camino-team rival">
-                                            <span>${p.rivalNombre}</span>
-                                            <img src="${obtenerUrlEscudo(p.rivalId)}" alt="${p.rivalNombre}">
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
 
                 btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
                 btn.disabled = false;
-                btn.innerHTML = `<i class="ph-bold ph-crown"></i> ¡LEVANTAR COPA (+${premio} SP)!`;
-                btn.onclick = () => {
-                    const datosCopa = {
-                        torneo: torneoEstado.config.nombre,
-                        subtitulo: 'Circuito Oficial de Copas',
-                        campana: 'Campaña Invicta'
+                if (otorgaSP && premio > 0) {
+                    const nuevoTotal = estadoSP.ganadosConSP + 1;
+                    btn.innerHTML = `<i class="ph-bold ph-trophy"></i> ¡RECLAMAR RECOMPENSA (+${premio} SP)! (${nuevoTotal}/3)`;
+                    btn.onclick = () => {
+                        cerrarModalSimuladorPartido();
+                        showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Sumaste +${premio} SP 🔥 (${nuevoTotal}/3 diarios con premio)`, 'ph-trophy', 'success');
                     };
-                    cerrarModalSimuladorPartido();
-                    showToast(`¡Campeón de la ${torneoEstado.config.nombre}! Sumaste +${premio} SP 🏆👑`, 'ph-trophy', 'success');
-                    dispararFestejoCampeon(document.getElementById('torneo-copas-modal') || document.body);
-                    setTimeout(() => compartirPosterCampeon(datosCopa), 800);
-                };
-
-                dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
-            } else {
-                torneoEstado.rondaIdx++;
-                if (!torneoEstado.esDesafioAsincronico) {
-                    localStorage.setItem('ev_torneo_guardado_' + getUserId(), JSON.stringify(torneoEstado));
+                } else {
+                    btn.innerHTML = `<i class="ph-bold ph-check"></i> FINALIZAR DUELO (RECREATIVO)`;
+                    btn.onclick = () => {
+                        cerrarModalSimuladorPartido();
+                        showToast(`¡Derrotaste al equipo de ${rivalActual.nombre}! Victoria amistosa registrada ⚔️ (Límite diario de 3 duelos con SP completado)`, 'ph-shield-check', 'info');
+                    };
                 }
-                const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
-                btn.className = 'btn-3d primary sim-main-btn';
+
+                dispararEfectoLucesGaming();
+            } else {
+                const esFinal = torneoEstado.rondaIdx === 3;
+                if (esFinal) {
+                    torneoEstado.terminado = true;
+                    localStorage.removeItem('ev_torneo_guardado_' + getUserId());
+
+                    const premio = torneoEstado.config.premioSP;
+                    userStats.puntosHabilidad = (userStats.puntosHabilidad || 0) + premio;
+                    if (!userStats.copasGanadas) userStats.copasGanadas = [];
+                    userStats.copasGanadas.push({
+                        tier: torneoEstado.tier,
+                        nombre: torneoEstado.config.nombre,
+                        fecha: new Date().toISOString()
+                    });
+                    guardarStats();
+
+                    const sbCard = document.querySelector('.sim-scoreboard-card');
+                    if (sbCard) sbCard.classList.add('campeon-glory');
+                    document.querySelector('.sim-match-layout')?.classList.add('campeon-view');
+
+                    const stageTitle = document.getElementById('sim-stage-title');
+                    if (stageTitle) {
+                        stageTitle.className = 'sim-stage-badge campeon';
+                        stageTitle.innerHTML = `<i class="ph-fill ph-crown"></i> ¡CAMPEÓN DEL TORNEO!`;
+                    }
+
+                    const escudoUsuario = userStats.onceEscudo || localStorage.getItem('ev_once_escudo_' + getUserId()) || getPref('ev_avatar_logo', 'ev');
+                    timeline.innerHTML = `
+                        <div class="sim-camino-wrapper">
+                            <div class="sim-camino-header">
+                                <i class="ph-fill ph-trophy"></i> EL CAMINO A LA GLORIA
+                            </div>
+                            <div class="sim-camino-list">
+                                ${torneoEstado.recorridoPartidos.map(p => `
+                                    <div class="sim-camino-row">
+                                        <span class="sim-camino-fase">${p.fase}</span>
+                                        <div class="sim-camino-match">
+                                            <div class="sim-camino-team user">
+                                                <img src="${obtenerUrlEscudo(escudoUsuario)}" alt="Tu Club">
+                                                <span>Tu Once</span>
+                                            </div>
+                                            <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales}</span>
+                                            <div class="sim-camino-team rival">
+                                                <span>${p.rivalNombre}</span>
+                                                <img src="${obtenerUrlEscudo(p.rivalId)}" alt="${p.rivalNombre}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                    btn.className = 'btn-3d primary sim-main-btn btn-campeon-gold animate-pulse';
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="ph-bold ph-crown"></i> ¡LEVANTAR COPA (+${premio} SP)!`;
+                    btn.onclick = () => {
+                        const datosCopa = {
+                            torneo: torneoEstado.config.nombre,
+                            subtitulo: 'Circuito Oficial de Copas',
+                            campana: 'Campaña Invicta'
+                        };
+                        cerrarModalSimuladorPartido();
+                        showToast(`¡Campeón de la ${torneoEstado.config.nombre}! Sumaste +${premio} SP 🏆👑`, 'ph-trophy', 'success');
+                        dispararFestejoCampeon(document.getElementById('torneo-copas-modal') || document.body);
+                        setTimeout(() => compartirPosterCampeon(datosCopa), 800);
+                    };
+
+                    dispararFestejoCampeon(document.getElementById('simulador-partido-modal'));
+                } else {
+                    torneoEstado.rondaIdx++;
+                    if (!torneoEstado.esDesafioAsincronico) {
+                        localStorage.setItem('ev_torneo_guardado_' + getUserId(), JSON.stringify(torneoEstado));
+                    }
+                    const proxRonda = RONDAS_NOMBRES[torneoEstado.rondaIdx];
+                    btn.className = 'btn-3d primary sim-main-btn';
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
+                    btn.onclick = () => {
+                        prepararVistaPartidoCopa();
+                        iniciarSimulacionEnVivo();
+                    };
+                }
+            }
+        } else {
+            torneoEstado.terminado = true;
+            if (!torneoEstado.esDesafioAsincronico) {
+                localStorage.removeItem('ev_torneo_guardado_' + getUserId());
+            }
+
+            if (torneoEstado.esDesafioAsincronico) {
+                userStats.duelosJugados = (userStats.duelosJugados || 0) + 1;
+                userStats.duelosPerdidos = (userStats.duelosPerdidos || 0) + 1;
+                guardarStats();
+                btn.className = 'btn-3d secondary sim-main-btn danger';
                 btn.disabled = false;
-                btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
+                btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Salir · Revancha más tarde`;
                 btn.onclick = () => {
-                    prepararVistaPartidoCopa();
-                    iniciarSimulacionEnVivo();
+                    cerrarModalSimuladorPartido();
+                    showToast(`Caíste frente al equipo de ${rivalActual.nombre}. ¡A entrenar a tus titulares! ⚽`, "ph-x-circle", "danger");
+                };
+            } else {
+                btn.className = 'btn-3d secondary sim-main-btn danger';
+                btn.disabled = false;
+                btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Eliminado · Volver a Entrenar`;
+                btn.onclick = () => {
+                    cerrarModalSimuladorPartido();
+                    showToast("Quedaste fuera de la Copa. ¡Entrená a tus jugadores y volvé a intentarlo! ⚽", "ph-x-circle", "danger");
                 };
             }
         }
-    } else {
-        torneoEstado.terminado = true;
-        if (!torneoEstado.esDesafioAsincronico) {
-            localStorage.removeItem('ev_torneo_guardado_' + getUserId());
-        }
+    };
 
-        if (torneoEstado.esDesafioAsincronico) {
-            userStats.duelosJugados = (userStats.duelosJugados || 0) + 1;
-            userStats.duelosPerdidos = (userStats.duelosPerdidos || 0) + 1;
-            guardarStats();
-            btn.className = 'btn-3d secondary sim-main-btn danger';
-            btn.disabled = false;
-            btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Salir · Revancha más tarde`;
-            btn.onclick = () => {
-                cerrarModalSimuladorPartido();
-                showToast(`Caíste frente al equipo de ${rivalActual.nombre}. ¡A entrenar a tus titulares! ⚽`, "ph-x-circle", "danger");
-            };
+    if (golesUser === golesRival) {
+        const overlay = document.getElementById('sim-momento-clave');
+        if (overlay && simVelocidadMult < 3) {
+            mostrarMomentoClave('penal_tanda', {}, (opcion) => {
+                const acierto = Math.random() < 0.76;
+                const penUser = acierto ? 5 : 4;
+                const penRival = acierto ? 4 : 5;
+                const gano = penUser > penRival;
+                const penalesTexto = ` (${penUser}-${penRival} pen.)`;
+
+                const penRow = document.createElement('div');
+                penRow.className = 'sim-event-row penales';
+                penRow.innerHTML = `<span class="sim-ev-min">PEN</span> <span class="sim-ev-text"><b>Definición por penales:</b> ${penUser} a ${penRival} (${gano ? '¡Gol de la victoria! ¡Ganaste la tanda!' : 'Atajó el portero rival... Caíste en penales'})</span>`;
+                timeline.appendChild(penRow);
+                timeline.scrollTop = timeline.scrollHeight;
+
+                resolverPostPartidoCopa(gano, penalesTexto);
+            });
+            return;
         } else {
-            btn.className = 'btn-3d secondary sim-main-btn danger';
-            btn.disabled = false;
-            btn.innerHTML = `<i class="ph-bold ph-arrow-left"></i> Eliminado · Volver a Entrenar`;
-            btn.onclick = () => {
-                cerrarModalSimuladorPartido();
-                showToast("Quedaste fuera de la Copa. ¡Entrená a tus jugadores y volvé a intentarlo! ⚽", "ph-x-circle", "danger");
-            };
+            const penUser = 4 + Math.round(Math.random());
+            const penRival = penUser === 5 ? (Math.random() < 0.5 ? 4 : 3) : 5;
+            const gano = penUser > penRival;
+            const penalesTexto = ` (${penUser}-${penRival} pen.)`;
+
+            const penRow = document.createElement('div');
+            penRow.className = 'sim-event-row penales';
+            penRow.innerHTML = `<span class="sim-ev-min">PEN</span> <span class="sim-ev-text"><b>Definición por penales:</b> ${penUser} a ${penRival} (${gano ? '¡Ganaste la tanda!' : 'Caíste en los penales'})</span>`;
+            timeline.appendChild(penRow);
+            timeline.scrollTop = timeline.scrollHeight;
+
+            resolverPostPartidoCopa(gano, penalesTexto);
         }
+    } else {
+        resolverPostPartidoCopa(golesUser > golesRival, '');
     }
 }
 
