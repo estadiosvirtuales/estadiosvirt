@@ -1920,13 +1920,29 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
             </div>
         </div>
 
-        <!-- 🕹️ ACCIONES INFERIORES -->
+        <!-- 🕹️ ACCIONES INFERIORES: DIRECCIÓN TÁCTICA EN VIVO Y CONTROL DE PARTIDO -->
         <div class="sim-actions-footer">
-            <!-- ⚡ CONTROLES RÁPIDOS DE VELOCIDAD Y SALTO -->
-            <div class="sim-quick-controls" id="sim-quick-controls" style="display:none;">
-                <button type="button" class="sim-ctrl-btn" id="sim-btn-speed" onclick="toggleVelocidadSimulacion()" title="Acelerar partido (1x / 2x / 3x)">
-                    <i class="ph-bold ph-fast-forward"></i> <span id="sim-speed-text">1x</span>
-                </button>
+            <!-- ⚡ CONSOLA DE DIRECCIÓN TÁCTICA DEL DT EN TIEMPO REAL -->
+            <div class="sim-in-game-bar" id="sim-in-game-bar" style="display:none;">
+                <div class="sim-tactics-group" id="sim-tactics-group">
+                    <button type="button" class="sim-tactic-btn" id="btn-tactic-def" onclick="cambiarTacticaEnVivo('defensivo')" title="Bloque Bajo: Aguantar el resultado y replegar líneas">
+                        <i class="ph-bold ph-shield"></i> <span>Aguantar</span>
+                    </button>
+                    <button type="button" class="sim-tactic-btn active active-bal" id="btn-tactic-bal" onclick="cambiarTacticaEnVivo('equilibrado')" title="Bloque Medio: Posesión equilibrada">
+                        <i class="ph-bold ph-scales"></i> <span>Equilibrado</span>
+                    </button>
+                    <button type="button" class="sim-tactic-btn" id="btn-tactic-atk" onclick="cambiarTacticaEnVivo('ofensivo')" title="Bloque Alto: Presión asfixiante y todos al ataque">
+                        <i class="ph-bold ph-sword"></i> <span>Ataque Total</span>
+                    </button>
+                </div>
+                <div class="sim-tools-group" id="sim-quick-controls">
+                    <button type="button" class="sim-ctrl-btn" id="sim-btn-speed" onclick="toggleVelocidadSimulacion()" title="Acelerar partido (1x / 2x / 3x)">
+                        <i class="ph-bold ph-fast-forward"></i> <span id="sim-speed-text">1x</span>
+                    </button>
+                    <button type="button" class="sim-ctrl-btn sim-ctrl-skip" id="sim-btn-skip" onclick="saltarSimulacionCompleta()" title="Simular resultado directo">
+                        <i class="ph-bold ph-skip-forward"></i> <span>Saltar</span>
+                    </button>
+                </div>
             </div>
 
             <button type="button" id="sim-btn-play" class="btn-3d primary sim-main-btn" onclick="iniciarSimulacionEnVivo()">

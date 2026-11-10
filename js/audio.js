@@ -271,6 +271,27 @@
                     osc.stop(startTime + n.d + 0.02);
                 });
 
+            } else if (tipo === 'tactica') {
+                // 📋 Feedback de orden táctica del DT (Dual tone bleep cyber: 540Hz -> 820Hz en 0.08s)
+                const t1 = 0.035;
+                const t2 = 0.055;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(540, now);
+                osc.frequency.setValueAtTime(820, now + t1);
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.20, now + 0.01);
+                gain.gain.setValueAtTime(0.20, now + t1);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + t1 + t2);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + t1 + t2 + 0.01);
+
             } else if (tipo === 'reloj') {
                 // Latido / Tic-tac tenso de cuenta regresiva
                 const osc = ctx.createOscillator();

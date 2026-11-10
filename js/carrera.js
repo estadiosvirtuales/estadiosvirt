@@ -33,6 +33,7 @@ var simHalftimeTimer = null;
 var simJugadaTimer = null;
 var simRafId = null;
 var simVelocidadMult = 1;
+var simTacticaActual = 'equilibrado';
 var cofreTemporadaPendiente = null;
 
 
@@ -927,14 +928,43 @@ function prepararVistaPartidoCopa() {
             <span>Todo listo en el campo. Tocá <b>Iniciar Partido</b> para disputar los 90 minutos de juego.</span>
         </div>`;
 
+    const inGameBar = document.getElementById('sim-in-game-bar');
+    if (inGameBar) inGameBar.style.display = 'none';
+
     const btn = document.getElementById('sim-btn-play');
-    btn.className = 'btn-3d primary sim-main-btn';
-    btn.disabled = false;
-    btn.innerHTML = `<span>Iniciar Partido</span> <i class="ph-bold ph-play"></i>`;
-    btn.onclick = iniciarSimulacionEnVivo;
+    if (btn) {
+        btn.classList.remove('sim-hidden');
+        btn.style.display = 'inline-flex';
+        btn.className = 'btn-3d primary sim-main-btn';
+        btn.disabled = false;
+        btn.innerHTML = `<span>Iniciar Partido</span> <i class="ph-bold ph-play"></i>`;
+        btn.onclick = iniciarSimulacionEnVivo;
+    }
 }
 
-// (Variables de simulación declaradas arriba)
+// 📋 CAMBIO DE TÁCTICA EN TIEMPO REAL POR EL DT (AGUANTAR, EQUILIBRADO, ATAQUE TOTAL)
+var simActualizarTacticaEnPartido = null;
+
+window.cambiarTacticaEnVivo = function(modo) {
+    if (!['defensivo', 'equilibrado', 'ofensivo'].includes(modo)) return;
+    simTacticaActual = modo;
+
+    const bDef = document.getElementById('btn-tactic-def');
+    const bBal = document.getElementById('btn-tactic-bal');
+    const bAtk = document.getElementById('btn-tactic-atk');
+    [bDef, bBal, bAtk].forEach(b => {
+        if (b) b.classList.remove('active', 'active-def', 'active-bal', 'active-atk');
+    });
+    if (modo === 'defensivo' && bDef) bDef.classList.add('active', 'active-def');
+    else if (modo === 'equilibrado' && bBal) bBal.classList.add('active', 'active-bal');
+    else if (modo === 'ofensivo' && bAtk) bAtk.classList.add('active', 'active-atk');
+
+    if (typeof reproducirSonido === 'function') reproducirSonido('tactica');
+
+    if (typeof simActualizarTacticaEnPartido === 'function') {
+        simActualizarTacticaEnPartido(modo);
+    }
+};
 
 // ⚡ BOTÓN 2X: Acelera todo el reloj, física y movimientos al doble
 window.toggleVelocidadSimulacion = function() {
@@ -996,8 +1026,15 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
     
     simVelocidadMult = 1;
-    const qControls = document.getElementById('sim-quick-controls');
-    if (qControls) qControls.style.display = 'none';
+    simActualizarTacticaEnPartido = null;
+    const inGameBar = document.getElementById('sim-in-game-bar');
+    if (inGameBar) inGameBar.style.display = 'none';
+    const btnPlay = document.getElementById('sim-btn-play');
+    if (btnPlay) {
+        btnPlay.classList.remove('sim-hidden');
+        btnPlay.style.display = 'inline-flex';
+        btnPlay.disabled = false;
+    }
     const btnSpeed = document.getElementById('sim-btn-speed');
     if (btnSpeed) {
         btnSpeed.classList.remove('active-2x', 'active-3x');
@@ -1039,7 +1076,14 @@ window.iniciarSimulacionEnVivo = function() {
     if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
 
     const btn = document.getElementById('sim-btn-play');
-    if (btn) btn.disabled = true;
+    if (btn) {
+        btn.classList.add('sim-hidden');
+        btn.style.display = 'none';
+        btn.disabled = true;
+    }
+
+    const inGameBar = document.getElementById('sim-in-game-bar');
+    if (inGameBar) inGameBar.style.display = 'flex';
 
     // Mostramos la barra de controles rápidos y reseteamos indicador de velocidad
     simVelocidadMult = 1;
@@ -1049,8 +1093,32 @@ window.iniciarSimulacionEnVivo = function() {
         const txtInit = document.getElementById('sim-speed-text');
         if (txtInit) txtInit.textContent = '1x';
     }
-    const qControls = document.getElementById('sim-quick-controls');
-    if (qControls) qControls.style.display = 'flex';
+
+    // Configuración de táctica activa en vivo
+    let tacticaUserActual = simTacticaActual || 'equilibrado';
+    const bDefInit = document.getElementById('btn-tactic-def');
+    const bBalInit = document.getElementById('btn-tactic-bal');
+    const bAtkInit = document.getElementById('btn-tactic-atk');
+    [bDefInit, bBalInit, bAtkInit].forEach(b => {
+        if (b) b.classList.remove('active', 'active-def', 'active-bal', 'active-atk');
+    });
+    if (tacticaUserActual === 'defensivo' && bDefInit) bDefInit.classList.add('active', 'active-def');
+    else if (tacticaUserActual === 'ofensivo' && bAtkInit) bAtkInit.classList.add('active', 'active-atk');
+    else if (bBalInit) bBalInit.classList.add('active', 'active-bal');
+
+    simActualizarTacticaEnPartido = (nuevoModo) => {
+        tacticaUserActual = nuevoModo;
+        if (nuevoModo === 'defensivo') {
+            mostrarTag('🛡️ BLOQUE BAJO · AGUANTAR', 'user-tag', 36, 30, 1.8);
+            narrar('tactica', 'El DT manda a retroceder las líneas: cerrojo defensivo y repliegue ordenado.');
+        } else if (nuevoModo === 'equilibrado') {
+            mostrarTag('⚖️ ESQUEMA EQUILIBRADO', 'user-tag', 36, 40, 1.8);
+            narrar('tactica', 'El DT reordena al equipo en bloque medio con posesión controlada.');
+        } else if (nuevoModo === 'ofensivo') {
+            mostrarTag('⚔️ ATAQUE TOTAL · BLOQUE ALTO', 'user-tag', 36, 52, 1.8);
+            narrar('tactica', '¡El DT ordena ataque total! Líneas adelantadas, presión en tres cuartos y búsqueda directa del gol.');
+        }
+    };
 
     const timeline = document.getElementById('sim-events-timeline');
     if (timeline) timeline.innerHTML = '';
@@ -1167,7 +1235,19 @@ window.iniciarSimulacionEnVivo = function() {
     const dirDe = (eq) => eq === 'user' ? 1 : -1;
     const rivalDe = (eq) => eq === 'user' ? 'rival' : 'user';
     const golX = (eq) => eq === 'user' ? 100 : 0;
-    const fuerza = (eq) => eq === 'user' ? probExitoUser : 1 - probExitoUser;
+    const fuerza = (eq) => {
+        if (eq === 'user') {
+            let f = probExitoUser;
+            if (tacticaUserActual === 'defensivo') f -= 0.04;
+            else if (tacticaUserActual === 'ofensivo') f += 0.05;
+            return clamp(f, 0.20, 0.85);
+        } else {
+            let f = 1 - probExitoUser;
+            if (tacticaUserActual === 'ofensivo') f += 0.05;
+            else if (tacticaUserActual === 'defensivo') f -= 0.05;
+            return clamp(f, 0.15, 0.80);
+        }
+    };
     const profDe = (eq, x) => eq === 'user' ? x : 100 - x;
     const xDe = (eq, prof) => eq === 'user' ? prof : 100 - prof;
 
@@ -1607,10 +1687,22 @@ window.iniciarSimulacionEnVivo = function() {
             }
         }
 
-        if (dArco < 34 && Math.abs(o.y - 50) < 32) {
+        let maxDistTiro = 34;
+        let extraProbTiro = 0;
+        if (o.eq === 'user') {
+            if (tacticaUserActual === 'ofensivo') {
+                maxDistTiro = 42;
+                extraProbTiro = 0.20;
+            } else if (tacticaUserActual === 'defensivo') {
+                maxDistTiro = 24;
+                extraProbTiro = -0.15;
+            }
+        }
+        if (dArco < maxDistTiro && Math.abs(o.y - 50) < 34) {
             let p = dArco < 18 ? 0.65 : dArco < 26 ? 0.5 : 0.32;
             if (pres < 5) p += 0.12;
-            if (Math.random() < p) { tirar(o); return; }
+            p += extraProbTiro;
+            if (Math.random() < clamp(p, 0.12, 0.90)) { tirar(o); return; }
         }
         if (pres > 3.8 && Math.random() < 0.6) { o.pensar = rnd(0.25, 0.5); return; }
         pasar(o);
@@ -1908,13 +2000,42 @@ window.iniciarSimulacionEnVivo = function() {
             j.vmax = CFG.velPortero * factor;
             return;
         }
+        const empAtkDe = (jug) => {
+            if (jug.eq === 'user') {
+                if (tacticaUserActual === 'defensivo') return jug.linea === 'def' ? 1 : jug.linea === 'med' ? 4 : 5;
+                if (tacticaUserActual === 'ofensivo') return jug.linea === 'def' ? 12 : jug.linea === 'med' ? 15 : 17;
+            }
+            return EMP_ATK[jug.linea];
+        };
+
+        const empDefDe = (jug) => {
+            if (jug.eq === 'user') {
+                if (tacticaUserActual === 'defensivo') return jug.linea === 'def' ? -6 : jug.linea === 'med' ? -7 : -6;
+                if (tacticaUserActual === 'ofensivo') return jug.linea === 'def' ? 3 : jug.linea === 'med' ? 2 : 1;
+            }
+            return EMP_DEF[jug.linea];
+        };
+
+        const limDe = (jug) => {
+            if (jug.eq === 'user') {
+                if (tacticaUserActual === 'defensivo') {
+                    return jug.linea === 'def' ? [6, 48] : jug.linea === 'med' ? [14, 62] : [24, 76];
+                }
+                if (tacticaUserActual === 'ofensivo') {
+                    return jug.linea === 'def' ? [16, 75] : jug.linea === 'med' ? [32, 88] : [48, 96];
+                }
+            }
+            return LIM[jug.linea];
+        };
+
         let prof = profDe(eq, j.baseX);
         prof += (bd - 50) * K_LINEA[j.linea];
-        prof += atacando ? EMP_ATK[j.linea] : EMP_DEF[j.linea];
+        prof += atacando ? empAtkDe(j) : empDefDe(j);
         prof += Math.sin(tSim * 1.3 + j.fase) * 1.4;
-        if (atacando && j.linea === 'del') prof = Math.max(prof, bd + 12);
-        else if (atacando && j.linea === 'med') prof = Math.max(prof, bd + 2);
-        prof = clamp(prof, LIM[j.linea][0], LIM[j.linea][1]);
+        if (atacando && j.linea === 'del') prof = Math.max(prof, bd + (tacticaUserActual === 'ofensivo' ? 14 : 11));
+        else if (atacando && j.linea === 'med') prof = Math.max(prof, bd + (tacticaUserActual === 'ofensivo' ? 5 : 2));
+        const lim = limDe(j);
+        prof = clamp(prof, lim[0], lim[1]);
         const ty = 50 + (j.baseY - 50) * (atacando ? 1.12 : 0.88)
             + (balon.y - 50) * (j.linea === 'def' ? 0.22 : 0.3)
             + Math.cos(tSim * 1.1 + j.fase) * 1.6;
@@ -2033,6 +2154,8 @@ window.iniciarSimulacionEnVivo = function() {
         statsPartido.tirosArcoRival = golesRival + Math.floor(Math.random() * 2);
         actualizarHudStats();
 
+        const inGameBar = document.getElementById('sim-in-game-bar');
+        if (inGameBar) inGameBar.style.display = 'none';
         const qControls = document.getElementById('sim-quick-controls');
         if (qControls) qControls.style.display = 'none';
 
@@ -2078,6 +2201,8 @@ window.iniciarSimulacionEnVivo = function() {
         if (primerTiempoTerminado && m > 90 + tiempoDescuento2T && cierreSeguro()) {
             estado = 'fin';
             if (clock) clock.textContent = `90'+${tiempoDescuento2T}' · FIN`;
+            const inGameBar = document.getElementById('sim-in-game-bar');
+            if (inGameBar) inGameBar.style.display = 'none';
             const qControls = document.getElementById('sim-quick-controls');
             if (qControls) qControls.style.display = 'none';
             finalizarPartidoCopa(golesUser, golesRival);
@@ -2197,7 +2322,15 @@ function dispararFestejoCampeon(targetModal = null) {
 }
 function finalizarPartidoCopa(golesUser, golesRival) {
     const timeline = document.getElementById('sim-events-timeline');
+    const inGameBar = document.getElementById('sim-in-game-bar');
+    if (inGameBar) inGameBar.style.display = 'none';
+    simActualizarTacticaEnPartido = null;
+
     const btn = document.getElementById('sim-btn-play');
+    if (btn) {
+        btn.classList.remove('sim-hidden');
+        btn.style.display = 'inline-flex';
+    }
     torneoEstado.partidoEnCurso = false;
     if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
 
@@ -5264,7 +5397,15 @@ function procesarFinDePartidoLiga(golesUser, golesRival) {
 
     localStorage.setItem('ev_liga_guardada_' + id, JSON.stringify(liga));
 
+    const inGameBar = document.getElementById('sim-in-game-bar');
+    if (inGameBar) inGameBar.style.display = 'none';
+    simActualizarTacticaEnPartido = null;
+
     const btn = document.getElementById('sim-btn-play');
+    if (btn) {
+        btn.classList.remove('sim-hidden');
+        btn.style.display = 'inline-flex';
+    }
     btn.className = 'btn-3d primary sim-main-btn';
     btn.disabled = false;
     if (esFinTemporada) {
@@ -6179,6 +6320,7 @@ window.cerrarModalTorneoCopas = cerrarModalTorneoCopas;
 window.seleccionarCopaParaJugar = seleccionarCopaParaJugar;
 window.iniciarTorneoDeCopas = iniciarTorneoDeCopas;
 window.prepararVistaPartidoCopa = prepararVistaPartidoCopa;
+window.cambiarTacticaEnVivo = cambiarTacticaEnVivo;
 window.toggleVelocidadSimulacion = toggleVelocidadSimulacion;
 window.saltarSimulacionCompleta = saltarSimulacionCompleta;
 window.cerrarModalSimuladorPartido = cerrarModalSimuladorPartido;

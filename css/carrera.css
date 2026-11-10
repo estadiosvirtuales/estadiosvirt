@@ -2427,6 +2427,12 @@
     overflow: hidden !important;
 }
 
+.sim-main-btn.sim-hidden,
+.sim-main-btn[style*="display: none"],
+.sim-actions-footer:has(.sim-in-game-bar:not([style*="display: none"])) .sim-main-btn {
+    display: none !important;
+}
+
 .sim-main-btn i {
     color: #00ff77 !important;
     font-size: 0.95rem !important;
@@ -2600,6 +2606,11 @@
     background: rgba(148, 163, 184, 0.08);
     border-left: 3px solid #64748b;
     color: #e2e8f0;
+}
+.sim-event-row.tactica {
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.16) 0%, rgba(14, 24, 40, 0.95) 100%);
+    border-left: 3px solid #06b6d4;
+    color: #e0f2fe;
 }
 
 .sim-team {
@@ -3718,6 +3729,88 @@
         font-size: 0.72rem !important;
         border-radius: 10px !important;
     }
+    .sim-in-game-bar {
+        max-width: 324px !important;
+        width: 100% !important;
+        flex-direction: column !important;
+        padding: 6px 8px !important;
+        gap: 5px !important;
+        border-radius: 12px !important;
+    }
+    .sim-tactics-group {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 4px !important;
+    }
+    .sim-tactic-btn {
+        width: 100% !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        padding: 0 4px !important;
+        font-size: 0.65rem !important;
+        letter-spacing: -0.2px !important;
+        border-radius: 8px !important;
+        justify-content: center !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+        gap: 3px !important;
+    }
+    .sim-tactic-btn i {
+        font-size: 0.78rem !important;
+    }
+    .sim-tools-group {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        gap: 8px !important;
+    }
+    .sim-tools-group .sim-ctrl-btn {
+        height: 30px !important;
+        min-height: 30px !important;
+        padding: 0 10px !important;
+        font-size: 0.68rem !important;
+        border-radius: 16px !important;
+    }
+}
+
+/* ========================================================
+   📱 ADAPTACIÓN DE TABLET (769PX - 1024PX): FLUJO ÓPTIMO SIN APRIETES
+   ======================================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .simulador-modal-box {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 16px 20px 20px !important;
+        gap: 12px !important;
+    }
+    .sim-match-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        max-width: 702px !important;
+        gap: 12px !important;
+    }
+    .sim-left-column {
+        width: 100% !important;
+    }
+    .sim-right-column {
+        width: 100% !important;
+    }
+    .sim-actions-footer {
+        width: 100% !important;
+        max-width: 702px !important;
+    }
+    .sim-in-game-bar {
+        padding: 8px 12px !important;
+        gap: 10px !important;
+    }
+    .sim-tactic-btn {
+        padding: 8px 12px !important;
+        font-size: 0.74rem !important;
+        min-height: 40px !important;
+    }
 }
 
 /* ☀️ Modo Claro */
@@ -3738,7 +3831,13 @@
     box-shadow: 0 4px 14px rgba(0, 204, 102, 0.32) !important;
     text-shadow: none !important;
 }
-[data-theme="light"] .sim-main-btn i {
+[data-theme="light"] .sim-main-btn.sim-hidden,
+.sim-main-btn[style*="display: none"],
+.sim-actions-footer:has(.sim-in-game-bar:not([style*="display: none"])) .sim-main-btn {
+    display: none !important;
+}
+
+.sim-main-btn i {
     color: #ffffff !important;
     filter: none !important;
 }
@@ -6184,15 +6283,114 @@
     box-sizing: border-box;
 }
 /* ========================================================
-   ⚡ CONTROLES RÁPIDOS DEL SIMULADOR (2X Y SALTO DIRECTO)
+   🕹️ BARRA DE TÁCTICAS DEL DT EN VIVO (CONSOLA CYBER)
    ======================================================== */
+.sim-in-game-bar {
+    width: 100%;
+    max-width: 702px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: linear-gradient(165deg, rgba(14, 22, 38, 0.95) 0%, rgba(8, 14, 25, 0.98) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 6px 14px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    animation: fadeSlideUp 0.25s ease-out;
+}
+
+.sim-tactics-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sim-tools-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sim-tactic-btn {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.14);
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    outline: none;
+}
+
+.sim-tactic-btn i {
+    font-size: 0.95rem;
+    transition: transform 0.2s ease;
+}
+
+.sim-tactic-btn:hover {
+    background: rgba(30, 41, 59, 0.95);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.sim-tactic-btn:active {
+    transform: scale(0.96);
+}
+
+/* 🛡️ TÁCTICA DEFENSIVA: AGUANTAR (Cyan Neón) */
+.sim-tactic-btn.active.active-def {
+    background: linear-gradient(135deg, rgba(8, 145, 178, 0.35) 0%, rgba(6, 182, 212, 0.45) 100%) !important;
+    border-color: #06b6d4 !important;
+    color: #e0f2fe !important;
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.45), inset 0 0 8px rgba(6, 182, 212, 0.3) !important;
+    text-shadow: 0 0 6px rgba(6, 182, 212, 0.8) !important;
+}
+.sim-tactic-btn.active.active-def i {
+    color: #38bdf8 !important;
+    animation: pulse 1.4s infinite alternate;
+}
+
+/* ⚖️ TÁCTICA EQUILIBRADA (Verde Esmeralda Neón) */
+.sim-tactic-btn.active.active-bal {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.45) 100%) !important;
+    border-color: #10b981 !important;
+    color: #ecfdf5 !important;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.45), inset 0 0 8px rgba(16, 185, 129, 0.3) !important;
+    text-shadow: 0 0 6px rgba(16, 185, 129, 0.8) !important;
+}
+.sim-tactic-btn.active.active-bal i {
+    color: #34d399 !important;
+}
+
+/* ⚔️ TÁCTICA OFENSIVA: ATAQUE TOTAL (Rojo Fuego / Naranja Neón) */
+.sim-tactic-btn.active.active-atk {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.40) 0%, rgba(234, 88, 12, 0.50) 100%) !important;
+    border-color: #f97316 !important;
+    color: #fff7ed !important;
+    box-shadow: 0 0 18px rgba(249, 115, 22, 0.55), inset 0 0 8px rgba(239, 68, 68, 0.35) !important;
+    text-shadow: 0 0 8px rgba(249, 115, 22, 0.9) !important;
+}
+.sim-tactic-btn.active.active-atk i {
+    color: #fb923c !important;
+    animation: pulse 0.8s infinite alternate;
+}
+
+/* ⚡ CONTROLES RÁPIDOS (2X Y SALTO DIRECTO) */
 .sim-quick-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 8px 0 12px 0;
-    width: 100%;
+    gap: 8px;
 }
 
 .sim-ctrl-btn {
@@ -7225,6 +7423,43 @@
     background: #fef3c7 !important;
     border-left: 3.5px solid #d97706 !important;
     color: #78350f !important;
+}
+[data-theme="light"] .sim-event-row.tactica {
+    background: #e0f2fe !important;
+    border-left: 3.5px solid #0284c7 !important;
+    color: #0369a1 !important;
+}
+[data-theme="light"] .sim-in-game-bar {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+}
+[data-theme="light"] .sim-tactic-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #475569 !important;
+}
+[data-theme="light"] .sim-tactic-btn:hover {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+[data-theme="light"] .sim-tactic-btn.active.active-def {
+    background: #e0f2fe !important;
+    border-color: #0284c7 !important;
+    color: #0369a1 !important;
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.25) !important;
+}
+[data-theme="light"] .sim-tactic-btn.active.active-bal {
+    background: #dcfce7 !important;
+    border-color: #059669 !important;
+    color: #047857 !important;
+    box-shadow: 0 0 10px rgba(5, 150, 105, 0.25) !important;
+}
+[data-theme="light"] .sim-tactic-btn.active.active-atk {
+    background: #ffedd5 !important;
+    border-color: #ea580c !important;
+    color: #c2410c !important;
+    box-shadow: 0 0 10px rgba(234, 88, 12, 0.25) !important;
 }
 [data-theme="light"] .sim-stage-badge {
     background: #e8f5e9 !important;
