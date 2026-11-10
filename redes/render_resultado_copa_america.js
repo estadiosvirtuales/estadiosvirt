@@ -48,9 +48,20 @@ const CONFIG_RESULTADOS = {
         nextCruceNum: 2,
         nextCruceTexto: 'São Paulo vs. Atlas FC',
         bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
-        copy: `🏆 ¡BOCA JUNIORS CLASIFICÓ A CUARTOS DE FINAL! 🔥🇦🇷
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Boca Juniors avanzó a Cuartos de Final de la Copa América de Estadios! 🇦🇷🔥
+La Bombonera se impuso con el 85% frente al 15% del Allianz Parque.
+
+⚔️ ¡El Cruce 2 (São Paulo vs Atlas FC) ya está abierto en mi perfil! 🗳️
+¿Quién clasifica a Cuartos?
+
+#CopaAmericaDeEstadios #BocaJuniors #LaBombonera #Palmeiras #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡BOCA JUNIORS CLASIFICÓ A CUARTOS DE FINAL! 🔥🇦🇷
 ¡Tenemos el primer estadio clasificado de la Copa América de Estadios!
-La Bombonera se impuso en la votación popular de la comunidad con una contundente diferencia:
+La Bombonera se impuso en el duelo de la comunidad con una contundente diferencia:
 
 📊 RESULTADO FINAL CRUCE 1:
 🟢 BOCA JUNIORS (La Bombonera): 85% ✅ ¡CLASIFICADO!
@@ -62,7 +73,7 @@ El templo xeneize hace valer su historia y mística y ya espera rival en Cuartos
 São Paulo (Morumbí) vs. Atlas FC (Estadio Jalisco).
 👉 ¡Entrá a nuestro perfil y dejá tu voto para clasificar a tu favorito! 🗳️
 
-🎮 Jugá al StadiumGuessr gratis en: estadiosvirtuales.com
+🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #LaBombonera #Palmeiras #AllianzParque #Estadios #FutbolSudamericano #EstadiosVirtuales`
     }
@@ -851,7 +862,7 @@ async function renderizarResultadoCopaAmerica(resultKey = 'resultado-1') {
 
         `[base_video][o1]overlay=0:0:enable='between(t,0,5.0)'[tmp1]`,
         `[tmp1][o2]overlay=0:0:enable='between(t,5.0,11.5)'[tmp2]`,
-        `[tmp2][o3]overlay=0:0:enable='between(t,11.5,18.0)'[final_v]`
+        `[tmp2][o3]overlay=0:0:enable='between(t,11.5,18.0)',setsar=1[final_v]`
     ];
 
     const ffmpegArgs = [
@@ -870,7 +881,10 @@ async function renderizarResultadoCopaAmerica(resultKey = 'resultado-1') {
         '-preset', 'fast',
         '-pix_fmt', 'yuv420p',
         '-c:a', 'aac',
+        '-ac', '2',
+        '-ar', '44100',
         '-b:a', '192k',
+        '-movflags', '+faststart',
         '-t', '18.0',
         videoOutPath
     ];
