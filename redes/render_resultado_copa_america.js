@@ -50,11 +50,11 @@ const CONFIG_RESULTADOS = {
         bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
         copy: `🏆 ¡BOCA JUNIORS CLASIFICÓ A CUARTOS DE FINAL! 🔥🇦🇷
 ¡Tenemos el primer estadio clasificado de la Copa América de Estadios!
-Tras 46 votos y comentarios de la comunidad, La Bombonera se impuso con una contundente diferencia:
+La Bombonera se impuso en la votación popular de la comunidad con una contundente diferencia:
 
 📊 RESULTADO FINAL CRUCE 1:
-🟢 BOCA JUNIORS (La Bombonera): 85% (39 votos) ✅ ¡CLASIFICADO!
-⚪ PALMEIRAS (Allianz Parque): 15% (7 votos)
+🟢 BOCA JUNIORS (La Bombonera): 85% ✅ ¡CLASIFICADO!
+⚪ PALMEIRAS (Allianz Parque): 15%
 
 El templo xeneize hace valer su historia y mística y ya espera rival en Cuartos de Final (saldrá de São Paulo vs Atlas FC).
 
@@ -281,7 +281,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         <div id="header-box">
             <div class="header-badge">🏆 COPA AMÉRICA DE ESTADIOS · CRUCE 1</div>
             <div class="header-title">¡RESULTADO DE LA VOTACIÓN! 🗳️</div>
-            <div class="header-sub">46 comentarios de la comunidad · Veredicto oficial</div>
+            <div class="header-sub">Votación de la comunidad · Veredicto oficial</div>
         </div>
 
         <!-- TARJETA GANADOR: BOCA JUNIORS -->
@@ -311,7 +311,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <div style="background: rgba(0, 0, 0, 0.45); border: 1.5px solid rgba(0, 255, 119, 0.35); border-radius: 20px; padding: 14px 20px; margin-top: 10px;">
                 <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
                     <span style="color: #00ff77; font-size: 56px; font-weight: 900; letter-spacing: -1px; line-height: 1;">85%</span>
-                    <span style="color: #ffffff; font-size: 22px; font-weight: 900; letter-spacing: 0.5px;">39 VOTOS A FAVOR</span>
+                    <span style="color: #00ff77; font-size: 24px; font-weight: 900; letter-spacing: 1px;">MAYORÍA DE VOTOS</span>
                 </div>
                 <!-- Barra de progreso -->
                 <div style="height: 22px; background: rgba(255, 255, 255, 0.12); border-radius: 12px; overflow: hidden; padding: 3px;">
@@ -327,7 +327,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
                 <span style="background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(255, 255, 255, 0.25); color: #94a3b8; font-size: 15px; font-weight: 800; padding: 4px 14px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase;">
                     ELIMINADO EN OCTAVOS
                 </span>
-                <span style="color: #94a3b8; font-size: 16px; font-weight: 800;">7 VOTOS</span>
+                <span style="color: #94a3b8; font-size: 16px; font-weight: 800;">CRUCE 1</span>
             </div>
 
             <!-- Datos del Estadio Perdedor -->
@@ -344,7 +344,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; padding: 12px 18px; margin-top: 6px;">
                 <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px;">
                     <span style="color: #cbd5e1; font-size: 40px; font-weight: 900; line-height: 1;">15%</span>
-                    <span style="color: #94a3b8; font-size: 18px; font-weight: 800;">7 VOTOS RECIBIDOS</span>
+                    <span style="color: #94a3b8; font-size: 18px; font-weight: 800;">VOTOS DE LA COMUNIDAD</span>
                 </div>
                 <!-- Barra de progreso -->
                 <div style="height: 16px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; overflow: hidden; padding: 2px;">
