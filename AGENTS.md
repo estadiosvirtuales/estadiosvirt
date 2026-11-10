@@ -117,6 +117,12 @@ Promociona la funcionalidad de la web para crear cartas FUT personalizadas con e
    - **Motores:**
      - Copa América: `redes/render_mundial_estadios.js`
      - Eurocopa: `redes/render_eurocopa_estadios.js`
+3. **Videos de Resultado Oficial (18.0s):**
+   - Escena 1 (0-5s): Develación de porcentaje y conteo real de votos de la comunidad (ganador verde neón vs eliminado).
+   - Escena 2 (5-11.5s): Celebración cinemática y showcase 3D del estadio ganador con capacidad y mística.
+   - Escena 3 (11.5-18s): Árbol de Playoffs actualizado con el clasificado avanzando de casilla y gancho directo al próximo cruce para votar.
+   - **Motores:**
+     - Copa América: `redes/render_resultado_copa_america.js`
 
 ---
 
