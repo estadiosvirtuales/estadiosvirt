@@ -3176,7 +3176,7 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                                                 <img src="${obtenerUrlEscudo(escudoUsuario)}" alt="Tu Club">
                                                 <span>Tu Once</span>
                                             </div>
-                                            <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales}</span>
+                                            <span class="sim-camino-score">${p.golesUser} - ${p.golesRival}${p.penales ? `<span class="sim-camino-pen">${p.penales}</span>` : ''}</span>
                                             <div class="sim-camino-team rival">
                                                 <span>${p.rivalNombre}</span>
                                                 <img src="${obtenerUrlEscudo(p.rivalId)}" alt="${p.rivalNombre}">
