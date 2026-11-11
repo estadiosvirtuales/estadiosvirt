@@ -1036,7 +1036,7 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
     // Si la simulación fue saltada o está en velocidad turbo 3x, auto-resolver de inmediato sin bloquear
     const overlay = document.getElementById('sim-momento-clave');
     if (!overlay || simVelocidadMult >= 3 || (torneoEstado && torneoEstado.terminado)) {
-        onResuelto(Math.floor(Math.random() * 3));
+        onResuelto(Math.floor(Math.random() * 6));
         return;
     }
 
@@ -1054,53 +1054,51 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
     const subEl = document.getElementById('sim-momento-sub');
     const fillEl = document.getElementById('sim-momento-timer-fill');
 
-    const icon0 = document.getElementById('opt-icon-0');
-    const lbl0 = document.getElementById('opt-lbl-0');
-    const icon1 = document.getElementById('opt-icon-1');
-    const lbl1 = document.getElementById('opt-lbl-1');
-    const icon2 = document.getElementById('opt-icon-2');
-    const lbl2 = document.getElementById('opt-lbl-2');
+    const keeperEl = document.getElementById('sim-goal-keeper');
+    if (keeperEl) {
+        keeperEl.style.transform = 'translateX(-50%)';
+        keeperEl.style.transition = 'transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    }
+
+    // Configuración de las 6 zonas en la cuadrícula del arco
+    const tagsZonas = {
+        0: '↖ ÁNGULO',
+        1: '⬆ AL TECHO',
+        2: '↗ ÁNGULO',
+        3: '↙ AL PALO',
+        4: '⬇ AL PISO',
+        5: '↘ AL PALO'
+    };
 
     if (tipo === 'penal_favor') {
         if (badgeEl) badgeEl.textContent = 'PENAL A FAVOR';
         if (titleEl) titleEl.textContent = '¡PENAL A FAVOR!';
-        if (subEl) subEl.innerHTML = `Elegí a qué palo rematar con <b>${data.tirador ? data.tirador.nombre : 'tu jugador'}</b>`;
-        if (icon0) icon0.textContent = '⬅️';
-        if (lbl0) lbl0.textContent = 'Izquierda';
-        if (icon1) icon1.textContent = '⬆️';
-        if (lbl1) lbl1.textContent = 'Al Medio';
-        if (icon2) icon2.textContent = '➡️';
-        if (lbl2) lbl2.textContent = 'Derecha';
+        if (subEl) subEl.innerHTML = `Elegí la zona del arco para colocar el remate con <b>${data.tirador ? data.tirador.nombre : 'tu jugador'}</b>`;
     } else if (tipo === 'penal_contra') {
         if (badgeEl) badgeEl.textContent = 'PENAL EN CONTRA';
         if (titleEl) titleEl.textContent = '¡PENAL EN CONTRA!';
-        if (subEl) subEl.innerHTML = `¡Adiviná a dónde tirarte con <b>${data.portero ? data.portero.nombre : 'tu arquero'}</b>!`;
-        if (icon0) icon0.textContent = '⬅️';
-        if (lbl0) lbl0.textContent = 'Tirarse a Izq.';
-        if (icon1) icon1.textContent = '⬆️';
-        if (lbl1) lbl1.textContent = 'Al Medio';
-        if (icon2) icon2.textContent = '➡️';
-        if (lbl2) lbl2.textContent = 'Tirarse a Der.';
+        if (subEl) subEl.innerHTML = `¡Elegí a qué zona tirarte para atajar con <b>${data.portero ? data.portero.nombre : 'tu arquero'}</b>!`;
+        tagsZonas[0] = '↖ VOLAR ARRIBA';
+        tagsZonas[1] = '⬆ AL MEDIO';
+        tagsZonas[2] = '↗ VOLAR ARRIBA';
+        tagsZonas[3] = '↙ VOLAR AL PALO';
+        tagsZonas[4] = '⬇ AL PISO';
+        tagsZonas[5] = '↘ VOLAR AL PALO';
     } else if (tipo === 'tiro_libre') {
         if (badgeEl) badgeEl.textContent = 'TIRO LIBRE PELIGROSO';
         if (titleEl) titleEl.textContent = '¡TIRO LIBRE AL BORDE DEL ÁREA!';
-        if (subEl) subEl.innerHTML = `Elegí el disparo con <b>${data.tirador ? data.tirador.nombre : 'tu especialista'}</b>`;
-        if (icon0) icon0.textContent = '🎯';
-        if (lbl0) lbl0.textContent = 'Al Ángulo';
-        if (icon1) icon1.textContent = '🌪️';
-        if (lbl1) lbl1.textContent = 'Comba Barrera';
-        if (icon2) icon2.textContent = '💥';
-        if (lbl2) lbl2.textContent = 'Fuerte al Palo';
+        if (subEl) subEl.innerHTML = `Elegí la zona del disparo con <b>${data.tirador ? data.tirador.nombre : 'tu especialista'}</b>`;
+        tagsZonas[1] = '⬆ BARRERA';
+        tagsZonas[4] = '⬇ POR ABAJO';
     } else if (tipo === 'penal_tanda') {
         if (badgeEl) badgeEl.textContent = 'TANDA DE PENALES';
         if (titleEl) titleEl.textContent = '¡EL 5º PENAL DECISIVO!';
-        if (subEl) subEl.innerHTML = `Serie 4-4: ¡Elegí a qué palo asegurar la clasificación!`;
-        if (icon0) icon0.textContent = '⬅️';
-        if (lbl0) lbl0.textContent = 'Izquierda';
-        if (icon1) icon1.textContent = '⬆️';
-        if (lbl1) lbl1.textContent = 'Al Medio';
-        if (icon2) icon2.textContent = '➡️';
-        if (lbl2) lbl2.textContent = 'Derecha';
+        if (subEl) subEl.innerHTML = `Serie 4-4: ¡Elegí la zona del arco para sellar la clasificación!`;
+    }
+
+    for (let i = 0; i < 6; i++) {
+        const tagEl = document.getElementById(`zone-tag-${i}`);
+        if (tagEl && tagsZonas[i]) tagEl.textContent = tagsZonas[i];
     }
 
     if (fillEl) fillEl.style.width = '100%';
@@ -1131,8 +1129,8 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         if (restante <= 0) {
             clearInterval(momentoClaveTimer);
             momentoClaveTimer = null;
-            // Auto-elección si se agota el tiempo
-            window.resolverMomentoClave(Math.floor(Math.random() * 3));
+            // Auto-elección aleatoria entre las 6 zonas si se agota el tiempo
+            window.resolverMomentoClave(Math.floor(Math.random() * 6));
         }
     }, 50);
 }
@@ -1148,8 +1146,22 @@ window.resolverMomentoClave = function(opcion) {
 
     momentoClaveActivo = false;
 
+    // Animación visual del arquero en el arco interactivo
+    const keeperEl = document.getElementById('sim-goal-keeper');
+    if (keeperEl) {
+        const col = opcion % 3; // 0: izq, 1: centro, 2: der
+        const row = Math.floor(opcion / 3); // 0: arriba, 1: abajo
+        const xOffset = col === 0 ? '-110%' : col === 2 ? '10%' : '-50%';
+        const yOffset = row === 0 ? '-35%' : '-5%';
+        const rot = col === 0 ? '-35deg' : col === 2 ? '35deg' : '0deg';
+        keeperEl.style.transform = `translate(${xOffset}, ${yOffset}) rotate(${rot})`;
+    }
+
     const overlay = document.getElementById('sim-momento-clave');
-    if (overlay) overlay.style.display = 'none';
+    setTimeout(() => {
+        if (overlay) overlay.style.display = 'none';
+        if (keeperEl) keeperEl.style.transform = 'translateX(-50%)';
+    }, 280);
 
     if (typeof reproducirSonido === 'function') {
         reproducirSonido('click');
@@ -2067,21 +2079,32 @@ window.iniciarSimulacionEnVivo = function() {
         entrarRepos(mapa, 1.4, () => {
             if (eq === 'user') {
                 mostrarMomentoClave('penal_favor', { tirador, portero, eq }, (opcion) => {
-                    const targetY = opcion === 0 ? 44.5 : opcion === 2 ? 55.5 : 50.0;
-                    const gkPalo = Math.floor(Math.random() * 3);
-                    const gkY = gkPalo === 0 ? 44.5 : gkPalo === 2 ? 55.5 : 50.0;
+                    // Mapeo físico en el arco 2D:
+                    // 0: Arriba Izq (44.0), 1: Arriba Centro (50.0), 2: Arriba Der (56.0)
+                    // 3: Raso Izq (44.5),   4: Raso Centro (50.0),   5: Raso Der (55.5)
+                    const mapTargetY = { 0: 44.0, 1: 50.0, 2: 56.0, 3: 44.5, 4: 50.0, 5: 55.5 };
+                    const targetY = mapTargetY[opcion] !== undefined ? mapTargetY[opcion] : 50.0;
+                    
+                    // El arquero rival elige una de las 6 zonas
+                    const gkZona = Math.floor(Math.random() * 6);
+                    const gkY = mapTargetY[gkZona] || 50.0;
                     let resExacto = 'gol';
                     let finalKy = gkY;
 
-                    if (gkPalo === opcion) {
-                        if (Math.random() < 0.72) {
+                    if (gkZona === opcion) {
+                        // El arquero adivinó la zona exacta
+                        const esAngulo = (opcion === 0 || opcion === 2);
+                        // Los tiros al ángulo son muy difíciles de atajar incluso si adivina (52% atajada / 48% gol)
+                        const probAtajada = esAngulo ? 0.52 : 0.76;
+                        if (Math.random() < probAtajada) {
                             resExacto = 'atajada';
                             finalKy = targetY;
                         } else {
                             resExacto = 'gol';
-                            finalKy = targetY + (opcion === 1 ? (Math.random() < 0.5 ? -1.5 : 1.5) : (opcion === 0 ? 2 : -2));
+                            finalKy = targetY + (opcion % 3 === 0 ? 1.8 : opcion % 3 === 2 ? -1.8 : 1.2);
                         }
                     } else {
+                        // El arquero voló a otra zona: ¡GOLAZO!
                         resExacto = 'gol';
                         finalKy = gkY;
                     }
@@ -2098,19 +2121,23 @@ window.iniciarSimulacionEnVivo = function() {
                 });
             } else {
                 mostrarMomentoClave('penal_contra', { tirador, portero, eq }, (opcion) => {
-                    const userKy = opcion === 0 ? 44.5 : opcion === 2 ? 55.5 : 50.0;
-                    const rivalPalo = Math.floor(Math.random() * 3);
-                    const targetY = rivalPalo === 0 ? 44.5 : rivalPalo === 2 ? 55.5 : 50.0;
+                    const mapTargetY = { 0: 44.0, 1: 50.0, 2: 56.0, 3: 44.5, 4: 50.0, 5: 55.5 };
+                    const userKy = mapTargetY[opcion] !== undefined ? mapTargetY[opcion] : 50.0;
+                    
+                    // Delantero rival patea a una de las 6 zonas
+                    const rivalZona = Math.floor(Math.random() * 6);
+                    const targetY = mapTargetY[rivalZona] || 50.0;
                     let resExacto = 'gol';
                     let finalKy = userKy;
 
-                    if (opcion === rivalPalo) {
-                        if (Math.random() < 0.78) {
+                    if (opcion === rivalZona) {
+                        // ¡El usuario acertó la zona a donde pateó el rival!
+                        if (Math.random() < 0.82) {
                             resExacto = 'atajada';
                             finalKy = targetY;
                         } else {
                             resExacto = 'gol';
-                            finalKy = targetY + (opcion === 1 ? (Math.random() < 0.5 ? -1.5 : 1.5) : (opcion === 0 ? 2 : -2));
+                            finalKy = targetY + (opcion % 3 === 0 ? 1.8 : opcion % 3 === 2 ? -1.8 : 1.2);
                         }
                     } else {
                         resExacto = 'gol';
@@ -2157,48 +2184,53 @@ window.iniciarSimulacionEnVivo = function() {
                 mostrarMomentoClave('tiro_libre', { tirador, portero, eq, dGol }, (opcion) => {
                     let targetY, targetX = 101.5, resExacto, keeperY;
                     const r = Math.random();
-                    if (opcion === 0) {
-                        targetY = Math.random() < 0.5 ? 44.0 : 56.0;
-                        if (r < 0.38) {
+                    const esAngulo = (opcion === 0 || opcion === 2);
+                    const esRaso = (opcion === 3 || opcion === 5);
+
+                    if (esAngulo) {
+                        targetY = opcion === 0 ? 44.0 : 56.0;
+                        if (r < 0.44) {
                             resExacto = 'gol';
-                            keeperY = targetY + (targetY < 50 ? 2.5 : -2.5);
-                        } else if (r < 0.65) {
+                            keeperY = targetY + (opcion === 0 ? 2.5 : -2.5);
+                        } else if (r < 0.74) {
                             resExacto = 'atajada';
                             keeperY = targetY;
-                        } else if (r < 0.85) {
+                        } else if (r < 0.88) {
                             resExacto = 'palo';
-                            targetY = targetY < 50 ? 44.5 : 55.5;
+                            targetY = opcion === 0 ? 44.5 : 55.5;
                             keeperY = 50;
                         } else {
                             resExacto = 'afuera';
-                            targetY = targetY < 50 ? 41.0 : 59.0;
+                            targetY = opcion === 0 ? 41.5 : 58.5;
                             keeperY = 50;
                         }
-                    } else if (opcion === 1) {
-                        targetY = y < 50 ? 46.5 : 53.5;
-                        if (r < 0.36) {
+                    } else if (esRaso) {
+                        targetY = opcion === 3 ? 44.5 : 55.5;
+                        if (r < 0.38) {
                             resExacto = 'gol';
-                            keeperY = 50;
-                        } else if (r < 0.75) {
+                            keeperY = targetY + (opcion === 3 ? 2.2 : -2.2);
+                        } else if (r < 0.76) {
                             resExacto = 'atajada';
                             keeperY = targetY;
                         } else {
                             resExacto = 'afuera';
-                            targetY = y < 50 ? 42.0 : 58.0;
+                            targetY = opcion === 3 ? 42.0 : 58.0;
                             keeperY = 50;
                         }
                     } else {
-                        targetY = 50 + (Math.random() < 0.5 ? -3 : 3);
-                        if (r < 0.30) {
+                        // Centro: tiro potente al medio o comba por encima de la barrera
+                        targetY = 50.0;
+                        if (r < 0.32) {
                             resExacto = 'gol';
-                            keeperY = targetY + (Math.random() < 0.5 ? -2 : 2);
-                        } else if (r < 0.80) {
+                            keeperY = 47.0;
+                        } else if (r < 0.82) {
                             resExacto = 'atajada';
-                            keeperY = targetY;
+                            keeperY = 50.0;
                         } else {
                             resExacto = 'afuera';
-                            targetY = 50 + (Math.random() < 0.5 ? -10 : 10);
-                            keeperY = 50;
+                            targetY = 50.0;
+                            targetX = 103.0;
+                            keeperY = 50.0;
                         }
                     }
                     tirar(tirador, {
@@ -2933,7 +2965,14 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         const overlay = document.getElementById('sim-momento-clave');
         if (overlay && simVelocidadMult < 3) {
             mostrarMomentoClave('penal_tanda', {}, (opcion) => {
-                const acierto = Math.random() < 0.76;
+                const gkZona = Math.floor(Math.random() * 6);
+                let acierto = true;
+                if (gkZona === opcion) {
+                    const esAngulo = (opcion === 0 || opcion === 2);
+                    acierto = Math.random() < (esAngulo ? 0.48 : 0.25);
+                } else {
+                    acierto = true;
+                }
                 const penUser = acierto ? 5 : 4;
                 const penRival = acierto ? 4 : 5;
                 const gano = penUser > penRival;

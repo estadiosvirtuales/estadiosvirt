@@ -1933,20 +1933,59 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                                 <div class="sim-momento-timer-fill" id="sim-momento-timer-fill"></div>
                             </div>
 
-                            <!-- 3 OPCIONES INTERACTIVAS -->
-                            <div class="sim-momento-options" id="sim-momento-options">
-                                <button type="button" class="sim-momento-btn" id="btn-momento-opt0" onclick="resolverMomentoClave(0)">
-                                    <span class="opt-icon" id="opt-icon-0">⬅️</span>
-                                    <span class="opt-label" id="opt-lbl-0">Izquierda</span>
-                                </button>
-                                <button type="button" class="sim-momento-btn" id="btn-momento-opt1" onclick="resolverMomentoClave(1)">
-                                    <span class="opt-icon" id="opt-icon-1">⬆️</span>
-                                    <span class="opt-label" id="opt-lbl-1">Al Medio</span>
-                                </button>
-                                <button type="button" class="sim-momento-btn" id="btn-momento-opt2" onclick="resolverMomentoClave(2)">
-                                    <span class="opt-icon" id="opt-icon-2">➡️</span>
-                                    <span class="opt-label" id="opt-lbl-2">Derecha</span>
-                                </button>
+                            <!-- 🥅 ARCO DE FÚTBOL INTERACTIVO CON CUADRÍCULA DE 6 ZONAS -->
+                            <div class="sim-goal-stage" id="sim-goal-stage">
+                                <div class="sim-goal-frame">
+                                    <div class="sim-goal-net-mesh"></div>
+
+                                    <!-- SILUETA / INDICADOR DEL ARQUERO BAJO LOS TRES PALOS -->
+                                    <div class="sim-goal-keeper" id="sim-goal-keeper">
+                                        <div class="sim-gk-gloves left">🧤</div>
+                                        <div class="sim-gk-icon"><i class="ph-bold ph-shield"></i></div>
+                                        <div class="sim-gk-gloves right">🧤</div>
+                                    </div>
+
+                                    <!-- CUADRÍCULA INTERACTIVA 2x3 DE DISPARO -->
+                                    <div class="sim-goal-grid" id="sim-goal-grid">
+                                        <!-- FILA SUPERIOR (0, 1, 2) -->
+                                        <button type="button" class="sim-goal-zone zone-top-left" id="goal-zone-0" onclick="resolverMomentoClave(0)" title="Ángulo Superior Izquierdo">
+                                            <div class="sim-zone-crosshair"></div>
+                                            <span class="sim-zone-ball">⚽</span>
+                                            <span class="sim-zone-tag" id="zone-tag-0">↖ ÁNGULO</span>
+                                        </button>
+                                        <button type="button" class="sim-goal-zone zone-top-center" id="goal-zone-1" onclick="resolverMomentoClave(1)" title="Arriba al Centro">
+                                            <div class="sim-zone-crosshair"></div>
+                                            <span class="sim-zone-ball">⚽</span>
+                                            <span class="sim-zone-tag" id="zone-tag-1">⬆ AL TECHO</span>
+                                        </button>
+                                        <button type="button" class="sim-goal-zone zone-top-right" id="goal-zone-2" onclick="resolverMomentoClave(2)" title="Ángulo Superior Derecho">
+                                            <div class="sim-zone-crosshair"></div>
+                                            <span class="sim-zone-ball">⚽</span>
+                                            <span class="sim-zone-tag" id="zone-tag-2">↗ ÁNGULO</span>
+                                        </button>
+
+                                        <!-- FILA INFERIOR (3, 4, 5) -->
+                                        <button type="button" class="sim-goal-zone zone-bottom-left" id="goal-zone-3" onclick="resolverMomentoClave(3)" title="Raso al Palo Izquierdo">
+                                            <div class="sim-zone-crosshair"></div>
+                                            <span class="sim-zone-ball">⚽</span>
+                                            <span class="sim-zone-tag" id="zone-tag-3">↙ AL PALO</span>
+                                        </button>
+                                        <button type="button" class="sim-goal-zone zone-bottom-center" id="goal-zone-4" onclick="resolverMomentoClave(4)" title="Raso al Centro">
+                                            <div class="sim-zone-crosshair"></div>
+                                            <span class="sim-zone-ball">⚽</span>
+                                            <span class="sim-zone-tag" id="zone-tag-4">⬇ AL PISO</span>
+                                        </button>
+                                        <button type="button" class="sim-goal-zone zone-bottom-right" id="goal-zone-5" onclick="resolverMomentoClave(5)" title="Raso al Palo Derecho">
+                                            <div class="sim-zone-crosshair"></div>
+                                            <span class="sim-zone-ball">⚽</span>
+                                            <span class="sim-zone-tag" id="zone-tag-5">↘ AL PALO</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="sim-goal-grass">
+                                    <div class="sim-goal-line"></div>
+                                    <div class="sim-penalty-spot"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
