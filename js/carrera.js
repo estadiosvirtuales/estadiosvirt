@@ -40,6 +40,7 @@ var momentoClaveResolutor = null;
 var momentoClaveTipo = null;
 var decisionEntretiempoSeleccionada = null;
 var resolverEntretiempo = null;
+var simSaltadorActivo = null;
 var cofreTemporadaPendiente = null;
 
 
@@ -936,6 +937,24 @@ function prepararVistaPartidoCopa() {
 
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'flex';
+    const btnSpeed = document.getElementById('sim-btn-speed');
+    if (btnSpeed) {
+        btnSpeed.style.display = 'inline-flex';
+        btnSpeed.disabled = false;
+        btnSpeed.classList.remove('active-2x', 'active-3x');
+        const txt = document.getElementById('sim-speed-text');
+        if (txt) txt.textContent = '1x';
+    }
+    const btnSkip = document.getElementById('sim-btn-skip');
+    if (btnSkip) {
+        btnSkip.style.display = 'inline-flex';
+        btnSkip.disabled = false;
+    }
+    simSaltadorActivo = null;
+    simVelocidadMult = 1;
+
     const etOverlay = document.getElementById('sim-entretiempo-overlay');
     if (etOverlay) etOverlay.style.display = 'none';
     const momentoOverlay = document.getElementById('sim-momento-clave');
@@ -1005,7 +1024,7 @@ window.toggleVelocidadSimulacion = function() {
     }
 };
 
-// ⚡ BOTÓN SALTAR: Fallback por si lo presionan antes de arrancar la previa
+// ⚡ BOTÓN SALTAR: Simulación instantánea para el partido actual (Copa, Liga o Desafío)
 window.saltarSimulacionCompleta = function() {
     if (!torneoEstado) return;
     if (torneoEstado.esLiga) {
@@ -1019,10 +1038,14 @@ window.saltarSimulacionCompleta = function() {
             } catch(e) {}
         }
     }
-    if (!torneoEstado.partidoEnCurso) {
+    // Si el partido está en curso, ejecutar el saltador del partido activo
+    if (torneoEstado.partidoEnCurso && typeof simSaltadorActivo === 'function') {
+        simSaltadorActivo();
+    } else if (!torneoEstado.partidoEnCurso) {
+        // Si está en la previa, arrancar el partido e inmediatamente resolverlo
         iniciarSimulacionEnVivo();
-        if (typeof window.saltarSimulacionCompleta === 'function') {
-            window.saltarSimulacionCompleta();
+        if (typeof simSaltadorActivo === 'function') {
+            simSaltadorActivo();
         }
     }
 };
@@ -1242,9 +1265,12 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (etOverlay) etOverlay.style.display = 'none';
 
     simVelocidadMult = 1;
+    simSaltadorActivo = null;
     simActualizarTacticaEnPartido = null;
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'flex';
     const btnPlay = document.getElementById('sim-btn-play');
     if (btnPlay) {
         btnPlay.classList.remove('sim-hidden');
@@ -1253,9 +1279,16 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     }
     const btnSpeed = document.getElementById('sim-btn-speed');
     if (btnSpeed) {
+        btnSpeed.style.display = 'inline-flex';
+        btnSpeed.disabled = false;
         btnSpeed.classList.remove('active-2x', 'active-3x');
         const txt = document.getElementById('sim-speed-text');
         if (txt) txt.textContent = '1x';
+    }
+    const btnSkip = document.getElementById('sim-btn-skip');
+    if (btnSkip) {
+        btnSkip.style.display = 'inline-flex';
+        btnSkip.disabled = false;
     }
 
     const tagEl = document.getElementById('sim-pitch-tag');
@@ -1311,13 +1344,24 @@ window.iniciarSimulacionEnVivo = function() {
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'flex';
 
-    // Mostramos la barra de controles rápidos y reseteamos indicador de velocidad
+    // Asegurar que la barra de controles rápidos y sus botones siempre estén visibles y activos
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'flex';
+
     simVelocidadMult = 1;
     const btnSpeedInit = document.getElementById('sim-btn-speed');
     if (btnSpeedInit) {
+        btnSpeedInit.style.display = 'inline-flex';
+        btnSpeedInit.disabled = false;
         btnSpeedInit.classList.remove('active-2x', 'active-3x');
         const txtInit = document.getElementById('sim-speed-text');
         if (txtInit) txtInit.textContent = '1x';
+    }
+
+    const btnSkipInit = document.getElementById('sim-btn-skip');
+    if (btnSkipInit) {
+        btnSkipInit.style.display = 'inline-flex';
+        btnSkipInit.disabled = false;
     }
 
     // Configuración de táctica activa en vivo
@@ -2504,7 +2548,7 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     // ================= 10. SIMULACIÓN INSTANTÁNEA (SALTAR PARTIDO) =================
-    window.saltarSimulacionCompleta = function() {
+    simSaltadorActivo = function() {
         if (torneoEstado && torneoEstado.esLiga) {
             const idUserGuardar = getUserId();
             const guardadaRaw = localStorage.getItem('ev_liga_guardada_' + idUserGuardar);
@@ -2565,8 +2609,6 @@ window.iniciarSimulacionEnVivo = function() {
 
         const inGameBar = document.getElementById('sim-in-game-bar');
         if (inGameBar) inGameBar.style.display = 'none';
-        const qControls = document.getElementById('sim-quick-controls');
-        if (qControls) qControls.style.display = 'none';
 
         const row = document.createElement('div');
         row.className = 'sim-event-row sim-event-simulado';
@@ -2676,8 +2718,6 @@ window.iniciarSimulacionEnVivo = function() {
             if (clock) clock.textContent = `90'+${tiempoDescuento2T}' · FIN`;
             const inGameBar = document.getElementById('sim-in-game-bar');
             if (inGameBar) inGameBar.style.display = 'none';
-            const qControls = document.getElementById('sim-quick-controls');
-            if (qControls) qControls.style.display = 'none';
             finalizarPartidoCopa(golesUser, golesRival);
             return;
         }
@@ -2797,6 +2837,24 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     const timeline = document.getElementById('sim-events-timeline');
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'flex';
+    const btnSpeed = document.getElementById('sim-btn-speed');
+    if (btnSpeed) {
+        btnSpeed.style.display = 'inline-flex';
+        btnSpeed.disabled = false;
+        btnSpeed.classList.remove('active-2x', 'active-3x');
+        const txt = document.getElementById('sim-speed-text');
+        if (txt) txt.textContent = '1x';
+    }
+    const btnSkip = document.getElementById('sim-btn-skip');
+    if (btnSkip) {
+        btnSkip.style.display = 'inline-flex';
+        btnSkip.disabled = false;
+    }
+    simSaltadorActivo = null;
+    simVelocidadMult = 1;
+
     const etOverlay = document.getElementById('sim-entretiempo-overlay');
     if (etOverlay) etOverlay.style.display = 'none';
     const momentoOverlay = document.getElementById('sim-momento-clave');
@@ -5906,6 +5964,24 @@ function procesarFinDePartidoLiga(golesUser, golesRival) {
 
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const qControls = document.getElementById('sim-quick-controls');
+    if (qControls) qControls.style.display = 'flex';
+    const btnSpeed = document.getElementById('sim-btn-speed');
+    if (btnSpeed) {
+        btnSpeed.style.display = 'inline-flex';
+        btnSpeed.disabled = false;
+        btnSpeed.classList.remove('active-2x', 'active-3x');
+        const txt = document.getElementById('sim-speed-text');
+        if (txt) txt.textContent = '1x';
+    }
+    const btnSkip = document.getElementById('sim-btn-skip');
+    if (btnSkip) {
+        btnSkip.style.display = 'inline-flex';
+        btnSkip.disabled = false;
+    }
+    simSaltadorActivo = null;
+    simVelocidadMult = 1;
+
     const etOverlay = document.getElementById('sim-entretiempo-overlay');
     if (etOverlay) etOverlay.style.display = 'none';
     const momentoOverlay = document.getElementById('sim-momento-clave');
