@@ -38,7 +38,7 @@ var momentoClaveActivo = false;
 var momentoClaveTimer = null;
 var momentoClaveResolutor = null;
 var momentoClaveTipo = null;
-var decisionEntretiempoSeleccionada = 'cambios';
+var decisionEntretiempoSeleccionada = null;
 var resolverEntretiempo = null;
 var cofreTemporadaPendiente = null;
 
@@ -1175,18 +1175,43 @@ window.resolverMomentoClave = function(opcion) {
     }
 };
 
+window.actualizarTextoBotonEntretiempo = function() {
+    const resumeTxt = document.getElementById('sim-et-resume-txt');
+    if (!resumeTxt) return;
+    if (decisionEntretiempoSeleccionada === 'cambios') {
+        resumeTxt.textContent = 'Aplicar Cambios y Jugar el 2T';
+    } else if (decisionEntretiempoSeleccionada === 'arenga') {
+        resumeTxt.textContent = 'Aplicar Arenga y Jugar el 2T';
+    } else {
+        resumeTxt.textContent = 'Salir a Jugar el 2T (Sin Cambios)';
+    }
+};
+
 window.aplicarDecisionEntretiempo = function(decision) {
-    decisionEntretiempoSeleccionada = decision;
     const bCambios = document.getElementById('sim-et-btn-cambios');
     const bArenga = document.getElementById('sim-et-btn-arenga');
-    if (decision === 'cambios') {
-        if (bCambios) bCambios.classList.add('active');
-        if (bArenga) bArenga.classList.remove('active');
-    } else {
+
+    // Toggle interactivo: Si vuelve a presionar la opción ya seleccionada, se deselecciona a estado neutro
+    if (decisionEntretiempoSeleccionada === decision) {
+        decisionEntretiempoSeleccionada = null;
         if (bCambios) bCambios.classList.remove('active');
-        if (bArenga) bArenga.classList.add('active');
+        if (bArenga) bArenga.classList.remove('active');
+        if (typeof reproducirSonido === 'function') reproducirSonido('click');
+    } else {
+        decisionEntretiempoSeleccionada = decision;
+        if (decision === 'cambios') {
+            if (bCambios) bCambios.classList.add('active');
+            if (bArenga) bArenga.classList.remove('active');
+        } else if (decision === 'arenga') {
+            if (bCambios) bCambios.classList.remove('active');
+            if (bArenga) bArenga.classList.add('active');
+        }
+        if (typeof reproducirSonido === 'function') reproducirSonido('tactica');
     }
-    if (typeof reproducirSonido === 'function') reproducirSonido('tactica');
+
+    if (typeof window.actualizarTextoBotonEntretiempo === 'function') {
+        window.actualizarTextoBotonEntretiempo();
+    }
 };
 
 window.reanudarSegundoTiempo = function() {
@@ -1194,7 +1219,7 @@ window.reanudarSegundoTiempo = function() {
         if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
         const fn = resolverEntretiempo;
         resolverEntretiempo = null;
-        fn(decisionEntretiempoSeleccionada);
+        fn(decisionEntretiempoSeleccionada || 'ninguna');
     }
 };
 
@@ -2598,11 +2623,15 @@ window.iniciarSimulacionEnVivo = function() {
                 else fillStamina.style.background = 'linear-gradient(90deg, #10b981 0%, #38bdf8 100%)';
             }
 
-            decisionEntretiempoSeleccionada = 'cambios';
+            // Entretiempo: inicializar sin forzar ninguna opción (libre elección opcional)
+            decisionEntretiempoSeleccionada = null;
             const bCambios = document.getElementById('sim-et-btn-cambios');
             const bArenga = document.getElementById('sim-et-btn-arenga');
-            if (bCambios) bCambios.classList.add('active');
+            if (bCambios) bCambios.classList.remove('active');
             if (bArenga) bArenga.classList.remove('active');
+            if (typeof window.actualizarTextoBotonEntretiempo === 'function') {
+                window.actualizarTextoBotonEntretiempo();
+            }
 
             if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
 
@@ -2619,6 +2648,9 @@ window.iniciarSimulacionEnVivo = function() {
                     probExitoUser = Math.min(0.85, probExitoUser + 0.08);
                     CFG.velTiro = 130;
                     narrar('tactica', '🗣️ <b>Charla de vestuario:</b> ¡Fuerte arenga del DT! El Once sale con el cuchillo entre los dientes para el segundo tiempo.');
+                } else {
+                    // Mismo plan táctico: sin modificaciones forzadas
+                    narrar('tactica', '📋 <b>Mismo plan:</b> El DT mantiene el esquema táctico sin cambios y el equipo sale a disputar el segundo tiempo.');
                 }
 
                 reposMap = null;
@@ -2632,7 +2664,7 @@ window.iniciarSimulacionEnVivo = function() {
             resolverEntretiempo = reanudar2T;
 
             if (simVelocidadMult >= 3 || !overlayET) {
-                setTimeout(() => reanudar2T(decisionEntretiempoSeleccionada), 600);
+                setTimeout(() => reanudar2T(decisionEntretiempoSeleccionada || 'ninguna'), 600);
             } else {
                 overlayET.style.display = 'flex';
             }

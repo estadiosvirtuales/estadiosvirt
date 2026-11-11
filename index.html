@@ -2009,9 +2009,15 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                                 </div>
                             </div>
 
-                            <!-- OPCIONES ESTRATÉGICAS DEL DT -->
+                            <!-- INDICACIÓN INFORMATIVA: LIBRE ELECCIÓN -->
+                            <div class="sim-et-hint">
+                                <i class="ph-bold ph-sparkle"></i>
+                                <span>Opcional: elegí una indicación o salí directo sin cambios</span>
+                            </div>
+
+                            <!-- OPCIONES ESTRATÉGICAS DEL DT (OPCIONALES CON TOGGLE) -->
                             <div class="sim-et-actions">
-                                <button type="button" class="sim-et-btn active" id="sim-et-btn-cambios" onclick="aplicarDecisionEntretiempo('cambios')">
+                                <button type="button" class="sim-et-btn" id="sim-et-btn-cambios" onclick="aplicarDecisionEntretiempo('cambios')">
                                     <div class="sim-et-btn-icon"><i class="ph-bold ph-arrows-clockwise"></i></div>
                                     <div class="sim-et-btn-info">
                                         <strong>Piernas Frescas</strong>
@@ -2029,7 +2035,7 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
 
                             <!-- BOTÓN PARA REANUDAR SEGUNDO TIEMPO -->
                             <button type="button" class="sim-et-resume-btn" id="sim-et-resume-btn" onclick="reanudarSegundoTiempo()">
-                                <span>Salir a Jugar el 2T</span> <i class="ph-bold ph-play-circle"></i>
+                                <span id="sim-et-resume-txt">Salir a Jugar el 2T (Sin Cambios)</span> <i class="ph-bold ph-play-circle"></i>
                             </button>
                         </div>
                     </div>

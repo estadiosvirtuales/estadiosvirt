@@ -3944,6 +3944,11 @@
     .sim-et-stamina-bar {
         height: 4px !important;
     }
+    .sim-et-hint {
+        font-size: 0.58rem !important;
+        margin-bottom: 4px !important;
+        gap: 4px !important;
+    }
     .sim-et-actions {
         gap: 5px !important;
         margin-bottom: 6px !important;
@@ -3963,9 +3968,11 @@
         display: none !important;
     }
     .sim-et-resume-btn {
-        height: 30px !important;
-        font-size: 0.70rem !important;
+        height: 32px !important;
+        font-size: 0.68rem !important;
         border-radius: 8px !important;
+        padding: 0 8px !important;
+        white-space: nowrap !important;
     }
 }
 
@@ -7142,6 +7149,24 @@
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.sim-et-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    text-align: center;
+    user-select: none;
+}
+
+.sim-et-hint i {
+    color: #fbbf24;
+    font-size: 0.85rem;
+}
+
 .sim-et-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -8329,6 +8354,9 @@
 }
 [data-theme="light"] .sim-et-btn:hover {
     background: #e2e8f0 !important;
+}
+[data-theme="light"] .sim-et-hint {
+    color: #64748b !important;
 }
 [data-theme="light"] .sim-stage-badge {
     background: #e8f5e9 !important;
