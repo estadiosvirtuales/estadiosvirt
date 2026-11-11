@@ -1079,6 +1079,10 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
     const subEl = document.getElementById('sim-momento-sub');
     const fillEl = document.getElementById('sim-momento-timer-fill');
 
+    if (subEl) {
+        subEl.style.display = '';
+    }
+
     const keeperEl = document.getElementById('sim-goal-keeper');
     if (keeperEl) {
         keeperEl.style.transform = 'translateX(-50%)';
@@ -1146,7 +1150,10 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
     } else if (tipo === 'penal_tanda_atajar') {
         if (badgeEl) badgeEl.textContent = data.badge || `TANDA DE PENALES · ATAJADA ${data.ronda || 1}`;
         if (titleEl) titleEl.textContent = `🧤 ¡TE TOCA ATAJAR! (${data.marcador || '0-0'})`;
-        if (subEl) subEl.innerHTML = `¡Adiviná a qué zona se tirará <b>${data.tiradorRival ? data.tiradorRival.nombre : 'el rival'}</b>!`;
+        if (subEl) {
+            subEl.innerHTML = '';
+            subEl.style.display = 'none';
+        }
         tagsZonas[0] = '↖ VOLAR ARRIBA';
         tagsZonas[1] = '⬆ AL MEDIO';
         tagsZonas[2] = '↗ VOLAR ARRIBA';
@@ -3294,8 +3301,8 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(item.pos)) userMed.push(nombre);
             else userDel.push(nombre);
         });
-        if (!userDef.length) userDef.push('La Defensa');
-        if (!userMed.length) userMed.push('El Mediocampo');
+        if (!userDef.length) userDef.push('Tu Defensor');
+        if (!userMed.length) userMed.push('Tu Mediocampista');
         if (!userDel.length) userDel.push('Tu Delantero');
 
         // Tiradores ordenados del Once
@@ -3304,9 +3311,9 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         // Tiradores y arquero rival
         const tit = (rivalActual && rivalActual.titulares && rivalActual.titulares.length) ? rivalActual.titulares : [];
         const rivalDel = tit.length ? tit.slice(0, 4) : [nombreRival];
-        const rivalMed = tit.length > 4 ? tit.slice(4, 8) : ['El Mediocampo Rival'];
-        const rivalDef = tit.length > 8 ? tit.slice(8, 12) : ['La Defensa Rival'];
-        const rivalPortero = tit.length > 12 ? tit[12] : 'El Arquero Rival';
+        const rivalMed = tit.length > 4 ? tit.slice(4, 8) : ['Mediocampista Rival'];
+        const rivalDef = tit.length > 8 ? tit.slice(8, 12) : ['Defensor Rival'];
+        const rivalPortero = tit.length > 12 ? tit[12] : 'Arquero Rival';
         const listaTiradoresRival = [...rivalDel, ...rivalMed, ...rivalDef, rivalPortero];
 
         let ronda = 1;
