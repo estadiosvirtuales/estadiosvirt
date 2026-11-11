@@ -1221,6 +1221,16 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
         if (txt) txt.textContent = '1x';
     }
 
+    const tagEl = document.getElementById('sim-pitch-tag');
+    if (tagEl) {
+        tagEl.classList.remove('visible');
+        tagEl.textContent = '';
+    }
+    const bannerEl = document.getElementById('sim-tactic-banner');
+    if (bannerEl) {
+        bannerEl.classList.remove('visible');
+        bannerEl.textContent = '';
+    }
     document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = 'none'; });
     const m = document.getElementById('simulador-partido-modal');
     if (m) m.style.display = 'none';
@@ -1285,17 +1295,29 @@ window.iniciarSimulacionEnVivo = function() {
     else if (tacticaUserActual === 'ofensivo' && bAtkInit) bAtkInit.classList.add('active', 'active-atk');
     else if (bBalInit) bBalInit.classList.add('active', 'active-bal');
 
+    const tacticBannerEl = document.getElementById('sim-tactic-banner');
+    let tacticBannerTimer = null;
+    const mostrarBannerTactica = (texto, claseModo) => {
+        if (!tacticBannerEl) return;
+        if (tacticBannerTimer) { clearTimeout(tacticBannerTimer); tacticBannerTimer = null; }
+        tacticBannerEl.textContent = texto;
+        tacticBannerEl.className = `sim-tactic-banner visible ${claseModo}`;
+        tacticBannerTimer = setTimeout(() => {
+            if (tacticBannerEl) tacticBannerEl.classList.remove('visible');
+        }, 1800);
+    };
+
     simActualizarTacticaEnPartido = (nuevoModo) => {
         tacticaUserActual = nuevoModo;
         if (nuevoModo === 'defensivo') {
-            mostrarTag('🛡️ BLOQUE BAJO · AGUANTAR', 'user-tag', 36, 30, 1.8);
-            narrar('tactica', 'El DT manda a retroceder las líneas: cerrojo defensivo y repliegue ordenado.');
+            mostrarBannerTactica('🛡️ MENTALIDAD DEFENSIVA', 'tactic-def');
+            narrar('tactica', 'El DT ordena mentalidad defensiva: cerrojo en bloque bajo y repliegue ordenado.');
         } else if (nuevoModo === 'equilibrado') {
-            mostrarTag('⚖️ ESQUEMA EQUILIBRADO', 'user-tag', 36, 40, 1.8);
-            narrar('tactica', 'El DT reordena al equipo en bloque medio con posesión controlada.');
+            mostrarBannerTactica('⚖️ MENTALIDAD EQUILIBRADA', 'tactic-bal');
+            narrar('tactica', 'El DT dispone mentalidad equilibrada: bloque medio y posesión controlada.');
         } else if (nuevoModo === 'ofensivo') {
-            mostrarTag('⚔️ ATAQUE TOTAL · BLOQUE ALTO', 'user-tag', 36, 52, 1.8);
-            narrar('tactica', '¡El DT ordena ataque total! Líneas adelantadas, presión en tres cuartos y búsqueda directa del gol.');
+            mostrarBannerTactica('⚔️ MENTALIDAD OFENSIVA', 'tactic-atk');
+            narrar('tactica', '¡El DT ordena mentalidad ofensiva! Adelantar líneas y presión en campo rival.');
         }
     };
 
