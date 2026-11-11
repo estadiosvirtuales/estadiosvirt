@@ -38,6 +38,7 @@ var momentoClaveActivo = false;
 var momentoClaveTimer = null;
 var momentoClaveResolutor = null;
 var momentoClaveTipo = null;
+var momentoClaveData = null;
 var decisionEntretiempoSeleccionada = null;
 var resolverEntretiempo = null;
 var simSaltadorActivo = null;
@@ -1071,6 +1072,7 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
     momentoClaveActivo = true;
     momentoClaveResolutor = onResuelto;
     momentoClaveTipo = tipo;
+    momentoClaveData = data;
 
     const badgeEl = document.getElementById('sim-momento-tipo');
     const titleEl = document.getElementById('sim-momento-title');
@@ -1082,6 +1084,25 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         keeperEl.style.transform = 'translateX(-50%)';
         keeperEl.style.transition = 'transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1)';
     }
+
+    const ballEl = document.getElementById('sim-penalty-ball');
+    if (ballEl) {
+        ballEl.style.transition = 'none';
+        ballEl.style.transform = 'translate(-50%, 0) scale(1.15)';
+        ballEl.style.opacity = '1';
+        ballEl.offsetHeight; // reflow
+        ballEl.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease';
+    }
+
+    const penBadgeEl = document.getElementById('sim-penalty-badge');
+    if (penBadgeEl) penBadgeEl.className = 'sim-penalty-badge';
+
+    const netMeshEl = document.querySelector('.sim-goal-net-mesh');
+    if (netMeshEl) netMeshEl.classList.remove('net-shake');
+
+    document.querySelectorAll('.sim-goal-zone').forEach(btn => {
+        btn.style.pointerEvents = 'all';
+    });
 
     // Configuración de las 6 zonas en la cuadrícula del arco
     const tagsZonas = {
@@ -1192,6 +1213,145 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
 }
 window.mostrarMomentoClave = mostrarMomentoClave;
 
+function ejecutarAnimacionFisicaPenal(params) {
+    const {
+        zonaTiro = 0,
+        zonaArquero = 0,
+        esGol = true,
+        esAtajada = false,
+        onTerminada = null
+    } = params || {};
+
+    const ballEl = document.getElementById('sim-penalty-ball');
+    const keeperEl = document.getElementById('sim-goal-keeper');
+    const netEl = document.querySelector('.sim-goal-net-mesh');
+    const badgeEl = document.getElementById('sim-penalty-badge');
+    const targetZoneEl = document.getElementById(`goal-zone-${zonaTiro}`);
+
+    // Bloquear clicks durante la secuencia de animación física
+    document.querySelectorAll('.sim-goal-zone').forEach(btn => {
+        btn.style.pointerEvents = 'none';
+    });
+
+    // 1. Estirada reactiva del arquero hacia su zona (0 a 5)
+    if (keeperEl) {
+        const colGk = zonaArquero % 3; // 0: izq, 1: centro, 2: der
+        const rowGk = Math.floor(zonaArquero / 3); // 0: arriba, 1: abajo
+
+        let xOffset = '-50%';
+        let yOffset = '-8%';
+        let rot = '0deg';
+
+        if (colGk === 0) {
+            xOffset = '-115%';
+            rot = rowGk === 0 ? '-34deg' : '-46deg';
+        } else if (colGk === 2) {
+            xOffset = '15%';
+            rot = rowGk === 0 ? '34deg' : '46deg';
+        }
+
+        if (rowGk === 0) {
+            yOffset = '-40%';
+        } else {
+            yOffset = '-8%';
+        }
+
+        keeperEl.style.transition = 'transform 0.38s cubic-bezier(0.25, 1, 0.5, 1)';
+        keeperEl.style.transform = `translate(${xOffset}, ${yOffset}) rotate(${rot})`;
+    }
+
+    // 2. Cálculo vectorial exacto hacia la zona del remate
+    let deltaX = 0;
+    let deltaY = -95;
+
+    if (ballEl && targetZoneEl) {
+        ballEl.style.transition = 'none';
+        ballEl.style.transform = 'translate(-50%, 0) scale(1.15)';
+        ballEl.style.opacity = '1';
+        ballEl.offsetHeight; // forzar reflow para animación inmediata
+
+        const bRect = ballEl.getBoundingClientRect();
+        const zRect = targetZoneEl.getBoundingClientRect();
+        deltaX = (zRect.left + zRect.width / 2) - (bRect.left + bRect.width / 2);
+        deltaY = (zRect.top + zRect.height / 2) - (bRect.top + bRect.height / 2);
+
+        const rotBall = deltaX < -15 ? -720 : deltaX > 15 ? 720 : 360;
+
+        // Vuelo de la pelota hacia el arco (380ms)
+        ballEl.style.transition = 'transform 0.38s cubic-bezier(0.22, 1, 0.36, 1)';
+        ballEl.style.transform = `translate(calc(-50% + ${deltaX}px), ${deltaY}px) scale(0.68) rotate(${rotBall}deg)`;
+
+        // 3. Momento del impacto en el arco (t = 380ms)
+        setTimeout(() => {
+            if (esAtajada) {
+                // Impacto contra los guantes y rebote físico
+                const reboteX = deltaX * 0.45 + (zonaArquero % 3 === 0 ? 35 : zonaArquero % 3 === 2 ? -35 : 0);
+                const reboteY = deltaY + 30;
+                ballEl.style.transition = 'transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                ballEl.style.transform = `translate(calc(-50% + ${reboteX}px), ${reboteY}px) scale(0.60) rotate(${rotBall + 180}deg)`;
+
+                if (badgeEl) {
+                    badgeEl.textContent = '¡ATAJADÓN! 🧤';
+                    badgeEl.className = 'sim-penalty-badge atajada show';
+                }
+                if (typeof reproducirSonido === 'function') reproducirSonido('click');
+            } else if (esGol) {
+                // Impacto en la red y sacudida
+                if (netEl) netEl.classList.add('net-shake');
+                if (badgeEl) {
+                    badgeEl.textContent = '¡GOLAZO! ⚽';
+                    badgeEl.className = 'sim-penalty-badge gol show';
+                }
+                if (typeof reproducirSonido === 'function') reproducirSonido('acierto');
+            } else {
+                // Desvío al poste o afuera
+                const posteX = deltaX > 0 ? deltaX + 32 : deltaX < 0 ? deltaX - 32 : deltaX;
+                const posteY = deltaY + 38;
+                ballEl.style.transition = 'transform 0.30s ease-out';
+                ballEl.style.transform = `translate(calc(-50% + ${posteX}px), ${posteY}px) scale(0.60) rotate(${rotBall + 240}deg)`;
+
+                if (badgeEl) {
+                    badgeEl.textContent = '¡LO ERRÓ! ❌';
+                    badgeEl.className = 'sim-penalty-badge poste show';
+                }
+                if (typeof reproducirSonido === 'function') reproducirSonido('click');
+            }
+        }, 380);
+    }
+
+    // 4. Restauración suave para el siguiente penal (t = 1250ms)
+    setTimeout(() => {
+        if (badgeEl) badgeEl.classList.remove('show');
+        if (netEl) netEl.classList.remove('net-shake');
+
+        if (ballEl) {
+            ballEl.style.transition = 'opacity 0.22s ease';
+            ballEl.style.opacity = '0';
+            setTimeout(() => {
+                ballEl.style.transition = 'none';
+                ballEl.style.transform = 'translate(-50%, 0) scale(1.15)';
+                ballEl.offsetHeight; // reflow
+                ballEl.style.opacity = '1';
+                ballEl.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease';
+            }, 220);
+        }
+
+        if (keeperEl) {
+            keeperEl.style.transition = 'transform 0.32s ease-out';
+            keeperEl.style.transform = 'translateX(-50%)';
+        }
+
+        document.querySelectorAll('.sim-goal-zone').forEach(btn => {
+            btn.style.pointerEvents = 'all';
+        });
+
+        if (typeof onTerminada === 'function') {
+            onTerminada();
+        }
+    }, 1250);
+}
+window.ejecutarAnimacionFisicaPenal = ejecutarAnimacionFisicaPenal;
+
 window.resolverMomentoClave = function(opcion) {
     if (!momentoClaveActivo) return;
 
@@ -1202,22 +1362,33 @@ window.resolverMomentoClave = function(opcion) {
 
     momentoClaveActivo = false;
 
-    // Animación visual del arquero en el arco interactivo
-    const keeperEl = document.getElementById('sim-goal-keeper');
-    if (keeperEl) {
-        const col = opcion % 3; // 0: izq, 1: centro, 2: der
-        const row = Math.floor(opcion / 3); // 0: arriba, 1: abajo
-        const xOffset = col === 0 ? '-110%' : col === 2 ? '10%' : '-50%';
-        const yOffset = row === 0 ? '-35%' : '-5%';
-        const rot = col === 0 ? '-35deg' : col === 2 ? '35deg' : '0deg';
-        keeperEl.style.transform = `translate(${xOffset}, ${yOffset}) rotate(${rot})`;
-    }
+    // Bloquear clicks inmediatos en todas las zonas
+    document.querySelectorAll('.sim-goal-zone').forEach(btn => {
+        btn.style.pointerEvents = 'none';
+    });
 
+    const isTanda = momentoClaveData && momentoClaveData.noCerrarOverlay;
     const overlay = document.getElementById('sim-momento-clave');
-    setTimeout(() => {
-        if (overlay) overlay.style.display = 'none';
-        if (keeperEl) keeperEl.style.transform = 'translateX(-50%)';
-    }, 280);
+    const keeperEl = document.getElementById('sim-goal-keeper');
+
+    if (!isTanda) {
+        if (keeperEl) {
+            const col = opcion % 3; // 0: izq, 1: centro, 2: der
+            const row = Math.floor(opcion / 3); // 0: arriba, 1: abajo
+            const xOffset = col === 0 ? '-110%' : col === 2 ? '10%' : '-50%';
+            const yOffset = row === 0 ? '-35%' : '-5%';
+            const rot = col === 0 ? '-35deg' : col === 2 ? '35deg' : '0deg';
+            keeperEl.style.transform = `translate(${xOffset}, ${yOffset}) rotate(${rot})`;
+        }
+
+        setTimeout(() => {
+            if (overlay) overlay.style.display = 'none';
+            if (keeperEl) keeperEl.style.transform = 'translateX(-50%)';
+            document.querySelectorAll('.sim-goal-zone').forEach(btn => {
+                btn.style.pointerEvents = 'all';
+            });
+        }, 280);
+    }
 
     if (typeof reproducirSonido === 'function') {
         reproducirSonido('click');
@@ -3243,6 +3414,17 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         const concluirTanda = () => {
             tandaTerminada = true;
             simSaltadorActivo = null;
+
+            const overlay = document.getElementById('sim-momento-clave');
+            if (overlay) {
+                overlay.style.transition = 'opacity 0.35s ease';
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    overlay.style.opacity = '1';
+                }, 360);
+            }
+
             if (tandaBar) tandaBar.style.display = 'none';
 
             const gano = golesUserPen > golesRivalPen;
@@ -3278,16 +3460,20 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                 tirador: { nombre: tiradorNombre },
                 arqueroRival: rivalPortero,
                 badge: badgeTexto,
-                marcador: `${golesUserPen} - ${golesRivalPen}`
+                marcador: `${golesUserPen} - ${golesRivalPen}`,
+                noCerrarOverlay: true
             }, (zonaElegida) => {
                 const gkZona = Math.floor(Math.random() * 6);
                 let esGol = true;
+                let esAtajada = false;
 
                 if (gkZona === zonaElegida) {
                     const esAngulo = (zonaElegida === 0 || zonaElegida === 2);
                     esGol = Math.random() < (esAngulo ? 0.40 : 0.20);
+                    esAtajada = !esGol;
                 } else {
                     esGol = Math.random() < 0.94;
+                    esAtajada = false;
                 }
 
                 histUser.push(esGol);
@@ -3298,24 +3484,36 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                     row.className = `sim-event-row ${esGol ? 'gol' : 'falta'}`;
                     const desc = esGol 
                         ? `⚽ ¡GOL de ${tiradorNombre}! Remate certero al arco. (${golesUserPen}-${golesRivalPen})`
-                        : `❌ ¡LO ERRÓ! ${tiradorNombre} no pudo vencer a ${rivalPortero}. (${golesUserPen}-${golesRivalPen})`;
+                        : (esAtajada 
+                            ? `🧤 ¡LO ATAJÓ ${rivalPortero}! Le adivinó el remate a ${tiradorNombre}. (${golesUserPen}-${golesRivalPen})`
+                            : `❌ ¡LO ERRÓ! ${tiradorNombre} no pudo vencer a ${rivalPortero}. (${golesUserPen}-${golesRivalPen})`);
                     row.innerHTML = `<span class="sim-ev-min">PEN ${ronda}</span> <span class="sim-ev-text">${desc}</span>`;
                     timeline.appendChild(row);
                     timeline.scrollTop = timeline.scrollHeight;
                 }
 
-                if (esGol && typeof reproducirSonido === 'function') reproducirSonido('acierto');
-
                 renderDots();
 
-                // Chequeo de ventaja matemática irreversible
-                const remRival = Math.max(0, 5 - histRival.length);
-                if (ronda <= 5 && golesUserPen > golesRivalPen + remRival) {
-                    setTimeout(concluirTanda, 850);
-                    return;
-                }
+                // Animación física realista de tiro y estirada del arquero
+                ejecutarAnimacionFisicaPenal({
+                    zonaTiro: zonaElegida,
+                    zonaArquero: gkZona,
+                    esGol,
+                    esAtajada,
+                    onTerminada: () => {
+                        if (tandaTerminada) return;
 
-                setTimeout(jugarAtajarUsuario, 850);
+                        // Chequeo de ventaja matemática irreversible
+                        const remRival = Math.max(0, 5 - histRival.length);
+                        if (ronda <= 5 && golesUserPen > golesRivalPen + remRival) {
+                            concluirTanda();
+                            return;
+                        }
+
+                        // Pasar fluidamente al turno de atajar sin cerrar el modal
+                        jugarAtajarUsuario();
+                    }
+                });
             });
         };
 
@@ -3333,7 +3531,8 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                 tiradorRival: { nombre: tiradorRivalNombre },
                 portero: { nombre: userPortero },
                 badge: badgeTexto,
-                marcador: `${golesUserPen} - ${golesRivalPen}`
+                marcador: `${golesUserPen} - ${golesRivalPen}`,
+                noCerrarOverlay: true
             }, (zonaElegidaPorUsuario) => {
                 const tiroRivalZona = Math.floor(Math.random() * 6);
                 let atajo = false;
@@ -3359,44 +3558,53 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                     timeline.scrollTop = timeline.scrollHeight;
                 }
 
-                if (atajo && typeof reproducirSonido === 'function') reproducirSonido('acierto');
-
                 renderDots();
 
-                // Chequeo de fin de tanda
-                if (ronda < 5) {
-                    const remU = 5 - histUser.length;
-                    const remR = 5 - histRival.length;
-                    if (golesUserPen > golesRivalPen + remR || golesRivalPen > golesUserPen + remU) {
-                        setTimeout(concluirTanda, 850);
-                        return;
-                    }
-                    ronda++;
-                    setTimeout(jugarPatearUsuario, 850);
-                } else if (ronda === 5) {
-                    if (golesUserPen !== golesRivalPen) {
-                        setTimeout(concluirTanda, 850);
-                    } else {
-                        // Serie de 5 empatada: pasar a muerte súbita
-                        ronda++;
-                        if (timeline) {
-                            const rowMS = document.createElement('div');
-                            rowMS.className = 'sim-event-row entretiempo';
-                            rowMS.innerHTML = `<span>⚡ <b>SERIE EMPATADA ${golesUserPen}-${golesRivalPen}:</b> ¡COMIENZA LA MUERTE SÚBITA (1 a 1)!</span>`;
-                            timeline.appendChild(rowMS);
-                            timeline.scrollTop = timeline.scrollHeight;
+                // Animación física realista de tiro rival y volada del arquero del usuario
+                ejecutarAnimacionFisicaPenal({
+                    zonaTiro: tiroRivalZona,
+                    zonaArquero: zonaElegidaPorUsuario,
+                    esGol: esGolRival,
+                    esAtajada: atajo,
+                    onTerminada: () => {
+                        if (tandaTerminada) return;
+
+                        // Chequeo de fin de tanda
+                        if (ronda < 5) {
+                            const remU = 5 - histUser.length;
+                            const remR = 5 - histRival.length;
+                            if (golesUserPen > golesRivalPen + remR || golesRivalPen > golesUserPen + remU) {
+                                concluirTanda();
+                                return;
+                            }
+                            ronda++;
+                            jugarPatearUsuario();
+                        } else if (ronda === 5) {
+                            if (golesUserPen !== golesRivalPen) {
+                                concluirTanda();
+                            } else {
+                                // Serie de 5 empatada: pasar a muerte súbita
+                                ronda++;
+                                if (timeline) {
+                                    const rowMS = document.createElement('div');
+                                    rowMS.className = 'sim-event-row entretiempo';
+                                    rowMS.innerHTML = `<span>⚡ <b>SERIE EMPATADA ${golesUserPen}-${golesRivalPen}:</b> ¡COMIENZA LA MUERTE SÚBITA (1 a 1)!</span>`;
+                                    timeline.appendChild(rowMS);
+                                    timeline.scrollTop = timeline.scrollHeight;
+                                }
+                                jugarPatearUsuario();
+                            }
+                        } else {
+                            // Muerte súbita (ronda 6+)
+                            if (golesUserPen !== golesRivalPen) {
+                                concluirTanda();
+                            } else {
+                                ronda++;
+                                jugarPatearUsuario();
+                            }
                         }
-                        setTimeout(jugarPatearUsuario, 1100);
                     }
-                } else {
-                    // Muerte súbita (ronda 6+)
-                    if (golesUserPen !== golesRivalPen) {
-                        setTimeout(concluirTanda, 850);
-                    } else {
-                        ronda++;
-                        setTimeout(jugarPatearUsuario, 850);
-                    }
-                }
+                });
             });
         };
 
