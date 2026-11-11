@@ -1093,6 +1093,11 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         5: '↘ AL PALO'
     };
 
+    const tandaBar = document.getElementById('sim-tanda-score-bar');
+    if (tandaBar) {
+        tandaBar.style.display = String(tipo).startsWith('penal_tanda') ? 'flex' : 'none';
+    }
+
     if (tipo === 'penal_favor') {
         if (badgeEl) badgeEl.textContent = 'PENAL A FAVOR';
         if (titleEl) titleEl.textContent = '¡PENAL A FAVOR!';
@@ -1113,6 +1118,20 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         if (subEl) subEl.innerHTML = `Elegí la zona del disparo con <b>${data.tirador ? data.tirador.nombre : 'tu especialista'}</b>`;
         tagsZonas[1] = '⬆ BARRERA';
         tagsZonas[4] = '⬇ POR ABAJO';
+    } else if (tipo === 'penal_tanda_patear') {
+        if (badgeEl) badgeEl.textContent = data.badge || `TANDA DE PENALES · TIRO ${data.ronda || 1}`;
+        if (titleEl) titleEl.textContent = `⚽ ¡TE TOCA PATEAR! (${data.marcador || '0-0'})`;
+        if (subEl) subEl.innerHTML = `Elegí la zona del arco para colocar el tiro con <b>${data.tirador ? data.tirador.nombre : 'tu jugador'}</b>`;
+    } else if (tipo === 'penal_tanda_atajar') {
+        if (badgeEl) badgeEl.textContent = data.badge || `TANDA DE PENALES · ATAJADA ${data.ronda || 1}`;
+        if (titleEl) titleEl.textContent = `🧤 ¡TE TOCA ATAJAR! (${data.marcador || '0-0'})`;
+        if (subEl) subEl.innerHTML = `¡Adiviná a qué zona se tirará <b>${data.tiradorRival ? data.tiradorRival.nombre : 'el rival'}</b>!`;
+        tagsZonas[0] = '↖ VOLAR ARRIBA';
+        tagsZonas[1] = '⬆ AL MEDIO';
+        tagsZonas[2] = '↗ VOLAR ARRIBA';
+        tagsZonas[3] = '↙ VOLAR AL PALO';
+        tagsZonas[4] = '⬇ AL PISO';
+        tagsZonas[5] = '↘ VOLAR AL PALO';
     } else if (tipo === 'penal_tanda') {
         if (badgeEl) badgeEl.textContent = 'TANDA DE PENALES';
         if (titleEl) titleEl.textContent = '¡EL 5º PENAL DECISIVO!';
@@ -3052,47 +3071,323 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     };
 
     if (golesUser === golesRival) {
-        const overlay = document.getElementById('sim-momento-clave');
-        if (overlay && simVelocidadMult < 3) {
-            mostrarMomentoClave('penal_tanda', {}, (opcion) => {
-                const gkZona = Math.floor(Math.random() * 6);
-                let acierto = true;
-                if (gkZona === opcion) {
-                    const esAngulo = (opcion === 0 || opcion === 2);
-                    acierto = Math.random() < (esAngulo ? 0.48 : 0.25);
-                } else {
-                    acierto = true;
-                }
-                const penUser = acierto ? 5 : 4;
-                const penRival = acierto ? 4 : 5;
-                const gano = penUser > penRival;
-                const penalesTexto = ` (${penUser}-${penRival} pen.)`;
-
-                const penRow = document.createElement('div');
-                penRow.className = 'sim-event-row penales';
-                penRow.innerHTML = `<span class="sim-ev-min">PEN</span> <span class="sim-ev-text"><b>Definición por penales:</b> ${penUser} a ${penRival} (${gano ? '¡Gol de la victoria! ¡Ganaste la tanda!' : 'Atajó el portero rival... Caíste en penales'})</span>`;
-                timeline.appendChild(penRow);
-                timeline.scrollTop = timeline.scrollHeight;
-
-                resolverPostPartidoCopa(gano, penalesTexto);
-            });
-            return;
-        } else {
-            const penUser = 4 + Math.round(Math.random());
-            const penRival = penUser === 5 ? (Math.random() < 0.5 ? 4 : 3) : 5;
-            const gano = penUser > penRival;
-            const penalesTexto = ` (${penUser}-${penRival} pen.)`;
-
-            const penRow = document.createElement('div');
-            penRow.className = 'sim-event-row penales';
-            penRow.innerHTML = `<span class="sim-ev-min">PEN</span> <span class="sim-ev-text"><b>Definición por penales:</b> ${penUser} a ${penRival} (${gano ? '¡Ganaste la tanda!' : 'Caíste en los penales'})</span>`;
-            timeline.appendChild(penRow);
-            timeline.scrollTop = timeline.scrollHeight;
-
-            resolverPostPartidoCopa(gano, penalesTexto);
-        }
+        iniciarTandaPenalesInteractiva((ganoTanda, penalesTexto) => {
+            resolverPostPartidoCopa(ganoTanda, penalesTexto);
+        });
+        return;
     } else {
         resolverPostPartidoCopa(golesUser > golesRival, '');
+    }
+
+    function iniciarTandaPenalesInteractiva(onFin) {
+        const timeline = document.getElementById('sim-events-timeline');
+        const overlay = document.getElementById('sim-momento-clave');
+        const tandaBar = document.getElementById('sim-tanda-score-bar');
+
+        const rivalActual = torneoEstado.rivales[torneoEstado.rondaIdx];
+        const nombreRival = rivalActual ? rivalActual.nombre : 'Rival';
+        const u = obtenerUsuarioLogueado();
+        const nombreUsuario = getPref('ev_custom_nick', '') || (u ? u.name.split(' ')[0] : 'Tu Once');
+
+        // Extraer jugadores del Once del usuario
+        const once = obtenerOnceInicial();
+        const fActual = FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'];
+        const userDef = [];
+        const userMed = [];
+        const userDel = [];
+        let userPortero = 'Tu Arquero';
+        const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
+
+        fActual.posiciones.forEach((item, idx) => {
+            const idAvatar = once[idx];
+            if (!idAvatar) return;
+            const cleanId = String(idAvatar).replace(/\.png$/i, '.webp');
+            if (cleanId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(cleanId))) return;
+            const nombre = obtenerNombreAvatar(idAvatar);
+            if (item.pos === 'POR') userPortero = nombre;
+            else if (['DFC', 'LD', 'LI'].includes(item.pos)) userDef.push(nombre);
+            else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(item.pos)) userMed.push(nombre);
+            else userDel.push(nombre);
+        });
+        if (!userDef.length) userDef.push('La Defensa');
+        if (!userMed.length) userMed.push('El Mediocampo');
+        if (!userDel.length) userDel.push('Tu Delantero');
+
+        // Tiradores ordenados del Once
+        const listaTiradoresUser = [...userDel, ...userMed, ...userDef, userPortero];
+
+        // Tiradores y arquero rival
+        const tit = (rivalActual && rivalActual.titulares && rivalActual.titulares.length) ? rivalActual.titulares : [];
+        const rivalDel = tit.length ? tit.slice(0, 4) : [nombreRival];
+        const rivalMed = tit.length > 4 ? tit.slice(4, 8) : ['El Mediocampo Rival'];
+        const rivalDef = tit.length > 8 ? tit.slice(8, 12) : ['La Defensa Rival'];
+        const rivalPortero = tit.length > 12 ? tit[12] : 'El Arquero Rival';
+        const listaTiradoresRival = [...rivalDel, ...rivalMed, ...rivalDef, rivalPortero];
+
+        let ronda = 1;
+        let golesUserPen = 0;
+        let golesRivalPen = 0;
+        const histUser = [];
+        const histRival = [];
+        let tandaTerminada = false;
+
+        // Actualizar reloj y relatar apertura de la tanda
+        const clock = document.getElementById('sim-match-clock');
+        if (clock) clock.textContent = "90' · PENALES";
+
+        if (timeline) {
+            const rowET = document.createElement('div');
+            rowET.className = 'sim-event-row entretiempo';
+            rowET.innerHTML = `<span><i class="ph-bold ph-lightning"></i> <b>¡EMPATE A LOS 90'! DEFINICIÓN POR PENALES</b> (${nombreUsuario} vs ${nombreRival})</span>`;
+            timeline.appendChild(rowET);
+            timeline.scrollTop = timeline.scrollHeight;
+        }
+
+        const renderDots = () => {
+            if (!tandaBar) return;
+            tandaBar.style.display = 'flex';
+            const nameU = document.getElementById('sim-tanda-name-user');
+            const nameR = document.getElementById('sim-tanda-name-rival');
+            const countU = document.getElementById('sim-tanda-count-user');
+            const countR = document.getElementById('sim-tanda-count-rival');
+            const dotsU = document.getElementById('sim-tanda-dots-user');
+            const dotsR = document.getElementById('sim-tanda-dots-rival');
+
+            if (nameU) nameU.textContent = nombreUsuario;
+            if (nameR) nameR.textContent = nombreRival;
+            if (countU) countU.textContent = golesUserPen;
+            if (countR) countR.textContent = golesRivalPen;
+
+            const totalSlots = Math.max(5, ronda);
+            if (dotsU) {
+                dotsU.innerHTML = '';
+                for (let i = 0; i < totalSlots; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'sim-tanda-dot';
+                    if (i < histUser.length) {
+                        dot.classList.add(histUser[i] ? 'gol' : 'fallo');
+                    } else if (i === histUser.length) {
+                        dot.classList.add('actual');
+                    }
+                    dotsU.appendChild(dot);
+                }
+            }
+            if (dotsR) {
+                dotsR.innerHTML = '';
+                for (let i = 0; i < totalSlots; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'sim-tanda-dot';
+                    if (i < histRival.length) {
+                        dot.classList.add(histRival[i] ? 'gol' : 'fallo');
+                    } else if (i === histRival.length && histUser.length > histRival.length) {
+                        dot.classList.add('actual');
+                    }
+                    dotsR.appendChild(dot);
+                }
+            }
+        };
+
+        const autoResolverResto = () => {
+            tandaTerminada = true;
+            while (histUser.length < 5 || histRival.length < 5 || (histUser.length === histRival.length && golesUserPen === golesRivalPen)) {
+                if (histUser.length === histRival.length) {
+                    const gU = Math.random() < 0.76;
+                    histUser.push(gU);
+                    if (gU) golesUserPen++;
+                } else {
+                    const gR = Math.random() < 0.72;
+                    histRival.push(gR);
+                    if (gR) golesRivalPen++;
+                }
+
+                if (histUser.length >= 5 && histRival.length >= 5 && histUser.length === histRival.length && golesUserPen !== golesRivalPen) {
+                    break;
+                }
+                if (histUser.length <= 5 && histRival.length <= 5) {
+                    const remU = 5 - histUser.length;
+                    const remR = 5 - histRival.length;
+                    if (golesUserPen > golesRivalPen + remR || golesRivalPen > golesUserPen + remU) {
+                        break;
+                    }
+                }
+            }
+            if (golesUserPen === golesRivalPen) {
+                golesUserPen++;
+                histUser.push(true);
+            }
+            concluirTanda();
+        };
+
+        // Soporte para botón "Saltar" durante la tanda
+        simSaltadorActivo = autoResolverResto;
+
+        if (simVelocidadMult >= 3 || !overlay) {
+            autoResolverResto();
+            return;
+        }
+
+        const concluirTanda = () => {
+            tandaTerminada = true;
+            simSaltadorActivo = null;
+            if (tandaBar) tandaBar.style.display = 'none';
+
+            const gano = golesUserPen > golesRivalPen;
+            const penalesTexto = ` (${golesUserPen}-${golesRivalPen} pen.)`;
+
+            if (timeline) {
+                const rowFin = document.createElement('div');
+                rowFin.className = `sim-event-row ${gano ? 'gol' : 'roja'}`;
+                const txtFin = gano 
+                    ? `🏆 ¡FINAL DE LA TANDA! ${nombreUsuario} se impone ${golesUserPen} a ${golesRivalPen} y avanza a la siguiente fase.`
+                    : `💔 FIN DE LA TANDA: ${nombreRival} ganó por penales ${golesRivalPen} a ${golesUserPen}.`;
+                rowFin.innerHTML = `<span class="sim-ev-min">FIN</span> <span class="sim-ev-text"><b>${txtFin}</b></span>`;
+                timeline.appendChild(rowFin);
+                timeline.scrollTop = timeline.scrollHeight;
+            }
+
+            if (gano && typeof reproducirSonido === 'function') reproducirSonido('victoria');
+
+            onFin(gano, penalesTexto);
+        };
+
+        // Turno 1: Usuario PATEA
+        const jugarPatearUsuario = () => {
+            if (tandaTerminada) return;
+            renderDots();
+
+            const tiradorNombre = listaTiradoresUser[(ronda - 1) % listaTiradoresUser.length] || 'Tu Delantero';
+            const esMuerteSubita = ronda > 5;
+            const badgeTexto = esMuerteSubita ? `MUERTE SÚBITA · TIRO ${ronda}` : `TANDA DE PENALES · TIRO ${ronda} DE 5`;
+
+            mostrarMomentoClave('penal_tanda_patear', {
+                ronda,
+                tirador: { nombre: tiradorNombre },
+                arqueroRival: rivalPortero,
+                badge: badgeTexto,
+                marcador: `${golesUserPen} - ${golesRivalPen}`
+            }, (zonaElegida) => {
+                const gkZona = Math.floor(Math.random() * 6);
+                let esGol = true;
+
+                if (gkZona === zonaElegida) {
+                    const esAngulo = (zonaElegida === 0 || zonaElegida === 2);
+                    esGol = Math.random() < (esAngulo ? 0.40 : 0.20);
+                } else {
+                    esGol = Math.random() < 0.94;
+                }
+
+                histUser.push(esGol);
+                if (esGol) golesUserPen++;
+
+                if (timeline) {
+                    const row = document.createElement('div');
+                    row.className = `sim-event-row ${esGol ? 'gol' : 'falta'}`;
+                    const desc = esGol 
+                        ? `⚽ ¡GOL de ${tiradorNombre}! Remate certero al arco. (${golesUserPen}-${golesRivalPen})`
+                        : `❌ ¡LO ERRÓ! ${tiradorNombre} no pudo vencer a ${rivalPortero}. (${golesUserPen}-${golesRivalPen})`;
+                    row.innerHTML = `<span class="sim-ev-min">PEN ${ronda}</span> <span class="sim-ev-text">${desc}</span>`;
+                    timeline.appendChild(row);
+                    timeline.scrollTop = timeline.scrollHeight;
+                }
+
+                if (esGol && typeof reproducirSonido === 'function') reproducirSonido('acierto');
+
+                renderDots();
+
+                // Chequeo de ventaja matemática irreversible
+                const remRival = Math.max(0, 5 - histRival.length);
+                if (ronda <= 5 && golesUserPen > golesRivalPen + remRival) {
+                    setTimeout(concluirTanda, 850);
+                    return;
+                }
+
+                setTimeout(jugarAtajarUsuario, 850);
+            });
+        };
+
+        // Turno 2: Usuario ATAJA (el rival patea)
+        const jugarAtajarUsuario = () => {
+            if (tandaTerminada) return;
+            renderDots();
+
+            const tiradorRivalNombre = listaTiradoresRival[(ronda - 1) % listaTiradoresRival.length] || 'Delantero Rival';
+            const esMuerteSubita = ronda > 5;
+            const badgeTexto = esMuerteSubita ? `MUERTE SÚBITA · ATAJADA ${ronda}` : `TANDA DE PENALES · ATAJADA ${ronda} DE 5`;
+
+            mostrarMomentoClave('penal_tanda_atajar', {
+                ronda,
+                tiradorRival: { nombre: tiradorRivalNombre },
+                portero: { nombre: userPortero },
+                badge: badgeTexto,
+                marcador: `${golesUserPen} - ${golesRivalPen}`
+            }, (zonaElegidaPorUsuario) => {
+                const tiroRivalZona = Math.floor(Math.random() * 6);
+                let atajo = false;
+
+                if (zonaElegidaPorUsuario === tiroRivalZona) {
+                    atajo = Math.random() < 0.85;
+                } else {
+                    atajo = Math.random() < 0.08;
+                }
+
+                const esGolRival = !atajo;
+                histRival.push(esGolRival);
+                if (esGolRival) golesRivalPen++;
+
+                if (timeline) {
+                    const row = document.createElement('div');
+                    row.className = `sim-event-row ${atajo ? 'gol' : 'falta'}`;
+                    const desc = atajo
+                        ? `🧤 ¡¡¡ATAJÓ ${userPortero.toUpperCase()}!!! Gran volada para taparle el tiro a ${tiradorRivalNombre}. (${golesUserPen}-${golesRivalPen})`
+                        : `⚽ Gol de ${tiradorRivalNombre} para ${nombreRival}. (${golesUserPen}-${golesRivalPen})`;
+                    row.innerHTML = `<span class="sim-ev-min">PEN ${ronda}</span> <span class="sim-ev-text">${desc}</span>`;
+                    timeline.appendChild(row);
+                    timeline.scrollTop = timeline.scrollHeight;
+                }
+
+                if (atajo && typeof reproducirSonido === 'function') reproducirSonido('acierto');
+
+                renderDots();
+
+                // Chequeo de fin de tanda
+                if (ronda < 5) {
+                    const remU = 5 - histUser.length;
+                    const remR = 5 - histRival.length;
+                    if (golesUserPen > golesRivalPen + remR || golesRivalPen > golesUserPen + remU) {
+                        setTimeout(concluirTanda, 850);
+                        return;
+                    }
+                    ronda++;
+                    setTimeout(jugarPatearUsuario, 850);
+                } else if (ronda === 5) {
+                    if (golesUserPen !== golesRivalPen) {
+                        setTimeout(concluirTanda, 850);
+                    } else {
+                        // Serie de 5 empatada: pasar a muerte súbita
+                        ronda++;
+                        if (timeline) {
+                            const rowMS = document.createElement('div');
+                            rowMS.className = 'sim-event-row entretiempo';
+                            rowMS.innerHTML = `<span>⚡ <b>SERIE EMPATADA ${golesUserPen}-${golesRivalPen}:</b> ¡COMIENZA LA MUERTE SÚBITA (1 a 1)!</span>`;
+                            timeline.appendChild(rowMS);
+                            timeline.scrollTop = timeline.scrollHeight;
+                        }
+                        setTimeout(jugarPatearUsuario, 1100);
+                    }
+                } else {
+                    // Muerte súbita (ronda 6+)
+                    if (golesUserPen !== golesRivalPen) {
+                        setTimeout(concluirTanda, 850);
+                    } else {
+                        ronda++;
+                        setTimeout(jugarPatearUsuario, 850);
+                    }
+                }
+            });
+        };
+
+        // Iniciar el primer penal (Patear)
+        jugarPatearUsuario();
     }
 }
 

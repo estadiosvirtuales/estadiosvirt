@@ -1928,6 +1928,21 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                             <h4 class="sim-momento-title" id="sim-momento-title">¡PENAL A FAVOR!</h4>
                             <p class="sim-momento-sub" id="sim-momento-sub">Elegí a qué palo rematar</p>
 
+                            <!-- 📊 MARCADOR EN VIVO DE TANDA DE PENALES (DOTS + GOLES) -->
+                            <div class="sim-tanda-score-bar" id="sim-tanda-score-bar" style="display:none;">
+                                <div class="sim-tanda-team user">
+                                    <span class="sim-tanda-name" id="sim-tanda-name-user">Tu Once</span>
+                                    <div class="sim-tanda-dots" id="sim-tanda-dots-user"></div>
+                                    <strong class="sim-tanda-count" id="sim-tanda-count-user">0</strong>
+                                </div>
+                                <div class="sim-tanda-vs">PEN</div>
+                                <div class="sim-tanda-team rival">
+                                    <strong class="sim-tanda-count" id="sim-tanda-count-rival">0</strong>
+                                    <div class="sim-tanda-dots" id="sim-tanda-dots-rival"></div>
+                                    <span class="sim-tanda-name" id="sim-tanda-name-rival">Rival</span>
+                                </div>
+                            </div>
+
                             <!-- BARRA DE TIEMPO / ADRENALINA -->
                             <div class="sim-momento-timer-track">
                                 <div class="sim-momento-timer-fill" id="sim-momento-timer-fill"></div>
