@@ -38,6 +38,8 @@ var momentoClaveActivo = false;
 var momentoClaveTimer = null;
 var momentoClaveResolutor = null;
 var momentoClaveTipo = null;
+var decisionEntretiempoSeleccionada = 'cambios';
+var resolverEntretiempo = null;
 var cofreTemporadaPendiente = null;
 
 
@@ -934,6 +936,10 @@ function prepararVistaPartidoCopa() {
 
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const etOverlay = document.getElementById('sim-entretiempo-overlay');
+    if (etOverlay) etOverlay.style.display = 'none';
+    const momentoOverlay = document.getElementById('sim-momento-clave');
+    if (momentoOverlay) momentoOverlay.style.display = 'none';
 
     const btn = document.getElementById('sim-btn-play');
     if (btn) {
@@ -1157,6 +1163,29 @@ window.resolverMomentoClave = function(opcion) {
     }
 };
 
+window.aplicarDecisionEntretiempo = function(decision) {
+    decisionEntretiempoSeleccionada = decision;
+    const bCambios = document.getElementById('sim-et-btn-cambios');
+    const bArenga = document.getElementById('sim-et-btn-arenga');
+    if (decision === 'cambios') {
+        if (bCambios) bCambios.classList.add('active');
+        if (bArenga) bArenga.classList.remove('active');
+    } else {
+        if (bCambios) bCambios.classList.remove('active');
+        if (bArenga) bArenga.classList.add('active');
+    }
+    if (typeof reproducirSonido === 'function') reproducirSonido('tactica');
+};
+
+window.reanudarSegundoTiempo = function() {
+    if (typeof resolverEntretiempo === 'function') {
+        if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
+        const fn = resolverEntretiempo;
+        resolverEntretiempo = null;
+        fn(decisionEntretiempoSeleccionada);
+    }
+};
+
 window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     if (simRafId) { cancelAnimationFrame(simRafId); simRafId = null; }
@@ -1170,6 +1199,10 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
     momentoClaveResolutor = null;
     const momentoOverlay = document.getElementById('sim-momento-clave');
     if (momentoOverlay) momentoOverlay.style.display = 'none';
+
+    resolverEntretiempo = null;
+    const etOverlay = document.getElementById('sim-entretiempo-overlay');
+    if (etOverlay) etOverlay.style.display = 'none';
 
     simVelocidadMult = 1;
     simActualizarTacticaEnPartido = null;
@@ -2420,6 +2453,14 @@ window.iniciarSimulacionEnVivo = function() {
             res(1);
         }
 
+        if (typeof resolverEntretiempo === 'function') {
+            const fn = resolverEntretiempo;
+            resolverEntretiempo = null;
+            const etOverlay = document.getElementById('sim-entretiempo-overlay');
+            if (etOverlay) etOverlay.style.display = 'none';
+            fn('cambios');
+        }
+
         estado = 'fin';
         relojPausado = true;
 
@@ -2478,12 +2519,69 @@ window.iniciarSimulacionEnVivo = function() {
             rowET.className = 'sim-event-row entretiempo';
             rowET.innerHTML = `<span><i class="ph-bold ph-whistle"></i> FIN DEL PRIMER TIEMPO (${golesUser} - ${golesRival})</span>`;
             if (timeline) { timeline.appendChild(rowET); timeline.scrollTop = timeline.scrollHeight; }
-            programar(2.4 / simVelocidadMult, () => {
+
+            // ⏸️ Gestión de Fatiga y Charla Técnica de Entretiempo
+            const overlayET = document.getElementById('sim-entretiempo-overlay');
+            const scoreET = document.getElementById('sim-et-score');
+            const txtStamina = document.getElementById('sim-et-stamina-txt');
+            const fillStamina = document.getElementById('sim-et-stamina-fill');
+
+            let energiaPct = 78;
+            let condicionTxt = '78% · Buenas Condiciones';
+            if (tacticaUserActual === 'ofensivo') {
+                energiaPct = 65;
+                condicionTxt = '65% · Desgaste Alto (Presión)';
+            } else if (tacticaUserActual === 'defensivo') {
+                energiaPct = 86;
+                condicionTxt = '86% · Desgaste Leve (Frescura)';
+            }
+
+            if (scoreET) scoreET.textContent = `${golesUser} - ${golesRival}`;
+            if (txtStamina) txtStamina.textContent = condicionTxt;
+            if (fillStamina) {
+                fillStamina.style.width = energiaPct + '%';
+                if (energiaPct < 70) fillStamina.style.background = 'linear-gradient(90deg, #f59e0b 0%, #ef4444 100%)';
+                else fillStamina.style.background = 'linear-gradient(90deg, #10b981 0%, #38bdf8 100%)';
+            }
+
+            decisionEntretiempoSeleccionada = 'cambios';
+            const bCambios = document.getElementById('sim-et-btn-cambios');
+            const bArenga = document.getElementById('sim-et-btn-arenga');
+            if (bCambios) bCambios.classList.add('active');
+            if (bArenga) bArenga.classList.remove('active');
+
+            if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
+
+            const reanudar2T = (decision) => {
+                if (overlayET) overlayET.style.display = 'none';
+                resolverEntretiempo = null;
+
+                if (decision === 'cambios') {
+                    // +25% frescura y +15% sprint
+                    equipos.user.forEach(j => { j.factorVel *= 1.15; });
+                    narrar('tactica', '🔄 <b>Cambios tácticos:</b> Ingresan piernas frescas del banco para oxigenar el mediocampo y el ataque.');
+                } else if (decision === 'arenga') {
+                    // +Potencia de tiro y quites
+                    probExitoUser = Math.min(0.85, probExitoUser + 0.08);
+                    CFG.velTiro = 130;
+                    narrar('tactica', '🗣️ <b>Charla de vestuario:</b> ¡Fuerte arenga del DT! El Once sale con el cuchillo entre los dientes para el segundo tiempo.');
+                }
+
                 reposMap = null;
                 gameMin = 46;
+                estado = 'juego';
+                relojPausado = false;
                 if (clock) clock.textContent = `46' (2T)`;
                 ejecutarSaqueCentro(false, true);
-            });
+            };
+
+            resolverEntretiempo = reanudar2T;
+
+            if (simVelocidadMult >= 3 || !overlayET) {
+                setTimeout(() => reanudar2T(decisionEntretiempoSeleccionada), 600);
+            } else {
+                overlayET.style.display = 'flex';
+            }
             return;
         }
 
@@ -2613,6 +2711,10 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     const timeline = document.getElementById('sim-events-timeline');
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const etOverlay = document.getElementById('sim-entretiempo-overlay');
+    if (etOverlay) etOverlay.style.display = 'none';
+    const momentoOverlay = document.getElementById('sim-momento-clave');
+    if (momentoOverlay) momentoOverlay.style.display = 'none';
     simActualizarTacticaEnPartido = null;
 
     const btn = document.getElementById('sim-btn-play');
@@ -5711,6 +5813,10 @@ function procesarFinDePartidoLiga(golesUser, golesRival) {
 
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
+    const etOverlay = document.getElementById('sim-entretiempo-overlay');
+    if (etOverlay) etOverlay.style.display = 'none';
+    const momentoOverlay = document.getElementById('sim-momento-clave');
+    if (momentoOverlay) momentoOverlay.style.display = 'none';
     simActualizarTacticaEnPartido = null;
 
     const btn = document.getElementById('sim-btn-play');

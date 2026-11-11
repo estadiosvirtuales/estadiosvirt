@@ -1948,6 +1948,50 @@ Aceptar y Continuar <i class="ph-bold ph-arrow-right"></i>
                             </div>
                         </div>
                     </div>
+
+                    <!-- ⏸️ OVERLAY DE ENTRETIEMPO: GESTIÓN DE FATIGA Y CHARLA TÁCTICA -->
+                    <div class="sim-entretiempo-overlay" id="sim-entretiempo-overlay" style="display: none;">
+                        <div class="sim-entretiempo-card">
+                            <div class="sim-et-header">
+                                <div class="sim-et-badge"><i class="ph-bold ph-hourglass-high"></i> ENTRETIEMPO · 45'</div>
+                                <div class="sim-et-score" id="sim-et-score">0 - 0</div>
+                            </div>
+                            
+                            <!-- BARRITA DE ENERGÍA Y DESGASTE -->
+                            <div class="sim-et-stamina-wrap">
+                                <div class="sim-et-stamina-label">
+                                    <span><i class="ph-bold ph-battery-charging"></i> Energía del Once:</span>
+                                    <strong id="sim-et-stamina-txt">78% · Buenas Condiciones</strong>
+                                </div>
+                                <div class="sim-et-stamina-bar">
+                                    <div class="sim-et-stamina-fill" id="sim-et-stamina-fill" style="width: 78%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- OPCIONES ESTRATÉGICAS DEL DT -->
+                            <div class="sim-et-actions">
+                                <button type="button" class="sim-et-btn active" id="sim-et-btn-cambios" onclick="aplicarDecisionEntretiempo('cambios')">
+                                    <div class="sim-et-btn-icon"><i class="ph-bold ph-arrows-clockwise"></i></div>
+                                    <div class="sim-et-btn-info">
+                                        <strong>Piernas Frescas</strong>
+                                        <span>+25% Energía · Más velocidad y sprint</span>
+                                    </div>
+                                </button>
+                                <button type="button" class="sim-et-btn" id="sim-et-btn-arenga" onclick="aplicarDecisionEntretiempo('arenga')">
+                                    <div class="sim-et-btn-icon"><i class="ph-bold ph-megaphone"></i></div>
+                                    <div class="sim-et-btn-info">
+                                        <strong>Arenga del DT</strong>
+                                        <span>+Potencia de tiro y quites defensivos</span>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- BOTÓN PARA REANUDAR SEGUNDO TIEMPO -->
+                            <button type="button" class="sim-et-resume-btn" id="sim-et-resume-btn" onclick="reanudarSegundoTiempo()">
+                                <span>Salir a Jugar el 2T</span> <i class="ph-bold ph-play-circle"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
