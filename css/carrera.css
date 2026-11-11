@@ -3912,8 +3912,7 @@
         top: 50% !important;
     }
     .sim-zone-ball {
-        font-size: 1.05rem !important;
-        top: 50% !important;
+        display: none !important;
     }
     .sim-zone-tag {
         display: none !important;
@@ -7082,16 +7081,7 @@
 }
 
 .sim-zone-ball {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.6);
-    font-size: 1.30rem;
-    opacity: 0;
-    transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.95));
-    pointer-events: none;
-    z-index: 7;
+    display: none !important;
 }
 
 .sim-zone-tag {
@@ -7099,7 +7089,7 @@
 }
 
 /* HOVER Y FOCUS DE LA ZONA */
-.sim-goal-zone:hover, .sim-goal-zone:focus {
+.sim-goal-zone:hover, .sim-goal-zone:focus-visible {
     background: rgba(251, 191, 36, 0.25);
     border-color: #fbbf24;
     border-style: solid;
@@ -7107,21 +7097,19 @@
     transform: scale(0.98);
 }
 
-.sim-goal-zone:hover .sim-zone-crosshair, .sim-goal-zone:focus .sim-zone-crosshair {
+.sim-goal-zone:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+    border: 1px dashed rgba(255, 255, 255, 0.25);
+    background: rgba(15, 23, 42, 0.45);
+    transform: none;
+}
+
+.sim-goal-zone:hover .sim-zone-crosshair, .sim-goal-zone:focus-visible .sim-zone-crosshair {
     border-color: #fbbf24;
     transform: translate(-50%, -50%) scale(1.15) rotate(45deg);
     box-shadow: 0 0 10px #fbbf24;
-    opacity: 0.35;
-}
-
-.sim-goal-zone:hover .sim-zone-ball, .sim-goal-zone:focus .sim-zone-ball {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
-.sim-goal-zone:hover .sim-zone-tag, .sim-goal-zone:focus .sim-zone-tag {
-    color: #fde047;
-    text-shadow: 0 0 6px rgba(251, 191, 36, 0.85);
+    opacity: 0.65;
 }
 
 .sim-goal-zone:active {

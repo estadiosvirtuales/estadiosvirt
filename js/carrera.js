@@ -1106,7 +1106,12 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
 
     document.querySelectorAll('.sim-goal-zone').forEach(btn => {
         btn.style.pointerEvents = 'all';
+        btn.classList.remove('active', 'selected', 'hover');
+        if (typeof btn.blur === 'function') btn.blur();
     });
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
 
     const tandaBar = document.getElementById('sim-tanda-score-bar');
     if (tandaBar) {
@@ -1321,7 +1326,12 @@ function ejecutarAnimacionFisicaPenal(params) {
 
         document.querySelectorAll('.sim-goal-zone').forEach(btn => {
             btn.style.pointerEvents = 'all';
+            btn.classList.remove('active', 'selected', 'hover');
+            if (typeof btn.blur === 'function') btn.blur();
         });
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+            document.activeElement.blur();
+        }
 
         if (typeof onTerminada === 'function') {
             onTerminada();
@@ -1340,10 +1350,15 @@ window.resolverMomentoClave = function(opcion) {
 
     momentoClaveActivo = false;
 
-    // Bloquear clicks inmediatos en todas las zonas
+    // Bloquear clicks inmediatos en todas las zonas y remover focos activos
     document.querySelectorAll('.sim-goal-zone').forEach(btn => {
         btn.style.pointerEvents = 'none';
+        btn.classList.remove('active', 'selected', 'hover');
+        if (typeof btn.blur === 'function') btn.blur();
     });
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
 
     const isTanda = momentoClaveData && momentoClaveData.noCerrarOverlay;
     const overlay = document.getElementById('sim-momento-clave');
