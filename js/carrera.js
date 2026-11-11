@@ -1143,6 +1143,12 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         if (tagEl && tagsZonas[i]) tagEl.textContent = tagsZonas[i];
     }
 
+    const isTanda = String(tipo).startsWith('penal_tanda');
+    const timerTrack = document.querySelector('.sim-momento-timer-track');
+    if (timerTrack) {
+        timerTrack.style.display = isTanda ? 'none' : 'block';
+    }
+
     if (fillEl) fillEl.style.width = '100%';
     overlay.style.display = 'flex';
 
@@ -1150,31 +1156,39 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         reproducirSonido('acierto');
     }
 
-    // Cuenta regresiva de adrenalina (5 segundos)
-    const durTotal = 5000;
-    const inicio = Date.now();
-    let ultimoBeep = 5;
-
-    momentoClaveTimer = setInterval(() => {
-        const transcurrido = Date.now() - inicio;
-        const restante = Math.max(0, durTotal - transcurrido);
-        const pct = (restante / durTotal) * 100;
-
-        if (fillEl) fillEl.style.width = pct + '%';
-
-        const segRestante = Math.ceil(restante / 1000);
-        if (segRestante < ultimoBeep && segRestante <= 3 && segRestante > 0) {
-            ultimoBeep = segRestante;
-            if (typeof reproducirSonido === 'function') reproducirSonido('reloj');
-        }
-
-        if (restante <= 0) {
+    if (isTanda) {
+        // En la definición por penales: CERO límite de tiempo. El usuario decide con total calma y control.
+        if (momentoClaveTimer) {
             clearInterval(momentoClaveTimer);
             momentoClaveTimer = null;
-            // Auto-elección aleatoria entre las 6 zonas si se agota el tiempo
-            window.resolverMomentoClave(Math.floor(Math.random() * 6));
         }
-    }, 50);
+    } else {
+        // En jugadas durante el partido (penal/tiro libre): tiempo amplio y generoso (15 segundos)
+        const durTotal = 15000;
+        const inicio = Date.now();
+        let ultimoBeep = 4;
+
+        momentoClaveTimer = setInterval(() => {
+            const transcurrido = Date.now() - inicio;
+            const restante = Math.max(0, durTotal - transcurrido);
+            const pct = (restante / durTotal) * 100;
+
+            if (fillEl) fillEl.style.width = pct + '%';
+
+            const segRestante = Math.ceil(restante / 1000);
+            if (segRestante < ultimoBeep && segRestante <= 3 && segRestante > 0) {
+                ultimoBeep = segRestante;
+                if (typeof reproducirSonido === 'function') reproducirSonido('reloj');
+            }
+
+            if (restante <= 0) {
+                clearInterval(momentoClaveTimer);
+                momentoClaveTimer = null;
+                // Auto-elección aleatoria entre las 6 zonas si se agota el tiempo
+                window.resolverMomentoClave(Math.floor(Math.random() * 6));
+            }
+        }, 50);
+    }
 }
 window.mostrarMomentoClave = mostrarMomentoClave;
 
