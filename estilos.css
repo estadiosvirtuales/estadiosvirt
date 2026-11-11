@@ -9658,11 +9658,13 @@ html[data-theme="light"] .xp-bar-big-fill {
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
 }
 
-[data-theme="light"] .stat-pill-info span {
+[data-theme="light"] .stat-pill-info span,
+[data-theme="light"] .ranking-pills-column .stat-pill-info span {
     color: #64748b !important;
 }
 
-[data-theme="light"] .stat-pill-info strong {
+[data-theme="light"] .stat-pill-info strong,
+[data-theme="light"] .ranking-pills-column .stat-pill-info strong {
     color: #0f172a !important;
     text-shadow: none !important;
 }

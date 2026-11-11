@@ -386,6 +386,70 @@ const CONFIG_COPA_AMERICA = {
 🎮 Poné a prueba cuánto sabés en: estadiosvirtuales.com
 
 #CopaAmericaDeEstadios #CopaAmerica #RiverPlate #ColoColo #Monumental #DavidArellano #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'cuartos-1': {
+        slug: '01-BOCA-VS-SAOPAULO',
+        fase: 'CUARTOS DE FINAL',
+        faseSiguiente: 'Semifinales',
+        llaveNumero: 'CUARTOS 1 / 4',
+        cruceSiguiente: 'Ganador de Llave 2 (Flamengo, Independiente, Santos o Pumas)',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · CUARTOS 1/4',
+        pregunta: '¿QUIÉN PASA A SEMIFINALES?',
+        subtitulo: 'Boca Juniors vs. São Paulo FC',
+        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
+        videoFileName: 'CopaAmerica_Cuartos_01_Boca_vs_SaoPaulo.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Cuartos_01_Boca_SaoPaulo.jpg',
+        team1: {
+            numero: '1',
+            nombre: 'BOCA JUNIORS',
+            estadio: 'Alberto J. Armando',
+            apodo: 'La Bombonera',
+            ciudadPais: 'Buenos Aires, Argentina',
+            capacidadTexto: '57.200 esp.',
+            escudoFile: 'Boca.webp',
+            borderColor: '#0044cc',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\La bombonera 3.mp4"
+        },
+        team2: {
+            numero: '2',
+            nombre: 'SÃO PAULO FC',
+            estadio: 'Cícero Pompeu de Toledo',
+            apodo: 'Estadio Morumbí',
+            ciudadPais: 'São Paulo, Brasil',
+            capacidadTexto: '66.795 esp.',
+            escudoFile: 'saopaulo.webp',
+            borderColor: '#c8102e',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4"
+        },
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y LIBRE DE BLOQUEOS) ===
+🏆 ¡CUARTOS DE FINAL DE LA COPA AMÉRICA DE ESTADIOS! 🇦🇷⚔️🇧🇷
+¡Superclásico continental entre Argentina y Brasil por un lugar en SEMIFINALES!
+
+🏟️ CUARTOS 1:
+1️⃣ LA BOMBONERA (Boca Juniors · Argentina)
+2️⃣ ESTADIO MORUMBÍ (São Paulo FC · Brasil)
+
+👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Semifinales. 🗳️
+¿La mística de Brandsen 805 o el coloso paulista?
+
+#CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #SaoPaulo #LaBombonera #Morumbi #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 COPA AMÉRICA DE ESTADIOS | CUARTOS DE FINAL (1/4) 🔥
+¡Llegaron los Cuartos de Final y abrimos con el duelo más esperado del continente!
+Dos colosos con historia gloriosa cara a cara por un pase a las Semifinales.
+
+🏟️ CUARTOS 1:
+1️⃣ LA BOMBONERA (Boca Juniors · Argentina · 57.200 esp.)
+2️⃣ ESTADIO MORUMBÍ (São Paulo FC · Brasil · 66.795 esp.)
+
+👉 COMENTÁ "1" O "2" para definir quién avanza a la Semifinal continental. 🗳️
+⚔️ El clasificado esperará rival de la Llave 2 (Flamengo, Independiente, Santos o Pumas).
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #SaoPauloFC #LaBombonera #Morumbi #FutbolSudamericano #EstadiosVirtuales #Estadios`
     }
 };
 
@@ -698,7 +762,7 @@ async function generarOverlaysGraficos(duelo, assetsDir) {
 
         <!-- SEGUINOS SUB-PILL (bottom: 165px) -->
         <div style="position:absolute; bottom:165px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:8px; background:rgba(9, 14, 23, 0.92); border:1.5px solid #ffd700; padding:8px 24px; border-radius:20px; color:#ffd700; font-size:20px; font-weight:800; box-shadow:0 8px 25px rgba(0,0,0,0.85); white-space:nowrap; letter-spacing:0.5px;">
-            <span>🔔 Seguinos para ver qué estadio clasifica a Cuartos 🏆</span>
+            <span>🔔 Seguinos para ver qué estadio clasifica a ${duelo.faseSiguiente || 'Cuartos'} 🏆</span>
         </div>
     `);
 
@@ -798,7 +862,7 @@ async function generarPortada(duelo, outFolder, bgFramePath) {
             </div>
 
             <div class="cta-card">
-                <span class="cta-text">🔥 ¡El más votado pasa a Cuartos de Final! 🏆</span>
+                <span class="cta-text">🔥 ¡El más votado pasa a ${duelo.faseSiguiente || 'Cuartos de Final'}! 🏆</span>
             </div>
         </div>
     </body>
@@ -879,7 +943,7 @@ async function renderizarCopaAmericaDuelo(dueloKey) {
         `[v1][4:v]overlay=0:0:enable='between(t,12.0,13.0)'[v2]`,
         `[v2][5:v]overlay=0:0:enable='between(t,13.0,14.0)'[v3]`,
         `[v3][6:v]overlay=0:0:enable='between(t,14.0,15.0)'[v4]`,
-        `[v4][7:v]overlay=0:0:enable='between(t,15.0,20.0)'[outv]`
+        `[v4][7:v]overlay=0:0:enable='between(t,15.0,20.0)',setsar=1[outv]`
     ].join(';');
 
     const ffmpegArgs = [
@@ -901,6 +965,8 @@ async function renderizarCopaAmericaDuelo(dueloKey) {
         '-crf', '18',
         '-pix_fmt', 'yuv420p',
         '-c:a', 'aac',
+        '-ac', '2',
+        '-ar', '44100',
         '-b:a', '192k',
         '-shortest',
         '-movflags', '+faststart',

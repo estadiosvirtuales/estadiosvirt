@@ -9089,4 +9089,44 @@
 .carrera-mini-shield[src*="Instituto"],
 .carrera-mini-shield[src*="instituto"] {
     transform: scale(1.06) !important;
-}
+}
+
+/* ========================================================
+   ☀️ MODO CLARO: PASTILLAS DE ESTADÍSTICAS EN SALÓN DE CAMPEONES
+   (Legibilidad óptima en celulares y PC sin letras blancas invisibles)
+   ======================================================== */
+[data-theme="light"] #ranking-carrera-modal .header-stat-pill,
+[data-theme="light"] .ranking-pills-column .header-stat-pill {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] #ranking-carrera-modal .ranking-pills-column .stat-pill-info strong,
+[data-theme="light"] .ranking-pills-column .stat-pill-info strong,
+[data-theme="light"] .ranking-pills-column .header-stat-pill .stat-pill-info strong {
+    color: #0f172a !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] #ranking-carrera-modal .ranking-pills-column .stat-pill-info span,
+[data-theme="light"] .ranking-pills-column .stat-pill-info span,
+[data-theme="light"] .ranking-pills-column .header-stat-pill .stat-pill-info span {
+    color: #64748b !important;
+}
+
+[data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="#ffd700"],
+[data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="255, 215, 0"] {
+    color: #d97706 !important;
+}
+
+[data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="#00ff77"],
+[data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="0, 255, 119"] {
+    color: #16a34a !important;
+}
+
+[data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="#2979ff"],
+[data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="41, 121, 255"] {
+    color: #2563eb !important;
+}
+
