@@ -3863,17 +3863,29 @@
         margin: 0 0 2px 0 !important;
     }
     .sim-tanda-score-bar {
-        padding: 2px 5px !important;
+        padding: 2px 4px !important;
         margin: 0 0 3px 0 !important;
-        gap: 4px !important;
+        gap: 3px !important;
+        overflow: hidden !important;
+    }
+    .sim-tanda-team {
+        gap: 3px !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
     }
     .sim-tanda-name {
-        font-size: 0.56rem !important;
-        max-width: 48px !important;
+        font-size: 0.54rem !important;
+        max-width: 42px !important;
+        flex-shrink: 1 !important;
+    }
+    .sim-tanda-dots {
+        gap: 2px !important;
+        flex-shrink: 0 !important;
     }
     .sim-tanda-dot {
         width: 6px !important;
         height: 6px !important;
+        flex-shrink: 0 !important;
     }
     .sim-tanda-count {
         font-size: 0.80rem !important;
@@ -6774,18 +6786,21 @@
     background: rgba(15, 23, 42, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 10px;
-    padding: 4px 10px;
+    padding: 4px 8px;
     margin: -4px 0 10px 0;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .sim-tanda-team {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .sim-tanda-team.rival {
@@ -6796,22 +6811,25 @@
     font-size: 0.68rem;
     font-weight: 700;
     color: #94a3b8;
-    max-width: 75px;
+    max-width: 68px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 1;
 }
 
 .sim-tanda-dots {
     display: flex;
     gap: 3px;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .sim-tanda-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    flex-shrink: 0;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.35);
     transition: all 0.2s ease;

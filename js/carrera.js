@@ -3321,12 +3321,21 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             if (countU) countU.textContent = golesUserPen;
             if (countR) countR.textContent = golesRivalPen;
 
-            const totalSlots = Math.max(5, ronda);
+            // Ventana deslizante fija de 5 slots máximos visibles:
+            // En serie regular (1 a 5) muestra slots 1 al 5.
+            // En muerte súbita (6+) muestra siempre los últimos 5 tiros ejecutados/en juego,
+            // garantizando que jamás se acumulen infinitos dots que desborden o salgan del modal.
+            const MAX_SLOTS = 5;
+            const totalRondas = Math.max(5, ronda);
+            const inicioIdx = Math.max(0, totalRondas - MAX_SLOTS);
+            const finIdx = inicioIdx + MAX_SLOTS;
+
             if (dotsU) {
                 dotsU.innerHTML = '';
-                for (let i = 0; i < totalSlots; i++) {
+                for (let i = inicioIdx; i < finIdx; i++) {
                     const dot = document.createElement('div');
                     dot.className = 'sim-tanda-dot';
+                    dot.title = `Penal ${i + 1}`;
                     if (i < histUser.length) {
                         dot.classList.add(histUser[i] ? 'gol' : 'fallo');
                     } else if (i === histUser.length) {
@@ -3337,9 +3346,10 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             }
             if (dotsR) {
                 dotsR.innerHTML = '';
-                for (let i = 0; i < totalSlots; i++) {
+                for (let i = inicioIdx; i < finIdx; i++) {
                     const dot = document.createElement('div');
                     dot.className = 'sim-tanda-dot';
+                    dot.title = `Penal ${i + 1}`;
                     if (i < histRival.length) {
                         dot.classList.add(histRival[i] ? 'gol' : 'fallo');
                     } else if (i === histRival.length && histUser.length > histRival.length) {
