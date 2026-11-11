@@ -1138,8 +1138,8 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         if (badgeEl) badgeEl.textContent = data.badge || `TANDA DE PENALES · ATAJADA ${data.ronda || 1}`;
         if (titleEl) titleEl.textContent = `🧤 ¡TE TOCA ATAJAR! (${data.marcador || '0-0'})`;
         if (subEl) {
-            subEl.innerHTML = '';
-            subEl.style.display = 'none';
+            subEl.innerHTML = 'Elegí dónde tirarte';
+            subEl.style.display = '';
         }
     } else if (tipo === 'penal_tanda') {
         if (badgeEl) badgeEl.textContent = 'TANDA DE PENALES';
