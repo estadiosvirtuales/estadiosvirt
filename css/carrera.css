@@ -3922,7 +3922,10 @@
         height: 28px !important;
         font-size: 0.90rem !important;
     }
+    .sim-goal-keeper .sim-gk-glove,
     .sim-goal-keeper .sim-gk-gloves {
+        width: 17px !important;
+        height: 20px !important;
         font-size: 0.85rem !important;
     }
     .sim-goal-grass {
@@ -7011,13 +7014,30 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
+.sim-goal-keeper .sim-gk-glove,
 .sim-goal-keeper .sim-gk-gloves {
-    font-size: 1.1rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7));
+    width: 22px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+    transition: transform 0.2s ease;
+}
+.sim-goal-keeper .sim-gk-glove svg,
+.sim-goal-keeper .sim-gk-gloves svg {
+    width: 100%;
+    height: 100%;
     animation: simGkFloat 1.2s infinite alternate ease-in-out;
 }
-.sim-goal-keeper .sim-gk-gloves.left { transform: rotate(-15deg); }
-.sim-goal-keeper .sim-gk-gloves.right { transform: rotate(15deg); }
+.sim-goal-keeper .sim-gk-glove.left,
+.sim-goal-keeper .sim-gk-gloves.left {
+    transform: rotate(-12deg);
+}
+.sim-goal-keeper .sim-gk-glove.right,
+.sim-goal-keeper .sim-gk-gloves.right {
+    transform: scaleX(-1) rotate(-12deg);
+}
 
 @keyframes simGkFloat {
     0% { transform: translateY(0); }
