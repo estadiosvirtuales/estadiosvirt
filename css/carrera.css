@@ -3897,16 +3897,14 @@
     .sim-zone-crosshair {
         width: 15px !important;
         height: 15px !important;
-        top: 38% !important;
+        top: 50% !important;
     }
     .sim-zone-ball {
         font-size: 1.05rem !important;
-        top: 38% !important;
+        top: 50% !important;
     }
     .sim-zone-tag {
-        font-size: 0.48rem !important;
-        bottom: 2px !important;
-        letter-spacing: 0.1px !important;
+        display: none !important;
     }
     .sim-goal-keeper .sim-gk-icon {
         width: 24px !important;
@@ -7047,7 +7045,7 @@
     border: 1.5px solid rgba(251, 191, 36, 0.45);
     border-radius: 50%;
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     transition: all 0.2s ease;
@@ -7067,7 +7065,7 @@
 
 .sim-zone-ball {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.6);
     font-size: 1.30rem;
@@ -7079,19 +7077,7 @@
 }
 
 .sim-zone-tag {
-    position: absolute;
-    bottom: 3px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.58rem;
-    font-weight: 900;
-    letter-spacing: 0.3px;
-    color: rgba(255, 255, 255, 0.70);
-    text-transform: uppercase;
-    transition: all 0.18s ease;
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 6;
+    display: none !important;
 }
 
 /* HOVER Y FOCUS DE LA ZONA */

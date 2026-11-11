@@ -1108,16 +1108,6 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         btn.style.pointerEvents = 'all';
     });
 
-    // Configuración de las 6 zonas en la cuadrícula del arco
-    const tagsZonas = {
-        0: '↖ ÁNGULO',
-        1: '⬆ AL TECHO',
-        2: '↗ ÁNGULO',
-        3: '↙ AL PALO',
-        4: '⬇ AL PISO',
-        5: '↘ AL PALO'
-    };
-
     const tandaBar = document.getElementById('sim-tanda-score-bar');
     if (tandaBar) {
         tandaBar.style.display = String(tipo).startsWith('penal_tanda') ? 'flex' : 'none';
@@ -1131,18 +1121,10 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
         if (badgeEl) badgeEl.textContent = 'PENAL EN CONTRA';
         if (titleEl) titleEl.textContent = '¡PENAL EN CONTRA!';
         if (subEl) subEl.innerHTML = `¡Elegí a qué zona tirarte para atajar con <b>${data.portero ? data.portero.nombre : 'tu arquero'}</b>!`;
-        tagsZonas[0] = '↖ VOLAR ARRIBA';
-        tagsZonas[1] = '⬆ AL MEDIO';
-        tagsZonas[2] = '↗ VOLAR ARRIBA';
-        tagsZonas[3] = '↙ VOLAR AL PALO';
-        tagsZonas[4] = '⬇ AL PISO';
-        tagsZonas[5] = '↘ VOLAR AL PALO';
     } else if (tipo === 'tiro_libre') {
         if (badgeEl) badgeEl.textContent = 'TIRO LIBRE PELIGROSO';
         if (titleEl) titleEl.textContent = '¡TIRO LIBRE AL BORDE DEL ÁREA!';
         if (subEl) subEl.innerHTML = `Elegí la zona del disparo con <b>${data.tirador ? data.tirador.nombre : 'tu especialista'}</b>`;
-        tagsZonas[1] = '⬆ BARRERA';
-        tagsZonas[4] = '⬇ POR ABAJO';
     } else if (tipo === 'penal_tanda_patear') {
         if (badgeEl) badgeEl.textContent = data.badge || `TANDA DE PENALES · TIRO ${data.ronda || 1}`;
         if (titleEl) titleEl.textContent = `⚽ ¡TE TOCA PATEAR! (${data.marcador || '0-0'})`;
@@ -1154,21 +1136,10 @@ function mostrarMomentoClave(tipo, data = {}, onResuelto) {
             subEl.innerHTML = '';
             subEl.style.display = 'none';
         }
-        tagsZonas[0] = '↖ VOLAR ARRIBA';
-        tagsZonas[1] = '⬆ AL MEDIO';
-        tagsZonas[2] = '↗ VOLAR ARRIBA';
-        tagsZonas[3] = '↙ VOLAR AL PALO';
-        tagsZonas[4] = '⬇ AL PISO';
-        tagsZonas[5] = '↘ VOLAR AL PALO';
     } else if (tipo === 'penal_tanda') {
         if (badgeEl) badgeEl.textContent = 'TANDA DE PENALES';
         if (titleEl) titleEl.textContent = '¡EL 5º PENAL DECISIVO!';
         if (subEl) subEl.innerHTML = `Serie 4-4: ¡Elegí la zona del arco para sellar la clasificación!`;
-    }
-
-    for (let i = 0; i < 6; i++) {
-        const tagEl = document.getElementById(`zone-tag-${i}`);
-        if (tagEl && tagsZonas[i]) tagEl.textContent = tagsZonas[i];
     }
 
     const isTanda = String(tipo).startsWith('penal_tanda');
