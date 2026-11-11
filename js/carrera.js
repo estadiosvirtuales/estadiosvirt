@@ -3434,6 +3434,32 @@ function finalizarPartidoCopa(golesUser, golesRival) {
             onFin(gano, penalesTexto);
         };
 
+        const verificarFinTanda = () => {
+            if (ronda <= 5) {
+                const remU = Math.max(0, 5 - histUser.length);
+                const remR = Math.max(0, 5 - histRival.length);
+
+                // Ventaja matemática irreversible (Regla IFAB 10):
+                // Si el usuario ya marcó más goles de los que el rival podría marcar completando sus 5 tiros
+                if (golesUserPen > golesRivalPen + remR) return true;
+                // Si el rival ya marcó más goles de los que el usuario podría marcar completando sus 5 tiros
+                if (golesRivalPen > golesUserPen + remU) return true;
+
+                // Si ambos completaron sus 5 tiros reglamentarios
+                if (histUser.length >= 5 && histRival.length >= 5) {
+                    return golesUserPen !== golesRivalPen;
+                }
+                return false;
+            } else {
+                // En muerte súbita (ronda > 5), cada equipo ejecuta 1 tiro.
+                // Si ambos patearon en la ronda actual y hay diferencia de goles, concluye la tanda:
+                if (histUser.length === histRival.length) {
+                    return golesUserPen !== golesRivalPen;
+                }
+                return false;
+            }
+        };
+
         // Turno 1: Usuario PATEA
         const jugarPatearUsuario = () => {
             if (tandaTerminada) return;
@@ -3491,9 +3517,8 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                     onTerminada: () => {
                         if (tandaTerminada) return;
 
-                        // Chequeo de ventaja matemática irreversible
-                        const remRival = Math.max(0, 5 - histRival.length);
-                        if (ronda <= 5 && golesUserPen > golesRivalPen + remRival) {
+                        // Chequeo de ventaja matemática irreversible tras el tiro del usuario
+                        if (verificarFinTanda()) {
                             concluirTanda();
                             return;
                         }
@@ -3557,40 +3582,29 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                     onTerminada: () => {
                         if (tandaTerminada) return;
 
-                        // Chequeo de fin de tanda
-                        if (ronda < 5) {
-                            const remU = 5 - histUser.length;
-                            const remR = 5 - histRival.length;
-                            if (golesUserPen > golesRivalPen + remR || golesRivalPen > golesUserPen + remU) {
-                                concluirTanda();
-                                return;
-                            }
-                            ronda++;
-                            jugarPatearUsuario();
-                        } else if (ronda === 5) {
-                            if (golesUserPen !== golesRivalPen) {
-                                concluirTanda();
-                            } else {
-                                // Serie de 5 empatada: pasar a muerte súbita
-                                ronda++;
-                                if (timeline) {
-                                    const rowMS = document.createElement('div');
-                                    rowMS.className = 'sim-event-row entretiempo';
-                                    rowMS.innerHTML = `<span>⚡ <b>SERIE EMPATADA ${golesUserPen}-${golesRivalPen}:</b> ¡COMIENZA LA MUERTE SÚBITA (1 a 1)!</span>`;
-                                    timeline.appendChild(rowMS);
-                                    timeline.scrollTop = timeline.scrollHeight;
-                                }
-                                jugarPatearUsuario();
-                            }
-                        } else {
-                            // Muerte súbita (ronda 6+)
-                            if (golesUserPen !== golesRivalPen) {
-                                concluirTanda();
-                            } else {
-                                ronda++;
-                                jugarPatearUsuario();
-                            }
+                        // Chequeo de ventaja matemática irreversible tras el tiro rival
+                        if (verificarFinTanda()) {
+                            concluirTanda();
+                            return;
                         }
+
+                        // Si se completaron las 5 rondas y están empatados, pasamos a muerte súbita
+                        if (ronda === 5 && histUser.length === 5 && histRival.length === 5 && golesUserPen === golesRivalPen) {
+                            ronda++;
+                            if (timeline) {
+                                const rowMS = document.createElement('div');
+                                rowMS.className = 'sim-event-row entretiempo';
+                                rowMS.innerHTML = `<span>⚡ <b>SERIE EMPATADA ${golesUserPen}-${golesRivalPen}:</b> ¡COMIENZA LA MUERTE SÚBITA (1 a 1)!</span>`;
+                                timeline.appendChild(rowMS);
+                                timeline.scrollTop = timeline.scrollHeight;
+                            }
+                            jugarPatearUsuario();
+                            return;
+                        }
+
+                        // Avanzar a la siguiente ronda
+                        ronda++;
+                        jugarPatearUsuario();
                     }
                 });
             });
