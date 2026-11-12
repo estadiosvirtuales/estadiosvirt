@@ -4,7 +4,9 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const BASE_OUTPUT_DIR = "E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS";
+const BASE_OUTPUT_DIR = fs.existsSync("E:\\Google earth studio\\videos para mostrar\\YA SUBIDOS\\COPA AMERICA DE ESTADIOS\\OCTAVOS DE FINAL")
+    ? "E:\\Google earth studio\\videos para mostrar\\YA SUBIDOS\\COPA AMERICA DE ESTADIOS"
+    : "E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS";
 
 // ==========================================
 // CONFIGURACIÓN DE RESULTADOS - COPA AMÉRICA
@@ -165,6 +167,84 @@ Flamengo (Estadio Maracaná) vs. Independiente (Libertadores de América).
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #SaoPauloFC #Morumbi #AtlasFC #EstadioJalisco #BocaJuniors #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'resultado-3': {
+        cruceNum: 3,
+        slug: '03-FLAMENGO-VS-INDEPENDIENTE',
+        tituloTorneo: 'COPA AMÉRICA DE ESTADIOS',
+        fase: 'OCTAVOS DE FINAL · CRUCE 3/8',
+        videoFileName: 'CopaAmerica_Resultado_03_Flamengo_vs_Independiente.mp4',
+        portadaFileName: 'Portada_Resultado_03_Flamengo_Independiente.jpg',
+        textFile: 'TEXTOS_RESULTADO_03.txt',
+        clasificadoBadge: '👑 TERCER CLASIFICADO A CUARTOS',
+        escena2Title: '¡EL ROJO EN CUARTOS! 🔥',
+        escena2Sub: 'Victoria aplastante con el 96% de los votos',
+        proximoRival: 'Santos FC o Pumas UNAM',
+        fraseCelebracion: 'La mística copera del Rey de Copas se hace sentir en el continente y clasifica a Cuartos de Final 🏟️',
+        footerComunidad: 'El Libertadores de América avanza a los Cuartos de Final',
+        bracketHeaderSub: 'Independiente clasificado · Espera rival de Santos vs Pumas',
+        nextCruceBanner: 'PRÓXIMO CRUCE: SANTOS FC VS PUMAS UNAM',
+        nextCruceCTA: '¡ENTRÁ A MI PERFIL Y VOTÁ EN EL CRUCE 4!',
+        // Ganador (Independiente)
+        winner: {
+            nombre: 'INDEPENDIENTE',
+            estadio: 'Libertadores de América',
+            apodo: 'Ricardo E. Bochini',
+            ciudadPais: 'Avellaneda, Argentina',
+            capacidadTexto: '42.069 esp.',
+            escudoFile: 'Independiente.webp',
+            votos: 130,
+            porcentaje: 96,
+            borderColor: '#00e676',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4"
+        },
+        // Perdedor (Flamengo)
+        loser: {
+            nombre: 'FLAMENGO',
+            estadio: 'Jornalista Mário Filho',
+            apodo: 'Estadio Maracaná',
+            ciudadPais: 'Río de Janeiro, Brasil',
+            capacidadTexto: '78.838 esp.',
+            escudoFile: 'flamengo.webp',
+            votos: 6,
+            porcentaje: 4,
+            borderColor: 'rgba(255,255,255,0.3)',
+            videoPath: "E:\\Google earth studio\\Brasil\\Maracaná.mp4"
+        },
+        totalComentarios: 136,
+        nextCruceNum: 4,
+        nextCruceTexto: 'Santos FC vs. Pumas UNAM',
+        bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Independiente avanzó a Cuartos de Final de la Copa América de Estadios! 🇦🇷🔥
+El Libertadores de América Ricardo E. Bochini se impuso con un aplastante 96% frente al 4% del Maracaná (Flamengo).
+
+⚔️ El Rey de Copas espera en Cuartos al ganador de Santos FC vs. Pumas UNAM.
+
+🔥 ¡El Cruce 4 (Santos vs Pumas) ya está disponible en mi perfil para votar! 🗳️
+¿Quién clasifica a Cuartos?
+
+#CopaAmericaDeEstadios #Independiente #TodoRojo #LibertadoresDeAmerica #Flamengo #Maracana #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡INDEPENDIENTE CLASIFICÓ A CUARTOS DE FINAL! 🔥🇦🇷
+¡Tenemos al tercer estadio clasificado de la Copa América de Estadios!
+La mística copera del Rey de Copas se hizo sentir y el Libertadores de América - Ricardo E. Bochini aplastó en la votación comunitaria:
+
+📊 RESULTADO FINAL CRUCE 3:
+🟢 INDEPENDIENTE (Libertadores de América): 96% ✅ ¡CLASIFICADO!
+⚪ FLAMENGO (Estadio Maracaná): 4%
+
+El mítico estadio de Avellaneda sella su pasaje a los Cuartos de Final y espera rival (saldrá de Santos FC vs Pumas UNAM).
+
+⚔️ CRUCE 4 DISPONIBLE AHORA:
+Santos FC (Vila Belmiro) vs. Pumas UNAM (Olímpico Universitario).
+👉 ¡Entrá a nuestro perfil y dejá tu voto para clasificar a tu favorito! 🗳️
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #Independiente #TodoRojo #LibertadoresDeAmerica #Flamengo #Maracana #Estadios #FutbolSudamericano #EstadiosVirtuales`
     }
 };
 
@@ -577,6 +657,8 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     // Configuración según el cruce que se esté mostrando
     let cruce1Finished = true;
     let cruce2Finished = cfg.cruceNum >= 2;
+    let cruce3Finished = cfg.cruceNum >= 3;
+    let cruce4Next = cfg.cruceNum === 3;
     let cruce3Next = cfg.cruceNum === 2;
     let cruce2Next = cfg.cruceNum === 1;
 
@@ -589,7 +671,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             </div>
         `);
     } else {
-        // Cruce 2 finalizado: ¡Boca vs São Paulo confirmado en Cuartos 1!
+        // Cruce 2 en adelante: ¡Boca vs São Paulo confirmado en Cuartos 1!
         cuartos1HTML = renderStageNode('CUARTOS 1', 315, bCYC1 - 28, 88, 56, '#00ff77', '#00ff77', `
             <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
                 <div style="display:flex; align-items:center; gap:5px;">
@@ -603,6 +685,18 @@ async function generarOverlaysResultado(cfg, assetsDir) {
                 </div>
             </div>
         `);
+    }
+
+    let cuartos2HTML = '';
+    if (cfg.cruceNum >= 3) {
+        cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 24, 75, 48, '#00ff77', '#00ff77', `
+            <div style="display:flex; align-items:center; gap:5px; padding:2px;">
+                <img src="${escudosBracket.independiente}" style="width:20px; height:20px; object-fit:contain;">
+                <span style="color:#00ff77; font-size:10px; font-weight:900;">INDEP.</span>
+            </div>
+        `);
+    } else {
+        cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 20, 70, 40, 'rgba(0,230,118,0.7)', '#00ff77');
     }
 
     const htmlEscena3 = getBaseHTML(`
@@ -634,8 +728,14 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             `}
 
             <!-- Resto de conectores Llave A -->
+            ${cfg.cruceNum >= 3 ? `
+            <!-- LÍNEA INDEPENDIENTE A CUARTOS 2 -->
+            <path d="M 275 ${bCY3} L 295 ${bCY3} L 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            <path d="M 275 ${bCY4} L 295 ${bCY4} L 295 ${bCYC2}" fill="none" stroke="rgba(0, 230, 118, 0.75)" stroke-width="2.5" />
+            ` : `
             <path d="M 275 ${bCY3} L 295 ${bCY3} L 295 ${bCY4} L 275 ${bCY4}" fill="none" stroke="rgba(0, 230, 118, 0.75)" stroke-width="2.5" />
             <path d="M 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="rgba(0, 230, 118, 0.95)" stroke-width="2.5" />
+            `}
 
             <path d="M 385 ${bCYC1} L 398 ${bCYC1} L 398 ${bCYC2} L 385 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
             <path d="M 398 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.95)" stroke-width="2.5" />
@@ -659,16 +759,16 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         ${renderMatchCard('2', escudosBracket.saopaulo, 'São Paulo', 'BRA', escudosBracket.atlas, 'Atlas FC', 'MEX', 'left', bY2, cruce2Finished, 1, '80%', '20%', cruce2Next)}
         
         <!-- CRUCE 3 (FLAMENGO VS INDEPENDIENTE) -->
-        ${renderMatchCard('3', escudosBracket.flamengo, 'Flamengo', 'BRA', escudosBracket.independiente, 'Independiente', 'ARG', 'left', bY3, false, 0, '', '', cruce3Next)}
+        ${renderMatchCard('3', escudosBracket.flamengo, 'Flamengo', 'BRA', escudosBracket.independiente, 'Independiente', 'ARG', 'left', bY3, cruce3Finished, 2, '4%', '96%', cruce3Next)}
         
         <!-- CRUCE 4 (SANTOS VS PUMAS) -->
-        ${renderMatchCard('4', escudosBracket.santos, 'Santos FC', 'BRA', escudosBracket.pumas, 'Pumas UNAM', 'MEX', 'left', bY4)}
+        ${renderMatchCard('4', escudosBracket.santos, 'Santos FC', 'BRA', escudosBracket.pumas, 'Pumas UNAM', 'MEX', 'left', bY4, false, 0, '', '', cruce4Next)}
 
         <!-- NODO DE CUARTOS 1 -->
         ${cuartos1HTML}
 
         <!-- NODO DE CUARTOS 2 -->
-        ${renderStageNode('CUARTOS 2', 315, bCYC2 - 20, 70, 40, 'rgba(0,230,118,0.7)', '#00ff77')}
+        ${cuartos2HTML}
 
         <!-- NODO DE SEMIFINAL 1 -->
         ${renderStageNode('SEMI 1', 408, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff')}
