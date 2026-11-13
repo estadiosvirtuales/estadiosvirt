@@ -245,6 +245,86 @@ Santos FC (Vila Belmiro) vs. Pumas UNAM (Olímpico Universitario).
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #Independiente #TodoRojo #LibertadoresDeAmerica #Flamengo #Maracana #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'resultado-4': {
+        cruceNum: 4,
+        slug: '04-SANTOS-VS-PUMAS',
+        tituloTorneo: 'COPA AMÉRICA DE ESTADIOS',
+        fase: 'OCTAVOS DE FINAL · CRUCE 4/8',
+        videoFileName: 'CopaAmerica_Resultado_04_Santos_vs_Pumas.mp4',
+        portadaFileName: 'Portada_Resultado_04_Santos_Pumas.jpg',
+        textFile: 'TEXTOS_RESULTADO_04.txt',
+        clasificadoBadge: '👑 CUARTO CLASIFICADO A CUARTOS',
+        escena2Title: '¡VILA BELMIRO EN CUARTOS! 🔥',
+        escena2Sub: 'Triunfo con el 64% de los votos de la comunidad',
+        proximoRival: 'Independiente en Cuartos',
+        fraseCelebracion: 'La histórica cuna de Pelé y Neymar se impone en el continente y clasifica a Cuartos de Final frente a Independiente 🏟️',
+        footerComunidad: 'El Estadio Urbano Caldeira (Vila Belmiro) avanza a los Cuartos de Final',
+        bracketHeaderSub: '¡Segundo cruce de Cuartos confirmado: Independiente vs. Santos!',
+        nextCruceBanner: 'PRÓXIMO CRUCE: CLUB AMÉRICA VS CRUZEIRO',
+        nextCruceCTA: '¡ENTRÁ A MI PERFIL Y VOTÁ EN EL CRUCE 5!',
+        // Ganador (Santos FC)
+        winner: {
+            nombre: 'SANTOS FC',
+            estadio: 'Urbano Caldeira',
+            apodo: 'Vila Belmiro',
+            ciudadPais: 'Santos, Brasil',
+            capacidadTexto: '16.068 esp.',
+            escudoFile: 'santos.webp',
+            votos: 9,
+            porcentaje: 64,
+            borderColor: '#00e676',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Urbano Caldeira_ Santos FC.mp4"
+        },
+        // Perdedor (Pumas UNAM)
+        loser: {
+            nombre: 'PUMAS UNAM',
+            estadio: 'Olímpico Universitario',
+            apodo: 'C.U.',
+            ciudadPais: 'Ciudad de México, México',
+            capacidadTexto: '72.000 esp.',
+            escudoFile: 'pumas.webp',
+            votos: 5,
+            porcentaje: 36,
+            borderColor: 'rgba(255,255,255,0.3)',
+            videoPath: "E:\\Google earth studio\\México\\Estadio Olimpico Universitario Pumas.mp4"
+        },
+        totalComentarios: 14,
+        nextCruceNum: 5,
+        nextCruceTexto: 'Club América vs. Cruzeiro',
+        bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Santos FC avanzó a Cuartos de Final de la Copa América de Estadios! 🇧🇷🔥
+El mítico Vila Belmiro se impuso con el 64% frente al 36% del Olímpico Universitario (Pumas UNAM).
+
+⚔️ ¡Y atención porque en Cuartos de Final tendremos DUELO DE GIGANTES: Independiente vs. Santos FC! 🇦🇷⚔️🇧🇷
+
+🔥 ¡Arranca la Llave B! El Cruce 5 (Club América vs Cruzeiro) ya está disponible en mi perfil para votar. 🗳️
+¿Quién clasifica a Cuartos?
+
+#CopaAmericaDeEstadios #SantosFC #VilaBelmiro #PumasUNAM #Independiente #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡SANTOS FC CLASIFICÓ A CUARTOS DE FINAL! 🔥🇧🇷
+¡Tenemos al cuarto clasificado y la LLAVE A de la Copa América de Estadios queda totalmente definida!
+La mística de Vila Belmiro se hizo valer en la votación comunitaria:
+
+📊 RESULTADO FINAL CRUCE 4:
+🟢 SANTOS FC (Vila Belmiro): 64% ✅ ¡CLASIFICADO!
+⚪ PUMAS UNAM (Olímpico Universitario): 36%
+
+🔥 ¡SEGUNDO CRUCE DE CUARTOS DE FINAL CONFIRMADO!
+INDEPENDIENTE (Libertadores de América) 🇦🇷 🆚 SANTOS FC (Vila Belmiro) 🇧🇷
+¡Duelo de historia pura entre dos colosos de América por un lugar en Semifinales!
+
+⚔️ CRUCE 5 DISPONIBLE AHORA (ARRANCA LA LLAVE B):
+Club América (Estadio Azteca) 🇲🇽 vs. Cruzeiro (Estadio Mineirão) 🇧🇷.
+👉 ¡Entrá a nuestro perfil y dejá tu voto para clasificar a tu favorito! 🗳️
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #SantosFC #VilaBelmiro #Pumas #PumasUNAM #Independiente #ClubAmerica #Cruzeiro #Estadios #FutbolSudamericano #EstadiosVirtuales`
     }
 };
 
@@ -658,6 +738,8 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     let cruce1Finished = true;
     let cruce2Finished = cfg.cruceNum >= 2;
     let cruce3Finished = cfg.cruceNum >= 3;
+    let cruce4Finished = cfg.cruceNum >= 4;
+    let cruce5Next = cfg.cruceNum === 4;
     let cruce4Next = cfg.cruceNum === 3;
     let cruce3Next = cfg.cruceNum === 2;
     let cruce2Next = cfg.cruceNum === 1;
@@ -688,7 +770,22 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     }
 
     let cuartos2HTML = '';
-    if (cfg.cruceNum >= 3) {
+    if (cfg.cruceNum >= 4) {
+        // Cruce 4 en adelante: ¡Independiente vs Santos confirmado en Cuartos 2!
+        cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 28, 88, 56, '#00ff77', '#00ff77', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.independiente}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#00ff77; font-size:9.5px; font-weight:900;">INDEP.</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.santos}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#ffd700; font-size:9.5px; font-weight:900;">SANTOS</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.cruceNum === 3) {
         cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 24, 75, 48, '#00ff77', '#00ff77', `
             <div style="display:flex; align-items:center; gap:5px; padding:2px;">
                 <img src="${escudosBracket.independiente}" style="width:20px; height:20px; object-fit:contain;">
@@ -728,7 +825,11 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             `}
 
             <!-- Resto de conectores Llave A -->
-            ${cfg.cruceNum >= 3 ? `
+            ${cfg.cruceNum >= 4 ? `
+            <!-- LÍNEAS INDEPENDIENTE Y SANTOS A CUARTOS 2 -->
+            <path d="M 275 ${bCY3} L 295 ${bCY3} L 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            <path d="M 275 ${bCY4} L 295 ${bCY4} L 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            ` : cfg.cruceNum >= 3 ? `
             <!-- LÍNEA INDEPENDIENTE A CUARTOS 2 -->
             <path d="M 275 ${bCY3} L 295 ${bCY3} L 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
             <path d="M 275 ${bCY4} L 295 ${bCY4} L 295 ${bCYC2}" fill="none" stroke="rgba(0, 230, 118, 0.75)" stroke-width="2.5" />
@@ -762,7 +863,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         ${renderMatchCard('3', escudosBracket.flamengo, 'Flamengo', 'BRA', escudosBracket.independiente, 'Independiente', 'ARG', 'left', bY3, cruce3Finished, 2, '4%', '96%', cruce3Next)}
         
         <!-- CRUCE 4 (SANTOS VS PUMAS) -->
-        ${renderMatchCard('4', escudosBracket.santos, 'Santos FC', 'BRA', escudosBracket.pumas, 'Pumas UNAM', 'MEX', 'left', bY4, false, 0, '', '', cruce4Next)}
+        ${renderMatchCard('4', escudosBracket.santos, 'Santos FC', 'BRA', escudosBracket.pumas, 'Pumas UNAM', 'MEX', 'left', bY4, cruce4Finished, 1, '64%', '36%', cruce4Next)}
 
         <!-- NODO DE CUARTOS 1 -->
         ${cuartos1HTML}
@@ -794,7 +895,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         ${renderStageNode('CUARTOS 4', 695, bCYC2 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700')}
 
         <!-- CRUCES DE OCTAVOS (DERECHA) -->
-        ${renderMatchCard('5', escudosBracket.america, 'Club América', 'MEX', escudosBracket.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1)}
+        ${renderMatchCard('5', escudosBracket.america, 'Club América', 'MEX', escudosBracket.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1, false, 0, '', '', cruce5Next)}
         ${renderMatchCard('6', escudosBracket.racing, 'Racing Club', 'ARG', escudosBracket.corinthians, 'Corinthians', 'BRA', 'right', bY2)}
         ${renderMatchCard('7', escudosBracket.chivas, 'Chivas', 'MEX', escudosBracket.central, 'Rosario Central', 'ARG', 'right', bY3)}
         ${renderMatchCard('8', escudosBracket.river, 'River Plate', 'ARG', escudosBracket.colocolo, 'Colo-Colo', 'CHI', 'right', bY4)}
