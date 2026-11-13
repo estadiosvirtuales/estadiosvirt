@@ -392,7 +392,7 @@ const CONFIG_COPA_AMERICA = {
         fase: 'CUARTOS DE FINAL',
         faseSiguiente: 'Semifinales',
         llaveNumero: 'CUARTOS 1 / 4',
-        cruceSiguiente: 'Ganador de Llave 2 (Flamengo, Independiente, Santos o Pumas)',
+        cruceSiguiente: 'Independiente o Santos FC (Semifinal 1)',
         tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · CUARTOS 1/4',
         pregunta: '¿QUIÉN PASA A SEMIFINALES?',
         subtitulo: 'Boca Juniors vs. São Paulo FC',
@@ -445,11 +445,75 @@ Dos colosos con historia gloriosa cara a cara por un pase a las Semifinales.
 2️⃣ ESTADIO MORUMBÍ (São Paulo FC · Brasil · 66.795 esp.)
 
 👉 COMENTÁ "1" O "2" para definir quién avanza a la Semifinal continental. 🗳️
-⚔️ El clasificado esperará rival de la Llave 2 (Flamengo, Independiente, Santos o Pumas).
+⚔️ El clasificado esperará en Semifinales al ganador de Independiente vs Santos FC.
 
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #SaoPauloFC #LaBombonera #Morumbi #FutbolSudamericano #EstadiosVirtuales #Estadios`
+    },
+    'cuartos-2': {
+        slug: '02-INDEPENDIENTE-VS-SANTOS',
+        fase: 'CUARTOS DE FINAL',
+        faseSiguiente: 'Semifinales',
+        llaveNumero: 'CUARTOS 2 / 4',
+        cruceSiguiente: 'Boca Juniors o São Paulo FC (Semifinal 1)',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · CUARTOS 2/4',
+        pregunta: '¿QUIÉN PASA A SEMIFINALES?',
+        subtitulo: 'Independiente vs. Santos FC',
+        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
+        videoFileName: 'CopaAmerica_Cuartos_02_Independiente_vs_Santos.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Cuartos_02_Independiente_Santos.jpg',
+        team1: {
+            numero: '1',
+            nombre: 'INDEPENDIENTE',
+            estadio: 'Libertadores de América',
+            apodo: 'Ricardo E. Bochini',
+            ciudadPais: 'Avellaneda, Argentina',
+            capacidadTexto: '42.069 esp.',
+            escudoFile: 'Independiente.webp',
+            borderColor: '#e11d2e',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4"
+        },
+        team2: {
+            numero: '2',
+            nombre: 'SANTOS FC',
+            estadio: 'Urbano Caldeira',
+            apodo: 'Vila Belmiro',
+            ciudadPais: 'Santos, Brasil',
+            capacidadTexto: '16.068 esp.',
+            escudoFile: 'santos.webp',
+            borderColor: '#ffffff',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Urbano Caldeira_ Santos FC.mp4"
+        },
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y LIBRE DE BLOQUEOS) ===
+🏆 ¡CUARTOS DE FINAL DE LA COPA AMÉRICA DE ESTADIOS! 🇦🇷⚔️🇧🇷
+¡Duelo de historia copera pura entre Argentina y Brasil por un lugar en SEMIFINALES!
+
+🏟️ CUARTOS 2:
+1️⃣ LIBERTADORES DE AMÉRICA (Independiente · Argentina)
+2️⃣ VILA BELMIRO (Santos FC · Brasil)
+
+👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Semifinales. 🗳️
+¿El Rey de Copas o el templo de Pelé y Neymar?
+
+#CopaAmericaDeEstadios #CopaAmerica #Independiente #SantosFC #LibertadoresDeAmerica #VilaBelmiro #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 COPA AMÉRICA DE ESTADIOS | CUARTOS DE FINAL (2/4) 🔥
+¡Llegó el segundo cruce de Cuartos de Final y se enfrentan dos leyendas vivientes de América!
+La mística copera de Avellaneda contra la histórica cuna del Joga Bonito por el pase a Semifinales.
+
+🏟️ CUARTOS 2:
+1️⃣ LIBERTADORES DE AMÉRICA - BOCHINI (Independiente · Argentina · 42.069 esp.)
+2️⃣ ESTADIO URBANO CALDEIRA - VILA BELMIRO (Santos FC · Brasil · 16.068 esp.)
+
+👉 COMENTÁ "1" O "2" para definir quién avanza a las Semifinales. 🗳️
+⚔️ El ganador se medirá en Semifinales contra el vencedor de BOCA JUNIORS vs SÃO PAULO FC.
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #Independiente #SantosFC #TodoRojo #VilaBelmiro #LibertadoresDeAmerica #FutbolSudamericano #EstadiosVirtuales #Estadios`
     }
 };
 
