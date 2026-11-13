@@ -7589,6 +7589,12 @@
 .sim-et-resume-btn:active {
     transform: scale(0.98);
 }
+
+.sim-et-resume-btn.active-ready {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.45), 0 0 10px rgba(0, 255, 119, 0.3) !important;
+}
 /* ========================================================
    ⚡ TEMPORADA DE LIGA: SIMULACIÓN RÁPIDA, GOLEADORES Y SP
    ======================================================== */

@@ -1397,13 +1397,17 @@ window.resolverMomentoClave = function(opcion) {
 
 window.actualizarTextoBotonEntretiempo = function() {
     const resumeTxt = document.getElementById('sim-et-resume-txt');
+    const resumeBtn = document.getElementById('sim-et-resume-btn');
     if (!resumeTxt) return;
     if (decisionEntretiempoSeleccionada === 'cambios') {
         resumeTxt.textContent = 'Aplicar Cambios y Jugar el 2T';
+        if (resumeBtn) resumeBtn.classList.add('active-ready');
     } else if (decisionEntretiempoSeleccionada === 'arenga') {
         resumeTxt.textContent = 'Aplicar Arenga y Jugar el 2T';
+        if (resumeBtn) resumeBtn.classList.add('active-ready');
     } else {
         resumeTxt.textContent = 'Salir a Jugar el 2T (Sin Cambios)';
+        if (resumeBtn) resumeBtn.classList.remove('active-ready');
     }
 };
 
@@ -1436,10 +1440,16 @@ window.aplicarDecisionEntretiempo = function(decision) {
 
 window.reanudarSegundoTiempo = function() {
     if (typeof resolverEntretiempo === 'function') {
+        const resumeBtn = document.getElementById('sim-et-resume-btn');
+        if (resumeBtn) resumeBtn.disabled = true;
         if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
         const fn = resolverEntretiempo;
         resolverEntretiempo = null;
-        fn(decisionEntretiempoSeleccionada || 'ninguna');
+        try {
+            fn(decisionEntretiempoSeleccionada || 'ninguna');
+        } catch (e) {
+            console.error('Error al reanudar el segundo tiempo:', e);
+        }
     }
 };
 
@@ -1687,7 +1697,7 @@ window.iniciarSimulacionEnVivo = function() {
 
     const difOvr = ovrUsuario - ovrRival;
     const basePosesion = Math.max(38, Math.min(68, Math.round(50 + (difOvr * 0.9))));
-    const probExitoUser = Math.max(0.28, Math.min(0.72, 0.50 + (difOvr * 0.035)));
+    let probExitoUser = Math.max(0.28, Math.min(0.72, 0.50 + (difOvr * 0.035)));
 
     const statsPartido = {
         tirosTotalesUser: 0, tirosArcoUser: 0, tirosTotalesRival: 0, tirosArcoRival: 0,
@@ -1813,6 +1823,7 @@ window.iniciarSimulacionEnVivo = function() {
     const agenda = [];
     const programar = (seg, fn) => agenda.push({ t: tSim + seg, fn });
     const tickAgenda = () => {
+        if (estado === 'entretiempo' || estado === 'momento_clave' || estado === 'fin') return;
         const vencidos = agenda.filter(a => a.t <= tSim).sort((a, b) => a.t - b.t);
         if (!vencidos.length) return;
         vencidos.forEach(a => agenda.splice(agenda.indexOf(a), 1));
@@ -2343,8 +2354,14 @@ window.iniciarSimulacionEnVivo = function() {
         mostrarTag('¡PENAL!', eq === 'user' ? 'user-tag' : 'rival-tag', 50, gx === 100 ? 80 : 20, 2.0);
         narrar('falta', `¡PENAL! <b>${tirador.nombre}</b> se prepara para patear desde los doce pasos.`);
         entrarRepos(mapa, 1.4, () => {
+            relojPausado = true;
+            estado = 'momento_clave';
+            reposMap = mapa;
             if (eq === 'user') {
                 mostrarMomentoClave('penal_favor', { tirador, portero, eq }, (opcion) => {
+                    reposMap = null;
+                    estado = 'juego';
+                    relojPausado = false;
                     // Mapeo físico en el arco 2D:
                     // 0: Arriba Izq (44.0), 1: Arriba Centro (50.0), 2: Arriba Der (56.0)
                     // 3: Raso Izq (44.5),   4: Raso Centro (50.0),   5: Raso Der (55.5)
@@ -2387,6 +2404,9 @@ window.iniciarSimulacionEnVivo = function() {
                 });
             } else {
                 mostrarMomentoClave('penal_contra', { tirador, portero, eq }, (opcion) => {
+                    reposMap = null;
+                    estado = 'juego';
+                    relojPausado = false;
                     const mapTargetY = { 0: 44.0, 1: 50.0, 2: 56.0, 3: 44.5, 4: 50.0, 5: 55.5 };
                     const userKy = mapTargetY[opcion] !== undefined ? mapTargetY[opcion] : 50.0;
                     
@@ -2447,7 +2467,13 @@ window.iniciarSimulacionEnVivo = function() {
                 darPosesion(tirador);
                 lanzarCentro(tirador, cands);
             } else if (eq === 'user' && dGol < 26) {
+                relojPausado = true;
+                estado = 'momento_clave';
+                reposMap = mapa;
                 mostrarMomentoClave('tiro_libre', { tirador, portero, eq, dGol }, (opcion) => {
+                    reposMap = null;
+                    estado = 'juego';
+                    relojPausado = false;
                     let targetY, targetX = 101.5, resExacto, keeperY;
                     const r = Math.random();
                     const esAngulo = (opcion === 0 || opcion === 2);
@@ -2819,10 +2845,10 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     // ================= 11. RELOJ Y LOOP PRINCIPAL =================
-    const cierreSeguro = () => estado === 'juego' && !(balon.modo === 'vuelo' && balon.tipo === 'tiro');
+    const cierreSeguro = () => estado === 'juego' && !momentoClaveActivo && !(balon.modo === 'vuelo' && balon.tipo === 'tiro');
 
     const tickReloj = (dt) => {
-        if (relojPausado || estado === 'previa' || estado === 'entretiempo' || estado === 'fin') return;
+        if (relojPausado || momentoClaveActivo || estado === 'previa' || estado === 'entretiempo' || estado === 'momento_clave' || estado === 'fin') return;
         gameMin += dt / (CFG.msPorMinuto / 1000);
         const m = Math.floor(gameMin);
 
@@ -2830,6 +2856,7 @@ window.iniciarSimulacionEnVivo = function() {
             primerTiempoTerminado = true;
             estado = 'entretiempo';
             relojPausado = true;
+            agenda.length = 0; // Limpiar jugadas pendientes del 1T
             reposMap = baseMapa();
             balon.modo = 'muerto'; balon.dueno = null;
             if (clock) clock.textContent = `45'+${tiempoDescuento1T} · ET`;
@@ -2843,6 +2870,8 @@ window.iniciarSimulacionEnVivo = function() {
             const scoreET = document.getElementById('sim-et-score');
             const txtStamina = document.getElementById('sim-et-stamina-txt');
             const fillStamina = document.getElementById('sim-et-stamina-fill');
+            const btnResumeET = document.getElementById('sim-et-resume-btn');
+            if (btnResumeET) btnResumeET.disabled = false;
 
             let energiaPct = 78;
             let condicionTxt = '78% · Buenas Condiciones';
@@ -2875,29 +2904,32 @@ window.iniciarSimulacionEnVivo = function() {
             if (typeof reproducirSonido === 'function') reproducirSonido('silbato');
 
             const reanudar2T = (decision) => {
-                if (overlayET) overlayET.style.display = 'none';
-                resolverEntretiempo = null;
-
-                if (decision === 'cambios') {
-                    // +25% frescura y +15% sprint
-                    equipos.user.forEach(j => { j.factorVel *= 1.15; });
-                    narrar('tactica', '🔄 <b>Cambios tácticos:</b> Ingresan piernas frescas del banco para oxigenar el mediocampo y el ataque.');
-                } else if (decision === 'arenga') {
-                    // +Potencia de tiro y quites
-                    probExitoUser = Math.min(0.85, probExitoUser + 0.08);
-                    CFG.velTiro = 130;
-                    narrar('tactica', '🗣️ <b>Charla de vestuario:</b> ¡Fuerte arenga del DT! El Once sale con el cuchillo entre los dientes para el segundo tiempo.');
-                } else {
-                    // Mismo plan táctico: sin modificaciones forzadas
-                    narrar('tactica', '📋 <b>Mismo plan:</b> El DT mantiene el esquema táctico sin cambios y el equipo sale a disputar el segundo tiempo.');
+                try {
+                    if (decision === 'cambios') {
+                        // +25% frescura y +15% sprint
+                        equipos.user.forEach(j => { j.factorVel *= 1.15; });
+                        narrar('tactica', '🔄 <b>Cambios tácticos:</b> Ingresan piernas frescas del banco para oxigenar el mediocampo y el ataque.');
+                    } else if (decision === 'arenga') {
+                        // +Potencia de tiro y quites
+                        probExitoUser = Math.min(0.85, probExitoUser + 0.08);
+                        CFG.velTiro = 130;
+                        narrar('tactica', '🗣️ <b>Charla de vestuario:</b> ¡Fuerte arenga del DT! El Once sale con el cuchillo entre los dientes para el segundo tiempo.');
+                    } else {
+                        // Mismo plan táctico: sin modificaciones forzadas
+                        narrar('tactica', '📋 <b>Mismo plan:</b> El DT mantiene el esquema táctico sin cambios y el equipo sale a disputar el segundo tiempo.');
+                    }
+                } catch (err) {
+                    console.error('Error aplicando decisión de entretiempo:', err);
+                } finally {
+                    if (overlayET) overlayET.style.display = 'none';
+                    resolverEntretiempo = null;
+                    reposMap = null;
+                    gameMin = 46;
+                    estado = 'juego';
+                    relojPausado = false;
+                    if (clock) clock.textContent = `46' (2T)`;
+                    ejecutarSaqueCentro(false, true);
                 }
-
-                reposMap = null;
-                gameMin = 46;
-                estado = 'juego';
-                relojPausado = false;
-                if (clock) clock.textContent = `46' (2T)`;
-                ejecutarSaqueCentro(false, true);
             };
 
             resolverEntretiempo = reanudar2T;
