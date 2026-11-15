@@ -514,6 +514,70 @@ La mística copera de Avellaneda contra la histórica cuna del Joga Bonito por e
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #Independiente #SantosFC #TodoRojo #VilaBelmiro #LibertadoresDeAmerica #FutbolSudamericano #EstadiosVirtuales #Estadios`
+    },
+    'cuartos-3': {
+        slug: '03-CRUZEIRO-VS-RACING',
+        fase: 'CUARTOS DE FINAL',
+        faseSiguiente: 'Semifinales',
+        llaveNumero: 'CUARTOS 3 / 4',
+        cruceSiguiente: 'Ganador de Cuartos 4 (Semifinal 2)',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · CUARTOS 3/4',
+        pregunta: '¿QUIÉN PASA A SEMIFINALES?',
+        subtitulo: 'Cruzeiro vs. Racing Club',
+        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
+        videoFileName: 'CopaAmerica_Cuartos_03_Cruzeiro_vs_Racing.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Cuartos_03_Cruzeiro_Racing.jpg',
+        team1: {
+            numero: '1',
+            nombre: 'CRUZEIRO',
+            estadio: 'Governador Magalhães Pinto',
+            apodo: 'Estadio Mineirão',
+            ciudadPais: 'Belo Horizonte, Brasil',
+            capacidadTexto: '61.846 esp.',
+            escudoFile: 'cruzeiro.webp',
+            borderColor: '#004bb6',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4"
+        },
+        team2: {
+            numero: '2',
+            nombre: 'RACING CLUB',
+            estadio: 'Presidente Perón',
+            apodo: 'El Cilindro de Avellaneda',
+            ciudadPais: 'Avellaneda, Argentina',
+            capacidadTexto: '51.000 esp.',
+            escudoFile: 'Racing.webp',
+            borderColor: '#5dade2',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Cilindro(listo)x2\\Estadio Presidente Perón.mp4"
+        },
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y LIBRE DE BLOQUEOS) ===
+🏆 ¡CUARTOS DE FINAL DE LA COPA AMÉRICA DE ESTADIOS! 🇧🇷⚔️🇦🇷
+¡Partidazo colosal entre Brasil y Argentina por un lugar en SEMIFINALES!
+
+🏟️ CUARTOS 3:
+1️⃣ ESTADIO MINEIRÃO (Cruzeiro · Brasil)
+2️⃣ EL CILINDRO DE AVELLANEDA (Racing Club · Argentina)
+
+👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Semifinales. 🗳️
+¿El gigante de Belo Horizonte o la catedral de Avellaneda?
+
+#CopaAmericaDeEstadios #CopaAmerica #Cruzeiro #RacingClub #Mineirao #ElCilindro #Racing #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 COPA AMÉRICA DE ESTADIOS | CUARTOS DE FINAL (3/4) 🔥
+¡Llegó el tercer cruce de Cuartos de Final y se enfrentan dos de los estadios más imponentes del continente!
+El gigante de Belo Horizonte (que viene de eliminar al Estadio Azteca) frente a la mística y acústica del Presidente Perón por el boleto a Semifinales.
+
+🏟️ CUARTOS 3:
+1️⃣ ESTADIO MINEIRÃO (Cruzeiro · Brasil · 61.846 esp.)
+2️⃣ ESTADIO PRESIDENTE PERÓN - EL CILINDRO (Racing Club · Argentina · 51.000 esp.)
+
+👉 COMENTÁ "1" O "2" para definir quién avanza a las Semifinales. 🗳️
+⚔️ El ganador se medirá en Semifinales contra el vencedor del Cruce 4.
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #Cruzeiro #RacingClub #ElCilindro #Mineirao #Racing #LaAcademia #FutbolSudamericano #EstadiosVirtuales #Estadios`
     }
 };
 
