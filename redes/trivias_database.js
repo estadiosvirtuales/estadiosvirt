@@ -3416,7 +3416,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 18.000 hinchas en Balcarce 477, Gran Mendoza.",
+        "text": "Capacidad para 21.000 hinchas en Balcarce 477, Gran Mendoza.",
         "color": "#00ff77"
       },
       {
