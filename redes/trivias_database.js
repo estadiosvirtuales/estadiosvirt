@@ -3404,7 +3404,7 @@ const TRIVIAS_DATABASE = [
     "pais": "Argentina",
     "videoFileName": "Estadio_Feliciano_Gambarte_Godoy_Cruz.mp4",
     "coverFileName": "Portada_Feliciano_Gambarte_Godoy_Cruz.jpg",
-    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\godoy cruz.mp4",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\godoy cruz\\Godoy cruz 3.0.mp4",
     "targetLat": -32.9239,
     "targetLng": -68.8419,
     "userLat": -32.922,
