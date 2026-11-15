@@ -325,6 +325,164 @@ Club América (Estadio Azteca) 🇲🇽 vs. Cruzeiro (Estadio Mineirão) 🇧�
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #SantosFC #VilaBelmiro #Pumas #PumasUNAM #Independiente #ClubAmerica #Cruzeiro #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'resultado-5': {
+        cruceNum: 5,
+        slug: '05-AMERICA-VS-CRUZEIRO',
+        tituloTorneo: 'COPA AMÉRICA DE ESTADIOS',
+        fase: 'OCTAVOS DE FINAL · CRUCE 5/8',
+        videoFileName: 'CopaAmerica_Resultado_05_America_vs_Cruzeiro.mp4',
+        portadaFileName: 'Portada_Resultado_05_America_Cruzeiro.jpg',
+        textFile: 'TEXTOS_RESULTADO_05.txt',
+        clasificadoBadge: '👑 QUINTO CLASIFICADO A CUARTOS',
+        escena2Title: '¡EL MINEIRÃO EN CUARTOS! 🔥',
+        escena2Sub: 'Triunfo con el 71% de los votos de la comunidad',
+        proximoRival: 'Racing Club o Corinthians',
+        fraseCelebracion: 'El gigante de Belo Horizonte hace historia eliminando al Estadio Azteca y avanza a Cuartos de Final 🏟️',
+        footerComunidad: 'El Estadio Mineirão avanza a los Cuartos de Final',
+        bracketHeaderSub: '¡Cruzeiro clasificado a Cuartos! · Llave B en marcha',
+        nextCruceBanner: 'PRÓXIMO CRUCE: RACING CLUB VS CORINTHIANS',
+        nextCruceCTA: '¡ENTRÁ A MI PERFIL Y VOTÁ EN EL CRUCE 6!',
+        // Ganador (Cruzeiro)
+        winner: {
+            nombre: 'CRUZEIRO',
+            estadio: 'Governador Magalhães Pinto',
+            apodo: 'Estadio Mineirão',
+            ciudadPais: 'Belo Horizonte, Brasil',
+            capacidadTexto: '61.846 esp.',
+            escudoFile: 'cruzeiro.webp',
+            votos: 5,
+            porcentaje: 71,
+            borderColor: '#00e676',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Mineirão_ Cruzeiro.mp4"
+        },
+        // Perdedor (Club América)
+        loser: {
+            nombre: 'CLUB AMÉRICA',
+            estadio: 'Estadio Azteca',
+            apodo: 'Coloso de Santa Úrsula',
+            ciudadPais: 'CDMX, México',
+            capacidadTexto: '83.264 esp.',
+            escudoFile: 'america1.webp',
+            votos: 2,
+            porcentaje: 29,
+            borderColor: 'rgba(255,255,255,0.3)',
+            videoPath: "E:\\Google earth studio\\México\\Estadio Azteca.mp4"
+        },
+        totalComentarios: 7,
+        nextCruceNum: 6,
+        nextCruceTexto: 'Racing Club vs. Corinthians',
+        bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Batacazo en la Copa América de Estadios! Cruzeiro eliminó al Estadio Azteca 🇧🇷🔥
+El imponente Mineirão se impuso con el 71% frente al 29% del Coloso de Santa Úrsula (Club América).
+
+⚔️ El gigante de Belo Horizonte avanza a Cuartos de Final y espera al ganador de Racing Club vs Corinthians.
+
+🔥 ¡El Cruce 6 (Racing vs Corinthians) ya está disponible en mi perfil para votar! 🗳️
+¿Quién clasifica a Cuartos?
+
+#CopaAmericaDeEstadios #Cruzeiro #Mineirao #ClubAmerica #EstadioAzteca #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡CRUZEIRO CLASIFICÓ A CUARTOS DE FINAL! 🔥🇧🇷
+¡Histórico batacazo en la apertura de la Llave B de la Copa América de Estadios!
+El colosal Estadio Mineirão de Belo Horizonte se impuso con autoridad sobre el Estadio Azteca en la votación comunitaria:
+
+📊 RESULTADO FINAL CRUCE 5:
+🟢 CRUZEIRO (Estadio Mineirão): 71% ✅ ¡CLASIFICADO!
+⚪ CLUB AMÉRICA (Estadio Azteca): 29%
+
+La Raposa hace valer la fuerza del fútbol brasileño y se mete entre los 8 mejores estadios del continente. En Cuartos de Final esperará rival del duelo entre Racing Club y Corinthians.
+
+⚔️ CRUCE 6 DISPONIBLE AHORA:
+Racing Club (El Cilindro) 🇦🇷 vs. Corinthians (Neo Química Arena) 🇧🇷.
+👉 ¡Entrá a nuestro perfil y dejá tu voto para clasificar a tu favorito! 🗳️
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #Cruzeiro #Mineirao #ClubAmerica #EstadioAzteca #RacingClub #Corinthians #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'resultado-6': {
+        cruceNum: 6,
+        slug: '06-RACING-VS-CORINTHIANS',
+        tituloTorneo: 'COPA AMÉRICA DE ESTADIOS',
+        fase: 'OCTAVOS DE FINAL · CRUCE 6/8',
+        videoFileName: 'CopaAmerica_Resultado_06_Racing_vs_Corinthians.mp4',
+        portadaFileName: 'Portada_Resultado_06_Racing_Corinthians.jpg',
+        textFile: 'TEXTOS_RESULTADO_06.txt',
+        clasificadoBadge: '👑 SEXTO CLASIFICADO A CUARTOS',
+        escena2Title: '¡EL CILINDRO EN CUARTOS! 🔥',
+        escena2Sub: 'Victoria aplastante con el 88% de los votos',
+        proximoRival: 'Cruzeiro en Cuartos',
+        fraseCelebracion: 'La majestuosa estructura de Avellaneda aplasta en la votación y avanza a Cuartos de Final frente a Cruzeiro 🏟️',
+        footerComunidad: 'El Estadio Presidente Perón avanza a los Cuartos de Final',
+        bracketHeaderSub: '¡Tercer cruce de Cuartos confirmado: Cruzeiro vs. Racing!',
+        nextCruceBanner: 'PRÓXIMO CRUCE: CHIVAS VS ROSARIO CENTRAL',
+        nextCruceCTA: '¡ENTRÁ A MI PERFIL Y VOTÁ EN EL CRUCE 7!',
+        // Ganador (Racing Club)
+        winner: {
+            nombre: 'RACING CLUB',
+            estadio: 'Presidente Perón',
+            apodo: 'El Cilindro de Avellaneda',
+            ciudadPais: 'Avellaneda, Argentina',
+            capacidadTexto: '51.000 esp.',
+            escudoFile: 'Racing.webp',
+            votos: 22,
+            porcentaje: 88,
+            borderColor: '#00e676',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Cilindro(listo)x2\\Estadio Presidente Perón.mp4"
+        },
+        // Perdedor (Corinthians)
+        loser: {
+            nombre: 'CORINTHIANS',
+            estadio: 'Neo Química Arena',
+            apodo: 'Arena Corinthians',
+            ciudadPais: 'São Paulo, Brasil',
+            capacidadTexto: '49.205 esp.',
+            escudoFile: 'corinthians.webp',
+            votos: 3,
+            porcentaje: 12,
+            borderColor: 'rgba(255,255,255,0.3)',
+            videoPath: "E:\\Google earth studio\\Brasil\\Neo Química Arena_ Corinthians.mp4"
+        },
+        totalComentarios: 25,
+        nextCruceNum: 7,
+        nextCruceTexto: 'Chivas vs. Rosario Central',
+        bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Racing Club avanzó a Cuartos de Final de la Copa América de Estadios! 🇦🇷🔥
+El mítico Cilindro de Avellaneda arrasó con el 88% frente al 12% de la Neo Química Arena (Corinthians).
+
+⚔️ ¡Y en Cuartos de Final tendremos partidazo: CRUZEIRO VS RACING CLUB! 🇧🇷⚔️🇦🇷
+
+🔥 ¡El Cruce 7 (Chivas vs Rosario Central) ya está disponible en mi perfil para votar! 🗳️
+¿Quién clasifica a Cuartos?
+
+#CopaAmericaDeEstadios #RacingClub #ElCilindro #Corinthians #Cruzeiro #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡RACING CLUB CLASIFICÓ A CUARTOS DE FINAL! 🔥🇦🇷
+¡El Cilindro de Avellaneda se mete entre los mejores 8 estadios de la Copa América de Estadios con un triunfo arrollador!
+La acústica y la historia del Presidente Perón se hicieron sentir en la comunidad:
+
+📊 RESULTADO FINAL CRUCE 6:
+🟢 RACING CLUB (El Cilindro): 88% ✅ ¡CLASIFICADO!
+⚪ CORINTHIANS (Neo Química Arena): 12%
+
+🔥 ¡TERCER CRUCE DE CUARTOS DE FINAL CONFIRMADO!
+CRUZEIRO (Estadio Mineirão) 🇧🇷 🆚 RACING CLUB (El Cilindro) 🇦🇷
+¡Dos gigantes sudamericanos frente a frente por el pase a Semifinales!
+
+⚔️ CRUCE 7 DISPONIBLE AHORA:
+Chivas (Estadio Akron) 🇲🇽 vs. Rosario Central (Gigante de Arroyito) 🇦🇷.
+👉 ¡Entrá a nuestro perfil y dejá tu voto para clasificar a tu favorito! 🗳️
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #RacingClub #LaAcademia #ElCilindro #Corinthians #Cruzeiro #Chivas #RosarioCentral #Estadios #FutbolSudamericano #EstadiosVirtuales`
     }
 };
 
@@ -739,10 +897,16 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     let cruce2Finished = cfg.cruceNum >= 2;
     let cruce3Finished = cfg.cruceNum >= 3;
     let cruce4Finished = cfg.cruceNum >= 4;
-    let cruce5Next = cfg.cruceNum === 4;
-    let cruce4Next = cfg.cruceNum === 3;
-    let cruce3Next = cfg.cruceNum === 2;
+    let cruce5Finished = cfg.cruceNum >= 5;
+    let cruce6Finished = cfg.cruceNum >= 6;
+    let cruce7Finished = cfg.cruceNum >= 7;
+
     let cruce2Next = cfg.cruceNum === 1;
+    let cruce3Next = cfg.cruceNum === 2;
+    let cruce4Next = cfg.cruceNum === 3;
+    let cruce5Next = cfg.cruceNum === 4;
+    let cruce6Next = cfg.cruceNum === 5;
+    let cruce7Next = cfg.cruceNum === 6;
 
     let cuartos1HTML = '';
     if (cfg.cruceNum === 1) {
@@ -796,6 +960,34 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 20, 70, 40, 'rgba(0,230,118,0.7)', '#00ff77');
     }
 
+    let cuartos3HTML = '';
+    if (cfg.cruceNum >= 6) {
+        // Cruce 6 en adelante: ¡Cruzeiro vs Racing confirmado en Cuartos 3!
+        cuartos3HTML = renderStageNode('CUARTOS 3', 677, bCYC1 - 28, 88, 56, '#00ff77', '#00ff77', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.cruzeiro}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#00ff77; font-size:9.5px; font-weight:900;">CRUZEIRO</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.racing}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#ffd700; font-size:9.5px; font-weight:900;">RACING</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.cruceNum === 5) {
+        // Cruce 5: Cruzeiro clasificado a Cuartos 3 esperando rival
+        cuartos3HTML = renderStageNode('CUARTOS 3', 690, bCYC1 - 24, 75, 48, '#00ff77', '#00ff77', `
+            <div style="display:flex; align-items:center; gap:5px; padding:2px;">
+                <img src="${escudosBracket.cruzeiro}" style="width:20px; height:20px; object-fit:contain;">
+                <span style="color:#00ff77; font-size:9.5px; font-weight:900;">CRUZEIRO</span>
+            </div>
+        `);
+    } else {
+        cuartos3HTML = renderStageNode('CUARTOS 3', 695, bCYC1 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700');
+    }
+
     const htmlEscena3 = getBaseHTML(`
         <div id="header-box">
             <div class="header-badge">FIXTURE OFICIAL · ELIMINATORIAS</div>
@@ -843,8 +1035,18 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <path d="M 463 ${bCYSemi} L 475 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
 
             <!-- Llave Derecha (Llave B) -->
+            ${cfg.cruceNum >= 6 ? `
+            <!-- LÍNEAS CRUZEIRO Y RACING A CUARTOS 3 -->
+            <path d="M 805 ${bCY1} L 785 ${bCY1} L 785 ${bCYC1} L 765 ${bCYC1}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            <path d="M 805 ${bCY2} L 785 ${bCY2} L 785 ${bCYC1} L 765 ${bCYC1}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            ` : cfg.cruceNum >= 5 ? `
+            <!-- LÍNEA CRUZEIRO A CUARTOS 3 -->
+            <path d="M 805 ${bCY1} L 785 ${bCY1} L 785 ${bCYC1} L 765 ${bCYC1}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            <path d="M 805 ${bCY2} L 785 ${bCY2} L 785 ${bCYC1}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
+            ` : `
             <path d="M 805 ${bCY1} L 785 ${bCY1} L 785 ${bCY2} L 805 ${bCY2}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
             <path d="M 785 ${bCYC1} L 765 ${bCYC1}" fill="none" stroke="rgba(255, 215, 0, 0.95)" stroke-width="2.5" />
+            `}
             <path d="M 805 ${bCY3} L 785 ${bCY3} L 785 ${bCY4} L 805 ${bCY4}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
             <path d="M 785 ${bCYC2} L 765 ${bCYC2}" fill="none" stroke="rgba(255, 215, 0, 0.95)" stroke-width="2.5" />
             <path d="M 695 ${bCYC1} L 682 ${bCYC1} L 682 ${bCYC2} L 695 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
@@ -891,13 +1093,13 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         ${renderStageNode('SEMI 2', 617, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff')}
 
         <!-- NODOS DE CUARTOS (DERECHA) -->
-        ${renderStageNode('CUARTOS 3', 695, bCYC1 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700')}
+        ${cuartos3HTML}
         ${renderStageNode('CUARTOS 4', 695, bCYC2 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700')}
 
         <!-- CRUCES DE OCTAVOS (DERECHA) -->
-        ${renderMatchCard('5', escudosBracket.america, 'Club América', 'MEX', escudosBracket.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1, false, 0, '', '', cruce5Next)}
-        ${renderMatchCard('6', escudosBracket.racing, 'Racing Club', 'ARG', escudosBracket.corinthians, 'Corinthians', 'BRA', 'right', bY2)}
-        ${renderMatchCard('7', escudosBracket.chivas, 'Chivas', 'MEX', escudosBracket.central, 'Rosario Central', 'ARG', 'right', bY3)}
+        ${renderMatchCard('5', escudosBracket.america, 'Club América', 'MEX', escudosBracket.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1, cruce5Finished, 2, '29%', '71%', cruce5Next)}
+        ${renderMatchCard('6', escudosBracket.racing, 'Racing Club', 'ARG', escudosBracket.corinthians, 'Corinthians', 'BRA', 'right', bY2, cruce6Finished, 1, '88%', '12%', cruce6Next)}
+        ${renderMatchCard('7', escudosBracket.chivas, 'Chivas', 'MEX', escudosBracket.central, 'Rosario Central', 'ARG', 'right', bY3, false, 0, '', '', cruce7Next)}
         ${renderMatchCard('8', escudosBracket.river, 'River Plate', 'ARG', escudosBracket.colocolo, 'Colo-Colo', 'CHI', 'right', bY4)}
 
         <!-- BANNER INFO PRÓXIMO CRUCE (y: 1475) -->
@@ -1117,9 +1319,14 @@ async function renderizarResultadoCopaAmerica(resultKey = 'resultado-1') {
     const cfg = CONFIG_RESULTADOS[resultKey];
     if (!cfg) throw new Error(`Clave no encontrada: ${resultKey}`);
 
-    const outFolder = path.join(BASE_OUTPUT_DIR, 'OCTAVOS DE FINAL', cfg.slug);
+    let outFolder = path.join("E:\\Google earth studio\\videos para mostrar\\YA SUBIDOS\\COPA AMERICA DE ESTADIOS\\OCTAVOS DE FINAL", cfg.slug);
     if (!fs.existsSync(outFolder)) {
-        fs.mkdirSync(outFolder, { recursive: true });
+        const altFolder = path.join("E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS\\OCTAVOS DE FINAL", cfg.slug);
+        if (fs.existsSync(altFolder)) {
+            outFolder = altFolder;
+        } else {
+            fs.mkdirSync(outFolder, { recursive: true });
+        }
     }
     const assetsDir = path.join(outFolder, 'assets_temp_resultado');
     if (!fs.existsSync(assetsDir)) {
