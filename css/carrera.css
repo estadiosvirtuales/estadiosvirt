@@ -2971,11 +2971,10 @@
         #ec4899 88%,
         #00f0ff 100%
     );
-    background-size: 200% 100%;
+    background-size: 100% 100%;
     box-shadow: 0 0 8px rgba(0, 255, 119, 0.65), 0 1px 3px rgba(0, 0, 0, 0.8);
     border-top: 0.5px solid rgba(255, 255, 255, 0.6);
     z-index: 3;
-    animation: simLedShimmer 8s linear infinite;
 }
 
 /* TRIBUNA INFERIOR (PLATEA BAJA CON BANCOS DE SUPLENTES) */
@@ -3034,11 +3033,10 @@
         #00f0ff 88%,
         #ec4899 100%
     );
-    background-size: 200% 100%;
+    background-size: 100% 100%;
     box-shadow: 0 0 8px rgba(0, 240, 255, 0.65), 0 -1px 3px rgba(0, 0, 0, 0.8);
     border-bottom: 0.5px solid rgba(255, 255, 255, 0.6);
     z-index: 3;
-    animation: simLedShimmer 8s linear infinite reverse;
 }
 
 /* BANCOS DE SUPLENTES (DUGOUTS) EN EL CENTRO DE LA TRIBUNA INFERIOR */
@@ -3434,16 +3432,16 @@
 
 .sim-pitch-ball {
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 0;
+    top: 0;
     transform: translate(-50%, -50%) translateZ(0);
     font-size: 0.70rem;
     line-height: 1;
     z-index: 10;
     pointer-events: none;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
-    transition: transform 0.2s ease;
-    will-change: top, left;
+    transition: none;
+    will-change: transform;
 }
 
 .sim-pitch-ball.shooting {
@@ -4475,16 +4473,19 @@
     inset: 0;
     pointer-events: none;
     z-index: 6;
+    contain: layout paint size;
 }
 
 .sim-dot {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 13px;
     height: 13px;
     border-radius: 50%;
     transform: translate(-50%, -50%) translateZ(0);
     box-sizing: border-box;
-    will-change: top, left;
+    will-change: transform;
     backface-visibility: hidden;
 }
 
@@ -4525,14 +4526,29 @@
     transform: translate(-50%, calc(-50% + 5px));
 }
 
-/* 📱 Ajuste de tamaño en celulares */
+/* 📱 Ajuste de rendimiento y tamaño en celulares */
 @media (max-width: 768px) {
     .sim-dot {
         width: 8px;
         height: 8px;
     }
+    .sim-dot.user {
+        box-shadow: 0 1px 3px rgba(0, 255, 119, 0.6) !important;
+    }
+    .sim-dot.rival {
+        box-shadow: 0 1px 3px rgba(255, 71, 87, 0.6) !important;
+    }
+    .sim-dot.por {
+        box-shadow: 0 1px 4px rgba(253, 224, 71, 0.7) !important;
+    }
     .sim-pitch-ball {
         font-size: 0.48rem !important;
+        filter: none !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    }
+    .sim-stands.top::after,
+    .sim-stands.bottom::after {
+        animation: none !important;
     }
 }
 /* ========================================================

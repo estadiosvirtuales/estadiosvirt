@@ -42,6 +42,7 @@ var momentoClaveData = null;
 var decisionEntretiempoSeleccionada = null;
 var resolverEntretiempo = null;
 var simSaltadorActivo = null;
+var simOnResize = null;
 var cofreTemporadaPendiente = null;
 
 
@@ -955,6 +956,10 @@ function prepararVistaPartidoCopa() {
     }
     simSaltadorActivo = null;
     simVelocidadMult = 1;
+    if (simOnResize) {
+        window.removeEventListener('resize', simOnResize);
+        simOnResize = null;
+    }
 
     const etOverlay = document.getElementById('sim-entretiempo-overlay');
     if (etOverlay) etOverlay.style.display = 'none';
@@ -1508,6 +1513,36 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
         bannerEl.classList.remove('visible');
         bannerEl.textContent = '';
     }
+    if (simOnResize) {
+        window.removeEventListener('resize', simOnResize);
+        simOnResize = null;
+    }
+    const POS_BASE_DEF = {
+        'dot-u-por': ['50%', '6%'],
+        'dot-u-def1': ['18%', '18%'], 'dot-u-def2': ['38%', '17%'], 'dot-u-def3': ['62%', '17%'], 'dot-u-def4': ['82%', '18%'],
+        'dot-u-med1': ['26%', '32%'], 'dot-u-med2': ['50%', '30%'], 'dot-u-med3': ['74%', '32%'],
+        'dot-u-del1': ['22%', '44%'], 'dot-u-del2': ['50%', '43%'], 'dot-u-del3': ['78%', '44%'],
+        'dot-r-del1': ['22%', '56%'], 'dot-r-del2': ['50%', '57%'], 'dot-r-del3': ['78%', '56%'],
+        'dot-r-med1': ['26%', '68%'], 'dot-r-med2': ['50%', '70%'], 'dot-r-med3': ['74%', '68%'],
+        'dot-r-def1': ['18%', '82%'], 'dot-r-def2': ['38%', '83%'], 'dot-r-def3': ['62%', '83%'], 'dot-r-def4': ['82%', '82%'],
+        'dot-r-por': ['50%', '94%']
+    };
+    for (const id in POS_BASE_DEF) {
+        const dEl = document.getElementById(id);
+        if (dEl) {
+            dEl.style.transform = '';
+            dEl.style.top = POS_BASE_DEF[id][0];
+            dEl.style.left = POS_BASE_DEF[id][1];
+            dEl.style.willChange = '';
+        }
+    }
+    const bEl = document.getElementById('sim-pitch-ball');
+    if (bEl) {
+        bEl.style.transform = '';
+        bEl.style.top = '50%';
+        bEl.style.left = '50%';
+        bEl.style.willChange = '';
+    }
     document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = 'none'; });
     const m = document.getElementById('simulador-partido-modal');
     if (m) m.style.display = 'none';
@@ -1633,7 +1668,31 @@ window.iniciarSimulacionEnVivo = function() {
 
     const canvasSVG = document.getElementById('sim-pitch-canvas');
     if (canvasSVG) canvasSVG.innerHTML = '';
-    if (ballEl) { ballEl.style.transition = 'none'; ballEl.className = 'sim-pitch-ball'; }
+    const pitchEl = document.getElementById('sim-pitch-2d');
+    let pitchW = 650, pitchH = 400;
+    const actualizarMedidasCancha = () => {
+        if (pitchEl) {
+            pitchW = pitchEl.clientWidth || 650;
+            pitchH = pitchEl.clientHeight || 400;
+        }
+    };
+    actualizarMedidasCancha();
+    if (simOnResize) {
+        window.removeEventListener('resize', simOnResize);
+        simOnResize = null;
+    }
+    simOnResize = () => {
+        actualizarMedidasCancha();
+    };
+    window.addEventListener('resize', simOnResize);
+
+    if (ballEl) {
+        ballEl.style.transition = 'none';
+        ballEl.style.top = '0';
+        ballEl.style.left = '0';
+        ballEl.style.willChange = 'transform';
+        ballEl.className = 'sim-pitch-ball';
+    }
 
     // ================= CONFIGURACIÓN FÍSICA HORIZONTAL =================
     const CFG = {
@@ -1704,17 +1763,47 @@ window.iniciarSimulacionEnVivo = function() {
         cornersUser: 0, cornersRival: 0, faltasUser: 0, faltasRival: 0, posesionUser: basePosesion
     };
 
+    let ultPosUser = -1;
+    let ultTirosU = '', ultTirosR = '';
+    let ultCornU = -1, ultCornR = -1;
+    let ultFaltU = -1, ultFaltR = -1;
+
     const actualizarHudStats = () => {
-        if (posUserEl) posUserEl.textContent = `${statsPartido.posesionUser}%`;
-        if (posRivalEl) posRivalEl.textContent = `${100 - statsPartido.posesionUser}%`;
-        if (fillUserEl) fillUserEl.style.width = `${statsPartido.posesionUser}%`;
-        if (fillRivalEl) fillRivalEl.style.width = `${100 - statsPartido.posesionUser}%`;
-        if (tirosUEl) tirosUEl.textContent = `${statsPartido.tirosTotalesUser} (${statsPartido.tirosArcoUser})`;
-        if (tirosREl) tirosREl.textContent = `${statsPartido.tirosTotalesRival} (${statsPartido.tirosArcoRival})`;
-        if (cornUEl) cornUEl.textContent = `${statsPartido.cornersUser}`;
-        if (cornREl) cornREl.textContent = `${statsPartido.cornersRival}`;
-        if (faltUEl) faltUEl.textContent = `${statsPartido.faltasUser}`;
-        if (faltREl) faltREl.textContent = `${statsPartido.faltasRival}`;
+        if (statsPartido.posesionUser !== ultPosUser) {
+            ultPosUser = statsPartido.posesionUser;
+            const posU = `${ultPosUser}%`;
+            const posR = `${100 - ultPosUser}%`;
+            if (posUserEl && posUserEl.textContent !== posU) posUserEl.textContent = posU;
+            if (posRivalEl && posRivalEl.textContent !== posR) posRivalEl.textContent = posR;
+            if (fillUserEl && fillUserEl.style.width !== posU) fillUserEl.style.width = posU;
+            if (fillRivalEl && fillRivalEl.style.width !== posR) fillRivalEl.style.width = posR;
+        }
+        const tU = `${statsPartido.tirosTotalesUser} (${statsPartido.tirosArcoUser})`;
+        if (tU !== ultTirosU) {
+            ultTirosU = tU;
+            if (tirosUEl) tirosUEl.textContent = tU;
+        }
+        const tR = `${statsPartido.tirosTotalesRival} (${statsPartido.tirosArcoRival})`;
+        if (tR !== ultTirosR) {
+            ultTirosR = tR;
+            if (tirosREl) tirosREl.textContent = tR;
+        }
+        if (statsPartido.cornersUser !== ultCornU) {
+            ultCornU = statsPartido.cornersUser;
+            if (cornUEl) cornUEl.textContent = String(ultCornU);
+        }
+        if (statsPartido.cornersRival !== ultCornR) {
+            ultCornR = statsPartido.cornersRival;
+            if (cornREl) cornREl.textContent = String(ultCornR);
+        }
+        if (statsPartido.faltasUser !== ultFaltU) {
+            ultFaltU = statsPartido.faltasUser;
+            if (faltUEl) faltUEl.textContent = String(ultFaltU);
+        }
+        if (statsPartido.faltasRival !== ultFaltR) {
+            ultFaltR = statsPartido.faltasRival;
+            if (faltREl) faltREl.textContent = String(ultFaltR);
+        }
     };
 
     // ================= 2. UTILIDADES =================
@@ -1764,7 +1853,12 @@ window.iniciarSimulacionEnVivo = function() {
         const lista = NOMBRES[eq][linea];
         const b = POS_BASE[id];
         const el = document.getElementById(id);
-        if (el) el.style.transition = 'none';
+        if (el) {
+            el.style.transition = 'none';
+            el.style.top = '0';
+            el.style.left = '0';
+            el.style.willChange = 'transform';
+        }
         const j = {
             id, eq, linea, el,
             nombre: lista[idx % lista.length],
@@ -2581,24 +2675,43 @@ window.iniciarSimulacionEnVivo = function() {
     const LIM = { def: [9, 64], med: [22, 78], del: [34, 93] };
     let roles = {};
 
+    const dosMasCercanos = (lista, ty, tx) => {
+        let m1 = null, d1 = Infinity;
+        let m2 = null, d2 = Infinity;
+        for (let i = 0; i < lista.length; i++) {
+            const j = lista[i];
+            if (j.linea === 'por') continue;
+            const dy = j.y - ty;
+            const dx = j.x - tx;
+            const dSq = dy * dy + dx * dx;
+            if (dSq < d1) {
+                m2 = m1; d2 = d1;
+                m1 = j; d1 = dSq;
+            } else if (dSq < d2) {
+                m2 = j; d2 = dSq;
+            }
+        }
+        return { primero: m1, segundo: m2, d1: Math.sqrt(d1), d2: Math.sqrt(d2) };
+    };
+
     const calcularRoles = () => {
         roles = {};
         if (estado !== 'juego') return;
         if (balon.modo === 'suelto') {
-            for (const eq of ['user', 'rival']) {
-                const ord = equipos[eq].filter(j => j.linea !== 'por')
-                    .sort((a, b) => dist(a.y, a.x, balon.y, balon.x) - dist(b.y, b.x, balon.y, balon.x));
-                roles[ord[0].id] = 'persigue';
-                if (dist(ord[1].y, ord[1].x, balon.y, balon.x) < 18) roles[ord[1].id] = 'persigue';
-            }
+            const cUser = dosMasCercanos(equipos.user, balon.y, balon.x);
+            if (cUser.primero) roles[cUser.primero.id] = 'persigue';
+            if (cUser.segundo && cUser.d2 < 18) roles[cUser.segundo.id] = 'persigue';
+
+            const cRival = dosMasCercanos(equipos.rival, balon.y, balon.x);
+            if (cRival.primero) roles[cRival.primero.id] = 'persigue';
+            if (cRival.segundo && cRival.d2 < 18) roles[cRival.segundo.id] = 'persigue';
         } else if (balon.modo === 'conducido' || balon.modo === 'vuelo') {
             const def = rivalDe(balon.eq);
             const fy = balon.modo === 'vuelo' ? balon.dy : balon.y;
             const fx = balon.modo === 'vuelo' ? balon.dx : balon.x;
-            const ord = equipos[def].filter(j => j.linea !== 'por')
-                .sort((a, b) => dist(a.y, a.x, fy, fx) - dist(b.y, b.x, fy, fx));
-            roles[ord[0].id] = 'presion1';
-            if (dist(ord[1].y, ord[1].x, fy, fx) < 34) roles[ord[1].id] = 'presion2';
+            const cDef = dosMasCercanos(equipos[def], fy, fx);
+            if (cDef.primero) roles[cDef.primero.id] = 'presion1';
+            if (cDef.segundo && cDef.d2 < 34) roles[cDef.segundo.id] = 'presion2';
         }
     };
 
@@ -2759,14 +2872,19 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     const render = () => {
-        for (const j of jugadores) {
+        const factorX = pitchW * 0.01;
+        const factorY = pitchH * 0.01;
+        for (let i = 0; i < jugadores.length; i++) {
+            const j = jugadores[i];
             if (!j.el) continue;
-            j.el.style.top = `${j.y.toFixed(2)}%`;
-            j.el.style.left = `${j.x.toFixed(2)}%`;
+            const px = (j.x * factorX).toFixed(1);
+            const py = (j.y * factorY).toFixed(1);
+            j.el.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`;
         }
         if (ballEl) {
-            ballEl.style.top = `${balon.y.toFixed(2)}%`;
-            ballEl.style.left = `${balon.x.toFixed(2)}%`;
+            const bx = (balon.x * factorX).toFixed(1);
+            const by = (balon.y * factorY).toFixed(1);
+            ballEl.style.transform = `translate3d(${bx}px, ${by}px, 0) translate(-50%, -50%)`;
         }
     };
 
@@ -2788,6 +2906,7 @@ window.iniciarSimulacionEnVivo = function() {
         if (simPreviaTimer) { clearInterval(simPreviaTimer); simPreviaTimer = null; }
         if (simHalftimeTimer) { clearTimeout(simHalftimeTimer); simHalftimeTimer = null; }
         if (simJugadaTimer) { clearTimeout(simJugadaTimer); simJugadaTimer = null; }
+        if (simOnResize) { window.removeEventListener('resize', simOnResize); simOnResize = null; }
 
         if (momentoClaveTimer) { clearInterval(momentoClaveTimer); momentoClaveTimer = null; }
         if (momentoClaveActivo && typeof momentoClaveResolutor === 'function') {
@@ -2952,9 +3071,11 @@ window.iniciarSimulacionEnVivo = function() {
         }
 
         if (clock) {
-            if (!primerTiempoTerminado && m > 45) clock.textContent = `45'+${m - 45}'`;
-            else if (m > 90) clock.textContent = `90'+${m - 90}'`;
-            else clock.textContent = `MIN ${m}'`;
+            let txt;
+            if (!primerTiempoTerminado && m > 45) txt = `45'+${m - 45}'`;
+            else if (m > 90) txt = `90'+${m - 90}'`;
+            else txt = `MIN ${m}'`;
+            if (clock.textContent !== txt) clock.textContent = txt;
         }
 
         // 🎙️ Mantener vivo el relato si hay una meseta táctica de más de 10 minutos sin incidentes
@@ -3083,6 +3204,10 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     }
     simSaltadorActivo = null;
     simVelocidadMult = 1;
+    if (simOnResize) {
+        window.removeEventListener('resize', simOnResize);
+        simOnResize = null;
+    }
 
     const etOverlay = document.getElementById('sim-entretiempo-overlay');
     if (etOverlay) etOverlay.style.display = 'none';
@@ -6547,6 +6672,10 @@ function procesarFinDePartidoLiga(golesUser, golesRival) {
     }
     simSaltadorActivo = null;
     simVelocidadMult = 1;
+    if (simOnResize) {
+        window.removeEventListener('resize', simOnResize);
+        simOnResize = null;
+    }
 
     const etOverlay = document.getElementById('sim-entretiempo-overlay');
     if (etOverlay) etOverlay.style.display = 'none';
