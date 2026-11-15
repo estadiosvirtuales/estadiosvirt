@@ -1425,7 +1425,7 @@ async function renderizarResultadoCopaAmerica(resultKey = 'resultado-1') {
         '-map', '[final_v]',
         '-map', '6:a',
         '-c:v', 'libx264',
-        '-preset', 'fast',
+        '-preset', 'veryfast',
         '-pix_fmt', 'yuv420p',
         '-c:a', 'aac',
         '-ac', '2',
