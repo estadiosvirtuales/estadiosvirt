@@ -4643,6 +4643,49 @@ const TRIVIAS_DATABASE = [
       "paisHashtag": "#acassuso #laquema #sanisidro #boulognesurmer #futbolargentino #primeranacional #stadiumguessr #estadios",
       "extraPista": "la tradición de Boulogne Sur Mer, el azul y blanco de San Isidro y el corazón quemero"
     }
+  },
+  {
+    "id": "malvinas_argentinas_mendoza",
+    "folderName": "Argentina\\Primera División\\MALVINAS-ARGENTINAS-MENDOZA",
+    "nombreMostrar": "MALVINAS ARGENTINAS",
+    "clubMostrar": "PROVINCIA DE MENDOZA",
+    "pais": "Argentina",
+    "videoFileName": "Estadio_Malvinas_Argentinas_Mendoza.mp4",
+    "coverFileName": "Portada_Estadio_Malvinas_Argentinas_Mendoza.jpg",
+    "inputVideoPath": "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\godoy cruz.mp4",
+    "targetLat": -32.8895,
+    "targetLng": -68.8797,
+    "userLat": -32.8875,
+    "userLng": -68.8778,
+    "distanciaTexto": "270 METROS",
+    "puntosTexto": "4.890 PUNTOS 🔥",
+    "ubicacionBadge": "📍 Parque Gral. San Martín, Mendoza · MALVINAS ARGENTINAS",
+    "pistas": [
+      {
+        "icon": "💡",
+        "tag": "PISTA 1:",
+        "text": "Capacidad para 42.500 espectadores, el coloso de la región de Cuyo.",
+        "color": "#00ff77"
+      },
+      {
+        "icon": "🏔️",
+        "tag": "PISTA 2:",
+        "text": "Construido en el Parque General San Martín al pie del Cerro de la Gloria.",
+        "color": "#38bdf8"
+      },
+      {
+        "icon": "⭐",
+        "tag": "PISTA 3:",
+        "text": "Histórica subsede del Mundial 1978 y finales del fútbol argentino.",
+        "color": "#ffd700"
+      }
+    ],
+    "portadaClue": "42.500 hinchas · Sede Mundial 1978 · Cuyo",
+    "copys": {
+      "club": "PROVINCIA DE MENDOZA",
+      "paisHashtag": "#malvinasargentinas #mendoza #futbolargentino #copadelmundo #mundial78 #godoycruz #stadiumguessr #estadios",
+      "extraPista": "El coloso cuyano construido para el Mundial 1978 en el Parque San Martín de Mendoza."
+    }
   }
 ];
 
