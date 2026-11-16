@@ -354,7 +354,7 @@ const CONFIG_COPA_AMERICA = {
             numero: '1',
             nombre: 'RIVER PLATE',
             estadio: 'Mâs Monumental',
-            apodo: 'El Monumental Renovado',
+            apodo: 'El Monumental',
             ciudadPais: 'Buenos Aires, Argentina',
             capacidadTexto: '84.567 esp.',
             escudoFile: 'River.webp',
@@ -374,7 +374,7 @@ const CONFIG_COPA_AMERICA = {
             videoPath: "E:\\Google earth studio\\Chile1\\Subidos\\Estadio Monumental_ Club Social y Deportivo Colo-Colo.mp4"
         },
         copy: `🏆 COPA AMÉRICA DE ESTADIOS | OCTAVOS DE FINAL (8/8) 🔥
-¡EL DUELO DE MONUMENTALES! El Mâs Monumental renovado de River Plate se enfrenta a La Ruca de Colo-Colo por el último boleto a Cuartos de Final.
+¡EL DUELO DE MONUMENTALES! El Mâs Monumental de River Plate se enfrenta a La Ruca de Colo-Colo por el último boleto a Cuartos de Final.
 
 🏟️ CRUCE 8:
 1️⃣ MÂS MONUMENTAL (River Plate · Argentina)
@@ -606,7 +606,7 @@ El gigante de Belo Horizonte (que viene de eliminar al Estadio Azteca) frente a 
             numero: '2',
             nombre: 'RIVER PLATE',
             estadio: 'Mâs Monumental',
-            apodo: 'El Monumental Renovado',
+            apodo: 'El Monumental',
             ciudadPais: 'Buenos Aires, Argentina',
             capacidadTexto: '84.567 esp.',
             escudoFile: 'River.webp',
@@ -623,7 +623,7 @@ El gigante de Belo Horizonte (que viene de eliminar al Estadio Azteca) frente a 
 2️⃣ MÂS MONUMENTAL (River Plate · 84.567 esp.)
 
 👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Semifinales. 🗳️
-¿La caldera de Rosario o el coloso renovado de Núñez?
+¿La caldera de Rosario o el coloso de Núñez?
 
 #CopaAmericaDeEstadios #CopaAmerica #RosarioCentral #RiverPlate #GiganteDeArroyito #Monumental #EstadiosVirtuales #Estadios #Futbol
 
