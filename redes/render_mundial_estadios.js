@@ -356,7 +356,7 @@ const CONFIG_COPA_AMERICA = {
             estadio: 'Mâs Monumental',
             apodo: 'El Monumental',
             ciudadPais: 'Buenos Aires, Argentina',
-            capacidadTexto: '84.567 esp.',
+            capacidadTexto: '85.018 esp.',
             escudoFile: 'River.webp',
             borderColor: '#ff2233',
             customCrop: 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960',
@@ -608,7 +608,7 @@ El gigante de Belo Horizonte (que viene de eliminar al Estadio Azteca) frente a 
             estadio: 'Mâs Monumental',
             apodo: 'El Monumental',
             ciudadPais: 'Buenos Aires, Argentina',
-            capacidadTexto: '84.567 esp.',
+            capacidadTexto: '85.018 esp.',
             escudoFile: 'River.webp',
             borderColor: '#ff2233',
             customCrop: 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960',
@@ -620,7 +620,7 @@ El gigante de Belo Horizonte (que viene de eliminar al Estadio Azteca) frente a 
 
 🏟️ CUARTOS 4:
 1️⃣ GIGANTE DE ARROYITO (Rosario Central · 46.955 esp.)
-2️⃣ MÂS MONUMENTAL (River Plate · 84.567 esp.)
+2️⃣ MÂS MONUMENTAL (River Plate · 85.018 esp.)
 
 👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Semifinales. 🗳️
 ¿La caldera de Rosario o el coloso de Núñez?
@@ -635,7 +635,7 @@ El Gigante de Arroyito de Rosario Central frente al colosal Mâs Monumental de R
 
 🏟️ CUARTOS 4:
 1️⃣ GIGANTE DE ARROYITO (Rosario Central · Argentina · 46.955 esp.)
-2️⃣ MÂS MONUMENTAL (River Plate · Argentina · 84.567 esp.)
+2️⃣ MÂS MONUMENTAL (River Plate · Argentina · 85.018 esp.)
 
 👉 COMENTÁ "1" O "2" para definir quién avanza a las Semifinales. 🗳️
 ⚔️ El clasificado enfrentará en Semifinales al ganador de Cruzeiro vs Racing Club.

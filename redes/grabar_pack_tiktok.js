@@ -152,7 +152,7 @@ const VIDEOS_CONFIG = [
         lng: -58.4498,
         videoUrl: 'https://youtu.be/uNvyp-W22cU',
         hook: '🏟️ ¿SOS CAPAZ DE RECONOCER ESTA CANCHA? 👀',
-        hint: '💡 Pista: 84.567 espectadores · El más grande de Sudamérica 🏆',
+        hint: '💡 Pista: 85.018 espectadores · El más grande de Sudamérica 🏆',
         prompt: '👇 Dejá tu respuesta en los comentarios 👇',
         scoreTag: '🎯 ¡A 14 METROS! 5.000 PUNTOS 🔥'
     }
