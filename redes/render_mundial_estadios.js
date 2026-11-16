@@ -578,6 +578,71 @@ El gigante de Belo Horizonte (que viene de eliminar al Estadio Azteca) frente a 
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #Cruzeiro #RacingClub #ElCilindro #Mineirao #Racing #LaAcademia #FutbolSudamericano #EstadiosVirtuales #Estadios`
+    },
+    'cuartos-4': {
+        slug: '04-CENTRAL-VS-RIVER',
+        fase: 'CUARTOS DE FINAL',
+        faseSiguiente: 'Semifinales',
+        llaveNumero: 'CUARTOS 4 / 4',
+        cruceSiguiente: 'Cruzeiro o Racing Club (Semifinal 2)',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · CUARTOS 4/4',
+        pregunta: '¿QUIÉN PASA A SEMIFINALES?',
+        subtitulo: 'Rosario Central vs. River Plate',
+        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
+        videoFileName: 'CopaAmerica_Cuartos_04_Central_vs_River.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Cuartos_04_Central_River.jpg',
+        team1: {
+            numero: '1',
+            nombre: 'ROSARIO CENTRAL',
+            estadio: 'Gigante de Arroyito',
+            apodo: 'El Gigante de Arroyito',
+            ciudadPais: 'Rosario, Argentina',
+            capacidadTexto: '46.955 esp.',
+            escudoFile: 'Rosario Central.webp',
+            borderColor: '#ffc700',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Gigante(listo)x2\\gigante.mp4"
+        },
+        team2: {
+            numero: '2',
+            nombre: 'RIVER PLATE',
+            estadio: 'Mâs Monumental',
+            apodo: 'El Monumental Renovado',
+            ciudadPais: 'Buenos Aires, Argentina',
+            capacidadTexto: '84.567 esp.',
+            escudoFile: 'River.webp',
+            borderColor: '#ff2233',
+            customCrop: 'scale=1080:960:force_original_aspect_ratio=increase,crop=1080:960',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Monumental(listo)\\River_Monumental_Renovado_16x9.mp4"
+        },
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y LIBRE DE BLOQUEOS) ===
+🏆 ¡ÚLTIMO CRUCE DE CUARTOS DE FINAL! 🇦🇷🔥
+¡Duelo electrizante del fútbol argentino por el último pase a SEMIFINALES de la Copa América de Estadios!
+
+🏟️ CUARTOS 4:
+1️⃣ GIGANTE DE ARROYITO (Rosario Central · 46.955 esp.)
+2️⃣ MÂS MONUMENTAL (River Plate · 84.567 esp.)
+
+👉 COMENTÁ "1" O "2" para clasificar a tu favorito a Semifinales. 🗳️
+¿La caldera de Rosario o el coloso renovado de Núñez?
+
+#CopaAmericaDeEstadios #CopaAmerica #RosarioCentral #RiverPlate #GiganteDeArroyito #Monumental #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 COPA AMÉRICA DE ESTADIOS | CUARTOS DE FINAL (4/4) 🔥
+¡Se define el cuadro de Semifinales con un choque memorable!
+El Gigante de Arroyito de Rosario Central frente al colosal Mâs Monumental de River Plate cara a cara por el último boleto a las Semifinales.
+
+🏟️ CUARTOS 4:
+1️⃣ GIGANTE DE ARROYITO (Rosario Central · Argentina · 46.955 esp.)
+2️⃣ MÂS MONUMENTAL (River Plate · Argentina · 84.567 esp.)
+
+👉 COMENTÁ "1" O "2" para definir quién avanza a las Semifinales. 🗳️
+⚔️ El clasificado enfrentará en Semifinales al ganador de Cruzeiro vs Racing Club.
+
+🎮 Jugá gratis en el link de nuestra bio.
+
+#CopaAmericaDeEstadios #CopaAmerica #RosarioCentral #RiverPlate #GiganteDeArroyito #Monumental #CARP #Rosario #FutbolSudamericano #EstadiosVirtuales #Estadios`
     }
 };
 
