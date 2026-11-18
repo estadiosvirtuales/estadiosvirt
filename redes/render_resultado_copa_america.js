@@ -483,6 +483,90 @@ Chivas (Estadio Akron) 🇲🇽 vs. Rosario Central (Gigante de Arroyito) 🇦�
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #RacingClub #LaAcademia #ElCilindro #Corinthians #Cruzeiro #Chivas #RosarioCentral #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'resultado-cuartos-1': {
+        cruceNum: 1,
+        isCuartos: true,
+        faseDir: 'CUARTOS DE FINAL',
+        slug: '01-BOCA-VS-SAOPAULO',
+        tituloTorneo: 'COPA AMÉRICA DE ESTADIOS',
+        fase: 'CUARTOS DE FINAL · CRUCE 1/4',
+        faseBadge: 'CUARTOS 1',
+        clasificadoTag: '🎉 ¡CLASIFICADO A SEMIFINALES! ✅',
+        loserBadge: 'ELIMINADO EN CUARTOS',
+        videoFileName: 'CopaAmerica_Resultado_Cuartos_01_Boca_vs_SaoPaulo.mp4',
+        portadaFileName: 'Portada_Resultado_Cuartos_01_Boca_SaoPaulo.jpg',
+        textFile: 'TEXTOS_RESULTADO_CUARTOS_01.txt',
+        clasificadoBadge: '👑 PRIMER SEMIFINALISTA CONFIRMADO',
+        escena2Title: '¡LA BOMBONERA EN SEMIFINALES! 🔥',
+        escena2Sub: 'Triunfo con el 70% de los votos de la comunidad',
+        proximoRival: 'Independiente o Santos FC en Semis',
+        fraseCelebracion: 'El templo xeneize de Brandsen 805 hace temblar América y se mete entre los 4 mejores estadios 🏟️',
+        footerComunidad: 'La Bombonera avanza a las Semifinales',
+        bracketHeaderSub: '¡Boca Juniors clasificado a SEMIFINALES!',
+        nextCruceBanner: 'PRÓXIMO CRUCE: INDEPENDIENTE VS SANTOS FC',
+        nextCruceCTA: '¡ENTRÁ A MI PERFIL Y VOTÁ EN EL CRUCE 2 DE CUARTOS!',
+        // Ganador (Boca Juniors)
+        winner: {
+            nombre: 'BOCA JUNIORS',
+            estadio: 'Alberto J. Armando',
+            apodo: 'La Bombonera',
+            ciudadPais: 'Buenos Aires, Argentina',
+            capacidadTexto: '57.200 esp.',
+            escudoFile: 'Boca.webp',
+            votos: 21,
+            porcentaje: 70,
+            borderColor: '#00e676',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\La bombonera 3.mp4"
+        },
+        // Perdedor (São Paulo FC)
+        loser: {
+            nombre: 'SÃO PAULO FC',
+            estadio: 'Cícero Pompeu de Toledo',
+            apodo: 'MorumBIS',
+            ciudadPais: 'São Paulo, Brasil',
+            capacidadTexto: '66.795 esp.',
+            escudoFile: 'saopaulo.webp',
+            votos: 9,
+            porcentaje: 30,
+            borderColor: 'rgba(255,255,255,0.3)',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4"
+        },
+        totalComentarios: 30,
+        nextCruceNum: 2,
+        nextCruceTexto: 'Independiente vs. Santos FC',
+        bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Boca Juniors es el PRIMER SEMIFINALISTA de la Copa América de Estadios! 🇦🇷🔥
+La Bombonera superó a MorumBIS (São Paulo) con el 70% de los votos de la comunidad (21 a 9).
+
+⚔️ ¡Y en Semifinales enfrentará al ganador de INDEPENDIENTE VS SANTOS FC! 🏟️
+
+🔥 ¡El Cruce 2 de Cuartos (Independiente vs Santos) ya está disponible en mi perfil para votar! 🗳️
+¿Quién clasifica a Semis?
+
+#CopaAmericaDeEstadios #BocaJuniors #LaBombonera #SaoPaulo #Morumbi #CopaAmerica #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡BOCA JUNIORS CLASIFICÓ A SEMIFINALES! 🔥🇦🇷
+¡La Bombonera se mete entre los 4 mejores estadios de América con un respaldo contundente de la gente!
+El templo de Brandsen 805 hizo temblar la votación ante el imponente MorumBIS de São Paulo:
+
+📊 RESULTADO FINAL CUARTOS 1:
+🟢 BOCA JUNIORS (Alberto J. Armando): 70% (21 votos) ✅ ¡A SEMIFINALES!
+⚪ SÃO PAULO FC (Cícero Pompeu de Toledo): 30% (9 votos)
+
+🔥 ¡EL PRIMER SEMIFINALISTA YA TIENE SU LUGAR!
+El rival de Boca en Semifinales saldrá de:
+INDEPENDIENTE (Libertadores de América) 🇦🇷 🆚 SANTOS FC (Vila Belmiro) 🇧🇷
+
+⚔️ CRUCE 2 DE CUARTOS DISPONIBLE AHORA EN NUESTRO PERFIL. 🗳️
+Dejá tu voto entre el Rey de Copas y el Peixe.
+
+🎮 Jugá gratis a StadiumGuessr en: estadiosvirtuales.com
+
+#CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #LaBombonera #SaoPauloFC #Morumbi #Independiente #SantosFC #Estadios #FutbolSudamericano #EstadiosVirtuales`
     }
 };
 
@@ -697,7 +781,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     // ==========================================
     const htmlEscena1 = getBaseHTML(`
         <div id="header-box">
-            <div class="header-badge">🏆 COPA AMÉRICA DE ESTADIOS · CRUCE ${cfg.cruceNum}</div>
+            <div class="header-badge">🏆 COPA AMÉRICA DE ESTADIOS · ${cfg.faseBadge || 'CRUCE ' + cfg.cruceNum}</div>
             <div class="header-title">¡RESULTADO DE LA VOTACIÓN! 🗳️</div>
             <div class="header-sub">Votación de la comunidad · Veredicto oficial</div>
         </div>
@@ -707,9 +791,9 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <!-- Badge Clasificado -->
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="background: rgba(0, 255, 119, 0.2); border: 2px solid #00ff77; color: #00ff77; font-size: 16px; font-weight: 900; padding: 6px 18px; border-radius: 12px; letter-spacing: 1.5px; text-transform: uppercase;">
-                    🎉 ¡CLASIFICADO A CUARTOS! ✅
+                    ${cfg.clasificadoTag || (cfg.isCuartos ? '🎉 ¡CLASIFICADO A SEMIFINALES! ✅' : '🎉 ¡CLASIFICADO A CUARTOS! ✅')}
                 </span>
-                <span style="color: #ffd700; font-size: 18px; font-weight: 900; letter-spacing: 1px;">CRUCE ${cfg.cruceNum}</span>
+                <span style="color: #ffd700; font-size: 18px; font-weight: 900; letter-spacing: 1px;">${cfg.faseBadge || `CRUCE ${cfg.cruceNum}`}</span>
             </div>
 
             <!-- Datos del Estadio Ganador -->
@@ -720,7 +804,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
                 </div>
                 <div style="flex: 1;">
                     <div style="color: #ffd700; font-size: 34px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; line-height: 1.1;">${cfg.winner.nombre}</div>
-                    <div style="color: #ffffff; font-size: 26px; font-weight: 800; margin-top: 4px;">${cfg.winner.estadio} · "${cfg.winner.apodo}"</div>
+                    <div style="color: #ffffff; font-size: 26px; font-weight: 800; margin-top: 4px;">${cfg.winner.estadio}</div>
                     <div style="color: #94a3b8; font-size: 19px; font-weight: 700; margin-top: 4px;">📍 ${cfg.winner.ciudadPais} · ${cfg.winner.capacidadTexto}</div>
                 </div>
             </div>
@@ -743,9 +827,9 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <!-- Badge Eliminado -->
             <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(255, 255, 255, 0.25); color: #94a3b8; font-size: 15px; font-weight: 800; padding: 4px 14px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase;">
-                    ELIMINADO EN OCTAVOS
+                    ${cfg.loserBadge || (cfg.isCuartos ? 'ELIMINADO EN CUARTOS' : 'ELIMINADO EN OCTAVOS')}
                 </span>
-                <span style="color: #94a3b8; font-size: 16px; font-weight: 800;">CRUCE ${cfg.cruceNum}</span>
+                <span style="color: #94a3b8; font-size: 16px; font-weight: 800;">${cfg.faseBadge || `CRUCE ${cfg.cruceNum}`}</span>
             </div>
 
             <!-- Datos del Estadio Perdedor -->
@@ -909,7 +993,27 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     let cruce7Next = cfg.cruceNum === 6;
 
     let cuartos1HTML = '';
-    if (cfg.cruceNum === 1) {
+    if (cfg.isCuartos && cfg.cruceNum === 1) {
+        cuartos1HTML = renderStageNode('CUARTOS 1', 315, bCYC1 - 28, 88, 56, '#00ff77', '#00ff77', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
+                <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <img src="${escudosBracket.boca}" style="width:16px; height:16px; object-fit:contain;">
+                        <span style="color:#00ff77; font-size:9px; font-weight:900;">BOCA</span>
+                    </div>
+                    <span style="color:#00ff77; font-size:8.5px; font-weight:900;">70% ✅</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <img src="${escudosBracket.saopaulo}" style="width:16px; height:16px; object-fit:contain;">
+                        <span style="color:#94a3b8; font-size:9px; font-weight:700;">SÃO PAULO</span>
+                    </div>
+                    <span style="color:#ef4444; font-size:8.5px; font-weight:700;">30% ❌</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.cruceNum === 1) {
         cuartos1HTML = renderStageNode('BOCA', 315, bCYC1 - 24, 75, 48, '#00ff77', '#00ff77', `
             <div style="display:flex; align-items:center; gap:5px; padding:2px;">
                 <img src="${escudosBracket.boca}" style="width:20px; height:20px; object-fit:contain;">
@@ -934,7 +1038,24 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     }
 
     let cuartos2HTML = '';
-    if (cfg.cruceNum >= 4) {
+    if (cfg.isCuartos && cfg.cruceNum === 1) {
+        cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 28, 88, 56, '#ffd700', '#ffd700', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center; box-shadow:0 0 20px rgba(255,215,0,0.45); border-radius:10px;">
+                <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <img src="${escudosBracket.independiente}" style="width:16px; height:16px; object-fit:contain;">
+                        <span style="color:#ffd700; font-size:9px; font-weight:900;">INDEP.</span>
+                    </div>
+                    <span style="background:rgba(255,215,0,0.25); border:1px solid #ffd700; color:#ffd700; font-size:7.5px; font-weight:900; padding:1px 3px; border-radius:4px;">HOY</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.santos}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#ffffff; font-size:9px; font-weight:900;">SANTOS</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.cruceNum >= 4) {
         // Cruce 4 en adelante: ¡Independiente vs Santos confirmado en Cuartos 2!
         cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 28, 88, 56, '#00ff77', '#00ff77', `
             <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
@@ -961,8 +1082,8 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     }
 
     let cuartos3HTML = '';
-    if (cfg.cruceNum >= 6) {
-        // Cruce 6 en adelante: ¡Cruzeiro vs Racing confirmado en Cuartos 3!
+    if (cfg.isCuartos || cfg.cruceNum >= 6) {
+        // Cruce 6 en adelante / Cuartos: ¡Cruzeiro vs Racing confirmado en Cuartos 3!
         cuartos3HTML = renderStageNode('CUARTOS 3', 677, bCYC1 - 28, 88, 56, '#00ff77', '#00ff77', `
             <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
                 <div style="display:flex; align-items:center; gap:5px;">
@@ -986,6 +1107,37 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         `);
     } else {
         cuartos3HTML = renderStageNode('CUARTOS 3', 695, bCYC1 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700');
+    }
+
+    let cuartos4HTML = '';
+    if (cfg.isCuartos || cfg.cruceNum >= 7) {
+        cuartos4HTML = renderStageNode('CUARTOS 4', 677, bCYC2 - 28, 88, 56, '#ffd700', '#ffd700', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.central}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#ffd700; font-size:9px; font-weight:900;">CENTRAL</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.river}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#ffffff; font-size:9px; font-weight:900;">RIVER</span>
+                </div>
+            </div>
+        `);
+    } else {
+        cuartos4HTML = renderStageNode('CUARTOS 4', 695, bCYC2 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700');
+    }
+
+    let semi1HTML = '';
+    if (cfg.isCuartos && cfg.cruceNum >= 1) {
+        semi1HTML = renderStageNode('SEMI 1', 408, bCYSemi - 24, 64, 48, '#00ff77', '#00ff77', `
+            <div style="display:flex; align-items:center; gap:4px; padding:2px;">
+                <img src="${escudosBracket.boca}" style="width:18px; height:18px; object-fit:contain;">
+                <span style="color:#00ff77; font-size:9px; font-weight:900;">BOCA</span>
+            </div>
+        `);
+    } else {
+        semi1HTML = renderStageNode('SEMI 1', 408, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff');
     }
 
     const htmlEscena3 = getBaseHTML(`
@@ -1030,9 +1182,17 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <path d="M 295 ${bCYC2} L 315 ${bCYC2}" fill="none" stroke="rgba(0, 230, 118, 0.95)" stroke-width="2.5" />
             `}
 
+            ${cfg.isCuartos ? `
+            <!-- LÍNEA GANADORA BOCA A SEMIFINAL 1 (VERDE NEÓN) -->
+            <path d="M 403 ${bCYC1} L 405 ${bCYC1} L 405 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            <!-- LÍNEA CUARTOS 2 A SEMIFINAL 1 -->
+            <path d="M 403 ${bCYC2} L 405 ${bCYC2} L 405 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
+            <path d="M 470 ${bCYSemi} L 475 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
+            ` : `
             <path d="M 385 ${bCYC1} L 398 ${bCYC1} L 398 ${bCYC2} L 385 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
             <path d="M 398 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.95)" stroke-width="2.5" />
             <path d="M 463 ${bCYSemi} L 475 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
+            `}
 
             <!-- Llave Derecha (Llave B) -->
             ${cfg.cruceNum >= 6 ? `
@@ -1047,8 +1207,14 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <path d="M 805 ${bCY1} L 785 ${bCY1} L 785 ${bCY2} L 805 ${bCY2}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
             <path d="M 785 ${bCYC1} L 765 ${bCYC1}" fill="none" stroke="rgba(255, 215, 0, 0.95)" stroke-width="2.5" />
             `}
+            ${cfg.isCuartos ? `
+            <!-- LÍNEAS CENTRAL Y RIVER A CUARTOS 4 -->
+            <path d="M 805 ${bCY3} L 785 ${bCY3} L 785 ${bCYC2} L 765 ${bCYC2}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            <path d="M 805 ${bCY4} L 785 ${bCY4} L 785 ${bCYC2} L 765 ${bCYC2}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            ` : `
             <path d="M 805 ${bCY3} L 785 ${bCY3} L 785 ${bCY4} L 805 ${bCY4}" fill="none" stroke="rgba(255, 215, 0, 0.75)" stroke-width="2.5" />
             <path d="M 785 ${bCYC2} L 765 ${bCYC2}" fill="none" stroke="rgba(255, 215, 0, 0.95)" stroke-width="2.5" />
+            `}
             <path d="M 695 ${bCYC1} L 682 ${bCYC1} L 682 ${bCYC2} L 695 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
             <path d="M 682 ${bCYSemi} L 672 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.95)" stroke-width="2.5" />
             <path d="M 617 ${bCYSemi} L 605 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
@@ -1059,13 +1225,13 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         ${renderMatchCard('1', escudosBracket.boca, 'Boca Juniors', 'ARG', escudosBracket.palmeiras, 'Palmeiras', 'BRA', 'left', bY1, true, 1, '85%', '15%', false)}
         
         <!-- CRUCE 2 (SÃO PAULO VS ATLAS FC) -->
-        ${renderMatchCard('2', escudosBracket.saopaulo, 'São Paulo', 'BRA', escudosBracket.atlas, 'Atlas FC', 'MEX', 'left', bY2, cruce2Finished, 1, '80%', '20%', cruce2Next)}
+        ${renderMatchCard('2', escudosBracket.saopaulo, 'São Paulo', 'BRA', escudosBracket.atlas, 'Atlas FC', 'MEX', 'left', bY2, cruce2Finished, 1, '80%', '20%', cruce2Next && !cfg.isCuartos)}
         
         <!-- CRUCE 3 (FLAMENGO VS INDEPENDIENTE) -->
-        ${renderMatchCard('3', escudosBracket.flamengo, 'Flamengo', 'BRA', escudosBracket.independiente, 'Independiente', 'ARG', 'left', bY3, cruce3Finished, 2, '4%', '96%', cruce3Next)}
+        ${renderMatchCard('3', escudosBracket.flamengo, 'Flamengo', 'BRA', escudosBracket.independiente, 'Independiente', 'ARG', 'left', bY3, cruce3Finished, 2, '4%', '96%', cruce3Next && !cfg.isCuartos)}
         
         <!-- CRUCE 4 (SANTOS VS PUMAS) -->
-        ${renderMatchCard('4', escudosBracket.santos, 'Santos FC', 'BRA', escudosBracket.pumas, 'Pumas UNAM', 'MEX', 'left', bY4, cruce4Finished, 1, '64%', '36%', cruce4Next)}
+        ${renderMatchCard('4', escudosBracket.santos, 'Santos FC', 'BRA', escudosBracket.pumas, 'Pumas UNAM', 'MEX', 'left', bY4, cruce4Finished, 1, '64%', '36%', cruce4Next && !cfg.isCuartos)}
 
         <!-- NODO DE CUARTOS 1 -->
         ${cuartos1HTML}
@@ -1074,7 +1240,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
         ${cuartos2HTML}
 
         <!-- NODO DE SEMIFINAL 1 -->
-        ${renderStageNode('SEMI 1', 408, bCYSemi - 22, 55, 44, 'rgba(0,176,255,0.85)', '#00e5ff')}
+        ${semi1HTML}
 
         <!-- NODO CENTRAL: GRAN FINAL -->
         <div style="position:absolute; left:475px; top:${bCYSemi - 115}px; width:130px; height:230px; background:linear-gradient(135deg, rgba(20, 32, 50, 0.99) 0%, rgba(9, 14, 23, 1) 100%); border:2.5px solid #ffd700; border-radius:24px; padding:12px 6px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; text-align:center; box-shadow:0 14px 40px rgba(0,0,0,0.92), 0 0 35px rgba(255,215,0,0.45); z-index:10;">
@@ -1094,13 +1260,13 @@ async function generarOverlaysResultado(cfg, assetsDir) {
 
         <!-- NODOS DE CUARTOS (DERECHA) -->
         ${cuartos3HTML}
-        ${renderStageNode('CUARTOS 4', 695, bCYC2 - 20, 70, 40, 'rgba(255,215,0,0.7)', '#ffd700')}
+        ${cuartos4HTML}
 
         <!-- CRUCES DE OCTAVOS (DERECHA) -->
-        ${renderMatchCard('5', escudosBracket.america, 'Club América', 'MEX', escudosBracket.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1, cruce5Finished, 2, '29%', '71%', cruce5Next)}
-        ${renderMatchCard('6', escudosBracket.racing, 'Racing Club', 'ARG', escudosBracket.corinthians, 'Corinthians', 'BRA', 'right', bY2, cruce6Finished, 1, '88%', '12%', cruce6Next)}
-        ${renderMatchCard('7', escudosBracket.chivas, 'Chivas', 'MEX', escudosBracket.central, 'Rosario Central', 'ARG', 'right', bY3, false, 0, '', '', cruce7Next)}
-        ${renderMatchCard('8', escudosBracket.river, 'River Plate', 'ARG', escudosBracket.colocolo, 'Colo-Colo', 'CHI', 'right', bY4)}
+        ${renderMatchCard('5', escudosBracket.america, 'Club América', 'MEX', escudosBracket.cruzeiro, 'Cruzeiro', 'BRA', 'right', bY1, cruce5Finished, 2, '29%', '71%', cruce5Next && !cfg.isCuartos)}
+        ${renderMatchCard('6', escudosBracket.racing, 'Racing Club', 'ARG', escudosBracket.corinthians, 'Corinthians', 'BRA', 'right', bY2, cruce6Finished, 1, '88%', '12%', cruce6Next && !cfg.isCuartos)}
+        ${renderMatchCard('7', escudosBracket.chivas, 'Chivas', 'MEX', escudosBracket.central, 'Rosario Central', 'ARG', 'right', bY3, cfg.isCuartos || cruce7Finished, 2, '', '', cruce7Next && !cfg.isCuartos)}
+        ${renderMatchCard('8', escudosBracket.river, 'River Plate', 'ARG', escudosBracket.colocolo, 'Colo-Colo', 'CHI', 'right', bY4, cfg.isCuartos || cruce8Finished, 1, '', '', false)}
 
         <!-- BANNER INFO PRÓXIMO CRUCE (y: 1475) -->
         <div style="position:absolute; top:1470px; left:50%; transform:translateX(-50%); width:980px; background:linear-gradient(135deg, rgba(20, 35, 55, 0.98) 0%, rgba(10, 18, 30, 0.99) 100%); border:2px solid #ffd700; border-radius:20px; padding:14px 20px; display:flex; align-items:center; justify-content:center; gap:16px; box-shadow:0 10px 30px rgba(0,0,0,0.9), 0 0 25px rgba(255, 215, 0, 0.3);">
@@ -1277,9 +1443,9 @@ async function generarPortadaResultado(cfg, outFolder, bgFramePath) {
             <div class="header-badge">🏆 COPA AMÉRICA DE ESTADIOS</div>
 
             <div class="hook-box">
-                <div class="hook-eyebrow">RESULTADO OFICIAL · CRUCE ${cfg.cruceNum}</div>
+                <div class="hook-eyebrow">RESULTADO OFICIAL · ${cfg.faseBadge || 'CRUCE ' + cfg.cruceNum}</div>
                 <div class="hook-title">
-                    ¿QUIÉN CLASIFICÓ<br>A CUARTOS?
+                    ${cfg.portadaTitle || (cfg.isCuartos ? '¿QUIÉN CLASIFICÓ<br>A SEMIFINALES?' : '¿QUIÉN CLASIFICÓ<br>A CUARTOS?')}
                 </div>
                 <div class="match-row">
                     <div class="team-badge">
@@ -1293,7 +1459,7 @@ async function generarPortadaResultado(cfg, outFolder, bgFramePath) {
                     </div>
                 </div>
                 <div class="hook-sub">
-                    ¡La comunidad definió el pase a Cuartos! 🗳️
+                    ${cfg.portadaSub || (cfg.isCuartos ? '¡La comunidad definió el pase a Semifinales! 🗳️' : '¡La comunidad definió el pase a Cuartos! 🗳️')}
                 </div>
             </div>
 
@@ -1316,16 +1482,19 @@ async function generarPortadaResultado(cfg, outFolder, bgFramePath) {
 // 4. MOTOR DE RENDERIZADO DEL VIDEO DE RESULTADO (18.0s)
 // ==========================================
 async function renderizarResultadoCopaAmerica(resultKey = 'resultado-1') {
-    const cfg = CONFIG_RESULTADOS[resultKey];
+    const resolvedKey = CONFIG_RESULTADOS[resultKey] ? resultKey : (CONFIG_RESULTADOS['resultado-' + resultKey] ? 'resultado-' + resultKey : resultKey);
+    const cfg = CONFIG_RESULTADOS[resolvedKey];
     if (!cfg) throw new Error(`Clave no encontrada: ${resultKey}`);
 
-    let outFolder = path.join("E:\\Google earth studio\\videos para mostrar\\YA SUBIDOS\\COPA AMERICA DE ESTADIOS\\OCTAVOS DE FINAL", cfg.slug);
+    const faseFolder = cfg.faseDir || 'OCTAVOS DE FINAL';
+    let outFolder = path.join("E:\\Google earth studio\\videos para mostrar\\YA SUBIDOS\\COPA AMERICA DE ESTADIOS", faseFolder, cfg.slug);
     if (!fs.existsSync(outFolder)) {
-        const altFolder = path.join("E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS\\OCTAVOS DE FINAL", cfg.slug);
+        const altFolder = path.join("E:\\Google earth studio\\videos para mostrar\\COPA AMERICA DE ESTADIOS", faseFolder, cfg.slug);
         if (fs.existsSync(altFolder)) {
             outFolder = altFolder;
         } else {
-            fs.mkdirSync(outFolder, { recursive: true });
+            fs.mkdirSync(altFolder, { recursive: true });
+            outFolder = altFolder;
         }
     }
     const assetsDir = path.join(outFolder, 'assets_temp_resultado');

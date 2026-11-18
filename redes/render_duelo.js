@@ -2713,7 +2713,7 @@ async function generarOverlaysGraficos(duelo, assetsDir) {
                 <img src="${escudo1Base64}" class="club-logo">
                 <div>
                     <div class="club-info-name">${duelo.team1.nombre}</div>
-                    <div class="club-info-stadium">${duelo.team1.apodo}</div>
+                    <div class="club-info-stadium">${duelo.team1.estadio}</div>
                 </div>
             </div>
 
@@ -2721,7 +2721,7 @@ async function generarOverlaysGraficos(duelo, assetsDir) {
                 <img src="${escudo2Base64}" class="club-logo">
                 <div>
                     <div class="club-info-name">${duelo.team2.nombre}</div>
-                    <div class="club-info-stadium">${duelo.team2.apodo}</div>
+                    <div class="club-info-stadium">${duelo.team2.estadio}</div>
                 </div>
             </div>
 
@@ -2868,13 +2868,13 @@ async function generarPortada(duelo, outFolder, bgFramePath) {
                 <div class="team-card t1">
                     <img src="${escudo1Base64}" class="team-logo">
                     <div class="team-name">${duelo.team1.nombre}</div>
-                    <div class="stadium-name">${duelo.team1.apodo}</div>
+                    <div class="stadium-name">${duelo.team1.estadio}</div>
                 </div>
                 <div class="vs-circle">VS</div>
                 <div class="team-card t2">
                     <img src="${escudo2Base64}" class="team-logo">
                     <div class="team-name">${duelo.team2.nombre}</div>
-                    <div class="stadium-name">${duelo.team2.apodo}</div>
+                    <div class="stadium-name">${duelo.team2.estadio}</div>
                 </div>
             </div>
             <div class="footer-pill">

@@ -218,7 +218,7 @@ async function generarOverlaysGraficos() {
                 <img src="${racingEscudo}" class="club-logo">
                 <div>
                     <div class="club-info-name">RACING CLUB</div>
-                    <div class="club-info-stadium">El Cilindro</div>
+                    <div class="club-info-stadium">Presidente Perón</div>
                 </div>
             </div>
 
