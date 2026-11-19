@@ -2137,7 +2137,7 @@ function calcularLogros(){
         logros.push({id:`${id}_${siguiente}`,icon,name:`${baseName} ${siguiente}`,rarity,req:`Llegá a ${(siguiente*step).toLocaleString('es-AR')}${unit}`,unlocked:false,pct:tierActual===0?pct:Math.round((progActual/step)*100),pctLabel:`${val.toLocaleString('es-AR')}/${(siguiente*step).toLocaleString('es-AR')}${unit}`});
     }
     addTierLogro('voto','<img src="catador.webp" class="logro-img-icon" alt="Catador">','Catador',s.votosRealizados,5,' califs','common');
-    addTierLogro('trivia','<img src="curioso.webp" class="logro-img-icon" alt="Curioso">','Curioso',s.triviasVistas,5,' trivias','common');
+    addTierLogro('trivia','<img src="curioso.webp" class="logro-img-icon" alt="Trotamundos">','Trotamundos',s.triviasVistas,5,' trivias','common');
     addTierLogro('guessr','<img src="piloto.webp" class="logro-img-icon" alt="Piloto">','Piloto',s.partidasJugadas,5,' partidas','common');
     addTierLogro('liga','<img src="explorador.webp" class="logro-img-icon" alt="Explorador">','Explorador',s.ligasExploradas.size,2,' ligas','common');
     addTierLogro('aleat','<img src="aventurero.webp" class="logro-img-icon" alt="Aventurero">','Aventurero',s.vuelosAleatorios||0,10,' vuelos','common');
