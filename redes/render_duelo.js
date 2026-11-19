@@ -1061,6 +1061,90 @@ El histórico Clásico del Oeste: El Fortín de Liniers vs El templo verde de Ca
 
 #VelezSarsfield #Ferro #ClasicoDelOeste #Amalfitani #Caballito #Estadios #FutbolArgentino #EstadiosVirtuales`
     },
+    'velez-sanlorenzo': {
+        slug: 'VELEZ-VS-SAN-LORENZO',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico Porteño',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'José Amalfitani vs Pedro Bidegain',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Velez_vs_San_Lorenzo.mp4',
+        portadaFileName: 'Portada_Duelo_Velez_San_Lorenzo.jpg',
+        bannerDiferencia: '¡VÉLEZ POR 1.576 LUGARES!',
+        team1: {
+            id: 'velez',
+            nombre: 'VÉLEZ SARSFIELD',
+            estadio: 'José Amalfitani',
+            apodo: 'El Fortín de Liniers',
+            capacidadNum: 49540,
+            capacidadTexto: '49.540 esp.',
+            escudoFile: 'Velez.webp',
+            borderColor: '#0055a5',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\velez.mp4",
+            esGanador: true
+        },
+        team2: {
+            id: 'casla',
+            nombre: 'SAN LORENZO',
+            estadio: 'Pedro Bidegain',
+            apodo: 'Nuevo Gasómetro',
+            capacidadNum: 47964,
+            capacidadTexto: '47.964 esp.',
+            escudoFile: 'San Lorenzo.webp',
+            borderColor: '#004080',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\casla(listo)x2\\casla.mp4",
+            esGanador: false
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿VÉLEZ O SAN LORENZO? 🏟️🔥
+El Fortín de Liniers vs El Nuevo Gasómetro del Bajo Flores. ¿Cuál de los dos gigantes de la Ciudad de Buenos Aires tiene mayor capacidad oficial? ¡El desenlace te va a sorprender! 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#Velez #SanLorenzo #VelezSarsfield #CASLA #Amalfitani #NuevoGasometro #ClasicoPorteño #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
+    'argentinos-platense': {
+        slug: 'ARGENTINOS-VS-PLATENSE',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Fútbol Argentino',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Diego Armando Maradona vs Vicente López',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Argentinos_vs_Platense.mp4',
+        portadaFileName: 'Portada_Duelo_Argentinos_Platense.jpg',
+        bannerDiferencia: '¡PLATENSE POR 4.000 LUGARES!',
+        team1: {
+            id: 'argentinos',
+            nombre: 'ARGENTINOS JUNIORS',
+            estadio: 'Diego Armando Maradona',
+            apodo: 'El Templo del Fútbol',
+            capacidadNum: 26000,
+            capacidadTexto: '26.000 esp.',
+            escudoFile: 'argentinos.svg.webp',
+            borderColor: '#d60000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\argentinos.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'platense',
+            nombre: 'PLATENSE',
+            estadio: 'Ciudad de Vicente López',
+            apodo: 'El Templo Calamar',
+            capacidadNum: 30000,
+            capacidadTexto: '30.000 esp.',
+            escudoFile: 'Platense.webp',
+            borderColor: '#8b4513',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\platense.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿ARGENTINOS O PLATENSE? 🏟️🔥
+El mítico Diego Armando Maradona en La Paternal vs el Ciudad de Vicente López pegado a General Paz. ¿Cuál de los dos estadios tiene mayor capacidad oficial de público? 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#ArgentinosJuniors #Platense #DiegoArmandoMaradona #LaPaternal #VicenteLopez #Calamar #Bicho #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
     'defensa-quilmes': {
         slug: 'DEFENSA-VS-QUILMES',
         pais: 'Argentina',
@@ -3073,6 +3157,8 @@ async function main() {
     const ARG_KEYS = [
         'river-boca',
         'casla-huracan',
+        'velez-sanlorenzo',
+        'argentinos-platense',
         'central-newells',
         'lanus-banfield',
         'sanmartin-atletico-tucuman',
