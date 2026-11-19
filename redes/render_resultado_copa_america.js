@@ -567,6 +567,90 @@ Dejá tu voto entre el Rey de Copas y el Peixe.
 🎮 Jugá gratis a StadiumGuessr en: estadiosvirtuales.com
 
 #CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #LaBombonera #SaoPauloFC #Morumbi #Independiente #SantosFC #Estadios #FutbolSudamericano #EstadiosVirtuales`
+    },
+    'resultado-cuartos-2': {
+        cruceNum: 2,
+        isCuartos: true,
+        faseDir: 'CUARTOS DE FINAL',
+        slug: '02-INDEPENDIENTE-VS-SANTOS',
+        tituloTorneo: 'COPA AMÉRICA DE ESTADIOS',
+        fase: 'CUARTOS DE FINAL · CRUCE 2/4',
+        faseBadge: 'CUARTOS 2',
+        clasificadoTag: '🎉 ¡CLASIFICADO A SEMIFINALES! ✅',
+        loserBadge: 'ELIMINADO EN CUARTOS',
+        videoFileName: 'CopaAmerica_Resultado_Cuartos_02_Independiente_vs_Santos.mp4',
+        portadaFileName: 'Portada_Resultado_Cuartos_02_Independiente_Santos.jpg',
+        textFile: 'TEXTOS_RESULTADO_CUARTOS_02.txt',
+        clasificadoBadge: '👑 SEGUNDO SEMIFINALISTA CONFIRMADO',
+        escena2Title: '¡EL LIBERTADORES DE AMÉRICA EN SEMIS! 🔥',
+        escena2Sub: 'Triunfo en la votación de la comunidad',
+        proximoRival: 'Boca Juniors en Semifinales',
+        fraseCelebracion: 'El templo del Rey de Copas de Avellaneda hace valer su peso copero y clasifica a Semifinales contra Boca Juniors 🏟️',
+        footerComunidad: 'El Libertadores de América avanza a las Semifinales',
+        bracketHeaderSub: '¡PRIMERA SEMIFINAL CONFIRMADA: BOCA VS INDEPENDIENTE!',
+        nextCruceBanner: 'PRÓXIMO CRUCE: CRUZEIRO VS RACING CLUB',
+        nextCruceCTA: '¡ENTRÁ A MI PERFIL Y VOTÁ EN EL CRUCE 3 DE CUARTOS!',
+        // Ganador (Independiente)
+        winner: {
+            nombre: 'INDEPENDIENTE',
+            estadio: 'Libertadores de América',
+            apodo: 'Ricardo E. Bochini',
+            ciudadPais: 'Avellaneda, Argentina',
+            capacidadTexto: '42.069 esp.',
+            escudoFile: 'Independiente.webp',
+            votos: 20,
+            porcentaje: 75,
+            borderColor: '#00e676',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4"
+        },
+        // Perdedor (Santos FC)
+        loser: {
+            nombre: 'SANTOS FC',
+            estadio: 'Urbano Caldeira',
+            apodo: 'Vila Belmiro',
+            ciudadPais: 'Santos, Brasil',
+            capacidadTexto: '16.068 esp.',
+            escudoFile: 'santos.webp',
+            votos: 7,
+            porcentaje: 25,
+            borderColor: 'rgba(255,255,255,0.3)',
+            videoPath: "E:\\Google earth studio\\Brasil\\Estadio Urbano Caldeira_ Santos FC.mp4"
+        },
+        totalComentarios: 27,
+        nextCruceNum: 3,
+        nextCruceTexto: 'Cruzeiro vs. Racing Club',
+        bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
+🏆 ¡Independiente es el SEGUNDO SEMIFINALISTA de la Copa América de Estadios! 🇦🇷🔥
+El Libertadores de América superó a Vila Belmiro (Santos FC) y avanza a la siguiente ronda.
+
+⚔️ ¡Y ATENCIÓN PORQUE TENDREMOS SUPERCLÁSICO EN SEMIFINALES: BOCA JUNIORS VS INDEPENDIENTE! 🏟️🇦🇷
+
+🔥 ¡El Cruce 3 de Cuartos (Cruzeiro vs Racing) ya está disponible en mi perfil para votar! 🗳️
+¿Quién clasifica a Semis?
+
+#CopaAmericaDeEstadios #Independiente #SantosFC #LibertadoresDeAmerica #VilaBelmiro #BocaJuniors #CopaAmerica #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 ¡INDEPENDIENTE CLASIFICÓ A SEMIFINALES! 🔥🇦🇷
+¡El Rey de Copas se mete entre los 4 mejores estadios de América tras imponerse en un tremendo duelo de historia copera frente a Vila Belmiro del Santos FC!
+
+📊 RESULTADO FINAL CUARTOS 2:
+🟢 INDEPENDIENTE (Libertadores de América): 75% ✅ ¡A SEMIFINALES!
+⚪ SANTOS FC (Urbano Caldeira - Vila Belmiro): 25%
+
+🔥 ¡PRIMERA SEMIFINAL CONFIRMADA!
+BOCA JUNIORS (Alberto J. Armando) 🇦🇷 🆚 INDEPENDIENTE (Libertadores de América) 🇦🇷
+¡Duelo de gigantes del continente por el pase a la Gran Final!
+
+⚔️ CRUCE 3 DE CUARTOS DISPONIBLE AHORA EN NUESTRO PERFIL:
+Cruzeiro (Mineirão) 🇧🇷 🆚 Racing Club (El Cilindro) 🇦🇷. 🗳️
+Dejá tu voto para definir al próximo semifinalista.
+
+🎮 Jugá gratis a StadiumGuessr en: estadiosvirtuales.com
+
+#CopaAmericaDeEstadios #CopaAmerica #Independiente #SantosFC #LibertadoresDeAmerica #TodoRojo #BocaJuniors #LaBombonera #Estadios #FutbolSudamericano #EstadiosVirtuales`
     }
 };
 
@@ -993,7 +1077,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     let cruce7Next = cfg.cruceNum === 6;
 
     let cuartos1HTML = '';
-    if (cfg.isCuartos && cfg.cruceNum === 1) {
+    if (cfg.isCuartos) {
         cuartos1HTML = renderStageNode('CUARTOS 1', 315, bCYC1 - 28, 88, 56, '#00ff77', '#00ff77', `
             <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
                 <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
@@ -1038,7 +1122,27 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     }
 
     let cuartos2HTML = '';
-    if (cfg.isCuartos && cfg.cruceNum === 1) {
+    if (cfg.isCuartos && cfg.cruceNum === 2) {
+        cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 28, 88, 56, '#00ff77', '#00ff77', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
+                <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <img src="${escudosBracket.independiente}" style="width:16px; height:16px; object-fit:contain;">
+                        <span style="color:#00ff77; font-size:9px; font-weight:900;">INDEP.</span>
+                    </div>
+                    <span style="color:#00ff77; font-size:8.5px; font-weight:900;">${cfg.winner.porcentaje}% ✅</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <img src="${escudosBracket.santos}" style="width:16px; height:16px; object-fit:contain;">
+                        <span style="color:#94a3b8; font-size:9px; font-weight:700;">SANTOS</span>
+                    </div>
+                    <span style="color:#ef4444; font-size:8.5px; font-weight:700;">${cfg.loser.porcentaje}% ❌</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.isCuartos && cfg.cruceNum === 1) {
         cuartos2HTML = renderStageNode('CUARTOS 2', 315, bCYC2 - 28, 88, 56, '#ffd700', '#ffd700', `
             <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center; box-shadow:0 0 20px rgba(255,215,0,0.45); border-radius:10px;">
                 <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
@@ -1082,7 +1186,24 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     }
 
     let cuartos3HTML = '';
-    if (cfg.isCuartos || cfg.cruceNum >= 6) {
+    if (cfg.isCuartos && cfg.cruceNum === 2) {
+        cuartos3HTML = renderStageNode('CUARTOS 3', 677, bCYC1 - 28, 88, 56, '#ffd700', '#ffd700', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center; box-shadow:0 0 20px rgba(255,215,0,0.45); border-radius:10px;">
+                <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <img src="${escudosBracket.cruzeiro}" style="width:16px; height:16px; object-fit:contain;">
+                        <span style="color:#ffd700; font-size:9px; font-weight:900;">CRUZEIRO</span>
+                    </div>
+                    <span style="background:rgba(255,215,0,0.25); border:1px solid #ffd700; color:#ffd700; font-size:7.5px; font-weight:900; padding:1px 3px; border-radius:4px;">HOY</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.racing}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#ffffff; font-size:9px; font-weight:900;">RACING</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.isCuartos || cfg.cruceNum >= 6) {
         // Cruce 6 en adelante / Cuartos: ¡Cruzeiro vs Racing confirmado en Cuartos 3!
         cuartos3HTML = renderStageNode('CUARTOS 3', 677, bCYC1 - 28, 88, 56, '#00ff77', '#00ff77', `
             <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center;">
@@ -1129,7 +1250,21 @@ async function generarOverlaysResultado(cfg, assetsDir) {
     }
 
     let semi1HTML = '';
-    if (cfg.isCuartos && cfg.cruceNum >= 1) {
+    if (cfg.isCuartos && cfg.cruceNum >= 2) {
+        semi1HTML = renderStageNode('SEMI 1', 400, bCYSemi - 28, 92, 56, '#00ff77', '#00ff77', `
+            <div style="display:flex; flex-direction:column; gap:2px; padding:3px 5px; width:100%; justify-content:center; box-shadow:0 0 20px rgba(0,255,119,0.45); border-radius:10px;">
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.boca}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#00ff77; font-size:9.5px; font-weight:900;">BOCA</span>
+                </div>
+                <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                    <img src="${escudosBracket.independiente}" style="width:16px; height:16px; object-fit:contain;">
+                    <span style="color:#00ff77; font-size:9.5px; font-weight:900;">INDEP.</span>
+                </div>
+            </div>
+        `);
+    } else if (cfg.isCuartos && cfg.cruceNum >= 1) {
         semi1HTML = renderStageNode('SEMI 1', 408, bCYSemi - 24, 64, 48, '#00ff77', '#00ff77', `
             <div style="display:flex; align-items:center; gap:4px; padding:2px;">
                 <img src="${escudosBracket.boca}" style="width:18px; height:18px; object-fit:contain;">
@@ -1186,8 +1321,12 @@ async function generarOverlaysResultado(cfg, assetsDir) {
             <!-- LÍNEA GANADORA BOCA A SEMIFINAL 1 (VERDE NEÓN) -->
             <path d="M 403 ${bCYC1} L 405 ${bCYC1} L 405 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
             <!-- LÍNEA CUARTOS 2 A SEMIFINAL 1 -->
+            ${cfg.cruceNum >= 2 ? `
+            <path d="M 403 ${bCYC2} L 405 ${bCYC2} L 405 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="#00ff77" stroke-width="4.5" filter="drop-shadow(0 0 8px #00ff77)" />
+            ` : `
             <path d="M 403 ${bCYC2} L 405 ${bCYC2} L 405 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
-            <path d="M 470 ${bCYSemi} L 475 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
+            `}
+            <path d="M 496 ${bCYSemi} L 505 ${bCYSemi}" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="3,2" />
             ` : `
             <path d="M 385 ${bCYC1} L 398 ${bCYC1} L 398 ${bCYC2} L 385 ${bCYC2}" fill="none" stroke="rgba(0, 176, 255, 0.75)" stroke-width="2.5" />
             <path d="M 398 ${bCYSemi} L 408 ${bCYSemi}" fill="none" stroke="rgba(0, 176, 255, 0.95)" stroke-width="2.5" />
