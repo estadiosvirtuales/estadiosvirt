@@ -3721,9 +3721,9 @@ const TRIVIAS_DATABASE = [
         "color": "#00ff77"
       },
       {
-        "icon": "🌊",
+        "icon": "🏔️",
         "tag": "PISTA 2:",
-        "text": "Ubicado frente al lago más famoso del norte italiano.",
+        "text": "Ubicado a pocos kilómetros de la frontera con Suiza.",
         "color": "#38bdf8"
       },
       {
@@ -3733,7 +3733,7 @@ const TRIVIAS_DATABASE = [
         "color": "#ffd700"
       }
     ],
-    "portadaClue": "13.600 hinchas · Postal al borde del lago · Joya de Serie A",
+    "portadaClue": "13.600 hinchas · Al pie de los Alpes · Joya de Serie A",
     "copys": {
       "club": "COMO 1907",
       "paisHashtag": "#como1907 #nicopaz #cescfabregas #seriea #calcio #stadiumguessr",
