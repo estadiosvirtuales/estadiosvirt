@@ -499,7 +499,7 @@ Chivas (Estadio Akron) 🇲🇽 vs. Rosario Central (Gigante de Arroyito) 🇦�
         textFile: 'TEXTOS_RESULTADO_CUARTOS_01.txt',
         clasificadoBadge: '👑 PRIMER SEMIFINALISTA CONFIRMADO',
         escena2Title: '¡LA BOMBONERA EN SEMIFINALES! 🔥',
-        escena2Sub: 'Triunfo con el 70% de los votos de la comunidad',
+        escena2Sub: 'Triunfo con el 66% de los votos de la comunidad',
         proximoRival: 'Independiente o Santos FC en Semis',
         fraseCelebracion: 'El templo xeneize de Brandsen 805 hace temblar América y se mete entre los 4 mejores estadios 🏟️',
         footerComunidad: 'La Bombonera avanza a las Semifinales',
@@ -514,8 +514,8 @@ Chivas (Estadio Akron) 🇲🇽 vs. Rosario Central (Gigante de Arroyito) 🇦�
             ciudadPais: 'Buenos Aires, Argentina',
             capacidadTexto: '57.200 esp.',
             escudoFile: 'Boca.webp',
-            votos: 21,
-            porcentaje: 70,
+            votos: 23,
+            porcentaje: 66,
             borderColor: '#00e676',
             videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\La bombonera 3.mp4"
         },
@@ -527,18 +527,18 @@ Chivas (Estadio Akron) 🇲🇽 vs. Rosario Central (Gigante de Arroyito) 🇦�
             ciudadPais: 'São Paulo, Brasil',
             capacidadTexto: '66.795 esp.',
             escudoFile: 'saopaulo.webp',
-            votos: 9,
-            porcentaje: 30,
+            votos: 12,
+            porcentaje: 34,
             borderColor: 'rgba(255,255,255,0.3)',
             videoPath: "E:\\Google earth studio\\Brasil\\Estadio Cícero Pompeu de Toledo_ São Paulo Futebol Clube.mp4"
         },
-        totalComentarios: 30,
+        totalComentarios: 35,
         nextCruceNum: 2,
         nextCruceTexto: 'Independiente vs. Santos FC',
         bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
         copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
 🏆 ¡Boca Juniors es el PRIMER SEMIFINALISTA de la Copa América de Estadios! 🇦🇷🔥
-La Bombonera superó a MorumBIS (São Paulo) con el 70% de los votos de la comunidad (21 a 9).
+La Bombonera superó a MorumBIS (São Paulo) con el 66% de los votos de la comunidad (23 a 12).
 
 ⚔️ ¡Y en Semifinales enfrentará al ganador de INDEPENDIENTE VS SANTOS FC! 🏟️
 
@@ -554,8 +554,8 @@ La Bombonera superó a MorumBIS (São Paulo) con el 70% de los votos de la comun
 El templo de Brandsen 805 hizo temblar la votación ante el imponente MorumBIS de São Paulo:
 
 📊 RESULTADO FINAL CUARTOS 1:
-🟢 BOCA JUNIORS (Alberto J. Armando): 70% (21 votos) ✅ ¡A SEMIFINALES!
-⚪ SÃO PAULO FC (Cícero Pompeu de Toledo): 30% (9 votos)
+🟢 BOCA JUNIORS (Alberto J. Armando): 66% (23 votos) ✅ ¡A SEMIFINALES!
+⚪ SÃO PAULO FC (Cícero Pompeu de Toledo): 34% (12 votos)
 
 🔥 ¡EL PRIMER SEMIFINALISTA YA TIENE SU LUGAR!
 El rival de Boca en Semifinales saldrá de:
@@ -583,9 +583,9 @@ Dejá tu voto entre el Rey de Copas y el Peixe.
         textFile: 'TEXTOS_RESULTADO_CUARTOS_02.txt',
         clasificadoBadge: '👑 SEGUNDO SEMIFINALISTA CONFIRMADO',
         escena2Title: '¡EL LIBERTADORES DE AMÉRICA EN SEMIS! 🔥',
-        escena2Sub: 'Triunfo en la votación de la comunidad',
+        escena2Sub: 'Victoria aplastante con el 98% de los votos',
         proximoRival: 'Boca Juniors en Semifinales',
-        fraseCelebracion: 'El templo del Rey de Copas de Avellaneda hace valer su peso copero y clasifica a Semifinales contra Boca Juniors 🏟️',
+        fraseCelebracion: 'El templo del Rey de Copas de Avellaneda arrasa con el 98% de los votos y clasifica a Semifinales contra Boca Juniors 🏟️',
         footerComunidad: 'El Libertadores de América avanza a las Semifinales',
         bracketHeaderSub: '¡PRIMERA SEMIFINAL CONFIRMADA: BOCA VS INDEPENDIENTE!',
         nextCruceBanner: 'PRÓXIMO CRUCE: CRUZEIRO VS RACING CLUB',
@@ -598,8 +598,8 @@ Dejá tu voto entre el Rey de Copas y el Peixe.
             ciudadPais: 'Avellaneda, Argentina',
             capacidadTexto: '42.069 esp.',
             escudoFile: 'Independiente.webp',
-            votos: 20,
-            porcentaje: 75,
+            votos: 49,
+            porcentaje: 98,
             borderColor: '#00e676',
             videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4"
         },
@@ -611,18 +611,18 @@ Dejá tu voto entre el Rey de Copas y el Peixe.
             ciudadPais: 'Santos, Brasil',
             capacidadTexto: '16.068 esp.',
             escudoFile: 'santos.webp',
-            votos: 7,
-            porcentaje: 25,
+            votos: 1,
+            porcentaje: 2,
             borderColor: 'rgba(255,255,255,0.3)',
             videoPath: "E:\\Google earth studio\\Brasil\\Estadio Urbano Caldeira_ Santos FC.mp4"
         },
-        totalComentarios: 27,
+        totalComentarios: 50,
         nextCruceNum: 3,
         nextCruceTexto: 'Cruzeiro vs. Racing Club',
         bgBracketVideo: "E:\\Google earth studio\\México\\Estadio Azteca.mp4",
         copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y 100% LIBRE DE BLOQUEOS) ===
 🏆 ¡Independiente es el SEGUNDO SEMIFINALISTA de la Copa América de Estadios! 🇦🇷🔥
-El Libertadores de América superó a Vila Belmiro (Santos FC) y avanza a la siguiente ronda.
+El Libertadores de América arrasó con el 98% de los votos frente al 2% de Vila Belmiro (Santos FC).
 
 ⚔️ ¡Y ATENCIÓN PORQUE TENDREMOS SUPERCLÁSICO EN SEMIFINALES: BOCA JUNIORS VS INDEPENDIENTE! 🏟️🇦🇷
 
@@ -633,12 +633,12 @@ El Libertadores de América superó a Vila Belmiro (Santos FC) y avanza a la sig
 
 
 === OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
-🏆 ¡INDEPENDIENTE CLASIFICÓ A SEMIFINALES! 🔥🇦🇷
-¡El Rey de Copas se mete entre los 4 mejores estadios de América tras imponerse en un tremendo duelo de historia copera frente a Vila Belmiro del Santos FC!
+🏆 ¡INDEPENDIENTE CLASIFICÓ A SEMIFINALES CON EL 98%! 🔥🇦🇷
+¡El Rey de Copas se mete entre los 4 mejores estadios de América con una victoria aplastante frente al mítico Vila Belmiro del Santos FC!
 
 📊 RESULTADO FINAL CUARTOS 2:
-🟢 INDEPENDIENTE (Libertadores de América): 75% ✅ ¡A SEMIFINALES!
-⚪ SANTOS FC (Urbano Caldeira - Vila Belmiro): 25%
+🟢 INDEPENDIENTE (Libertadores de América): 98% ✅ ¡A SEMIFINALES!
+⚪ SANTOS FC (Urbano Caldeira - Vila Belmiro): 2%
 
 🔥 ¡PRIMERA SEMIFINAL CONFIRMADA!
 BOCA JUNIORS (Alberto J. Armando) 🇦🇷 🆚 INDEPENDIENTE (Libertadores de América) 🇦🇷
@@ -1085,7 +1085,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
                         <img src="${escudosBracket.boca}" style="width:16px; height:16px; object-fit:contain;">
                         <span style="color:#00ff77; font-size:9px; font-weight:900;">BOCA</span>
                     </div>
-                    <span style="color:#00ff77; font-size:8.5px; font-weight:900;">70% ✅</span>
+                    <span style="color:#00ff77; font-size:8.5px; font-weight:900;">66% ✅</span>
                 </div>
                 <div style="height:1px; width:100%; background:rgba(255,255,255,0.2);"></div>
                 <div style="display:flex; align-items:center; gap:5px; justify-content:space-between;">
@@ -1093,7 +1093,7 @@ async function generarOverlaysResultado(cfg, assetsDir) {
                         <img src="${escudosBracket.saopaulo}" style="width:16px; height:16px; object-fit:contain;">
                         <span style="color:#94a3b8; font-size:9px; font-weight:700;">SÃO PAULO</span>
                     </div>
-                    <span style="color:#ef4444; font-size:8.5px; font-weight:700;">30% ❌</span>
+                    <span style="color:#ef4444; font-size:8.5px; font-weight:700;">34% ❌</span>
                 </div>
             </div>
         `);
