@@ -246,7 +246,7 @@ async function procesarEstadio(item, index, total) {
                 top: 16px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(9, 14, 23, 0.94);
+                background: rgba(9, 14, 23, 0.95);
                 border: 2px solid #00e676;
                 color: #00e676;
                 padding: 10px 26px;
@@ -258,6 +258,7 @@ async function procesarEstadio(item, index, total) {
                 gap: 10px;
                 z-index: 1000;
                 box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+                white-space: nowrap;
             }
             .score-badge span { color: #fff; }
             .bottom-badge {
@@ -265,7 +266,7 @@ async function procesarEstadio(item, index, total) {
                 bottom: 16px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: rgba(9, 14, 23, 0.94);
+                background: rgba(9, 14, 23, 0.95);
                 border: 1px solid rgba(255,255,255,0.25);
                 color: #ffd700;
                 padding: 8px 24px;
@@ -273,7 +274,8 @@ async function procesarEstadio(item, index, total) {
                 font-size: 20px;
                 font-weight: 700;
                 z-index: 1000;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+                white-space: nowrap;
             }
             .user-pin {
                 width: 32px;
@@ -293,21 +295,20 @@ async function procesarEstadio(item, index, total) {
             <div class="bottom-badge">${item.ubicacionBadge}</div>
         </div>
         <script>
+            window.tilesDone = false;
             const userPos = [${item.userLat}, ${item.userLng}];
             const targetPos = [${item.targetLat}, ${item.targetLng}];
             const centerLat = (userPos[0] + targetPos[0]) / 2;
             const centerLng = (userPos[1] + targetPos[1]) / 2;
 
             const map = L.map('map', { attributionControl: false, zoomControl: false }).setView([centerLat, centerLng], 15);
-            window.tilesDone = false;
             const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
             tileLayer.on('load', () => { window.tilesDone = true; });
-            setTimeout(() => { window.tilesDone = true; }, 3500);
 
             L.polyline([userPos, targetPos], { color: '#ff3b30', weight: 4, dashArray: '8, 8', opacity: 0.95 }).addTo(map);
 
             L.circleMarker(targetPos, { radius: 14, color: '#00e676', fillColor: '#090e17', fillOpacity: 1, weight: 4 }).addTo(map);
-            L.circleMarker(targetPos, { radius: 35, color: '#00e676', fillColor: '#00e676', fillOpacity: 0.2, weight: 2 }).addTo(map);
+            L.circleMarker(targetPos, { radius: 35, color: '#00e676', fillColor: '#00e676', fillOpacity: 0.22, weight: 2 }).addTo(map);
 
             const pinIcon = L.divIcon({ className: 'custom-pin-wrap', html: '<div class="user-pin"></div>', iconSize: [32, 32], iconAnchor: [16, 32] });
             L.marker(userPos, { icon: pinIcon }).addTo(map);
@@ -315,11 +316,14 @@ async function procesarEstadio(item, index, total) {
     </body>
     </html>`;
 
-    await page.setContent(mapHtml, { waitUntil: 'domcontentloaded' });
+    await page.setContent(mapHtml, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForSelector('#map-card', { timeout: 8000 }).catch(() => {});
     try {
-        await page.waitForFunction(() => window.tilesDone === true, { timeout: 6000 });
-    } catch(e) {}
-    await new Promise(r => setTimeout(r, 600));
+        await page.waitForFunction(() => window.tilesDone === true, { timeout: 12000 });
+    } catch(e) {
+        await new Promise(r => setTimeout(r, 2000));
+    }
+    await new Promise(r => setTimeout(r, 800));
     const mapCardEl = await page.$('#map-card');
     const mapImgPath = path.join(__dirname, `mapa_${item.id}_card.png`);
     await mapCardEl.screenshot({ path: mapImgPath, omitBackground: true });
