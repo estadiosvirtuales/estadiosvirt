@@ -643,6 +643,69 @@ El Gigante de Arroyito de Rosario Central frente al colosal Mâs Monumental de R
 🎮 Jugá gratis en el link de nuestra bio.
 
 #CopaAmericaDeEstadios #CopaAmerica #RosarioCentral #RiverPlate #GiganteDeArroyito #Monumental #CARP #Rosario #FutbolSudamericano #EstadiosVirtuales #Estadios`
+    },
+    'semifinal-1': {
+        slug: '01-BOCA-VS-INDEPENDIENTE',
+        fase: 'SEMIFINALES',
+        faseSiguiente: 'la Gran Final',
+        llaveNumero: 'SEMIFINAL 1 / 2',
+        cruceSiguiente: 'Cruzeiro/Racing vs Rosario Central/River Plate',
+        tituloBadge: '🏆 COPA AMÉRICA DE ESTADIOS · SEMIFINAL 1/2',
+        pregunta: '¿QUIÉN PASA A LA GRAN FINAL?',
+        subtitulo: 'Boca Juniors vs. Independiente',
+        subtituloVotacion: 'VOTÁ EN COMENTARIOS: ¿1 Ó 2? 🗳️',
+        videoFileName: 'CopaAmerica_Semifinal_01_Boca_vs_Independiente.mp4',
+        portadaFileName: 'Portada_CopaAmerica_Semifinal_01_Boca_Independiente.jpg',
+        team1: {
+            numero: '1',
+            nombre: 'BOCA JUNIORS',
+            estadio: 'Alberto J. Armando',
+            apodo: 'La Bombonera',
+            ciudadPais: 'Buenos Aires, Argentina',
+            capacidadTexto: '57.200 esp.',
+            escudoFile: 'Boca.webp',
+            borderColor: '#0055b8',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Bombonera(listo)\\La bombonera 3.mp4"
+        },
+        team2: {
+            numero: '2',
+            nombre: 'INDEPENDIENTE',
+            estadio: 'Libertadores de América',
+            apodo: 'Ricardo E. Bochini',
+            ciudadPais: 'Avellaneda, Argentina',
+            capacidadTexto: '42.069 esp.',
+            escudoFile: 'Independiente.webp',
+            borderColor: '#e11d2e',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\rojo(listo)\\Estadio Libertadores de América - Ricardo Enrique Bochini.mp4"
+        },
+        copy: `=== OPCIÓN 1: TIKTOK (CORTA, DIRECTA Y LIBRE DE BLOQUEOS) ===
+🏆 ¡PRIMERA SEMIFINAL DE LA COPA AMÉRICA DE ESTADIOS! 🇦🇷🔥
+¡SUPERCLÁSICO HISTÓRICO: BOCA JUNIORS VS INDEPENDIENTE POR EL PASE A LA GRAN FINAL!
+
+🏟️ SEMIFINAL 1:
+1️⃣ ALBERTO J. ARMANDO (Boca Juniors · La Bombonera)
+2️⃣ LIBERTADORES DE AMÉRICA (Independiente · Ricardo E. Bochini)
+
+👉 COMENTÁ "1" O "2" para clasificar a tu favorito a la Gran Final. 🗳️
+¿La acústica y mística de Brandsen 805 o la historia del Rey de Copas de Avellaneda?
+
+#CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #Independiente #LaBombonera #LibertadoresDeAmerica #TodoRojo #Boca #EstadiosVirtuales #Estadios #Futbol
+
+
+=== OPCIÓN 2: INSTAGRAM / REELS / COMPLETA ===
+🏆 COPA AMÉRICA DE ESTADIOS | SEMIFINAL 1/2 🔥🇦🇷
+¡LLEGÓ LA HORA DE LA PRIMERA SEMIFINAL! Dos de los templos más legendarios del fútbol mundial se enfrentan mano a mano por el primer boleto a la GRAN FINAL de la Copa América de Estadios.
+
+🏟️ SEMIFINAL 1:
+1️⃣ ESTADIO ALBERTO J. ARMANDO (Boca Juniors · 57.200 esp.)
+2️⃣ ESTADIO LIBERTADORES DE AMÉRICA - BOCHINI (Independiente · 42.069 esp.)
+
+👉 COMENTÁ "1" O "2" para definir cuál de los dos estadios llega a la Gran Final. 🗳️
+⚔️ El clasificado enfrentará en la Gran Final al ganador de la otra llave (Cruzeiro/Racing vs Rosario Central/River Plate).
+
+🎮 Jugá gratis a StadiumGuessr en: estadiosvirtuales.com
+
+#CopaAmericaDeEstadios #CopaAmerica #BocaJuniors #Independiente #LaBombonera #LibertadoresDeAmerica #Boca #TodoRojo #FutbolArgentino #FutbolSudamericano #EstadiosVirtuales #Estadios`
     }
 };
 
@@ -1196,7 +1259,8 @@ async function renderizarCopaAmericaDuelo(dueloKey) {
 // 5. EJECUCIÓN PRINCIPAL (CLI)
 // ==========================================
 async function main() {
-    const target = process.argv[2] || 'octavos-1';
+    let target = process.argv[2] || 'octavos-1';
+    if (target === 'semi-1') target = 'semifinal-1';
 
     if (target === 'octavos-all') {
         const keys = Object.keys(CONFIG_COPA_AMERICA);
