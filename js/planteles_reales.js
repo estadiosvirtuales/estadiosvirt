@@ -20,7 +20,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Figal"
+                "nombre": "Anselmino"
             },
             {
                 "pos": "DFC",
@@ -172,7 +172,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Loyola"
+                "nombre": "Vera"
             },
             {
                 "pos": "DFC",
@@ -180,15 +180,15 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Pellegrino"
+                "nombre": "Laso"
             },
             {
                 "pos": "LI",
-                "nombre": "Pérez"
+                "nombre": "Sporle"
             },
             {
                 "pos": "MC",
-                "nombre": "F. González"
+                "nombre": "Loyola"
             },
             {
                 "pos": "MCD",
@@ -196,7 +196,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Loyola"
+                "nombre": "F. González"
             },
             {
                 "pos": "ED",
@@ -276,11 +276,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "L. García"
+                "nombre": "J. García"
             },
             {
                 "pos": "DFC",
-                "nombre": "D. Fernández"
+                "nombre": "Mammana"
             },
             {
                 "pos": "DFC",
@@ -332,15 +332,15 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "F. Pereyra"
+                "nombre": "Tobio"
             },
             {
                 "pos": "DFC",
-                "nombre": "Carrizo"
+                "nombre": "F. Pereyra"
             },
             {
                 "pos": "LI",
-                "nombre": "C. Benítez"
+                "nombre": "C. Ibáñez"
             },
             {
                 "pos": "MC",
@@ -388,11 +388,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "F. Romero"
+                "nombre": "Boselli"
             },
             {
                 "pos": "LI",
-                "nombre": "Arzamendia"
+                "nombre": "Benedetti"
             },
             {
                 "pos": "MC",
@@ -416,7 +416,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "Manyoma"
+                "nombre": "Cetré"
             }
         ]
     },
@@ -1556,7 +1556,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "F. González"
+                "nombre": "Nazareno Fúnez"
             },
             {
                 "pos": "EI",
@@ -1619,7 +1619,7 @@ window.PLAN_REALES = {
     "arg_quilmes": {
         "tactica": "4-3-3",
         "dt": "Darío Franco",
-        "figura": "González Pirez",
+        "figura": "Parisi",
         "arquero": "Glellel",
         "titulares": [
             {
@@ -2124,7 +2124,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MI",
-                "nombre": "A. González"
+                "nombre": "Arnaldo González"
             },
             {
                 "pos": "DC",
@@ -2503,7 +2503,7 @@ window.PLAN_REALES = {
     "arg_defensores": {
         "tactica": "4-4-2",
         "dt": "Carlos Mayor",
-        "figura": "Aguirre",
+        "figura": "E. Aguirre",
         "arquero": "Medina",
         "titulares": [
             {
@@ -2512,7 +2512,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Gutiérrez"
+                "nombre": "G. Mendoza"
             },
             {
                 "pos": "DFC",
@@ -2528,11 +2528,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MD",
-                "nombre": "Chávez"
+                "nombre": "Salto"
             },
             {
                 "pos": "MC",
-                "nombre": "Gutiérrez"
+                "nombre": "I. Gutiérrez"
             },
             {
                 "pos": "MC",
@@ -3377,6 +3377,10 @@ window.PLAN_REALES = {
             {
                 "pos": "MCO",
                 "nombre": "Rubens"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Hulk"
             }
         ]
     },
@@ -3956,11 +3960,11 @@ window.PLAN_REALES = {
         "tactica": "4-2-3-1",
         "dt": "Hansi Flick",
         "figura": "Lamine Yamal",
-        "arquero": "Szczęsny",
+        "arquero": "Iñaki Peña",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Szczęsny"
+                "nombre": "Iñaki Peña"
             },
             {
                 "pos": "LD",
@@ -4578,7 +4582,7 @@ window.PLAN_REALES = {
     },
     "gb-eng": {
         "tactica": "4-2-3-1",
-        "dt": "Gareth Southgate",
+        "dt": "Thomas Tuchel",
         "figura": "Jude Bellingham",
         "arquero": "Pickford",
         "titulares": [
@@ -6128,7 +6132,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "N. Williams"
+                "nombre": "Nico Williams"
             },
             {
                 "pos": "DC",
@@ -7336,15 +7340,15 @@ window.PLAN_REALES = {
         "tactica": "4-2-3-1",
         "dt": "Erwin Durán",
         "figura": "Altamirano",
-        "arquero": "Sanhueza",
+        "arquero": "E. Sanhueza",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sanhueza"
+                "nombre": "E. Sanhueza"
             },
             {
                 "pos": "LD",
-                "nombre": "Sanhueza"
+                "nombre": "D. Sanhueza"
             },
             {
                 "pos": "DFC",
@@ -7500,11 +7504,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Uzcátegui"
+                "nombre": "A. Uzcátegui"
             },
             {
                 "pos": "DFC",
-                "nombre": "Uzcátegui"
+                "nombre": "R. Uzcátegui"
             },
             {
                 "pos": "DFC",
@@ -7744,7 +7748,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "Brumado"
+                "nombre": "Robson"
             }
         ]
     },
@@ -8216,10 +8220,4 @@ window.PLAN_REALES = {
             }
         ]
     }
-};
-
-// Helper global para consultar los datos de un rival
-window.obtenerDatosPlantelRival = function(rivalId) {
-    if (!window.PLAN_REALES) return null;
-    return window.PLAN_REALES[rivalId] || null;
 };
