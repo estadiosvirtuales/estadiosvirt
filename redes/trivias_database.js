@@ -3717,27 +3717,27 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 13.602 espectadores directamente a orillas del agua.",
+        "text": "Capacidad para 13.600 hinchas a orillas del agua.",
         "color": "#00ff77"
       },
       {
         "icon": "🌊",
         "tag": "PISTA 2:",
-        "text": "Ubicado frente al mundialmente famoso Lago de Como.",
+        "text": "Ubicado frente al lago más famoso del norte italiano.",
         "color": "#38bdf8"
       },
       {
         "icon": "💎",
         "tag": "PISTA 3:",
-        "text": "El equipo revelación de la Serie A con Nico Paz y Cesc Fàbregas.",
+        "text": "La revelación de Serie A con Cesc Fàbregas y Nico Paz.",
         "color": "#ffd700"
       }
     ],
-    "portadaClue": "SINIGAGLIA · COMO 1907",
+    "portadaClue": "13.600 hinchas · Postal al borde del lago · Joya de Serie A",
     "copys": {
       "club": "COMO 1907",
-      "paisHashtag": "#como1907 #nicopaz #cescfabregas #lagodicomo #seriea #calcio #stadiumguessr",
-      "extraPista": "El estadio más cinematográfico del fútbol mundial al borde del Lago de Como."
+      "paisHashtag": "#como1907 #nicopaz #cescfabregas #seriea #calcio #stadiumguessr",
+      "extraPista": "el estadio más cinematográfico del fútbol mundial al borde del agua y la magia de Nico Paz en Serie A"
     }
   },
   {
