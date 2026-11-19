@@ -105,7 +105,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 26.000 hinchas en La Paternal.",
+        "text": "Capacidad para 26.000 hinchas.",
         "color": "#00ff77"
       },
       {
@@ -121,7 +121,7 @@ const TRIVIAS_DATABASE = [
         "color": "#ffd700"
       }
     ],
-    "portadaClue": "26.000 hinchas · La Paternal · Debut del '10'",
+    "portadaClue": "26.000 hinchas · El Semillero del Mundo · Debut del '10'",
     "copys": {
       "club": "ARGENTINOS JUNIORS",
       "paisHashtag": "#argentinosjuniors #estadios #stadiumguessr #futbol #geoguessr",
