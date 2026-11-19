@@ -940,11 +940,11 @@ El Superclásico del fútbol chileno: Estadio Nacional de Ñuñoa vs Estadio Mon
         pais: 'Argentina',
         tituloBadge: '🥊 Duelo de Capacidad · Clásico Cordobés',
         pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
-        subtitulo: 'El Gigante de Alberdi vs El Mario Alberto Kempes',
+        subtitulo: 'Gigante de Alberdi vs La Boutique',
         subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
         videoFileName: 'Duelo_Capacidad_Belgrano_vs_Talleres.mp4',
         portadaFileName: 'Portada_Duelo_Belgrano_Talleres.jpg',
-        bannerDiferencia: '¡EL KEMPES POR +23.000 LUGARES!',
+        bannerDiferencia: '¡BELGRANO POR 16.000 LUGARES!',
         team1: {
             id: 'belgrano',
             nombre: 'BELGRANO',
@@ -955,27 +955,27 @@ El Superclásico del fútbol chileno: Estadio Nacional de Ñuñoa vs Estadio Mon
             escudoFile: 'Belgrano.webp',
             borderColor: '#38bdf8',
             videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\Subidos\\belgrano.mp4",
-            esGanador: false
+            esGanador: true
         },
         team2: {
             id: 'talleres',
             nombre: 'TALLERES',
-            estadio: 'Mario Alberto Kempes',
-            apodo: 'El Coloso Cordobés',
-            capacidadNum: 57000,
-            capacidadTexto: '57.000 esp.',
+            estadio: 'Francisco Cabasés',
+            apodo: 'La Boutique',
+            capacidadNum: 18000,
+            capacidadTexto: '18.000 esp.',
             escudoFile: 'Talleres.webp',
             borderColor: '#002244',
-            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\Videos\\kempes.mp4",
-            esGanador: true
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\A\\talleres\\talleres.mp4",
+            esGanador: false
         },
         copy: `🥊 DUELO DE CAPACIDAD: ¿BELGRANO O TALLERES? 🏟️🔥
-El clásico cordobés: el Gigante de Alberdi vs el Estadio Mario Alberto Kempes. ¿Cuál tiene mayor capacidad de público?
+El histórico Clásico Cordobés: el Gigante de Alberdi vs La Boutique de Barrio Jardín (estadio propio de Talleres). ¿Cuál de los dos estadios tiene mayor capacidad oficial? ¡El resultado te va a sorprender! 😱
 
-👉 Dejá tu voto en los comentarios.
-🎮 Desafiá tu conocimiento de estadios en: estadiosvirtuales.com
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
 
-#Belgrano #Talleres #ClasicoCordobes #Kempes #GiganteDeAlberdi #Estadios #FutbolArgentino #EstadiosVirtuales`
+#Belgrano #Talleres #ClasicoCordobes #GiganteDeAlberdi #LaBoutique #FranciscoCabases #BarrioJardin #Alberdi #Estadios #FutbolArgentino #EstadiosVirtuales`
     },
     'platense-tigre': {
         slug: 'PLATENSE-VS-TIGRE',
