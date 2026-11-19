@@ -30,11 +30,11 @@ let STADIUMS_QUEUE = [
         puntosTexto: '4.880 PUNTOS 🔥',
         ubicacionBadge: '📍 La Paternal, CABA · DIEGO ARMANDO MARADONA',
         pistas: [
-            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 26.000 hinchas en el corazón de La Paternal', color: '#00ff77' },
-            { icon: '⭐', tag: 'PISTA 2:', text: 'El Semillero del Mundo: cuna de leyendas y campeones mundiales', color: '#38bdf8' },
-            { icon: '🔟', tag: 'PISTA 3:', text: 'El templo donde debutó Diego Armando Maradona en 1976', color: '#ffd700' }
+            { icon: '💡', tag: 'PISTA 1:', text: 'Capacidad para 26.000 hinchas en La Paternal.', color: '#00ff77' },
+            { icon: '⭐', tag: 'PISTA 2:', text: 'El legendario \'Semillero del Mundo\'.', color: '#38bdf8' },
+            { icon: '👑', tag: 'PISTA 3:', text: 'El templo donde debutó el \'10\' en 1976.', color: '#ffd700' }
         ],
-        portadaClue: '26.000 hinchas · La Paternal · Debut de D10S',
+        portadaClue: '26.000 hinchas · La Paternal · Debut del \'10\'',
         copys: {
             club: 'Argentinos Juniors',
             paisHashtag: '#argentinosjuniors #aaaj #paternal #maradona #diegomaradona #futbolargentino #estadios #stadiumguessr',

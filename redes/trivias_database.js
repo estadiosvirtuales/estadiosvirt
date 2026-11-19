@@ -105,23 +105,23 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 26.000 hinchas en el corazón de La Paternal.",
+        "text": "Capacidad para 26.000 hinchas en La Paternal.",
         "color": "#00ff77"
       },
       {
-        "icon": "🏟️",
+        "icon": "⭐",
         "tag": "PISTA 2:",
-        "text": "El Semillero del Mundo: cuna de leyendas y campeones mundiales.",
+        "text": "El legendario 'Semillero del Mundo'.",
         "color": "#38bdf8"
       },
       {
-        "icon": "⭐",
+        "icon": "👑",
         "tag": "PISTA 3:",
-        "text": "El templo donde debutó Diego Armando Maradona en 1976.",
+        "text": "El templo donde debutó el '10' en 1976.",
         "color": "#ffd700"
       }
     ],
-    "portadaClue": "DIEGO ARMANDO MARADONA · ARGENTINOS JUNIORS",
+    "portadaClue": "26.000 hinchas · La Paternal · Debut del '10'",
     "copys": {
       "club": "ARGENTINOS JUNIORS",
       "paisHashtag": "#argentinosjuniors #estadios #stadiumguessr #futbol #geoguessr",
