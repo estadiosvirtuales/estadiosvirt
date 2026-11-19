@@ -930,12 +930,103 @@ function prepararVistaPartidoCopa() {
     if (bUser) bUser.textContent = nombreUsuario;
     if (bRival) bRival.textContent = rival.nombre;
 
+    // 📋 Pizarra Táctica de Formaciones en Previa (Tu Once vs Rival con datos reales)
+    const rivalData = (typeof obtenerDatosPlantelRival === 'function') ? obtenerDatosPlantelRival(rival.id) : null;
+    const once = (typeof obtenerOnceInicial === 'function') ? obtenerOnceInicial() : {};
+    const fActual = (typeof FORMACIONES_TACTICAS !== 'undefined')
+        ? (FORMACIONES_TACTICAS[formacionOnceActual] || FORMACIONES_TACTICAS['4-3-3'])
+        : { nombre: '4-3-3', posiciones: [] };
+
+    let userArquero = 'Tu Arquero';
+    const userDefensas = [];
+    const userVolantes = [];
+    const userDelanteros = [];
+    const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
+    let nombreDTUser = 'Estrategia Táctica';
+    if (dtId && typeof DTS_CONFIG !== 'undefined' && DTS_CONFIG[dtId]) {
+        nombreDTUser = DTS_CONFIG[dtId].nombre;
+    }
+
+    if (fActual.posiciones) {
+        fActual.posiciones.forEach((item, idx) => {
+            const idAvatar = once[idx];
+            if (!idAvatar) return;
+            const cleanId = String(idAvatar).replace(/\.png$/i, '.webp');
+            if (cleanId === dtId || (typeof esAvatarDT === 'function' && esAvatarDT(cleanId))) return;
+            const nombre = (typeof obtenerNombreAvatar === 'function') ? obtenerNombreAvatar(idAvatar) : 'Jugador';
+            if (item.pos === 'POR') userArquero = nombre;
+            else if (['DFC', 'LD', 'LI', 'CAD', 'CAI'].includes(item.pos)) userDefensas.push(nombre);
+            else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(item.pos)) userVolantes.push(nombre);
+            else userDelanteros.push(nombre);
+        });
+    }
+    if (!userDefensas.length) userDefensas.push('La Defensa');
+    if (!userVolantes.length) userVolantes.push('El Mediocampo');
+    if (!userDelanteros.length) userDelanteros.push('La Delantera');
+
+    const rivalTactica = rivalData ? rivalData.tactica : '4-3-3';
+    const rivalDT = rivalData ? rivalData.dt : 'DT Oficial';
+    const rivalFigura = rivalData ? rivalData.figura : rival.nombre;
+    let rivalArquero = rivalData ? rivalData.arquero : 'Arquero Rival';
+    const rivalDef = [];
+    const rivalMed = [];
+    const rivalDel = [];
+
+    if (rivalData && rivalData.titulares) {
+        rivalData.titulares.forEach(t => {
+            if (t.pos === 'POR') rivalArquero = t.nombre;
+            else if (['DFC', 'LD', 'LI', 'CAD', 'CAI'].includes(t.pos)) rivalDef.push(t.nombre);
+            else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(t.pos)) rivalMed.push(t.nombre);
+            else rivalDel.push(t.nombre);
+        });
+    }
+    if (!rivalDef.length) rivalDef.push('Defensa Rival');
+    if (!rivalMed.length) rivalMed.push('Mediocampo Rival');
+    if (!rivalDel.length) rivalDel.push('Delantera Rival');
+
     const timeline = document.getElementById('sim-events-timeline');
-    timeline.innerHTML = `
-        <div class="sim-event-placeholder">
-            <i class="ph-bold ph-whistle"></i>
-            <span>Todo listo en el campo. Tocá <b>Iniciar Partido</b> para disputar los 90 minutos de juego.</span>
-        </div>`;
+    if (timeline) {
+        timeline.classList.add('has-lineups-previa');
+        const wrapper = timeline.closest('.sim-events-wrapper');
+        if (wrapper) wrapper.classList.add('has-lineups-previa');
+        timeline.innerHTML = `
+            <div class="sim-lineups-previa">
+                <div class="sim-lineup-col user-col">
+                    <div class="sim-lineup-head">
+                        <div class="sim-lineup-badge-team"><i class="ph-bold ph-shield-check"></i> <span>${nombreUsuario}</span></div>
+                        <div class="sim-lineup-meta">
+                            <span class="sim-tactica-tag">${fActual.nombre || formacionOnceActual}</span>
+                            <span class="sim-dt-tag"><i class="ph-bold ph-strategy"></i> ${nombreDTUser}</span>
+                        </div>
+                    </div>
+                    <div class="sim-lineup-rows">
+                        <div class="sim-lineup-group"><span class="sim-pos-label">POR</span><span class="sim-player-names">${userArquero}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEF</span><span class="sim-player-names">${userDefensas.join(' · ')}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">MED</span><span class="sim-player-names">${userVolantes.join(' · ')}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEL</span><span class="sim-player-names">${userDelanteros.join(' · ')}</span></div>
+                    </div>
+                </div>
+                <div class="sim-lineup-divider">
+                    <span class="sim-vs-pill">VS</span>
+                </div>
+                <div class="sim-lineup-col rival-col">
+                    <div class="sim-lineup-head">
+                        <div class="sim-lineup-badge-team"><i class="ph-bold ph-shield-warning"></i> <span>${rival.nombre}</span></div>
+                        <div class="sim-lineup-meta">
+                            <span class="sim-tactica-tag rival-tactica-tag">${rivalTactica}</span>
+                            <span class="sim-dt-tag"><i class="ph-bold ph-strategy"></i> ${rivalDT}</span>
+                        </div>
+                    </div>
+                    ${rivalFigura ? `<div class="sim-lineup-star-banner"><i class="ph-fill ph-star"></i> FIGURA: <b>${rivalFigura}</b></div>` : ''}
+                    <div class="sim-lineup-rows">
+                        <div class="sim-lineup-group"><span class="sim-pos-label">POR</span><span class="sim-player-names">${rivalArquero}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEF</span><span class="sim-player-names">${rivalDef.join(' · ')}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">MED</span><span class="sim-player-names">${rivalMed.join(' · ')}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEL</span><span class="sim-player-names">${rivalDel.join(' · ')}</span></div>
+                    </div>
+                </div>
+            </div>`;
+    }
 
     const inGameBar = document.getElementById('sim-in-game-bar');
     if (inGameBar) inGameBar.style.display = 'none';
@@ -1651,6 +1742,11 @@ window.iniciarSimulacionEnVivo = function() {
     const scoreUserEl = document.getElementById('sim-score-user');
     const scoreRivalEl = document.getElementById('sim-score-rival');
     const ballEl = document.getElementById('sim-pitch-ball');
+    const holderTagEl = document.getElementById('sim-ball-holder-tag');
+    if (holderTagEl) {
+        holderTagEl.className = 'sim-ball-holder-tag';
+        holderTagEl.textContent = '';
+    }
     const tagEl = document.getElementById('sim-pitch-tag');
     const goalLeft = document.getElementById('sim-goal-left');
     const goalRight = document.getElementById('sim-goal-right');
@@ -1743,11 +1839,30 @@ window.iniciarSimulacionEnVivo = function() {
     if (!userDelanteros.length) userDelanteros.push('Tu Delantero');
 
     const nombreCapitan = capitanId ? obtenerNombreAvatar(capitanId) : userDelanteros[0];
-    const tit = (rival.titulares && rival.titulares.length) ? rival.titulares : [];
-    const rivalDelanteros = tit.length ? tit.slice(0, 4) : [rival.nombre];
-    const rivalVolantes = tit.length > 4 ? tit.slice(4, 8) : ['El Mediocampo Rival'];
-    const rivalDefensas = tit.length > 8 ? tit.slice(8, 12) : ['La Defensa Rival'];
-    const rivalArquero = tit.length > 12 ? tit[12] : 'El Arquero Rival';
+    const rivalData = (typeof obtenerDatosPlantelRival === 'function') ? obtenerDatosPlantelRival(rival.id) : null;
+
+    let rivalDelanteros = [];
+    let rivalVolantes = [];
+    let rivalDefensas = [];
+    let rivalArquero = rivalData ? (rivalData.arquero || 'El Arquero Rival') : 'El Arquero Rival';
+
+    if (rivalData && rivalData.titulares) {
+        rivalData.titulares.forEach(t => {
+            if (t.pos === 'POR') rivalArquero = t.nombre;
+            else if (['DFC', 'LD', 'LI', 'CAD', 'CAI'].includes(t.pos)) rivalDefensas.push(t.nombre);
+            else if (['MCD', 'MC', 'MCO', 'MD', 'MI'].includes(t.pos)) rivalVolantes.push(t.nombre);
+            else rivalDelanteros.push(t.nombre);
+        });
+    } else {
+        const tit = (rival.titulares && rival.titulares.length) ? rival.titulares : [];
+        rivalDelanteros = tit.length ? tit.slice(0, 4) : [rival.nombre];
+        rivalVolantes = tit.length > 4 ? tit.slice(4, 8) : ['El Mediocampo Rival'];
+        rivalDefensas = tit.length > 8 ? tit.slice(8, 12) : ['La Defensa Rival'];
+        rivalArquero = tit.length > 12 ? tit[12] : 'El Arquero Rival';
+    }
+    if (!rivalDelanteros.length) rivalDelanteros = [rivalData?.figura || rival.nombre];
+    if (!rivalVolantes.length) rivalVolantes = ['El Mediocampo Rival'];
+    if (!rivalDefensas.length) rivalDefensas = ['La Defensa Rival'];
 
     const NOMBRES = {
         user:  { por: [userArquero],  def: userDefensas,  med: userVolantes,  del: userDelanteros },
@@ -1829,18 +1944,71 @@ window.iniciarSimulacionEnVivo = function() {
     const profDe = (eq, x) => eq === 'user' ? x : 100 - x;
     const xDe = (eq, prof) => eq === 'user' ? prof : 100 - prof;
 
-    // ================= 3. JUGADORES =================
-    const POS_BASE = {
+    // ================= 3. JUGADORES Y ESQUEMA TÁCTICO =================
+    const rivalTactica = rivalData ? rivalData.tactica : '4-3-3';
+    let basePosRival = {
+        'dot-r-por': [50, 94],
+        'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+        'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
+        'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57], 'dot-r-del3': [78, 56]
+    };
+
+    if (rivalTactica === '4-4-2') {
+        basePosRival = {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med1': [16, 68], 'dot-r-med2': [38, 69], 'dot-r-med3': [62, 69], 'dot-r-del3': [84, 68],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    } else if (rivalTactica === '4-2-3-1') {
+        basePosRival = {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med1': [36, 73], 'dot-r-med2': [64, 73],
+            'dot-r-del1': [18, 63], 'dot-r-med3': [50, 63], 'dot-r-del3': [82, 63],
+            'dot-r-del2': [50, 55]
+        };
+    } else if (rivalTactica === '3-5-2') {
+        basePosRival = {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [24, 83], 'dot-r-def2': [50, 84], 'dot-r-def3': [76, 83],
+            'dot-r-def4': [14, 68], 'dot-r-med1': [32, 70], 'dot-r-med2': [50, 69], 'dot-r-med3': [68, 70], 'dot-r-del3': [86, 68],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    } else if (rivalTactica === '3-4-3' || rivalTactica === '3-4-2-1') {
+        basePosRival = {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [24, 83], 'dot-r-def2': [50, 84], 'dot-r-def3': [76, 83],
+            'dot-r-def4': [16, 69], 'dot-r-med1': [38, 70], 'dot-r-med2': [62, 70], 'dot-r-med3': [84, 69],
+            'dot-r-del1': [20, 56], 'dot-r-del2': [50, 56], 'dot-r-del3': [80, 56]
+        };
+    } else if (rivalTactica === '5-3-2') {
+        basePosRival = {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [14, 82], 'dot-r-def2': [32, 83], 'dot-r-def3': [50, 84], 'dot-r-def4': [68, 83], 'dot-r-del3': [86, 82],
+            'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    }
+
+    const POS_BASE = Object.assign({
         'dot-u-por': [50, 6],
         'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
         'dot-u-med1': [26, 32], 'dot-u-med2': [50, 30], 'dot-u-med3': [74, 32],
-        'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43], 'dot-u-del3': [78, 44],
+        'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43], 'dot-u-del3': [78, 44]
+    }, basePosRival);
 
-        'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57], 'dot-r-del3': [78, 56],
-        'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
-        'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
-        'dot-r-por': [50, 94]
-    };
+    // Mapeo individual de nombres por dot del rival
+    const nombresPuntosRival = {};
+    if (rivalData && rivalData.titulares && rivalData.titulares.length >= 11) {
+        const por = rivalData.titulares.find(t => t.pos === 'POR') || rivalData.titulares[0];
+        const noPor = rivalData.titulares.filter(t => t !== por);
+        nombresPuntosRival['dot-r-por'] = por.nombre;
+        const keysNoPor = Object.keys(basePosRival).filter(k => k !== 'dot-r-por');
+        keysNoPor.forEach((key, idx) => {
+            nombresPuntosRival[key] = noPor[idx] ? noPor[idx].nombre : (rivalData.figura || rival.nombre);
+        });
+    }
 
     const jugadores = [];
     const porId = {};
@@ -1859,9 +2027,13 @@ window.iniciarSimulacionEnVivo = function() {
             el.style.left = '0';
             el.style.willChange = 'transform';
         }
+        const nombreJugador = (eq === 'rival' && nombresPuntosRival[id])
+            ? nombresPuntosRival[id]
+            : lista[idx % lista.length];
+
         const j = {
             id, eq, linea, el,
-            nombre: lista[idx % lista.length],
+            nombre: nombreJugador,
             baseY: b[0], baseX: b[1],
             y: b[0], x: b[1], vy: 0, vx: 0,
             tY: b[0], tX: b[1], vmax: CFG.velTrote,
@@ -1908,8 +2080,14 @@ window.iniciarSimulacionEnVivo = function() {
         if (eq === 'user') {
             const cap = equipos.user.find(j => j.nombre === nombreCapitan && j.linea !== 'por');
             if (cap) return cap;
+            return porId['dot-u-del2'] || equipos.user.find(j => j.linea === 'del') || equipos.user[0];
         }
-        return porId[eq === 'user' ? 'dot-u-del2' : 'dot-r-del2'];
+        // Rival: priorizar a la figura si está en cancha
+        if (rivalData && rivalData.figura) {
+            const fig = equipos.rival.find(j => j.nombre === rivalData.figura && j.linea !== 'por');
+            if (fig) return fig;
+        }
+        return porId['dot-r-del2'] || equipos.rival.find(j => j.linea === 'del') || equipos.rival[0];
     };
 
     // ================= 4. ESTADO, RELOJ Y AGENDA =================
@@ -1957,6 +2135,13 @@ window.iniciarSimulacionEnVivo = function() {
         ultimoRelatoMin = gameMin;
         const placeholder = timeline.querySelector('.sim-event-placeholder');
         if (placeholder) placeholder.remove();
+        const previaBox = timeline.querySelector('.sim-lineups-previa');
+        if (previaBox) {
+            previaBox.remove();
+            timeline.classList.remove('has-lineups-previa');
+            const wrapper = timeline.closest('.sim-events-wrapper');
+            if (wrapper) wrapper.classList.remove('has-lineups-previa');
+        }
         const row = document.createElement('div');
         row.className = `sim-event-row ${tipo}`;
         row.innerHTML = `<span class="sim-ev-min">${minTxt()}'</span> <span class="sim-ev-text">${texto}</span>`;
@@ -2886,6 +3071,20 @@ window.iniciarSimulacionEnVivo = function() {
             const by = (balon.y * factorY).toFixed(1);
             ballEl.style.transform = `translate3d(${bx}px, ${by}px, 0) translate(-50%, -50%)`;
         }
+        if (holderTagEl) {
+            if (balon.modo === 'conducido' && balon.dueno) {
+                const d = balon.dueno;
+                const hx = (d.x * factorX).toFixed(1);
+                const hy = (d.y * factorY).toFixed(1);
+                const esUser = d.eq === 'user';
+                if (holderTagEl.textContent !== d.nombre) holderTagEl.textContent = d.nombre;
+                const clName = `sim-ball-holder-tag active ${esUser ? 'tag-user' : 'tag-rival'}`;
+                if (holderTagEl.className !== clName) holderTagEl.className = clName;
+                holderTagEl.style.transform = `translate3d(${hx}px, ${hy}px, 0) translate(-50%, -125%)`;
+            } else {
+                if (holderTagEl.className !== 'sim-ball-holder-tag') holderTagEl.className = 'sim-ball-holder-tag';
+            }
+        }
     };
 
     // ================= 10. SIMULACIÓN INSTANTÁNEA (SALTAR PARTIDO) =================
@@ -3451,13 +3650,25 @@ function finalizarPartidoCopa(golesUser, golesRival) {
         // Tiradores ordenados del Once
         const listaTiradoresUser = [...userDel, ...userMed, ...userDef, userPortero];
 
-        // Tiradores y arquero rival
-        const tit = (rivalActual && rivalActual.titulares && rivalActual.titulares.length) ? rivalActual.titulares : [];
-        const rivalDel = tit.length ? tit.slice(0, 4) : [nombreRival];
-        const rivalMed = tit.length > 4 ? tit.slice(4, 8) : ['Mediocampista Rival'];
-        const rivalDef = tit.length > 8 ? tit.slice(8, 12) : ['Defensor Rival'];
-        const rivalPortero = tit.length > 12 ? tit[12] : 'Arquero Rival';
-        const listaTiradoresRival = [...rivalDel, ...rivalMed, ...rivalDef, rivalPortero];
+        // Tiradores y arquero rival con formación real verificada
+        const rivalData = (typeof obtenerDatosPlantelRival === 'function' && rivalActual) ? obtenerDatosPlantelRival(rivalActual.id) : null;
+        let rivalPortero = (rivalData && rivalData.arquero) ? rivalData.arquero : 'Arquero Rival';
+        let listaTiradoresRival = [];
+        if (rivalData && rivalData.titulares && rivalData.titulares.length) {
+            const noPor = rivalData.titulares.filter(t => t.pos !== 'POR').map(t => t.nombre);
+            if (rivalData.figura && noPor.includes(rivalData.figura)) {
+                listaTiradoresRival = [rivalData.figura, ...noPor.filter(n => n !== rivalData.figura), rivalPortero];
+            } else {
+                listaTiradoresRival = [...noPor, rivalPortero];
+            }
+        } else {
+            const tit = (rivalActual && rivalActual.titulares && rivalActual.titulares.length) ? rivalActual.titulares : [];
+            const rivalDel = tit.length ? tit.slice(0, 4) : [nombreRival];
+            const rivalMed = tit.length > 4 ? tit.slice(4, 8) : ['Mediocampista Rival'];
+            const rivalDef = tit.length > 8 ? tit.slice(8, 12) : ['Defensor Rival'];
+            rivalPortero = tit.length > 12 ? tit[12] : 'Arquero Rival';
+            listaTiradoresRival = [...rivalDel, ...rivalMed, ...rivalDef, rivalPortero];
+        }
 
         let ronda = 1;
         let golesUserPen = 0;
