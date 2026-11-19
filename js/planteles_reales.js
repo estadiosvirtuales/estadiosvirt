@@ -993,9 +993,9 @@ window.PLAN_REALES = {
         ]
     },
     "arg_platense": {
-        "tactica": "4-4-2",
-        "dt": "Favio Orsi",
-        "figura": "Mainero",
+        "tactica": "4-2-3-1",
+        "dt": "Favio Orsi - Sergio Gómez",
+        "figura": "M. Pellegrino",
         "arquero": "Cozzani",
         "titulares": [
             {
@@ -1004,7 +1004,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Schelotto"
+                "nombre": "Saborido"
             },
             {
                 "pos": "DFC",
@@ -1019,10 +1019,6 @@ window.PLAN_REALES = {
                 "nombre": "Marcich"
             },
             {
-                "pos": "MD",
-                "nombre": "Mainero"
-            },
-            {
                 "pos": "MC",
                 "nombre": "L. Picco"
             },
@@ -1031,16 +1027,20 @@ window.PLAN_REALES = {
                 "nombre": "F. Juárez"
             },
             {
-                "pos": "MI",
+                "pos": "ED",
+                "nombre": "Mainero"
+            },
+            {
+                "pos": "MCO",
                 "nombre": "Minerva"
+            },
+            {
+                "pos": "EI",
+                "nombre": "R. Martínez"
             },
             {
                 "pos": "DC",
                 "nombre": "M. Pellegrino"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Schor"
             }
         ]
     },
