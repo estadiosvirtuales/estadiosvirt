@@ -8221,3 +8221,9 @@ window.PLAN_REALES = {
         ]
     }
 };
+
+// Helper global para consultar los datos de un rival
+window.obtenerDatosPlantelRival = function(rivalId) {
+    if (!window.PLAN_REALES) return null;
+    return window.PLAN_REALES[rivalId] || null;
+};
