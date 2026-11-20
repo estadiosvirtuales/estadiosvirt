@@ -857,6 +857,22 @@ function obtenerPosicionesTacticas2DCancha(tactica, equipo = 'user') {
         };
     }
 
+    if (t === '4-2-2-2') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+            'dot-u-med1': [36, 27], 'dot-u-med2': [64, 27],
+            'dot-u-med3': [22, 36], 'dot-u-del3': [78, 36],
+            'dot-u-del1': [36, 44], 'dot-u-del2': [64, 44]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med1': [36, 73], 'dot-r-med2': [64, 73],
+            'dot-r-med3': [22, 64], 'dot-r-del3': [78, 64],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    }
+
     if (t === '4-2-3-1') {
         return esUser ? {
             'dot-u-por': [50, 6],
