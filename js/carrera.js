@@ -991,7 +991,15 @@ function prepararVistaPartidoCopa() {
         if (wrapper) wrapper.classList.add('has-lineups-previa');
         timeline.innerHTML = `
             <div class="sim-lineups-previa">
-                <div class="sim-lineup-col user-col">
+                <div class="sim-lineup-tabs-mobile">
+                    <button type="button" class="sim-mobile-tab-btn active" onclick="simCambiarTabPreviaMobile('rival')" id="tab-btn-rival">
+                        <span>🔴 ${rival.nombre}</span> <span class="tab-tactica-pill">${rivalTactica}</span>
+                    </button>
+                    <button type="button" class="sim-mobile-tab-btn" onclick="simCambiarTabPreviaMobile('user')" id="tab-btn-user">
+                        <span>🟢 ${nombreUsuario}</span> <span class="tab-tactica-pill">${fActual.nombre || formacionOnceActual}</span>
+                    </button>
+                </div>
+                <div class="sim-lineup-col user-col" id="col-previa-user">
                     <div class="sim-lineup-head">
                         <div class="sim-lineup-badge-team"><i class="ph-bold ph-shield-check"></i> <span>${nombreUsuario}</span></div>
                         <div class="sim-lineup-meta">
@@ -1009,7 +1017,7 @@ function prepararVistaPartidoCopa() {
                 <div class="sim-lineup-divider">
                     <span class="sim-vs-pill">VS</span>
                 </div>
-                <div class="sim-lineup-col rival-col">
+                <div class="sim-lineup-col rival-col mobile-active" id="col-previa-rival">
                     <div class="sim-lineup-head">
                         <div class="sim-lineup-badge-team"><i class="ph-bold ph-shield-warning"></i> <span>${rival.nombre}</span></div>
                         <div class="sim-lineup-meta">
@@ -1047,6 +1055,25 @@ function prepararVistaPartidoCopa() {
     }
     simSaltadorActivo = null;
     simVelocidadMult = 1;
+
+    window.simCambiarTabPreviaMobile = function(tab) {
+        const colUser = document.getElementById('col-previa-user');
+        const colRival = document.getElementById('col-previa-rival');
+        const btnUser = document.getElementById('tab-btn-user');
+        const btnRival = document.getElementById('tab-btn-rival');
+        if (!colUser || !colRival) return;
+        if (tab === 'user') {
+            colUser.classList.add('mobile-active');
+            colRival.classList.remove('mobile-active');
+            if (btnUser) btnUser.classList.add('active');
+            if (btnRival) btnRival.classList.remove('active');
+        } else {
+            colRival.classList.add('mobile-active');
+            colUser.classList.remove('mobile-active');
+            if (btnRival) btnRival.classList.add('active');
+            if (btnUser) btnUser.classList.remove('active');
+        }
+    };
     if (simOnResize) {
         window.removeEventListener('resize', simOnResize);
         simOnResize = null;
@@ -3403,6 +3430,25 @@ function finalizarPartidoCopa(golesUser, golesRival) {
     }
     simSaltadorActivo = null;
     simVelocidadMult = 1;
+
+    window.simCambiarTabPreviaMobile = function(tab) {
+        const colUser = document.getElementById('col-previa-user');
+        const colRival = document.getElementById('col-previa-rival');
+        const btnUser = document.getElementById('tab-btn-user');
+        const btnRival = document.getElementById('tab-btn-rival');
+        if (!colUser || !colRival) return;
+        if (tab === 'user') {
+            colUser.classList.add('mobile-active');
+            colRival.classList.remove('mobile-active');
+            if (btnUser) btnUser.classList.add('active');
+            if (btnRival) btnRival.classList.remove('active');
+        } else {
+            colRival.classList.add('mobile-active');
+            colUser.classList.remove('mobile-active');
+            if (btnRival) btnRival.classList.add('active');
+            if (btnUser) btnUser.classList.remove('active');
+        }
+    };
     if (simOnResize) {
         window.removeEventListener('resize', simOnResize);
         simOnResize = null;
@@ -6882,6 +6928,25 @@ function procesarFinDePartidoLiga(golesUser, golesRival) {
     }
     simSaltadorActivo = null;
     simVelocidadMult = 1;
+
+    window.simCambiarTabPreviaMobile = function(tab) {
+        const colUser = document.getElementById('col-previa-user');
+        const colRival = document.getElementById('col-previa-rival');
+        const btnUser = document.getElementById('tab-btn-user');
+        const btnRival = document.getElementById('tab-btn-rival');
+        if (!colUser || !colRival) return;
+        if (tab === 'user') {
+            colUser.classList.add('mobile-active');
+            colRival.classList.remove('mobile-active');
+            if (btnUser) btnUser.classList.add('active');
+            if (btnRival) btnRival.classList.remove('active');
+        } else {
+            colRival.classList.add('mobile-active');
+            colUser.classList.remove('mobile-active');
+            if (btnRival) btnRival.classList.add('active');
+            if (btnUser) btnUser.classList.remove('active');
+        }
+    };
     if (simOnResize) {
         window.removeEventListener('resize', simOnResize);
         simOnResize = null;
