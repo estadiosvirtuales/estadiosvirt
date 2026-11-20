@@ -6,7 +6,7 @@
 window.PLAN_REALES = {
     "arg_boca": {
         "tactica": "4-3-3",
-        "dt": "Fernando Gago",
+        "dt": "Rodolfo Arruabarrena",
         "figura": "Leandro Paredes",
         "arquero": "Álvaro Montero",
         "titulares": [
@@ -58,7 +58,7 @@ window.PLAN_REALES = {
     },
     "arg_river": {
         "tactica": "4-1-3-2",
-        "dt": "Marcelo Gallardo",
+        "dt": "Leonardo Ponzio",
         "figura": "Thiago Almada",
         "arquero": "Santiago Beltrán",
         "titulares": [
