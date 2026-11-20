@@ -1051,7 +1051,7 @@ const TRIVIAS_DATABASE = [
       {
         "icon": "💡",
         "tag": "PISTA 1:",
-        "text": "Capacidad para 18.000 hinchas en el Sur.",
+        "text": "Capacidad para 26.000 hinchas en el Sur.",
         "color": "#00ff77"
       },
       {
@@ -1067,7 +1067,7 @@ const TRIVIAS_DATABASE = [
         "color": "#ffd700"
       }
     ],
-    "portadaClue": "ALFREDO BERANGER · CLUB ATLÉTICO TEMPERLEY",
+    "portadaClue": "26.000 hinchas · Teatro de Turdera · El Gasolero",
     "copys": {
       "club": "CLUB ATLÉTICO TEMPERLEY",
       "paisHashtag": "#clubatlticotemperley #estadios #stadiumguessr #futbol #geoguessr",
