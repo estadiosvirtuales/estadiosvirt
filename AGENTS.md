@@ -10,7 +10,7 @@ Este documento define la arquitectura general, las reglas técnicas del proyecto
 - **Directorio de Desarrollo:** `c:\Users\Jonathan\Downloads\estadiosvirt-main`
 - **Directorio de GitHub Desktop:** `C:\Users\Jonathan\Desktop\estadiosvirt`
 - **Regla de Sincronización:** Cada modificación de código debe copiarse al repositorio de Desktop y commitearse con mensajes limpios y descriptivos:
-  `& "C:\Users\Jonathan\AppData\Local\GitHubDesktop\app-3.6.7\resources\app\git\cmd\git.exe" commit -m "..."`
+  `& "C:\Users\Jonathan\AppData\Local\GitHubDesktop\app-3.6.11\resources\app\git\cmd\git.exe" commit -m "..."`
 
 ### Módulos Principales:
 - `index.html`: Estructura principal, modales y layouts.
