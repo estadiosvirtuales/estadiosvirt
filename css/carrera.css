@@ -3856,57 +3856,101 @@
     /* 📋 Adaptación responsiva de Pizarra de Previa y Tag Flotante en Celular */
     .sim-events-wrapper:has(.sim-lineups-previa),
     .sim-events-wrapper.has-lineups-previa {
-        min-height: 48px !important;
-        max-height: 52px !important;
-        padding: 4px 6px !important;
+        min-height: auto !important;
+        max-height: none !important;
+        height: auto !important;
+        padding: 4px 0 !important;
+        overflow: visible !important;
+        background: transparent !important;
+        border: none !important;
     }
     .sim-events-scroll:has(.sim-lineups-previa),
     .sim-events-scroll.has-lineups-previa {
-        min-height: 40px !important;
-        max-height: 44px !important;
-        overflow-y: auto !important;
-        scrollbar-width: thin !important;
+        min-height: auto !important;
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
     }
     .sim-lineups-previa {
         flex-direction: row !important;
-        gap: 6px !important;
-        padding: 0 !important;
+        gap: 8px !important;
+        padding: 2px 0 !important;
         width: 100% !important;
+        align-items: stretch !important;
     }
     .sim-lineup-col {
-        padding: 2px 5px !important;
-        border-radius: 6px !important;
-        gap: 1px !important;
-        font-size: 0.56rem !important;
+        padding: 8px 10px !important;
+        border-radius: 10px !important;
+        gap: 4px !important;
+        font-size: 0.68rem !important;
+        background: rgba(10, 16, 28, 0.85) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    .sim-lineup-col.user-col {
+        border-left: 3px solid #00e676 !important;
+        background: linear-gradient(135deg, rgba(0, 230, 118, 0.08) 0%, rgba(10, 16, 28, 0.9) 100%) !important;
+    }
+    .sim-lineup-col.rival-col {
+        border-right: 3px solid #ff5252 !important;
+        background: linear-gradient(135deg, rgba(10, 16, 28, 0.9) 0%, rgba(255, 82, 82, 0.08) 100%) !important;
     }
     .sim-lineup-head {
-        padding-bottom: 1px !important;
+        padding-bottom: 4px !important;
+        margin-bottom: 2px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 4px !important;
     }
     .sim-lineup-badge-team {
-        font-size: 0.60rem !important;
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        color: #f8fafc !important;
     }
     .sim-tactica-tag {
-        font-size: 0.48rem !important;
-        padding: 0 3px !important;
+        font-size: 0.56rem !important;
+        padding: 1px 5px !important;
+        border-radius: 4px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        font-weight: 700 !important;
     }
     .sim-dt-tag {
-        font-size: 0.48rem !important;
+        font-size: 0.58rem !important;
+        color: #94a3b8 !important;
     }
     .sim-lineup-star-banner {
-        font-size: 0.48rem !important;
-        padding: 0 3px !important;
+        font-size: 0.58rem !important;
+        padding: 2px 6px !important;
+        border-radius: 5px !important;
+        margin-bottom: 2px !important;
+        background: rgba(255, 215, 0, 0.1) !important;
+        border: 1px solid rgba(255, 215, 0, 0.25) !important;
+        color: #ffd700 !important;
+        font-weight: 700 !important;
     }
     .sim-lineup-group {
-        font-size: 0.52rem !important;
-        gap: 3px !important;
+        font-size: 0.65rem !important;
+        gap: 5px !important;
+        display: flex !important;
+        align-items: baseline !important;
+        line-height: 1.3 !important;
     }
     .sim-pos-label {
-        font-size: 0.46rem !important;
-        width: 18px !important;
-        padding: 0 1px !important;
+        font-size: 0.54rem !important;
+        width: 22px !important;
+        min-width: 22px !important;
+        padding: 1px 2px !important;
+        border-radius: 3px !important;
+        text-align: center !important;
+        font-weight: 800 !important;
+        flex-shrink: 0 !important;
     }
     .sim-player-names {
-        font-size: 0.52rem !important;
+        font-size: 0.64rem !important;
+        line-height: 1.3 !important;
+        color: #e2e8f0 !important;
+        word-break: break-word !important;
     }
     .sim-lineup-divider {
         display: none !important;

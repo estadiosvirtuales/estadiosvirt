@@ -3571,7 +3571,6 @@ function finalizarPartidoCopa(golesUser, golesRival) {
                     btn.innerHTML = `<span>Avanzar a ${proxRonda}</span> <i class="ph-bold ph-arrow-right"></i>`;
                     btn.onclick = () => {
                         prepararVistaPartidoCopa();
-                        iniciarSimulacionEnVivo();
                     };
                 }
             }
