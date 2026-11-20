@@ -1,2 +1,3 @@
 # Google AdSense - Estadios Virtuales
-google.com, pub-5233422005824524, DIRECT, f08c47fec0942fa0
+# Reemplazar con ID de cuenta limpia y activa
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
