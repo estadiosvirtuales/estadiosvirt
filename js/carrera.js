@@ -836,6 +836,186 @@ function iniciarTorneoDeCopas(tierKey) {
     document.getElementById('simulador-partido-modal').style.display = 'flex';
 }
 
+// =============================================================================
+// 🏟️ DISPOSICIÓN TÁCTICA 2D HORIZONTAL EN LA CANCHITA (TV BROADCAST)
+// =============================================================================
+function obtenerPosicionesTacticas2DCancha(tactica, equipo = 'user') {
+    const esUser = equipo === 'user';
+    const t = (tactica || '4-3-3').trim();
+
+    if (t === '4-4-2' || t === '4-4-1-1') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+            'dot-u-med1': [16, 32], 'dot-u-med2': [38, 31], 'dot-u-med3': [62, 31], 'dot-u-del3': [84, 32],
+            'dot-u-del1': [36, 44], 'dot-u-del2': [64, 44]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med1': [16, 68], 'dot-r-med2': [38, 69], 'dot-r-med3': [62, 69], 'dot-r-del3': [84, 68],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    }
+
+    if (t === '4-2-3-1') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+            'dot-u-med1': [36, 27], 'dot-u-med2': [64, 27],
+            'dot-u-del1': [18, 37], 'dot-u-med3': [50, 36], 'dot-u-del3': [82, 37],
+            'dot-u-del2': [50, 45]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med1': [36, 73], 'dot-r-med2': [64, 73],
+            'dot-r-del1': [18, 63], 'dot-r-med3': [50, 64], 'dot-r-del3': [82, 63],
+            'dot-r-del2': [50, 55]
+        };
+    }
+
+    if (t === '4-3-1-2' || t === '4-1-2-1-2' || t === '4-1-3-2') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+            'dot-u-med1': [24, 29], 'dot-u-med2': [50, 27], 'dot-u-del3': [76, 29],
+            'dot-u-med3': [50, 37],
+            'dot-u-del1': [36, 44], 'dot-u-del2': [64, 44]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med1': [24, 71], 'dot-r-med2': [50, 73], 'dot-r-del3': [76, 71],
+            'dot-r-med3': [50, 63],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    }
+
+    if (t === '4-1-4-1' || t === '4-5-1') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+            'dot-u-med2': [50, 26],
+            'dot-u-med1': [18, 35], 'dot-u-del1': [38, 34], 'dot-u-del3': [62, 34], 'dot-u-med3': [82, 35],
+            'dot-u-del2': [50, 45]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+            'dot-r-med2': [50, 74],
+            'dot-r-med1': [18, 65], 'dot-r-del1': [38, 66], 'dot-r-del3': [62, 66], 'dot-r-med3': [82, 65],
+            'dot-r-del2': [50, 55]
+        };
+    }
+
+    if (t === '3-5-2' || t === '3-1-4-2') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [24, 17], 'dot-u-def2': [50, 16], 'dot-u-def3': [76, 17],
+            'dot-u-def4': [14, 31], 'dot-u-med1': [32, 29], 'dot-u-med2': [50, 30], 'dot-u-med3': [68, 29], 'dot-u-del3': [86, 31],
+            'dot-u-del1': [36, 44], 'dot-u-del2': [64, 44]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [24, 83], 'dot-r-def2': [50, 84], 'dot-r-def3': [76, 83],
+            'dot-r-def4': [14, 69], 'dot-r-med1': [32, 71], 'dot-r-med2': [50, 70], 'dot-r-med3': [68, 71], 'dot-r-del3': [86, 69],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    }
+
+    if (t === '3-4-3' || t === '3-4-2-1' || t === '3-4-1-2') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [24, 17], 'dot-u-def2': [50, 16], 'dot-u-def3': [76, 17],
+            'dot-u-def4': [16, 31], 'dot-u-med1': [38, 30], 'dot-u-med2': [62, 30], 'dot-u-med3': [84, 31],
+            'dot-u-del1': [20, 44], 'dot-u-del2': [50, 44], 'dot-u-del3': [80, 44]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [24, 83], 'dot-r-def2': [50, 84], 'dot-r-def3': [76, 83],
+            'dot-r-def4': [16, 69], 'dot-r-med1': [38, 70], 'dot-r-med2': [62, 70], 'dot-r-med3': [84, 69],
+            'dot-r-del1': [20, 56], 'dot-r-del2': [50, 56], 'dot-r-del3': [80, 56]
+        };
+    }
+
+    if (t === '5-3-2') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [14, 20], 'dot-u-def2': [32, 17], 'dot-u-def3': [50, 16], 'dot-u-def4': [68, 17], 'dot-u-del3': [86, 20],
+            'dot-u-med1': [26, 32], 'dot-u-med2': [50, 30], 'dot-u-med3': [74, 32],
+            'dot-u-del1': [36, 44], 'dot-u-del2': [64, 44]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [14, 80], 'dot-r-def2': [32, 83], 'dot-r-def3': [50, 84], 'dot-r-def4': [68, 83], 'dot-r-del3': [86, 80],
+            'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
+            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+        };
+    }
+
+    if (t === '5-2-3') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [14, 20], 'dot-u-def2': [32, 17], 'dot-u-def3': [50, 16], 'dot-u-def4': [68, 17], 'dot-u-del3': [86, 20],
+            'dot-u-med1': [36, 31], 'dot-u-med2': [64, 31], 'dot-u-med3': [50, 33],
+            'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [14, 80], 'dot-r-def2': [32, 83], 'dot-r-def3': [50, 84], 'dot-r-def4': [68, 83], 'dot-r-del3': [86, 80],
+            'dot-r-med1': [36, 69], 'dot-r-med2': [64, 69], 'dot-r-med3': [50, 67],
+            'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57]
+        };
+    }
+
+    if (t === '5-4-1') {
+        return esUser ? {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [14, 20], 'dot-u-def2': [32, 17], 'dot-u-def3': [50, 16], 'dot-u-def4': [68, 17], 'dot-u-del3': [86, 20],
+            'dot-u-med1': [18, 33], 'dot-u-med2': [38, 31], 'dot-u-med3': [62, 31], 'dot-u-del1': [82, 33],
+            'dot-u-del2': [50, 45]
+        } : {
+            'dot-r-por': [50, 94],
+            'dot-r-def1': [14, 80], 'dot-r-def2': [32, 83], 'dot-r-def3': [50, 84], 'dot-r-def4': [68, 83], 'dot-r-del3': [86, 80],
+            'dot-r-med1': [18, 67], 'dot-r-med2': [38, 69], 'dot-r-med3': [62, 69], 'dot-r-del1': [82, 67],
+            'dot-r-del2': [50, 55]
+        };
+    }
+
+    // Default 4-3-3 (cubre también 4-3-2-1)
+    return esUser ? {
+        'dot-u-por': [50, 6],
+        'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+        'dot-u-med1': [26, 32], 'dot-u-med2': [50, 30], 'dot-u-med3': [74, 32],
+        'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43], 'dot-u-del3': [78, 44]
+    } : {
+        'dot-r-por': [50, 94],
+        'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
+        'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
+        'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57], 'dot-r-del3': [78, 56]
+    };
+}
+window.obtenerPosicionesTacticas2DCancha = obtenerPosicionesTacticas2DCancha;
+
+function aplicarFormacionesCancha2D(tacticaUser, tacticaRival) {
+    const posUser = obtenerPosicionesTacticas2DCancha(tacticaUser, 'user');
+    const posRival = obtenerPosicionesTacticas2DCancha(tacticaRival, 'rival');
+    const todas = Object.assign({}, posUser, posRival);
+
+    for (const id in todas) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.transition = 'none';
+            el.style.top = todas[id][0] + '%';
+            el.style.left = todas[id][1] + '%';
+            el.style.transform = '';
+            el.style.willChange = '';
+        }
+    }
+    const ball = document.getElementById('sim-pitch-ball');
+    if (ball) {
+        ball.style.transition = 'none';
+        ball.style.top = '50%';
+        ball.style.left = '50%';
+        ball.style.transform = '';
+        ball.style.willChange = '';
+    }
+}
+window.aplicarFormacionesCancha2D = aplicarFormacionesCancha2D;
+
 function prepararVistaPartidoCopa() {
     if (!torneoEstado) return;
     const rondaNombre = RONDAS_NOMBRES[torneoEstado.rondaIdx] || 'Partido de Copa';
@@ -942,9 +1122,30 @@ function prepararVistaPartidoCopa() {
     const userVolantes = [];
     const userDelanteros = [];
     const dtId = once['DT'] ? String(once['DT']).replace(/\.png$/i, '.webp') : null;
-    let nombreDTUser = 'Estrategia Táctica';
-    if (dtId && typeof DTS_CONFIG !== 'undefined' && DTS_CONFIG[dtId]) {
-        nombreDTUser = DTS_CONFIG[dtId].nombre;
+
+    // 👤 Determinación inteligente del Director Técnico del Usuario
+    const MAPA_DTS_OFICIALES = {
+        '45.webp': 'Lionel Scaloni',
+        '48.webp': 'Marcelo Gallardo',
+        '46.webp': 'Pep Guardiola',
+        'Diego Simeone.webp': 'Diego Simeone',
+        'Jurgen Klopp.webp': 'Jürgen Klopp',
+        '49.webp': 'José Mourinho',
+        '47.webp': 'Carlo Ancelotti',
+        'Alex Ferguson.webp': 'Sir Alex Ferguson'
+    };
+    let nombreDTUser = '';
+    if (dtId) {
+        nombreDTUser = MAPA_DTS_OFICIALES[dtId] || (typeof obtenerNombreAvatar === 'function' ? obtenerNombreAvatar(dtId) : null);
+    }
+    if (!nombreDTUser && escudoUsuario && escudoUsuario !== 'ev') {
+        const userClubData = (typeof obtenerDatosPlantelRival === 'function') ? obtenerDatosPlantelRival(escudoUsuario) : null;
+        if (userClubData && userClubData.dt) {
+            nombreDTUser = userClubData.dt;
+        }
+    }
+    if (!nombreDTUser) {
+        nombreDTUser = (nombreUsuario && nombreUsuario !== 'Tu Once') ? `DT ${nombreUsuario}` : 'DT Propio';
     }
 
     if (fActual.posiciones) {
@@ -971,6 +1172,11 @@ function prepararVistaPartidoCopa() {
     const rivalDef = [];
     const rivalMed = [];
     const rivalDel = [];
+
+    // ⚽ Reflejar en la canchita 2D la disposición táctica real de ambos equipos en la previa
+    if (typeof aplicarFormacionesCancha2D === 'function') {
+        aplicarFormacionesCancha2D(fActual.nombre || formacionOnceActual || '4-3-3', rivalTactica);
+    }
 
     if (rivalData && rivalData.titulares) {
         rivalData.titulares.forEach(t => {
@@ -1639,31 +1845,15 @@ window.cerrarModalSimuladorPartido = function(volverACarrera = true) {
         window.removeEventListener('resize', simOnResize);
         simOnResize = null;
     }
-    const POS_BASE_DEF = {
-        'dot-u-por': ['50%', '6%'],
-        'dot-u-def1': ['18%', '18%'], 'dot-u-def2': ['38%', '17%'], 'dot-u-def3': ['62%', '17%'], 'dot-u-def4': ['82%', '18%'],
-        'dot-u-med1': ['26%', '32%'], 'dot-u-med2': ['50%', '30%'], 'dot-u-med3': ['74%', '32%'],
-        'dot-u-del1': ['22%', '44%'], 'dot-u-del2': ['50%', '43%'], 'dot-u-del3': ['78%', '44%'],
-        'dot-r-del1': ['22%', '56%'], 'dot-r-del2': ['50%', '57%'], 'dot-r-del3': ['78%', '56%'],
-        'dot-r-med1': ['26%', '68%'], 'dot-r-med2': ['50%', '70%'], 'dot-r-med3': ['74%', '68%'],
-        'dot-r-def1': ['18%', '82%'], 'dot-r-def2': ['38%', '83%'], 'dot-r-def3': ['62%', '83%'], 'dot-r-def4': ['82%', '82%'],
-        'dot-r-por': ['50%', '94%']
-    };
-    for (const id in POS_BASE_DEF) {
-        const dEl = document.getElementById(id);
-        if (dEl) {
-            dEl.style.transform = '';
-            dEl.style.top = POS_BASE_DEF[id][0];
-            dEl.style.left = POS_BASE_DEF[id][1];
-            dEl.style.willChange = '';
-        }
+    const fU = (typeof formacionOnceActual !== 'undefined') ? formacionOnceActual : '4-3-3';
+    let fR = '4-3-3';
+    if (torneoEstado && torneoEstado.rivales && torneoEstado.rivales[torneoEstado.rondaIdx]) {
+        const rId = torneoEstado.rivales[torneoEstado.rondaIdx].id;
+        const rDat = (typeof obtenerDatosPlantelRival === 'function') ? obtenerDatosPlantelRival(rId) : null;
+        if (rDat && rDat.tactica) fR = rDat.tactica;
     }
-    const bEl = document.getElementById('sim-pitch-ball');
-    if (bEl) {
-        bEl.style.transform = '';
-        bEl.style.top = '50%';
-        bEl.style.left = '50%';
-        bEl.style.willChange = '';
+    if (typeof aplicarFormacionesCancha2D === 'function') {
+        aplicarFormacionesCancha2D(fU, fR);
     }
     document.querySelectorAll('[id^="dot-"], #sim-pitch-ball').forEach(el => { el.style.transition = 'none'; });
     const m = document.getElementById('simulador-partido-modal');
@@ -1981,58 +2171,28 @@ window.iniciarSimulacionEnVivo = function() {
     const xDe = (eq, prof) => eq === 'user' ? prof : 100 - prof;
 
     // ================= 3. JUGADORES Y ESQUEMA TÁCTICO =================
+    const userTactica = (fActual && fActual.nombre) ? fActual.nombre : (formacionOnceActual || '4-3-3');
     const rivalTactica = rivalData ? rivalData.tactica : '4-3-3';
-    let basePosRival = {
-        'dot-r-por': [50, 94],
-        'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
-        'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
-        'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57], 'dot-r-del3': [78, 56]
-    };
 
-    if (rivalTactica === '4-4-2') {
-        basePosRival = {
+    const basePosUser = (typeof obtenerPosicionesTacticas2DCancha === 'function')
+        ? obtenerPosicionesTacticas2DCancha(userTactica, 'user')
+        : {
+            'dot-u-por': [50, 6],
+            'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
+            'dot-u-med1': [26, 32], 'dot-u-med2': [50, 30], 'dot-u-med3': [74, 32],
+            'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43], 'dot-u-del3': [78, 44]
+        };
+
+    const basePosRival = (typeof obtenerPosicionesTacticas2DCancha === 'function')
+        ? obtenerPosicionesTacticas2DCancha(rivalTactica, 'rival')
+        : {
             'dot-r-por': [50, 94],
             'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
-            'dot-r-med1': [16, 68], 'dot-r-med2': [38, 69], 'dot-r-med3': [62, 69], 'dot-r-del3': [84, 68],
-            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
-        };
-    } else if (rivalTactica === '4-2-3-1') {
-        basePosRival = {
-            'dot-r-por': [50, 94],
-            'dot-r-def1': [18, 82], 'dot-r-def2': [38, 83], 'dot-r-def3': [62, 83], 'dot-r-def4': [82, 82],
-            'dot-r-med1': [36, 73], 'dot-r-med2': [64, 73],
-            'dot-r-del1': [18, 63], 'dot-r-med3': [50, 63], 'dot-r-del3': [82, 63],
-            'dot-r-del2': [50, 55]
-        };
-    } else if (rivalTactica === '3-5-2') {
-        basePosRival = {
-            'dot-r-por': [50, 94],
-            'dot-r-def1': [24, 83], 'dot-r-def2': [50, 84], 'dot-r-def3': [76, 83],
-            'dot-r-def4': [14, 68], 'dot-r-med1': [32, 70], 'dot-r-med2': [50, 69], 'dot-r-med3': [68, 70], 'dot-r-del3': [86, 68],
-            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
-        };
-    } else if (rivalTactica === '3-4-3' || rivalTactica === '3-4-2-1') {
-        basePosRival = {
-            'dot-r-por': [50, 94],
-            'dot-r-def1': [24, 83], 'dot-r-def2': [50, 84], 'dot-r-def3': [76, 83],
-            'dot-r-def4': [16, 69], 'dot-r-med1': [38, 70], 'dot-r-med2': [62, 70], 'dot-r-med3': [84, 69],
-            'dot-r-del1': [20, 56], 'dot-r-del2': [50, 56], 'dot-r-del3': [80, 56]
-        };
-    } else if (rivalTactica === '5-3-2') {
-        basePosRival = {
-            'dot-r-por': [50, 94],
-            'dot-r-def1': [14, 82], 'dot-r-def2': [32, 83], 'dot-r-def3': [50, 84], 'dot-r-def4': [68, 83], 'dot-r-del3': [86, 82],
             'dot-r-med1': [26, 68], 'dot-r-med2': [50, 70], 'dot-r-med3': [74, 68],
-            'dot-r-del1': [36, 56], 'dot-r-del2': [64, 56]
+            'dot-r-del1': [22, 56], 'dot-r-del2': [50, 57], 'dot-r-del3': [78, 56]
         };
-    }
 
-    const POS_BASE = Object.assign({
-        'dot-u-por': [50, 6],
-        'dot-u-def1': [18, 18], 'dot-u-def2': [38, 17], 'dot-u-def3': [62, 17], 'dot-u-def4': [82, 18],
-        'dot-u-med1': [26, 32], 'dot-u-med2': [50, 30], 'dot-u-med3': [74, 32],
-        'dot-u-del1': [22, 44], 'dot-u-del2': [50, 43], 'dot-u-del3': [78, 44]
-    }, basePosRival);
+    const POS_BASE = Object.assign({}, basePosUser, basePosRival);
 
     // Mapeo individual de nombres por dot del rival
     const nombresPuntosRival = {};

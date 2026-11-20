@@ -6,7 +6,7 @@
 window.PLAN_REALES = {
     "arg_boca": {
         "tactica": "4-3-3",
-        "dt": "Rodolfo Arruabarrena",
+        "dt": "Fernando Gago",
         "figura": "Leandro Paredes",
         "arquero": "Álvaro Montero",
         "titulares": [
@@ -58,7 +58,7 @@ window.PLAN_REALES = {
     },
     "arg_river": {
         "tactica": "4-1-3-2",
-        "dt": "Leonardo Ponzio",
+        "dt": "Marcelo Gallardo",
         "figura": "Thiago Almada",
         "arquero": "Santiago Beltrán",
         "titulares": [
@@ -1306,7 +1306,7 @@ window.PLAN_REALES = {
     },
     "arg_atleticotucuman": {
         "tactica": "4-4-2",
-        "dt": "Pedro Troglio",
+        "dt": "Julio César Falcioni",
         "figura": "Renzo Tesuri",
         "arquero": "Luis Ingolotti",
         "titulares": [
@@ -13684,6 +13684,14 @@ window.PLAN_REALES = {
 
 // Helper global para consultar los datos de un rival (club o selección)
 window.obtenerDatosPlantelRival = function(rivalId) {
-    if (!window.PLAN_REALES) return null;
-    return window.PLAN_REALES[rivalId] || null;
+    if (!window.PLAN_REALES || !rivalId) return null;
+    if (window.PLAN_REALES[rivalId]) return window.PLAN_REALES[rivalId];
+    const cleanId = String(rivalId).toLowerCase().trim();
+    if (window.PLAN_REALES[cleanId]) return window.PLAN_REALES[cleanId];
+    for (const key in window.PLAN_REALES) {
+        if (key.endsWith('_' + cleanId) || key.replace(/^[a-z]{2,3}_/, '') === cleanId) {
+            return window.PLAN_REALES[key];
+        }
+    }
+    return null;
 };
