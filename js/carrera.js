@@ -989,14 +989,18 @@ function prepararVistaPartidoCopa() {
         timeline.classList.add('has-lineups-previa');
         const wrapper = timeline.closest('.sim-events-wrapper');
         if (wrapper) wrapper.classList.add('has-lineups-previa');
+        const renderChips = (lista, figuraNombre) => lista.map(n => {
+            const esFig = figuraNombre && n.trim().toLowerCase() === figuraNombre.trim().toLowerCase();
+            return `<span class="sim-player-token${esFig ? ' is-star' : ''}">${esFig ? '★ ' : ''}${n}</span>`;
+        }).join('');
         timeline.innerHTML = `
             <div class="sim-lineups-previa">
                 <div class="sim-lineup-tabs-mobile">
                     <button type="button" class="sim-mobile-tab-btn active" onclick="simCambiarTabPreviaMobile('rival')" id="tab-btn-rival">
-                        <span>🔴 ${rival.nombre}</span> <span class="tab-tactica-pill">${rivalTactica}</span>
+                        <span class="tab-team-label">🔴 ${rival.nombre}</span> <span class="tab-tactica-pill">${rivalTactica}</span>
                     </button>
                     <button type="button" class="sim-mobile-tab-btn" onclick="simCambiarTabPreviaMobile('user')" id="tab-btn-user">
-                        <span>🟢 ${nombreUsuario}</span> <span class="tab-tactica-pill">${fActual.nombre || formacionOnceActual}</span>
+                        <span class="tab-team-label">🟢 ${nombreUsuario}</span> <span class="tab-tactica-pill">${fActual.nombre || formacionOnceActual}</span>
                     </button>
                 </div>
                 <div class="sim-lineup-col user-col" id="col-previa-user">
@@ -1008,10 +1012,10 @@ function prepararVistaPartidoCopa() {
                         </div>
                     </div>
                     <div class="sim-lineup-rows">
-                        <div class="sim-lineup-group"><span class="sim-pos-label">POR</span><span class="sim-player-names">${userArquero}</span></div>
-                        <div class="sim-lineup-group"><span class="sim-pos-label">DEF</span><span class="sim-player-names">${userDefensas.join(' · ')}</span></div>
-                        <div class="sim-lineup-group"><span class="sim-pos-label">MED</span><span class="sim-player-names">${userVolantes.join(' · ')}</span></div>
-                        <div class="sim-lineup-group"><span class="sim-pos-label">DEL</span><span class="sim-player-names">${userDelanteros.join(' · ')}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">POR</span><div class="sim-player-names">${renderChips([userArquero], '')}</div></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEF</span><div class="sim-player-names">${renderChips(userDefensas, '')}</div></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">MED</span><div class="sim-player-names">${renderChips(userVolantes, '')}</div></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEL</span><div class="sim-player-names">${renderChips(userDelanteros, '')}</div></div>
                     </div>
                 </div>
                 <div class="sim-lineup-divider">
@@ -1027,10 +1031,10 @@ function prepararVistaPartidoCopa() {
                     </div>
                     ${rivalFigura ? `<div class="sim-lineup-star-banner"><i class="ph-fill ph-star"></i> FIGURA: <b>${rivalFigura}</b></div>` : ''}
                     <div class="sim-lineup-rows">
-                        <div class="sim-lineup-group"><span class="sim-pos-label">POR</span><span class="sim-player-names">${rivalArquero}</span></div>
-                        <div class="sim-lineup-group"><span class="sim-pos-label">DEF</span><span class="sim-player-names">${rivalDef.join(' · ')}</span></div>
-                        <div class="sim-lineup-group"><span class="sim-pos-label">MED</span><span class="sim-player-names">${rivalMed.join(' · ')}</span></div>
-                        <div class="sim-lineup-group"><span class="sim-pos-label">DEL</span><span class="sim-player-names">${rivalDel.join(' · ')}</span></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">POR</span><div class="sim-player-names">${renderChips([rivalArquero], rivalFigura)}</div></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEF</span><div class="sim-player-names">${renderChips(rivalDef, rivalFigura)}</div></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">MED</span><div class="sim-player-names">${renderChips(rivalMed, rivalFigura)}</div></div>
+                        <div class="sim-lineup-group"><span class="sim-pos-label">DEL</span><div class="sim-player-names">${renderChips(rivalDel, rivalFigura)}</div></div>
                     </div>
                 </div>
             </div>`;
@@ -1763,7 +1767,12 @@ window.iniciarSimulacionEnVivo = function() {
     };
 
     const timeline = document.getElementById('sim-events-timeline');
-    if (timeline) timeline.innerHTML = '';
+    if (timeline) {
+        timeline.innerHTML = '';
+        timeline.classList.remove('has-lineups-previa');
+        const wrapper = timeline.closest('.sim-events-wrapper');
+        if (wrapper) wrapper.classList.remove('has-lineups-previa');
+    }
 
     const clock = document.getElementById('sim-match-clock');
     const scoreUserEl = document.getElementById('sim-score-user');
