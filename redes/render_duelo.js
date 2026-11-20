@@ -1145,6 +1145,48 @@ El mítico Diego Armando Maradona en La Paternal vs el Ciudad de Vicente López 
 
 #ArgentinosJuniors #Platense #DiegoArmandoMaradona #LaPaternal #VicenteLopez #Calamar #Bicho #Estadios #FutbolArgentino #EstadiosVirtuales`
     },
+    'temperley-losandes': {
+        slug: 'TEMPERLEY-VS-LOS-ANDES',
+        pais: 'Argentina',
+        tituloBadge: '🥊 Duelo de Capacidad · Clásico de Lomas',
+        pregunta: '¿CUÁL TIENE MÁS CAPACIDAD?',
+        subtitulo: 'Alfredo Beranger vs Eduardo Gallardón',
+        subtituloVotacion: '¿Cuál es más grande? Votá en comentarios 🗳️',
+        videoFileName: 'Duelo_Capacidad_Temperley_vs_Los_Andes.mp4',
+        portadaFileName: 'Portada_Duelo_Temperley_Los_Andes.jpg',
+        bannerDiferencia: '¡LOS ANDES POR CASI 19.000 LUGARES!',
+        team1: {
+            id: 'temperley',
+            nombre: 'TEMPERLEY',
+            estadio: 'Alfredo Beranger',
+            apodo: 'Teatro de Turdera',
+            capacidadNum: 18000,
+            capacidadTexto: '18.000 esp.',
+            escudoFile: 'Temperley.webp',
+            borderColor: '#00aae4',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Temperley3.mp4",
+            esGanador: false
+        },
+        team2: {
+            id: 'losandes',
+            nombre: 'LOS ANDES',
+            estadio: 'Eduardo Gallardón',
+            apodo: 'El Gallardón',
+            capacidadNum: 36900,
+            capacidadTexto: '36.900 esp.',
+            escudoFile: 'Losandes.webp',
+            borderColor: '#e60000',
+            videoPath: "E:\\Google earth studio\\Argentina\\Subidos\\B\\Bloque B\\Los andes.mp4",
+            esGanador: true
+        },
+        copy: `🥊 DUELO DE CAPACIDAD: ¿TEMPERLEY O LOS ANDES? 🏟️🔥
+El clásico de Lomas de Zamora: Alfredo Beranger vs Eduardo Gallardón. ¿Cuál de los dos estadios del Sur tiene mayor capacidad oficial? ¡El resultado te va a sorprender! 😱
+
+👉 ¿Acertaste o pensabas que era al revés? Dejanos tu voto en los comentarios.
+🎮 Poné a prueba cuánto sabés de estadios en el link del perfil: estadiosvirtuales.com
+
+#Temperley #LosAndes #ClasicoDeLomas #AlfredoBeranger #EduardoGallardon #Gasolero #Milrayitas #Estadios #FutbolArgentino #EstadiosVirtuales`
+    },
     'defensa-quilmes': {
         slug: 'DEFENSA-VS-QUILMES',
         pais: 'Argentina',
