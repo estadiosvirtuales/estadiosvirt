@@ -1,6 +1,6 @@
 // =============================================================================
 // ⚽ BASE DE DATOS OFICIAL DE PLANTELES Y FORMACIONES REALES
-// Modo Carrera · Estadios Virtuales (Datos oficiales actualizados Temporada 2026)
+// Modo Carrera · Estadios Virtuales (Auditado 1x1 · Jul-Nov 2026 · 261 equipos)
 // =============================================================================
 
 window.PLAN_REALES = {
@@ -24,18 +24,18 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Marco Pellegrino"
+                "nombre": "Facundo Herrera"
             },
             {
                 "pos": "LI",
-                "nombre": "Lautaro Blanco"
+                "nombre": "Malcom Braida"
             },
             {
                 "pos": "MC",
-                "nombre": "Santiago Ascacibar"
+                "nombre": "Santiago Ascacíbar"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Leandro Paredes"
             },
             {
@@ -43,21 +43,21 @@ window.PLAN_REALES = {
                 "nombre": "Milton Delgado"
             },
             {
-                "pos": "ED",
-                "nombre": "Sebastián Villa"
+                "pos": "EI",
+                "nombre": "Alan Velasco"
             },
             {
                 "pos": "DC",
                 "nombre": "Miguel Merentiel"
             },
             {
-                "pos": "EI",
-                "nombre": "Ángel Romero"
+                "pos": "ED",
+                "nombre": "Sebastián Villa"
             }
         ]
     },
     "arg_river": {
-        "tactica": "4-3-3",
+        "tactica": "4-1-3-2",
         "dt": "Leonardo Ponzio",
         "figura": "Thiago Almada",
         "arquero": "Santiago Beltrán",
@@ -68,19 +68,23 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Giovanni González"
+                "nombre": "Gonzalo Montiel"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Lucas Martínez Quarta"
             },
             {
                 "pos": "DFC",
                 "nombre": "Nicolás Otamendi"
             },
             {
-                "pos": "DFC",
-                "nombre": "Lautaro Rivero"
-            },
-            {
                 "pos": "LI",
                 "nombre": "Marcos Acuña"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Fausto Vera"
             },
             {
                 "pos": "MC",
@@ -88,29 +92,25 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Fausto Vera"
+                "nombre": "Tomás Galván"
             },
             {
                 "pos": "MCO",
                 "nombre": "Thiago Almada"
             },
             {
-                "pos": "ED",
+                "pos": "DC",
                 "nombre": "Ángel Correa"
             },
             {
                 "pos": "DC",
-                "nombre": "Lucas Beltrán"
-            },
-            {
-                "pos": "EI",
                 "nombre": "Sebastián Driussi"
             }
         ]
     },
     "arg_racing": {
         "tactica": "4-3-3",
-        "dt": "Juan Pablo Vojvoda",
+        "dt": "Sebastián Romero",
         "figura": "Matías Zaracho",
         "arquero": "Facundo Cambeses",
         "titulares": [
@@ -120,35 +120,35 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Gastón Martirena"
+                "nombre": "Ezequiel Cannavo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marco Di Césare"
+                "nombre": "Leonel Pérez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marcos Rojo"
+                "nombre": "Gonzalo Escudero"
             },
             {
                 "pos": "LI",
-                "nombre": "Gabriel Rojas"
+                "nombre": "Ignacio Rodríguez"
             },
             {
                 "pos": "MC",
-                "nombre": "Santiago Sosa"
+                "nombre": "Alejandro Tello"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Matías Kranevitter"
             },
             {
                 "pos": "MC",
-                "nombre": "Matías Zaracho"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Ulises Ortegoza"
+                "nombre": "Gastón Lodico"
             },
             {
                 "pos": "ED",
-                "nombre": "Tomás Conechny"
+                "nombre": "Matías Zaracho"
             },
             {
                 "pos": "DC",
@@ -156,14 +156,14 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "Matko Miljevic"
+                "nombre": "Tomás Conechny"
             }
         ]
     },
     "arg_independiente": {
         "tactica": "4-3-3",
         "dt": "Jadson Viera",
-        "figura": "Santiago Montiel",
+        "figura": "Iván Marcone",
         "arquero": "Santiago Mele",
         "titulares": [
             {
@@ -176,27 +176,27 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Franco Calderón"
+                "nombre": "Sebastián Valdéz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Juan Manuel Fedorco"
+                "nombre": "Juan Miguel Arrayago"
             },
             {
                 "pos": "LI",
-                "nombre": "Facundo Zabala"
+                "nombre": "Nahuel Banegas"
             },
             {
                 "pos": "MC",
+                "nombre": "Mateo Pérez Curci"
+            },
+            {
+                "pos": "MCD",
                 "nombre": "Iván Marcone"
             },
             {
                 "pos": "MC",
-                "nombre": "Lucas González"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Lautaro Millán"
+                "nombre": "Maximiliano Meza"
             },
             {
                 "pos": "ED",
@@ -204,16 +204,16 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "Gabriel Ávalos"
+                "nombre": "Ezequiel Ávila"
             },
             {
                 "pos": "EI",
-                "nombre": "Santiago Montiel"
+                "nombre": "Josias Palais"
             }
         ]
     },
     "arg_sanlorenzo": {
-        "tactica": "3-4-2-1",
+        "tactica": "3-4-1-2",
         "dt": "Rubén Darío Insúa",
         "figura": "Facundo Farías",
         "arquero": "José Devecchi",
@@ -224,11 +224,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Guzmán Corujo"
+                "nombre": "Danilo Arboleda"
             },
             {
                 "pos": "DFC",
-                "nombre": "Danilo Arboleda"
+                "nombre": "Guzmán Corujo"
             },
             {
                 "pos": "DFC",
@@ -240,11 +240,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Martín Río"
+                "nombre": "Ignacio Perruzzi"
             },
             {
                 "pos": "MC",
-                "nombre": "Facundo Gulli"
+                "nombre": "Juan Cruz Rattalino"
             },
             {
                 "pos": "CAI",
@@ -255,19 +255,19 @@ window.PLAN_REALES = {
                 "nombre": "Facundo Farías"
             },
             {
-                "pos": "MCO",
-                "nombre": "Nahuel Barrios"
+                "pos": "DC",
+                "nombre": "Alexis Cuello"
             },
             {
                 "pos": "DC",
-                "nombre": "Rodrigo Auzmendi"
+                "nombre": "Agustín Ladstatter"
             }
         ]
     },
     "arg_velez": {
         "tactica": "4-3-3",
         "dt": "Guillermo Barros Schelotto",
-        "figura": "Ronaldo Martínez",
+        "figura": "Manuel Lanzini",
         "arquero": "Tomás Marchiori",
         "titulares": [
             {
@@ -276,15 +276,15 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Leonardo Jara"
+                "nombre": "Joaquín García"
             },
             {
                 "pos": "DFC",
-                "nombre": "Emanuel Mammana"
+                "nombre": "Lisandro Magallán"
             },
             {
                 "pos": "DFC",
-                "nombre": "Valentín Gómez"
+                "nombre": "Thiago Silvero"
             },
             {
                 "pos": "LI",
@@ -292,19 +292,19 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Christian Ordóñez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Agustín Bouzat"
+                "nombre": "Lucas Robertone"
             },
             {
                 "pos": "MC",
                 "nombre": "Rodrigo Aliendro"
             },
             {
+                "pos": "MCO",
+                "nombre": "Manuel Lanzini"
+            },
+            {
                 "pos": "ED",
-                "nombre": "Francisco Pizzini"
+                "nombre": "Matías Pellegrini"
             },
             {
                 "pos": "DC",
@@ -312,14 +312,14 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "Matías Pellegrini"
+                "nombre": "Juan Cruz Policella"
             }
         ]
     },
     "arg_huracan": {
-        "tactica": "4-3-3",
+        "tactica": "4-2-3-1",
         "dt": "Diego Martínez",
-        "figura": "Walter Mazzantti",
+        "figura": "Hernán Galíndez",
         "arquero": "Hernán Galíndez",
         "titulares": [
             {
@@ -328,100 +328,100 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Hernán De La Fuente"
+                "nombre": "Federico Vera"
             },
             {
                 "pos": "DFC",
-                "nombre": "Fabio Pereyra"
+                "nombre": "Hugo Nervo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lucas Carrizo"
+                "nombre": "Máximo Palazzo"
             },
             {
                 "pos": "LI",
                 "nombre": "César Ibáñez"
             },
             {
-                "pos": "MC",
-                "nombre": "Rodrigo Echeverría"
+                "pos": "MCD",
+                "nombre": "Facundo Waller"
             },
             {
-                "pos": "MC",
-                "nombre": "Williams Alarcón"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Alan Soñora"
+                "pos": "MCD",
+                "nombre": "Facundo Kalinger"
             },
             {
                 "pos": "ED",
-                "nombre": "Walter Mazzantti"
+                "nombre": "Lucas Blondel"
             },
             {
-                "pos": "DC",
-                "nombre": "Eric Ramírez"
+                "pos": "MCO",
+                "nombre": "Bruno Barticciotto"
             },
             {
                 "pos": "EI",
-                "nombre": "Rodrigo Cabral"
+                "nombre": "Óscar Cortés"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jordy Caicedo"
             }
         ]
     },
     "arg_estudiantes": {
-        "tactica": "4-3-3",
+        "tactica": "5-3-2",
         "dt": "Alexander Medina",
         "figura": "Guido Carrillo",
-        "arquero": "Matías Mansilla",
+        "arquero": "Fernando Muslera",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Matías Mansilla"
+                "nombre": "Fernando Muslera"
             },
             {
-                "pos": "LD",
-                "nombre": "Eric Meza"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Federico Fernández"
+                "pos": "CAD",
+                "nombre": "Eros Mancuso"
             },
             {
                 "pos": "DFC",
-                "nombre": "Facundo Rodríguez"
+                "nombre": "Santiago Núñez"
             },
             {
-                "pos": "LI",
-                "nombre": "Gastón Benedetti"
+                "pos": "DFC",
+                "nombre": "Leandro González Pirez"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Marcos Rojo"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Joaquín Tobio Burgos"
             },
             {
                 "pos": "MC",
-                "nombre": "Santiago Ascacibar"
+                "nombre": "Baltasar Rodríguez"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Ezequiel Piovi"
             },
             {
                 "pos": "MC",
-                "nombre": "Enzo Pérez"
+                "nombre": "Alexis Castro"
             },
             {
-                "pos": "MC",
-                "nombre": "José Sosa"
-            },
-            {
-                "pos": "ED",
+                "pos": "DC",
                 "nombre": "Tiago Palacios"
             },
             {
                 "pos": "DC",
                 "nombre": "Guido Carrillo"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Edwuin Cetré"
             }
         ]
     },
     "arg_gimnasia": {
-        "tactica": "4-1-4-1",
+        "tactica": "4-4-2",
         "dt": "Ariel Pereyra",
         "figura": "Ignacio Fernández",
         "arquero": "Nelson Insfrán",
@@ -436,7 +436,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Germán Conti"
+                "nombre": "Renzo Giampaoli"
             },
             {
                 "pos": "DFC",
@@ -452,28 +452,28 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Ignacio Fernández"
+                "nombre": "Nicolás Barros Schelotto"
             },
             {
                 "pos": "MC",
-                "nombre": "Mateo Seoane"
+                "nombre": "Martín Fernández"
             },
             {
-                "pos": "MD",
-                "nombre": "Alexis Steimbach"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Maximiliano Zalazar"
+                "pos": "MCO",
+                "nombre": "Ignacio Fernández"
             },
             {
                 "pos": "DC",
-                "nombre": "Agustín Auzmendi"
+                "nombre": "Manuel Panaro"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Marcelo Torres"
             }
         ]
     },
     "arg_rosario": {
-        "tactica": "4-3-3",
+        "tactica": "4-2-3-1",
         "dt": "Jorge Almirón",
         "figura": "Ángel Di María",
         "arquero": "Jeremías Ledesma",
@@ -496,38 +496,38 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Juan Cruz Sández"
+                "nombre": "Agustín Sández"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Franco Ibarra"
             },
             {
-                "pos": "MC",
-                "nombre": "Federico Navarro"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Alan Rodríguez"
+                "pos": "MCD",
+                "nombre": "Vicente Pizarro"
             },
             {
                 "pos": "ED",
-                "nombre": "Ángel Di María"
+                "nombre": "Giovanni Cantizano"
             },
             {
-                "pos": "DC",
-                "nombre": "Enzo Copetti"
+                "pos": "MCO",
+                "nombre": "Ángel Di María"
             },
             {
                 "pos": "EI",
                 "nombre": "Jaminton Campaz"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Enzo Copetti"
             }
         ]
     },
     "arg_newells": {
         "tactica": "4-3-3",
         "dt": "Frank Darío Kudelka",
-        "figura": "Matías Cóccaro",
+        "figura": "Walter Mazzantti",
         "arquero": "Josué Reinatti",
         "titulares": [
             {
@@ -540,23 +540,23 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Bruno Cabrera"
+                "nombre": "Nicolás Goitea"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lautaro Giannetti"
+                "nombre": "Oscar Salomón"
             },
             {
                 "pos": "LI",
                 "nombre": "Jerónimo Russo"
             },
             {
-                "pos": "MC",
-                "nombre": "Lucas Regiardo"
+                "pos": "MCD",
+                "nombre": "Luca Regiardo"
             },
             {
                 "pos": "MC",
-                "nombre": "Facundo Guch"
+                "nombre": "Lucas Gómez"
             },
             {
                 "pos": "MC",
@@ -568,18 +568,18 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "Matías Cóccaro"
+                "nombre": "Walter Núñez"
             },
             {
                 "pos": "EI",
-                "nombre": "Walter Núñez"
+                "nombre": "Santiago Solari"
             }
         ]
     },
     "arg_talleres": {
         "tactica": "4-2-3-1",
-        "dt": "Jorge Sampaoli",
-        "figura": "Franco Cristaldo",
+        "dt": "Omar De Felippe",
+        "figura": "Ezequiel Unsain",
         "arquero": "Ezequiel Unsain",
         "titulares": [
             {
@@ -603,28 +603,28 @@ window.PLAN_REALES = {
                 "nombre": "Gabriel Báez"
             },
             {
-                "pos": "MC",
-                "nombre": "Federico Fattori"
+                "pos": "MCD",
+                "nombre": "Mateo Cáceres"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Matías Galarza"
             },
             {
-                "pos": "MCO",
-                "nombre": "Franco Cristaldo"
-            },
-            {
                 "pos": "ED",
-                "nombre": "Rick"
+                "nombre": "Rick Lima"
             },
             {
-                "pos": "DC",
-                "nombre": "Ronaldo Martínez"
+                "pos": "MCO",
+                "nombre": "Valentín Depietri"
             },
             {
                 "pos": "EI",
-                "nombre": "Valentín Depietri"
+                "nombre": "Alexandro Maidana"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Agustín Álvarez Martínez"
             }
         ]
     },
@@ -652,18 +652,18 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Adrián Spörle"
+                "nombre": "Federico Ricca"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Adrián Sánchez"
             },
             {
-                "pos": "MC",
-                "nombre": "Franco Vázquez"
+                "pos": "MCD",
+                "nombre": "Santiago Longo"
             },
             {
-                "pos": "MD",
+                "pos": "ED",
                 "nombre": "Emiliano Rigoni"
             },
             {
@@ -671,8 +671,8 @@ window.PLAN_REALES = {
                 "nombre": "Lucas Zelarayán"
             },
             {
-                "pos": "MI",
-                "nombre": "Francisco González Metilli"
+                "pos": "EI",
+                "nombre": "Franco Vázquez"
             },
             {
                 "pos": "DC",
@@ -681,9 +681,9 @@ window.PLAN_REALES = {
         ]
     },
     "arg_instituto": {
-        "tactica": "4-3-1-2",
+        "tactica": "3-4-2-1",
         "dt": "Diego Flores",
-        "figura": "Alex Luna",
+        "figura": "Facundo Suárez",
         "arquero": "Marcos Ledesma",
         "titulares": [
             {
@@ -691,20 +691,20 @@ window.PLAN_REALES = {
                 "nombre": "Marcos Ledesma"
             },
             {
-                "pos": "LD",
+                "pos": "DFC",
+                "nombre": "Agustín Massaccesi"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Agustín Bravo"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Andrés Meli"
+            },
+            {
+                "pos": "CAD",
                 "nombre": "Giuliano Cerato"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Jonatan Galván"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Fernando Alarcón"
-            },
-            {
-                "pos": "LI",
-                "nombre": "Diego Sosa"
             },
             {
                 "pos": "MC",
@@ -715,72 +715,72 @@ window.PLAN_REALES = {
                 "nombre": "Matías Gallardo"
             },
             {
-                "pos": "MC",
-                "nombre": "Alex Luna"
+                "pos": "CAI",
+                "nombre": "Diego Sosa"
             },
             {
                 "pos": "MCO",
-                "nombre": "Jeremías Lázaro"
+                "nombre": "Jonás Acevedo"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Jhon Córdoba"
             },
             {
                 "pos": "DC",
                 "nombre": "Facundo Suárez"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Jhon Córdoba"
             }
         ]
     },
     "arg_godoycruz": {
         "tactica": "4-4-2",
-        "dt": "Daniel Oldrá",
-        "figura": "Salomón Rodríguez",
-        "arquero": "Roberto Ramírez",
+        "dt": "Pablo De Muner",
+        "figura": "Vicente Poggi",
+        "arquero": "Juan Strumia",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Roberto Ramírez"
+                "nombre": "Juan Strumia"
             },
             {
                 "pos": "LD",
-                "nombre": "Lucas Arce"
+                "nombre": "Francisco Gerometta"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Esteban Burgos"
             },
             {
                 "pos": "DFC",
                 "nombre": "Diego Viera"
             },
             {
-                "pos": "DFC",
+                "pos": "LI",
                 "nombre": "Nahuel Brunet"
             },
             {
-                "pos": "LI",
-                "nombre": "Federico Milo"
+                "pos": "MD",
+                "nombre": "Benjamín Schamine"
             },
             {
                 "pos": "MC",
-                "nombre": "Gastón Gil Romero"
+                "nombre": "Felipe Cairus"
             },
             {
                 "pos": "MC",
                 "nombre": "Vicente Poggi"
             },
             {
-                "pos": "MD",
-                "nombre": "Nicolás Fernández"
-            },
-            {
                 "pos": "MI",
-                "nombre": "Bruno Schamine"
+                "nombre": "Rodrigo Fernández"
             },
             {
                 "pos": "DC",
-                "nombre": "Facundo Altamira"
+                "nombre": "Axel Rodríguez"
             },
             {
                 "pos": "DC",
-                "nombre": "Salomón Rodríguez"
+                "nombre": "Martín Pino"
             }
         ]
     },
@@ -796,15 +796,15 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Nicolás Morgantini"
+                "nombre": "Gonzalo Pérez"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "José Canale"
             },
             {
                 "pos": "DFC",
                 "nombre": "Carlos Izquierdoz"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Abel Luciatti"
             },
             {
                 "pos": "LI",
@@ -812,14 +812,14 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MCD",
-                "nombre": "Felipe Peña Biafore"
+                "nombre": "Agustín Medina"
             },
             {
                 "pos": "MCD",
-                "nombre": "Raúl Loaiza"
+                "nombre": "Felipe Peña Biafore"
             },
             {
-                "pos": "MD",
+                "pos": "ED",
                 "nombre": "Eduardo Salvio"
             },
             {
@@ -827,19 +827,19 @@ window.PLAN_REALES = {
                 "nombre": "Marcelino Moreno"
             },
             {
-                "pos": "MI",
-                "nombre": "Dylan Aquino"
+                "pos": "EI",
+                "nombre": "Ramiro Carrera"
             },
             {
                 "pos": "DC",
-                "nombre": "Walter Bou"
+                "nombre": "Yoshan Valois"
             }
         ]
     },
     "arg_banfield": {
-        "tactica": "4-4-2",
-        "dt": "Pedro Troglio",
-        "figura": "Rodrigo Auzmendi",
+        "tactica": "4-3-3",
+        "dt": "Interino (post Pedro Troglio)",
+        "figura": "Adrián Balboa",
         "arquero": "Diego Rodríguez",
         "titulares": [
             {
@@ -848,50 +848,50 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Juan Pablo Iezzi"
+                "nombre": "Juan Luis Alfaro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Emmanuel Maldonado"
+                "nombre": "Santiago Daniele"
             },
             {
                 "pos": "DFC",
-                "nombre": "Aaron Quirós"
+                "nombre": "Nicolás Meriano"
             },
             {
                 "pos": "LI",
-                "nombre": "Mathías De Ritis"
+                "nombre": "Ignacio Abraham"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Brandon Oviedo"
             },
             {
                 "pos": "MC",
-                "nombre": "Cristian Núñez"
+                "nombre": "Lautaro Gómez"
             },
             {
                 "pos": "MC",
-                "nombre": "Ignacio Rodríguez"
+                "nombre": "Tomás Adoryán"
             },
             {
-                "pos": "MD",
-                "nombre": "Juan Álvarez"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Gerónimo Rivera"
+                "pos": "ED",
+                "nombre": "Federico Medina"
             },
             {
                 "pos": "DC",
-                "nombre": "Rodrigo Auzmendi"
+                "nombre": "Adrián Balboa"
             },
             {
-                "pos": "DC",
-                "nombre": "Bruno Sepúlveda"
+                "pos": "EI",
+                "nombre": "David Zalazar"
             }
         ]
     },
     "arg_defensa": {
         "tactica": "4-2-3-1",
         "dt": "Julio Vaccari",
-        "figura": "Aaron Molinas",
+        "figura": "David Barbona",
         "arquero": "Matías Borgogno",
         "titulares": [
             {
@@ -900,50 +900,50 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Ayrton Portillo"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Héctor David Martínez"
+                "nombre": "Valentín Loza"
             },
             {
                 "pos": "DFC",
                 "nombre": "Damián Fernández"
             },
             {
-                "pos": "LI",
-                "nombre": "Fernando Román"
+                "pos": "DFC",
+                "nombre": "Héctor Martínez"
             },
             {
-                "pos": "MC",
+                "pos": "LI",
+                "nombre": "Damián Domínguez"
+            },
+            {
+                "pos": "MCD",
                 "nombre": "César Pérez"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Santiago Sosa"
             },
             {
-                "pos": "MCO",
-                "nombre": "Aaron Molinas"
+                "pos": "ED",
+                "nombre": "Jeremías Lucco"
             },
             {
-                "pos": "ED",
+                "pos": "MCO",
                 "nombre": "David Barbona"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Juan Manuel Gutiérrez"
             },
             {
                 "pos": "DC",
                 "nombre": "Leandro Fernández"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Santiago Toloza"
             }
         ]
     },
     "arg_argentinos": {
-        "tactica": "4-3-3",
+        "tactica": "4-1-2-1-2",
         "dt": "Nicolás Diez",
-        "figura": "Hernán López Muñoz",
+        "figura": "Nicolás Oroz",
         "arquero": "Brayan Cortés",
         "titulares": [
             {
@@ -952,50 +952,50 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Kevin Coronel"
+                "nombre": "Franco Paredes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Francisco Álvarez"
+                "nombre": "Mateo Mendoza"
             },
             {
                 "pos": "DFC",
-                "nombre": "Erik Godoy"
+                "nombre": "Érik Godoy"
             },
             {
                 "pos": "LI",
                 "nombre": "Sebastián Prieto"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Kevin Gutiérrez"
             },
             {
                 "pos": "MC",
-                "nombre": "Nicolás Oroz"
+                "nombre": "Facundo Carrizo"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Diego Porcel"
             },
             {
                 "pos": "MCO",
-                "nombre": "Hernán López Muñoz"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Gastón Verón"
+                "nombre": "Nicolás Oroz"
             },
             {
                 "pos": "DC",
                 "nombre": "Matías Giménez Rojas"
             },
             {
-                "pos": "EI",
-                "nombre": "Alan Lescano"
+                "pos": "DC",
+                "nombre": "Gastón Verón"
             }
         ]
     },
     "arg_platense": {
         "tactica": "4-2-3-1",
         "dt": "Martín Palermo",
-        "figura": "Franco Zapiola",
+        "figura": "Guido Mainero",
         "arquero": "Juan Pablo Cozzani",
         "titulares": [
             {
@@ -1004,11 +1004,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Agustín Lagos"
+                "nombre": "Juan Saborido"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mateo Mendía"
+                "nombre": "Mateo Mendia"
             },
             {
                 "pos": "DFC",
@@ -1020,34 +1020,34 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MCD",
-                "nombre": "Pablo Ferreira"
+                "nombre": "Martín Barrios"
             },
             {
                 "pos": "MCD",
-                "nombre": "Maximiliano Amarfil"
+                "nombre": "Iván Gómez"
             },
             {
-                "pos": "MD",
-                "nombre": "Guido Mainero"
+                "pos": "ED",
+                "nombre": "Nicolás Retamar"
             },
             {
                 "pos": "MCO",
-                "nombre": "Franco Zapiola"
+                "nombre": "Bautista Merlini"
             },
             {
-                "pos": "MI",
-                "nombre": "Agustín Gauto"
+                "pos": "EI",
+                "nombre": "Guido Mainero"
             },
             {
                 "pos": "DC",
-                "nombre": "Agustín Lencina"
+                "nombre": "Bruno Sepúlveda"
             }
         ]
     },
     "arg_tigre": {
         "tactica": "4-4-2",
         "dt": "Juan Carlos Blengio",
-        "figura": "Gonzalo Maroni",
+        "figura": "Ignacio Russo",
         "arquero": "Felipe Zenobio",
         "titulares": [
             {
@@ -1060,7 +1060,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Ramón Arias"
+                "nombre": "Joaquín Laso"
             },
             {
                 "pos": "DFC",
@@ -1068,31 +1068,31 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Nahuel Banegas"
+                "nombre": "Federico Álvarez"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Jabes Saralegui"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Santiago González"
             },
             {
                 "pos": "MC",
                 "nombre": "Bruno Leyes"
             },
             {
-                "pos": "MC",
-                "nombre": "Jabes Saralegui"
-            },
-            {
-                "pos": "MD",
-                "nombre": "Tiago Serrago"
-            },
-            {
                 "pos": "MI",
-                "nombre": "Gonzalo Maroni"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Ignacio Russo"
+                "nombre": "Santiago López"
             },
             {
                 "pos": "DC",
                 "nombre": "Jerónimo Dómina"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Ignacio Russo"
             }
         ]
     },
@@ -1112,46 +1112,46 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Nicolás Paz"
+                "nombre": "Matías Rocha"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mathías Rocha"
+                "nombre": "Juan Pablo Ludueña"
             },
             {
                 "pos": "LI",
-                "nombre": "Bruno Pittón"
+                "nombre": "Lucas Ayala"
             },
             {
-                "pos": "MC",
-                "nombre": "Joaquín Mosqueira"
+                "pos": "MD",
+                "nombre": "Sebastián Palacios"
             },
             {
                 "pos": "MC",
                 "nombre": "Lucas Menossi"
             },
             {
-                "pos": "MD",
-                "nombre": "Ignacio Malcorra"
+                "pos": "MC",
+                "nombre": "Joaquín Mosqueira"
             },
             {
                 "pos": "MI",
-                "nombre": "Franco Fragapane"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Cristian Tarragona"
+                "nombre": "Ignacio Malcorra"
             },
             {
                 "pos": "DC",
                 "nombre": "Marcelo Estigarribia"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Cristian Tarragona"
             }
         ]
     },
     "arg_riestra": {
         "tactica": "5-3-2",
-        "dt": "Guillermo Duró",
-        "figura": "Milton Céliz",
+        "dt": "Gustavo Benítez",
+        "figura": "Ignacio Arce",
         "arquero": "Ignacio Arce",
         "titulares": [
             {
@@ -1160,35 +1160,35 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "CAD",
-                "nombre": "Mariano Bracamonte"
+                "nombre": "Pedro Ramírez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Eric Tovo"
+                "nombre": "Facundo Domínguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Carlos Quintana"
+                "nombre": "Cristian Paz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ignacio Gariglio"
+                "nombre": "Facundo Miño"
             },
             {
                 "pos": "CAI",
-                "nombre": "Rodrigo Gallo"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Milton Céliz"
+                "nombre": "Rodrigo Sayavedra"
             },
             {
                 "pos": "MC",
                 "nombre": "Nicolás Watson"
             },
             {
+                "pos": "MCD",
+                "nombre": "Pablo Monje"
+            },
+            {
                 "pos": "MC",
-                "nombre": "Braian Sánchez"
+                "nombre": "Milton Celis"
             },
             {
                 "pos": "DC",
@@ -1196,19 +1196,19 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "Nicolás Benegas"
+                "nombre": "Jonathan Herrera"
             }
         ]
     },
     "arg_barracas": {
-        "tactica": "4-4-2",
+        "tactica": "4-2-3-1",
         "dt": "Damián Ayude",
         "figura": "Iván Tapia",
-        "arquero": "Marcelo Miño",
+        "arquero": "Juan Espínola",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Marcelo Miño"
+                "nombre": "Juan Espínola"
             },
             {
                 "pos": "LD",
@@ -1216,45 +1216,45 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Kevin Jappert"
-            },
-            {
-                "pos": "DFC",
                 "nombre": "Yonatthan Rak"
             },
             {
-                "pos": "LI",
+                "pos": "DFC",
                 "nombre": "Nicolás Demartini"
             },
             {
-                "pos": "MC",
-                "nombre": "Iván Tapia"
+                "pos": "LI",
+                "nombre": "Elías Pereyra"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Dardo Miloc"
             },
             {
-                "pos": "MD",
+                "pos": "MCD",
+                "nombre": "Iván Tapia"
+            },
+            {
+                "pos": "ED",
                 "nombre": "Tomás Porra"
             },
             {
-                "pos": "MI",
-                "nombre": "Rodrigo Insúa"
+                "pos": "MCO",
+                "nombre": "Gonzalo Maroni"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Rodrigo Bogarín"
             },
             {
                 "pos": "DC",
-                "nombre": "Norberto Briasco"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Jhonatan Candia"
+                "nombre": "Facundo Bruera"
             }
         ]
     },
     "arg_centralcordoba": {
-        "tactica": "4-4-2",
-        "dt": "Sebastián Domínguez",
+        "tactica": "4-2-3-1",
+        "dt": "Juan Carlos Roldán",
         "figura": "Michael Santos",
         "arquero": "Alan Aguerre",
         "titulares": [
@@ -1264,38 +1264,38 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Santiago Moyano"
+                "nombre": "Fernando Martínez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alejandro Maciel"
+                "nombre": "Facundo Roldán"
             },
             {
                 "pos": "DFC",
-                "nombre": "Yuri Casemiro"
+                "nombre": "Nicolás Garrido"
             },
             {
                 "pos": "LI",
                 "nombre": "Darío Cáceres"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Matías Vera"
             },
             {
-                "pos": "MC",
-                "nombre": "Lucas González"
+                "pos": "MCD",
+                "nombre": "Tiziano Ramírez"
             },
             {
-                "pos": "MD",
-                "nombre": "Horacio Tijanovich"
+                "pos": "ED",
+                "nombre": "Leonardo Sequeira"
             },
             {
-                "pos": "MI",
-                "nombre": "Fernando Martínez"
+                "pos": "MCO",
+                "nombre": "Marco Iacobellis"
             },
             {
-                "pos": "DC",
+                "pos": "EI",
                 "nombre": "Diego Barrera"
             },
             {
@@ -1306,60 +1306,60 @@ window.PLAN_REALES = {
     },
     "arg_atleticotucuman": {
         "tactica": "4-4-2",
-        "dt": "Julio César Falcioni",
-        "figura": "Leandro Díaz",
-        "arquero": "Durso",
+        "dt": "Pedro Troglio",
+        "figura": "Renzo Tesuri",
+        "arquero": "Luis Ingolotti",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Durso"
+                "nombre": "Luis Ingolotti"
             },
             {
                 "pos": "LD",
-                "nombre": "Di Plácido"
+                "nombre": "Leonel Di Plácido"
             },
             {
                 "pos": "DFC",
-                "nombre": "G. Ferrari"
+                "nombre": "Juan Cruz Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Suso"
+                "nombre": "Julián Fernández"
             },
             {
                 "pos": "LI",
-                "nombre": "Infante"
+                "nombre": "Juan Infante"
             },
             {
                 "pos": "MD",
-                "nombre": "Tesuri"
+                "nombre": "Renzo Tesuri"
             },
             {
                 "pos": "MC",
-                "nombre": "K. Ortiz"
+                "nombre": "Clever Ferreira"
             },
             {
                 "pos": "MC",
-                "nombre": "Ham"
+                "nombre": "Lautaro Godoy"
             },
             {
                 "pos": "MI",
-                "nombre": "Nicola"
+                "nombre": "Ramiro Ruiz Rodríguez"
             },
             {
                 "pos": "DC",
-                "nombre": "Bajamich"
+                "nombre": "Facundo Pimienta"
             },
             {
                 "pos": "DC",
-                "nombre": "Leandro Díaz"
+                "nombre": "Alexis Canelo"
             }
         ]
     },
     "arg_sarmiento": {
-        "tactica": "4-4-2",
+        "tactica": "3-4-2-1",
         "dt": "Facundo Sava",
-        "figura": "Jonathan Herrera",
+        "figura": "Junior Marabel",
         "arquero": "Thyago Ayala",
         "titulares": [
             {
@@ -1367,8 +1367,8 @@ window.PLAN_REALES = {
                 "nombre": "Thyago Ayala"
             },
             {
-                "pos": "LD",
-                "nombre": "Santiago Salle"
+                "pos": "DFC",
+                "nombre": "Renzo Orihuela"
             },
             {
                 "pos": "DFC",
@@ -1379,28 +1379,28 @@ window.PLAN_REALES = {
                 "nombre": "Lucas Suárez"
             },
             {
-                "pos": "LI",
-                "nombre": "Renzo Orihuela"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Mauricio Martínez"
+                "pos": "CAD",
+                "nombre": "Santiago Salle"
             },
             {
                 "pos": "MC",
                 "nombre": "Cristian Zabala"
             },
             {
-                "pos": "MD",
-                "nombre": "Julián Contrera"
+                "pos": "MC",
+                "nombre": "Mauricio Martínez"
             },
             {
-                "pos": "MI",
+                "pos": "CAI",
                 "nombre": "Julián Mavilla"
             },
             {
-                "pos": "DC",
-                "nombre": "Jonathan Herrera"
+                "pos": "MCO",
+                "nombre": "Julián Contrera"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Jhon Rentería"
             },
             {
                 "pos": "DC",
@@ -1409,18 +1409,18 @@ window.PLAN_REALES = {
         ]
     },
     "arg_indrivadavia": {
-        "tactica": "4-4-2",
+        "tactica": "4-2-3-1",
         "dt": "Alfredo Berti",
         "figura": "Álex Arce",
-        "arquero": "Ramiro Macagno",
+        "arquero": "Emmanuel Gómez Riga",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Ramiro Macagno"
+                "nombre": "Emmanuel Gómez Riga"
             },
             {
                 "pos": "LD",
-                "nombre": "Alex Vigo"
+                "nombre": "Ezequiel Bonifacio"
             },
             {
                 "pos": "DFC",
@@ -1428,42 +1428,42 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Leonard Costa"
+                "nombre": "Alejo Osella"
             },
             {
                 "pos": "LI",
                 "nombre": "Juan Manuel Elordi"
             },
             {
-                "pos": "MC",
-                "nombre": "Tomás Bottari"
+                "pos": "MCD",
+                "nombre": "Leonard Costa"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "José Florentín"
             },
             {
-                "pos": "MD",
-                "nombre": "Gonzalo Ríos"
+                "pos": "ED",
+                "nombre": "Matías Fernández"
             },
             {
-                "pos": "MI",
-                "nombre": "Matías Fernández"
+                "pos": "MCO",
+                "nombre": "Luis Sequeira"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Leonel Bucca"
             },
             {
                 "pos": "DC",
                 "nombre": "Álex Arce"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Maximiliano Salas"
             }
         ]
     },
     "arg_aldosivi": {
         "tactica": "4-2-3-1",
         "dt": "Javier Sanguinetti",
-        "figura": "Nicolás Gaitán",
+        "figura": "Andrés Vombergar",
         "arquero": "Lucas Acosta",
         "titulares": [
             {
@@ -1472,7 +1472,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Elías López"
+                "nombre": "Santiago Moya"
             },
             {
                 "pos": "DFC",
@@ -1480,40 +1480,40 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Nicolás Zalazar"
+                "nombre": "Joaquín Pombo"
             },
             {
                 "pos": "LI",
-                "nombre": "Rodrigo González"
+                "nombre": "Braian Cufré"
             },
             {
-                "pos": "MC",
-                "nombre": "Esteban Rolón"
+                "pos": "MCD",
+                "nombre": "Martín García"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Lucas Castro"
             },
             {
-                "pos": "MD",
-                "nombre": "Matías Godoy"
+                "pos": "ED",
+                "nombre": "Agustín Palavecino"
             },
             {
                 "pos": "MCO",
                 "nombre": "Nicolás Gaitán"
             },
             {
-                "pos": "MI",
+                "pos": "EI",
                 "nombre": "Alan Sosa"
             },
             {
                 "pos": "DC",
-                "nombre": "Andrés Chávez"
+                "nombre": "Andrés Vombergar"
             }
         ]
     },
     "arg_sanmartinsj": {
-        "tactica": "4-4-2",
+        "tactica": "4-2-3-1",
         "dt": "Alejandro Schiapparelli",
         "figura": "Nazareno Funez",
         "arquero": "Sebastián Díaz Robles",
@@ -1532,431 +1532,431 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Emanuel Aguilera"
+                "nombre": "Manuel Cocca"
             },
             {
                 "pos": "LI",
                 "nombre": "Hernán Zuliani"
             },
             {
-                "pos": "MC",
-                "nombre": "Nicolás Pelaitay"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Sebastián Jaurena"
             },
             {
-                "pos": "MD",
-                "nombre": "Lucas Acosta"
+                "pos": "MCD",
+                "nombre": "Guillermo Acosta"
             },
             {
-                "pos": "MI",
-                "nombre": "Gabriel Hachen"
+                "pos": "ED",
+                "nombre": "Nicolás Iachetti"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Luciano Ferreyra"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Leonardo Monje"
             },
             {
                 "pos": "DC",
                 "nombre": "Nazareno Funez"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Franco Coronel"
             }
         ]
     },
     "arg_colon": {
-        "tactica": "4-4-2",
-        "dt": "Diego Osella",
-        "figura": "Bernardi",
-        "arquero": "Vicentini",
+        "tactica": "4-3-3",
+        "dt": "Iván Delfino",
+        "figura": "Ignacio Lago",
+        "arquero": "Tomás Giménez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Vicentini"
+                "nombre": "Tomás Giménez"
             },
             {
                 "pos": "LD",
-                "nombre": "Herrera"
+                "nombre": "Mauro Peinipil"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lópes"
+                "nombre": "Nicolás Thaller"
             },
             {
                 "pos": "DFC",
-                "nombre": "Goltz"
+                "nombre": "Federico Rasmussen"
             },
             {
                 "pos": "LI",
-                "nombre": "Castet"
+                "nombre": "Facundo Castet"
             },
             {
-                "pos": "MD",
-                "nombre": "Jourdán"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Prediger"
+                "pos": "MCD",
+                "nombre": "Federico Lértora"
             },
             {
                 "pos": "MC",
-                "nombre": "Talpone"
+                "nombre": "Agustín Toledo"
             },
             {
-                "pos": "MI",
-                "nombre": "Bernardi"
+                "pos": "MCO",
+                "nombre": "Darío Sarmiento"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Julián Marcioni"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Ignacio Lago"
             },
             {
                 "pos": "DC",
-                "nombre": "Guille"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Toledo"
+                "nombre": "Alan Bonansea"
             }
         ]
     },
     "arg_quilmes": {
-        "tactica": "4-3-3",
-        "dt": "Darío Franco",
-        "figura": "Parisi",
-        "arquero": "Glellel",
+        "tactica": "4-2-3-1",
+        "dt": "Emanuel Trípodi",
+        "figura": "Nicolás Colazo",
+        "arquero": "Joaquín Canadell",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Glellel"
+                "nombre": "Joaquín Canadell"
             },
             {
                 "pos": "LD",
-                "nombre": "Adín"
+                "nombre": "Agustín Ortega"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tevez"
+                "nombre": "Lucas Romeo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ferreira"
+                "nombre": "Santino Rodríguez"
             },
             {
                 "pos": "LI",
-                "nombre": "Ayrton Sánchez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "I. Ramírez"
+                "nombre": "Agustín Bindella"
             },
             {
                 "pos": "MCD",
-                "nombre": "Postigo"
+                "nombre": "Facundo Yozwiak"
             },
             {
                 "pos": "MC",
-                "nombre": "Enrique"
+                "nombre": "Nicolás Colazo"
             },
             {
                 "pos": "ED",
-                "nombre": "Capano"
+                "nombre": "Axel Batista"
             },
             {
-                "pos": "DC",
-                "nombre": "Parisi"
+                "pos": "MCO",
+                "nombre": "Gonzalo Vega"
             },
             {
                 "pos": "EI",
-                "nombre": "Batista"
+                "nombre": "Jano Coronel"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Aarón Spetale"
             }
         ]
     },
     "arg_sanmartintuc": {
         "tactica": "4-4-2",
-        "dt": "Diego Flores",
-        "figura": "Junior Arias",
-        "arquero": "Sand",
+        "dt": "Alejandro Orfila",
+        "figura": "Gabriel Carabajal",
+        "arquero": "Juan Jaime",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sand"
+                "nombre": "Juan Jaime"
             },
             {
                 "pos": "LD",
-                "nombre": "Bettini"
+                "nombre": "Víctor Salazar"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dattola"
+                "nombre": "Guillermo Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Orellana"
+                "nombre": "Ezequiel Parnisari"
             },
             {
                 "pos": "LI",
-                "nombre": "Diarte"
+                "nombre": "Nahuel Gallardo"
             },
             {
                 "pos": "MD",
-                "nombre": "Cuevas"
+                "nombre": "Álvaro Veliez"
             },
             {
                 "pos": "MC",
-                "nombre": "Abregú"
+                "nombre": "Santiago Briñone"
             },
             {
                 "pos": "MC",
-                "nombre": "U. Vera"
+                "nombre": "Agustín Graneros"
             },
             {
                 "pos": "MI",
-                "nombre": "M. García"
+                "nombre": "Gabriel Carabajal"
             },
             {
                 "pos": "DC",
-                "nombre": "Fedele"
+                "nombre": "Luca Arfaras"
             },
             {
                 "pos": "DC",
-                "nombre": "Junior Arias"
+                "nombre": "Bruno Cabrera"
             }
         ]
     },
     "arg_ferro": {
-        "tactica": "4-4-2",
-        "dt": "Aníbal Biggeri",
-        "figura": "R. Blanco",
-        "arquero": "Saracho",
+        "tactica": "4-3-3",
+        "dt": "Juan Manuel Sara",
+        "figura": "Fernando Monetti",
+        "arquero": "Fernando Monetti",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Saracho"
+                "nombre": "Fernando Monetti"
             },
             {
                 "pos": "LD",
-                "nombre": "Murillo"
+                "nombre": "Nazareno Kihm"
             },
             {
                 "pos": "DFC",
-                "nombre": "Arena"
+                "nombre": "Juan Orellana"
             },
             {
                 "pos": "DFC",
-                "nombre": "Boulone"
+                "nombre": "Gustavo Canto"
             },
             {
                 "pos": "LI",
-                "nombre": "Moreyra"
+                "nombre": "Emiliano Ozuna"
             },
             {
-                "pos": "MD",
-                "nombre": "Pérez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Mussis"
+                "pos": "MCD",
+                "nombre": "Matías Kabalin"
             },
             {
                 "pos": "MC",
-                "nombre": "Gómez"
+                "nombre": "Felipe Obradovich"
             },
             {
-                "pos": "MI",
-                "nombre": "R. Blanco"
+                "pos": "MCO",
+                "nombre": "Gonzalo Castellani"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Ángel González"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Lautaro Parisi"
             },
             {
                 "pos": "DC",
-                "nombre": "Retamar"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Levato"
+                "nombre": "Nicolás Reniero"
             }
         ]
     },
     "arg_chacarita": {
-        "tactica": "4-3-3",
-        "dt": "Manuel Fernández",
-        "figura": "Pisano",
-        "arquero": "Arzamendia",
+        "tactica": "4-4-2",
+        "dt": "Sergio Rondina",
+        "figura": "Cristian Guanca",
+        "arquero": "Federico Losas",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Arzamendia"
+                "nombre": "Federico Losas"
             },
             {
                 "pos": "LD",
-                "nombre": "Tobías Fernández"
+                "nombre": "Francisco Facello"
             },
             {
                 "pos": "DFC",
-                "nombre": "Brunet"
+                "nombre": "Santiago Acosta"
             },
             {
                 "pos": "DFC",
-                "nombre": "Álvarez"
+                "nombre": "Sergio Vittor"
             },
             {
                 "pos": "LI",
-                "nombre": "Chávez"
+                "nombre": "Nicolás Pantaleone"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Nicolás Cháves"
             },
             {
                 "pos": "MC",
-                "nombre": "Watson"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Perdomo"
+                "nombre": "Maximiliano Meléndez"
             },
             {
                 "pos": "MC",
-                "nombre": "Pisano"
+                "nombre": "Tomás Pérez Serra"
             },
             {
-                "pos": "ED",
-                "nombre": "Brandán"
+                "pos": "MI",
+                "nombre": "Álvaro Cuello"
             },
             {
                 "pos": "DC",
-                "nombre": "Salinas"
+                "nombre": "Cristian Guanca"
             },
             {
-                "pos": "EI",
-                "nombre": "Pombo"
+                "pos": "DC",
+                "nombre": "Alexis Domínguez"
             }
         ]
     },
     "arg_allboys": {
-        "tactica": "4-4-2",
-        "dt": "César Monasterio",
-        "figura": "Toloza",
-        "arquero": "Mitre",
+        "tactica": "4-5-1",
+        "dt": "Fabián Nardozza",
+        "figura": "Hernán Grana",
+        "arquero": "Juan Pablo Noce",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mitre"
+                "nombre": "Juan Pablo Noce"
             },
             {
                 "pos": "LD",
-                "nombre": "Tizón"
+                "nombre": "Hernán Grana"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pusula"
+                "nombre": "Iván Zafarana"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ferrari"
+                "nombre": "Maximiliano Coronel"
             },
             {
                 "pos": "LI",
-                "nombre": "Tobías Bovone"
+                "nombre": "Alejo Tabares"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Alexis Melo"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Cristo Lozada"
             },
             {
                 "pos": "MD",
-                "nombre": "Calone"
+                "nombre": "Thiago Calone"
             },
             {
-                "pos": "MC",
-                "nombre": "Gallo"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Passaglia"
+                "pos": "MCO",
+                "nombre": "Nicolás Barrientos"
             },
             {
                 "pos": "MI",
-                "nombre": "Patricio Miranda"
+                "nombre": "Luciano Leguizamón"
             },
             {
                 "pos": "DC",
-                "nombre": "Toloza"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Assennato"
+                "nombre": "Lucas Cano"
             }
         ]
     },
     "arg_atlanta": {
-        "tactica": "4-3-3",
-        "dt": "Luis García",
-        "figura": "Susvielles",
-        "arquero": "Galardi",
+        "tactica": "4-5-1",
+        "dt": "Cristian Pellerano",
+        "figura": "Alejandro Quintana",
+        "arquero": "Juan Francisco Rago",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Galardi"
+                "nombre": "Juan Francisco Rago"
             },
             {
                 "pos": "LD",
-                "nombre": "Rosales"
+                "nombre": "Martín García"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rojas"
+                "nombre": "Rodrigo Moreira"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gissi"
+                "nombre": "Patricio Ostachuk"
             },
             {
                 "pos": "LI",
-                "nombre": "Silva"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Marín"
+                "nombre": "Rodrigo Sosa"
             },
             {
                 "pos": "MCD",
-                "nombre": "Previtali"
+                "nombre": "Francisco Romero"
             },
             {
                 "pos": "MC",
-                "nombre": "Dramisino"
+                "nombre": "Braian Rivero"
             },
             {
-                "pos": "ED",
-                "nombre": "Lattanzio"
+                "pos": "MD",
+                "nombre": "Federico Álvarez"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Tomás Castro Ponce"
+            },
+            {
+                "pos": "MI",
+                "nombre": "Ignacio Rodríguez"
             },
             {
                 "pos": "DC",
-                "nombre": "Susvielles"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Bodencer"
+                "nombre": "Alejandro Quintana"
             }
         ]
     },
     "arg_almirantebrown": {
         "tactica": "4-4-2",
-        "dt": "Daniel Bazán Vera",
-        "figura": "Pomelo Vera",
-        "arquero": "Ramiro Martínez",
+        "dt": "Andrés Montenegro",
+        "figura": "Gustavo Cabral",
+        "arquero": "Bruno Galván",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Ramiro Martínez"
+                "nombre": "Bruno Galván"
             },
             {
                 "pos": "LD",
-                "nombre": "Acosta"
+                "nombre": "Pedro Velurtas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dattola"
+                "nombre": "Enzo Cardozo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Quiroz"
+                "nombre": "Gustavo Cabral"
             },
             {
                 "pos": "LI",
-                "nombre": "Axel Ochoa"
+                "nombre": "Gerardo Alegre Rojas"
             },
             {
-                "pos": "MD",
-                "nombre": "Cenci"
+                "pos": "MI",
+                "nombre": "Ramiro Fernández"
             },
             {
                 "pos": "MC",
@@ -1964,1239 +1964,1239 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Ibáñez"
+                "nombre": "Luciano Pascual"
             },
             {
-                "pos": "MI",
-                "nombre": "Villarruel"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Pomelo Vera"
+                "pos": "MD",
+                "nombre": "Mariano Santiago"
             },
             {
                 "pos": "DC",
-                "nombre": "Brian Fernández"
+                "nombre": "Ulises Abreliano"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Javier Martínez"
             }
         ]
     },
     "arg_moron": {
         "tactica": "4-4-2",
-        "dt": "César Monasterio",
-        "figura": "Berterame",
-        "arquero": "Rojas",
+        "dt": "Walter Otta",
+        "figura": "Gonzalo Berterame",
+        "arquero": "Julio Salvá",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rojas"
+                "nombre": "Julio Salvá"
             },
             {
                 "pos": "LD",
-                "nombre": "Arciero"
+                "nombre": "Emanuel Iñíguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Machuca"
+                "nombre": "Braian Salvareschi"
             },
             {
                 "pos": "DFC",
-                "nombre": "López"
+                "nombre": "Emilio Lazza"
             },
             {
                 "pos": "LI",
-                "nombre": "Vaquer"
+                "nombre": "Joaquín Livera"
             },
             {
                 "pos": "MD",
-                "nombre": "Gómez"
+                "nombre": "Gonzalo Berterame"
             },
             {
                 "pos": "MC",
-                "nombre": "Brum"
+                "nombre": "Santiago Kubiszyn"
             },
             {
                 "pos": "MC",
-                "nombre": "Ferreira"
+                "nombre": "Mauro Burruchaga"
             },
             {
                 "pos": "MI",
-                "nombre": "Curruhinca"
+                "nombre": "Mariano Bíttolo"
             },
             {
                 "pos": "DC",
-                "nombre": "Berterame"
+                "nombre": "Mateo Levato"
             },
             {
                 "pos": "DC",
-                "nombre": "Rescaldani"
+                "nombre": "Franco Fagúndez"
             }
         ]
     },
     "arg_gimnasiamza": {
-        "tactica": "4-4-2",
-        "dt": "Ezequiel Medrán",
-        "figura": "Silba",
-        "arquero": "Tagliamonte",
+        "tactica": "5-3-2",
+        "dt": "Darío Franco",
+        "figura": "Facundo Lencioni",
+        "arquero": "César Rigamonti",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Tagliamonte"
+                "nombre": "César Rigamonti"
             },
             {
-                "pos": "LD",
-                "nombre": "Cortez"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Mondino"
+                "pos": "CAD",
+                "nombre": "Luciano Paredes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Padilla"
+                "nombre": "Diego Mondino"
             },
             {
-                "pos": "LI",
-                "nombre": "Saavedra"
+                "pos": "DFC",
+                "nombre": "Germán Guiffrey"
             },
             {
-                "pos": "MD",
-                "nombre": "Ciccolini"
+                "pos": "DFC",
+                "nombre": "Ezequiel Muñoz"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Matías Recalde"
             },
             {
                 "pos": "MC",
-                "nombre": "F. Rinaldi"
+                "nombre": "Fermín Antonini"
             },
             {
                 "pos": "MC",
-                "nombre": "L. Muñoz"
+                "nombre": "Nahuel Barboza"
             },
             {
-                "pos": "MI",
-                "nombre": "Puch"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Silba"
+                "pos": "MC",
+                "nombre": "Esteban Fernández"
             },
             {
                 "pos": "DC",
-                "nombre": "Solís"
+                "nombre": "Facundo Lencioni"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Agustín Módica"
             }
         ]
     },
     "arg_patronato": {
-        "tactica": "4-4-2",
-        "dt": "Diego Pozo",
-        "figura": "Arnaldo González",
-        "arquero": "Salvá",
+        "tactica": "4-3-3",
+        "dt": "Marcelo Fuentes",
+        "figura": "Franco Soldano",
+        "arquero": "Alan Sosa",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Salvá"
+                "nombre": "Alan Sosa"
             },
             {
                 "pos": "LD",
-                "nombre": "Asís"
+                "nombre": "Juan Barinaga"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bellatti"
+                "nombre": "Franco Meritello"
             },
             {
                 "pos": "DFC",
-                "nombre": "Burdisso"
+                "nombre": "Fernando Evangelista"
             },
             {
                 "pos": "LI",
-                "nombre": "Díaz"
-            },
-            {
-                "pos": "MD",
-                "nombre": "Barinaga"
+                "nombre": "Nahuel Genez"
             },
             {
                 "pos": "MC",
-                "nombre": "Turraca"
+                "nombre": "Maximiliano Rueda"
             },
             {
                 "pos": "MC",
-                "nombre": "Maciel"
+                "nombre": "Gonzalo Salega"
             },
             {
-                "pos": "MI",
-                "nombre": "Arnaldo González"
+                "pos": "MC",
+                "nombre": "Brandon Cortés"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Alejo Miró"
             },
             {
                 "pos": "DC",
-                "nombre": "Dening"
+                "nombre": "Franco Soldano"
             },
             {
-                "pos": "DC",
-                "nombre": "Coronel"
+                "pos": "EI",
+                "nombre": "Renzo Reynaga"
             }
         ]
     },
     "arg_temperley": {
-        "tactica": "4-4-2",
-        "dt": "Walter Perazzo",
-        "figura": "Baldunciel",
-        "arquero": "Rago",
+        "tactica": "4-3-3",
+        "dt": "Nicolás Domingo",
+        "figura": "Gabriel Hauche",
+        "arquero": "Ezequiel Mastrolía",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rago"
+                "nombre": "Ezequiel Mastrolía"
             },
             {
                 "pos": "LD",
-                "nombre": "Souto"
+                "nombre": "Lorenzo Monti"
             },
             {
                 "pos": "DFC",
-                "nombre": "Casarico"
+                "nombre": "Oswaldo Pacheco"
             },
             {
                 "pos": "DFC",
-                "nombre": "Segovia"
+                "nombre": "Valentín Aguiñagalde"
             },
             {
                 "pos": "LI",
-                "nombre": "Angelini"
-            },
-            {
-                "pos": "MD",
-                "nombre": "Frías"
+                "nombre": "Lucas Angelini"
             },
             {
                 "pos": "MC",
-                "nombre": "Richarte"
+                "nombre": "Pedro Souto"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Lucas Richarte"
             },
             {
                 "pos": "MC",
-                "nombre": "Mavilla"
+                "nombre": "Franco Díaz"
             },
             {
-                "pos": "MI",
-                "nombre": "Baldunciel"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Arturia"
+                "pos": "ED",
+                "nombre": "Franco Benítez"
             },
             {
                 "pos": "DC",
-                "nombre": "L. López"
+                "nombre": "Marcos Echeverría"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Gabriel Hauche"
             }
         ]
     },
     "arg_depmadryn": {
-        "tactica": "4-4-2",
-        "dt": "Leandro Gracián",
-        "figura": "Crego",
-        "arquero": "Bonnin",
+        "tactica": "4-2-3-1",
+        "dt": "Luis García",
+        "figura": "Luis Silba",
+        "arquero": "Yair Bonnin",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Bonnin"
+                "nombre": "Yair Bonnin"
             },
             {
                 "pos": "LD",
-                "nombre": "Pezzi"
+                "nombre": "Agustín Sosa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Calderón"
+                "nombre": "Facundo Giacopuzzi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mansilla"
+                "nombre": "Claudio Corvalán"
             },
             {
                 "pos": "LI",
-                "nombre": "Zuliani"
+                "nombre": "Lucas Diarte"
             },
             {
-                "pos": "MD",
-                "nombre": "Recalde"
+                "pos": "MCD",
+                "nombre": "Federico Recalde"
             },
             {
-                "pos": "MC",
-                "nombre": "L. Pérez"
+                "pos": "MCD",
+                "nombre": "Marcelo Meli"
             },
             {
-                "pos": "MC",
-                "nombre": "Sánchez"
+                "pos": "ED",
+                "nombre": "Nazareno Solís"
             },
             {
-                "pos": "MI",
-                "nombre": "Crego"
+                "pos": "MCO",
+                "nombre": "Leonardo Marinucci"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Fernando Bersano"
             },
             {
                 "pos": "DC",
-                "nombre": "Ferreyra"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Peinipil"
+                "nombre": "Luis Silba"
             }
         ]
     },
     "arg_estudiantesba": {
         "tactica": "4-4-2",
-        "dt": "Walter Otta",
-        "figura": "Fagúndez",
-        "arquero": "Budiño",
+        "dt": "Alfredo Grelak",
+        "figura": "Jorge Correa",
+        "arquero": "Juan Manuel Lungarzo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Budiño"
+                "nombre": "Juan Manuel Lungarzo"
             },
             {
                 "pos": "LD",
-                "nombre": "Vallejos"
+                "nombre": "Martín Albarracín"
             },
             {
                 "pos": "DFC",
-                "nombre": "Román"
+                "nombre": "Jorge Benítez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lorenzon"
+                "nombre": "Nicolás Caro Torres"
             },
             {
                 "pos": "LI",
-                "nombre": "Fernández"
+                "nombre": "Franco Quinteros"
             },
             {
                 "pos": "MD",
-                "nombre": "Lugo"
+                "nombre": "Federico Sena"
             },
             {
                 "pos": "MC",
-                "nombre": "Bacigalupo"
+                "nombre": "Rodrigo Melo"
             },
             {
                 "pos": "MC",
-                "nombre": "Acosta"
+                "nombre": "Jorge Correa"
             },
             {
                 "pos": "MI",
-                "nombre": "Luna"
+                "nombre": "Enzo Acosta"
             },
             {
                 "pos": "DC",
-                "nombre": "Fagúndez"
+                "nombre": "Facundo Ardiles"
             },
             {
                 "pos": "DC",
-                "nombre": "Contreras"
+                "nombre": "Darío Rostagno"
             }
         ]
     },
     "arg_estudiantesrc": {
-        "tactica": "4-4-2",
-        "dt": "Alberto Salomón",
-        "figura": "Cainelli",
-        "arquero": "Bigo",
+        "tactica": "4-2-3-1",
+        "dt": "Gerardo Acuña",
+        "figura": "Alejandro Cabrera",
+        "arquero": "Francisco Gualtieri",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Bigo"
+                "nombre": "Francisco Gualtieri"
             },
             {
                 "pos": "LD",
-                "nombre": "Fenoglio"
+                "nombre": "Fernando Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Arturia"
+                "nombre": "Gonzalo González"
             },
             {
                 "pos": "DFC",
-                "nombre": "Maffini"
+                "nombre": "Sergio Ojeda"
             },
             {
                 "pos": "LI",
-                "nombre": "Abraham"
+                "nombre": "Agustín Quiroga"
             },
             {
-                "pos": "MD",
-                "nombre": "Cainelli"
+                "pos": "MCD",
+                "nombre": "Alejandro Cabrera"
             },
             {
-                "pos": "MC",
-                "nombre": "Romero"
+                "pos": "MCD",
+                "nombre": "Lautaro Cepeha"
             },
             {
-                "pos": "MC",
-                "nombre": "Blanco"
+                "pos": "ED",
+                "nombre": "Facundo Gallardo"
             },
             {
-                "pos": "MI",
-                "nombre": "Valiente"
+                "pos": "MCO",
+                "nombre": "Juan Chala"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Ibrahim Hesar"
             },
             {
                 "pos": "DC",
-                "nombre": "Villalba"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Reynaga"
+                "nombre": "Tomás González"
             }
         ]
     },
     "arg_almagro": {
         "tactica": "4-4-2",
-        "dt": "Lucas Sparapani",
-        "figura": "Troncoso",
-        "arquero": "Champagne",
+        "dt": "Carlos Mayor",
+        "figura": "Facundo De La Vega",
+        "arquero": "Sebastián Anchoverri",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Champagne"
+                "nombre": "Sebastián Anchoverri"
             },
             {
                 "pos": "LD",
-                "nombre": "Lauro"
+                "nombre": "Joaquín Flores"
             },
             {
                 "pos": "DFC",
-                "nombre": "Falabella"
+                "nombre": "Julián Vitale"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mattia"
+                "nombre": "Brian Negro"
             },
             {
                 "pos": "LI",
-                "nombre": "Gerez"
+                "nombre": "Pedro Blanco"
             },
             {
                 "pos": "MD",
-                "nombre": "Jerez"
+                "nombre": "Uriel Villalobos"
             },
             {
                 "pos": "MC",
-                "nombre": "Silva"
+                "nombre": "Julián Marchioni"
             },
             {
                 "pos": "MC",
-                "nombre": "Vásquez"
+                "nombre": "Enzo Martínez"
             },
             {
                 "pos": "MI",
-                "nombre": "Leal"
+                "nombre": "Joel Orlando"
             },
             {
                 "pos": "DC",
-                "nombre": "Troncoso"
+                "nombre": "Jeremías Bustos"
             },
             {
                 "pos": "DC",
-                "nombre": "Dornell"
+                "nombre": "Facundo De La Vega"
             }
         ]
     },
     "arg_chacoforever": {
-        "tactica": "4-4-2",
-        "dt": "Ricardo Pancaldo",
-        "figura": "Dellarossa",
-        "arquero": "Canuto",
+        "tactica": "4-3-3",
+        "dt": "Daniel Cravero",
+        "figura": "Gastón Canuto",
+        "arquero": "Gastón Canuto",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Canuto"
+                "nombre": "Gastón Canuto"
             },
             {
                 "pos": "LD",
-                "nombre": "Fernández"
+                "nombre": "Lucas Mihovilcevich"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tamborelli"
+                "nombre": "David Valdez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Valdez"
+                "nombre": "Ricardo Garay Lima"
             },
             {
                 "pos": "LI",
-                "nombre": "Silverton"
+                "nombre": "Agustín Ojeda"
             },
             {
-                "pos": "MD",
-                "nombre": "Nuñez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Valenzuela"
+                "pos": "MCD",
+                "nombre": "Juan Manuel Carrizo"
             },
             {
                 "pos": "MC",
-                "nombre": "Maccari"
+                "nombre": "Brian Nievas"
             },
             {
-                "pos": "MI",
-                "nombre": "Lucero"
+                "pos": "MC",
+                "nombre": "Enzo Gaggi"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Leandro Fernández"
             },
             {
                 "pos": "DC",
-                "nombre": "Dellarossa"
+                "nombre": "Matías Romero"
             },
             {
-                "pos": "DC",
-                "nombre": "Romero"
+                "pos": "EI",
+                "nombre": "Mateo Díaz Chaves"
             }
         ]
     },
     "arg_maipu": {
-        "tactica": "4-3-3",
-        "dt": "Juan Manuel Sara",
-        "figura": "Misael Sosa",
-        "arquero": "Noce",
+        "tactica": "4-2-3-1",
+        "dt": "Mariano Echeverría",
+        "figura": "Brian Orosco",
+        "arquero": "Nahuel Galardi",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Noce"
+                "nombre": "Nahuel Galardi"
             },
             {
                 "pos": "LD",
-                "nombre": "Paredes"
+                "nombre": "Lucas Faggioli"
             },
             {
                 "pos": "DFC",
-                "nombre": "Coronel"
+                "nombre": "Santiago Paulini"
             },
             {
                 "pos": "DFC",
-                "nombre": "Paulini"
+                "nombre": "Aron Agüero"
             },
             {
                 "pos": "LI",
-                "nombre": "Ostchega"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Arno"
+                "nombre": "Juan De La Reta"
             },
             {
                 "pos": "MCD",
-                "nombre": "Mansilla"
+                "nombre": "Juan Gobetto"
             },
             {
                 "pos": "MC",
-                "nombre": "Del Priore"
+                "nombre": "Enzo Pérez"
             },
             {
                 "pos": "ED",
-                "nombre": "Misael Sosa"
+                "nombre": "Franco Saccone"
             },
             {
-                "pos": "DC",
-                "nombre": "Viguet"
+                "pos": "MCO",
+                "nombre": "Brian Orosco"
             },
             {
                 "pos": "EI",
-                "nombre": "Raschle"
+                "nombre": "Mirko Bonfigli"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Juan Cruz Giacone"
             }
         ]
     },
     "arg_defensores": {
-        "tactica": "4-4-2",
-        "dt": "Carlos Mayor",
-        "figura": "E. Aguirre",
-        "arquero": "Medina",
+        "tactica": "4-1-4-1",
+        "dt": "Ricardo Pancaldo",
+        "figura": "Ezequiel Aguirre",
+        "arquero": "Alejandro Medina",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Medina"
+                "nombre": "Alejandro Medina"
             },
             {
                 "pos": "LD",
-                "nombre": "G. Mendoza"
+                "nombre": "Brian Gómez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Massaccesi"
+                "nombre": "Luis Jérez Silva"
             },
             {
                 "pos": "DFC",
-                "nombre": "Barbi"
+                "nombre": "Leonel Gigli"
             },
             {
                 "pos": "LI",
-                "nombre": "Borsotti"
+                "nombre": "Ian Pérez"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Juan De Tomasso"
             },
             {
                 "pos": "MD",
-                "nombre": "Salto"
+                "nombre": "Ezequiel Aguirre"
             },
             {
                 "pos": "MC",
-                "nombre": "I. Gutiérrez"
+                "nombre": "Nicolás Borsotti"
             },
             {
                 "pos": "MC",
-                "nombre": "Pietro"
+                "nombre": "Patricio Moyano"
             },
             {
                 "pos": "MI",
-                "nombre": "Antunes"
+                "nombre": "Leonardo Landriel"
             },
             {
                 "pos": "DC",
-                "nombre": "E. Aguirre"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Sayago"
+                "nombre": "Enzo González"
             }
         ]
     },
     "arg_agropecuario": {
         "tactica": "4-4-2",
-        "dt": "Pablo Frontini",
-        "figura": "Bieler",
-        "arquero": "Otarola",
+        "dt": "Gabriel Gómez",
+        "figura": "Alejandro Gagliardi",
+        "arquero": "Luciano Acosta",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Otarola"
+                "nombre": "Luciano Acosta"
             },
             {
                 "pos": "LD",
-                "nombre": "Moreno"
+                "nombre": "Enzo Aguirre"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mondino"
+                "nombre": "Alan Pérez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ledesma"
+                "nombre": "Danilo Actis"
             },
             {
                 "pos": "LI",
-                "nombre": "Marcioni"
+                "nombre": "Facundo Sánchez"
             },
             {
                 "pos": "MD",
-                "nombre": "Gagliardi"
+                "nombre": "Danilo Ruiz Díaz"
             },
             {
                 "pos": "MC",
-                "nombre": "Lemos"
+                "nombre": "Natanael Pereyra"
             },
             {
                 "pos": "MC",
-                "nombre": "Melo"
+                "nombre": "Braian Aranda"
             },
             {
                 "pos": "MI",
-                "nombre": "Mosca"
+                "nombre": "Juan Cruz Vega"
             },
             {
                 "pos": "DC",
-                "nombre": "Bieler"
+                "nombre": "Alejandro Gagliardi"
             },
             {
                 "pos": "DC",
-                "nombre": "Cucchi"
+                "nombre": "Jarol Heritier"
             }
         ]
     },
     "arg_mitre": {
         "tactica": "4-4-2",
-        "dt": "Mario Sciacqua",
-        "figura": "David Romero",
-        "arquero": "Jachfe",
+        "dt": "Christian Salandín",
+        "figura": "Juan Alesandroni",
+        "arquero": "Ignacio Pietrobono",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Jachfe"
+                "nombre": "Ignacio Pietrobono"
             },
             {
                 "pos": "LD",
-                "nombre": "Mieres"
+                "nombre": "Pablo Minissale"
             },
             {
                 "pos": "DFC",
-                "nombre": "Piriz"
+                "nombre": "Maximiliano Romero"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ferreyra"
+                "nombre": "Daniel Abello"
             },
             {
                 "pos": "LI",
-                "nombre": "Sánchez"
+                "nombre": "Franco Ferrari"
             },
             {
                 "pos": "MD",
-                "nombre": "Castro"
+                "nombre": "Oscar Garrido"
             },
             {
                 "pos": "MC",
-                "nombre": "Alesandroni"
+                "nombre": "Martín Vázquez"
             },
             {
                 "pos": "MC",
-                "nombre": "Ferrari"
+                "nombre": "Juan Alesandroni"
             },
             {
                 "pos": "MI",
-                "nombre": "Gobetto"
+                "nombre": "Santiago Rosales"
             },
             {
                 "pos": "DC",
-                "nombre": "David Romero"
+                "nombre": "Marcos Machado"
             },
             {
                 "pos": "DC",
-                "nombre": "Posse"
+                "nombre": "Favio Cabral"
             }
         ]
     },
     "arg_guemes": {
         "tactica": "4-4-2",
-        "dt": "Marcelo Vázquez",
-        "figura": "Hernán Brylko",
-        "arquero": "Mendonca",
+        "dt": "Mario Gómez",
+        "figura": "Gianluca Pugliese",
+        "arquero": "Tomás Palleres",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mendonca"
+                "nombre": "Tomás Palleres"
             },
             {
                 "pos": "LD",
-                "nombre": "Broggi"
+                "nombre": "Alan González"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ríos"
+                "nombre": "Rodrigo Arnay"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mercado"
+                "nombre": "Facundo Melillán"
             },
             {
                 "pos": "LI",
-                "nombre": "García"
+                "nombre": "Walter Juárez"
             },
             {
                 "pos": "MD",
-                "nombre": "Papa"
+                "nombre": "Milton Gerez"
             },
             {
                 "pos": "MC",
-                "nombre": "Griffa"
+                "nombre": "Gianfranco Baier"
             },
             {
                 "pos": "MC",
-                "nombre": "Veliz"
+                "nombre": "Santiago Farrera"
             },
             {
                 "pos": "MI",
-                "nombre": "Palacios"
+                "nombre": "Jonás Carranza"
             },
             {
                 "pos": "DC",
-                "nombre": "Brylko"
+                "nombre": "Ciro Leineker"
             },
             {
                 "pos": "DC",
-                "nombre": "Gerez"
+                "nombre": "Gianluca Pugliese"
             }
         ]
     },
     "arg_sanmiguel": {
         "tactica": "4-4-2",
-        "dt": "Gustavo Coleoni",
-        "figura": "Ferrero",
-        "arquero": "Pucheta",
+        "dt": "Alberto Bulleri",
+        "figura": "Fabrizio Almeida",
+        "arquero": "Mateo Reynoso",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Pucheta"
+                "nombre": "Mateo Reynoso"
             },
             {
                 "pos": "LD",
-                "nombre": "Dixon"
+                "nombre": "Agustín Desimone"
             },
             {
                 "pos": "DFC",
-                "nombre": "Manenti"
+                "nombre": "Leandro Ortíz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Paredes"
+                "nombre": "Santino Bevilacqua"
             },
             {
                 "pos": "LI",
-                "nombre": "Cravero"
+                "nombre": "Alexis Cruz"
             },
             {
                 "pos": "MD",
-                "nombre": "Melillo"
+                "nombre": "Thomas Carosio"
             },
             {
                 "pos": "MC",
-                "nombre": "Sena"
+                "nombre": "Fabrizio Almeida"
             },
             {
                 "pos": "MC",
-                "nombre": "Rojas"
+                "nombre": "Elian De La Cruz"
             },
             {
                 "pos": "MI",
-                "nombre": "Kippes"
+                "nombre": "Sergio Riquelme"
             },
             {
                 "pos": "DC",
-                "nombre": "Ferrero"
+                "nombre": "Tomás Jerez"
             },
             {
                 "pos": "DC",
-                "nombre": "Luján"
+                "nombre": "Nicolás Coronel"
             }
         ]
     },
     "arg_santelmo": {
-        "tactica": "4-3-3",
-        "dt": "Alfredo Grelak",
-        "figura": "Barreto",
-        "arquero": "Bustillos",
+        "tactica": "4-4-2",
+        "dt": "Aníbal Biggeri",
+        "figura": "Martín Batallini",
+        "arquero": "Joaquín Enrico",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Bustillos"
+                "nombre": "Joaquín Enrico"
             },
             {
                 "pos": "LD",
-                "nombre": "Vallejos"
+                "nombre": "Emanuel Díaz"
             },
             {
                 "pos": "DFC",
-                "nombre": "H. González"
+                "nombre": "Leonel Pollacchi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Laza"
+                "nombre": "Patricio Romero"
             },
             {
                 "pos": "LI",
-                "nombre": "Cosi"
+                "nombre": "Facundo Roncaglia"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Juan Motroni"
             },
             {
                 "pos": "MC",
-                "nombre": "Ayala"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Heil"
+                "nombre": "Elías Brítez"
             },
             {
                 "pos": "MC",
-                "nombre": "Canto"
+                "nombre": "Martín González"
             },
             {
-                "pos": "ED",
-                "nombre": "Barreto"
+                "pos": "MI",
+                "nombre": "Jerónimo Porto Lapegüe"
             },
             {
                 "pos": "DC",
-                "nombre": "Diellos"
+                "nombre": "Nicolás Molina"
             },
             {
-                "pos": "EI",
-                "nombre": "Larthirigoyen"
+                "pos": "DC",
+                "nombre": "Martín Batallini"
             }
         ]
     },
     "arg_tristansuarez": {
-        "tactica": "4-4-2",
+        "tactica": "3-4-2-1",
         "dt": "José María Martínez",
-        "figura": "Lavezzi",
-        "arquero": "Silva",
+        "figura": "Diego Becker",
+        "arquero": "Joaquín Bigo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Silva"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Pérez"
+                "nombre": "Joaquín Bigo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Iriarte"
+                "nombre": "Brian Aguilar"
             },
             {
                 "pos": "DFC",
-                "nombre": "García"
+                "nombre": "Mauricio Guzmán"
             },
             {
-                "pos": "LI",
-                "nombre": "Pantaleone"
+                "pos": "DFC",
+                "nombre": "Agustín Baldi"
             },
             {
-                "pos": "MD",
-                "nombre": "Almada"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Molina"
+                "pos": "CAD",
+                "nombre": "Manuel Guillén"
             },
             {
                 "pos": "MC",
-                "nombre": "Arregui"
+                "nombre": "Marcos Enrique"
             },
             {
-                "pos": "MI",
-                "nombre": "Versaci"
+                "pos": "MC",
+                "nombre": "Nicolás Del Priore"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Nicolás Fernández"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Diego Becker"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Nicolás Sánchez"
             },
             {
                 "pos": "DC",
-                "nombre": "A. Lavezzi"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Bergara"
+                "nombre": "Renzo Conechny"
             }
         ]
     },
     "arg_colegiales": {
-        "tactica": "4-4-2",
+        "tactica": "4-3-3",
         "dt": "Leonardo Fernández",
-        "figura": "Camacho",
-        "arquero": "Di Fulvio",
+        "figura": "Emilio Di Fulvio",
+        "arquero": "Emilio Di Fulvio",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Di Fulvio"
+                "nombre": "Emilio Di Fulvio"
             },
             {
                 "pos": "LD",
-                "nombre": "Magallanes"
+                "nombre": "Franco Malagueño"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marzoratti"
+                "nombre": "Facundo Rivero"
             },
             {
                 "pos": "DFC",
-                "nombre": "Montiel"
+                "nombre": "Leonel Ortiz"
             },
             {
                 "pos": "LI",
-                "nombre": "Silguero"
-            },
-            {
-                "pos": "MD",
-                "nombre": "Polizzotto"
+                "nombre": "Emanuel Insúa"
             },
             {
                 "pos": "MC",
-                "nombre": "Keczeli"
+                "nombre": "Franco Zicarelli"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Federico Marín"
             },
             {
                 "pos": "MC",
-                "nombre": "Stancato"
+                "nombre": "Facundo Montiel"
             },
             {
-                "pos": "MI",
-                "nombre": "Luna"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Camacho"
+                "pos": "ED",
+                "nombre": "Rodrigo Monserrat"
             },
             {
                 "pos": "DC",
-                "nombre": "Diosquez"
+                "nombre": "Mauro Albertengo"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Mateo Mamani"
             }
         ]
     },
     "arg_acassuso": {
         "tactica": "4-4-2",
-        "dt": "Federico Hernández",
-        "figura": "Sena",
-        "arquero": "Lobelos",
+        "dt": "Interino (post Ricardo Pancaldo)",
+        "figura": "Kevin Dubini",
+        "arquero": "Mariano Monllor",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Lobelos"
+                "nombre": "Mariano Monllor"
             },
             {
                 "pos": "LD",
-                "nombre": "Gutiérrez"
+                "nombre": "Santiago Bellatti"
             },
             {
                 "pos": "DFC",
-                "nombre": "Piñero"
+                "nombre": "Alex Ruiz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ruiz"
+                "nombre": "Román Etcheverri"
             },
             {
                 "pos": "LI",
-                "nombre": "Galeano"
+                "nombre": "Joel Ghirardello"
             },
             {
                 "pos": "MD",
-                "nombre": "Violini"
+                "nombre": "Joaquín Postigo"
             },
             {
                 "pos": "MC",
-                "nombre": "Urrutia"
+                "nombre": "Ramiro Reynoso"
             },
             {
                 "pos": "MC",
-                "nombre": "Coronel"
+                "nombre": "Kevin Dubini"
             },
             {
                 "pos": "MI",
-                "nombre": "Sena"
+                "nombre": "Agustín Hermoso"
             },
             {
                 "pos": "DC",
-                "nombre": "Gil Clarotti"
+                "nombre": "Tomás Rodríguez"
             },
             {
                 "pos": "DC",
-                "nombre": "Villegas"
+                "nombre": "Valentín Serrano"
             }
         ]
     },
     "arg_losandes": {
         "tactica": "4-4-2",
-        "dt": "Fernando Ruiz",
-        "figura": "Brítez Ojeda",
-        "arquero": "López",
+        "dt": "César Monasterio",
+        "figura": "Sebastián López",
+        "arquero": "Sebastián López",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "López"
+                "nombre": "Sebastián López"
             },
             {
                 "pos": "LD",
-                "nombre": "Barrientos"
+                "nombre": "Gabriel Carrasco"
             },
             {
                 "pos": "DFC",
-                "nombre": "Igarzabal"
+                "nombre": "Julián Rodríguez Vuotto"
             },
             {
                 "pos": "DFC",
-                "nombre": "Segalerba"
+                "nombre": "Daniel Franco"
             },
             {
                 "pos": "LI",
-                "nombre": "Martínez"
+                "nombre": "Nazareno Fernández Colombo"
             },
             {
                 "pos": "MD",
-                "nombre": "Carrasco"
+                "nombre": "Juan Manuel Vázquez"
             },
             {
                 "pos": "MC",
-                "nombre": "Cañete"
+                "nombre": "Gabriel Cañete"
             },
             {
                 "pos": "MC",
-                "nombre": "Brítez Ojeda"
+                "nombre": "Alex Valdez Chamorro"
             },
             {
                 "pos": "MI",
-                "nombre": "González"
+                "nombre": "Alexis González"
             },
             {
                 "pos": "DC",
-                "nombre": "Páez"
+                "nombre": "Matías González"
             },
             {
                 "pos": "DC",
-                "nombre": "Villarreal"
+                "nombre": "Mauricio Asenjo"
             }
         ]
     },
     "arg_midland": {
         "tactica": "4-4-2",
-        "dt": "Jesús Díaz",
-        "figura": "Frattini",
-        "arquero": "Leguiza",
+        "dt": "Joaquín Iturrería",
+        "figura": "Ramiro Luna",
+        "arquero": "Mauro Leguiza",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Leguiza"
+                "nombre": "Mauro Leguiza"
             },
             {
                 "pos": "LD",
-                "nombre": "Cataldi"
+                "nombre": "Isaías Andrada"
             },
             {
                 "pos": "DFC",
-                "nombre": "Laborda"
+                "nombre": "Genaro Cepeda"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gamarra"
+                "nombre": "Luciano Recalde"
             },
             {
                 "pos": "LI",
-                "nombre": "Violini"
+                "nombre": "Pablo Casarico"
             },
             {
                 "pos": "MD",
-                "nombre": "Gómez"
+                "nombre": "Jesús Camaño"
             },
             {
                 "pos": "MC",
-                "nombre": "Pepe"
+                "nombre": "Nicolás Violini"
             },
             {
                 "pos": "MC",
-                "nombre": "Frattini"
+                "nombre": "Marcos Roseti"
             },
             {
                 "pos": "MI",
-                "nombre": "Arango"
+                "nombre": "Ramiro Luna"
             },
             {
                 "pos": "DC",
-                "nombre": "Roseti"
+                "nombre": "Ezequiel Bulacio"
             },
             {
                 "pos": "DC",
-                "nombre": "Torres"
+                "nombre": "Facundo Marín"
             }
         ]
     },
     "arg_centralnorte": {
         "tactica": "4-4-2",
-        "dt": "Víctor Riggio",
-        "figura": "Magno",
-        "arquero": "Salort",
+        "dt": "Alexis Matteo",
+        "figura": "Franco Vedoya",
+        "arquero": "Fabricio Hass",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Salort"
+                "nombre": "Fabricio Hass"
             },
             {
                 "pos": "LD",
-                "nombre": "Sanz"
+                "nombre": "Mauricio Rosales"
             },
             {
                 "pos": "DFC",
-                "nombre": "Paparelli"
+                "nombre": "Elías Calderón"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rodríguez"
+                "nombre": "Agustín Lamosa"
             },
             {
                 "pos": "LI",
-                "nombre": "Puñet"
+                "nombre": "Leonardo Felissia"
             },
             {
                 "pos": "MD",
-                "nombre": "Gómez"
+                "nombre": "Tomás Castro"
             },
             {
                 "pos": "MC",
-                "nombre": "Carrizo"
+                "nombre": "Gianluca Mancuso"
             },
             {
                 "pos": "MC",
-                "nombre": "Mazzola"
+                "nombre": "Matías Villarreal"
             },
             {
                 "pos": "MI",
-                "nombre": "Giménez"
+                "nombre": "Pedro Sanz"
             },
             {
                 "pos": "DC",
-                "nombre": "D. Magno"
+                "nombre": "Franco Vedoya"
             },
             {
                 "pos": "DC",
-                "nombre": "Lesman"
+                "nombre": "Francisco Borda"
             }
         ]
     },
     "arg_ciudadbolivar": {
-        "tactica": "4-4-2",
+        "tactica": "4-2-3-1",
         "dt": "Diego Funes",
-        "figura": "Troncoso",
-        "arquero": "Cavallotti",
+        "figura": "Arnaldo González",
+        "arquero": "Agustín Rufinetti",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cavallotti"
+                "nombre": "Agustín Rufinetti"
             },
             {
                 "pos": "LD",
-                "nombre": "Formato"
+                "nombre": "Agustín Paredes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lucero"
+                "nombre": "Ezequiel Navarro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vesco"
+                "nombre": "Elías Martínez"
             },
             {
                 "pos": "LI",
-                "nombre": "Díaz"
+                "nombre": "Federico Peralta"
             },
             {
-                "pos": "MD",
-                "nombre": "Roldán"
+                "pos": "MCD",
+                "nombre": "Nahuel Yeri"
             },
             {
-                "pos": "MC",
-                "nombre": "Yeri"
+                "pos": "MCD",
+                "nombre": "Alex Díaz"
             },
             {
-                "pos": "MC",
-                "nombre": "Giménez"
+                "pos": "ED",
+                "nombre": "Facundo Mucignat"
             },
             {
-                "pos": "MI",
-                "nombre": "Brambillo"
+                "pos": "MCO",
+                "nombre": "Arnaldo González"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Maximiliano Gutiérrez"
             },
             {
                 "pos": "DC",
-                "nombre": "Troncoso"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Urquijo"
+                "nombre": "Guillermo Sánchez"
             }
         ]
     },
     "bra_flamengo": {
         "tactica": "4-2-3-1",
-        "dt": "Filipe Luís",
-        "figura": "De Arrascaeta",
-        "arquero": "Rossi",
+        "dt": "Leonardo Jardim",
+        "figura": "Giorgian de Arrascaeta",
+        "arquero": "Agustín Rossi",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rossi"
+                "nombre": "Agustín Rossi"
             },
             {
                 "pos": "LD",
-                "nombre": "Varela"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Fabrício Bruno"
+                "nombre": "Guillermo Varela"
             },
             {
                 "pos": "DFC",
                 "nombre": "Léo Ortiz"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Léo Pereira"
             },
             {
                 "pos": "LI",
@@ -3208,39 +3208,39 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MCD",
-                "nombre": "De la Cruz"
+                "nombre": "Jorginho"
             },
             {
-                "pos": "MD",
-                "nombre": "Gerson"
+                "pos": "ED",
+                "nombre": "Jorge Carrascal"
             },
             {
                 "pos": "MCO",
-                "nombre": "De Arrascaeta"
+                "nombre": "Giorgian de Arrascaeta"
             },
             {
-                "pos": "MI",
-                "nombre": "Bruno Henrique"
+                "pos": "EI",
+                "nombre": "Samuel Lino"
             },
             {
                 "pos": "DC",
-                "nombre": "Gabriel Barbosa"
+                "nombre": "Pedro"
             }
         ]
     },
     "bra_palmeiras": {
-        "tactica": "4-2-3-1",
+        "tactica": "3-4-2-1",
         "dt": "Abel Ferreira",
-        "figura": "Estêvão",
-        "arquero": "Weverton",
+        "figura": "Gustavo Gómez",
+        "arquero": "Carlos Miguel",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Weverton"
+                "nombre": "Carlos Miguel"
             },
             {
-                "pos": "LD",
-                "nombre": "Marcos Rocha"
+                "pos": "DFC",
+                "nombre": "Bruno Fuchs"
             },
             {
                 "pos": "DFC",
@@ -3248,94 +3248,94 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Murilo"
+                "nombre": "Alexander Barboza"
             },
             {
-                "pos": "LI",
-                "nombre": "Caio Paulista"
+                "pos": "CAD",
+                "nombre": "Khellven"
             },
             {
-                "pos": "MCD",
-                "nombre": "Aníbal Moreno"
+                "pos": "MC",
+                "nombre": "Marlon Freitas"
             },
             {
-                "pos": "MCD",
-                "nombre": "Richard Ríos"
+                "pos": "MC",
+                "nombre": "Lucas Evangelista"
             },
             {
-                "pos": "MD",
-                "nombre": "Estêvão"
+                "pos": "CAI",
+                "nombre": "Arthur"
             },
             {
                 "pos": "MCO",
-                "nombre": "Raphael Veiga"
+                "nombre": "Mauricio"
             },
             {
-                "pos": "MI",
-                "nombre": "Felipe Anderson"
+                "pos": "MCO",
+                "nombre": "Jhon Arias"
             },
             {
                 "pos": "DC",
-                "nombre": "Flaco López"
+                "nombre": "Vitor Roque"
             }
         ]
     },
     "bra_botafogo": {
-        "tactica": "4-2-3-1",
-        "dt": "Artur Jorge",
-        "figura": "Luiz Henrique",
-        "arquero": "John",
+        "tactica": "5-3-2",
+        "dt": "Tite",
+        "figura": "Tiquinho Soares",
+        "arquero": "Gabriel Batista",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "John"
+                "nombre": "Gabriel Batista"
             },
             {
-                "pos": "LD",
+                "pos": "CAD",
                 "nombre": "Vitinho"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bastos"
+                "nombre": "Arthur Chaves"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alexander Barboza"
+                "nombre": "Justino"
             },
             {
-                "pos": "LI",
+                "pos": "DFC",
+                "nombre": "Marçal"
+            },
+            {
+                "pos": "CAI",
                 "nombre": "Alex Telles"
             },
             {
-                "pos": "MCD",
-                "nombre": "Gregore"
+                "pos": "MC",
+                "nombre": "Huguinho"
             },
             {
-                "pos": "MCD",
-                "nombre": "Marlon Freitas"
+                "pos": "MC",
+                "nombre": "Cristian Medina"
             },
             {
-                "pos": "MD",
-                "nombre": "Luiz Henrique"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Savarino"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Thiago Almada"
+                "pos": "MC",
+                "nombre": "Edenílson"
             },
             {
                 "pos": "DC",
-                "nombre": "Igor Jesus"
+                "nombre": "Matheus Martins"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Tiquinho Soares"
             }
         ]
     },
     "bra_atleticomg": {
-        "tactica": "3-4-2-1",
-        "dt": "Gabriel Milito",
-        "figura": "Hulk",
+        "tactica": "4-3-3",
+        "dt": "Eduardo Domínguez",
+        "figura": "Everson",
         "arquero": "Everson",
         "titulares": [
             {
@@ -3343,50 +3343,50 @@ window.PLAN_REALES = {
                 "nombre": "Everson"
             },
             {
-                "pos": "DFC",
-                "nombre": "Lyanco"
+                "pos": "LD",
+                "nombre": "Natanael"
             },
             {
                 "pos": "DFC",
-                "nombre": "Battaglia"
+                "nombre": "Ruan Tressoldi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Junior Alonso"
+                "nombre": "Vitão"
             },
             {
-                "pos": "MD",
-                "nombre": "Gustavo Scarpa"
+                "pos": "LI",
+                "nombre": "Renan Lodi"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Kevin Castaño"
             },
             {
                 "pos": "MC",
-                "nombre": "Otávio"
+                "nombre": "Maycon"
             },
             {
                 "pos": "MC",
-                "nombre": "Alan Franco"
+                "nombre": "Fred"
             },
             {
-                "pos": "MI",
-                "nombre": "Arana"
+                "pos": "ED",
+                "nombre": "Tomás Cuello"
             },
             {
-                "pos": "MCO",
-                "nombre": "Paulinho"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Rubens"
+                "pos": "EI",
+                "nombre": "Bernard"
             },
             {
                 "pos": "DC",
-                "nombre": "Hulk"
+                "nombre": "Thiago Borbas"
             }
         ]
     },
     "bra_saopaulo": {
-        "tactica": "4-2-3-1",
-        "dt": "Luis Zubeldía",
+        "tactica": "3-4-2-1",
+        "dt": "Dorival Júnior",
         "figura": "Lucas Moura",
         "arquero": "Rafael",
         "titulares": [
@@ -3395,8 +3395,8 @@ window.PLAN_REALES = {
                 "nombre": "Rafael"
             },
             {
-                "pos": "LD",
-                "nombre": "Igor Vinícius"
+                "pos": "DFC",
+                "nombre": "Rafael Tolói"
             },
             {
                 "pos": "DFC",
@@ -3407,44 +3407,44 @@ window.PLAN_REALES = {
                 "nombre": "Alan Franco"
             },
             {
-                "pos": "LI",
-                "nombre": "Welington"
+                "pos": "CAD",
+                "nombre": "Pedro Lima"
             },
             {
-                "pos": "MCD",
-                "nombre": "Luiz Gustavo"
+                "pos": "MC",
+                "nombre": "Pablo Maia"
             },
             {
-                "pos": "MCD",
-                "nombre": "Bobadilla"
+                "pos": "MC",
+                "nombre": "Danielzinho"
             },
             {
-                "pos": "MD",
+                "pos": "CAI",
+                "nombre": "Iago Borduchi"
+            },
+            {
+                "pos": "ED",
                 "nombre": "Lucas Moura"
             },
             {
-                "pos": "MCO",
-                "nombre": "Luciano"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Ferreirinha"
+                "pos": "EI",
+                "nombre": "Artur"
             },
             {
                 "pos": "DC",
-                "nombre": "Calleri"
+                "nombre": "Jonathan Calleri"
             }
         ]
     },
     "bra_cruzeiro": {
-        "tactica": "4-3-3",
-        "dt": "Fernando Diniz",
+        "tactica": "4-2-3-1",
+        "dt": "Artur Jorge",
         "figura": "Matheus Pereira",
-        "arquero": "Cássio",
+        "arquero": "Otávio",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cássio"
+                "nombre": "Otávio"
             },
             {
                 "pos": "LD",
@@ -3452,45 +3452,45 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Zé Ivaldo"
+                "nombre": "Fabrício Bruno"
             },
             {
                 "pos": "DFC",
-                "nombre": "Villalba"
+                "nombre": "Lucas Villalba"
             },
             {
                 "pos": "LI",
-                "nombre": "Marlon"
+                "nombre": "Gabriel Rojas"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Lucas Romero"
             },
             {
                 "pos": "MCD",
-                "nombre": "Walace"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Matheus Henrique"
+                "nombre": "Zé Lucas"
             },
             {
                 "pos": "ED",
-                "nombre": "Gabriel Veron"
+                "nombre": "Marquinhos"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Matheus Pereira"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Gerson"
             },
             {
                 "pos": "DC",
                 "nombre": "Kaio Jorge"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Matheus Pereira"
             }
         ]
     },
     "bra_corinthians": {
-        "tactica": "4-3-1-2",
-        "dt": "Ramón Díaz",
+        "tactica": "4-2-3-1",
+        "dt": "Clarence Seedorf",
         "figura": "Memphis Depay",
         "arquero": "Hugo Souza",
         "titulares": [
@@ -3500,39 +3500,39 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Fagner"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "André Ramalho"
+                "nombre": "Matheuzinho"
             },
             {
                 "pos": "DFC",
                 "nombre": "Gustavo Henrique"
             },
             {
-                "pos": "LI",
-                "nombre": "Matheus Bidu"
+                "pos": "DFC",
+                "nombre": "João Pedro Tchoca"
             },
             {
-                "pos": "MC",
-                "nombre": "Alex Santana"
+                "pos": "LI",
+                "nombre": "Fabrizio Angileri"
             },
             {
                 "pos": "MCD",
-                "nombre": "José Martínez"
+                "nombre": "Breno Bidon"
             },
             {
-                "pos": "MC",
-                "nombre": "Carrillo"
+                "pos": "MCD",
+                "nombre": "André Carrillo"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Kaio César"
             },
             {
                 "pos": "MCO",
-                "nombre": "Rodrigo Garro"
+                "nombre": "Vitinho"
             },
             {
-                "pos": "DC",
-                "nombre": "Yuri Alberto"
+                "pos": "EI",
+                "nombre": "Matheus Bidu"
             },
             {
                 "pos": "DC",
@@ -3541,102 +3541,102 @@ window.PLAN_REALES = {
         ]
     },
     "bra_santos": {
-        "tactica": "4-3-3",
-        "dt": "Fábio Carille",
-        "figura": "Giuliano",
-        "arquero": "Gabriel Brazão",
+        "tactica": "4-2-3-1",
+        "dt": "Cuca",
+        "figura": "Neymar",
+        "arquero": "Diógenes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Gabriel Brazão"
+                "nombre": "Diógenes"
             },
             {
                 "pos": "LD",
-                "nombre": "JP Chermont"
+                "nombre": "Rodinei"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gil"
+                "nombre": "João Alencar"
             },
             {
                 "pos": "DFC",
-                "nombre": "Joaquim"
+                "nombre": "Willian Arão"
             },
             {
                 "pos": "LI",
-                "nombre": "Escobar"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Diego Pituca"
+                "nombre": "Luan Peres"
             },
             {
                 "pos": "MCD",
-                "nombre": "João Schmidt"
+                "nombre": "Gustavo Henrique"
             },
             {
-                "pos": "MC",
-                "nombre": "Giuliano"
+                "pos": "MCD",
+                "nombre": "Arthur"
             },
             {
                 "pos": "ED",
-                "nombre": "Otero"
+                "nombre": "Neymar"
             },
             {
-                "pos": "DC",
-                "nombre": "Furch"
+                "pos": "MCO",
+                "nombre": "Philippe Coutinho"
             },
             {
                 "pos": "EI",
-                "nombre": "Guilherme"
+                "nombre": "Everton Cebolinha"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Gabriel Barbosa"
             }
         ]
     },
     "chi_colocolo": {
-        "tactica": "3-5-2",
-        "dt": "Jorge Almirón",
+        "tactica": "4-3-3",
+        "dt": "Fernando Ortiz",
         "figura": "Arturo Vidal",
-        "arquero": "Cortés",
+        "arquero": "Vozinha",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cortés"
+                "nombre": "Vozinha"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Jeyson Rojas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Saldivia"
+                "nombre": "Jonathan Villagra"
             },
             {
                 "pos": "DFC",
-                "nombre": "Falcón"
+                "nombre": "Erick Wiemberg"
             },
             {
-                "pos": "DFC",
-                "nombre": "Wiemberg"
+                "pos": "LI",
+                "nombre": "Diego Ulloa"
             },
             {
-                "pos": "MD",
-                "nombre": "Isla"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Pavez"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Arturo Vidal"
             },
             {
                 "pos": "MC",
-                "nombre": "Gil"
+                "nombre": "Víctor Felipe Méndez"
             },
             {
-                "pos": "MI",
-                "nombre": "Cepeda"
+                "pos": "MC",
+                "nombre": "Álvaro Madrid"
             },
             {
-                "pos": "DC",
-                "nombre": "Palacios"
+                "pos": "ED",
+                "nombre": "Francisco Marchant"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Gedeón Díaz"
             },
             {
                 "pos": "DC",
@@ -3645,206 +3645,206 @@ window.PLAN_REALES = {
         ]
     },
     "chi_uchile": {
-        "tactica": "4-3-3",
-        "dt": "Gustavo Álvarez",
-        "figura": "Leandro Fernández",
-        "arquero": "Castellón",
+        "tactica": "3-5-2",
+        "dt": "Fernando Gago",
+        "figura": "Charles Aránguiz",
+        "arquero": "Gabriel Castellón",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Castellón"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Hormazábal"
+                "nombre": "Gabriel Castellón"
             },
             {
                 "pos": "DFC",
-                "nombre": "Calderón"
+                "nombre": "Igor Lichnovsky"
             },
             {
                 "pos": "DFC",
-                "nombre": "Zaldivia"
+                "nombre": "Matías Zaldivia"
             },
             {
-                "pos": "LI",
-                "nombre": "Morales"
+                "pos": "DFC",
+                "nombre": "Nicolás Ramírez"
             },
             {
-                "pos": "MC",
-                "nombre": "M. Díaz"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Poblete"
+                "pos": "CAD",
+                "nombre": "Maximiliano Guerrero"
             },
             {
                 "pos": "MC",
-                "nombre": "Aránguiz"
+                "nombre": "Charles Aránguiz"
             },
             {
-                "pos": "ED",
-                "nombre": "Guerrero"
+                "pos": "MC",
+                "nombre": "Tobías Reinhart"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Agustín Arce"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Marcelo Morales"
             },
             {
                 "pos": "DC",
-                "nombre": "Palacios"
+                "nombre": "Eduardo Vargas"
             },
             {
-                "pos": "EI",
-                "nombre": "Leandro Fernández"
+                "pos": "DC",
+                "nombre": "Ignacio Vásquez"
             }
         ]
     },
     "col_nacional": {
         "tactica": "4-2-3-1",
-        "dt": "Efraín Juárez",
-        "figura": "Edwin Cardona",
-        "arquero": "Castillo",
+        "dt": "Lucas González",
+        "figura": "James Rodríguez",
+        "arquero": "Franco Armani",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Castillo"
+                "nombre": "Franco Armani"
             },
             {
                 "pos": "LD",
-                "nombre": "Román"
+                "nombre": "Andrés Felipe Román"
             },
             {
                 "pos": "DFC",
-                "nombre": "Aguirre"
+                "nombre": "Andrés Reyes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tesillo"
+                "nombre": "William Tesillo"
             },
             {
                 "pos": "LI",
-                "nombre": "Angulo"
+                "nombre": "Milton Casco"
             },
             {
                 "pos": "MCD",
-                "nombre": "Campuzano"
+                "nombre": "Jorman Campuzano"
             },
             {
                 "pos": "MCD",
-                "nombre": "Zapata"
+                "nombre": "Matheus Uribe"
             },
             {
-                "pos": "MD",
-                "nombre": "Marino Hinestroza"
+                "pos": "ED",
+                "nombre": "Andrés Sarmiento"
             },
             {
                 "pos": "MCO",
+                "nombre": "James Rodríguez"
+            },
+            {
+                "pos": "EI",
                 "nombre": "Edwin Cardona"
             },
             {
-                "pos": "MI",
-                "nombre": "Sarmiento"
-            },
-            {
                 "pos": "DC",
-                "nombre": "Morelos"
+                "nombre": "Alfredo Morelos"
             }
         ]
     },
     "col_millonarios": {
         "tactica": "4-2-3-1",
         "dt": "Alberto Gamero",
-        "figura": "Falcao",
-        "arquero": "Montero",
+        "figura": "David Mackalister Silva",
+        "arquero": "Javier Burrai",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Montero"
+                "nombre": "Javier Burrai"
             },
             {
                 "pos": "LD",
-                "nombre": "Alfonso"
+                "nombre": "Samuel Martín"
             },
             {
                 "pos": "DFC",
-                "nombre": "Llinás"
+                "nombre": "Stiven Barreiro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vargas"
+                "nombre": "Jorge Arias"
             },
             {
                 "pos": "LI",
-                "nombre": "Banguero"
+                "nombre": "Danovis Banguero"
             },
             {
                 "pos": "MCD",
-                "nombre": "Vega"
+                "nombre": "Mateo García"
             },
             {
                 "pos": "MCD",
-                "nombre": "Giraldo"
+                "nombre": "Rodrigo Ureña"
             },
             {
-                "pos": "MD",
-                "nombre": "Mackalister Silva"
+                "pos": "ED",
+                "nombre": "Juan Guillermo Cuadrado"
             },
             {
                 "pos": "MCO",
-                "nombre": "Cataño"
+                "nombre": "David Mackalister Silva"
             },
             {
-                "pos": "MI",
-                "nombre": "Castro"
+                "pos": "EI",
+                "nombre": "Andrey Estupiñán"
             },
             {
                 "pos": "DC",
-                "nombre": "Radamel Falcao"
+                "nombre": "Rodrigo Contreras"
             }
         ]
     },
     "mex_america": {
         "tactica": "4-2-3-1",
-        "dt": "André Jardine",
+        "dt": "Guillermo Almada",
         "figura": "Henry Martín",
-        "arquero": "Malagón",
+        "arquero": "Luis Ángel Malagón",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Malagón"
+                "nombre": "Luis Ángel Malagón"
             },
             {
                 "pos": "LD",
+                "nombre": "Kevin Álvarez"
+            },
+            {
+                "pos": "DFC",
                 "nombre": "Israel Reyes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Cáceres"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Lichnovsky"
+                "nombre": "Santiago Ramos Mingo"
             },
             {
                 "pos": "LI",
-                "nombre": "Calderón"
+                "nombre": "Cristian Borja"
             },
             {
                 "pos": "MCD",
-                "nombre": "Fidalgo"
+                "nombre": "Érick Sánchez"
             },
             {
                 "pos": "MCD",
-                "nombre": "Jonathan dos Santos"
+                "nombre": "Alan Cervantes"
             },
             {
-                "pos": "MD",
-                "nombre": "Zendejas"
+                "pos": "ED",
+                "nombre": "Alejandro Zendejas"
             },
             {
                 "pos": "MCO",
-                "nombre": "Valdés"
+                "nombre": "Carlos Álvarez"
             },
             {
-                "pos": "MI",
-                "nombre": "Brian Rodríguez"
+                "pos": "EI",
+                "nombre": "Óscar Perea"
             },
             {
                 "pos": "DC",
@@ -3853,59 +3853,59 @@ window.PLAN_REALES = {
         ]
     },
     "mex_chivas": {
-        "tactica": "4-3-3",
-        "dt": "Arturo Ortega",
-        "figura": "Chicharito",
-        "arquero": "Rangel",
+        "tactica": "3-4-2-1",
+        "dt": "Gabriel Milito",
+        "figura": "Roberto Alvarado",
+        "arquero": "Raúl Rangel",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rangel"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Mozo"
+                "nombre": "Raúl Rangel"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sepúlveda"
+                "nombre": "Daniel Aguirre"
             },
             {
                 "pos": "DFC",
-                "nombre": "Orozco Chiquete"
+                "nombre": "Diego Campillo"
             },
             {
-                "pos": "LI",
-                "nombre": "Castillo"
+                "pos": "DFC",
+                "nombre": "Luis Romo"
             },
             {
-                "pos": "MC",
-                "nombre": "Beltrán"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "González"
+                "pos": "CAD",
+                "nombre": "Richard Ledezma"
             },
             {
                 "pos": "MC",
-                "nombre": "Gutiérrez"
+                "nombre": "Fernando González"
             },
             {
-                "pos": "ED",
-                "nombre": "Piojo Alvarado"
+                "pos": "MC",
+                "nombre": "Omar Govea"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Bryan González"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Roberto Alvarado"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Efraín Álvarez"
             },
             {
                 "pos": "DC",
-                "nombre": "Chicharito Hernández"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Cade Cowell"
+                "nombre": "Santiago Sandoval"
             }
         ]
     },
     "esp_realmadrid": {
-        "tactica": "4-4-2",
+        "tactica": "4-3-3",
         "dt": "José Mourinho",
         "figura": "Kylian Mbappé",
         "arquero": "Thibaut Courtois",
@@ -3916,7 +3916,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Trent Alexander-Arnold"
+                "nombre": "Federico Valverde"
             },
             {
                 "pos": "DFC",
@@ -3924,35 +3924,35 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Antonio Rüdiger"
+                "nombre": "Dean Huijsen"
             },
             {
                 "pos": "LI",
                 "nombre": "Marc Cucurella"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Aurélien Tchouaméni"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Federico Valverde"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Jude Bellingham"
             },
             {
                 "pos": "MC",
                 "nombre": "Bernardo Silva"
             },
             {
-                "pos": "DC",
-                "nombre": "Vinícius Jr."
+                "pos": "MC",
+                "nombre": "Jude Bellingham"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Arda Güler"
             },
             {
                 "pos": "DC",
                 "nombre": "Kylian Mbappé"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Yan Diomande"
             }
         ]
     },
@@ -3968,7 +3968,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Jules Koundé"
+                "nombre": "Brian Fariñas"
             },
             {
                 "pos": "DFC",
@@ -3976,19 +3976,19 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Ronald Araújo"
+                "nombre": "Gerard Martín"
             },
             {
                 "pos": "LI",
-                "nombre": "Alejandro Balde"
+                "nombre": "João Cancelo"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Marc Bernal"
             },
             {
                 "pos": "MC",
                 "nombre": "Pedri"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Gavi"
             },
             {
                 "pos": "MCO",
@@ -4000,7 +4000,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "Gabriel Jesus"
+                "nombre": "Anthony Gordon"
             },
             {
                 "pos": "EI",
@@ -4009,50 +4009,50 @@ window.PLAN_REALES = {
         ]
     },
     "esp_atletico": {
-        "tactica": "5-3-2",
+        "tactica": "4-4-2",
         "dt": "Diego Simeone",
-        "figura": "Griezmann",
-        "arquero": "Oblak",
+        "figura": "Julián Álvarez",
+        "arquero": "Jan Oblak",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Oblak"
+                "nombre": "Jan Oblak"
             },
             {
                 "pos": "LD",
-                "nombre": "Molina"
+                "nombre": "Marcos Llorente"
             },
             {
                 "pos": "DFC",
-                "nombre": "Le Normand"
+                "nombre": "Marc Pubill"
             },
             {
                 "pos": "DFC",
-                "nombre": "Giménez"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Lenglet"
+                "nombre": "David Hancko"
             },
             {
                 "pos": "LI",
-                "nombre": "Reinildo"
+                "nombre": "Alejandro Grimaldo"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Giuliano Simeone"
             },
             {
                 "pos": "MC",
-                "nombre": "De Paul"
-            },
-            {
-                "pos": "MCD",
                 "nombre": "Koke"
             },
             {
                 "pos": "MC",
-                "nombre": "Gallagher"
+                "nombre": "Pablo Barrios"
+            },
+            {
+                "pos": "MI",
+                "nombre": "Álex Baena"
             },
             {
                 "pos": "DC",
-                "nombre": "Griezmann"
+                "nombre": "Lee Kang-in"
             },
             {
                 "pos": "DC",
@@ -4061,7 +4061,7 @@ window.PLAN_REALES = {
         ]
     },
     "eng_mancity": {
-        "tactica": "4-3-3",
+        "tactica": "4-2-3-1",
         "dt": "Enzo Maresca",
         "figura": "Erling Haaland",
         "arquero": "Gianluigi Donnarumma",
@@ -4072,7 +4072,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Rayan Aït-Nouri"
+                "nombre": "Abdukodir Khusanov"
             },
             {
                 "pos": "DFC",
@@ -4084,38 +4084,38 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Joško Gvardiol"
+                "nombre": "Josko Gvardiol"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Enzo Fernández"
             },
             {
-                "pos": "MC",
-                "nombre": "Mateo Kovačić"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Phil Foden"
+                "pos": "MCD",
+                "nombre": "Elliot Anderson"
             },
             {
                 "pos": "ED",
+                "nombre": "Iliman Ndiaye"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Rayan Cherki"
+            },
+            {
+                "pos": "EI",
                 "nombre": "Jérémy Doku"
             },
             {
                 "pos": "DC",
                 "nombre": "Erling Haaland"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Rayan Cherki"
             }
         ]
     },
     "eng_liverpool": {
         "tactica": "4-2-3-1",
         "dt": "Andoni Iraola",
-        "figura": "Florian Wirtz",
+        "figura": "Virgil van Dijk",
         "arquero": "Alisson Becker",
         "titulares": [
             {
@@ -4124,50 +4124,50 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Jeremie Frimpong"
+                "nombre": "Ronald Araújo"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Jérémy Jacquet"
             },
             {
                 "pos": "DFC",
                 "nombre": "Virgil van Dijk"
             },
             {
-                "pos": "DFC",
-                "nombre": "Ronald Araújo"
-            },
-            {
                 "pos": "LI",
-                "nombre": "Milos Kerkez"
+                "nombre": "Miloš Kerkez"
             },
             {
-                "pos": "MC",
-                "nombre": "Ryan Gravenberch"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Alexis Mac Allister"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Dominik Szoboszlai"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Bradley Barcola"
             },
             {
                 "pos": "MCO",
                 "nombre": "Florian Wirtz"
             },
             {
-                "pos": "ED",
-                "nombre": "Dominik Szoboszlai"
+                "pos": "EI",
+                "nombre": "Cody Gakpo"
             },
             {
                 "pos": "DC",
                 "nombre": "Alexander Isak"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Cody Gakpo"
             }
         ]
     },
     "eng_arsenal": {
-        "tactica": "4-3-3",
+        "tactica": "4-2-3-1",
         "dt": "Mikel Arteta",
-        "figura": "Bukayo Saka",
+        "figura": "Martin Ødegaard",
         "arquero": "David Raya",
         "titulares": [
             {
@@ -4176,11 +4176,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Ben White"
+                "nombre": "Jurriën Timber"
             },
             {
                 "pos": "DFC",
-                "nombre": "William Saliba"
+                "nombre": "Ezri Konsa"
             },
             {
                 "pos": "DFC",
@@ -4191,27 +4191,27 @@ window.PLAN_REALES = {
                 "nombre": "Riccardo Calafiori"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
+                "nombre": "Bruno Guimarães"
+            },
+            {
+                "pos": "MCD",
                 "nombre": "Declan Rice"
             },
             {
-                "pos": "MC",
-                "nombre": "Martín Zubimendi"
+                "pos": "ED",
+                "nombre": "Noni Madueke"
             },
             {
                 "pos": "MCO",
                 "nombre": "Martin Ødegaard"
             },
             {
-                "pos": "ED",
-                "nombre": "Bukayo Saka"
+                "pos": "EI",
+                "nombre": "Christos Tzolis"
             },
             {
                 "pos": "DC",
-                "nombre": "Viktor Gyökeres"
-            },
-            {
-                "pos": "EI",
                 "nombre": "Kai Havertz"
             }
         ]
@@ -4220,47 +4220,47 @@ window.PLAN_REALES = {
         "tactica": "4-2-3-1",
         "dt": "Vincent Kompany",
         "figura": "Harry Kane",
-        "arquero": "Neuer",
+        "arquero": "Manuel Neuer",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Neuer"
+                "nombre": "Manuel Neuer"
             },
             {
                 "pos": "LD",
-                "nombre": "Laimer"
+                "nombre": "Konrad Laimer"
             },
             {
                 "pos": "DFC",
-                "nombre": "Upamecano"
+                "nombre": "Dayot Upamecano"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kim Min-jae"
+                "nombre": "Jonathan Tah"
             },
             {
                 "pos": "LI",
-                "nombre": "Davies"
+                "nombre": "Josip Stanišić"
             },
             {
                 "pos": "MCD",
-                "nombre": "Kimmich"
+                "nombre": "Aleksandar Pavlović"
             },
             {
                 "pos": "MCD",
-                "nombre": "Pavlović"
+                "nombre": "Joshua Kimmich"
             },
             {
-                "pos": "MD",
-                "nombre": "Olise"
+                "pos": "ED",
+                "nombre": "Michael Olise"
             },
             {
                 "pos": "MCO",
-                "nombre": "Musiala"
+                "nombre": "Lennart Karl"
             },
             {
-                "pos": "MI",
-                "nombre": "Gnabry"
+                "pos": "EI",
+                "nombre": "Nathaniel Brown"
             },
             {
                 "pos": "DC",
@@ -4270,88 +4270,84 @@ window.PLAN_REALES = {
     },
     "ita_inter": {
         "tactica": "3-5-2",
-        "dt": "Simone Inzaghi",
-        "figura": "Lautaro Martínez",
-        "arquero": "Sommer",
+        "dt": "Cristian Chivu",
+        "figura": "Nicolò Barella",
+        "arquero": "Josep Martínez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sommer"
+                "nombre": "Josep Martínez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pavard"
+                "nombre": "Manuel Akanji"
             },
             {
                 "pos": "DFC",
-                "nombre": "Acerbi"
+                "nombre": "Alessandro Bastoni"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bastoni"
+                "nombre": "Carlos Augusto"
             },
             {
-                "pos": "MD",
-                "nombre": "Dumfries"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Barella"
+                "pos": "CAD",
+                "nombre": "Djed Spence"
             },
             {
                 "pos": "MC",
-                "nombre": "Çalhanoğlu"
+                "nombre": "Nicolò Barella"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Hakan Çalhanoğlu"
             },
             {
                 "pos": "MC",
-                "nombre": "Mkhitaryan"
+                "nombre": "Piotr Zieliński"
             },
             {
-                "pos": "MI",
-                "nombre": "Dimarco"
+                "pos": "CAI",
+                "nombre": "Federico Dimarco"
             },
             {
                 "pos": "DC",
-                "nombre": "Thuram"
+                "nombre": "Francesco Pio Esposito"
             },
             {
                 "pos": "DC",
-                "nombre": "Lautaro Martínez"
+                "nombre": "Marcus Thuram"
             }
         ]
     },
     "fra_psg": {
         "tactica": "4-3-3",
         "dt": "Luis Enrique",
-        "figura": "Dembélé",
-        "arquero": "Donnarumma",
+        "figura": "Vitinha",
+        "arquero": "Matvey Safonov",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Donnarumma"
+                "nombre": "Matvey Safonov"
             },
             {
                 "pos": "LD",
-                "nombre": "Hakimi"
+                "nombre": "Warren Zaïre-Emery"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marquinhos"
+                "nombre": "Illia Zabarnyi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pacho"
+                "nombre": "Willian Pacho"
             },
             {
                 "pos": "LI",
-                "nombre": "Nuno Mendes"
+                "nombre": "Lucas Hernández"
             },
             {
                 "pos": "MC",
-                "nombre": "Zaïre-Emery"
-            },
-            {
-                "pos": "MCD",
                 "nombre": "Vitinha"
             },
             {
@@ -4359,36 +4355,40 @@ window.PLAN_REALES = {
                 "nombre": "Fabián Ruiz"
             },
             {
+                "pos": "MC",
+                "nombre": "Senny Mayulu"
+            },
+            {
                 "pos": "ED",
-                "nombre": "Dembélé"
+                "nombre": "Désiré Doué"
             },
             {
                 "pos": "DC",
-                "nombre": "Asensio"
+                "nombre": "Ferran Torres"
             },
             {
                 "pos": "EI",
-                "nombre": "Barcola"
+                "nombre": "Mika Godts"
             }
         ]
     },
     "ar": {
         "tactica": "4-3-3",
         "dt": "Lionel Scaloni",
-        "figura": "Lionel Messi",
-        "arquero": "Emiliano Martínez",
+        "figura": "Julián Álvarez",
+        "arquero": "Gerónimo Rulli",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Emiliano Martínez"
+                "nombre": "Gerónimo Rulli"
             },
             {
                 "pos": "LD",
-                "nombre": "Nahuel Molina"
+                "nombre": "Gonzalo Montiel"
             },
             {
                 "pos": "DFC",
-                "nombre": "Cristian Romero"
+                "nombre": "Leonardo Balerdi"
             },
             {
                 "pos": "DFC",
@@ -4396,14 +4396,14 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Nicolás Tagliafico"
+                "nombre": "Facundo Medina"
             },
             {
                 "pos": "MC",
-                "nombre": "Rodrigo De Paul"
+                "nombre": "Exequiel Palacios"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Enzo Fernández"
             },
             {
@@ -4412,7 +4412,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "ED",
-                "nombre": "Lionel Messi"
+                "nombre": "Nicolás Paz"
             },
             {
                 "pos": "DC",
@@ -4420,13 +4420,13 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "Lautaro Martínez"
+                "nombre": "Thiago Almada"
             }
         ]
     },
     "fr": {
-        "tactica": "4-2-3-1",
-        "dt": "Didier Deschamps",
+        "tactica": "4-3-3",
+        "dt": "Zinedine Zidane",
         "figura": "Kylian Mbappé",
         "arquero": "Mike Maignan",
         "titulares": [
@@ -4436,35 +4436,35 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Jules Koundé"
+                "nombre": "Saël Kumbedi"
             },
             {
                 "pos": "DFC",
-                "nombre": "William Saliba"
+                "nombre": "Jérémy Jacquet"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dayot Upamecano"
+                "nombre": "Ibrahima Konaté"
             },
             {
                 "pos": "LI",
-                "nombre": "Theo Hernández"
+                "nombre": "Andy Diouf"
             },
             {
                 "pos": "MC",
-                "nombre": "Aurélien Tchouaméni"
+                "nombre": "Rayan Cherki"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Lucas Da Cunha"
             },
             {
                 "pos": "MC",
-                "nombre": "Eduardo Camavinga"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Michael Olise"
+                "nombre": "Adrien Rabiot"
             },
             {
                 "pos": "ED",
-                "nombre": "Ousmane Dembélé"
+                "nombre": "Michael Olise"
             },
             {
                 "pos": "DC",
@@ -4479,20 +4479,20 @@ window.PLAN_REALES = {
     "br": {
         "tactica": "4-3-3",
         "dt": "Carlo Ancelotti",
-        "figura": "Vinícius Jr.",
-        "arquero": "Alisson",
+        "figura": "Vinícius Júnior",
+        "arquero": "Lucas Perri",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Alisson"
+                "nombre": "Lucas Perri"
             },
             {
                 "pos": "LD",
-                "nombre": "Danilo"
+                "nombre": "Vanderson"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marquinhos"
+                "nombre": "Jonathan Jesus"
             },
             {
                 "pos": "DFC",
@@ -4500,31 +4500,31 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Alex Sandro"
+                "nombre": "Douglas Santos"
             },
             {
                 "pos": "MC",
-                "nombre": "Casemiro"
+                "nombre": "João Gomes"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Bruno Guimarães"
             },
             {
                 "pos": "MCO",
-                "nombre": "Lucas Paquetá"
+                "nombre": "Rayan"
             },
             {
                 "pos": "ED",
-                "nombre": "Rodrygo"
+                "nombre": "Estêvão"
             },
             {
                 "pos": "DC",
-                "nombre": "Matheus Cunha"
+                "nombre": "Endrick"
             },
             {
                 "pos": "EI",
-                "nombre": "Vinícius Jr."
+                "nombre": "Vinícius Júnior"
             }
         ]
     },
@@ -4540,31 +4540,31 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Pedro Porro"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Aymeric Laporte"
+                "nombre": "Marc Pubill"
             },
             {
                 "pos": "DFC",
                 "nombre": "Pau Cubarsí"
             },
             {
+                "pos": "DFC",
+                "nombre": "Aymeric Laporte"
+            },
+            {
                 "pos": "LI",
                 "nombre": "Marc Cucurella"
             },
             {
-                "pos": "MC",
-                "nombre": "Rodri"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Pedri"
+                "pos": "MCD",
+                "nombre": "Martín Zubimendi"
             },
             {
                 "pos": "MC",
                 "nombre": "Fabián Ruiz"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Pedri"
             },
             {
                 "pos": "ED",
@@ -4576,118 +4576,118 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "Nico Williams"
+                "nombre": "Álex Baena"
             }
         ]
     },
     "gb-eng": {
         "tactica": "4-2-3-1",
         "dt": "Thomas Tuchel",
-        "figura": "Jude Bellingham",
-        "arquero": "Jordan Pickford",
+        "figura": "Harry Kane",
+        "arquero": "James Trafford",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Jordan Pickford"
+                "nombre": "James Trafford"
             },
             {
                 "pos": "LD",
-                "nombre": "Reece James"
+                "nombre": "Ben White"
             },
             {
                 "pos": "DFC",
-                "nombre": "John Stones"
+                "nombre": "Ezri Konsa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marc Guéhi"
+                "nombre": "Jarell Quansah"
             },
             {
                 "pos": "LI",
-                "nombre": "Luke Shaw"
+                "nombre": "Lewis Hall"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Declan Rice"
             },
             {
-                "pos": "MC",
-                "nombre": "Kobbie Mainoo"
+                "pos": "MCD",
+                "nombre": "Elliot Anderson"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Morgan Rogers"
             },
             {
                 "pos": "MCO",
                 "nombre": "Jude Bellingham"
             },
             {
-                "pos": "ED",
-                "nombre": "Bukayo Saka"
+                "pos": "EI",
+                "nombre": "Anthony Gordon"
             },
             {
                 "pos": "DC",
                 "nombre": "Harry Kane"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Anthony Gordon"
             }
         ]
     },
     "de": {
         "tactica": "4-2-3-1",
-        "dt": "Julian Nagelsmann",
-        "figura": "Jamal Musiala",
-        "arquero": "Oliver Baumann",
+        "dt": "Jürgen Klopp",
+        "figura": "Florian Wirtz",
+        "arquero": "Marc-André ter Stegen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Oliver Baumann"
+                "nombre": "Marc-André ter Stegen"
             },
             {
                 "pos": "LD",
-                "nombre": "Joshua Kimmich"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Antonio Rüdiger"
+                "nombre": "Philipp Treu"
             },
             {
                 "pos": "DFC",
                 "nombre": "Jonathan Tah"
             },
             {
-                "pos": "LI",
-                "nombre": "David Raum"
+                "pos": "DFC",
+                "nombre": "Nico Schlotterbeck"
             },
             {
-                "pos": "MC",
+                "pos": "LI",
+                "nombre": "Nathaniel Brown"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Joshua Kimmich"
+            },
+            {
+                "pos": "MCD",
                 "nombre": "Aleksandar Pavlović"
             },
             {
-                "pos": "MC",
-                "nombre": "Robert Andrich"
+                "pos": "ED",
+                "nombre": "Brajan Gruda"
             },
             {
                 "pos": "MCO",
                 "nombre": "Florian Wirtz"
             },
             {
-                "pos": "ED",
-                "nombre": "Leroy Sané"
+                "pos": "EI",
+                "nombre": "Derry Scherhant"
             },
             {
                 "pos": "DC",
                 "nombre": "Kai Havertz"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Jamal Musiala"
             }
         ]
     },
     "pt": {
-        "tactica": "4-3-3",
-        "dt": "Roberto Martínez",
-        "figura": "Cristiano Ronaldo",
+        "tactica": "4-2-3-1",
+        "dt": "Jorge Jesus",
+        "figura": "Bruno Fernandes",
         "arquero": "Diogo Costa",
         "titulares": [
             {
@@ -4700,46 +4700,46 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Rúben Dias"
+                "nombre": "António Silva"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gonçalo Inácio"
+                "nombre": "Renato Veiga"
             },
             {
                 "pos": "LI",
-                "nombre": "Nuno Mendes"
+                "nombre": "João Cancelo"
             },
             {
-                "pos": "MC",
-                "nombre": "João Palhinha"
+                "pos": "MCD",
+                "nombre": "João Neves"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Vitinha"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Francisco Trincão"
             },
             {
                 "pos": "MCO",
                 "nombre": "Bruno Fernandes"
             },
             {
-                "pos": "ED",
-                "nombre": "Bernardo Silva"
+                "pos": "EI",
+                "nombre": "Pedro Neto"
             },
             {
                 "pos": "DC",
-                "nombre": "Cristiano Ronaldo"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Rafael Leão"
+                "nombre": "Gonçalo Ramos"
             }
         ]
     },
     "uy": {
-        "tactica": "4-3-3",
-        "dt": "Marcelo Bielsa",
-        "figura": "Federico Valverde",
+        "tactica": "4-4-2",
+        "dt": "Diego Forlán",
+        "figura": "Rodrigo Bentancur",
         "arquero": "Santiago Mele",
         "titulares": [
             {
@@ -4748,50 +4748,50 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Guillermo Varela"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Ronald Araújo"
+                "nombre": "Santiago Mouriño"
             },
             {
                 "pos": "DFC",
                 "nombre": "José María Giménez"
             },
             {
+                "pos": "DFC",
+                "nombre": "Sebastián Cáceres"
+            },
+            {
                 "pos": "LI",
-                "nombre": "Mathías Olivera"
+                "nombre": "Juan Manuel Sanabria"
             },
             {
-                "pos": "MC",
-                "nombre": "Manuel Ugarte"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Federico Valverde"
+                "pos": "MD",
+                "nombre": "Agustín Canobbio"
             },
             {
                 "pos": "MC",
                 "nombre": "Rodrigo Bentancur"
             },
             {
-                "pos": "ED",
-                "nombre": "Facundo Pellistri"
+                "pos": "MC",
+                "nombre": "Facundo Bernal"
+            },
+            {
+                "pos": "MI",
+                "nombre": "Rodrigo Zalazar"
             },
             {
                 "pos": "DC",
-                "nombre": "Darwin Núñez"
+                "nombre": "Federico Viñas"
             },
             {
-                "pos": "EI",
-                "nombre": "Maximiliano Araújo"
+                "pos": "DC",
+                "nombre": "Rodrigo Aguirre"
             }
         ]
     },
     "co": {
-        "tactica": "4-2-3-1",
+        "tactica": "4-4-2",
         "dt": "Néstor Lorenzo",
-        "figura": "Luis Díaz",
+        "figura": "Jhon Arias",
         "arquero": "Camilo Vargas",
         "titulares": [
             {
@@ -4804,7 +4804,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Davinson Sánchez"
+                "nombre": "Dávinson Sánchez"
             },
             {
                 "pos": "DFC",
@@ -4812,37 +4812,37 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Johan Mojica"
+                "nombre": "Samuel Velásquez"
             },
             {
-                "pos": "MC",
-                "nombre": "Richard Ríos"
+                "pos": "MD",
+                "nombre": "Jhon Arias"
             },
             {
                 "pos": "MC",
                 "nombre": "Jefferson Lerma"
             },
             {
-                "pos": "MCO",
-                "nombre": "James Rodríguez"
+                "pos": "MC",
+                "nombre": "Gustavo Puerta"
             },
             {
-                "pos": "ED",
-                "nombre": "Jhon Arias"
+                "pos": "MI",
+                "nombre": "Nelson Deossa"
             },
             {
                 "pos": "DC",
-                "nombre": "Jhon Córdoba"
+                "nombre": "Camilo Durán"
             },
             {
-                "pos": "EI",
-                "nombre": "Luis Díaz"
+                "pos": "DC",
+                "nombre": "Luis Suárez"
             }
         ]
     },
     "nl": {
         "tactica": "4-3-3",
-        "dt": "Ronald Koeman",
+        "dt": "Xavi Hernández",
         "figura": "Virgil van Dijk",
         "arquero": "Bart Verbruggen",
         "titulares": [
@@ -4856,35 +4856,35 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Virgil van Dijk"
+                "nombre": "Jan Paul van Hecke"
             },
             {
                 "pos": "DFC",
-                "nombre": "Nathan Aké"
+                "nombre": "Virgil van Dijk"
             },
             {
                 "pos": "LI",
                 "nombre": "Micky van de Ven"
             },
             {
-                "pos": "MC",
-                "nombre": "Frenkie de Jong"
+                "pos": "MCD",
+                "nombre": "Quinten Timber"
             },
             {
                 "pos": "MC",
                 "nombre": "Ryan Gravenberch"
             },
             {
-                "pos": "MCO",
-                "nombre": "Xavi Simons"
+                "pos": "MC",
+                "nombre": "Tijjani Reijnders"
             },
             {
                 "pos": "ED",
-                "nombre": "Jeremie Frimpong"
+                "nombre": "Crysencio Summerville"
             },
             {
                 "pos": "DC",
-                "nombre": "Memphis Depay"
+                "nombre": "Brian Brobbey"
             },
             {
                 "pos": "EI",
@@ -4904,23 +4904,23 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Giovanni Di Lorenzo"
+                "nombre": "Michael Kayode"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Giorgio Scalvini"
             },
             {
                 "pos": "DFC",
                 "nombre": "Alessandro Bastoni"
             },
             {
-                "pos": "DFC",
+                "pos": "LI",
                 "nombre": "Riccardo Calafiori"
             },
             {
-                "pos": "LI",
-                "nombre": "Federico Dimarco"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Sandro Tonali"
+                "pos": "MCD",
+                "nombre": "Nicolò Fagioli"
             },
             {
                 "pos": "MC",
@@ -4928,25 +4928,25 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Davide Frattesi"
+                "nombre": "Niccolò Pisilli"
             },
             {
                 "pos": "ED",
-                "nombre": "Federico Chiesa"
+                "nombre": "Luca Koleosho"
             },
             {
                 "pos": "DC",
-                "nombre": "Mateo Retegui"
+                "nombre": "Francesco Pio Esposito"
             },
             {
                 "pos": "EI",
-                "nombre": "Mattia Zaccagni"
+                "nombre": "Nicolò Cambiaghi"
             }
         ]
     },
     "hr": {
-        "tactica": "4-3-3",
-        "dt": "Zlatko Dalić",
+        "tactica": "4-2-3-1",
+        "dt": "Slaven Bilić",
         "figura": "Luka Modrić",
         "arquero": "Dominik Livaković",
         "titulares": [
@@ -4960,39 +4960,39 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Josip Šutalo"
+                "nombre": "Luka Vušković"
             },
             {
                 "pos": "DFC",
-                "nombre": "Joško Gvardiol"
+                "nombre": "Duje Ćaleta-Car"
             },
             {
                 "pos": "LI",
-                "nombre": "Borna Sosa"
+                "nombre": "Joško Gvardiol"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Mateo Kovačić"
             },
             {
-                "pos": "MC",
-                "nombre": "Marcelo Brozović"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Luka Modrić"
             },
             {
                 "pos": "ED",
-                "nombre": "Lovro Majer"
+                "nombre": "Ivan Perišić"
             },
             {
-                "pos": "DC",
-                "nombre": "Andrej Kramarić"
+                "pos": "MCO",
+                "nombre": "Martin Baturina"
             },
             {
                 "pos": "EI",
-                "nombre": "Ivan Perišić"
+                "nombre": "Luka Sučić"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Dion Drena Beljo"
             }
         ]
     },
@@ -5016,31 +5016,31 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Chadi Riad"
+                "nombre": "Issa Diop"
             },
             {
                 "pos": "LI",
                 "nombre": "Noussair Mazraoui"
             },
             {
-                "pos": "MC",
-                "nombre": "Sofyan Amrabat"
+                "pos": "MCD",
+                "nombre": "Oussama Targhalline"
             },
             {
                 "pos": "MC",
-                "nombre": "Azzedine Ounahi"
+                "nombre": "Ayyoub Bouaddi"
             },
             {
                 "pos": "MCO",
-                "nombre": "Brahim Díaz"
+                "nombre": "Bilal El Khannouss"
             },
             {
                 "pos": "ED",
-                "nombre": "Hakim Ziyech"
+                "nombre": "Brahim Díaz"
             },
             {
                 "pos": "DC",
-                "nombre": "Youssef En-Nesyri"
+                "nombre": "Yassir Zabiri"
             },
             {
                 "pos": "EI",
@@ -5050,13 +5050,13 @@ window.PLAN_REALES = {
     },
     "be": {
         "tactica": "4-2-3-1",
-        "dt": "Rudi Garcia",
+        "dt": "Mark van Bommel",
         "figura": "Kevin De Bruyne",
-        "arquero": "Thibaut Courtois",
+        "arquero": "Senne Lammens",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Thibaut Courtois"
+                "nombre": "Senne Lammens"
             },
             {
                 "pos": "LD",
@@ -5064,46 +5064,46 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Zeno Debast"
+                "nombre": "Nathan Ngoy"
             },
             {
                 "pos": "DFC",
-                "nombre": "Arthur Theate"
+                "nombre": "Brandon Mechele"
             },
             {
                 "pos": "LI",
                 "nombre": "Maxim De Cuyper"
             },
             {
-                "pos": "MC",
-                "nombre": "Amadou Onana"
+                "pos": "MCD",
+                "nombre": "Youri Tielemans"
             },
             {
-                "pos": "MC",
-                "nombre": "Youri Tielemans"
+                "pos": "MCD",
+                "nombre": "Roméo Lavia"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Diego Moreira"
             },
             {
                 "pos": "MCO",
                 "nombre": "Kevin De Bruyne"
             },
             {
-                "pos": "ED",
-                "nombre": "Dodi Lukebakio"
+                "pos": "EI",
+                "nombre": "Jérémy Doku"
             },
             {
                 "pos": "DC",
-                "nombre": "Romelu Lukaku"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Jérémy Doku"
+                "nombre": "Charles De Ketelaere"
             }
         ]
     },
     "jp": {
         "tactica": "4-2-3-1",
         "dt": "Hajime Moriyasu",
-        "figura": "Takefusa Kubo",
+        "figura": "Ritsu Doan",
         "arquero": "Zion Suzuki",
         "titulares": [
             {
@@ -5112,30 +5112,26 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Yukinari Sugawara"
+                "nombre": "Shuto Nakano"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ko Itakura"
+                "nombre": "Ayumu Seko"
             },
             {
                 "pos": "DFC",
-                "nombre": "Takehiro Tomiyasu"
+                "nombre": "Koki Machida"
             },
             {
                 "pos": "LI",
                 "nombre": "Hiroki Ito"
             },
             {
-                "pos": "MC",
-                "nombre": "Wataru Endo"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Ao Tanaka"
             },
             {
-                "pos": "MCO",
+                "pos": "MCD",
                 "nombre": "Daichi Kamada"
             },
             {
@@ -5143,80 +5139,84 @@ window.PLAN_REALES = {
                 "nombre": "Ritsu Doan"
             },
             {
-                "pos": "DC",
-                "nombre": "Ayase Ueda"
+                "pos": "MCO",
+                "nombre": "Takefusa Kubo"
             },
             {
                 "pos": "EI",
-                "nombre": "Takefusa Kubo"
+                "nombre": "Keito Nakamura"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Daizen Maeda"
             }
         ]
     },
     "sen": {
         "tactica": "4-3-3",
-        "dt": "Pape Thiaw",
-        "figura": "Sadio Mané",
-        "arquero": "Mory Diaw",
+        "dt": "Patrick Vieira",
+        "figura": "Nicolas Jackson",
+        "arquero": "Yéhvann Diouf",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mory Diaw"
+                "nombre": "Yéhvann Diouf"
             },
             {
                 "pos": "LD",
-                "nombre": "Krépin Diatta"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Kalidou Koulibaly"
+                "nombre": "Sadibou Sané"
             },
             {
                 "pos": "DFC",
                 "nombre": "Moussa Niakhaté"
             },
             {
+                "pos": "DFC",
+                "nombre": "Malang Sarr"
+            },
+            {
                 "pos": "LI",
-                "nombre": "Ismail Jakobs"
+                "nombre": "El Hadji Malick Diouf"
             },
             {
-                "pos": "MC",
-                "nombre": "Idrissa Gueye"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Pape Gueye"
             },
             {
                 "pos": "MC",
-                "nombre": "Pathé Ciss"
+                "nombre": "Lamine Camara"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Pape Matar Sarr"
             },
             {
                 "pos": "ED",
-                "nombre": "Ismaïla Sarr"
+                "nombre": "Ibrahim Mbaye"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Iliman Ndiaye"
             },
             {
                 "pos": "DC",
                 "nombre": "Nicolas Jackson"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Sadio Mané"
             }
         ]
     },
     "us": {
-        "tactica": "4-3-3",
+        "tactica": "4-2-3-1",
         "dt": "Mauricio Pochettino",
         "figura": "Christian Pulisic",
-        "arquero": "Matt Turner",
+        "arquero": "Diego Kochen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Matt Turner"
+                "nombre": "Diego Kochen"
             },
             {
                 "pos": "LD",
-                "nombre": "Sergiño Dest"
+                "nombre": "Alex Freeman"
             },
             {
                 "pos": "DFC",
@@ -5224,47 +5224,47 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Tim Ream"
+                "nombre": "Auston Trusty"
             },
             {
                 "pos": "LI",
                 "nombre": "Antonee Robinson"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Tyler Adams"
             },
             {
-                "pos": "MC",
-                "nombre": "Weston McKennie"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Yunus Musah"
+                "pos": "MCD",
+                "nombre": "Sebastian Berhalter"
             },
             {
                 "pos": "ED",
-                "nombre": "Timothy Weah"
+                "nombre": "Weston McKennie"
             },
             {
-                "pos": "DC",
-                "nombre": "Folarin Balogun"
+                "pos": "MCO",
+                "nombre": "Malik Tillman"
             },
             {
                 "pos": "EI",
                 "nombre": "Christian Pulisic"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Julian Hall"
             }
         ]
     },
     "mx": {
         "tactica": "4-3-3",
-        "dt": "Javier Aguirre",
-        "figura": "Santiago Gimenez",
-        "arquero": "Guillermo Ochoa",
+        "dt": "Rafael Márquez",
+        "figura": "Jesús Corona",
+        "arquero": "Raúl Rangel",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Guillermo Ochoa"
+                "nombre": "Raúl Rangel"
             },
             {
                 "pos": "LD",
@@ -5272,319 +5272,215 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "César Montes"
+                "nombre": "Israel Reyes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Johan Vásquez"
+                "nombre": "Jesús Orozco Chiquete"
             },
             {
                 "pos": "LI",
-                "nombre": "Jesús Gallardo"
+                "nombre": "Mateo Chávez"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Érik Lira"
             },
             {
                 "pos": "MC",
-                "nombre": "Edson Álvarez"
+                "nombre": "Álvaro Fidalgo"
             },
             {
-                "pos": "MC",
-                "nombre": "Luis Chávez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Orbelín Pineda"
+                "pos": "MCO",
+                "nombre": "Gilberto Mora"
             },
             {
                 "pos": "ED",
+                "nombre": "Jesús Corona"
+            },
+            {
+                "pos": "EI",
                 "nombre": "Roberto Alvarado"
             },
             {
                 "pos": "DC",
-                "nombre": "Santiago Gimenez"
-            },
-            {
-                "pos": "EI",
                 "nombre": "Julián Quiñones"
-            }
-        ]
-    },
-    "ec": {
-        "tactica": "4-3-3",
-        "dt": "Sebastián Beccacece",
-        "figura": "Moisés Caicedo",
-        "arquero": "Hernán Galíndez",
-        "titulares": [
-            {
-                "pos": "POR",
-                "nombre": "Hernán Galíndez"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Ángelo Preciado"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Félix Torres"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Willian Pacho"
-            },
-            {
-                "pos": "LI",
-                "nombre": "Pervis Estupiñán"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Moisés Caicedo"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Alan Franco"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Kendry Páez"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Gonzalo Plata"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Enner Valencia"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Kevin Rodríguez"
-            }
-        ]
-    },
-    "dk": {
-        "tactica": "4-3-3",
-        "dt": "Brian Riemer",
-        "figura": "Christian Eriksen",
-        "arquero": "Mads Hermansen",
-        "titulares": [
-            {
-                "pos": "POR",
-                "nombre": "Mads Hermansen"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Alexander Bah"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Joachim Andersen"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Victor Nelsson"
-            },
-            {
-                "pos": "LI",
-                "nombre": "Joakim Mæhle"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Pierre-Emile Højbjerg"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Morten Hjulmand"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Christian Eriksen"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Andreas Skov Olsen"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Rasmus Højlund"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Mikkel Damsgaard"
             }
         ]
     },
     "eng_manunited": {
         "tactica": "4-2-3-1",
-        "dt": "Rúben Amorim",
+        "dt": "Mauricio Pochettino",
         "figura": "Bruno Fernandes",
-        "arquero": "Onana",
+        "arquero": "Senne Lammens",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Onana"
+                "nombre": "Senne Lammens"
             },
             {
                 "pos": "LD",
-                "nombre": "Mazraoui"
+                "nombre": "Noussair Mazraoui"
             },
             {
                 "pos": "DFC",
-                "nombre": "De Ligt"
+                "nombre": "Leny Yoro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Martínez"
+                "nombre": "Harry Maguire"
             },
             {
                 "pos": "LI",
-                "nombre": "Dalot"
+                "nombre": "Diogo Dalot"
             },
             {
-                "pos": "MC",
-                "nombre": "Casemiro"
+                "pos": "MCD",
+                "nombre": "Kobbie Mainoo"
             },
             {
-                "pos": "MC",
-                "nombre": "Mainoo"
+                "pos": "MCD",
+                "nombre": "Youri Tielemans"
             },
             {
                 "pos": "ED",
-                "nombre": "Garnacho"
+                "nombre": "Amad Diallo"
             },
             {
                 "pos": "MCO",
-                "nombre": "Fernandes"
+                "nombre": "Bruno Fernandes"
             },
             {
                 "pos": "EI",
-                "nombre": "Rashford"
+                "nombre": "Matheus Cunha"
             },
             {
                 "pos": "DC",
-                "nombre": "Højlund"
+                "nombre": "Bryan Mbeumo"
             }
         ]
     },
     "eng_chelsea": {
-        "tactica": "4-2-3-1",
-        "dt": "Enzo Maresca",
-        "figura": "Palmer",
-        "arquero": "Sánchez",
+        "tactica": "4-3-2-1",
+        "dt": "Xabi Alonso",
+        "figura": "Cole Palmer",
+        "arquero": "Mike Penders",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sánchez"
+                "nombre": "Mike Penders"
             },
             {
                 "pos": "LD",
-                "nombre": "Gusto"
+                "nombre": "Marco Palestra"
             },
             {
                 "pos": "DFC",
-                "nombre": "Fofana"
+                "nombre": "Wesley Fofana"
             },
             {
                 "pos": "DFC",
-                "nombre": "Colwill"
+                "nombre": "Levi Colwill"
             },
             {
                 "pos": "LI",
-                "nombre": "Cucurella"
+                "nombre": "Pep Chavarría"
             },
             {
                 "pos": "MC",
-                "nombre": "Caicedo"
+                "nombre": "Roméo Lavia"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Moisés Caicedo"
             },
             {
                 "pos": "MC",
-                "nombre": "Lavia"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Madueke"
+                "nombre": "Jordan Henderson"
             },
             {
                 "pos": "MCO",
-                "nombre": "Palmer"
+                "nombre": "Cole Palmer"
             },
             {
-                "pos": "EI",
-                "nombre": "Neto"
+                "pos": "MCO",
+                "nombre": "Pedro Neto"
             },
             {
                 "pos": "DC",
-                "nombre": "Jackson"
+                "nombre": "Morgan Rogers"
             }
         ]
     },
     "eng_tottenham": {
         "tactica": "4-3-3",
-        "dt": "Ange Postecoglou",
-        "figura": "Son",
-        "arquero": "Vicario",
+        "dt": "Roberto De Zerbi",
+        "figura": "Omar Marmoush",
+        "arquero": "Antonín Kinský",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Vicario"
+                "nombre": "Antonín Kinský"
             },
             {
                 "pos": "LD",
-                "nombre": "Porro"
+                "nombre": "Pedro Porro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Romero"
+                "nombre": "Jan Paul van Hecke"
             },
             {
                 "pos": "DFC",
-                "nombre": "Van de Ven"
+                "nombre": "Micky van de Ven"
             },
             {
                 "pos": "LI",
-                "nombre": "Udogie"
+                "nombre": "Andy Robertson"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Sandro Tonali"
             },
             {
                 "pos": "MC",
-                "nombre": "Kulusevski"
+                "nombre": "Archie Gray"
             },
             {
                 "pos": "MC",
-                "nombre": "Bissouma"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Maddison"
+                "nombre": "Mateus Fernandes"
             },
             {
                 "pos": "ED",
-                "nombre": "Johnson"
+                "nombre": "Mohammed Kudus"
             },
             {
                 "pos": "DC",
-                "nombre": "Solanke"
+                "nombre": "Omar Marmoush"
             },
             {
                 "pos": "EI",
-                "nombre": "Son"
+                "nombre": "Mathys Tel"
             }
         ]
     },
     "eng_astonvilla": {
         "tactica": "4-2-3-1",
         "dt": "Unai Emery",
-        "figura": "Dibu Martínez",
-        "arquero": "Dibu Martínez",
+        "figura": "John McGinn",
+        "arquero": "Zion Suzuki",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Dibu Martínez"
+                "nombre": "Zion Suzuki"
             },
             {
                 "pos": "LD",
-                "nombre": "Cash"
+                "nombre": "Taylor Harwood-Bellis"
             },
             {
                 "pos": "DFC",
-                "nombre": "Konsa"
+                "nombre": "Victor Lindelöf"
             },
             {
                 "pos": "DFC",
@@ -5592,1026 +5488,1026 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Digne"
+                "nombre": "Ian Maatsen"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Boubacar Kamara"
             },
             {
                 "pos": "MC",
-                "nombre": "Onana"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Tielemans"
+                "nombre": "Leon Goretzka"
             },
             {
                 "pos": "ED",
-                "nombre": "Bailey"
+                "nombre": "Johan Manzambi"
             },
             {
                 "pos": "MCO",
-                "nombre": "Rogers"
+                "nombre": "John McGinn"
             },
             {
                 "pos": "EI",
-                "nombre": "McGinn"
+                "nombre": "Alysson"
             },
             {
                 "pos": "DC",
-                "nombre": "Watkins"
+                "nombre": "Nicolas Jackson"
             }
         ]
     },
     "eng_newcastle": {
-        "tactica": "4-3-3",
-        "dt": "Eddie Howe",
-        "figura": "Isak",
-        "arquero": "Pope",
+        "tactica": "4-2-3-1",
+        "dt": "Matthias Jaissle",
+        "figura": "Lewis Hall",
+        "arquero": "Lukáš Horníček",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Pope"
+                "nombre": "Lukáš Horníček"
             },
             {
                 "pos": "LD",
-                "nombre": "Livramento"
+                "nombre": "Amar Dedić"
             },
             {
                 "pos": "DFC",
-                "nombre": "Schär"
+                "nombre": "Malick Thiaw"
             },
             {
                 "pos": "DFC",
-                "nombre": "Burn"
+                "nombre": "Sven Botman"
             },
             {
                 "pos": "LI",
-                "nombre": "Hall"
+                "nombre": "Lewis Hall"
             },
             {
-                "pos": "MC",
-                "nombre": "Tonali"
+                "pos": "MCD",
+                "nombre": "Nico González"
             },
             {
-                "pos": "MC",
-                "nombre": "Guimarães"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Joelinton"
+                "pos": "MCD",
+                "nombre": "Joe Willock"
             },
             {
                 "pos": "ED",
-                "nombre": "Gordon"
+                "nombre": "Jacob Murphy"
             },
             {
-                "pos": "DC",
-                "nombre": "Isak"
+                "pos": "MCO",
+                "nombre": "Lewis Miley"
             },
             {
                 "pos": "EI",
-                "nombre": "Barnes"
+                "nombre": "Harvey Barnes"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Yoane Wissa"
             }
         ]
     },
     "ger_dortmund": {
-        "tactica": "4-2-3-1",
-        "dt": "Nuri Şahin",
-        "figura": "Guirassy",
-        "arquero": "Kobel",
+        "tactica": "4-3-3",
+        "dt": "Niko Kovač",
+        "figura": "Felix Nmecha",
+        "arquero": "Gregor Kobel",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Kobel"
+                "nombre": "Gregor Kobel"
             },
             {
                 "pos": "LD",
-                "nombre": "Ryerson"
+                "nombre": "Joane Gadou"
             },
             {
                 "pos": "DFC",
-                "nombre": "Anton"
+                "nombre": "Waldemar Anton"
             },
             {
                 "pos": "DFC",
-                "nombre": "Schlotterbeck"
+                "nombre": "Nico Schlotterbeck"
             },
             {
                 "pos": "LI",
-                "nombre": "Bensebaini"
+                "nombre": "Daniel Svensson"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Joey Veerman"
             },
             {
                 "pos": "MC",
-                "nombre": "Can"
+                "nombre": "Jobe Bellingham"
             },
             {
                 "pos": "MC",
-                "nombre": "Groß"
+                "nombre": "Felix Nmecha"
             },
             {
                 "pos": "ED",
-                "nombre": "Malen"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Brandt"
+                "nombre": "Konstantinos Karetsas"
             },
             {
                 "pos": "EI",
-                "nombre": "Gittens"
+                "nombre": "Carney Chukwuemeka"
             },
             {
                 "pos": "DC",
-                "nombre": "Guirassy"
+                "nombre": "Fábio Silva"
             }
         ]
     },
     "ger_leverkusen": {
-        "tactica": "3-4-2-1",
-        "dt": "Xabi Alonso",
-        "figura": "Wirtz",
-        "arquero": "Hrádecký",
+        "tactica": "4-2-3-1",
+        "dt": "Carles Martínez Novell",
+        "figura": "Patrik Schick",
+        "arquero": "Mark Flekken",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Hrádecký"
+                "nombre": "Mark Flekken"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Jarell Quansah"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tapsoba"
+                "nombre": "Edmond Tapsoba"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tah"
+                "nombre": "Facundo Medina"
             },
             {
-                "pos": "DFC",
-                "nombre": "Hincapié"
+                "pos": "LI",
+                "nombre": "Miguel Gutiérrez"
             },
             {
-                "pos": "MD",
-                "nombre": "Frimpong"
+                "pos": "MCD",
+                "nombre": "Aleix García"
             },
             {
-                "pos": "MC",
-                "nombre": "Xhaka"
+                "pos": "MCD",
+                "nombre": "Equi Fernández"
             },
             {
-                "pos": "MC",
-                "nombre": "Andrich"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Grimaldo"
+                "pos": "ED",
+                "nombre": "Ibrahim Maza"
             },
             {
                 "pos": "MCO",
-                "nombre": "Hofmann"
+                "nombre": "Malik Tillman"
             },
             {
-                "pos": "MCO",
-                "nombre": "Wirtz"
+                "pos": "EI",
+                "nombre": "Afonso Moreira"
             },
             {
                 "pos": "DC",
-                "nombre": "Boniface"
+                "nombre": "Patrik Schick"
             }
         ]
     },
     "ita_juventus": {
-        "tactica": "4-2-3-1",
-        "dt": "Thiago Motta",
-        "figura": "Vlahović",
-        "arquero": "Di Gregorio",
+        "tactica": "4-3-3",
+        "dt": "Luciano Spalletti",
+        "figura": "Gleison Bremer",
+        "arquero": "Guglielmo Vicario",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Di Gregorio"
+                "nombre": "Guglielmo Vicario"
             },
             {
                 "pos": "LD",
-                "nombre": "Savona"
+                "nombre": "Pierre Kalulu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gatti"
+                "nombre": "Gleison Bremer"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kalulu"
+                "nombre": "John Lucumí"
             },
             {
                 "pos": "LI",
-                "nombre": "Cambiaso"
+                "nombre": "Juan Cabal"
             },
             {
                 "pos": "MC",
-                "nombre": "Locatelli"
+                "nombre": "Weston McKennie"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Douglas Luiz"
             },
             {
                 "pos": "MC",
-                "nombre": "Thuram"
+                "nombre": "Teun Koopmeiners"
             },
             {
                 "pos": "ED",
-                "nombre": "Conceição"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Koopmeiners"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Yildiz"
+                "nombre": "Randal Kolo Muani"
             },
             {
                 "pos": "DC",
-                "nombre": "Vlahović"
+                "nombre": "Nick Woltemade"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Jeremie Boga"
             }
         ]
     },
     "ita_milan": {
-        "tactica": "4-2-3-1",
-        "dt": "Paulo Fonseca",
-        "figura": "Leão",
-        "arquero": "Maignan",
+        "tactica": "4-4-1-1",
+        "dt": "Rúben Amorim",
+        "figura": "Christian Pulisic",
+        "arquero": "Mike Maignan",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Maignan"
+                "nombre": "Mike Maignan"
             },
             {
                 "pos": "LD",
-                "nombre": "Emerson"
+                "nombre": "Yunus Musah"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tomori"
+                "nombre": "Mario Gila"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pavlović"
+                "nombre": "Koni De Winter"
             },
             {
                 "pos": "LI",
-                "nombre": "Hernández"
+                "nombre": "Sankhoun Diawara"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Alphadjo Cisse"
             },
             {
                 "pos": "MC",
-                "nombre": "Fofana"
+                "nombre": "Luka Modrić"
             },
             {
                 "pos": "MC",
-                "nombre": "Reijnders"
+                "nombre": "Adrien Rabiot"
             },
             {
-                "pos": "ED",
-                "nombre": "Pulisic"
+                "pos": "MI",
+                "nombre": "Diego Moreira"
             },
             {
                 "pos": "MCO",
-                "nombre": "Morata"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Leão"
+                "nombre": "Christian Pulisic"
             },
             {
                 "pos": "DC",
-                "nombre": "Abraham"
+                "nombre": "Gonçalo Ramos"
             }
         ]
     },
     "ita_napoli": {
-        "tactica": "4-3-3",
-        "dt": "Antonio Conte",
-        "figura": "Kvaratskhelia",
-        "arquero": "Meret",
+        "tactica": "3-5-2",
+        "dt": "Massimiliano Allegri",
+        "figura": "Kevin De Bruyne",
+        "arquero": "Vanja Milinković-Savić",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Meret"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Di Lorenzo"
+                "nombre": "Vanja Milinković-Savić"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rrahmani"
+                "nombre": "Sam Beukema"
             },
             {
                 "pos": "DFC",
-                "nombre": "Buongiorno"
+                "nombre": "Amir Rrahmani"
             },
             {
-                "pos": "LI",
-                "nombre": "Olivera"
+                "pos": "DFC",
+                "nombre": "Rafa Marín"
             },
             {
-                "pos": "MC",
-                "nombre": "Anguissa"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Lobotka"
+                "pos": "CAD",
+                "nombre": "Antonio Vergara"
             },
             {
                 "pos": "MC",
-                "nombre": "McTominay"
+                "nombre": "Kevin De Bruyne"
             },
             {
-                "pos": "ED",
-                "nombre": "Politano"
+                "pos": "MCD",
+                "nombre": "Billy Gilmour"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Scott McTominay"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Mathías Olivera"
             },
             {
                 "pos": "DC",
-                "nombre": "Lukaku"
+                "nombre": "Noa Lang"
             },
             {
-                "pos": "EI",
-                "nombre": "Kvaratskhelia"
+                "pos": "DC",
+                "nombre": "Rasmus Højlund"
             }
         ]
     },
     "ita_roma": {
         "tactica": "3-4-2-1",
-        "dt": "Claudio Ranieri",
-        "figura": "Dybala",
-        "arquero": "Svilar",
+        "dt": "Gian Piero Gasperini",
+        "figura": "Matías Soulé",
+        "arquero": "Devis Vásquez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Svilar"
+                "nombre": "Devis Vásquez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mancini"
+                "nombre": "Leonardo Balerdi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ndicka"
+                "nombre": "Evan Ndicka"
             },
             {
                 "pos": "DFC",
-                "nombre": "Angeliño"
+                "nombre": "Mario Hermoso"
             },
             {
-                "pos": "MD",
-                "nombre": "Çelik"
+                "pos": "CAD",
+                "nombre": "Nahuel Molina"
             },
             {
                 "pos": "MC",
-                "nombre": "Koné"
+                "nombre": "Bryan Cristante"
             },
             {
                 "pos": "MC",
-                "nombre": "Cristante"
+                "nombre": "Manu Koné"
             },
             {
-                "pos": "MI",
-                "nombre": "El Shaarawy"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Dybala"
+                "pos": "CAI",
+                "nombre": "Wesley"
             },
             {
                 "pos": "MCO",
-                "nombre": "Pellegrini"
+                "nombre": "Matías Soulé"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Rodrigo Mora"
             },
             {
                 "pos": "DC",
-                "nombre": "Dovbyk"
+                "nombre": "Donyell Malen"
             }
         ]
     },
     "ita_lazio": {
-        "tactica": "4-2-3-1",
-        "dt": "Marco Baroni",
-        "figura": "Castellanos",
-        "arquero": "Provedel",
+        "tactica": "4-3-3",
+        "dt": "Gennaro Gattuso",
+        "figura": "Mattia Zaccagni",
+        "arquero": "Christos Mandas",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Provedel"
+                "nombre": "Christos Mandas"
             },
             {
                 "pos": "LD",
-                "nombre": "Lazzari"
+                "nombre": "Romano Floriani Mussolini"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gila"
+                "nombre": "Oliver Provstgaard"
             },
             {
                 "pos": "DFC",
-                "nombre": "Romagnoli"
+                "nombre": "Josip Šutalo"
             },
             {
                 "pos": "LI",
-                "nombre": "Tavares"
+                "nombre": "Nuno Tavares"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Reda Belahyane"
             },
             {
                 "pos": "MC",
-                "nombre": "Guendouzi"
+                "nombre": "Davide Frattesi"
             },
             {
                 "pos": "MC",
-                "nombre": "Rovella"
+                "nombre": "Kenneth Taylor"
             },
             {
                 "pos": "ED",
-                "nombre": "Isaksen"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Dia"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Zaccagni"
+                "nombre": "Gustav Isaksen"
             },
             {
                 "pos": "DC",
-                "nombre": "Castellanos"
+                "nombre": "Tijjani Noslin"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Mattia Zaccagni"
             }
         ]
     },
     "ita_atalanta": {
-        "tactica": "3-4-1-2",
-        "dt": "Gian Piero Gasperini",
-        "figura": "Lookman",
-        "arquero": "Carnesecchi",
+        "tactica": "4-2-3-1",
+        "dt": "Maurizio Sarri",
+        "figura": "Charles De Ketelaere",
+        "arquero": "Marco Carnesecchi",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Carnesecchi"
+                "nombre": "Marco Carnesecchi"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Davide Zappacosta"
             },
             {
                 "pos": "DFC",
-                "nombre": "Djimsiti"
+                "nombre": "Giorgio Scalvini"
             },
             {
                 "pos": "DFC",
-                "nombre": "Hien"
+                "nombre": "Sead Kolašinac"
             },
             {
-                "pos": "DFC",
-                "nombre": "Kolašinac"
+                "pos": "LI",
+                "nombre": "Lorenzo Bernasconi"
             },
             {
-                "pos": "MD",
-                "nombre": "Bellanova"
-            },
-            {
-                "pos": "MC",
-                "nombre": "De Roon"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Éderson"
             },
             {
-                "pos": "MI",
-                "nombre": "Ruggeri"
+                "pos": "MCD",
+                "nombre": "Mario Pašalić"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Elif Elmas"
             },
             {
                 "pos": "MCO",
-                "nombre": "Pašalić"
+                "nombre": "Charles De Ketelaere"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Nicola Zalewski"
             },
             {
                 "pos": "DC",
-                "nombre": "De Ketelaere"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Lookman"
+                "nombre": "Nikola Krstović"
             }
         ]
     },
     "esp_athletic": {
         "tactica": "4-2-3-1",
-        "dt": "Ernesto Valverde",
+        "dt": "Edin Terzić",
         "figura": "Nico Williams",
-        "arquero": "Agirrezabala",
+        "arquero": "Unai Simón",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Agirrezabala"
+                "nombre": "Unai Simón"
             },
             {
                 "pos": "LD",
-                "nombre": "De Marcos"
+                "nombre": "Hugo Rincón"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vivian"
+                "nombre": "Yeray Álvarez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Yeray"
+                "nombre": "Aymeric Laporte"
             },
             {
                 "pos": "LI",
-                "nombre": "Yuri"
+                "nombre": "Yuri Berchiche"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Iñigo Ruiz de Galarreta"
             },
             {
                 "pos": "MC",
-                "nombre": "Galarreta"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Prados"
-            },
-            {
-                "pos": "ED",
-                "nombre": "I. Williams"
+                "nombre": "Beñat Gerenabarrena"
             },
             {
                 "pos": "MCO",
-                "nombre": "Sancet"
+                "nombre": "Oihan Sancet"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Iñaki Williams"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Álex Berenguer"
             },
             {
                 "pos": "EI",
                 "nombre": "Nico Williams"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Guruzeta"
             }
         ]
     },
     "esp_realsociedad": {
-        "tactica": "4-3-3",
-        "dt": "Imanol Alguacil",
-        "figura": "Kubo",
-        "arquero": "Remiro",
+        "tactica": "4-2-3-1",
+        "dt": "Pellegrino Matarazzo",
+        "figura": "Takefusa Kubo",
+        "arquero": "Álex Remiro",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Remiro"
+                "nombre": "Álex Remiro"
             },
             {
                 "pos": "LD",
-                "nombre": "Aramburu"
+                "nombre": "Jon Aramburu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Zubeldia"
+                "nombre": "Igor Zubeldia"
             },
             {
                 "pos": "DFC",
-                "nombre": "Aguerd"
+                "nombre": "Jon Martín"
             },
             {
                 "pos": "LI",
-                "nombre": "Gómez"
+                "nombre": "Aihen Muñoz"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Beñat Turrientes"
             },
             {
                 "pos": "MC",
-                "nombre": "Zubimendi"
+                "nombre": "Luka Sučić"
             },
             {
-                "pos": "MC",
-                "nombre": "Méndez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Sučić"
+                "pos": "MCO",
+                "nombre": "Carlos Soler"
             },
             {
                 "pos": "ED",
-                "nombre": "Kubo"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Oyarzabal"
+                "nombre": "Takefusa Kubo"
             },
             {
                 "pos": "EI",
-                "nombre": "Becker"
+                "nombre": "Ander Barrenetxea"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Orri Óskarsson"
             }
         ]
     },
     "esp_betis": {
         "tactica": "4-2-3-1",
         "dt": "Manuel Pellegrini",
-        "figura": "Lo Celso",
-        "arquero": "Silva",
+        "figura": "Isco Alarcón",
+        "arquero": "Álvaro Valles",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Silva"
+                "nombre": "Álvaro Valles"
             },
             {
                 "pos": "LD",
-                "nombre": "Sabaly"
+                "nombre": "Héctor Bellerín"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bartra"
+                "nombre": "Marc Bartra"
             },
             {
                 "pos": "DFC",
-                "nombre": "Llorente"
+                "nombre": "Natan"
             },
             {
                 "pos": "LI",
-                "nombre": "Perraud"
+                "nombre": "Fran García"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Marc Roca"
             },
             {
                 "pos": "MC",
-                "nombre": "Roca"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Cardoso"
+                "nombre": "Pablo Fornals"
             },
             {
                 "pos": "ED",
-                "nombre": "Fornals"
+                "nombre": "Antony"
             },
             {
                 "pos": "MCO",
-                "nombre": "Lo Celso"
+                "nombre": "Isco Alarcón"
             },
             {
                 "pos": "EI",
-                "nombre": "Abde"
+                "nombre": "Abde Ezzalzouli"
             },
             {
                 "pos": "DC",
-                "nombre": "Vitor Roque"
+                "nombre": "Troy Parrott"
             }
         ]
     },
     "esp_sevilla": {
-        "tactica": "4-3-3",
-        "dt": "García Pimienta",
-        "figura": "Lukebakio",
-        "arquero": "Nyland",
+        "tactica": "4-2-3-1",
+        "dt": "Luis García Plaza",
+        "figura": "Isaac Romero",
+        "arquero": "Odysseas Vlachodimos",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Nyland"
+                "nombre": "Odysseas Vlachodimos"
             },
             {
                 "pos": "LD",
-                "nombre": "Carmona"
+                "nombre": "Juan Iglesias"
             },
             {
                 "pos": "DFC",
-                "nombre": "Badé"
+                "nombre": "Kike Salas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gudelj"
+                "nombre": "Andrés Castrín"
             },
             {
                 "pos": "LI",
-                "nombre": "Pedrosa"
+                "nombre": "Gabriel Suazo"
             },
             {
-                "pos": "MC",
-                "nombre": "Lokonga"
+                "pos": "MCD",
+                "nombre": "Lucien Agoumé"
             },
             {
-                "pos": "MC",
-                "nombre": "Sow"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Juanlu"
+                "pos": "MCD",
+                "nombre": "Youssouf Fofana"
             },
             {
                 "pos": "ED",
-                "nombre": "Lukebakio"
+                "nombre": "Félix Correia"
             },
             {
-                "pos": "DC",
-                "nombre": "Romero"
+                "pos": "MCO",
+                "nombre": "Isaac Romero"
             },
             {
                 "pos": "EI",
-                "nombre": "Peque"
+                "nombre": "Chidera Ejuke"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Lucas Stassin"
             }
         ]
     },
     "por_sporting": {
-        "tactica": "3-4-3",
-        "dt": "João Pereira",
-        "figura": "Gyökeres",
-        "arquero": "Israel",
+        "tactica": "4-3-3",
+        "dt": "Paulo Fonseca",
+        "figura": "Luis Suárez",
+        "arquero": "Kaique Pereira",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Israel"
+                "nombre": "Kaique Pereira"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Iván Fresneda"
             },
             {
                 "pos": "DFC",
-                "nombre": "Debast"
+                "nombre": "Eduardo Quaresma"
             },
             {
                 "pos": "DFC",
-                "nombre": "Diomande"
+                "nombre": "Gonçalo Inácio"
             },
             {
-                "pos": "DFC",
-                "nombre": "Inácio"
+                "pos": "LI",
+                "nombre": "Maxi Araújo"
             },
             {
-                "pos": "MD",
-                "nombre": "Quenda"
+                "pos": "MCD",
+                "nombre": "Silas Andersen"
             },
             {
                 "pos": "MC",
-                "nombre": "Hjulmand"
+                "nombre": "Sergi Altimira"
             },
             {
                 "pos": "MC",
-                "nombre": "Bragança"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Araújo"
+                "nombre": "Issa Doumbia"
             },
             {
                 "pos": "ED",
-                "nombre": "Trincão"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Gyökeres"
+                "nombre": "Nestory Irankunda"
             },
             {
                 "pos": "EI",
-                "nombre": "Gonçalves"
+                "nombre": "Luis Guilherme"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Luis Suárez"
             }
         ]
     },
     "por_benfica": {
-        "tactica": "4-3-3",
-        "dt": "Bruno Lage",
-        "figura": "Di María",
-        "arquero": "Trubin",
+        "tactica": "4-2-3-1",
+        "dt": "Marco Silva",
+        "figura": "Vangelis Pavlidis",
+        "arquero": "Soares",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Trubin"
+                "nombre": "Soares"
             },
             {
                 "pos": "LD",
-                "nombre": "Bah"
+                "nombre": "Alexander Bah"
             },
             {
                 "pos": "DFC",
-                "nombre": "Araújo"
+                "nombre": "Tomás Araújo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Otamendi"
+                "nombre": "Clément Lenglet"
             },
             {
                 "pos": "LI",
-                "nombre": "Carreras"
+                "nombre": "Samuel Dahl"
             },
             {
-                "pos": "MC",
-                "nombre": "Florentino"
+                "pos": "MCD",
+                "nombre": "Fredrik Aursnes"
             },
             {
-                "pos": "MC",
-                "nombre": "Aursnes"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Kökçü"
+                "pos": "MCD",
+                "nombre": "João Palhinha"
             },
             {
                 "pos": "ED",
-                "nombre": "Di María"
+                "nombre": "Rafa Silva"
             },
             {
-                "pos": "DC",
-                "nombre": "Pavlidis"
+                "pos": "MCO",
+                "nombre": "Heorhii Sudakov"
             },
             {
                 "pos": "EI",
-                "nombre": "Aktürkoğlu"
+                "nombre": "Gianluca Prestianni"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Vangelis Pavlidis"
             }
         ]
     },
     "por_porto": {
-        "tactica": "4-2-3-1",
-        "dt": "Vítor Bruno",
-        "figura": "Samu",
-        "arquero": "Costa",
+        "tactica": "4-3-3",
+        "dt": "Francesco Farioli",
+        "figura": "Pepê",
+        "arquero": "Diogo Costa",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Costa"
+                "nombre": "Diogo Costa"
             },
             {
                 "pos": "LD",
-                "nombre": "João Mário"
+                "nombre": "Alberto Costa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pérez"
+                "nombre": "Jan Bednarek"
             },
             {
                 "pos": "DFC",
-                "nombre": "Zé Pedro"
+                "nombre": "Jakub Kiwior"
             },
             {
                 "pos": "LI",
-                "nombre": "Moura"
+                "nombre": "Martim Fernandes"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Pablo Rosario"
             },
             {
                 "pos": "MC",
-                "nombre": "Varela"
+                "nombre": "Victor Froholdt"
             },
             {
                 "pos": "MC",
-                "nombre": "González"
+                "nombre": "Gabri Veiga"
             },
             {
                 "pos": "ED",
                 "nombre": "Pepê"
             },
             {
-                "pos": "MCO",
-                "nombre": "Vieira"
+                "pos": "DC",
+                "nombre": "André Silva"
             },
             {
                 "pos": "EI",
-                "nombre": "Galeno"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Samu"
+                "nombre": "Borja Sainz"
             }
         ]
     },
     "ned_psv": {
         "tactica": "4-3-3",
         "dt": "Peter Bosz",
-        "figura": "De Jong",
-        "arquero": "Benítez",
+        "figura": "Guus Til",
+        "arquero": "Matěj Kovář",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Benítez"
+                "nombre": "Matěj Kovář"
             },
             {
                 "pos": "LD",
-                "nombre": "Karsdorp"
+                "nombre": "Sergiño Dest"
             },
             {
                 "pos": "DFC",
-                "nombre": "Flamingo"
+                "nombre": "Lutsharel Geertruida"
             },
             {
                 "pos": "DFC",
-                "nombre": "Boscagli"
+                "nombre": "Armando Obispo"
             },
             {
                 "pos": "LI",
-                "nombre": "Dams"
+                "nombre": "Filip Kostić"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Mauro Júnior"
             },
             {
                 "pos": "MC",
-                "nombre": "Schouten"
+                "nombre": "Kodai Sano"
             },
             {
                 "pos": "MC",
-                "nombre": "Tillman"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Saibari"
+                "nombre": "Guus Til"
             },
             {
                 "pos": "ED",
-                "nombre": "Bakayoko"
-            },
-            {
-                "pos": "DC",
-                "nombre": "De Jong"
+                "nombre": "Ivan Perišić"
             },
             {
                 "pos": "EI",
-                "nombre": "Lang"
+                "nombre": "Ruben van Bommel"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Sven Mijnans"
             }
         ]
     },
     "ned_feyenoord": {
         "tactica": "4-3-3",
-        "dt": "Brian Priske",
-        "figura": "Giménez",
-        "arquero": "Wellenreuther",
+        "dt": "Giovanni van Bronckhorst",
+        "figura": "Anis Hadj Moussa",
+        "arquero": "Tjark Ernst",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Wellenreuther"
+                "nombre": "Tjark Ernst"
             },
             {
                 "pos": "LD",
-                "nombre": "Read"
+                "nombre": "Givairo Read"
             },
             {
                 "pos": "DFC",
-                "nombre": "Trauner"
+                "nombre": "Tsuyoshi Watanabe"
             },
             {
                 "pos": "DFC",
-                "nombre": "Hancko"
+                "nombre": "Mika Mármol"
             },
             {
                 "pos": "LI",
-                "nombre": "Bueno"
+                "nombre": "Javi López"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Charles Vanhoutte"
             },
             {
                 "pos": "MC",
-                "nombre": "Hwang"
+                "nombre": "Oussama Targhalline"
             },
             {
                 "pos": "MC",
-                "nombre": "Timber"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Milambo"
+                "nombre": "Gjivai Zechiël"
             },
             {
                 "pos": "ED",
-                "nombre": "Osman"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Giménez"
+                "nombre": "Anis Hadj Moussa"
             },
             {
                 "pos": "EI",
-                "nombre": "Paixão"
+                "nombre": "Luciano Valente"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Nacho Ferri"
             }
         ]
     },
     "ned_ajax": {
         "tactica": "4-3-3",
-        "dt": "Francesco Farioli",
-        "figura": "Brobbey",
-        "arquero": "Pasveer",
+        "dt": "Míchel Sánchez",
+        "figura": "Julian Brandt",
+        "arquero": "Marc-André ter Stegen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Pasveer"
+                "nombre": "Marc-André ter Stegen"
             },
             {
                 "pos": "LD",
-                "nombre": "Rensch"
+                "nombre": "Lucas Rosa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Šutalo"
+                "nombre": "Aaron Bouwman"
             },
             {
                 "pos": "DFC",
-                "nombre": "Baas"
+                "nombre": "Youri Baas"
             },
             {
                 "pos": "LI",
-                "nombre": "Hato"
+                "nombre": "Owen Wijndal"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Sofyan Amrabat"
             },
             {
                 "pos": "MC",
-                "nombre": "Henderson"
+                "nombre": "Julian Brandt"
             },
             {
                 "pos": "MC",
-                "nombre": "Klaassen"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Taylor"
+                "nombre": "Jorthy Mokio"
             },
             {
                 "pos": "ED",
-                "nombre": "Traoré"
+                "nombre": "Abdellah Ouazane"
             },
             {
                 "pos": "DC",
-                "nombre": "Brobbey"
+                "nombre": "Tolu Arokodare"
             },
             {
                 "pos": "EI",
-                "nombre": "Godts"
+                "nombre": "Davy Klaassen"
             }
         ]
     },
     "bra_fluminense": {
         "tactica": "4-2-3-1",
-        "dt": "Mano Menezes",
-        "figura": "Ganso",
+        "dt": "Marcão",
+        "figura": "Jefferson Savarino",
         "arquero": "Fábio",
         "titulares": [
             {
@@ -6620,7 +6516,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Samuel Xavier"
+                "nombre": "Guga"
             },
             {
                 "pos": "DFC",
@@ -6628,99 +6524,99 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Thiago Santos"
+                "nombre": "Freytes"
             },
             {
                 "pos": "LI",
-                "nombre": "Barbosa"
+                "nombre": "Renê"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Hércules"
             },
             {
                 "pos": "MC",
-                "nombre": "Bernal"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Martinelli"
+                "nombre": "Nonato"
             },
             {
                 "pos": "ED",
-                "nombre": "Arias"
+                "nombre": "Jefferson Savarino"
             },
             {
                 "pos": "MCO",
-                "nombre": "Ganso"
+                "nombre": "Lucho Acosta"
             },
             {
                 "pos": "EI",
-                "nombre": "Keno"
+                "nombre": "Agustín Canobbio"
             },
             {
                 "pos": "DC",
-                "nombre": "Kauã Elias"
+                "nombre": "Hulk"
             }
         ]
     },
     "bra_internacional": {
-        "tactica": "4-2-3-1",
-        "dt": "Roger Machado",
-        "figura": "Borré",
-        "arquero": "Rochet",
+        "tactica": "3-4-2-1",
+        "dt": "Eduardo Baptista",
+        "figura": "Alerrandro",
+        "arquero": "Kauan Jesus",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rochet"
+                "nombre": "Kauan Jesus"
             },
             {
-                "pos": "LD",
+                "pos": "DFC",
                 "nombre": "Bruno Gomes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rogel"
+                "nombre": "Gabriel Mercado"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vitão"
+                "nombre": "Juninho"
             },
             {
-                "pos": "LI",
-                "nombre": "Bernabei"
+                "pos": "CAD",
+                "nombre": "Braian Aguirre"
             },
             {
-                "pos": "MC",
-                "nombre": "Fernando"
+                "pos": "MCD",
+                "nombre": "Rodrigo Villagra"
             },
             {
                 "pos": "MC",
                 "nombre": "Thiago Maia"
             },
             {
-                "pos": "ED",
-                "nombre": "Tabata"
+                "pos": "CAI",
+                "nombre": "Matheus Bahia"
             },
             {
                 "pos": "MCO",
-                "nombre": "Alan Patrick"
+                "nombre": "Vitinho"
             },
             {
-                "pos": "EI",
-                "nombre": "Wesley"
+                "pos": "MCO",
+                "nombre": "Johan Carbonero"
             },
             {
                 "pos": "DC",
-                "nombre": "Borré"
+                "nombre": "Alerrandro"
             }
         ]
     },
     "bra_gremio": {
-        "tactica": "4-2-3-1",
-        "dt": "Renato Gaúcho",
-        "figura": "Braithwaite",
-        "arquero": "Marchesín",
+        "tactica": "5-2-3",
+        "dt": "Renato Portaluppi",
+        "figura": "Carlos Vinícius",
+        "arquero": "Weverton",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Marchesín"
+                "nombre": "Weverton"
             },
             {
                 "pos": "LD",
@@ -6728,503 +6624,503 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Ely"
+                "nombre": "Gustavo Martins"
             },
             {
                 "pos": "DFC",
-                "nombre": "Jemerson"
+                "nombre": "Balbuena"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Wallace"
             },
             {
                 "pos": "LI",
-                "nombre": "Reinaldo"
+                "nombre": "Marlon"
             },
             {
-                "pos": "MC",
-                "nombre": "Villasanti"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Dodi"
             },
             {
+                "pos": "MC",
+                "nombre": "Noriega"
+            },
+            {
                 "pos": "ED",
-                "nombre": "Pavón"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Cristaldo"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Soteldo"
+                "nombre": "Cristian Pavon"
             },
             {
                 "pos": "DC",
-                "nombre": "Braithwaite"
+                "nombre": "Carlos Vinícius"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Amuzu"
             }
         ]
     },
     "col_america": {
-        "tactica": "4-3-3",
-        "dt": "Jorge da Silva",
-        "figura": "Vergara",
-        "arquero": "Soto",
+        "tactica": "4-2-3-1",
+        "dt": "David González",
+        "figura": "Yeison Guzmán",
+        "arquero": "Jean Fernandes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Soto"
+                "nombre": "Jean Fernandes"
             },
             {
                 "pos": "LD",
-                "nombre": "Candelo"
+                "nombre": "Mateo Castillo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mosquera"
+                "nombre": "Marlon Torres"
             },
             {
                 "pos": "DFC",
-                "nombre": "Medina"
+                "nombre": "Nicolás Hernández"
             },
             {
                 "pos": "LI",
-                "nombre": "Velasco"
+                "nombre": "Marcos Mina"
             },
             {
-                "pos": "MC",
-                "nombre": "Leys"
+                "pos": "MCD",
+                "nombre": "Rafael Carrascal"
             },
             {
-                "pos": "MC",
-                "nombre": "Carrascal"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Rivera"
+                "pos": "MCD",
+                "nombre": "Josen Escobar"
             },
             {
                 "pos": "ED",
-                "nombre": "Barrios"
+                "nombre": "Luis Quiñones"
             },
             {
-                "pos": "DC",
-                "nombre": "Holgado"
+                "pos": "MCO",
+                "nombre": "Yeison Guzmán"
             },
             {
                 "pos": "EI",
-                "nombre": "Vergara"
+                "nombre": "Jhon Murillo"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Tomás Ángel"
             }
         ]
     },
     "col_junior": {
         "tactica": "4-2-3-1",
-        "dt": "César Farías",
-        "figura": "Bacca",
-        "arquero": "Mele",
+        "dt": "Sebastián Viera",
+        "figura": "Carlos Mario Pérez",
+        "arquero": "Mauro Silveira",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mele"
+                "nombre": "Mauro Silveira"
             },
             {
                 "pos": "LD",
-                "nombre": "Navia"
+                "nombre": "Carlos Mario Pérez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Olivera"
+                "nombre": "Jermein Peña"
             },
             {
                 "pos": "DFC",
-                "nombre": "Zalazar"
+                "nombre": "Jean Pestaña"
             },
             {
                 "pos": "LI",
-                "nombre": "Herrera"
+                "nombre": "Yeison Suárez"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Juan David Ríos"
             },
             {
                 "pos": "MC",
-                "nombre": "Moreno"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Vélez"
+                "nombre": "Guillermo Celis"
             },
             {
                 "pos": "ED",
-                "nombre": "Enamorado"
+                "nombre": "Déiber Caicedo"
             },
             {
                 "pos": "MCO",
-                "nombre": "Chará"
+                "nombre": "Guillermo Paiva"
             },
             {
                 "pos": "EI",
-                "nombre": "Castrillón"
+                "nombre": "Bryan Castrillón"
             },
             {
                 "pos": "DC",
-                "nombre": "Bacca"
+                "nombre": "Francisco Fydriszewski"
             }
         ]
     },
     "col_santafe": {
-        "tactica": "3-5-2",
-        "dt": "Pablo Peirano",
-        "figura": "Rodallega",
-        "arquero": "Marmolejo",
+        "tactica": "4-3-3",
+        "dt": "Pablo Repetto",
+        "figura": "Hugo Rodallega",
+        "arquero": "Andrés Mosquera Marmolejo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Marmolejo"
+                "nombre": "Andrés Mosquera Marmolejo"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Helibelton Palacios"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pisciotti"
+                "nombre": "Víctor Moreno"
             },
             {
                 "pos": "DFC",
-                "nombre": "Millán"
+                "nombre": "Emanuel Olivera"
             },
             {
-                "pos": "DFC",
-                "nombre": "Ortiz"
+                "pos": "LI",
+                "nombre": "Mateo Puerta"
             },
             {
-                "pos": "CAD",
-                "nombre": "Perlaza"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Torres"
+                "pos": "MCD",
+                "nombre": "Daniel Torres"
             },
             {
                 "pos": "MC",
-                "nombre": "Zuluaga"
+                "nombre": "Kilian Toscano"
             },
             {
-                "pos": "MC",
-                "nombre": "Velásquez"
+                "pos": "MCO",
+                "nombre": "Franco Fagúndez"
             },
             {
-                "pos": "CAI",
-                "nombre": "Albornoz"
+                "pos": "ED",
+                "nombre": "Jáder Obrian"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Emerson Rodríguez"
             },
             {
                 "pos": "DC",
-                "nombre": "Mosquera"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Rodallega"
+                "nombre": "Hugo Rodallega"
             }
         ]
     },
     "chi_ucatolica": {
-        "tactica": "4-2-3-1",
-        "dt": "Tiago Nunes",
-        "figura": "Zampedri",
-        "arquero": "Pérez",
+        "tactica": "4-3-3",
+        "dt": "Daniel Garnero",
+        "figura": "Fernando Zampedri",
+        "arquero": "Darío Melo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Pérez"
+                "nombre": "Darío Melo"
             },
             {
                 "pos": "LD",
-                "nombre": "Ampuero"
+                "nombre": "Tomás Asta-Buruaga"
             },
             {
                 "pos": "DFC",
-                "nombre": "González"
+                "nombre": "Agustín Farías"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kagelmacher"
+                "nombre": "Juan Ignacio Díaz"
             },
             {
                 "pos": "LI",
-                "nombre": "Mena"
+                "nombre": "Eugenio Mena"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Jhojan Valencia"
             },
             {
                 "pos": "MC",
-                "nombre": "Farías"
+                "nombre": "Jimmy Martínez"
             },
             {
                 "pos": "MC",
-                "nombre": "Zuqui"
+                "nombre": "Cristián Cuevas"
             },
             {
                 "pos": "ED",
-                "nombre": "Montes"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Gentil"
+                "nombre": "Clemente Montes"
             },
             {
                 "pos": "EI",
-                "nombre": "Tapia"
+                "nombre": "Juan Francisco Rossel"
             },
             {
                 "pos": "DC",
-                "nombre": "Zampedri"
+                "nombre": "Fernando Zampedri"
             }
         ]
     },
     "chi_coquimbo": {
-        "tactica": "4-3-3",
-        "dt": "Fernando Díaz",
-        "figura": "Glaby",
-        "arquero": "Sánchez",
+        "tactica": "4-2-3-1",
+        "dt": "Hernán Caputto",
+        "figura": "Diego Sánchez",
+        "arquero": "Diego Sánchez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sánchez"
+                "nombre": "Diego Sánchez"
             },
             {
                 "pos": "LD",
-                "nombre": "B. Cabrera"
+                "nombre": "Francisco Salinas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Hernández"
+                "nombre": "Benjamín Gazzolo"
             },
             {
                 "pos": "DFC",
-                "nombre": "S. Sánchez"
+                "nombre": "Manuel Fernández"
             },
             {
                 "pos": "LI",
-                "nombre": "Cornejo"
+                "nombre": "Juan Cornejo"
             },
             {
-                "pos": "MC",
-                "nombre": "Glaby"
+                "pos": "MCD",
+                "nombre": "Sebastián Galani"
             },
             {
-                "pos": "MC",
-                "nombre": "Galani"
+                "pos": "MCD",
+                "nombre": "Alejandro Camargo"
             },
             {
-                "pos": "MC",
-                "nombre": "Henríquez"
+                "pos": "MCO",
+                "nombre": "Guido Vadalá"
             },
             {
                 "pos": "ED",
-                "nombre": "Barrera"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Chávez"
+                "nombre": "Cristián Zavala"
             },
             {
                 "pos": "EI",
-                "nombre": "Chandía"
+                "nombre": "Benjamín Chandía"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Luis Riveros"
             }
         ]
     },
     "mex_monterrey": {
         "tactica": "4-2-3-1",
-        "dt": "Martín Demichelis",
-        "figura": "Canales",
-        "arquero": "Andrada",
+        "dt": "Matías Almeyda",
+        "figura": "Lucas Ocampos",
+        "arquero": "Esteban Andrada",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Andrada"
+                "nombre": "Esteban Andrada"
             },
             {
                 "pos": "LD",
-                "nombre": "Aguirre"
+                "nombre": "Ricardo Chávez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Medina"
+                "nombre": "Víctor Guzmán"
             },
             {
                 "pos": "DFC",
-                "nombre": "Moreno"
+                "nombre": "Carlos Salcedo"
             },
             {
                 "pos": "LI",
-                "nombre": "Arteaga"
+                "nombre": "Gerardo Arteaga"
             },
             {
-                "pos": "MC",
-                "nombre": "Rodríguez"
+                "pos": "MCD",
+                "nombre": "Óliver Torres"
             },
             {
-                "pos": "MC",
-                "nombre": "Ambriz"
+                "pos": "MCD",
+                "nombre": "Orbelín Pineda"
             },
             {
                 "pos": "ED",
-                "nombre": "Corona"
+                "nombre": "César Garza"
             },
             {
                 "pos": "MCO",
-                "nombre": "Canales"
+                "nombre": "Diego Rossi"
             },
             {
                 "pos": "EI",
-                "nombre": "Ocampos"
+                "nombre": "Lucas Ocampos"
             },
             {
                 "pos": "DC",
-                "nombre": "Berterame"
+                "nombre": "Hugo Cuypers"
             }
         ]
     },
     "mex_tigres": {
         "tactica": "4-2-3-1",
-        "dt": "Veljko Paunović",
-        "figura": "Gignac",
-        "arquero": "Guzmán",
+        "dt": "Víctor Manuel Vucetich",
+        "figura": "Juan Brunetta",
+        "arquero": "Nahuel Guzmán",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Guzmán"
+                "nombre": "Nahuel Guzmán"
             },
             {
                 "pos": "LD",
-                "nombre": "Aquino"
+                "nombre": "Jesús Garza"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pizarro"
+                "nombre": "Rafael Guerrero"
             },
             {
                 "pos": "DFC",
-                "nombre": "Joaquim"
+                "nombre": "Vladimir Loroña"
             },
             {
                 "pos": "LI",
-                "nombre": "Angulo"
+                "nombre": "Mauro Laínez"
             },
             {
-                "pos": "MC",
-                "nombre": "Gorriarán"
+                "pos": "MCD",
+                "nombre": "Fernando Gorriarán"
             },
             {
-                "pos": "MC",
-                "nombre": "Carioca"
+                "pos": "MCD",
+                "nombre": "César Araújo"
             },
             {
                 "pos": "ED",
-                "nombre": "Lainez"
+                "nombre": "Diego Lainez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Brunetta"
+                "nombre": "Juan Brunetta"
             },
             {
                 "pos": "EI",
-                "nombre": "Córdova"
+                "nombre": "Emiliano Gómez"
             },
             {
                 "pos": "DC",
-                "nombre": "Gignac"
+                "nombre": "Guillermo Martínez"
             }
         ]
     },
     "mex_cruzazul": {
-        "tactica": "3-4-2-1",
-        "dt": "Martín Anselmi",
-        "figura": "Giakoumakis",
-        "arquero": "Mier",
+        "tactica": "5-4-1",
+        "dt": "Joel Huiqui",
+        "figura": "Érik Lira",
+        "arquero": "Kevin Mier",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mier"
+                "nombre": "Kevin Mier"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Rogelio González"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ditta"
+                "nombre": "Amaury García"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lira"
+                "nombre": "Gonzalo Piovi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Piovi"
+                "nombre": "Jesús Orozco Chiquete"
             },
             {
-                "pos": "MD",
-                "nombre": "Sánchez"
+                "pos": "CAI",
+                "nombre": "Omar Campos"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Érik Lira"
             },
             {
                 "pos": "MC",
-                "nombre": "Rodríguez"
+                "nombre": "Carlos Rodríguez"
             },
             {
                 "pos": "MC",
-                "nombre": "Faravelli"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Rotondi"
+                "nombre": "Andrés Montaño"
             },
             {
                 "pos": "MCO",
-                "nombre": "Romo"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Gutiérrez"
+                "nombre": "Agustín Palavecino"
             },
             {
                 "pos": "DC",
-                "nombre": "Giakoumakis"
+                "nombre": "Gabriel Fernández"
             }
         ]
     },
     "mex_toluca": {
-        "tactica": "4-2-3-1",
-        "dt": "Renato Paiva",
-        "figura": "Paulinho",
-        "arquero": "Volpi",
+        "tactica": "4-4-2",
+        "dt": "Antonio Mohamed",
+        "figura": "Alexis Vega",
+        "arquero": "Hugo González",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Volpi"
+                "nombre": "Hugo González"
             },
             {
                 "pos": "LD",
-                "nombre": "García"
+                "nombre": "Brian García"
             },
             {
                 "pos": "DFC",
-                "nombre": "Méndez"
+                "nombre": "Federico Pereira"
             },
             {
                 "pos": "DFC",
-                "nombre": "Luan"
+                "nombre": "Luan García"
             },
             {
                 "pos": "LI",
-                "nombre": "Gallardo"
+                "nombre": "Jesús Gallardo"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Helinho"
             },
             {
                 "pos": "MC",
-                "nombre": "Baeza"
+                "nombre": "Franco Romero"
             },
             {
                 "pos": "MC",
-                "nombre": "Ruiz"
+                "nombre": "Nicolás Castro"
             },
             {
-                "pos": "ED",
-                "nombre": "Violante"
+                "pos": "MI",
+                "nombre": "Pável Pérez"
             },
             {
-                "pos": "MCO",
-                "nombre": "Vega"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Angulo"
+                "pos": "DC",
+                "nombre": "Alexis Vega"
             },
             {
                 "pos": "DC",
@@ -7235,376 +7131,324 @@ window.PLAN_REALES = {
     "chi_limache": {
         "tactica": "4-3-3",
         "dt": "Víctor Rivero",
-        "figura": "Da Silva",
-        "arquero": "Bórquez",
+        "figura": "Gonzalo Sosa",
+        "arquero": "Claudio González",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Bórquez"
+                "nombre": "Claudio González"
             },
             {
                 "pos": "LD",
-                "nombre": "Avello"
+                "nombre": "Dylan Escobar"
             },
             {
                 "pos": "DFC",
-                "nombre": "Moreira"
+                "nombre": "Augusto Aguirre"
             },
             {
                 "pos": "DFC",
-                "nombre": "Paz"
+                "nombre": "Alfonso Parot"
             },
             {
                 "pos": "LI",
-                "nombre": "Fritz"
+                "nombre": "Javier Rojas"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "César Fuentes"
             },
             {
                 "pos": "MC",
-                "nombre": "Césped"
+                "nombre": "Tiago Galletto"
             },
             {
                 "pos": "MC",
-                "nombre": "Juárez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Lentini"
+                "nombre": "Vicente Álvarez"
             },
             {
                 "pos": "ED",
-                "nombre": "Castro"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Da Silva"
+                "nombre": "Daniel Castro"
             },
             {
                 "pos": "EI",
-                "nombre": "Tarifeño"
+                "nombre": "Jean Meneses"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Gonzalo Sosa"
             }
         ]
     },
     "chi_dconcepcion": {
         "tactica": "4-3-3",
-        "dt": "Manuel Suárez",
-        "figura": "Valdivia",
-        "arquero": "Araya",
+        "dt": "Fernando Díaz",
+        "figura": "Fausto Grillo",
+        "arquero": "Nicolás Araya",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Araya"
+                "nombre": "Nicolás Araya"
             },
             {
                 "pos": "LD",
-                "nombre": "Fernández"
+                "nombre": "Mateo González"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rigazzi"
+                "nombre": "Norman Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Silva"
+                "nombre": "Fausto Grillo"
             },
             {
                 "pos": "LI",
-                "nombre": "Saavedra"
+                "nombre": "Cristián Riquelme"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Mario Sandoval"
             },
             {
                 "pos": "MC",
-                "nombre": "Manzo"
+                "nombre": "Misael Dávila"
             },
             {
                 "pos": "MC",
-                "nombre": "Martínez"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Valdivia"
+                "nombre": "Matías Cavalleri"
             },
             {
                 "pos": "ED",
-                "nombre": "Mesías"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Escobar"
+                "nombre": "Joaquín Montecinos"
             },
             {
                 "pos": "EI",
-                "nombre": "Lopes"
+                "nombre": "Ethan Espinoza"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Joaquín Larrivey"
             }
         ]
     },
     "chi_laserena": {
-        "tactica": "4-2-3-1",
-        "dt": "Erwin Durán",
-        "figura": "Altamirano",
-        "arquero": "E. Sanhueza",
+        "tactica": "4-3-3",
+        "dt": "Felipe Gutiérrez",
+        "figura": "Jeisson Vargas",
+        "arquero": "José Tapia",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "E. Sanhueza"
+                "nombre": "José Tapia"
             },
             {
                 "pos": "LD",
-                "nombre": "D. Sanhueza"
+                "nombre": "Ian Rasso"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ferrario"
+                "nombre": "Lucas Alarcón"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alarcón"
+                "nombre": "Rafael Delgado"
             },
             {
                 "pos": "LI",
-                "nombre": "Osorio"
+                "nombre": "Yahir Salazar"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Sebastián Díaz"
             },
             {
                 "pos": "MC",
-                "nombre": "Díaz"
+                "nombre": "Matías Marín"
             },
             {
                 "pos": "MC",
-                "nombre": "Carreño"
+                "nombre": "Gonzalo Escalante"
             },
             {
                 "pos": "ED",
-                "nombre": "Espinoza"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Gallegos"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Figueroa"
+                "nombre": "Diego Rubio"
             },
             {
                 "pos": "DC",
-                "nombre": "Altamirano"
+                "nombre": "Felipe Chamorro"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Jeisson Vargas"
             }
         ]
     },
     "col_cucuta": {
-        "tactica": "4-2-3-1",
-        "dt": "Bernardo Redín",
-        "figura": "Ramos",
-        "arquero": "Esteban",
+        "tactica": "4-3-3",
+        "dt": "Nicolás Chiesa",
+        "figura": "Federico Abadía",
+        "arquero": "Federico Abadía",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Esteban"
+                "nombre": "Federico Abadía"
             },
             {
                 "pos": "LD",
-                "nombre": "Mosquera"
+                "nombre": "Jairo Castellanos"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pertuz"
+                "nombre": "Hernán Lópes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Moreno"
+                "nombre": "Leison Ochoa"
             },
             {
                 "pos": "LI",
-                "nombre": "Duarte"
+                "nombre": "Mauricio Duarte"
             },
             {
                 "pos": "MC",
-                "nombre": "Angulo"
+                "nombre": "Diego Calcaterra"
             },
             {
                 "pos": "MC",
-                "nombre": "Tapias"
+                "nombre": "Carlos Rentería"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Léider Berdugo"
             },
             {
                 "pos": "ED",
-                "nombre": "Álvarez"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Ríos"
+                "nombre": "Dayan Pérez"
             },
             {
                 "pos": "EI",
-                "nombre": "Montes"
+                "nombre": "Gustavo Torres"
             },
             {
                 "pos": "DC",
-                "nombre": "Ramos"
+                "nombre": "Jaime Peralta"
             }
         ]
     },
     "col_llaneros": {
-        "tactica": "4-3-3",
-        "dt": "Pedro Sarmiento",
-        "figura": "Ospina",
-        "arquero": "Armesto",
+        "tactica": "4-2-3-1",
+        "dt": "Wilmer Sandoval",
+        "figura": "Jhon Vásquez",
+        "arquero": "Juan Loaiza",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Armesto"
+                "nombre": "Juan Loaiza"
             },
             {
                 "pos": "LD",
-                "nombre": "Montes"
+                "nombre": "Juan David Pertúz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mosquera"
+                "nombre": "Francisco Meza"
             },
             {
                 "pos": "DFC",
-                "nombre": "Muñoz"
+                "nombre": "Dennys Quintero"
             },
             {
                 "pos": "LI",
-                "nombre": "Lasso"
+                "nombre": "Jhojan Escobar"
             },
             {
-                "pos": "MC",
-                "nombre": "Restrepo"
+                "pos": "MCD",
+                "nombre": "Marlon Sierra"
             },
             {
-                "pos": "MC",
-                "nombre": "Sierra"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Urueña"
+                "pos": "MCD",
+                "nombre": "Juan José Ramírez"
             },
             {
                 "pos": "ED",
-                "nombre": "Ospina"
+                "nombre": "Joel Contreras"
             },
             {
-                "pos": "DC",
-                "nombre": "Reina"
+                "pos": "MCO",
+                "nombre": "Néider Ospina"
             },
             {
                 "pos": "EI",
-                "nombre": "Verdugo"
+                "nombre": "Juan Castilla"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jhon Vásquez"
             }
         ]
     },
     "col_chico": {
         "tactica": "4-3-3",
-        "dt": "Sergio Migliaccio",
-        "figura": "Balanta",
-        "arquero": "Caicedo",
+        "dt": "Jhon Jairo Gómez",
+        "figura": "Jéfferson Mena",
+        "arquero": "David Agudelo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Caicedo"
+                "nombre": "David Agudelo"
             },
             {
                 "pos": "LD",
-                "nombre": "A. Uzcátegui"
+                "nombre": "Juan Sebastián Palma"
             },
             {
                 "pos": "DFC",
-                "nombre": "R. Uzcátegui"
+                "nombre": "Jesús Cárdenas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Plazas"
+                "nombre": "Jéfferson Mena"
             },
             {
                 "pos": "LI",
-                "nombre": "Banguero"
+                "nombre": "Cristian Blanco"
             },
             {
                 "pos": "MC",
-                "nombre": "Lozano"
+                "nombre": "Juan Díaz"
             },
             {
                 "pos": "MC",
-                "nombre": "Támara"
+                "nombre": "Delio Ramírez"
             },
             {
                 "pos": "MC",
-                "nombre": "Londoño"
+                "nombre": "Jacobo Pimentel"
             },
             {
                 "pos": "ED",
-                "nombre": "Balanta"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Cruz"
+                "nombre": "Estiven Sarria"
             },
             {
                 "pos": "EI",
-                "nombre": "Gómez"
+                "nombre": "Alejandro Maya"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Santiago Mera"
             }
         ]
     },
     "bra_remo": {
         "tactica": "4-3-3",
-        "dt": "Rodrigo Santana",
-        "figura": "Ytalo",
-        "arquero": "Rangel",
+        "dt": "Thiago Carpini",
+        "figura": "Gabriel Taliari",
+        "arquero": "Marcelo Rangel",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rangel"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Batista"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Castro"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Ligger"
-            },
-            {
-                "pos": "LI",
-                "nombre": "Sávio"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Jaderson"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Silva"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Pavani"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Kelvin"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Ytalo"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Pedro Vitor"
-            }
-        ]
-    },
-    "bra_chapecoense": {
-        "tactica": "4-2-3-1",
-        "dt": "Gilmar Dal Pozzo",
-        "figura": "Mário Sérgio",
-        "arquero": "Vieira",
-        "titulares": [
-            {
-                "pos": "POR",
-                "nombre": "Vieira"
+                "nombre": "Marcelo Rangel"
             },
             {
                 "pos": "LD",
@@ -7612,763 +7456,815 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Leonardo"
+                "nombre": "Zé Ivaldo"
             },
             {
                 "pos": "DFC",
-                "nombre": "João Paulo"
+                "nombre": "Duplexe Tchamba"
             },
             {
                 "pos": "LI",
-                "nombre": "Mancha"
+                "nombre": "Marlon"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Zé Welison"
             },
             {
                 "pos": "MC",
-                "nombre": "Foguinho"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Tarik"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Carvalheira"
+                "nombre": "Leonel Picco"
             },
             {
                 "pos": "MCO",
-                "nombre": "Thomás"
+                "nombre": "Patrick"
             },
             {
-                "pos": "EI",
-                "nombre": "Marcinho"
+                "pos": "ED",
+                "nombre": "David Braga"
             },
             {
                 "pos": "DC",
-                "nombre": "Mário Sérgio"
+                "nombre": "Gabriel Taliari"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Jajá"
+            }
+        ]
+    },
+    "bra_chapecoense": {
+        "tactica": "3-5-2",
+        "dt": "Vinicius Bergantin",
+        "figura": "Giovanni Augusto",
+        "arquero": "Gabriel Werner",
+        "titulares": [
+            {
+                "pos": "POR",
+                "nombre": "Gabriel Werner"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Eduardo Doma"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Kauan Faria"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Victor Caetano"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Bruno Tubarão"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Camilo"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Max Alves"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Giovanni Augusto"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Fernando"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Dylan Borrero"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Túlio Eduardo"
             }
         ]
     },
     "bra_mirassol": {
-        "tactica": "4-3-3",
-        "dt": "Mozart",
-        "figura": "Dellatorre",
-        "arquero": "Muralha",
+        "tactica": "4-2-3-1",
+        "dt": "Rafael Guanaes",
+        "figura": "Reinaldo",
+        "arquero": "Walter",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Muralha"
+                "nombre": "Walter"
             },
             {
                 "pos": "LD",
-                "nombre": "Ramon"
+                "nombre": "Igor Formiga"
             },
             {
                 "pos": "DFC",
-                "nombre": "Victor"
+                "nombre": "João Victor"
             },
             {
                 "pos": "DFC",
-                "nombre": "Otávio"
+                "nombre": "Lucas Oliveira"
             },
             {
                 "pos": "LI",
-                "nombre": "Zeca"
+                "nombre": "Reinaldo"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Denilson"
             },
             {
                 "pos": "MC",
-                "nombre": "Danielzinho"
+                "nombre": "Neto Moura"
             },
             {
-                "pos": "MC",
-                "nombre": "Gabriel"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Kim"
+                "pos": "MCO",
+                "nombre": "Shaylon"
             },
             {
                 "pos": "ED",
-                "nombre": "Fernandinho"
+                "nombre": "Carlos Eduardo"
             },
             {
                 "pos": "DC",
-                "nombre": "Dellatorre"
+                "nombre": "Bruno Santos"
             },
             {
                 "pos": "EI",
-                "nombre": "Negueba"
+                "nombre": "Alesson"
             }
         ]
     },
     "bra_coritiba": {
-        "tactica": "4-2-3-1",
-        "dt": "Jorginho",
-        "figura": "Robson",
-        "arquero": "Morisco",
+        "tactica": "4-3-3",
+        "dt": "Guila Bossle",
+        "figura": "Pedro Rocha",
+        "arquero": "Pedro Rangel",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Morisco"
+                "nombre": "Pedro Rangel"
             },
             {
                 "pos": "LD",
-                "nombre": "Natanael"
+                "nombre": "Tinga"
             },
             {
                 "pos": "DFC",
-                "nombre": "Antônio"
+                "nombre": "Tiago Cóser"
             },
             {
                 "pos": "DFC",
-                "nombre": "Melo"
+                "nombre": "Jacy"
             },
             {
                 "pos": "LI",
-                "nombre": "Jamerson"
+                "nombre": "Bruno Melo"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Thiago Santos"
             },
             {
                 "pos": "MC",
-                "nombre": "Zé Gabriel"
+                "nombre": "Sebastián Gómez"
             },
             {
                 "pos": "MC",
-                "nombre": "Gómez"
+                "nombre": "Nicolás Fonseca"
             },
             {
                 "pos": "ED",
-                "nombre": "Ronier"
-            },
-            {
-                "pos": "MCO",
                 "nombre": "Josué"
             },
             {
-                "pos": "EI",
-                "nombre": "Frizzo"
+                "pos": "DC",
+                "nombre": "Pedro Rocha"
             },
             {
-                "pos": "DC",
-                "nombre": "Robson"
+                "pos": "EI",
+                "nombre": "Breno Lopes"
             }
         ]
     },
     "eng_coventry": {
         "tactica": "4-2-3-1",
         "dt": "Frank Lampard",
-        "figura": "Wright",
-        "arquero": "Dovin",
+        "figura": "Jack Rudoni",
+        "arquero": "Carl Rushworth",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Dovin"
+                "nombre": "Carl Rushworth"
             },
             {
                 "pos": "LD",
-                "nombre": "Van Ewijk"
+                "nombre": "Milan van Ewijk"
             },
             {
                 "pos": "DFC",
-                "nombre": "Thomas"
+                "nombre": "Stephen Mfuni"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kitching"
+                "nombre": "Ethan Pinnock"
             },
             {
                 "pos": "LI",
-                "nombre": "Dasilva"
+                "nombre": "Jay Dasilva"
             },
             {
-                "pos": "MC",
-                "nombre": "Sheaf"
+                "pos": "MCD",
+                "nombre": "Victor Torp"
             },
             {
-                "pos": "MC",
-                "nombre": "Eccles"
+                "pos": "MCD",
+                "nombre": "Caleb Yirenkyi"
             },
             {
                 "pos": "ED",
-                "nombre": "Sakamoto"
+                "nombre": "Tatsuhiro Sakamoto"
             },
             {
                 "pos": "MCO",
-                "nombre": "Rudoni"
+                "nombre": "Jack Rudoni"
             },
             {
                 "pos": "EI",
-                "nombre": "Wright"
+                "nombre": "Yann Gboho"
             },
             {
                 "pos": "DC",
-                "nombre": "Simms"
+                "nombre": "Taiwo Awoniyi"
             }
         ]
     },
     "eng_hull": {
-        "tactica": "4-3-3",
-        "dt": "Tim Walter",
-        "figura": "Belloumi",
-        "arquero": "Pandur",
+        "tactica": "5-4-1",
+        "dt": "Sergej Jakirović",
+        "figura": "Oli McBurnie",
+        "arquero": "Konstantinos Tzolakis",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Pandur"
+                "nombre": "Konstantinos Tzolakis"
             },
             {
-                "pos": "LD",
-                "nombre": "Coyle"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Jones"
+                "pos": "CAD",
+                "nombre": "Lewie Coyle"
             },
             {
                 "pos": "DFC",
-                "nombre": "McLoughlin"
+                "nombre": "Semi Ajayi"
             },
             {
-                "pos": "LI",
-                "nombre": "Drameh"
+                "pos": "DFC",
+                "nombre": "John Egan"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Nobel Mendy"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Ryan Giles"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Mohamed Belloumi"
             },
             {
                 "pos": "MC",
-                "nombre": "Zambrano"
+                "nombre": "Tim Iroegbunam"
             },
             {
                 "pos": "MC",
-                "nombre": "Slater"
+                "nombre": "Regan Slater"
             },
             {
-                "pos": "MC",
-                "nombre": "Ömür"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Belloumi"
+                "pos": "MI",
+                "nombre": "Elliot Stroud"
             },
             {
                 "pos": "DC",
-                "nombre": "Bedia"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Millar"
+                "nombre": "Oli McBurnie"
             }
         ]
     },
     "eng_sunderland": {
-        "tactica": "4-3-3",
+        "tactica": "4-2-3-1",
         "dt": "Régis Le Bris",
-        "figura": "Bellingham",
-        "arquero": "Patterson",
+        "figura": "Granit Xhaka",
+        "arquero": "Robin Roefs",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Patterson"
+                "nombre": "Robin Roefs"
             },
             {
                 "pos": "LD",
-                "nombre": "Hume"
+                "nombre": "Trai Hume"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mepham"
+                "nombre": "Kevin Danso"
             },
             {
                 "pos": "DFC",
-                "nombre": "O'Nien"
+                "nombre": "Omar Alderete"
             },
             {
                 "pos": "LI",
-                "nombre": "Cirkin"
+                "nombre": "Reinildo Mandava"
             },
             {
-                "pos": "MC",
-                "nombre": "Neil"
+                "pos": "MCD",
+                "nombre": "Granit Xhaka"
             },
             {
-                "pos": "MC",
-                "nombre": "Bellingham"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Rigg"
+                "pos": "MCD",
+                "nombre": "Enzo Le Fée"
             },
             {
                 "pos": "ED",
-                "nombre": "Roberts"
+                "nombre": "Malick Fofana"
             },
             {
-                "pos": "DC",
-                "nombre": "Isidor"
+                "pos": "MCO",
+                "nombre": "Chris Rigg"
             },
             {
                 "pos": "EI",
-                "nombre": "Mundle"
+                "nombre": "Romaine Mundle"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Brian Brobbey"
             }
         ]
     },
     "ger_elversberg": {
         "tactica": "4-2-3-1",
-        "dt": "Horst Steffen",
-        "figura": "Asllani",
-        "arquero": "Kristof",
+        "dt": "Vincent Wagner",
+        "figura": "Maurice Krattenmacher",
+        "arquero": "Nicolas Kristof",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Kristof"
+                "nombre": "Nicolas Kristof"
             },
             {
                 "pos": "LD",
-                "nombre": "Baum"
+                "nombre": "Luca Sirch"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pinckert"
+                "nombre": "Lukas Pinckert"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rohr"
+                "nombre": "Maximilian Rohr"
             },
             {
                 "pos": "LI",
-                "nombre": "Neubauer"
+                "nombre": "Lasse Günther"
             },
             {
-                "pos": "MC",
-                "nombre": "Fellhauer"
+                "pos": "MCD",
+                "nombre": "Felix Keidel"
             },
             {
-                "pos": "MC",
-                "nombre": "Şahin"
+                "pos": "MCD",
+                "nombre": "Łukasz Poręba"
             },
             {
                 "pos": "ED",
-                "nombre": "Petkov"
+                "nombre": "Lukas Petkov"
             },
             {
                 "pos": "MCO",
-                "nombre": "Damar"
+                "nombre": "Francis Onyeka"
             },
             {
                 "pos": "EI",
-                "nombre": "Schnellbacher"
+                "nombre": "Maurice Krattenmacher"
             },
             {
                 "pos": "DC",
-                "nombre": "Asllani"
+                "nombre": "David Mokwa"
             }
         ]
     },
     "ger_paderborn": {
-        "tactica": "3-4-2-1",
-        "dt": "Lukas Kwasniok",
-        "figura": "Bilbija",
-        "arquero": "Boevink",
+        "tactica": "3-5-2",
+        "dt": "Ralf Kettemann",
+        "figura": "Raphael Obermair",
+        "arquero": "Nahuel Noll",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Boevink"
+                "nombre": "Nahuel Noll"
             },
             {
                 "pos": "DFC",
-                "nombre": "Hoffmeier"
+                "nombre": "Jano ter Horst"
             },
             {
                 "pos": "DFC",
-                "nombre": "Götze"
+                "nombre": "Tjark Scheller"
             },
             {
                 "pos": "DFC",
-                "nombre": "Brackelmann"
+                "nombre": "Mattes Hansen"
             },
             {
-                "pos": "MD",
-                "nombre": "Curda"
+                "pos": "CAD",
+                "nombre": "Laurin Curda"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Tom Baack"
             },
             {
                 "pos": "MC",
-                "nombre": "Castañeda"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Obermair"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Zehnter"
+                "nombre": "Santiago Castañeda"
             },
             {
                 "pos": "MCO",
-                "nombre": "Ansah"
+                "nombre": "Gabriel Vidović"
             },
             {
-                "pos": "MCO",
-                "nombre": "Michel"
+                "pos": "CAI",
+                "nombre": "Raphael Obermair"
             },
             {
                 "pos": "DC",
-                "nombre": "Bilbija"
+                "nombre": "Ruben Müller"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Stefano Marino"
             }
         ]
     },
     "ned_telstar": {
-        "tactica": "3-5-2",
-        "dt": "Anthony Correia",
-        "figura": "Eddahchouri",
-        "arquero": "Koeman Jr.",
+        "tactica": "4-2-3-1",
+        "dt": "Henk Brugge",
+        "figura": "Nökkvi Þeyr Þórisson",
+        "arquero": "Ronald Koeman Jr.",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Koeman Jr."
+                "nombre": "Ronald Koeman Jr."
+            },
+            {
+                "pos": "LD",
+                "nombre": "Gabi Caschili"
             },
             {
                 "pos": "DFC",
-                "nombre": "Apau"
+                "nombre": "Sem Valk"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dirks"
+                "nombre": "Abdelnour Soualhia"
             },
             {
-                "pos": "DFC",
-                "nombre": "Koswal"
+                "pos": "LI",
+                "nombre": "Marvin Peersman"
             },
             {
-                "pos": "CAD",
-                "nombre": "Noslin"
+                "pos": "MCD",
+                "nombre": "Nils Rossen"
             },
             {
-                "pos": "MC",
-                "nombre": "Rossen"
+                "pos": "MCD",
+                "nombre": "Isaiah Ahmed"
             },
             {
-                "pos": "MC",
-                "nombre": "Offerhaus"
+                "pos": "MCO",
+                "nombre": "Tyrone Owusu"
             },
             {
-                "pos": "MC",
-                "nombre": "Turfkruier"
+                "pos": "ED",
+                "nombre": "Ar'jany Martha"
             },
             {
-                "pos": "CAI",
-                "nombre": "Hardeveld"
+                "pos": "EI",
+                "nombre": "Emirhan Demircan"
             },
             {
                 "pos": "DC",
-                "nombre": "El Kachati"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Eddahchouri"
+                "nombre": "Nökkvi Þeyr Þórisson"
             }
         ]
     },
     "ned_cambuur": {
         "tactica": "4-3-3",
-        "dt": "Henk de Jong",
-        "figura": "Balk",
-        "arquero": "Jansen",
+        "dt": "Johan Plat",
+        "figura": "Ilyes Hamache",
+        "arquero": "Thijs Jansen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Jansen"
+                "nombre": "Thijs Jansen"
             },
             {
                 "pos": "LD",
-                "nombre": "Ottesen"
+                "nombre": "Devid Eugene Bouah"
             },
             {
                 "pos": "DFC",
-                "nombre": "Nieling"
+                "nombre": "Ismaël Baouf"
             },
             {
                 "pos": "DFC",
-                "nombre": "Smand"
+                "nombre": "Billy van Duijl"
             },
             {
                 "pos": "LI",
-                "nombre": "Poll"
+                "nombre": "Morgan Costarelli"
             },
             {
                 "pos": "MC",
-                "nombre": "Diemers"
+                "nombre": "Mathieu Maertens"
             },
             {
                 "pos": "MC",
-                "nombre": "Souren"
+                "nombre": "Nicky Souren"
             },
             {
-                "pos": "MC",
-                "nombre": "De Leeuw"
+                "pos": "MCO",
+                "nombre": "Rafik El Arguioui"
             },
             {
                 "pos": "ED",
-                "nombre": "Balk"
+                "nombre": "Jason Ceka"
             },
             {
                 "pos": "DC",
-                "nombre": "Pauwels"
+                "nombre": "Nicolas Binder"
             },
             {
                 "pos": "EI",
-                "nombre": "Alhaft"
+                "nombre": "Ilyes Hamache"
             }
         ]
     },
     "por_alverca": {
-        "tactica": "4-3-3",
-        "dt": "Custódio Castro",
-        "figura": "Brenner",
-        "arquero": "Cristian",
+        "tactica": "3-4-3",
+        "dt": "Sérgio Ferreira",
+        "figura": "Chiquinho",
+        "arquero": "Matheus Mendes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cristian"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Talison"
+                "nombre": "Matheus Mendes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alysson"
+                "nombre": "Isaac James"
             },
             {
                 "pos": "DFC",
-                "nombre": "Varela"
+                "nombre": "Sergi Gómez"
             },
             {
-                "pos": "LI",
-                "nombre": "Vitó"
+                "pos": "DFC",
+                "nombre": "Yaya Bojang"
             },
             {
-                "pos": "MC",
-                "nombre": "Bicalho"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Sarará"
+                "pos": "CAD",
+                "nombre": "Diogo Spencer"
             },
             {
                 "pos": "MC",
-                "nombre": "Martins"
+                "nombre": "Davy Gui"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Ian Luccas"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Francisco Chissumba"
             },
             {
                 "pos": "ED",
-                "nombre": "Marcos"
+                "nombre": "Figueiredo"
             },
             {
                 "pos": "DC",
-                "nombre": "Brenner"
+                "nombre": "Dawda Camara"
             },
             {
                 "pos": "EI",
-                "nombre": "Harramiz"
+                "nombre": "Chiquinho"
             }
         ]
     },
     "por_tondela": {
         "tactica": "4-2-3-1",
-        "dt": "Luís Pinto",
-        "figura": "Miro",
-        "arquero": "Fontes",
+        "dt": "Ricardo Costa",
+        "figura": "Tomané",
+        "arquero": "Carlão",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Fontes"
+                "nombre": "Carlão"
             },
             {
                 "pos": "LD",
-                "nombre": "Bebeto"
+                "nombre": "Carraça"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alves"
+                "nombre": "Brayan Medina"
             },
             {
                 "pos": "DFC",
-                "nombre": "Medina"
+                "nombre": "Christian Marques"
             },
             {
                 "pos": "LI",
-                "nombre": "Maviram"
+                "nombre": "Zé Ricardo"
             },
             {
-                "pos": "MC",
-                "nombre": "Tavares"
+                "pos": "MCD",
+                "nombre": "Mateus Sarará"
             },
             {
-                "pos": "MC",
-                "nombre": "Cícero"
+                "pos": "MCD",
+                "nombre": "Hélder Tavares"
             },
             {
                 "pos": "ED",
-                "nombre": "Maranhão"
+                "nombre": "Arjen van der Heide"
             },
             {
                 "pos": "MCO",
-                "nombre": "Costinha"
+                "nombre": "Hugo Félix"
             },
             {
                 "pos": "EI",
-                "nombre": "Ceitil"
+                "nombre": "Rodrigo Cascavel"
             },
             {
                 "pos": "DC",
-                "nombre": "Miro"
+                "nombre": "Tomané"
             }
         ]
     },
     "eng_brighton": {
         "tactica": "4-2-3-1",
         "dt": "Fabian Hürzeler",
-        "figura": "Mitoma",
-        "arquero": "Verbruggen",
+        "figura": "Lewis Dunk",
+        "arquero": "Bart Verbruggen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Verbruggen"
+                "nombre": "Bart Verbruggen"
             },
             {
                 "pos": "LD",
-                "nombre": "Veltman"
+                "nombre": "Ferdi Kadıoğlu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Van Hecke"
+                "nombre": "Lewis Dunk"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dunk"
+                "nombre": "Luka Vušković"
             },
             {
                 "pos": "LI",
-                "nombre": "Estupiñán"
+                "nombre": "Olivier Boscagli"
             },
             {
-                "pos": "MC",
-                "nombre": "Baleba"
+                "pos": "MCD",
+                "nombre": "Pascal Groß"
             },
             {
-                "pos": "MC",
-                "nombre": "Ayari"
+                "pos": "MCD",
+                "nombre": "Yasin Ayari"
             },
             {
                 "pos": "ED",
-                "nombre": "Minteh"
+                "nombre": "Diego Gómez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Rutter"
+                "nombre": "Malick Yalcouyé"
             },
             {
                 "pos": "EI",
-                "nombre": "Mitoma"
+                "nombre": "Kaoru Mitoma"
             },
             {
                 "pos": "DC",
-                "nombre": "Welbeck"
+                "nombre": "Charalampos Kostoulas"
             }
         ]
     },
     "eng_nottingham": {
-        "tactica": "4-2-3-1",
-        "dt": "Nuno Espírito Santo",
-        "figura": "Chris Wood",
-        "arquero": "Sels",
+        "tactica": "3-4-2-1",
+        "dt": "Oliver Glasner",
+        "figura": "Morgan Gibbs-White",
+        "arquero": "Matz Sels",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sels"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Aina"
+                "nombre": "Matz Sels"
             },
             {
                 "pos": "DFC",
-                "nombre": "Milenković"
+                "nombre": "Jair Cunha"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Nikola Milenković"
             },
             {
                 "pos": "DFC",
                 "nombre": "Murillo"
             },
             {
-                "pos": "LI",
-                "nombre": "Álex Moreno"
+                "pos": "CAD",
+                "nombre": "Daniel Muñoz"
             },
             {
                 "pos": "MC",
-                "nombre": "Yates"
+                "nombre": "Xaver Schlager"
             },
             {
                 "pos": "MC",
-                "nombre": "Domínguez"
+                "nombre": "Ryan Yates"
             },
             {
-                "pos": "ED",
-                "nombre": "Elanga"
+                "pos": "CAI",
+                "nombre": "Neco Williams"
             },
             {
                 "pos": "MCO",
-                "nombre": "Gibbs-White"
+                "nombre": "James McAtee"
             },
             {
-                "pos": "EI",
-                "nombre": "Hudson-Odoi"
+                "pos": "MCO",
+                "nombre": "Morgan Gibbs-White"
             },
             {
                 "pos": "DC",
-                "nombre": "Chris Wood"
+                "nombre": "Liam Delap"
             }
         ]
     },
     "eng_bournemouth": {
         "tactica": "4-2-3-1",
-        "dt": "Andoni Iraola",
-        "figura": "Semenyo",
-        "arquero": "Kepa",
+        "dt": "Marco Rose",
+        "figura": "Evanilson",
+        "arquero": "Djordje Petrović",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Kepa"
+                "nombre": "Djordje Petrović"
             },
             {
                 "pos": "LD",
-                "nombre": "Smith"
+                "nombre": "Adam Smith"
             },
             {
                 "pos": "DFC",
-                "nombre": "Zabarnyi"
+                "nombre": "James Hill"
             },
             {
                 "pos": "DFC",
-                "nombre": "Senesi"
+                "nombre": "António Silva"
             },
             {
                 "pos": "LI",
-                "nombre": "Kerkez"
+                "nombre": "Adrien Truffert"
             },
             {
-                "pos": "MC",
-                "nombre": "Christie"
+                "pos": "MCD",
+                "nombre": "Tyler Adams"
             },
             {
-                "pos": "MC",
-                "nombre": "Cook"
+                "pos": "MCD",
+                "nombre": "Ryan Christie"
             },
             {
                 "pos": "ED",
-                "nombre": "Semenyo"
+                "nombre": "Rayan Vitor"
             },
             {
                 "pos": "MCO",
-                "nombre": "Kluivert"
+                "nombre": "Justin Kluivert"
             },
             {
                 "pos": "EI",
-                "nombre": "Tavernier"
+                "nombre": "Marcus Tavernier"
             },
             {
                 "pos": "DC",
@@ -8377,394 +8273,398 @@ window.PLAN_REALES = {
         ]
     },
     "eng_brentford": {
-        "tactica": "4-3-3",
-        "dt": "Thomas Frank",
-        "figura": "Mbeumo",
-        "arquero": "Flekken",
+        "tactica": "4-2-3-1",
+        "dt": "Keith Andrews",
+        "figura": "Igor Thiago",
+        "arquero": "Caoimhín Kelleher",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Flekken"
+                "nombre": "Caoimhín Kelleher"
             },
             {
                 "pos": "LD",
-                "nombre": "Roerslev"
+                "nombre": "Michael Kayode"
             },
             {
                 "pos": "DFC",
-                "nombre": "Collins"
+                "nombre": "Kristoffer Ajer"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pinnock"
+                "nombre": "Sepp van den Berg"
             },
             {
                 "pos": "LI",
-                "nombre": "Van den Berg"
+                "nombre": "Aaron Hickey"
             },
             {
                 "pos": "MCD",
-                "nombre": "Nørgaard"
+                "nombre": "Mamadou Sangaré"
             },
             {
-                "pos": "MC",
-                "nombre": "Janelt"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Damsgaard"
+                "pos": "MCD",
+                "nombre": "Vitaly Janelt"
             },
             {
                 "pos": "ED",
-                "nombre": "Mbeumo"
+                "nombre": "Dango Ouattara"
             },
             {
-                "pos": "DC",
-                "nombre": "Wissa"
+                "pos": "MCO",
+                "nombre": "Kevin Schade"
             },
             {
                 "pos": "EI",
-                "nombre": "Schade"
+                "nombre": "Keane Lewis-Potter"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Igor Thiago"
             }
         ]
     },
     "eng_fulham": {
         "tactica": "4-2-3-1",
-        "dt": "Marco Silva",
-        "figura": "Smith Rowe",
-        "arquero": "Leno",
+        "dt": "Álvaro Arbeloa",
+        "figura": "Antonee Robinson",
+        "arquero": "Bernd Leno",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Leno"
+                "nombre": "Bernd Leno"
             },
             {
                 "pos": "LD",
-                "nombre": "Tete"
+                "nombre": "Timothy Castagne"
             },
             {
                 "pos": "DFC",
-                "nombre": "Andersen"
+                "nombre": "David Affengruber"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bassey"
+                "nombre": "Calvin Bassey"
             },
             {
                 "pos": "LI",
-                "nombre": "Robinson"
+                "nombre": "Antonee Robinson"
             },
             {
-                "pos": "MC",
-                "nombre": "Berge"
+                "pos": "MCD",
+                "nombre": "Sander Berge"
             },
             {
-                "pos": "MC",
-                "nombre": "Pereira"
+                "pos": "MCD",
+                "nombre": "Shea Charles"
             },
             {
                 "pos": "ED",
-                "nombre": "Traoré"
+                "nombre": "Oscar Bobb"
             },
             {
                 "pos": "MCO",
-                "nombre": "Smith Rowe"
+                "nombre": "Joshua King"
             },
             {
                 "pos": "EI",
-                "nombre": "Iwobi"
+                "nombre": "Alex Iwobi"
             },
             {
                 "pos": "DC",
-                "nombre": "Jiménez"
+                "nombre": "Gonzalo García"
             }
         ]
     },
     "eng_crystalpalace": {
         "tactica": "3-4-2-1",
-        "dt": "Oliver Glasner",
-        "figura": "Eze",
-        "arquero": "Henderson",
+        "dt": "Thomas Frank",
+        "figura": "Jean-Philippe Mateta",
+        "arquero": "Walter Benítez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Henderson"
+                "nombre": "Walter Benítez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Chalobah"
+                "nombre": "Chris Richards"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lacroix"
+                "nombre": "Axel Disasi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Guéhi"
+                "nombre": "Jaydee Canvot"
             },
             {
-                "pos": "MD",
-                "nombre": "Muñoz"
+                "pos": "CAD",
+                "nombre": "Anan Khalaili"
             },
             {
                 "pos": "MC",
-                "nombre": "Wharton"
+                "nombre": "Daichi Kamada"
             },
             {
                 "pos": "MC",
-                "nombre": "Hughes"
+                "nombre": "Adam Wharton"
             },
             {
-                "pos": "MI",
-                "nombre": "Mitchell"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Sarr"
+                "pos": "CAI",
+                "nombre": "Tyrick Mitchell"
             },
             {
                 "pos": "MCO",
-                "nombre": "Eze"
+                "nombre": "Yeremy Pino"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Dwight McNeil"
             },
             {
                 "pos": "DC",
-                "nombre": "Mateta"
+                "nombre": "Jean-Philippe Mateta"
             }
         ]
     },
     "eng_everton": {
         "tactica": "4-2-3-1",
-        "dt": "Sean Dyche",
-        "figura": "McNeil",
-        "arquero": "Pickford",
+        "dt": "David Moyes",
+        "figura": "Jordan Pickford",
+        "arquero": "Jordan Pickford",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Pickford"
+                "nombre": "Jordan Pickford"
             },
             {
                 "pos": "LD",
-                "nombre": "Young"
+                "nombre": "Merlin Röhl"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tarkowski"
+                "nombre": "James Tarkowski"
             },
             {
                 "pos": "DFC",
-                "nombre": "Branthwaite"
+                "nombre": "Jarrad Branthwaite"
             },
             {
                 "pos": "LI",
-                "nombre": "Mykolenko"
+                "nombre": "Vitaliy Mykolenko"
             },
             {
-                "pos": "MC",
-                "nombre": "Mangala"
+                "pos": "MCD",
+                "nombre": "James Garner"
             },
             {
-                "pos": "MC",
-                "nombre": "Gueye"
+                "pos": "MCD",
+                "nombre": "Harrison Armstrong"
             },
             {
                 "pos": "ED",
-                "nombre": "Lindstrøm"
+                "nombre": "Tyler Dibling"
             },
             {
                 "pos": "MCO",
-                "nombre": "McNeil"
+                "nombre": "Kiernan Dewsbury-Hall"
             },
             {
                 "pos": "EI",
-                "nombre": "Ndiaye"
+                "nombre": "Tyrique George"
             },
             {
                 "pos": "DC",
-                "nombre": "Calvert-Lewin"
+                "nombre": "Thierno Barry"
             }
         ]
     },
     "eng_ipswich": {
         "tactica": "4-2-3-1",
-        "dt": "Kieran McKenna",
-        "figura": "Liam Delap",
-        "arquero": "Murić",
+        "dt": "Gary O'Neil",
+        "figura": "Julio Enciso",
+        "arquero": "Christian Walton",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Murić"
+                "nombre": "Christian Walton"
             },
             {
                 "pos": "LD",
-                "nombre": "Tuanzebe"
+                "nombre": "Abdoul Ouattara"
             },
             {
                 "pos": "DFC",
-                "nombre": "O'Shea"
+                "nombre": "Issa Diop"
             },
             {
                 "pos": "DFC",
-                "nombre": "Burgess"
+                "nombre": "Dara O'Shea"
             },
             {
                 "pos": "LI",
-                "nombre": "Davis"
+                "nombre": "Leif Davis"
             },
             {
-                "pos": "MC",
-                "nombre": "Morsy"
+                "pos": "MCD",
+                "nombre": "Exequiel Palacios"
             },
             {
-                "pos": "MC",
-                "nombre": "Phillips"
+                "pos": "MCD",
+                "nombre": "Florentino Luís"
             },
             {
                 "pos": "ED",
-                "nombre": "Hutchinson"
+                "nombre": "Daizen Maeda"
             },
             {
                 "pos": "MCO",
-                "nombre": "Chaplin"
+                "nombre": "Julio Enciso"
             },
             {
                 "pos": "EI",
-                "nombre": "Szmodics"
+                "nombre": "Jaden Philogene-Bidace"
             },
             {
                 "pos": "DC",
-                "nombre": "Liam Delap"
+                "nombre": "Emersonn"
             }
         ]
     },
     "eng_leeds": {
-        "tactica": "4-2-3-1",
+        "tactica": "3-4-2-1",
         "dt": "Daniel Farke",
-        "figura": "Gnonto",
-        "arquero": "Meslier",
+        "figura": "Ethan Ampadu",
+        "arquero": "James Trafford",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Meslier"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Bogle"
+                "nombre": "James Trafford"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rodon"
+                "nombre": "Nico Elvedi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Struijk"
+                "nombre": "Tarik Muharemović"
             },
             {
-                "pos": "LI",
-                "nombre": "Firpo"
+                "pos": "DFC",
+                "nombre": "James Justin"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Jayden Bogle"
             },
             {
                 "pos": "MC",
-                "nombre": "Tanaka"
+                "nombre": "Ethan Ampadu"
             },
             {
                 "pos": "MC",
-                "nombre": "Rothwell"
+                "nombre": "Ao Tanaka"
             },
             {
-                "pos": "ED",
-                "nombre": "Gnonto"
+                "pos": "CAI",
+                "nombre": "Gabriel Gudmundsson"
             },
             {
                 "pos": "MCO",
-                "nombre": "Aaronson"
+                "nombre": "Sean Longstaff"
             },
             {
-                "pos": "EI",
-                "nombre": "Ramazani"
+                "pos": "MCO",
+                "nombre": "Lukas Nmecha"
             },
             {
                 "pos": "DC",
-                "nombre": "Joseph"
+                "nombre": "Dominic Calvert-Lewin"
             }
         ]
     },
     "esp_villarreal": {
         "tactica": "4-4-2",
-        "dt": "Marcelino García Toral",
-        "figura": "Baena",
-        "arquero": "Conde",
+        "dt": "Iñigo Pérez",
+        "figura": "Georges Mikautadze",
+        "arquero": "Péter Gulácsi",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Conde"
+                "nombre": "Péter Gulácsi"
             },
             {
                 "pos": "LD",
-                "nombre": "Femenía"
+                "nombre": "Santiago Mouriño"
             },
             {
                 "pos": "DFC",
-                "nombre": "Albiol"
+                "nombre": "Logan Costa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Costa"
+                "nombre": "Renato Veiga"
             },
             {
                 "pos": "LI",
-                "nombre": "Cardona"
+                "nombre": "Carlos Romero"
             },
             {
                 "pos": "MD",
-                "nombre": "Pino"
+                "nombre": "Santi Comesaña"
             },
             {
                 "pos": "MC",
-                "nombre": "Parejo"
+                "nombre": "Carlos Maciá"
             },
             {
                 "pos": "MC",
-                "nombre": "Comesaña"
+                "nombre": "Pape Gueye"
             },
             {
                 "pos": "MI",
-                "nombre": "Baena"
+                "nombre": "Alberto Moleiro"
             },
             {
                 "pos": "DC",
-                "nombre": "Pérez"
+                "nombre": "Tajon Buchanan"
             },
             {
                 "pos": "DC",
-                "nombre": "Barry"
+                "nombre": "Georges Mikautadze"
             }
         ]
     },
     "esp_valencia": {
-        "tactica": "4-2-3-1",
-        "dt": "Rubén Baraja",
-        "figura": "Pepelu",
-        "arquero": "Mamardashvili",
+        "tactica": "4-3-3",
+        "dt": "Javier Aguirre",
+        "figura": "José Gayà",
+        "arquero": "Stole Dimitrievski",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mamardashvili"
+                "nombre": "Stole Dimitrievski"
             },
             {
                 "pos": "LD",
-                "nombre": "Correia"
+                "nombre": "Pablo Maffeo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mosquera"
+                "nombre": "César Tárrega"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tárrega"
+                "nombre": "Justin De Haas"
             },
             {
                 "pos": "LI",
-                "nombre": "Gayà"
+                "nombre": "José Gayà"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Guido Rodríguez"
             },
             {
                 "pos": "MC",
@@ -8772,75 +8672,71 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Guerra"
+                "nombre": "Javi Guerra"
             },
             {
                 "pos": "ED",
-                "nombre": "López"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Almeida"
+                "nombre": "Luis Rioja"
             },
             {
                 "pos": "EI",
-                "nombre": "Rioja"
+                "nombre": "Arnaut Danjuma"
             },
             {
                 "pos": "DC",
-                "nombre": "Hugo Duro"
+                "nombre": "Umar Sadiq"
             }
         ]
     },
     "esp_osasuna": {
         "tactica": "4-3-3",
-        "dt": "Vicente Moreno",
-        "figura": "Bryan Zaragoza",
-        "arquero": "Herrera",
+        "dt": "Jagoba Arrasate",
+        "figura": "Ante Budimir",
+        "arquero": "Aitor Fernández",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Herrera"
+                "nombre": "Aitor Fernández"
             },
             {
                 "pos": "LD",
-                "nombre": "Areso"
+                "nombre": "Valentín Rosier"
             },
             {
                 "pos": "DFC",
-                "nombre": "Catena"
+                "nombre": "Alejandro Catena"
             },
             {
                 "pos": "DFC",
-                "nombre": "Boyomo"
+                "nombre": "Flavien Boyomo"
             },
             {
                 "pos": "LI",
-                "nombre": "Bretones"
+                "nombre": "Abel Bretones"
             },
             {
                 "pos": "MCD",
-                "nombre": "Torró"
+                "nombre": "Lucas Torró"
             },
             {
                 "pos": "MC",
-                "nombre": "Moncayola"
+                "nombre": "Jon Moncayola"
             },
             {
                 "pos": "MC",
-                "nombre": "Oroz"
+                "nombre": "Moi Gómez"
             },
             {
                 "pos": "ED",
-                "nombre": "Peña"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Budimir"
+                "nombre": "Rubén García"
             },
             {
                 "pos": "EI",
-                "nombre": "Bryan Zaragoza"
+                "nombre": "Raúl Moro"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Ante Budimir"
             }
         ]
     },
@@ -8848,39 +8744,39 @@ window.PLAN_REALES = {
         "tactica": "3-4-3",
         "dt": "Claudio Giráldez",
         "figura": "Iago Aspas",
-        "arquero": "Guaita",
+        "arquero": "Ionuț Radu",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Guaita"
+                "nombre": "Ionuț Radu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rodríguez"
+                "nombre": "Javi Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Starfelt"
+                "nombre": "Sebastián Cáceres"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alonso"
+                "nombre": "Marcos Alonso"
             },
             {
-                "pos": "MD",
-                "nombre": "Mingueza"
+                "pos": "CAD",
+                "nombre": "Javi Rueda"
             },
             {
                 "pos": "MC",
-                "nombre": "Beltrán"
+                "nombre": "Andrés Antañón"
             },
             {
                 "pos": "MC",
-                "nombre": "Sotelo"
+                "nombre": "Ilaix Moriba"
             },
             {
-                "pos": "MI",
-                "nombre": "Álvarez"
+                "pos": "CAI",
+                "nombre": "Sergio Carreira"
             },
             {
                 "pos": "ED",
@@ -8888,1051 +8784,1051 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DC",
-                "nombre": "Iglesias"
+                "nombre": "Pablo Durán"
             },
             {
                 "pos": "EI",
-                "nombre": "Swedberg"
+                "nombre": "Couhaib Driouech"
             }
         ]
     },
     "esp_alaves": {
-        "tactica": "4-2-3-1",
-        "dt": "Luis García Plaza",
-        "figura": "Carlos Vicente",
-        "arquero": "Sivera",
+        "tactica": "3-5-2",
+        "dt": "Quique Sánchez Flores",
+        "figura": "Lucas Boyé",
+        "arquero": "Antonio Sivera",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sivera"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Tenaglia"
+                "nombre": "Antonio Sivera"
             },
             {
                 "pos": "DFC",
-                "nombre": "Abqar"
+                "nombre": "Nahuel Tenaglia"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sedlar"
+                "nombre": "Ville Koski"
             },
             {
-                "pos": "LI",
-                "nombre": "Sánchez"
+                "pos": "DFC",
+                "nombre": "Nicolás Valentini"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Ángel Pérez"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Ander Guevara"
             },
             {
                 "pos": "MC",
-                "nombre": "Blanco"
+                "nombre": "Antonio Blanco"
             },
             {
                 "pos": "MC",
-                "nombre": "Guevara"
+                "nombre": "Pablo Ibáñez"
             },
             {
-                "pos": "ED",
-                "nombre": "Carlos Vicente"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Guridi"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Conechny"
+                "pos": "CAI",
+                "nombre": "Youssef Enríquez"
             },
             {
                 "pos": "DC",
-                "nombre": "Kike García"
+                "nombre": "Toni Martínez"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Lucas Boyé"
             }
         ]
     },
     "esp_getafe": {
         "tactica": "4-2-3-1",
         "dt": "José Bordalás",
-        "figura": "Arambarri",
-        "arquero": "Soria",
+        "figura": "Djené Dakonam",
+        "arquero": "David Soria",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Soria"
+                "nombre": "David Soria"
             },
             {
                 "pos": "LD",
-                "nombre": "Djené"
+                "nombre": "Dani Carvajal"
             },
             {
                 "pos": "DFC",
-                "nombre": "Berrocal"
+                "nombre": "Sebastián Boselli"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alderete"
+                "nombre": "Djené Dakonam"
             },
             {
                 "pos": "LI",
-                "nombre": "Rico"
+                "nombre": "Johan Mojica"
             },
             {
-                "pos": "MC",
-                "nombre": "Milla"
+                "pos": "MCD",
+                "nombre": "Nemanja Gudelj"
             },
             {
-                "pos": "MC",
-                "nombre": "Arambarri"
+                "pos": "MCD",
+                "nombre": "Orel Mangala"
             },
             {
                 "pos": "ED",
-                "nombre": "Pérez"
+                "nombre": "Andrés García"
             },
             {
                 "pos": "MCO",
-                "nombre": "Uche"
+                "nombre": "Mario Martín"
             },
             {
                 "pos": "EI",
-                "nombre": "Sola"
+                "nombre": "Martín Satriano"
             },
             {
                 "pos": "DC",
-                "nombre": "Mayoral"
+                "nombre": "Enes Ünal"
             }
         ]
     },
     "esp_mallorca": {
-        "tactica": "4-2-3-1",
-        "dt": "Jagoba Arrasate",
-        "figura": "Muriqi",
-        "arquero": "Greif",
+        "tactica": "4-4-2",
+        "dt": "Luis García Fernández",
+        "figura": "Sergi Darder",
+        "arquero": "Arnau Tenas",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Greif"
+                "nombre": "Arnau Tenas"
             },
             {
                 "pos": "LD",
-                "nombre": "Maffeo"
+                "nombre": "Antonio Sánchez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Valjent"
+                "nombre": "Antonio Raíllo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Raíllo"
+                "nombre": "Aboubaka Soumahoro"
             },
             {
                 "pos": "LI",
-                "nombre": "Mojica"
+                "nombre": "Alberto Moreno"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Arnau Puigmal"
             },
             {
                 "pos": "MC",
-                "nombre": "Costa"
+                "nombre": "Álex Sala"
             },
             {
                 "pos": "MC",
-                "nombre": "Morlanes"
+                "nombre": "Sergi Darder"
             },
             {
-                "pos": "ED",
-                "nombre": "Navarro"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Darder"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Rodríguez"
+                "pos": "MI",
+                "nombre": "Pablo Torre"
             },
             {
                 "pos": "DC",
-                "nombre": "Muriqi"
+                "nombre": "Adrián Liso"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Adrián Fuentes"
             }
         ]
     },
     "esp_laspalmas": {
         "tactica": "4-3-3",
-        "dt": "Diego Martínez",
-        "figura": "Moleiro",
-        "arquero": "Cillessen",
+        "dt": "Albert Sánchez",
+        "figura": "Kirian Rodríguez",
+        "arquero": "José Antonio Caro",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cillessen"
+                "nombre": "José Antonio Caro"
             },
             {
                 "pos": "LD",
-                "nombre": "Rozada"
+                "nombre": "Álex Suárez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Suárez"
+                "nombre": "Adrián Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "McKenna"
+                "nombre": "Giovanni Bonfanti"
             },
             {
                 "pos": "LI",
-                "nombre": "Muñoz"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Essugo"
+                "nombre": "Andrés Rodríguez"
             },
             {
                 "pos": "MC",
-                "nombre": "Campaña"
+                "nombre": "Enzo Loiodice"
             },
             {
                 "pos": "MC",
-                "nombre": "Kirian"
+                "nombre": "Kirian Rodríguez"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Manu Fuster"
             },
             {
                 "pos": "ED",
-                "nombre": "Sandro"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Silva"
+                "nombre": "Iván Jaime"
             },
             {
                 "pos": "EI",
-                "nombre": "Moleiro"
+                "nombre": "Taisei Miyashiro"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jesé Rodríguez"
             }
         ]
     },
     "esp_rayo": {
         "tactica": "4-2-3-1",
-        "dt": "Íñigo Pérez",
-        "figura": "Isi Palazón",
-        "arquero": "Batalla",
+        "dt": "Beñat San José",
+        "figura": "Jorge de Frutos",
+        "arquero": "Emil Audero",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Batalla"
+                "nombre": "Emil Audero"
             },
             {
                 "pos": "LD",
-                "nombre": "Ratiu"
+                "nombre": "Andrei Rațiu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lejeune"
+                "nombre": "Florian Lejeune"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mumin"
+                "nombre": "Mujaid Sadick"
             },
             {
                 "pos": "LI",
-                "nombre": "Chavarría"
+                "nombre": "Adrià Pedrosa"
             },
             {
-                "pos": "MC",
-                "nombre": "Valentín"
+                "pos": "MCD",
+                "nombre": "Pathé Ciss"
             },
             {
-                "pos": "MC",
-                "nombre": "López"
+                "pos": "MCD",
+                "nombre": "Unai López"
             },
             {
                 "pos": "ED",
-                "nombre": "De Frutos"
+                "nombre": "Jorge de Frutos"
             },
             {
                 "pos": "MCO",
-                "nombre": "Isi Palazón"
+                "nombre": "Pedro Díaz"
             },
             {
                 "pos": "EI",
-                "nombre": "García"
+                "nombre": "Giorgi Tsitaishvili"
             },
             {
                 "pos": "DC",
-                "nombre": "Camello"
+                "nombre": "Sergio Camello"
             }
         ]
     },
     "esp_girona": {
         "tactica": "4-2-3-1",
-        "dt": "Míchel",
-        "figura": "Tsygankov",
-        "arquero": "Gazzaniga",
+        "dt": "Quique Álvarez",
+        "figura": "Vladyslav Vanat",
+        "arquero": "Paulo Gazzaniga",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Gazzaniga"
+                "nombre": "Paulo Gazzaniga"
             },
             {
                 "pos": "LD",
-                "nombre": "Martínez"
+                "nombre": "Mateu Morey"
             },
             {
                 "pos": "DFC",
-                "nombre": "López"
+                "nombre": "Alejandro Francés"
             },
             {
                 "pos": "DFC",
-                "nombre": "Krejčí"
+                "nombre": "David López"
             },
             {
                 "pos": "LI",
-                "nombre": "Gutiérrez"
+                "nombre": "Álex Moreno"
             },
             {
-                "pos": "MC",
-                "nombre": "Herrera"
+                "pos": "MCD",
+                "nombre": "Izan González"
             },
             {
-                "pos": "MC",
-                "nombre": "Romeu"
+                "pos": "MCD",
+                "nombre": "Fran Beltrán"
             },
             {
                 "pos": "ED",
-                "nombre": "Tsygankov"
+                "nombre": "Carles Pérez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Van de Beek"
+                "nombre": "Unai Hernández"
             },
             {
                 "pos": "EI",
-                "nombre": "Gil"
+                "nombre": "Yáser Asprilla"
             },
             {
                 "pos": "DC",
-                "nombre": "Miovski"
+                "nombre": "Vladyslav Vanat"
             }
         ]
     },
     "esp_leganes": {
-        "tactica": "4-3-3",
-        "dt": "Borja Jiménez",
-        "figura": "Juan Cruz",
-        "arquero": "Dmitrović",
+        "tactica": "4-2-3-1",
+        "dt": "Luis Carrión",
+        "figura": "Álex Millán",
+        "arquero": "Luca Zidane",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Dmitrović"
+                "nombre": "Luca Zidane"
             },
             {
                 "pos": "LD",
-                "nombre": "Rosier"
+                "nombre": "Álvaro Tejero"
             },
             {
                 "pos": "DFC",
-                "nombre": "González"
+                "nombre": "Marvel"
             },
             {
                 "pos": "DFC",
-                "nombre": "Nastasić"
+                "nombre": "Rubén Pulido"
             },
             {
                 "pos": "LI",
-                "nombre": "Hernández"
+                "nombre": "Ignasi Miquel"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Miguel Atienza"
             },
             {
                 "pos": "MC",
-                "nombre": "Cissé"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Tapia"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Neyou"
+                "nombre": "Unax del Cura"
             },
             {
                 "pos": "ED",
-                "nombre": "Juan Cruz"
+                "nombre": "Álex Sancris"
             },
             {
-                "pos": "DC",
-                "nombre": "De la Fuente"
+                "pos": "MCO",
+                "nombre": "Dani Rodríguez"
             },
             {
                 "pos": "EI",
-                "nombre": "Altimira"
+                "nombre": "Morata"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Álex Millán"
             }
         ]
     },
     "esp_valladolid": {
         "tactica": "4-3-3",
-        "dt": "Paulo Pezzolano",
-        "figura": "Raúl Moro",
-        "arquero": "Hein",
+        "dt": "Fran Escribá",
+        "figura": "Stanko Jurić",
+        "arquero": "Álvaro Aceves",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Hein"
+                "nombre": "Álvaro Aceves"
             },
             {
                 "pos": "LD",
-                "nombre": "Pérez"
+                "nombre": "Iván Alejo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sánchez"
+                "nombre": "Miguel Rubio"
             },
             {
                 "pos": "DFC",
-                "nombre": "Torres"
+                "nombre": "David Torres"
             },
             {
                 "pos": "LI",
-                "nombre": "Rosa"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Cömert"
+                "nombre": "Carlos Clerc"
             },
             {
                 "pos": "MC",
-                "nombre": "Kike Pérez"
+                "nombre": "Stanko Jurić"
             },
             {
                 "pos": "MC",
-                "nombre": "Martín"
+                "nombre": "Julien Ponceau"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Thiago Ojeda"
             },
             {
                 "pos": "ED",
-                "nombre": "Anuar"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Sylla"
+                "nombre": "Víctor Fernández"
             },
             {
                 "pos": "EI",
-                "nombre": "Raúl Moro"
+                "nombre": "Tai Abed"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Adrián Arnu"
             }
         ]
     },
     "esp_espanyol": {
-        "tactica": "4-4-2",
-        "dt": "Manolo González",
-        "figura": "Javi Puado",
-        "arquero": "Joan García",
+        "tactica": "3-4-1-2",
+        "dt": "Eder Sarabia",
+        "figura": "Edu Expósito",
+        "arquero": "Ángel Fortuño",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Joan García"
-            },
-            {
-                "pos": "LD",
-                "nombre": "El Hilali"
+                "nombre": "Ángel Fortuño"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kumbulla"
+                "nombre": "Omar El Hilali"
             },
             {
                 "pos": "DFC",
-                "nombre": "Cabrera"
+                "nombre": "Leandro Cabrera"
             },
             {
-                "pos": "LI",
-                "nombre": "Romero"
+                "pos": "DFC",
+                "nombre": "Alejandro Santiago"
             },
             {
-                "pos": "MD",
-                "nombre": "Tejero"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Král"
+                "pos": "CAD",
+                "nombre": "Tyrhys Dolan"
             },
             {
                 "pos": "MC",
-                "nombre": "Gragera"
+                "nombre": "Pol Lozano"
             },
             {
-                "pos": "MI",
-                "nombre": "Carreras"
+                "pos": "MC",
+                "nombre": "Edu Expósito"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Quilindschy Hartman"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Cala"
             },
             {
                 "pos": "DC",
-                "nombre": "Javi Puado"
+                "nombre": "Pere Milla"
             },
             {
                 "pos": "DC",
-                "nombre": "Cheddira"
+                "nombre": "Roberto Fernández"
             }
         ]
     },
     "ita_fiorentina": {
         "tactica": "4-2-3-1",
-        "dt": "Raffaele Palladino",
-        "figura": "Moise Kean",
-        "arquero": "De Gea",
+        "dt": "Paolo Vanoli",
+        "figura": "David de Gea",
+        "arquero": "David de Gea",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "De Gea"
+                "nombre": "David de Gea"
             },
             {
                 "pos": "LD",
-                "nombre": "Dodô"
+                "nombre": "Álex Jiménez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Comuzzo"
+                "nombre": "Radu Drăgușin"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ranieri"
+                "nombre": "Viery"
             },
             {
                 "pos": "LI",
-                "nombre": "Gosens"
+                "nombre": "João Mário"
             },
             {
-                "pos": "MC",
-                "nombre": "Adli"
+                "pos": "MCD",
+                "nombre": "Christ Inao Oulaï"
             },
             {
-                "pos": "MC",
-                "nombre": "Cataldi"
+                "pos": "MCD",
+                "nombre": "Cher Ndour"
             },
             {
                 "pos": "ED",
-                "nombre": "Colpani"
+                "nombre": "Franco Mastantuono"
             },
             {
                 "pos": "MCO",
-                "nombre": "Guðmundsson"
+                "nombre": "Pedro Gonçalves"
             },
             {
                 "pos": "EI",
-                "nombre": "Bove"
+                "nombre": "Alieu Njie"
             },
             {
                 "pos": "DC",
-                "nombre": "Moise Kean"
+                "nombre": "Mateo Pellegrino"
             }
         ]
     },
     "ita_bologna": {
-        "tactica": "4-2-3-1",
-        "dt": "Vincenzo Italiano",
-        "figura": "Orsolini",
-        "arquero": "Skorupski",
+        "tactica": "3-4-2-1",
+        "dt": "Raffaele Palladino",
+        "figura": "Riccardo Orsolini",
+        "arquero": "Massimo Pessina",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Skorupski"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Posch"
+                "nombre": "Massimo Pessina"
             },
             {
                 "pos": "DFC",
-                "nombre": "Beukema"
+                "nombre": "Torbjørn Heggem"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lucumí"
+                "nombre": "Nicolò Casale"
             },
             {
-                "pos": "LI",
-                "nombre": "Miranda"
+                "pos": "DFC",
+                "nombre": "Matteo Darmian"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Nadir Zortea"
             },
             {
                 "pos": "MC",
-                "nombre": "Freuler"
+                "nombre": "Lewis Ferguson"
             },
             {
                 "pos": "MC",
-                "nombre": "Moro"
+                "nombre": "Tommaso Pobega"
             },
             {
-                "pos": "ED",
-                "nombre": "Orsolini"
+                "pos": "CAI",
+                "nombre": "Juan Miranda"
             },
             {
                 "pos": "MCO",
-                "nombre": "Fabbian"
+                "nombre": "Nicolò Cambiaghi"
             },
             {
-                "pos": "EI",
-                "nombre": "Ndoye"
+                "pos": "MCO",
+                "nombre": "Riccardo Orsolini"
             },
             {
                 "pos": "DC",
-                "nombre": "Castro"
+                "nombre": "Roberto Piccoli"
             }
         ]
     },
     "ita_torino": {
         "tactica": "3-5-2",
-        "dt": "Paolo Vanoli",
-        "figura": "Zapata",
-        "arquero": "Milinković-Savić",
+        "dt": "Ignazio Abate",
+        "figura": "Nikola Vlašić",
+        "arquero": "Lucas Perri",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Milinković-Savić"
+                "nombre": "Lucas Perri"
             },
             {
                 "pos": "DFC",
-                "nombre": "Walukiewicz"
+                "nombre": "Pietro Comuzzo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Maripán"
+                "nombre": "Saúl Coco"
             },
             {
                 "pos": "DFC",
-                "nombre": "Coco"
+                "nombre": "Ardian Ismajli"
             },
             {
-                "pos": "MD",
-                "nombre": "Lazaro"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Ricci"
+                "pos": "CAD",
+                "nombre": "Rafik Belghali"
             },
             {
                 "pos": "MC",
-                "nombre": "Linetty"
+                "nombre": "Daniel Bragança"
             },
             {
                 "pos": "MC",
-                "nombre": "Ilić"
+                "nombre": "Kian Fitz-Jim"
             },
             {
-                "pos": "MI",
-                "nombre": "Sosa"
+                "pos": "MCO",
+                "nombre": "Nikola Vlašić"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Alessio Cacciamani"
             },
             {
                 "pos": "DC",
-                "nombre": "Sanabria"
+                "nombre": "Ché Adams"
             },
             {
                 "pos": "DC",
-                "nombre": "Zapata"
+                "nombre": "Giovanni Simeone"
             }
         ]
     },
     "ita_udinese": {
-        "tactica": "3-5-2",
-        "dt": "Kosta Runjaić",
-        "figura": "Lucca",
-        "arquero": "Okoye",
+        "tactica": "3-4-2-1",
+        "dt": "Paolo Zanetti",
+        "figura": "Nicolò Zaniolo",
+        "arquero": "Maduka Okoye",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Okoye"
+                "nombre": "Maduka Okoye"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kabasele"
+                "nombre": "Matteo Palma"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bijol"
+                "nombre": "James Abankwah"
             },
             {
                 "pos": "DFC",
-                "nombre": "Touré"
+                "nombre": "Oumar Solet"
             },
             {
-                "pos": "MD",
-                "nombre": "Ehizibue"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Lovrić"
+                "pos": "CAD",
+                "nombre": "Mërgim Vojvoda"
             },
             {
                 "pos": "MC",
-                "nombre": "Karlström"
+                "nombre": "Jesper Karlström"
             },
             {
                 "pos": "MC",
-                "nombre": "Payero"
+                "nombre": "Jakub Piotrowski"
             },
             {
-                "pos": "MI",
-                "nombre": "Zemura"
+                "pos": "CAI",
+                "nombre": "Hassane Kamara"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Nicolò Zaniolo"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Jurgen Ekkelenkamp"
             },
             {
                 "pos": "DC",
-                "nombre": "Thauvin"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Lucca"
+                "nombre": "Keinan Davis"
             }
         ]
     },
     "ita_genoa": {
-        "tactica": "4-3-3",
-        "dt": "Alberto Gilardino",
-        "figura": "Pinamonti",
-        "arquero": "Leali",
+        "tactica": "3-4-2-1",
+        "dt": "Daniele De Rossi",
+        "figura": "Milutin Osmajić",
+        "arquero": "Justin Bijlow",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Leali"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Sabelli"
+                "nombre": "Justin Bijlow"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vogliacco"
+                "nombre": "Alessandro Marcandalli"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vásquez"
+                "nombre": "Leo Østigård"
             },
             {
-                "pos": "LI",
-                "nombre": "Matturro"
+                "pos": "DFC",
+                "nombre": "Johan Vásquez"
             },
             {
-                "pos": "MC",
-                "nombre": "Thorsby"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Badelj"
+                "pos": "MD",
+                "nombre": "Kingsley Ehizibue"
             },
             {
                 "pos": "MC",
-                "nombre": "Frendrup"
+                "nombre": "Samuel Wiafe"
             },
             {
-                "pos": "ED",
-                "nombre": "Zanoli"
+                "pos": "MC",
+                "nombre": "Hamed Junior Traorè"
+            },
+            {
+                "pos": "MI",
+                "nombre": "Mikael Ellertsson"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Júnior Messias"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Vítinha"
             },
             {
                 "pos": "DC",
-                "nombre": "Pinamonti"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Martin"
+                "nombre": "Milutin Osmajić"
             }
         ]
     },
     "ita_verona": {
         "tactica": "4-2-3-1",
-        "dt": "Paolo Zanetti",
-        "figura": "Tengstedt",
-        "arquero": "Montipò",
+        "dt": "Marco Baroni",
+        "figura": "Daniel Mosquera",
+        "arquero": "Nicola Leali",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Montipò"
+                "nombre": "Nicola Leali"
             },
             {
                 "pos": "LD",
-                "nombre": "Tchatchoua"
+                "nombre": "Gabriele Zappa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Coppola"
+                "nombre": "Andrias Edmundsson"
             },
             {
                 "pos": "DFC",
-                "nombre": "Magnani"
+                "nombre": "Martin Frese"
             },
             {
                 "pos": "LI",
-                "nombre": "Bradarić"
+                "nombre": "Domagoj Bradarić"
             },
             {
-                "pos": "MC",
-                "nombre": "Belahyane"
+                "pos": "MCD",
+                "nombre": "Suat Serdar"
             },
             {
-                "pos": "MC",
-                "nombre": "Duda"
+                "pos": "MCD",
+                "nombre": "Antoine Bernede"
             },
             {
                 "pos": "ED",
-                "nombre": "Suslov"
+                "nombre": "Grigoris Kastanos"
             },
             {
                 "pos": "MCO",
-                "nombre": "Serdar"
+                "nombre": "Abdou Harroui"
             },
             {
                 "pos": "EI",
-                "nombre": "Lazović"
+                "nombre": "Amin Sarr"
             },
             {
                 "pos": "DC",
-                "nombre": "Tengstedt"
+                "nombre": "Daniel Mosquera"
             }
         ]
     },
     "ita_empoli": {
-        "tactica": "3-4-1-2",
-        "dt": "Roberto D'Aversa",
-        "figura": "Esposito",
-        "arquero": "Vásquez",
+        "tactica": "3-5-2",
+        "dt": "Matteo Andreoletti",
+        "figura": "Luca Magnino",
+        "arquero": "Jacopo Seghetti",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Vásquez"
+                "nombre": "Jacopo Seghetti"
             },
             {
                 "pos": "DFC",
-                "nombre": "Goglichidze"
+                "nombre": "Marco Curto"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ismajli"
+                "nombre": "Simone Romagnoli"
             },
             {
                 "pos": "DFC",
-                "nombre": "Viti"
+                "nombre": "Cristian Cauz"
             },
             {
-                "pos": "MD",
-                "nombre": "Gyasi"
+                "pos": "CAD",
+                "nombre": "Joseph Ceesay"
             },
             {
                 "pos": "MC",
-                "nombre": "Henderson"
+                "nombre": "Luca Magnino"
             },
             {
                 "pos": "MC",
-                "nombre": "Anjorin"
+                "nombre": "Edoardo Biondini"
             },
             {
-                "pos": "MI",
-                "nombre": "Pezzella"
+                "pos": "MC",
+                "nombre": "Filippo Bandinelli"
             },
             {
-                "pos": "MCO",
-                "nombre": "Fazzini"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Colombo"
+                "pos": "CAI",
+                "nombre": "Niccolò Corrado"
             },
             {
                 "pos": "DC",
-                "nombre": "Esposito"
+                "nombre": "Edoardo Saporiti"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Bogdan Popov"
             }
         ]
     },
     "ita_lecce": {
-        "tactica": "4-2-3-1",
-        "dt": "Marco Giampaolo",
-        "figura": "Krstović",
-        "arquero": "Falcone",
+        "tactica": "4-3-3",
+        "dt": "Eusebio Di Francesco",
+        "figura": "Wladimiro Falcone",
+        "arquero": "Wladimiro Falcone",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Falcone"
+                "nombre": "Wladimiro Falcone"
             },
             {
                 "pos": "LD",
-                "nombre": "Guilbert"
+                "nombre": "Danilo Veiga"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gaspar"
+                "nombre": "Kialonda Gaspar"
             },
             {
                 "pos": "DFC",
-                "nombre": "Baschirotto"
+                "nombre": "Tiago Gabriel"
             },
             {
                 "pos": "LI",
-                "nombre": "Gallo"
+                "nombre": "Antonino Gallo"
             },
             {
                 "pos": "MC",
-                "nombre": "Ramadani"
+                "nombre": "Mohamed Kaba"
             },
             {
                 "pos": "MC",
-                "nombre": "Coulibaly"
+                "nombre": "Oumar Ngom"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Youssef Maleh"
             },
             {
                 "pos": "ED",
-                "nombre": "Dorgu"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Rafia"
+                "nombre": "Ali Dembélé"
             },
             {
                 "pos": "EI",
-                "nombre": "Banda"
+                "nombre": "Amar Fatah"
             },
             {
                 "pos": "DC",
-                "nombre": "Krstović"
+                "nombre": "Nikola Štulić"
             }
         ]
     },
     "ita_monza": {
-        "tactica": "3-4-2-1",
-        "dt": "Alessandro Nesta",
-        "figura": "Djurić",
-        "arquero": "Turati",
+        "tactica": "3-5-2",
+        "dt": "Ivan Jurić",
+        "figura": "Gustavo Varela",
+        "arquero": "Noel Törnqvist",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Turati"
+                "nombre": "Noel Törnqvist"
             },
             {
                 "pos": "DFC",
-                "nombre": "Izzo"
+                "nombre": "Eddy Kouadio"
             },
             {
                 "pos": "DFC",
-                "nombre": "Marí"
+                "nombre": "Lorenzo Lucchesi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Carboni"
+                "nombre": "Saba Goglichidze"
             },
             {
-                "pos": "MD",
-                "nombre": "Pereira"
+                "pos": "CAD",
+                "nombre": "Idrissa Touré"
             },
             {
                 "pos": "MC",
-                "nombre": "Bondo"
+                "nombre": "Ebenezer Akinsanmiro"
             },
             {
                 "pos": "MC",
-                "nombre": "Pessina"
+                "nombre": "Leonardo Colombo"
             },
             {
-                "pos": "MI",
-                "nombre": "Kyriakopoulos"
+                "pos": "MC",
+                "nombre": "Mathis Mout"
             },
             {
-                "pos": "MCO",
-                "nombre": "Maldini"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Dany Mota"
+                "pos": "CAI",
+                "nombre": "Ricardo Mangas"
             },
             {
                 "pos": "DC",
-                "nombre": "Djurić"
+                "nombre": "Jay Robinson"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Gustavo Varela"
             }
         ]
     },
     "ita_cagliari": {
-        "tactica": "4-2-3-1",
-        "dt": "Davide Nicola",
-        "figura": "Piccoli",
-        "arquero": "Scuffet",
+        "tactica": "4-3-3",
+        "dt": "Fabio Pisacane",
+        "figura": "Daniel Maldini",
+        "arquero": "Elia Caprile",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Scuffet"
+                "nombre": "Elia Caprile"
             },
             {
                 "pos": "LD",
-                "nombre": "Zappa"
+                "nombre": "Nicola Grandu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mina"
+                "nombre": "Zé Pedro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Luperto"
+                "nombre": "Juan Rodríguez"
             },
             {
                 "pos": "LI",
-                "nombre": "Augello"
+                "nombre": "Raphael Kofler"
             },
             {
                 "pos": "MC",
-                "nombre": "Makoumbou"
+                "nombre": "Michel Adopo"
             },
             {
                 "pos": "MC",
-                "nombre": "Adopo"
+                "nombre": "Alessandro Romano"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Alessandro Deiola"
             },
             {
                 "pos": "ED",
-                "nombre": "Zortea"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Viola"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Luvumbo"
+                "nombre": "Paul Mendy"
             },
             {
                 "pos": "DC",
-                "nombre": "Piccoli"
+                "nombre": "Daniel Maldini"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Yael Trepy"
             }
         ]
     },
     "ita_parma": {
-        "tactica": "4-2-3-1",
-        "dt": "Fabio Pecchia",
-        "figura": "Dennis Man",
-        "arquero": "Suzuki",
+        "tactica": "3-5-2",
+        "dt": "Alberto Gilardino",
+        "figura": "Enrico Delprato",
+        "arquero": "Giovanni Daffara",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Suzuki"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Coulibaly"
+                "nombre": "Giovanni Daffara"
             },
             {
                 "pos": "DFC",
-                "nombre": "Delprato"
+                "nombre": "Enrico Delprato"
             },
             {
                 "pos": "DFC",
-                "nombre": "Balogh"
+                "nombre": "Mariano Troilo"
             },
             {
-                "pos": "LI",
-                "nombre": "Valeri"
+                "pos": "DFC",
+                "nombre": "Abdoulaye Ndiaye"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "B. Cremaschi"
             },
             {
                 "pos": "MC",
-                "nombre": "Keita"
+                "nombre": "Giovanni Fabbian"
             },
             {
                 "pos": "MC",
-                "nombre": "Sohm"
+                "nombre": "Vincent Sierro"
             },
             {
-                "pos": "ED",
-                "nombre": "Dennis Man"
+                "pos": "MC",
+                "nombre": "Mandela Keita"
             },
             {
-                "pos": "MCO",
-                "nombre": "Hernani"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Mihăilă"
+                "pos": "CAI",
+                "nombre": "Emanuele Valeri"
             },
             {
                 "pos": "DC",
-                "nombre": "Bonny"
+                "nombre": "Simone Lontani"
+            },
+            {
+                "pos": "DC",
+                "nombre": "D. Romero"
             }
         ]
     },
@@ -9940,39 +9836,39 @@ window.PLAN_REALES = {
         "tactica": "4-2-3-1",
         "dt": "Cesc Fàbregas",
         "figura": "Nico Paz",
-        "arquero": "Audero",
+        "arquero": "Robert Sánchez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Audero"
+                "nombre": "Robert Sánchez"
             },
             {
                 "pos": "LD",
-                "nombre": "Goldaniga"
+                "nombre": "Yan Couto"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dossena"
+                "nombre": "Jacobo Ramón"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kempf"
+                "nombre": "Marc Oliver Kempf"
             },
             {
                 "pos": "LI",
-                "nombre": "Moreno"
+                "nombre": "Álex Valle"
             },
             {
-                "pos": "MC",
-                "nombre": "Perrone"
+                "pos": "MCD",
+                "nombre": "Máximo Perrone"
             },
             {
-                "pos": "MC",
-                "nombre": "Sergi Roberto"
+                "pos": "MCD",
+                "nombre": "Luis Milla"
             },
             {
                 "pos": "ED",
-                "nombre": "Strefezza"
+                "nombre": "Lucas Da Cunha"
             },
             {
                 "pos": "MCO",
@@ -9980,83 +9876,83 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
-                "nombre": "Fadera"
+                "nombre": "Martin Baturina"
             },
             {
                 "pos": "DC",
-                "nombre": "Cutrone"
+                "nombre": "Anastasios Douvikas"
             }
         ]
     },
     "ita_venezia": {
-        "tactica": "3-4-2-1",
-        "dt": "Eusebio Di Francesco",
-        "figura": "Pohjanpalo",
-        "arquero": "Stanković",
+        "tactica": "3-5-2",
+        "dt": "Davide Nicola",
+        "figura": "Akor Adams",
+        "arquero": "Filip Stanković",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Stanković"
+                "nombre": "Filip Stanković"
             },
             {
                 "pos": "DFC",
-                "nombre": "Candela"
+                "nombre": "Redouane Halhal"
             },
             {
                 "pos": "DFC",
-                "nombre": "Svoboda"
+                "nombre": "Matías Moreno"
             },
             {
                 "pos": "DFC",
-                "nombre": "Idzes"
+                "nombre": "Juan Jesus"
             },
             {
-                "pos": "MD",
-                "nombre": "Zampano"
+                "pos": "CAD",
+                "nombre": "Pasquale Mazzocchi"
             },
             {
                 "pos": "MC",
-                "nombre": "Duncan"
+                "nombre": "Kike Pérez"
             },
             {
                 "pos": "MC",
-                "nombre": "Nicolussi Caviglia"
+                "nombre": "Thórir Jóhann Helgason"
             },
             {
-                "pos": "MI",
-                "nombre": "Ellertsson"
+                "pos": "MC",
+                "nombre": "Simon Sohm"
             },
             {
-                "pos": "MCO",
-                "nombre": "Busio"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Oristanio"
+                "pos": "CAI",
+                "nombre": "Antoine Hainaut"
             },
             {
                 "pos": "DC",
-                "nombre": "Pohjanpalo"
+                "nombre": "Lion Lauberbach"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Akor Adams"
             }
         ]
     },
     "bra_bahia": {
-        "tactica": "4-3-1-2",
+        "tactica": "4-4-2",
         "dt": "Rogério Ceni",
-        "figura": "Éverton Ribeiro",
-        "arquero": "Marcos Felipe",
+        "figura": "Luciano Juba",
+        "arquero": "Ronaldo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Marcos Felipe"
+                "nombre": "Ronaldo"
             },
             {
                 "pos": "LD",
-                "nombre": "Arias"
+                "nombre": "Marcos Victor"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gabriel Xavier"
+                "nombre": "David Duarte"
             },
             {
                 "pos": "DFC",
@@ -10067,35 +9963,35 @@ window.PLAN_REALES = {
                 "nombre": "Luciano Juba"
             },
             {
-                "pos": "MC",
-                "nombre": "Caio Alexandre"
+                "pos": "MCD",
+                "nombre": "Nicolás Acevedo"
             },
             {
                 "pos": "MC",
-                "nombre": "Jean Lucas"
+                "nombre": "Erick"
             },
             {
                 "pos": "MC",
-                "nombre": "Cauly"
+                "nombre": "Rodrigo Nestor"
             },
             {
                 "pos": "MCO",
-                "nombre": "Éverton Ribeiro"
+                "nombre": "Everton Ribeiro"
             },
             {
                 "pos": "DC",
-                "nombre": "Thaciano"
+                "nombre": "Kike Olivera"
             },
             {
                 "pos": "DC",
-                "nombre": "Everaldo"
+                "nombre": "Alejo Véliz"
             }
         ]
     },
     "bra_vasco": {
         "tactica": "4-2-3-1",
-        "dt": "Rafael Paiva",
-        "figura": "Vegetti",
+        "dt": "Pedro Emanuel",
+        "figura": "Bruno Duarte",
         "arquero": "Léo Jardim",
         "titulares": [
             {
@@ -10104,50 +10000,50 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Paulo Henrique"
+                "nombre": "Puma Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "João Victor"
+                "nombre": "Alan Saldivia"
             },
             {
                 "pos": "DFC",
-                "nombre": "Léo"
+                "nombre": "Robert Renan"
             },
             {
                 "pos": "LI",
-                "nombre": "Lucas Piton"
+                "nombre": "Cuiabano"
             },
             {
-                "pos": "MC",
-                "nombre": "Hugo Moura"
+                "pos": "MCD",
+                "nombre": "Santiago Sosa"
             },
             {
-                "pos": "MC",
-                "nombre": "Mateus Carvalho"
+                "pos": "MCD",
+                "nombre": "Thiago Mendes"
             },
             {
                 "pos": "ED",
-                "nombre": "Emerson Rodríguez"
+                "nombre": "Andrés Gómez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Coutinho"
+                "nombre": "Alan Lescano"
             },
             {
                 "pos": "EI",
-                "nombre": "Payet"
+                "nombre": "Facundo Colidio"
             },
             {
                 "pos": "DC",
-                "nombre": "Vegetti"
+                "nombre": "Bruno Duarte"
             }
         ]
     },
     "bra_athleticopr": {
-        "tactica": "4-2-3-1",
-        "dt": "Lucho González",
-        "figura": "Nikão",
+        "tactica": "3-4-2-1",
+        "dt": "Odair Hellmann",
+        "figura": "Kerwin Vargas",
         "arquero": "Mycael",
         "titulares": [
             {
@@ -10155,92 +10051,92 @@ window.PLAN_REALES = {
                 "nombre": "Mycael"
             },
             {
-                "pos": "LD",
-                "nombre": "Madson"
+                "pos": "DFC",
+                "nombre": "Dantas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kaique Rocha"
+                "nombre": "Aguirre"
             },
             {
                 "pos": "DFC",
-                "nombre": "Thiago Heleno"
+                "nombre": "Arthur Dias"
             },
             {
-                "pos": "LI",
-                "nombre": "Esquivel"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Erick"
+                "pos": "CAD",
+                "nombre": "Gastón Benavídez"
             },
             {
                 "pos": "MC",
-                "nombre": "Felipinho"
+                "nombre": "Jádson"
             },
             {
-                "pos": "ED",
-                "nombre": "Nikão"
+                "pos": "MC",
+                "nombre": "Luiz Gustavo"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Lucas Esquivel"
             },
             {
                 "pos": "MCO",
-                "nombre": "Zapelli"
+                "nombre": "Stiven Mendoza"
             },
             {
-                "pos": "EI",
-                "nombre": "Cuello"
+                "pos": "MCO",
+                "nombre": "Kerwin Vargas"
             },
             {
                 "pos": "DC",
-                "nombre": "Pablo"
+                "nombre": "Kevin Viveros"
             }
         ]
     },
     "bra_bragantino": {
         "tactica": "4-2-3-1",
-        "dt": "Fernando Seabra",
+        "dt": "Vágner Mancini",
         "figura": "Eduardo Sasha",
-        "arquero": "Cleiton",
+        "arquero": "Tiago Volpi",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cleiton"
+                "nombre": "Tiago Volpi"
             },
             {
                 "pos": "LD",
-                "nombre": "Hurtado"
+                "nombre": "Agustín Sant'Anna"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pedro Henrique"
+                "nombre": "Guzmán Rodríguez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Eduardo Santos"
+                "nombre": "Gustavo Marques"
             },
             {
                 "pos": "LI",
                 "nombre": "Juninho Capixaba"
             },
             {
-                "pos": "MC",
-                "nombre": "Jadsom"
+                "pos": "MCD",
+                "nombre": "Fabinho"
             },
             {
-                "pos": "MC",
-                "nombre": "Lucas Evangelista"
+                "pos": "MCD",
+                "nombre": "Eric Ramires"
             },
             {
                 "pos": "ED",
-                "nombre": "Vitinho"
+                "nombre": "José Herrera"
             },
             {
                 "pos": "MCO",
-                "nombre": "Lincoln"
+                "nombre": "Wallace Yan"
             },
             {
                 "pos": "EI",
-                "nombre": "Mosquera"
+                "nombre": "Fernando"
             },
             {
                 "pos": "DC",
@@ -10249,8 +10145,8 @@ window.PLAN_REALES = {
         ]
     },
     "bra_vitoria": {
-        "tactica": "4-3-3",
-        "dt": "Thiago Carpini",
+        "tactica": "4-2-3-1",
+        "dt": "Rafael Lacerda",
         "figura": "Matheuzinho",
         "arquero": "Lucas Arcanjo",
         "titulares": [
@@ -10260,299 +10156,299 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Cáceres"
+                "nombre": "Mateus Silva"
             },
             {
                 "pos": "DFC",
-                "nombre": "Neris"
+                "nombre": "Emanuel Brítez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Wagner Leonardo"
+                "nombre": "Cacá"
             },
             {
                 "pos": "LI",
-                "nombre": "Lucas Esteves"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Luan"
+                "nombre": "Jamerson"
             },
             {
                 "pos": "MCD",
-                "nombre": "Willian Oliveira"
+                "nombre": "Gabriel Baralhas"
             },
             {
-                "pos": "MC",
-                "nombre": "Ryller"
+                "pos": "MCD",
+                "nombre": "Emmanuel Martínez"
             },
             {
                 "pos": "ED",
+                "nombre": "Erick"
+            },
+            {
+                "pos": "MCO",
                 "nombre": "Matheuzinho"
             },
             {
-                "pos": "DC",
-                "nombre": "Alerrandro"
+                "pos": "EI",
+                "nombre": "Diego Tarzia"
             },
             {
-                "pos": "EI",
-                "nombre": "Mosquito"
+                "pos": "DC",
+                "nombre": "Renê"
             }
         ]
     },
     "col_tolima": {
         "tactica": "4-2-3-1",
-        "dt": "David González",
-        "figura": "Yeison Guzmán",
-        "arquero": "Chaverra",
+        "dt": "Luis Fernando Suárez",
+        "figura": "Bryan Rovira",
+        "arquero": "Miguel Ortega",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Chaverra"
+                "nombre": "Miguel Ortega"
             },
             {
                 "pos": "LD",
-                "nombre": "Hurtado"
+                "nombre": "Jan Angulo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Quiñones"
+                "nombre": "Anderson Angulo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Angulo"
+                "nombre": "José Mera"
             },
             {
                 "pos": "LI",
                 "nombre": "Junior Hernández"
             },
             {
-                "pos": "MC",
-                "nombre": "Nieto"
+                "pos": "MCD",
+                "nombre": "Homer Martínez"
             },
             {
-                "pos": "MC",
-                "nombre": "Rovira"
+                "pos": "MCD",
+                "nombre": "Bryan Rovira"
             },
             {
                 "pos": "ED",
-                "nombre": "Castro"
+                "nombre": "Jorge Cabezas Hurtado"
             },
             {
                 "pos": "MCO",
-                "nombre": "Yeison Guzmán"
+                "nombre": "Ever Valencia"
             },
             {
                 "pos": "EI",
-                "nombre": "Lucumí"
+                "nombre": "Kelvin Flórez"
             },
             {
                 "pos": "DC",
-                "nombre": "Gil"
+                "nombre": "Adrián Parra"
             }
         ]
     },
     "col_cali": {
         "tactica": "4-2-3-1",
-        "dt": "Alfredo Arias",
-        "figura": "Fredy Montero",
-        "arquero": "Rodríguez",
+        "dt": "Rafael Dudamel",
+        "figura": "Juan Ignacio Dinenno",
+        "arquero": "Pedro Gallese",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rodríguez"
+                "nombre": "Pedro Gallese"
             },
             {
                 "pos": "LD",
-                "nombre": "Gómez"
+                "nombre": "Léyser Chaverra"
             },
             {
                 "pos": "DFC",
-                "nombre": "Caldera"
+                "nombre": "José Caldera"
             },
             {
                 "pos": "DFC",
-                "nombre": "Meza"
+                "nombre": "Fernando Álvarez"
             },
             {
                 "pos": "LI",
-                "nombre": "Osorio"
+                "nombre": "Edwin Velasco"
             },
             {
-                "pos": "MC",
-                "nombre": "Cabezas"
+                "pos": "MCD",
+                "nombre": "Daniel Giraldo"
             },
             {
-                "pos": "MC",
-                "nombre": "Mejía"
+                "pos": "MCD",
+                "nombre": "Gustavo Cuéllar"
             },
             {
                 "pos": "ED",
-                "nombre": "Plata"
+                "nombre": "Johan Martínez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Jarlan Barrera"
+                "nombre": "Emanuel Reynoso"
             },
             {
                 "pos": "EI",
-                "nombre": "Estupiñán"
+                "nombre": "Alexis Castillo Manyoma"
             },
             {
                 "pos": "DC",
-                "nombre": "Fredy Montero"
+                "nombre": "Juan Ignacio Dinenno"
             }
         ]
     },
     "col_medellin": {
         "tactica": "4-2-3-1",
-        "dt": "Alejandro Restrepo",
-        "figura": "Brayan León",
-        "arquero": "Chaux",
+        "dt": "Luis Amaranto Perea",
+        "figura": "Daniel Cataño",
+        "arquero": "Éder Chaux",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Chaux"
+                "nombre": "Éder Chaux"
             },
             {
                 "pos": "LD",
-                "nombre": "Chaverra"
+                "nombre": "Esneyder Mena"
             },
             {
                 "pos": "DFC",
-                "nombre": "Torijano"
+                "nombre": "Luis Escorcia"
             },
             {
                 "pos": "DFC",
-                "nombre": "Fory"
+                "nombre": "Alfonso Simarra"
             },
             {
                 "pos": "LI",
-                "nombre": "Londoño"
+                "nombre": "Frank Fabra"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Didier Moreno"
             },
             {
                 "pos": "MC",
-                "nombre": "Alvarado"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Perlaza"
+                "nombre": "Halam Loboa"
             },
             {
                 "pos": "ED",
-                "nombre": "Sandoval"
+                "nombre": "Jhon Edwin Montaño"
             },
             {
                 "pos": "MCO",
-                "nombre": "García"
+                "nombre": "Daniel Cataño"
             },
             {
                 "pos": "EI",
-                "nombre": "Vásquez"
+                "nombre": "Kéiner Klinger"
             },
             {
                 "pos": "DC",
-                "nombre": "Brayan León"
+                "nombre": "Jeison Medina"
             }
         ]
     },
     "col_bucaramanga": {
-        "tactica": "4-2-3-1",
-        "dt": "Rafael Dudamel",
+        "tactica": "3-4-3",
+        "dt": "Pablo Peirano",
         "figura": "Fabián Sambueza",
-        "arquero": "Quintana",
+        "arquero": "Cristopher Fiermarín",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Quintana"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Gutiérrez"
+                "nombre": "Cristopher Fiermarín"
             },
             {
                 "pos": "DFC",
-                "nombre": "Henao"
+                "nombre": "José García"
             },
             {
                 "pos": "DFC",
-                "nombre": "Romaña"
+                "nombre": "José Ortiz"
             },
             {
-                "pos": "LI",
-                "nombre": "Hinestroza"
+                "pos": "DFC",
+                "nombre": "Carlos Romaña"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Nilson Castrillón"
             },
             {
                 "pos": "MC",
-                "nombre": "Flores"
+                "nombre": "Leonardo Flores"
             },
             {
                 "pos": "MC",
-                "nombre": "Castro"
+                "nombre": "Félix Charrupí"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Freddy Hinestroza"
             },
             {
                 "pos": "ED",
-                "nombre": "Mosquera"
-            },
-            {
-                "pos": "MCO",
                 "nombre": "Fabián Sambueza"
             },
             {
                 "pos": "EI",
-                "nombre": "Córdoba"
+                "nombre": "Émerson Batalla"
             },
             {
                 "pos": "DC",
-                "nombre": "Ponce"
+                "nombre": "Luciano Pons"
             }
         ]
     },
     "col_oncecaldas": {
-        "tactica": "4-2-3-1",
-        "dt": "Hernán Darío Herrera",
+        "tactica": "4-3-3",
+        "dt": "Carlos Valencia",
         "figura": "Dayro Moreno",
-        "arquero": "Aguirre",
+        "arquero": "Joan Felipe Parra",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Aguirre"
+                "nombre": "Joan Felipe Parra"
             },
             {
                 "pos": "LD",
-                "nombre": "Cuesta"
+                "nombre": "Juan David Cuesta"
             },
             {
                 "pos": "DFC",
-                "nombre": "Cardona"
+                "nombre": "Jorge Cardona"
             },
             {
                 "pos": "DFC",
-                "nombre": "Riquett"
+                "nombre": "Daniel Londoño"
             },
             {
                 "pos": "LI",
-                "nombre": "Patiño"
+                "nombre": "Juan Pablo Patiño"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Andrés Colorado"
             },
             {
                 "pos": "MC",
-                "nombre": "Rojas"
-            },
-            {
-                "pos": "MC",
-                "nombre": "García"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Barrios"
+                "nombre": "Juan Pablo Nieto"
             },
             {
                 "pos": "MCO",
-                "nombre": "Zapata"
+                "nombre": "Jáder Quiñones"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Michael Barrios"
             },
             {
                 "pos": "EI",
-                "nombre": "Arce"
+                "nombre": "Jefry Zapata"
             },
             {
                 "pos": "DC",
@@ -10561,529 +10457,529 @@ window.PLAN_REALES = {
         ]
     },
     "col_pasto": {
-        "tactica": "4-2-3-1",
-        "dt": "Gustavo Florentín",
-        "figura": "Tréllez",
-        "arquero": "Martínez",
+        "tactica": "4-4-2",
+        "dt": "Diego Merino",
+        "figura": "Patrick Preciado",
+        "arquero": "Luis Marquínez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Martínez"
+                "nombre": "Luis Marquínez"
             },
             {
                 "pos": "LD",
-                "nombre": "Alba"
+                "nombre": "Michael Mosquera"
             },
             {
                 "pos": "DFC",
-                "nombre": "Carabalí"
+                "nombre": "Juan Revollo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Malagón"
+                "nombre": "Samuel Portes"
             },
             {
                 "pos": "LI",
-                "nombre": "Gómez"
+                "nombre": "Hervin Goyes"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Heiler Moreno"
             },
             {
                 "pos": "MC",
-                "nombre": "Castilla"
+                "nombre": "Kevin Santacruz"
             },
             {
-                "pos": "MC",
-                "nombre": "Charrupí"
+                "pos": "MD",
+                "nombre": "José Solarte"
             },
             {
-                "pos": "ED",
-                "nombre": "Londoño"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Moreno"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Chávez"
+                "pos": "MI",
+                "nombre": "Juan Arboleda"
             },
             {
                 "pos": "DC",
-                "nombre": "Tréllez"
+                "nombre": "Patrick Preciado"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Édgar García"
             }
         ]
     },
     "col_pereira": {
         "tactica": "4-2-3-1",
-        "dt": "Luis Fernando Suárez",
-        "figura": "Darwin Quintero",
-        "arquero": "Ichazo",
+        "dt": "Alexis Márquez",
+        "figura": "Anderson Plata",
+        "arquero": "Yimy Gómez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Ichazo"
+                "nombre": "Yimy Gómez"
             },
             {
                 "pos": "LD",
-                "nombre": "Monroy"
+                "nombre": "Jordy Monroy"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pestaña"
+                "nombre": "Danilo Ortiz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Moya"
+                "nombre": "Sebastián Urrea"
             },
             {
                 "pos": "LI",
-                "nombre": "Suárez"
+                "nombre": "Fabio Delgado"
             },
             {
-                "pos": "MC",
-                "nombre": "Murillo"
+                "pos": "MCD",
+                "nombre": "Walmer Pacheco"
             },
             {
-                "pos": "MC",
-                "nombre": "Ríos"
+                "pos": "MCD",
+                "nombre": "Jorge Bermúdez"
             },
             {
                 "pos": "ED",
-                "nombre": "Cabrera"
+                "nombre": "Anderson Plata"
             },
             {
                 "pos": "MCO",
-                "nombre": "Darwin Quintero"
+                "nombre": "Luis Mosquera"
             },
             {
                 "pos": "EI",
-                "nombre": "Piedrahita"
+                "nombre": "Miguel Palacios"
             },
             {
                 "pos": "DC",
-                "nombre": "Lencina"
+                "nombre": "Jhon Largacha"
             }
         ]
     },
     "col_aguilas": {
         "tactica": "4-2-3-1",
-        "dt": "Juan Pablo Buch",
-        "figura": "Salazar",
-        "arquero": "Contreras",
+        "dt": "Flavio Robatto",
+        "figura": "Andrés Ricaurte",
+        "arquero": "Jorge Soto",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Contreras"
+                "nombre": "Jorge Soto"
             },
             {
                 "pos": "LD",
-                "nombre": "Arboleda"
+                "nombre": "Juan Camilo Roa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Quiñones"
+                "nombre": "Jhon García"
             },
             {
                 "pos": "DFC",
-                "nombre": "Varela"
+                "nombre": "Jhon Ontaneda"
             },
             {
                 "pos": "LI",
-                "nombre": "Banguero"
+                "nombre": "Javier Mena"
             },
             {
-                "pos": "MC",
-                "nombre": "Rivas"
+                "pos": "MCD",
+                "nombre": "Frank Lozano"
             },
             {
-                "pos": "MC",
-                "nombre": "Celis"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Salazar"
+                "pos": "MCD",
+                "nombre": "Iván Rojas"
             },
             {
                 "pos": "MCO",
-                "nombre": "Pineda"
+                "nombre": "Andrés Ricaurte"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Eduar Arízalas"
             },
             {
                 "pos": "EI",
-                "nombre": "Ramos"
+                "nombre": "Matías Ramírez"
             },
             {
                 "pos": "DC",
-                "nombre": "Vuletich"
+                "nombre": "Antony Vásquez"
             }
         ]
     },
     "col_alianza": {
-        "tactica": "4-2-3-1",
-        "dt": "Hubert Bodhert",
-        "figura": "Torres",
-        "arquero": "Grazziani",
+        "tactica": "5-3-2",
+        "dt": "Flabio Torres",
+        "figura": "Felipe Pardo",
+        "arquero": "Antonio Simancas",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Grazziani"
+                "nombre": "Antonio Simancas"
             },
             {
-                "pos": "LD",
-                "nombre": "Navarro"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Figueroa"
+                "pos": "CAD",
+                "nombre": "Israel Alba"
             },
             {
                 "pos": "DFC",
                 "nombre": "Pedro Franco"
             },
             {
-                "pos": "LI",
-                "nombre": "Saldaña"
+                "pos": "DFC",
+                "nombre": "Leyner Palacios"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Sebastián Quiñones"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Juan Viveros"
             },
             {
                 "pos": "MC",
-                "nombre": "Manjarrés"
+                "nombre": "Wiston Fernández"
             },
             {
                 "pos": "MC",
-                "nombre": "Orozco"
+                "nombre": "Jair Castillo"
             },
             {
-                "pos": "ED",
-                "nombre": "Batalla"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Torres"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Gil"
+                "pos": "MC",
+                "nombre": "Brayan Stiven Viafara"
             },
             {
                 "pos": "DC",
-                "nombre": "Rangel"
+                "nombre": "Felipe Pardo"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jesús Muñoz"
             }
         ]
     },
     "col_fortaleza": {
         "tactica": "4-2-3-1",
-        "dt": "Sebastián Oliveros",
-        "figura": "Adrián Parra",
-        "arquero": "Castillo",
+        "dt": "Diego Arias",
+        "figura": "Franco Pulicastro",
+        "arquero": "Williams Barlasina",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Castillo"
+                "nombre": "Williams Barlasina"
             },
             {
                 "pos": "LD",
-                "nombre": "Hinestroza"
+                "nombre": "Joan Cajares"
             },
             {
                 "pos": "DFC",
-                "nombre": "Moralez"
+                "nombre": "Yesid Díaz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Díaz"
+                "nombre": "Anderson Copete"
             },
             {
                 "pos": "LI",
-                "nombre": "Rivera"
+                "nombre": "Santiago Cuero"
             },
             {
-                "pos": "MC",
-                "nombre": "Pico"
+                "pos": "MCD",
+                "nombre": "Leonardo Pico"
             },
             {
-                "pos": "MC",
-                "nombre": "Guevara"
+                "pos": "MCD",
+                "nombre": "Santiago Vivas"
             },
             {
                 "pos": "ED",
-                "nombre": "Pajaro"
+                "nombre": "Sebastián Navarro"
             },
             {
                 "pos": "MCO",
-                "nombre": "Rodríguez"
+                "nombre": "Mariano Vázquez"
             },
             {
                 "pos": "EI",
-                "nombre": "Navarro"
+                "nombre": "Julio Sinisterra"
             },
             {
                 "pos": "DC",
-                "nombre": "Adrián Parra"
+                "nombre": "Franco Pulicastro"
             }
         ]
     },
     "col_jaguares": {
-        "tactica": "4-2-3-1",
-        "dt": "Edgar Carvajal",
-        "figura": "Pablo Rojas",
-        "arquero": "Banguera",
+        "tactica": "4-3-3",
+        "dt": "Julio Méndez",
+        "figura": "Carlos Henao",
+        "arquero": "Diego Martínez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Banguera"
+                "nombre": "Diego Martínez"
             },
             {
                 "pos": "LD",
-                "nombre": "Díaz"
+                "nombre": "Juan Franco"
             },
             {
                 "pos": "DFC",
-                "nombre": "Anaya"
+                "nombre": "Royscer Colpa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vanegas"
+                "nombre": "Carlos Henao"
             },
             {
                 "pos": "LI",
-                "nombre": "Andrade"
+                "nombre": "Juan Pablo Arcila"
             },
             {
                 "pos": "MC",
-                "nombre": "Pino"
+                "nombre": "Yosé Yáñez"
             },
             {
-                "pos": "MC",
-                "nombre": "Serje"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Maza"
+                "pos": "MCD",
+                "nombre": "Rafael Bustamante"
             },
             {
                 "pos": "MCO",
-                "nombre": "Pablo Rojas"
+                "nombre": "Esteban Beltrán"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Wilfrido de la Rosa"
             },
             {
                 "pos": "EI",
-                "nombre": "Padilla"
+                "nombre": "Fáber Gil"
             },
             {
                 "pos": "DC",
-                "nombre": "Morelo"
+                "nombre": "Johar Mejía"
             }
         ]
     },
     "col_interpalmira": {
-        "tactica": "4-2-3-1",
-        "dt": "Héctor Cárdenas",
-        "figura": "Dairon Mosquera",
-        "arquero": "Soto",
+        "tactica": "3-4-3",
+        "dt": "Ricardo Valiño",
+        "figura": "Wuilker Faríñez",
+        "arquero": "Wuilker Faríñez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Soto"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Palacios"
+                "nombre": "Wuilker Faríñez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mina"
+                "nombre": "Miguel Amaya"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rentería"
+                "nombre": "Carlos Vivas"
             },
             {
-                "pos": "LI",
-                "nombre": "Cuero"
+                "pos": "DFC",
+                "nombre": "Agustín Irazoque"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Ronaldo Julio"
             },
             {
                 "pos": "MC",
-                "nombre": "Balanta"
+                "nombre": "Larry Vásquez"
             },
             {
                 "pos": "MC",
-                "nombre": "Caicedo"
+                "nombre": "Rubén Manjarrés"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Miguel Pernía"
             },
             {
                 "pos": "ED",
-                "nombre": "Angulo"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Murillo"
+                "nombre": "Johan Caballero"
             },
             {
                 "pos": "EI",
-                "nombre": "Preciado"
+                "nombre": "Cristian Dájome"
             },
             {
                 "pos": "DC",
-                "nombre": "Dairon Mosquera"
+                "nombre": "Fabricio Sanguinetti"
             }
         ]
     },
     "chi_everton": {
-        "tactica": "4-2-3-1",
-        "dt": "Esteban Solari",
-        "figura": "Rodrigo Contreras",
-        "arquero": "González",
+        "tactica": "4-4-1-1",
+        "dt": "Walter Ribonetto",
+        "figura": "Ignacio González",
+        "arquero": "Ignacio González",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "González"
+                "nombre": "Ignacio González"
             },
             {
                 "pos": "LD",
-                "nombre": "Baeza"
+                "nombre": "Ó. Opazo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Oyarzún"
+                "nombre": "Hugo Magallanes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pereira"
+                "nombre": "Diego Oyarzún"
             },
             {
                 "pos": "LI",
-                "nombre": "Ibacache"
+                "nombre": "E. Ramos"
+            },
+            {
+                "pos": "MD",
+                "nombre": "J. Alfaro"
             },
             {
                 "pos": "MC",
-                "nombre": "Berríos"
+                "nombre": "Benjamín Berríos"
             },
             {
                 "pos": "MC",
-                "nombre": "Madrid"
+                "nombre": "J. Moya"
             },
             {
-                "pos": "ED",
-                "nombre": "Pastrán"
+                "pos": "MI",
+                "nombre": "J. Ovalle"
             },
             {
                 "pos": "MCO",
-                "nombre": "Méndez"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Campos López"
+                "nombre": "Alan Medina"
             },
             {
                 "pos": "DC",
-                "nombre": "Rodrigo Contreras"
+                "nombre": "Braian Martínez"
             }
         ]
     },
     "chi_huachipato": {
-        "tactica": "4-2-3-1",
-        "dt": "Igor Oca",
-        "figura": "Cris Martínez",
-        "arquero": "Cerda",
+        "tactica": "3-5-2",
+        "dt": "Jaime García",
+        "figura": "Claudio Sepúlveda",
+        "arquero": "Christian Bravo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Cerda"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Loyola"
+                "nombre": "Christian Bravo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gazzolo"
+                "nombre": "Cristián Toro"
             },
             {
                 "pos": "DFC",
-                "nombre": "Malanca"
+                "nombre": "Rafael Caroca"
             },
             {
-                "pos": "LI",
-                "nombre": "Castillo"
+                "pos": "DFC",
+                "nombre": "Benjamín Mellado"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Mario Briceño"
             },
             {
                 "pos": "MC",
-                "nombre": "Sepúlveda"
+                "nombre": "Maicol León"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Claudio Sepúlveda"
             },
             {
                 "pos": "MC",
-                "nombre": "Montes"
+                "nombre": "Harold Antiñirre"
             },
             {
-                "pos": "ED",
-                "nombre": "Brea"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Palmezano"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Cris Martínez"
+                "pos": "CAI",
+                "nombre": "Sergio Núñez"
             },
             {
                 "pos": "DC",
-                "nombre": "Rodríguez"
+                "nombre": "Maximiliano Rodríguez"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Lionel Altamirano"
             }
         ]
     },
     "chi_palestino": {
-        "tactica": "4-2-3-1",
-        "dt": "Lucas Bovaglio",
-        "figura": "Bryan Carrasco",
-        "arquero": "Rigamonti",
+        "tactica": "4-3-3",
+        "dt": "Guillermo Farré",
+        "figura": "Ronnie Fernández",
+        "arquero": "Sebastián Pérez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rigamonti"
+                "nombre": "Sebastián Pérez"
             },
             {
                 "pos": "LD",
-                "nombre": "Rojas"
+                "nombre": "José Bizama"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ceza"
+                "nombre": "Vicente Espinoza"
             },
             {
                 "pos": "DFC",
-                "nombre": "Suárez"
+                "nombre": "Enzo Roco"
             },
             {
                 "pos": "LI",
-                "nombre": "Zúñiga"
+                "nombre": "Jason León"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Dylan Glaby"
             },
             {
                 "pos": "MC",
-                "nombre": "Linares"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Martínez"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Palacio"
+                "nombre": "Nicolás Meza"
             },
             {
                 "pos": "MCO",
-                "nombre": "Abrigo"
+                "nombre": "Francisco Montes"
             },
             {
-                "pos": "EI",
-                "nombre": "Bryan Carrasco"
+                "pos": "ED",
+                "nombre": "Ian Alegría"
             },
             {
                 "pos": "DC",
-                "nombre": "Marabel"
+                "nombre": "Ronnie Fernández"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Sebastián Gallegos"
             }
         ]
     },
     "chi_nublense": {
-        "tactica": "4-2-3-1",
-        "dt": "Mario Salas",
-        "figura": "Patricio Rubio",
+        "tactica": "3-4-3",
+        "dt": "Vicente Núñez",
+        "figura": "Lorenzo Reyes",
         "arquero": "Nicola Pérez",
         "titulares": [
             {
@@ -11091,1044 +10987,1044 @@ window.PLAN_REALES = {
                 "nombre": "Nicola Pérez"
             },
             {
-                "pos": "LD",
-                "nombre": "Cerezo"
+                "pos": "DFC",
+                "nombre": "Felipe Campos"
             },
             {
                 "pos": "DFC",
-                "nombre": "Caroca"
+                "nombre": "Diego Céspedes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bosso"
+                "nombre": "Sebastián Valencia"
             },
             {
-                "pos": "LI",
-                "nombre": "Campusano"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Reyes"
+                "pos": "CAD",
+                "nombre": "Gabriel Graciani"
             },
             {
                 "pos": "MC",
-                "nombre": "Rivera"
+                "nombre": "Lorenzo Reyes"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Manuel Rivera"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Jovany Campusano"
             },
             {
                 "pos": "ED",
-                "nombre": "Graciani"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Sosa"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Oyarzo"
+                "nombre": "Matías Plaza"
             },
             {
                 "pos": "DC",
-                "nombre": "Patricio Rubio"
+                "nombre": "Esteban Calderón"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Lucas Molina"
             }
         ]
     },
     "chi_ohiggins": {
         "tactica": "4-2-3-1",
-        "dt": "Víctor Fuentes",
-        "figura": "Bryan Rabello",
-        "arquero": "Peranic",
+        "dt": "Lucas Bovaglio",
+        "figura": "Alan Robledo",
+        "arquero": "Omar Carabalí",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Peranic"
+                "nombre": "Omar Carabalí"
             },
             {
                 "pos": "LD",
-                "nombre": "Hormazábal"
+                "nombre": "Felipe Faúndez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Torrealba"
+                "nombre": "Alan Robledo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Díaz"
+                "nombre": "Nicolás Garrido"
             },
             {
                 "pos": "LI",
-                "nombre": "Godoy"
+                "nombre": "Leandro Díaz"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Tomás Avilés"
             },
             {
                 "pos": "MC",
-                "nombre": "Buonanotte"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Fuentes"
+                "nombre": "Felipe Ogaz"
             },
             {
                 "pos": "ED",
-                "nombre": "Tapia"
+                "nombre": "Benjamín Pérez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Sarrafiore"
+                "nombre": "Santiago Toloza"
             },
             {
                 "pos": "EI",
-                "nombre": "Bryan Rabello"
+                "nombre": "Bastián Yáñez"
             },
             {
                 "pos": "DC",
-                "nombre": "Moreira"
+                "nombre": "Arnaldo Castillo"
             }
         ]
     },
     "chi_audax": {
-        "tactica": "4-2-3-1",
-        "dt": "Juan José Ribera",
-        "figura": "Ignacio Jeraldino",
-        "arquero": "Ahumada",
+        "tactica": "4-4-2",
+        "dt": "Patricio Graff",
+        "figura": "César Pinares",
+        "arquero": "Tomás Ahumada",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Ahumada"
+                "nombre": "Tomás Ahumada"
             },
             {
                 "pos": "LD",
-                "nombre": "Oliveros"
+                "nombre": "Raimundo Rebolledo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Torres"
+                "nombre": "Enzo Ferrario"
             },
             {
                 "pos": "DFC",
-                "nombre": "Muñoz"
+                "nombre": "Marcelo Ortiz"
             },
             {
                 "pos": "LI",
-                "nombre": "Dittborn"
+                "nombre": "Felipe Salomoni"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Martín Jiménez"
             },
             {
                 "pos": "MC",
-                "nombre": "Collao"
+                "nombre": "Marco Collao"
             },
             {
                 "pos": "MC",
-                "nombre": "Cecchini"
+                "nombre": "César Pinares"
             },
             {
-                "pos": "ED",
-                "nombre": "Álvarez"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Palacios"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Ríos"
+                "pos": "MI",
+                "nombre": "Giovani Chiaverano"
             },
             {
                 "pos": "DC",
-                "nombre": "Ignacio Jeraldino"
+                "nombre": "Franco Troyansky"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Diego Coelho"
             }
         ]
     },
     "chi_cobresal": {
-        "tactica": "4-2-3-1",
+        "tactica": "4-3-3",
         "dt": "Gustavo Huerta",
-        "figura": "Leonardo Valencia",
-        "arquero": "Requena",
+        "figura": "César Yanis",
+        "arquero": "Alejandro Santander",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Requena"
+                "nombre": "Alejandro Santander"
             },
             {
                 "pos": "LD",
-                "nombre": "Pacheco"
+                "nombre": "Guillermo Pacheco"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bechtholdt"
+                "nombre": "José Tiznado"
             },
             {
                 "pos": "DFC",
-                "nombre": "Alarcón"
+                "nombre": "Christian Moreno"
             },
             {
                 "pos": "LI",
-                "nombre": "Jorquera"
+                "nombre": "Antonio Castillo"
             },
             {
                 "pos": "MC",
-                "nombre": "Céspedes"
+                "nombre": "Esteban Valencia"
             },
             {
                 "pos": "MC",
-                "nombre": "Mesías"
-            },
-            {
-                "pos": "ED",
-                "nombre": "García"
+                "nombre": "Felipe Villagrán"
             },
             {
                 "pos": "MCO",
-                "nombre": "Leonardo Valencia"
+                "nombre": "César Yanis"
             },
             {
-                "pos": "EI",
-                "nombre": "Lezcano"
+                "pos": "ED",
+                "nombre": "Julián Brea"
             },
             {
                 "pos": "DC",
-                "nombre": "Coelho"
+                "nombre": "Franco Frías"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Janpol Morales"
             }
         ]
     },
     "chi_calera": {
-        "tactica": "4-2-3-1",
-        "dt": "Walter Lemma",
-        "figura": "Franco Soldano",
-        "arquero": "Peña",
+        "tactica": "4-3-3",
+        "dt": "John Armijo",
+        "figura": "Sebastián Sáez",
+        "arquero": "Nicolás Avellaneda",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Peña"
+                "nombre": "Nicolás Avellaneda"
             },
             {
                 "pos": "LD",
-                "nombre": "Rebolledo"
+                "nombre": "Cristopher Díaz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ferrario"
+                "nombre": "Rodrigo Cáseres"
             },
             {
                 "pos": "DFC",
-                "nombre": "Brunet"
+                "nombre": "Daniel Gutiérrez"
             },
             {
                 "pos": "LI",
-                "nombre": "Ulloa"
+                "nombre": "Cristián Gutiérrez"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Camilo Moya"
             },
             {
                 "pos": "MC",
-                "nombre": "Muñoz"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Méndez"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Cavalleri"
+                "nombre": "Yerko Leiva"
             },
             {
                 "pos": "MCO",
-                "nombre": "Encinas"
+                "nombre": "Carlos Villanueva"
             },
             {
-                "pos": "EI",
-                "nombre": "Parra"
+                "pos": "ED",
+                "nombre": "Bayron Oyarzo"
             },
             {
                 "pos": "DC",
-                "nombre": "Franco Soldano"
+                "nombre": "Sebastián Sáez"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Kevin Méndez"
             }
         ]
     },
     "chi_uconcepcion": {
-        "tactica": "4-2-3-1",
-        "dt": "Javier Torrente",
-        "figura": "Waterman",
-        "arquero": "Sanhueza",
+        "tactica": "4-4-2",
+        "dt": "Cristián Muñoz",
+        "figura": "Cecilio Waterman",
+        "arquero": "Jorge Broun",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sanhueza"
+                "nombre": "Jorge Broun"
             },
             {
                 "pos": "LD",
-                "nombre": "Ramírez"
+                "nombre": "Moisés González"
             },
             {
                 "pos": "DFC",
-                "nombre": "Araya"
+                "nombre": "Osvaldo González"
             },
             {
                 "pos": "DFC",
-                "nombre": "Guerreño"
+                "nombre": "Miguel Barbieri"
             },
             {
                 "pos": "LI",
-                "nombre": "Cordero"
+                "nombre": "Yerco Oyanedel"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Bryan Ogaz"
             },
             {
                 "pos": "MC",
-                "nombre": "Camargo"
+                "nombre": "Jeison Fuentealba"
             },
             {
                 "pos": "MC",
-                "nombre": "Medel"
+                "nombre": "Cristhofer Mesías"
             },
             {
-                "pos": "ED",
-                "nombre": "Patiño"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Carvallo"
-            },
-            {
-                "pos": "EI",
-                "nombre": "González"
+                "pos": "MI",
+                "nombre": "Iam González"
             },
             {
                 "pos": "DC",
-                "nombre": "Waterman"
+                "nombre": "Cecilio Waterman"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Rogelio Funes Mori"
             }
         ]
     },
     "ger_leipzig": {
-        "tactica": "4-2-2-2",
-        "dt": "Marco Rose",
-        "figura": "Šeško",
-        "arquero": "Gulácsi",
+        "tactica": "4-3-3",
+        "dt": "Martín Demichelis",
+        "figura": "Christopher Nkunku",
+        "arquero": "Maarten Vandevoordt",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Gulácsi"
+                "nombre": "Maarten Vandevoordt"
             },
             {
                 "pos": "LD",
-                "nombre": "Geertruida"
+                "nombre": "Ridle Baku"
             },
             {
                 "pos": "DFC",
-                "nombre": "Orbán"
+                "nombre": "Willi Orbán"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lukeba"
+                "nombre": "Castello Lukeba"
             },
             {
                 "pos": "LI",
-                "nombre": "Henrichs"
+                "nombre": "David Raum"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Neil El Aynaoui"
             },
             {
                 "pos": "MC",
-                "nombre": "Haidara"
+                "nombre": "Ezechiel Banzuzi"
             },
             {
                 "pos": "MC",
-                "nombre": "Kampl"
+                "nombre": "Christopher Nkunku"
             },
             {
                 "pos": "ED",
-                "nombre": "Baumgartner"
+                "nombre": "Brajan Gruda"
             },
             {
                 "pos": "EI",
-                "nombre": "Nusa"
+                "nombre": "Tidiam Gomis"
             },
             {
                 "pos": "DC",
-                "nombre": "Šeško"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Openda"
+                "nombre": "Rômulo Cardoso"
             }
         ]
     },
     "ger_stuttgart": {
-        "tactica": "4-4-2",
+        "tactica": "3-4-2-1",
         "dt": "Sebastian Hoeneß",
-        "figura": "Undav",
-        "arquero": "Nübel",
+        "figura": "Ermedin Demirović",
+        "arquero": "Dennis Seimen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Nübel"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Vagnoman"
+                "nombre": "Dennis Seimen"
             },
             {
                 "pos": "DFC",
-                "nombre": "Rouault"
+                "nombre": "Luca Jaquez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Chabot"
+                "nombre": "Jeff Chabot"
             },
             {
-                "pos": "LI",
-                "nombre": "Mittelstädt"
+                "pos": "DFC",
+                "nombre": "Ramon Hendriks"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Jamie Leweling"
             },
             {
                 "pos": "MC",
-                "nombre": "Karazor"
+                "nombre": "Grischa Prömel"
             },
             {
                 "pos": "MC",
-                "nombre": "Stiller"
+                "nombre": "Yanik Spalt"
             },
             {
-                "pos": "MD",
-                "nombre": "Millot"
+                "pos": "CAI",
+                "nombre": "Maximilian Mittelstädt"
             },
             {
-                "pos": "MI",
-                "nombre": "Leweling"
+                "pos": "MCO",
+                "nombre": "Chris Führich"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Bilal El Khannouss"
             },
             {
                 "pos": "DC",
-                "nombre": "Undav"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Demirović"
+                "nombre": "Ermedin Demirović"
             }
         ]
     },
     "ger_frankfurt": {
         "tactica": "4-2-3-1",
-        "dt": "Dino Toppmöller",
-        "figura": "Marmoush",
-        "arquero": "Trapp",
+        "dt": "Adi Hütter",
+        "figura": "Robin Koch",
+        "arquero": "Noah Atubolu",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Trapp"
+                "nombre": "Noah Atubolu"
             },
             {
                 "pos": "LD",
-                "nombre": "Kristensen"
+                "nombre": "Elias Baum"
             },
             {
                 "pos": "DFC",
-                "nombre": "Tuta"
+                "nombre": "Robin Koch"
             },
             {
                 "pos": "DFC",
-                "nombre": "Koch"
+                "nombre": "Lilian Brassier"
             },
             {
                 "pos": "LI",
-                "nombre": "Theate"
+                "nombre": "Ansgar Knauff"
             },
             {
-                "pos": "MC",
-                "nombre": "Skhiri"
+                "pos": "MCD",
+                "nombre": "Noel Aseko"
             },
             {
-                "pos": "MC",
-                "nombre": "Larsson"
+                "pos": "MCD",
+                "nombre": "Raphael Onyedika"
             },
             {
                 "pos": "ED",
-                "nombre": "Knauff"
+                "nombre": "Ritsu Doan"
             },
             {
                 "pos": "MCO",
-                "nombre": "Götze"
+                "nombre": "Can Uzun"
             },
             {
                 "pos": "EI",
-                "nombre": "Chaïbi"
+                "nombre": "Farès Chaïbi"
             },
             {
                 "pos": "DC",
-                "nombre": "Marmoush"
+                "nombre": "Jonathan Burkardt"
             }
         ]
     },
     "ger_freiburg": {
         "tactica": "4-2-3-1",
         "dt": "Julian Schuster",
-        "figura": "Grifo",
-        "arquero": "Atubolu",
+        "figura": "Matthias Ginter",
+        "arquero": "Mio Backhaus",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Atubolu"
+                "nombre": "Mio Backhaus"
             },
             {
                 "pos": "LD",
-                "nombre": "Kübler"
+                "nombre": "Jordy Makengo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ginter"
+                "nombre": "Matthias Ginter"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lienhart"
+                "nombre": "Philipp Lienhart"
             },
             {
                 "pos": "LI",
-                "nombre": "Günter"
+                "nombre": "Philipp Treu"
             },
             {
-                "pos": "MC",
-                "nombre": "Eggestein"
+                "pos": "MCD",
+                "nombre": "Maximilian Eggestein"
             },
             {
-                "pos": "MC",
-                "nombre": "Osterhage"
+                "pos": "MCD",
+                "nombre": "Yannick Engelhardt"
             },
             {
                 "pos": "ED",
-                "nombre": "Dōan"
+                "nombre": "Jan-Niklas Beste"
             },
             {
                 "pos": "MCO",
-                "nombre": "Dinkçi"
+                "nombre": "Yuito Suzuki"
             },
             {
                 "pos": "EI",
-                "nombre": "Grifo"
+                "nombre": "Derry Scherhant"
             },
             {
                 "pos": "DC",
-                "nombre": "Adamu"
+                "nombre": "Igor Matanović"
             }
         ]
     },
     "ger_hoffenheim": {
-        "tactica": "3-4-1-2",
+        "tactica": "4-2-3-1",
         "dt": "Christian Ilzer",
-        "figura": "Kramarić",
-        "arquero": "Baumann",
+        "figura": "Oliver Baumann",
+        "arquero": "Oliver Baumann",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Baumann"
+                "nombre": "Oliver Baumann"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Vladimír Coufal"
             },
             {
                 "pos": "DFC",
-                "nombre": "Arthur Chaves"
+                "nombre": "Ozan Kabak"
             },
             {
                 "pos": "DFC",
-                "nombre": "Stach"
+                "nombre": "Koki Machida"
             },
             {
-                "pos": "DFC",
-                "nombre": "Akpoguma"
+                "pos": "LI",
+                "nombre": "Mats Rots"
             },
             {
-                "pos": "MD",
-                "nombre": "Gendrey"
+                "pos": "MCD",
+                "nombre": "Leon Avdullahu"
             },
             {
-                "pos": "MC",
-                "nombre": "Grillitsch"
+                "pos": "MCD",
+                "nombre": "Wout Burger"
             },
             {
-                "pos": "MC",
-                "nombre": "Bischof"
-            },
-            {
-                "pos": "MI",
-                "nombre": "Prass"
+                "pos": "ED",
+                "nombre": "Adam Daghim"
             },
             {
                 "pos": "MCO",
-                "nombre": "Kramarić"
+                "nombre": "Adam Hložek"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Alexander Prass"
             },
             {
                 "pos": "DC",
-                "nombre": "Hložek"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Bülter"
+                "nombre": "Fisnik Asllani"
             }
         ]
     },
     "ger_bremen": {
-        "tactica": "3-5-1-1",
-        "dt": "Ole Werner",
-        "figura": "Ducksch",
-        "arquero": "Zetterer",
+        "tactica": "4-3-3",
+        "dt": "Daniel Thioune",
+        "figura": "Karl Hein",
+        "arquero": "Karl Hein",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Zetterer"
+                "nombre": "Karl Hein"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Arthur"
             },
             {
                 "pos": "DFC",
-                "nombre": "Malatini"
+                "nombre": "Amos Pieper"
             },
             {
                 "pos": "DFC",
-                "nombre": "Friedl"
+                "nombre": "Marco Friedl"
             },
             {
-                "pos": "DFC",
-                "nombre": "Jung"
-            },
-            {
-                "pos": "MD",
-                "nombre": "Weiser"
+                "pos": "LI",
+                "nombre": "Olivier Deman"
             },
             {
                 "pos": "MC",
-                "nombre": "Bittencourt"
+                "nombre": "Ludovit Reis"
             },
             {
                 "pos": "MC",
-                "nombre": "Lynen"
+                "nombre": "Senne Lynen"
             },
             {
                 "pos": "MC",
-                "nombre": "Stage"
+                "nombre": "Youri Regeer"
             },
             {
-                "pos": "MI",
-                "nombre": "Köhn"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Schmid"
+                "pos": "ED",
+                "nombre": "Eren Dinkçi"
             },
             {
                 "pos": "DC",
-                "nombre": "Ducksch"
+                "nombre": "Niclas Füllkrug"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Marco Grüll"
             }
         ]
     },
     "ger_monchengladbach": {
-        "tactica": "4-2-3-1",
-        "dt": "Gerardo Seoane",
-        "figura": "Pléa",
-        "arquero": "Nicolas",
+        "tactica": "3-4-2-1",
+        "dt": "Alexander Blessin",
+        "figura": "Florian Neuhaus",
+        "arquero": "Daniel Batz",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Nicolas"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Scally"
+                "nombre": "Daniel Batz"
             },
             {
                 "pos": "DFC",
-                "nombre": "Itakura"
+                "nombre": "Kevin Diks"
             },
             {
                 "pos": "DFC",
-                "nombre": "Friedrich"
+                "nombre": "Philipp Sander"
             },
             {
-                "pos": "LI",
-                "nombre": "Ullrich"
+                "pos": "DFC",
+                "nombre": "Fabio Chiarodia"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Joe Scally"
             },
             {
                 "pos": "MC",
-                "nombre": "Reitz"
+                "nombre": "Zento Uno"
             },
             {
                 "pos": "MC",
-                "nombre": "Weigl"
+                "nombre": "Florian Neuhaus"
             },
             {
-                "pos": "ED",
-                "nombre": "Honorat"
+                "pos": "CAI",
+                "nombre": "Lukas Ullrich"
             },
             {
                 "pos": "MCO",
-                "nombre": "Stöger"
+                "nombre": "Robin Hack"
             },
             {
-                "pos": "EI",
-                "nombre": "Hack"
+                "pos": "MCO",
+                "nombre": "Wael Mohya"
             },
             {
                 "pos": "DC",
-                "nombre": "Pléa"
+                "nombre": "Shuto Machino"
             }
         ]
     },
     "ger_mainz": {
-        "tactica": "3-4-2-1",
-        "dt": "Bo Henriksen",
-        "figura": "Burkardt",
-        "arquero": "Zentner",
+        "tactica": "3-5-2",
+        "dt": "Urs Fischer",
+        "figura": "Robin Zentner",
+        "arquero": "Robin Zentner",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Zentner"
+                "nombre": "Robin Zentner"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kohr"
+                "nombre": "Danny da Costa"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bell"
+                "nombre": "Kacper Potulski"
             },
             {
                 "pos": "DFC",
-                "nombre": "Leitsch"
+                "nombre": "Fabio Gruber"
             },
             {
-                "pos": "MD",
-                "nombre": "Caci"
+                "pos": "CAD",
+                "nombre": "Silvan Widmer"
             },
             {
                 "pos": "MC",
-                "nombre": "Sano"
+                "nombre": "Nadiem Amiri"
             },
             {
                 "pos": "MC",
-                "nombre": "Amiri"
+                "nombre": "Kaishu Sano"
             },
             {
-                "pos": "MI",
-                "nombre": "Mwene"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Nebel"
-            },
-            {
-                "pos": "MCO",
+                "pos": "MC",
                 "nombre": "Lee Jae-sung"
             },
             {
+                "pos": "CAI",
+                "nombre": "Anthony Caci"
+            },
+            {
                 "pos": "DC",
-                "nombre": "Burkardt"
+                "nombre": "Sheraldo Becker"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Ransford Königsdörffer"
             }
         ]
     },
     "ger_augsburg": {
-        "tactica": "3-5-1-1",
-        "dt": "Jess Thorup",
-        "figura": "Claude-Maurice",
-        "arquero": "Labrović",
+        "tactica": "3-4-2-1",
+        "dt": "Manuel Baum",
+        "figura": "Jeffrey Gouweleeuw",
+        "arquero": "Finn Dahmen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Labrović"
+                "nombre": "Finn Dahmen"
             },
             {
                 "pos": "DFC",
-                "nombre": "Matsima"
+                "nombre": "Hennes Behrens"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gouweleeuw"
+                "nombre": "Chrislain Matsima"
             },
             {
                 "pos": "DFC",
-                "nombre": "Schlotterbeck"
+                "nombre": "Jeffrey Gouweleeuw"
             },
             {
-                "pos": "MD",
-                "nombre": "Wolf"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Onyeka"
+                "pos": "CAD",
+                "nombre": "Robin Fellhauer"
             },
             {
                 "pos": "MC",
-                "nombre": "Jakić"
+                "nombre": "Fabian Rieder"
             },
             {
                 "pos": "MC",
-                "nombre": "Rexhbeçaj"
+                "nombre": "Han-Noah Massengo"
             },
             {
-                "pos": "MI",
-                "nombre": "Giannoulis"
+                "pos": "CAI",
+                "nombre": "Young-woo Seol"
             },
             {
                 "pos": "MCO",
-                "nombre": "Claude-Maurice"
+                "nombre": "Rodrigo Ribeiro"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Michael Gregoritsch"
             },
             {
                 "pos": "DC",
-                "nombre": "Tietz"
+                "nombre": "Alexis Claude-Maurice"
             }
         ]
     },
     "ger_unionberlin": {
-        "tactica": "3-4-2-1",
-        "dt": "Bo Svensson",
-        "figura": "Hollerbach",
-        "arquero": "Rønnow",
+        "tactica": "4-3-3",
+        "dt": "Mauro Lustrinelli",
+        "figura": "Rani Khedira",
+        "arquero": "Frederik Rønnow",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rønnow"
+                "nombre": "Frederik Rønnow"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Janik Haberer"
             },
             {
                 "pos": "DFC",
-                "nombre": "Doekhi"
+                "nombre": "Zeno van den Bosch"
             },
             {
                 "pos": "DFC",
-                "nombre": "Vogt"
+                "nombre": "Marvin Friedrich"
             },
             {
-                "pos": "DFC",
-                "nombre": "Diogo Leite"
+                "pos": "LI",
+                "nombre": "Derrick Köhn"
             },
             {
-                "pos": "MD",
-                "nombre": "Trimmel"
+                "pos": "MCD",
+                "nombre": "Rani Khedira"
             },
             {
                 "pos": "MC",
-                "nombre": "Kemlein"
+                "nombre": "Michel Aebischer"
             },
             {
                 "pos": "MC",
-                "nombre": "Khedira"
+                "nombre": "András Schäfer"
             },
             {
-                "pos": "MI",
-                "nombre": "Rothe"
+                "pos": "ED",
+                "nombre": "Kastriot Imeri"
             },
             {
-                "pos": "MCO",
-                "nombre": "Jeong Woo-yeong"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Vertessen"
+                "pos": "EI",
+                "nombre": "Livan Burcu"
             },
             {
                 "pos": "DC",
-                "nombre": "Hollerbach"
+                "nombre": "Tim Skarke"
             }
         ]
     },
     "ger_koln": {
-        "tactica": "4-2-3-1",
-        "dt": "Gerhard Struber",
-        "figura": "Downs",
-        "arquero": "Urbig",
+        "tactica": "3-5-2",
+        "dt": "René Wagner",
+        "figura": "Marvin Schwäbe",
+        "arquero": "Marvin Schwäbe",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Urbig"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Thielmann"
+                "nombre": "Marvin Schwäbe"
             },
             {
                 "pos": "DFC",
-                "nombre": "Hübers"
+                "nombre": "Joël Schmied"
             },
             {
                 "pos": "DFC",
-                "nombre": "Pauli"
+                "nombre": "Jahmai Simpson-Pusey"
             },
             {
-                "pos": "LI",
-                "nombre": "Paqarada"
+                "pos": "DFC",
+                "nombre": "Tom Krauß"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Sebastian Sebulonsen"
             },
             {
                 "pos": "MC",
-                "nombre": "Martel"
+                "nombre": "Linton Maina"
             },
             {
                 "pos": "MC",
-                "nombre": "Huseinbašić"
+                "nombre": "Paul Okon-Engstler"
             },
             {
-                "pos": "ED",
-                "nombre": "Maina"
+                "pos": "MC",
+                "nombre": "Mikey Moore"
             },
             {
-                "pos": "MCO",
-                "nombre": "Waldschmidt"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Lemperle"
+                "pos": "CAI",
+                "nombre": "Borna Sosa"
             },
             {
                 "pos": "DC",
-                "nombre": "Downs"
+                "nombre": "Marius Bülter"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Saïd El Mala"
             }
         ]
     },
     "ger_hamburg": {
-        "tactica": "4-2-3-1",
-        "dt": "Steffen Baumgart",
-        "figura": "Glatzel",
-        "arquero": "Heuer Fernandes",
+        "tactica": "3-5-2",
+        "dt": "Merlin Polzin",
+        "figura": "Yussuf Poulsen",
+        "arquero": "Daniel Heuer Fernandes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Heuer Fernandes"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Mikelbrencis"
+                "nombre": "Daniel Heuer Fernandes"
             },
             {
                 "pos": "DFC",
-                "nombre": "Hadžikadunić"
+                "nombre": "Sebastiaan Bornauw"
             },
             {
                 "pos": "DFC",
-                "nombre": "Schonlau"
+                "nombre": "Shafiq Nandja"
             },
             {
-                "pos": "LI",
-                "nombre": "Muheim"
+                "pos": "DFC",
+                "nombre": "Warmed Omari"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Zakaria El Ouahdi"
             },
             {
                 "pos": "MC",
-                "nombre": "Meffert"
+                "nombre": "Bilal Nadir"
             },
             {
                 "pos": "MC",
-                "nombre": "Reis"
+                "nombre": "Martin Adeline"
             },
             {
-                "pos": "ED",
-                "nombre": "Dompé"
+                "pos": "MC",
+                "nombre": "Miro Muheim"
             },
             {
-                "pos": "MCO",
-                "nombre": "Richter"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Sahiti"
+                "pos": "CAI",
+                "nombre": "David Møller Wolfe"
             },
             {
                 "pos": "DC",
-                "nombre": "Glatzel"
+                "nombre": "Yussuf Poulsen"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Fábio Vieira"
             }
         ]
     },
     "ger_schalke": {
-        "tactica": "4-2-3-1",
-        "dt": "Kees van Wonderen",
-        "figura": "Karaman",
-        "arquero": "Heekeren",
+        "tactica": "5-3-2",
+        "dt": "Miron Muslić",
+        "figura": "Kenan Karaman",
+        "arquero": "Loris Karius",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Heekeren"
+                "nombre": "Loris Karius"
             },
             {
-                "pos": "LD",
-                "nombre": "Bulut"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Kalas"
+                "pos": "CAD",
+                "nombre": "Dejan Ljubičić"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kamiński"
+                "nombre": "Mertcan Ayhan"
             },
             {
-                "pos": "LI",
-                "nombre": "Murkin"
+                "pos": "DFC",
+                "nombre": "Nikola Katić"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Hasan Kuruçay"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Robin Gosens"
             },
             {
                 "pos": "MC",
-                "nombre": "Schallenberg"
+                "nombre": "Soufiane El-Faouzi"
             },
             {
                 "pos": "MC",
-                "nombre": "Bachmann"
+                "nombre": "Satoshi Tanaka"
             },
             {
-                "pos": "ED",
-                "nombre": "Mohr"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Karaman"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Seguin"
+                "pos": "MC",
+                "nombre": "Adil Aouchiche"
             },
             {
                 "pos": "DC",
-                "nombre": "Sylla"
+                "nombre": "Kenan Karaman"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Hwang Hee-chan"
             }
         ]
     },
     "fra_marseille": {
         "tactica": "4-2-3-1",
-        "dt": "Roberto De Zerbi",
-        "figura": "Mason Greenwood",
-        "arquero": "Rulli",
+        "dt": "Bruno Génésio",
+        "figura": "Pierre-Emile Højbjerg",
+        "arquero": "Gerónimo Rulli",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rulli"
+                "nombre": "Gerónimo Rulli"
             },
             {
                 "pos": "LD",
-                "nombre": "Murillo"
+                "nombre": "Timothy Weah"
             },
             {
                 "pos": "DFC",
-                "nombre": "Balerdi"
+                "nombre": "CJ Egan-Riley"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kondogbia"
+                "nombre": "Nayef Aguerd"
             },
             {
                 "pos": "LI",
-                "nombre": "Merlin"
+                "nombre": "Ulisses Garcia"
             },
             {
-                "pos": "MC",
-                "nombre": "Højbjerg"
+                "pos": "MCD",
+                "nombre": "Tochukwu Nnadi"
             },
             {
-                "pos": "MC",
-                "nombre": "Rabiot"
+                "pos": "MCD",
+                "nombre": "Pierre-Emile Højbjerg"
             },
             {
                 "pos": "ED",
-                "nombre": "Mason Greenwood"
+                "nombre": "Himad Abdelli"
             },
             {
                 "pos": "MCO",
-                "nombre": "Harit"
+                "nombre": "Amine Harit"
             },
             {
                 "pos": "EI",
-                "nombre": "Luis Henrique"
+                "nombre": "Igor Paixão"
             },
             {
                 "pos": "DC",
-                "nombre": "Wahi"
+                "nombre": "Amine Gouiri"
             }
         ]
     },
     "fra_monaco": {
         "tactica": "4-2-3-1",
-        "dt": "Adi Hütter",
-        "figura": "Akliouche",
-        "arquero": "Majecki",
+        "dt": "Filipe Luís",
+        "figura": "Aleksandr Golovin",
+        "arquero": "Lukas Hrádecký",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Majecki"
+                "nombre": "Lukas Hrádecký"
             },
             {
                 "pos": "LD",
@@ -12136,111 +12032,111 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Singo"
+                "nombre": "Sadibou Sané"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kehrer"
+                "nombre": "Eric Dier"
             },
             {
                 "pos": "LI",
-                "nombre": "Caio Henrique"
+                "nombre": "Flávio Nazinho"
             },
             {
-                "pos": "MC",
-                "nombre": "Camara"
+                "pos": "MCD",
+                "nombre": "Denis Zakaria"
             },
             {
-                "pos": "MC",
-                "nombre": "Zakaria"
+                "pos": "MCD",
+                "nombre": "Lamine Camara"
             },
             {
                 "pos": "ED",
-                "nombre": "Akliouche"
+                "nombre": "Mamadou Coulibaly"
             },
             {
                 "pos": "MCO",
-                "nombre": "Golovin"
+                "nombre": "Aleksandr Golovin"
             },
             {
                 "pos": "EI",
-                "nombre": "Ben Seghir"
+                "nombre": "Mathys Detourbet"
             },
             {
                 "pos": "DC",
-                "nombre": "Embolo"
+                "nombre": "Matthys Abline"
             }
         ]
     },
     "fra_lyon": {
         "tactica": "4-3-3",
-        "dt": "Pierre Sage",
-        "figura": "Lacazette",
-        "arquero": "Perri",
+        "dt": "Carlos Vicens",
+        "figura": "Corentin Tolisso",
+        "arquero": "Dominik Greif",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Perri"
+                "nombre": "Dominik Greif"
             },
             {
                 "pos": "LD",
-                "nombre": "Maitland-Niles"
+                "nombre": "Zachary Athekame"
             },
             {
                 "pos": "DFC",
-                "nombre": "Ćaleta-Car"
+                "nombre": "Moussa Niakhaté"
             },
             {
                 "pos": "DFC",
-                "nombre": "Niakhaté"
+                "nombre": "Ruben Kluivert"
             },
             {
                 "pos": "LI",
-                "nombre": "Tagliafico"
+                "nombre": "Nicolás Tagliafico"
             },
             {
                 "pos": "MC",
-                "nombre": "Veretout"
-            },
-            {
-                "pos": "MCD",
-                "nombre": "Matić"
+                "nombre": "Tanner Tessmann"
             },
             {
                 "pos": "MC",
-                "nombre": "Tolisso"
+                "nombre": "Corentin Tolisso"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Noah Nartey"
             },
             {
                 "pos": "ED",
-                "nombre": "Cherki"
+                "nombre": "Khalis Merah"
             },
             {
                 "pos": "DC",
-                "nombre": "Lacazette"
+                "nombre": "Kaïl Boudache"
             },
             {
                 "pos": "EI",
-                "nombre": "Fofana"
+                "nombre": "Keito Nakamura"
             }
         ]
     },
     "fra_lille": {
-        "tactica": "4-2-3-1",
-        "dt": "Bruno Génésio",
-        "figura": "Jonathan David",
-        "arquero": "Chevalier",
+        "tactica": "4-3-3",
+        "dt": "Davide Ancelotti",
+        "figura": "Benjamin André",
+        "arquero": "Berke Özer",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Chevalier"
+                "nombre": "Berke Özer"
             },
             {
                 "pos": "LD",
-                "nombre": "Meunier"
+                "nombre": "Maxima Goffi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Diakité"
+                "nombre": "Nathan Ngoy"
             },
             {
                 "pos": "DFC",
@@ -12248,723 +12144,723 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Gudmundsson"
+                "nombre": "Romain Perraud"
             },
             {
                 "pos": "MC",
-                "nombre": "André"
+                "nombre": "Benjamin André"
             },
             {
                 "pos": "MC",
-                "nombre": "Bouaddi"
+                "nombre": "Nabil Bentaleb"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Ngal'ayel Mukau"
             },
             {
                 "pos": "ED",
-                "nombre": "Zhegrova"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Angel Gomes"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Sahraoui"
+                "nombre": "Ethan Mbappé"
             },
             {
                 "pos": "DC",
-                "nombre": "Jonathan David"
+                "nombre": "Hákon Arnar Haraldsson"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Dilane Bakwa"
             }
         ]
     },
     "fra_lens": {
         "tactica": "3-4-2-1",
-        "dt": "Will Still",
-        "figura": "Sotoca",
-        "arquero": "Samba",
+        "dt": "Didier Digard",
+        "figura": "Florian Thauvin",
+        "arquero": "Robin Risser",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Samba"
+                "nombre": "Robin Risser"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gradit"
+                "nombre": "Samson Baidoo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Khusanov"
+                "nombre": "Jonathan Gradit"
             },
             {
                 "pos": "DFC",
-                "nombre": "Medina"
+                "nombre": "Jean-Clair Todibo"
             },
             {
-                "pos": "MD",
-                "nombre": "Frankowski"
+                "pos": "CAD",
+                "nombre": "Saud Abdulhamid"
             },
             {
                 "pos": "MC",
-                "nombre": "Thomasson"
+                "nombre": "Yassine Titraoui"
             },
             {
                 "pos": "MC",
-                "nombre": "Diouf"
+                "nombre": "Amadou Haidara"
             },
             {
-                "pos": "MI",
-                "nombre": "Machado"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Sotoca"
+                "pos": "CAI",
+                "nombre": "Matthieu Udol"
             },
             {
                 "pos": "MCO",
-                "nombre": "Zaroury"
+                "nombre": "Florian Thauvin"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Florian Sotoca"
             },
             {
                 "pos": "DC",
-                "nombre": "Nzola"
+                "nombre": "Franjo Ivanović"
             }
         ]
     },
     "fra_nice": {
         "tactica": "3-4-2-1",
-        "dt": "Franck Haise",
-        "figura": "Guessand",
-        "arquero": "Bulka",
+        "dt": "Olivier Pantaloni",
+        "figura": "Sofiane Diop",
+        "arquero": "Yehvann Diouf",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Bulka"
+                "nombre": "Yehvann Diouf"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mendy"
+                "nombre": "Alidu Seidu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bombito"
+                "nombre": "Youssouf Ndayishimiye"
             },
             {
                 "pos": "DFC",
-                "nombre": "Abdelmonem"
+                "nombre": "Mohamed Abdelmonem"
             },
             {
-                "pos": "MD",
-                "nombre": "Clauss"
+                "pos": "CAD",
+                "nombre": "Jonathan Clauss"
             },
             {
                 "pos": "MC",
-                "nombre": "Rosario"
+                "nombre": "Hicham Boudaoui"
             },
             {
                 "pos": "MC",
-                "nombre": "Ndombele"
+                "nombre": "Djibril Coulibaly"
             },
             {
-                "pos": "MI",
-                "nombre": "Bard"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Cho"
+                "pos": "CAI",
+                "nombre": "Niels Nkounkou"
             },
             {
                 "pos": "MCO",
-                "nombre": "Boga"
+                "nombre": "Sofiane Diop"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Mohamed Amoura"
             },
             {
                 "pos": "DC",
-                "nombre": "Guessand"
+                "nombre": "Elye Wahi"
             }
         ]
     },
     "fra_rennes": {
-        "tactica": "4-2-3-1",
-        "dt": "Jorge Sampaoli",
-        "figura": "Kalimuendo",
-        "arquero": "Mandanda",
+        "tactica": "3-5-2",
+        "dt": "Franck Haise",
+        "figura": "Valentin Rongier",
+        "arquero": "Brice Samba",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mandanda"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Assignon"
+                "nombre": "Brice Samba"
             },
             {
                 "pos": "DFC",
-                "nombre": "Wooh"
+                "nombre": "Abdelhamid Aït Boudlal"
             },
             {
                 "pos": "DFC",
-                "nombre": "Østigård"
+                "nombre": "Charlie Cresswell"
             },
             {
-                "pos": "LI",
-                "nombre": "Truffert"
+                "pos": "DFC",
+                "nombre": "Gonçalo Oliveira"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Bryan Reynolds"
             },
             {
                 "pos": "MC",
-                "nombre": "Matusiwa"
+                "nombre": "Valentin Rongier"
             },
             {
                 "pos": "MC",
-                "nombre": "Kamara"
+                "nombre": "Adrien Thomasson"
             },
             {
-                "pos": "ED",
-                "nombre": "Blas"
+                "pos": "MC",
+                "nombre": "Mahdi Camara"
             },
             {
-                "pos": "MCO",
-                "nombre": "Gronbæk"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Gouiri"
+                "pos": "CAI",
+                "nombre": "Aboubakar Nagida"
             },
             {
                 "pos": "DC",
-                "nombre": "Kalimuendo"
+                "nombre": "Edi Mayenda"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Boulaye Dia"
             }
         ]
     },
     "fra_strasbourg": {
         "tactica": "4-2-3-1",
-        "dt": "Liam Rosenior",
-        "figura": "Andrey Santos",
-        "arquero": "Petrović",
+        "dt": "Vítor Matos",
+        "figura": "Giovanni Reyna",
+        "arquero": "Filip Jørgensen",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Petrović"
+                "nombre": "Filip Jørgensen"
             },
             {
                 "pos": "LD",
-                "nombre": "Doué"
+                "nombre": "Lucas Högsberg"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sow"
+                "nombre": "Ismaël Doukouré"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sylla"
+                "nombre": "Karim Coulibaly"
             },
             {
                 "pos": "LI",
-                "nombre": "Diego Moreira"
+                "nombre": "Oso"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Dário Essugo"
             },
             {
                 "pos": "MC",
-                "nombre": "Andrey Santos"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Doukouré"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Bakwa"
+                "nombre": "Samir El Mourabet"
             },
             {
                 "pos": "MCO",
-                "nombre": "Diarra"
+                "nombre": "Giovanni Reyna"
             },
             {
-                "pos": "EI",
-                "nombre": "Nanasi"
+                "pos": "ED",
+                "nombre": "Gessime Yassine"
             },
             {
                 "pos": "DC",
-                "nombre": "Mara"
+                "nombre": "Conrad Harder"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Martial Godo"
             }
         ]
     },
     "fra_toulouse": {
-        "tactica": "3-4-2-1",
-        "dt": "Carles Martínez Novell",
-        "figura": "Aboukhlal",
-        "arquero": "Restes",
+        "tactica": "4-4-2",
+        "dt": "Jens Berthel Askou",
+        "figura": "Casper Tengstedt",
+        "arquero": "Guillaume Restes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Restes"
+                "nombre": "Guillaume Restes"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Christ Tapé"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sidibé"
+                "nombre": "Mark McKenzie"
             },
             {
                 "pos": "DFC",
-                "nombre": "Cresswell"
+                "nombre": "Rasmus Nicolaisen"
             },
             {
-                "pos": "DFC",
-                "nombre": "McKenzie"
+                "pos": "LI",
+                "nombre": "Ismaïl Diallo"
             },
             {
                 "pos": "MD",
-                "nombre": "Kamanzi"
+                "nombre": "Sion Oppong"
             },
             {
                 "pos": "MC",
-                "nombre": "Sierro"
+                "nombre": "Cristian Cásseres Jr."
             },
             {
                 "pos": "MC",
-                "nombre": "Cásseres Jr."
+                "nombre": "Thomas Jørgensen"
             },
             {
                 "pos": "MI",
-                "nombre": "Suazo"
-            },
-            {
-                "pos": "ED",
-                "nombre": "Aboukhlal"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Gboho"
+                "nombre": "Niko Sigur"
             },
             {
                 "pos": "DC",
-                "nombre": "King"
+                "nombre": "Santiago Hidalgo"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Casper Tengstedt"
             }
         ]
     },
     "fra_lehavre": {
-        "tactica": "4-3-3",
-        "dt": "Didier Digard",
-        "figura": "Kechta",
-        "arquero": "Desmas",
+        "tactica": "3-4-2-1",
+        "dt": "Valérien Ismaël",
+        "figura": "Josh Maja",
+        "arquero": "Arnaud Bodart",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Desmas"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Pembele"
+                "nombre": "Arnaud Bodart"
             },
             {
                 "pos": "DFC",
-                "nombre": "Youté"
+                "nombre": "Vincent Sasso"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lloris"
+                "nombre": "Ahmed Touba"
             },
             {
-                "pos": "LI",
-                "nombre": "Operi"
+                "pos": "DFC",
+                "nombre": "Enzo Koffi"
             },
             {
-                "pos": "MC",
-                "nombre": "Touré"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Ndiaye"
+                "pos": "CAD",
+                "nombre": "Djibril Ouziad"
             },
             {
                 "pos": "MC",
-                "nombre": "Kuziaev"
+                "nombre": "Simon Ebonog"
             },
             {
-                "pos": "ED",
-                "nombre": "Kechta"
+                "pos": "MC",
+                "nombre": "Junior Mwanga"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Mbwana Samatta"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Rayan Fofana"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Kaito Mizuta"
             },
             {
                 "pos": "DC",
-                "nombre": "Casimir"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Sabbi"
+                "nombre": "Josh Maja"
             }
         ]
     },
     "fra_angers": {
-        "tactica": "4-2-3-1",
-        "dt": "Alexandre Dujeux",
-        "figura": "Abdelli",
-        "arquero": "Fofana",
+        "tactica": "4-1-4-1",
+        "dt": "Stéphane Gilli",
+        "figura": "Branco van den Boomen",
+        "arquero": "Anthony Lopes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Fofana"
+                "nombre": "Anthony Lopes"
             },
             {
                 "pos": "LD",
-                "nombre": "Arcus"
+                "nombre": "Carlens Arcus"
             },
             {
                 "pos": "DFC",
-                "nombre": "Biumla"
+                "nombre": "Jordan Lefort"
             },
             {
                 "pos": "DFC",
-                "nombre": "Lefort"
+                "nombre": "Ousmane Camara"
             },
             {
                 "pos": "LI",
-                "nombre": "Hanin"
+                "nombre": "Joseph Kalulu"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Haris Belkebla"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Jim Allevinah"
             },
             {
                 "pos": "MC",
-                "nombre": "Aholou"
+                "nombre": "Yassin Belkhdim"
             },
             {
                 "pos": "MC",
-                "nombre": "Belkebla"
+                "nombre": "Branco van den Boomen"
             },
             {
-                "pos": "ED",
-                "nombre": "Allevinah"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Abdelli"
-            },
-            {
-                "pos": "EI",
-                "nombre": "El Melali"
+                "pos": "MI",
+                "nombre": "Amine Sbaï"
             },
             {
                 "pos": "DC",
-                "nombre": "Niane"
+                "nombre": "Prosper Peter"
             }
         ]
     },
     "fra_auxerre": {
-        "tactica": "5-4-1",
-        "dt": "Christophe Pélissier",
-        "figura": "Hamed Traorè",
-        "arquero": "Léon",
+        "tactica": "4-3-3",
+        "dt": "Will Still",
+        "figura": "Romain Faivre",
+        "arquero": "Paul Nardi",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Léon"
+                "nombre": "Paul Nardi"
             },
             {
-                "pos": "CAD",
-                "nombre": "Hoever"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Diomandé"
+                "pos": "LD",
+                "nombre": "Marvin Senaya"
             },
             {
                 "pos": "DFC",
-                "nombre": "Jubal"
+                "nombre": "Sinaly Diomandé"
             },
             {
                 "pos": "DFC",
-                "nombre": "Osho"
+                "nombre": "Axel Tuanzebe"
             },
             {
-                "pos": "CAI",
-                "nombre": "Mensah"
+                "pos": "LI",
+                "nombre": "Telli Siwe"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Pierre Ekwah"
             },
             {
                 "pos": "MC",
-                "nombre": "Owusu"
+                "nombre": "Naouirou Ahamada"
             },
             {
                 "pos": "MC",
-                "nombre": "Danois"
+                "nombre": "Fredrik Oppegård"
             },
             {
                 "pos": "ED",
-                "nombre": "Perrin"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Hamed Traorè"
+                "nombre": "Romain Faivre"
             },
             {
                 "pos": "DC",
-                "nombre": "Bair"
+                "nombre": "Cameron Archer"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Danny Namaso"
             }
         ]
     },
     "fra_brest": {
-        "tactica": "4-3-3",
-        "dt": "Éric Roy",
-        "figura": "Camara",
-        "arquero": "Bizot",
+        "tactica": "4-2-3-1",
+        "dt": "Julien Lachuer",
+        "figura": "Ludovic Ajorque",
+        "arquero": "Egil Selvik",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Bizot"
+                "nombre": "Egil Selvik"
             },
             {
                 "pos": "LD",
-                "nombre": "Lala"
+                "nombre": "Kenny Lala"
             },
             {
                 "pos": "DFC",
-                "nombre": "Chardonnet"
+                "nombre": "Lucas Tousart"
             },
             {
                 "pos": "DFC",
-                "nombre": "Coulibaly"
+                "nombre": "Gautier Lloris"
             },
             {
                 "pos": "LI",
-                "nombre": "Amavi"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Camara"
+                "nombre": "Bradley Locko"
             },
             {
                 "pos": "MCD",
-                "nombre": "Lees-Melou"
+                "nombre": "Joris Chotard"
             },
             {
-                "pos": "MC",
-                "nombre": "Magnetti"
+                "pos": "MCD",
+                "nombre": "Hugo Magnetti"
             },
             {
                 "pos": "ED",
-                "nombre": "Del Castillo"
+                "nombre": "Noah Edjouma"
             },
             {
-                "pos": "DC",
-                "nombre": "Ajorque"
+                "pos": "MCO",
+                "nombre": "Kamory Doumbia"
             },
             {
                 "pos": "EI",
-                "nombre": "Baldé"
+                "nombre": "Mama Baldé"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Ludovic Ajorque"
             }
         ]
     },
     "fra_lorient": {
-        "tactica": "4-2-3-1",
-        "dt": "Olivier Pantaloni",
-        "figura": "Abergel",
-        "arquero": "Mvogo",
+        "tactica": "3-4-2-1",
+        "dt": "Alexandre Dujeux",
+        "figura": "Aiyegun Tosin",
+        "arquero": "Yvon Mvogo",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Mvogo"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Silva"
+                "nombre": "Yvon Mvogo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Laporte"
+                "nombre": "Montassar Talbi"
             },
             {
                 "pos": "DFC",
-                "nombre": "Talbi"
+                "nombre": "Nathaniel Adjei"
             },
             {
-                "pos": "LI",
-                "nombre": "Yongwa"
+                "pos": "DFC",
+                "nombre": "Isaak Touré"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Dembo Sylla"
             },
             {
                 "pos": "MC",
-                "nombre": "Abergel"
+                "nombre": "Noah Cadiou"
             },
             {
                 "pos": "MC",
-                "nombre": "Ponceau"
+                "nombre": "Arthur Avom Ebong"
             },
             {
-                "pos": "ED",
-                "nombre": "Katseris"
+                "pos": "CAI",
+                "nombre": "Arsène Kouassi"
             },
             {
                 "pos": "MCO",
-                "nombre": "Pagis"
+                "nombre": "Gabin Bernardeau"
             },
             {
-                "pos": "EI",
-                "nombre": "Kroupi"
+                "pos": "MCO",
+                "nombre": "Jean-Victor Makengo"
             },
             {
                 "pos": "DC",
-                "nombre": "Bamba"
+                "nombre": "Aiyegun Tosin"
             }
         ]
     },
     "fra_lemans": {
-        "tactica": "4-2-3-1",
+        "tactica": "3-1-4-2",
         "dt": "Patrick Videira",
-        "figura": "Rabillard",
-        "arquero": "Hatfout",
+        "figura": "Louis Mafouta",
+        "arquero": "Nicolas Kocik",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Hatfout"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Ribelin"
+                "nombre": "Nicolas Kocik"
             },
             {
                 "pos": "DFC",
-                "nombre": "Voyer"
+                "nombre": "Harold Voyer"
             },
             {
                 "pos": "DFC",
-                "nombre": "Yohou"
+                "nombre": "Samuel Yohou"
             },
             {
-                "pos": "LI",
-                "nombre": "Lauray"
+                "pos": "DFC",
+                "nombre": "Rayan Bamba"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Lucas Bretelle"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Lucas Buadés"
             },
             {
                 "pos": "MC",
-                "nombre": "Quarshie"
+                "nombre": "Jean Vercruysse"
             },
             {
                 "pos": "MC",
-                "nombre": "Rossignol"
+                "nombre": "Daouda Traoré"
             },
             {
-                "pos": "ED",
-                "nombre": "Colas"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Oulaï"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Gueye"
+                "pos": "MI",
+                "nombre": "Lucas Calodat"
             },
             {
                 "pos": "DC",
-                "nombre": "Rabillard"
+                "nombre": "Dame Gueye"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Louis Mafouta"
             }
         ]
     },
     "fra_parisfc": {
-        "tactica": "4-3-3",
-        "dt": "Stéphane Gilli",
-        "figura": "Kebbal",
-        "arquero": "Nkambadio",
+        "tactica": "3-4-2-1",
+        "dt": "Liam Rosenior",
+        "figura": "Lassine Sinayoko",
+        "arquero": "Kevin Trapp",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Nkambadio"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Tourraine"
+                "nombre": "Kevin Trapp"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mbow"
+                "nombre": "Adama Camara"
             },
             {
                 "pos": "DFC",
-                "nombre": "Kolodziejczak"
+                "nombre": "Diego Coppola"
             },
             {
-                "pos": "LI",
-                "nombre": "Gaudin"
+                "pos": "DFC",
+                "nombre": "Moustapha Mbow"
             },
             {
-                "pos": "MC",
-                "nombre": "Doucet"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Camara"
+                "pos": "CAD",
+                "nombre": "Hamari Traoré"
             },
             {
                 "pos": "MC",
-                "nombre": "Lopez"
+                "nombre": "Maxime Lopez"
             },
             {
-                "pos": "ED",
-                "nombre": "Kebbal"
+                "pos": "MC",
+                "nombre": "Pierre Lees-Melou"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Otávio"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Ilan Kebbal"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Pablo Pagis"
             },
             {
                 "pos": "DC",
-                "nombre": "Krasso"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Gory"
+                "nombre": "Lassine Sinayoko"
             }
         ]
     },
     "fra_troyes": {
-        "tactica": "4-2-3-1",
+        "tactica": "4-3-3",
         "dt": "Stéphane Dumont",
-        "figura": "Ripart",
-        "arquero": "Lemaître",
+        "figura": "Renaud Ripart",
+        "arquero": "Hillel Konaté",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Lemaître"
+                "nombre": "Hillel Konaté"
             },
             {
                 "pos": "LD",
-                "nombre": "Mendes"
+                "nombre": "Lucas Maronnier"
             },
             {
                 "pos": "DFC",
-                "nombre": "Monfray"
+                "nombre": "Adrien Monfray"
             },
             {
                 "pos": "DFC",
-                "nombre": "Díaz"
+                "nombre": "Junior Diaz"
             },
             {
                 "pos": "LI",
-                "nombre": "Boura"
+                "nombre": "Paolo Gozzi"
             },
             {
                 "pos": "MC",
-                "nombre": "Kanté"
+                "nombre": "Antoine Mille"
             },
             {
                 "pos": "MC",
-                "nombre": "Diop"
+                "nombre": "Dermane Karim"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Mouhamed Diop"
             },
             {
                 "pos": "ED",
-                "nombre": "Saïd"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Chavalerin"
+                "nombre": "Renaud Ripart"
             },
             {
                 "pos": "EI",
-                "nombre": "Irié"
+                "nombre": "Merwan Ifnaoui"
             },
             {
                 "pos": "DC",
-                "nombre": "Ripart"
+                "nombre": "Timothé Nkada"
             }
         ]
     },
     "mex_pumas": {
-        "tactica": "4-2-3-1",
-        "dt": "Gustavo Lema",
+        "tactica": "4-4-2",
+        "dt": "Esteban Solari",
         "figura": "César Huerta",
-        "arquero": "González",
+        "arquero": "Keylor Navas",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "González"
+                "nombre": "Keylor Navas"
             },
             {
                 "pos": "LD",
-                "nombre": "Bennevendo"
+                "nombre": "Pablo Bennevendo"
             },
             {
                 "pos": "DFC",
@@ -12972,83 +12868,83 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Magallán"
+                "nombre": "Rubén Duarte"
             },
             {
                 "pos": "LI",
-                "nombre": "Ergas"
+                "nombre": "Rodrigo López"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Uriel Antuna"
             },
             {
                 "pos": "MC",
-                "nombre": "Caicedo"
+                "nombre": "Adalberto Carrasquilla"
             },
             {
                 "pos": "MC",
-                "nombre": "Trigos"
+                "nombre": "Pedro Vite"
             },
             {
-                "pos": "ED",
-                "nombre": "Suárez"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Quispe"
-            },
-            {
-                "pos": "EI",
+                "pos": "MI",
                 "nombre": "César Huerta"
             },
             {
                 "pos": "DC",
-                "nombre": "Martínez"
+                "nombre": "Robert Morales"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Juninho Vieira"
             }
         ]
     },
     "mex_pachuca": {
         "tactica": "4-2-3-1",
-        "dt": "Guillermo Almada",
-        "figura": "Salomón Rondón",
-        "arquero": "Moreno",
+        "dt": "Benjamín Mora",
+        "figura": "Oussama Idrissi",
+        "arquero": "Carlos Moreno",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Moreno"
+                "nombre": "Carlos Moreno"
             },
             {
                 "pos": "LD",
-                "nombre": "Rodríguez"
+                "nombre": "Jorge Berlanga"
             },
             {
                 "pos": "DFC",
-                "nombre": "Cabral"
+                "nombre": "Eduardo Bauermann"
             },
             {
                 "pos": "DFC",
-                "nombre": "Barreto"
+                "nombre": "Sergio Barreto"
             },
             {
                 "pos": "LI",
-                "nombre": "Bryan González"
+                "nombre": "Francisco Venegas"
             },
             {
-                "pos": "MC",
-                "nombre": "Pedraza"
+                "pos": "MCD",
+                "nombre": "Christian Rivera"
             },
             {
-                "pos": "MC",
-                "nombre": "Deossa"
+                "pos": "MCD",
+                "nombre": "Rodolfo Pizarro"
             },
             {
                 "pos": "ED",
-                "nombre": "Owen González"
+                "nombre": "Nicolás Vallejo"
             },
             {
                 "pos": "MCO",
-                "nombre": "Montiel"
+                "nombre": "Alán Bautista"
             },
             {
                 "pos": "EI",
-                "nombre": "Idrissi"
+                "nombre": "Oussama Idrissi"
             },
             {
                 "pos": "DC",
@@ -13057,60 +12953,60 @@ window.PLAN_REALES = {
         ]
     },
     "mex_leon": {
-        "tactica": "4-2-3-1",
-        "dt": "Eduardo Berizzo",
-        "figura": "Andrés Guardado",
-        "arquero": "Blanco",
+        "tactica": "4-3-3",
+        "dt": "Javier Gandolfi",
+        "figura": "Díber Cambindo",
+        "arquero": "Óscar García",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Blanco"
+                "nombre": "Óscar García"
             },
             {
                 "pos": "LD",
-                "nombre": "Reyes"
+                "nombre": "Iván Moreno"
             },
             {
                 "pos": "DFC",
-                "nombre": "Barreiro"
+                "nombre": "Jhohan Romaña"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bellón"
+                "nombre": "Sebastián Vegas"
             },
             {
                 "pos": "LI",
-                "nombre": "Salvador"
+                "nombre": "Juan José Guevara"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "José Iván Rodríguez"
             },
             {
                 "pos": "MC",
-                "nombre": "Andrés Guardado"
+                "nombre": "Fernando Beltrán"
             },
             {
                 "pos": "MC",
-                "nombre": "Estrada"
+                "nombre": "Rodrigo Echeverría"
             },
             {
                 "pos": "ED",
-                "nombre": "Cabral"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Mendoza"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Hernández"
+                "nombre": "Daniel Arcila"
             },
             {
                 "pos": "DC",
-                "nombre": "Cádiz"
+                "nombre": "Díber Cambindo"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Alfonso Alvarado"
             }
         ]
     },
     "mex_santos": {
-        "tactica": "4-2-3-1",
-        "dt": "Ignacio Ambriz",
+        "tactica": "5-4-1",
+        "dt": "Renato Paiva",
         "figura": "Carlos Acevedo",
         "arquero": "Carlos Acevedo",
         "titulares": [
@@ -13119,50 +13015,50 @@ window.PLAN_REALES = {
                 "nombre": "Carlos Acevedo"
             },
             {
-                "pos": "LD",
-                "nombre": "López"
+                "pos": "CAD",
+                "nombre": "Mauricio Cuevas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Santamaría"
+                "nombre": "Franco Pardo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Amione"
+                "nombre": "Felipe Sánchez"
             },
             {
-                "pos": "LI",
-                "nombre": "Echeverría"
+                "pos": "DFC",
+                "nombre": "Jonathan Pérez"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Emmanuel Echeverría"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Ramiro Sordo"
             },
             {
                 "pos": "MC",
-                "nombre": "Mariscal"
+                "nombre": "Fran Villalba"
             },
             {
                 "pos": "MC",
-                "nombre": "Naveda"
+                "nombre": "Facundo Cáseres"
             },
             {
-                "pos": "ED",
-                "nombre": "Sordo"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Fagúndez"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Medina"
+                "pos": "MI",
+                "nombre": "Ezequiel Bullaude"
             },
             {
                 "pos": "DC",
-                "nombre": "Lozano"
+                "nombre": "Eduardo Aguirre"
             }
         ]
     },
     "mex_atlas": {
-        "tactica": "4-2-3-1",
-        "dt": "Beñat San José",
+        "tactica": "3-4-2-1",
+        "dt": "Hernán Crespo",
         "figura": "Aldo Rocha",
         "arquero": "Camilo Vargas",
         "titulares": [
@@ -13171,20 +13067,20 @@ window.PLAN_REALES = {
                 "nombre": "Camilo Vargas"
             },
             {
-                "pos": "LD",
-                "nombre": "Zaldívar"
+                "pos": "DFC",
+                "nombre": "Manuel Capasso"
             },
             {
                 "pos": "DFC",
-                "nombre": "Nervo"
+                "nombre": "Adonis Frías"
             },
             {
                 "pos": "DFC",
-                "nombre": "Dória"
+                "nombre": "Juan José Purata"
             },
             {
-                "pos": "LI",
-                "nombre": "Reyes"
+                "pos": "CAD",
+                "nombre": "Sergio Hernández"
             },
             {
                 "pos": "MC",
@@ -13192,279 +13088,279 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "MC",
-                "nombre": "Márquez"
+                "nombre": "Elías Montiel"
             },
             {
-                "pos": "ED",
-                "nombre": "Murillo"
+                "pos": "CAI",
+                "nombre": "Milton Valenzuela"
             },
             {
                 "pos": "MCO",
-                "nombre": "Lozano"
+                "nombre": "Luís Esteves"
             },
             {
-                "pos": "EI",
-                "nombre": "Fulgencio"
+                "pos": "MCO",
+                "nombre": "Kevin Zenón"
             },
             {
                 "pos": "DC",
-                "nombre": "Djurdjević"
+                "nombre": "Florián Monzón"
             }
         ]
     },
     "mex_sanluis": {
-        "tactica": "4-2-3-1",
-        "dt": "Domènec Torrent",
-        "figura": "Franck Boli",
-        "arquero": "Sánchez",
+        "tactica": "3-4-2-1",
+        "dt": "Diego Mejía",
+        "figura": "Sébastien Salles-Lamonge",
+        "arquero": "Gibrán Lajud",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Sánchez"
-            },
-            {
-                "pos": "LD",
-                "nombre": "Chávez"
+                "nombre": "Gibrán Lajud"
             },
             {
                 "pos": "DFC",
-                "nombre": "Domínguez"
+                "nombre": "Robson Bambu"
             },
             {
                 "pos": "DFC",
-                "nombre": "Águila"
+                "nombre": "Eduardo Águila"
             },
             {
-                "pos": "LI",
-                "nombre": "Sanabria"
+                "pos": "DFC",
+                "nombre": "Aldo Cruz"
+            },
+            {
+                "pos": "CAD",
+                "nombre": "Benjamín Galdames"
             },
             {
                 "pos": "MC",
-                "nombre": "Güémez"
+                "nombre": "Óscar Macías"
             },
             {
                 "pos": "MC",
-                "nombre": "Dourado"
+                "nombre": "Sébastien Salles-Lamonge"
             },
             {
-                "pos": "ED",
-                "nombre": "Nájera"
+                "pos": "CAI",
+                "nombre": "Anderson Duarte"
             },
             {
                 "pos": "MCO",
-                "nombre": "Salles-Lamonge"
+                "nombre": "David Rodríguez"
             },
             {
-                "pos": "EI",
-                "nombre": "Klimowicz"
+                "pos": "MCO",
+                "nombre": "Rafael Llorente"
             },
             {
                 "pos": "DC",
-                "nombre": "Franck Boli"
+                "nombre": "Felipe Mora"
             }
         ]
     },
     "mex_tijuana": {
-        "tactica": "4-2-3-1",
-        "dt": "Juan Carlos Osorio",
-        "figura": "Emanuel Reynoso",
-        "arquero": "Rodríguez",
+        "tactica": "5-4-1",
+        "dt": "Sebastián Abreu",
+        "figura": "Gilberto Mora",
+        "arquero": "José Antonio Rodríguez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Rodríguez"
+                "nombre": "José Antonio Rodríguez"
             },
             {
                 "pos": "LD",
-                "nombre": "Fernández"
+                "nombre": "Rafael Fernández"
             },
             {
                 "pos": "DFC",
-                "nombre": "Bilbao"
+                "nombre": "Jackson Porozo"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gómez"
+                "nombre": "Iván Tona"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Jesús Gómez"
             },
             {
                 "pos": "LI",
-                "nombre": "Vega"
+                "nombre": "Pablo Nicolás Ortíz"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Francisco González"
             },
             {
                 "pos": "MC",
-                "nombre": "Rivera"
+                "nombre": "Ignacio Rivero"
             },
             {
                 "pos": "MC",
-                "nombre": "Castañeda"
+                "nombre": "Gilberto Mora"
             },
             {
-                "pos": "ED",
-                "nombre": "Blanco"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Emanuel Reynoso"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Álvarez"
+                "pos": "MI",
+                "nombre": "Adonis Preciado"
             },
             {
                 "pos": "DC",
-                "nombre": "Zúñiga"
+                "nombre": "Mourad El Ghezouani"
             }
         ]
     },
     "mex_necaxa": {
-        "tactica": "4-2-3-1",
-        "dt": "Eduardo Fentanes",
-        "figura": "José Paradela",
-        "arquero": "Unsain",
+        "tactica": "4-1-4-1",
+        "dt": "Juan Reynoso",
+        "figura": "Julián Carranza",
+        "arquero": "Javier Orantes",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Unsain"
+                "nombre": "Javier Orantes"
             },
             {
                 "pos": "LD",
-                "nombre": "Martínez"
+                "nombre": "Raúl Martínez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Montes"
+                "nombre": "Kaiky Naves"
             },
             {
                 "pos": "DFC",
-                "nombre": "Oliveros"
+                "nombre": "Agustín Oliveros"
             },
             {
                 "pos": "LI",
-                "nombre": "Calderón"
+                "nombre": "Mauro Zaleta"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Diego Ochoa"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Emilio Rodríguez"
             },
             {
                 "pos": "MC",
-                "nombre": "Gómez"
+                "nombre": "Lorenzo Faravelli"
             },
             {
                 "pos": "MC",
-                "nombre": "Palavecino"
+                "nombre": "Danny Leyva"
             },
             {
-                "pos": "ED",
-                "nombre": "Garnica"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "José Paradela"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Mayorga"
+                "pos": "MI",
+                "nombre": "Owen González"
             },
             {
                 "pos": "DC",
-                "nombre": "Cambindo"
+                "nombre": "Julián Carranza"
             }
         ]
     },
     "mex_puebla": {
-        "tactica": "4-2-3-1",
-        "dt": "José Manuel de la Torre",
-        "figura": "Lucas Cavallini",
-        "arquero": "Jiménez",
+        "tactica": "4-4-1-1",
+        "dt": "Gerardo Espinoza",
+        "figura": "Mathías Tomás",
+        "arquero": "Ricardo Gutiérrez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Jiménez"
+                "nombre": "Ricardo Gutiérrez"
             },
             {
                 "pos": "LD",
-                "nombre": "Ferrareis"
+                "nombre": "Iker Moreno"
             },
             {
                 "pos": "DFC",
-                "nombre": "Gularte"
+                "nombre": "Juan Pablo Vargas"
             },
             {
                 "pos": "DFC",
-                "nombre": "Orona"
+                "nombre": "Facundo Almada"
             },
             {
                 "pos": "LI",
-                "nombre": "Angulo"
+                "nombre": "Óscar Villa"
+            },
+            {
+                "pos": "MD",
+                "nombre": "Kevin Velasco"
             },
             {
                 "pos": "MC",
-                "nombre": "De Buen"
+                "nombre": "Alejandro Organista"
             },
             {
                 "pos": "MC",
-                "nombre": "González"
+                "nombre": "Eduardo Armenta"
             },
             {
-                "pos": "ED",
-                "nombre": "Castillo"
+                "pos": "MI",
+                "nombre": "Omar Moreno"
             },
             {
                 "pos": "MCO",
-                "nombre": "Waller"
-            },
-            {
-                "pos": "EI",
-                "nombre": "Quiñones"
+                "nombre": "Mathías Tomás"
             },
             {
                 "pos": "DC",
-                "nombre": "Lucas Cavallini"
+                "nombre": "Luifer Hernández"
             }
         ]
     },
     "mex_juarez": {
         "tactica": "4-2-3-1",
-        "dt": "Salvador Valero",
+        "dt": "Gustavo Lema",
         "figura": "Óscar Estupiñán",
-        "arquero": "Díaz",
+        "arquero": "Sebastián Jurado",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Díaz"
+                "nombre": "Sebastián Jurado"
             },
             {
                 "pos": "LD",
-                "nombre": "Abella"
+                "nombre": "Francisco Nevárez"
             },
             {
                 "pos": "DFC",
-                "nombre": "Salcedo"
+                "nombre": "Gilberto Sepúlveda"
             },
             {
                 "pos": "DFC",
-                "nombre": "Mosquera"
+                "nombre": "Jesús Murillo"
             },
             {
                 "pos": "LI",
-                "nombre": "Orquín"
+                "nombre": "Alejandro Mayorga"
             },
             {
-                "pos": "MC",
-                "nombre": "Campillo"
+                "pos": "MCD",
+                "nombre": "Denzell García"
             },
             {
-                "pos": "MC",
-                "nombre": "Castilho"
+                "pos": "MCD",
+                "nombre": "Guilherme Castilho"
             },
             {
                 "pos": "ED",
-                "nombre": "Rodríguez"
+                "nombre": "José Luis Rodríguez"
             },
             {
                 "pos": "MCO",
-                "nombre": "Villalpando"
+                "nombre": "Madson Monteiro"
             },
             {
                 "pos": "EI",
-                "nombre": "García"
+                "nombre": "Eder López"
             },
             {
                 "pos": "DC",
@@ -13473,112 +13369,112 @@ window.PLAN_REALES = {
         ]
     },
     "mex_queretaro": {
-        "tactica": "4-4-2",
-        "dt": "Mauro Gerk",
-        "figura": "Federico Lértora",
-        "arquero": "Allison",
+        "tactica": "5-3-2",
+        "dt": "Esteban González",
+        "figura": "Mateo Coronel",
+        "arquero": "Guillermo Allison",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Allison"
+                "nombre": "Guillermo Allison"
             },
             {
-                "pos": "LD",
-                "nombre": "Mendoza"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Franco"
+                "pos": "CAD",
+                "nombre": "Bayron Duarte"
             },
             {
                 "pos": "DFC",
-                "nombre": "Russo"
+                "nombre": "Diego Reyes"
             },
             {
-                "pos": "LI",
-                "nombre": "Venegas"
+                "pos": "DFC",
+                "nombre": "Lucas Abascia"
             },
             {
-                "pos": "MD",
-                "nombre": "Barrera"
+                "pos": "DFC",
+                "nombre": "Carlos Villanueva"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Daniel Parra"
             },
             {
                 "pos": "MC",
-                "nombre": "Federico Lértora"
+                "nombre": "Carlo García"
             },
             {
                 "pos": "MC",
-                "nombre": "Escamilla"
+                "nombre": "Bernardo Parra"
             },
             {
-                "pos": "MI",
-                "nombre": "Preciado"
-            },
-            {
-                "pos": "DC",
-                "nombre": "Sosa"
+                "pos": "MC",
+                "nombre": "Enzo Giménez"
             },
             {
                 "pos": "DC",
-                "nombre": "Benedetto"
+                "nombre": "Mateo Coronel"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Iker Benito"
             }
         ]
     },
     "mex_atlante": {
-        "tactica": "4-2-3-1",
-        "dt": "Daniel Alcántar",
-        "figura": "Rafael Durán",
-        "arquero": "Hernández",
+        "tactica": "5-3-2",
+        "dt": "Miguel Herrera",
+        "figura": "Jhojan Julio",
+        "arquero": "Óscar Jiménez",
         "titulares": [
             {
                 "pos": "POR",
-                "nombre": "Hernández"
+                "nombre": "Óscar Jiménez"
             },
             {
-                "pos": "LD",
-                "nombre": "Soto"
-            },
-            {
-                "pos": "DFC",
-                "nombre": "Cruz"
+                "pos": "CAD",
+                "nombre": "Walter Portales"
             },
             {
                 "pos": "DFC",
-                "nombre": "Sánchez"
+                "nombre": "Juan Nicolás Carrera"
             },
             {
-                "pos": "LI",
-                "nombre": "Sousa"
+                "pos": "DFC",
+                "nombre": "Aarón Quirós"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Luis Gustavo Sánchez"
+            },
+            {
+                "pos": "CAI",
+                "nombre": "Walter Clar"
             },
             {
                 "pos": "MC",
-                "nombre": "Partida"
+                "nombre": "Martín Sarrafiore"
             },
             {
                 "pos": "MC",
-                "nombre": "Canto"
+                "nombre": "Eugenio Pizzuto"
             },
             {
-                "pos": "ED",
-                "nombre": "Jiménez"
-            },
-            {
-                "pos": "MCO",
-                "nombre": "Cantú"
-            },
-            {
-                "pos": "EI",
-                "nombre": "González"
+                "pos": "MC",
+                "nombre": "Luis Calzadilla"
             },
             {
                 "pos": "DC",
-                "nombre": "Rafael Durán"
+                "nombre": "Joaquín Moxica"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jhojan Julio"
             }
         ]
     },
     "ecu": {
-        "tactica": "4-3-3",
-        "dt": "Sebastián Beccacece",
+        "tactica": "4-2-3-1",
+        "dt": "Marcelo Gallardo",
         "figura": "Moisés Caicedo",
         "arquero": "Hernán Galíndez",
         "titulares": [
@@ -13588,11 +13484,11 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Ángelo Preciado"
+                "nombre": "Angelo Preciado"
             },
             {
                 "pos": "DFC",
-                "nombre": "Félix Torres"
+                "nombre": "Jackson Porozo"
             },
             {
                 "pos": "DFC",
@@ -13600,38 +13496,38 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LI",
-                "nombre": "Pervis Estupiñán"
+                "nombre": "Piero Hincapié"
             },
             {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Moisés Caicedo"
             },
             {
                 "pos": "MC",
-                "nombre": "Alan Franco"
-            },
-            {
-                "pos": "MC",
-                "nombre": "Kendry Páez"
+                "nombre": "Pedro Vite"
             },
             {
                 "pos": "ED",
-                "nombre": "Gonzalo Plata"
+                "nombre": "Keny Arroyo"
             },
             {
-                "pos": "DC",
-                "nombre": "Enner Valencia"
+                "pos": "MCO",
+                "nombre": "John Yeboah"
             },
             {
                 "pos": "EI",
-                "nombre": "Kevin Rodríguez"
+                "nombre": "Nilson Angulo"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jordy Caicedo"
             }
         ]
     },
     "den": {
         "tactica": "4-3-3",
         "dt": "Brian Riemer",
-        "figura": "Christian Eriksen",
+        "figura": "Rasmus Højlund",
         "arquero": "Mads Hermansen",
         "titulares": [
             {
@@ -13640,7 +13536,7 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "LD",
-                "nombre": "Alexander Bah"
+                "nombre": "Rasmus Kristensen"
             },
             {
                 "pos": "DFC",
@@ -13648,27 +13544,27 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "DFC",
-                "nombre": "Victor Nelsson"
+                "nombre": "Oliver Provstgaard"
             },
             {
                 "pos": "LI",
                 "nombre": "Joakim Mæhle"
             },
             {
-                "pos": "MC",
-                "nombre": "Pierre-Emile Højbjerg"
-            },
-            {
-                "pos": "MC",
+                "pos": "MCD",
                 "nombre": "Morten Hjulmand"
             },
             {
                 "pos": "MC",
-                "nombre": "Christian Eriksen"
+                "nombre": "Pierre-Emile Højbjerg"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "Mikkel Damsgaard"
             },
             {
                 "pos": "ED",
-                "nombre": "Andreas Skov Olsen"
+                "nombre": "Gustav Isaksen"
             },
             {
                 "pos": "DC",
@@ -13676,7 +13572,111 @@ window.PLAN_REALES = {
             },
             {
                 "pos": "EI",
+                "nombre": "Mohamed Daramy"
+            }
+        ]
+    },
+    "ec": {
+        "tactica": "4-2-3-1",
+        "dt": "Marcelo Gallardo",
+        "figura": "Moisés Caicedo",
+        "arquero": "Hernán Galíndez",
+        "titulares": [
+            {
+                "pos": "POR",
+                "nombre": "Hernán Galíndez"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Angelo Preciado"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Jackson Porozo"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Willian Pacho"
+            },
+            {
+                "pos": "LI",
+                "nombre": "Piero Hincapié"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Moisés Caicedo"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Pedro Vite"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Keny Arroyo"
+            },
+            {
+                "pos": "MCO",
+                "nombre": "John Yeboah"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Nilson Angulo"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Jordy Caicedo"
+            }
+        ]
+    },
+    "dk": {
+        "tactica": "4-3-3",
+        "dt": "Brian Riemer",
+        "figura": "Rasmus Højlund",
+        "arquero": "Mads Hermansen",
+        "titulares": [
+            {
+                "pos": "POR",
+                "nombre": "Mads Hermansen"
+            },
+            {
+                "pos": "LD",
+                "nombre": "Rasmus Kristensen"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Joachim Andersen"
+            },
+            {
+                "pos": "DFC",
+                "nombre": "Oliver Provstgaard"
+            },
+            {
+                "pos": "LI",
+                "nombre": "Joakim Mæhle"
+            },
+            {
+                "pos": "MCD",
+                "nombre": "Morten Hjulmand"
+            },
+            {
+                "pos": "MC",
+                "nombre": "Pierre-Emile Højbjerg"
+            },
+            {
+                "pos": "MCO",
                 "nombre": "Mikkel Damsgaard"
+            },
+            {
+                "pos": "ED",
+                "nombre": "Gustav Isaksen"
+            },
+            {
+                "pos": "DC",
+                "nombre": "Rasmus Højlund"
+            },
+            {
+                "pos": "EI",
+                "nombre": "Mohamed Daramy"
             }
         ]
     }

@@ -647,7 +647,7 @@ const EQUIPOS_OVR = {
     // 🌍 SELECCIONES NACIONALES
     'ar': 87, 'fr': 87, 'gb-eng': 86, 'es': 86, 'br': 85, 'de': 85, 'pt': 85, 'nl': 84,
     'it': 83, 'uy': 82, 'co': 81, 'hr': 81, 'mar': 81, 'be': 80, 'jp': 79, 'sen': 79,
-    'us': 78, 'mx': 78, 'ec': 78, 'ch': 78, 'dk': 78, 'at': 77, 'srb': 77, 'pl': 77,
+    'us': 78, 'mx': 78, 'ecu': 78, 'ec': 78, 'ch': 78, 'den': 78, 'dk': 78, 'at': 77, 'srb': 77, 'pl': 77,
     'tr': 77, 'ua': 76, 'ng': 76, 'ci': 76, 'eg': 76, 'kr': 76, 'cl': 75, 'pe': 74,
     'py': 75, 've': 74, 'bo': 70, 'au': 74, 'ca': 76, 'cz': 76, 'no': 77, 'sc': 76,
 
@@ -748,7 +748,7 @@ const TORNEOS_CONFIG = {
         premioSP: 15,
         clubesIds: [
             'ar', 'fr', 'gb-eng', 'es', 'br', 'de', 'pt', 'nl', 'it', 'uy',
-            'co', 'hr', 'mar', 'be', 'jp', 'sen', 'us', 'mx', 'ec', 'dk'
+            'co', 'hr', 'mar', 'be', 'jp', 'sen', 'us', 'mx', 'ecu', 'den'
         ]
     }
 };
