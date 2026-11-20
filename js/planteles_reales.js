@@ -838,7 +838,7 @@ window.PLAN_REALES = {
     },
     "arg_banfield": {
         "tactica": "4-3-3",
-        "dt": "Interino (post Pedro Troglio)",
+        "dt": "Pedro Troglio",
         "figura": "Adrián Balboa",
         "arquero": "Diego Rodríguez",
         "titulares": [
@@ -2918,7 +2918,7 @@ window.PLAN_REALES = {
     },
     "arg_acassuso": {
         "tactica": "4-4-2",
-        "dt": "Interino (post Ricardo Pancaldo)",
+        "dt": "Ricardo Pancaldo",
         "figura": "Kevin Dubini",
         "arquero": "Mariano Monllor",
         "titulares": [

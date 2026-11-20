@@ -1148,6 +1148,17 @@ function prepararVistaPartidoCopa() {
         nombreDTUser = (nombreUsuario && nombreUsuario !== 'Tu Once') ? `DT ${nombreUsuario}` : 'DT Propio';
     }
 
+    const limpiarNombreDT = (dt) => {
+        if (!dt) return 'DT Oficial';
+        return String(dt)
+            .replace(/\s*\((?:interino|int\.?|post[^)]*)\)/gi, '')
+            .replace(/^interino\s*(?:\(post\s*([^)]+)\))?/i, (m, p1) => p1 ? p1.trim() : 'DT Oficial')
+            .replace(/\s*-\s*interino/gi, '')
+            .replace(/\s+interino/gi, '')
+            .trim();
+    };
+    nombreDTUser = limpiarNombreDT(nombreDTUser);
+
     if (fActual.posiciones) {
         fActual.posiciones.forEach((item, idx) => {
             const idAvatar = once[idx];
@@ -1166,7 +1177,7 @@ function prepararVistaPartidoCopa() {
     if (!userDelanteros.length) userDelanteros.push('La Delantera');
 
     const rivalTactica = rivalData ? rivalData.tactica : '4-3-3';
-    const rivalDT = rivalData ? rivalData.dt : 'DT Oficial';
+    const rivalDT = limpiarNombreDT(rivalData ? rivalData.dt : 'DT Oficial');
     const rivalFigura = rivalData ? rivalData.figura : rival.nombre;
     let rivalArquero = rivalData ? rivalData.arquero : 'Arquero Rival';
     const rivalDef = [];
