@@ -5777,6 +5777,254 @@
 }
 
 /* 🟡 DORADO ORO: COPAS */
+#ranking-carrera-modal .carrera-tabs-v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+#ranking-carrera-modal .carrera-v2-tab-btn {
+    position: relative;
+    width: 100%;
+    height: 58px;
+    min-height: 58px;
+    max-height: 58px;
+    padding: 0 16px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.55) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-left: 3.5px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    text-align: left;
+}
+
+#ranking-carrera-modal .carrera-v2-tab-btn:hover {
+    transform: translateX(4px);
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+#ranking-carrera-modal .v2-tab-icon-wrap {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    max-width: 42px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#ranking-carrera-modal .v2-tab-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
+    transition: transform 0.25s ease;
+}
+
+#ranking-carrera-modal .carrera-v2-tab-btn:hover .v2-tab-img {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+#ranking-carrera-modal .v2-tab-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    gap: 2px;
+    text-align: left;
+}
+
+#ranking-carrera-modal .v2-tab-title {
+    font-size: 0.92rem;
+    font-weight: 900;
+    color: #f8fafc;
+    letter-spacing: 0.2px;
+    line-height: 1.15;
+}
+
+#ranking-carrera-modal .v2-tab-sub {
+    font-size: 0.70rem;
+    color: #94a3b8;
+    font-weight: 600;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+#ranking-carrera-modal .v2-tab-chevron {
+    font-size: 0.95rem;
+    color: rgba(148, 163, 184, 0.35);
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* 🟡 DORADO ORO: COPAS */
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active {
+    background: linear-gradient(135deg, rgba(60, 45, 12, 0.85) 0%, rgba(26, 18, 5, 0.98) 100%) !important;
+    border: 1.5px solid rgba(250, 204, 21, 0.55) !important;
+    border-left: 4px solid #facc15 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(250, 204, 21, 0.25), inset 0 1px 0 rgba(254, 240, 138, 0.35) !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active .v2-tab-title {
+    color: #fef08a !important;
+    text-shadow: 0 0 12px rgba(250, 204, 21, 0.45);
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active .v2-tab-sub {
+    color: #fde68a !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active .v2-tab-icon-wrap {
+    background: rgba(250, 204, 21, 0.18) !important;
+    border-color: rgba(250, 204, 21, 0.45) !important;
+    box-shadow: 0 0 12px rgba(250, 204, 21, 0.3) !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active .v2-tab-chevron {
+    color: #facc15 !important;
+    transform: translateX(3px);
+}
+
+/* 🟢 VERDE NEÓN: LIGAS */
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active {
+    background: linear-gradient(135deg, rgba(10, 48, 28, 0.85) 0%, rgba(5, 22, 12, 0.98) 100%) !important;
+    border: 1.5px solid rgba(0, 255, 119, 0.55) !important;
+    border-left: 4px solid #00ff77 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 119, 0.25), inset 0 1px 0 rgba(167, 243, 208, 0.35) !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active .v2-tab-title {
+    color: #86efac !important;
+    text-shadow: 0 0 12px rgba(0, 255, 119, 0.45);
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active .v2-tab-sub {
+    color: #a7f3d0 !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active .v2-tab-icon-wrap {
+    background: rgba(0, 255, 119, 0.18) !important;
+    border-color: rgba(0, 255, 119, 0.45) !important;
+    box-shadow: 0 0 12px rgba(0, 255, 119, 0.3) !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active .v2-tab-chevron {
+    color: #00ff77 !important;
+    transform: translateX(3px);
+}
+
+/* 🔵 AZUL / PÚRPURA: 1 VS 1 HISTÓRICO */
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active {
+    background: linear-gradient(135deg, rgba(18, 42, 80, 0.85) 0%, rgba(8, 18, 38, 0.98) 100%) !important;
+    border: 1.5px solid rgba(56, 189, 248, 0.55) !important;
+    border-left: 4px solid #38bdf8 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(186, 230, 253, 0.35) !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active .v2-tab-title {
+    color: #bae6fd !important;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active .v2-tab-sub {
+    color: #93c5fd !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active .v2-tab-icon-wrap {
+    background: rgba(56, 189, 248, 0.18) !important;
+    border-color: rgba(56, 189, 248, 0.45) !important;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.3) !important;
+}
+#ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active .v2-tab-chevron {
+    color: #38bdf8 !important;
+    transform: translateX(3px);
+}
+
+/* ========================================================
+   ⏳ SELECTOR DE TEMPORADA MENSUAL VS HISTÓRICO
+   ======================================================== */
+#ranking-carrera-modal .carrera-period-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+#ranking-carrera-modal .period-txt-desktop {
+    display: inline;
+}
+
+#ranking-carrera-modal .period-txt-mobile {
+    display: none;
+}
+
+#ranking-carrera-modal .btn-carrera-period {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #94a3b8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+#ranking-carrera-modal .btn-carrera-period:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#ranking-carrera-modal .btn-carrera-period.active {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.24) 0%, rgba(180, 83, 9, 0.34) 100%) !important;
+    color: #fef08a !important;
+    border: 1px solid rgba(250, 204, 21, 0.45) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35) !important;
+    font-weight: 800 !important;
+}
+
+#ranking-carrera-modal .period-timer-pill {
+    background: rgba(234, 179, 8, 0.24);
+    border: 1px solid rgba(250, 204, 21, 0.45);
+    color: #fef08a;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.2px;
+    margin-left: 4px;
+    text-transform: uppercase;
+}
+
+#ranking-carrera-modal .badge-mensual {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.22) 0%, rgba(18, 14, 6, 0.95) 100%) !important;
+    border: 1px solid rgba(250, 204, 21, 0.45) !important;
+    color: #fef08a !important;
+}
+
+/* Compatibilidad retro */
 #ranking-carrera-modal .ranking-left-panel .tab-btn-copas {
     background: linear-gradient(165deg, rgba(38, 30, 10, 0.88) 0%, rgba(18, 14, 6, 0.96) 100%) !important;
     border: 1.5px solid rgba(234, 179, 8, 0.35) !important;
@@ -5804,7 +6052,6 @@
     font-weight: 900 !important;
 }
 
-/* 🟢 VERDE NEÓN: LIGAS */
 #ranking-carrera-modal .ranking-left-panel .tab-btn-ligas {
     background: linear-gradient(165deg, rgba(14, 32, 22, 0.88) 0%, rgba(8, 18, 12, 0.96) 100%) !important;
     border: 1.5px solid rgba(0, 255, 119, 0.35) !important;
@@ -5831,7 +6078,6 @@
     font-weight: 900 !important;
 }
 
-/* 🔵 AZUL / PÚRPURA: 1 VS 1 HISTÓRICO */
 #ranking-carrera-modal .ranking-left-panel .tab-btn-versus-carrera {
     background: linear-gradient(165deg, rgba(16, 28, 50, 0.88) 0%, rgba(8, 14, 26, 0.96) 100%) !important;
     border: 1.5px solid rgba(41, 121, 255, 0.35) !important;
@@ -5860,6 +6106,78 @@
 }
 
 @media (max-width: 768px) {
+    /* 🕹️ Adaptación Móvil de los 3 botones v2 */
+    #ranking-carrera-modal .carrera-tabs-v2 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        width: 100% !important;
+        margin: 4px 0 !important;
+    }
+    #ranking-carrera-modal .carrera-v2-tab-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        height: 48px !important;
+        min-height: 48px !important;
+        max-height: 48px !important;
+        padding: 4px 6px !important;
+        gap: 6px !important;
+        justify-content: center !important;
+        border-radius: 10px !important;
+        border-left-width: 1.5px !important;
+    }
+    #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-icon-wrap {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        border-radius: 8px !important;
+    }
+    #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-img {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-info {
+        align-items: center !important;
+        text-align: center !important;
+        gap: 0 !important;
+    }
+    #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-title {
+        font-size: 0.72rem !important;
+        letter-spacing: -0.2px !important;
+        white-space: nowrap !important;
+    }
+    #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-sub,
+    #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-chevron {
+        display: none !important;
+    }
+
+    #ranking-carrera-modal .period-txt-desktop {
+        display: none !important;
+    }
+    #ranking-carrera-modal .period-txt-mobile {
+        display: inline !important;
+    }
+    #ranking-carrera-modal .carrera-period-toggle {
+        display: flex !important;
+        width: 100% !important;
+        gap: 4px !important;
+        margin: 2px 0 6px 0 !important;
+        box-sizing: border-box !important;
+    }
+    #ranking-carrera-modal .btn-carrera-period {
+        flex: 1 !important;
+        justify-content: center !important;
+        padding: 5px 6px !important;
+        font-size: 0.70rem !important;
+        min-width: 0 !important;
+    }
+    #ranking-carrera-modal .period-timer-pill {
+        padding: 1px 5px !important;
+        font-size: 0.60rem !important;
+        margin-left: 2px !important;
+    }
     #ranking-carrera-modal .ranking-left-panel .ranking-tabs-row .liga-tab-btn {
         width: 100% !important;
         max-width: 100% !important;
@@ -9556,5 +9874,62 @@
 [data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="#2979ff"],
 [data-theme="light"] .ranking-pills-column .header-stat-pill i[style*="41, 121, 255"] {
     color: #2563eb !important;
+}
+
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-title {
+    color: #0f172a !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-sub {
+    color: #64748b !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn .v2-tab-icon-wrap {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active {
+    background: #fefce8 !important;
+    border-color: #eab308 !important;
+    border-left-color: #ca8a04 !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn.tab-copas.active .v2-tab-title {
+    color: #854d0e !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active {
+    background: #f0fdf4 !important;
+    border-color: #22c55e !important;
+    border-left-color: #16a34a !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn.tab-ligas.active .v2-tab-title {
+    color: #14532d !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active {
+    background: #eff6ff !important;
+    border-color: #3b82f6 !important;
+    border-left-color: #2563eb !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-v2-tab-btn.tab-versus.active .v2-tab-title {
+    color: #1e3a8a !important;
+}
+[data-theme="light"] #ranking-carrera-modal .carrera-period-toggle {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+}
+[data-theme="light"] #ranking-carrera-modal .btn-carrera-period {
+    color: #64748b !important;
+}
+[data-theme="light"] #ranking-carrera-modal .btn-carrera-period.active {
+    background: #ffffff !important;
+    color: #854d0e !important;
+    border-color: #eab308 !important;
+}
+[data-theme="light"] #ranking-carrera-modal .period-timer-pill {
+    background: #fef08a !important;
+    color: #854d0e !important;
+    border-color: #facc15 !important;
 }
 

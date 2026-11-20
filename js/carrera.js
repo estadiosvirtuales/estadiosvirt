@@ -5558,7 +5558,43 @@ window.cerrarModalRankingCarrera = function(volverACarrera = true) {
 
 window.rankingCarreraTabActiva = 'copas';
 window.rankingCarreraFiltroLiga = 'todas';
+window.rankingCarreraPeriodo = 'mensual'; // 🗓️ 'mensual' (con conteo de fin de mes) o 'historico'
 window.rankingCarreraListaCache = null;
+
+// ⏱️ CONTEO REGRESIVO Y METADATOS DE TEMPORADA MENSUAL
+window.obtenerInfoTemporadaMensual = function() {
+    const ahora = new Date();
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const mesIdx = ahora.getMonth();
+    const mesNombre = meses[mesIdx];
+    const anio = ahora.getFullYear();
+    const finDeMes = new Date(anio, mesIdx + 1, 0, 23, 59, 59, 999);
+    const ms = Math.max(0, finDeMes - ahora);
+    const dias = Math.floor(ms / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+
+    const timerCorto = dias > 0 ? `${dias}d ${horas}h` : `${horas}h ${mins}m`;
+    const etiquetaCierre = dias === 0 ? '¡Cierra hoy 23:59!' : `Cierra en ${timerCorto}`;
+
+    return {
+        mesIdx,
+        mesNombre,
+        anio,
+        dias,
+        horas,
+        mins,
+        timerCorto,
+        etiquetaCierre
+    };
+};
+
+window.cambiarPeriodoRankingCarrera = function(pKey) {
+    window.rankingCarreraPeriodo = pKey || 'mensual';
+    if (typeof renderizarRankingCarrera === 'function') {
+        renderizarRankingCarrera();
+    }
+};
 
 window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
     window.rankingCarreraTabActiva = tabInicial || 'copas';
@@ -5584,6 +5620,10 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
         ? userStats.nivelActual
         : (typeof calcularNivelIdx === 'function' ? calcularNivelIdx(userStats.xpTotal || 0) : 1);
 
+    const infoMes = obtenerInfoTemporadaMensual();
+    const mesActual = infoMes.mesIdx;
+    const anioActual = infoMes.anio;
+
     try {
         if (!supabaseClient) throw new Error("Sin conexión a la base de datos");
 
@@ -5594,26 +5634,38 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
 
         if (error) throw error;
 
-        // Datos en vivo del usuario actual
+        // Datos en vivo del usuario actual (conteo histórico y mensual)
         const misCopas = userStats.copasGanadas || [];
         let misLigas = 0, misNac = 0, misCont = 0, misClubes = 0, misMundial = 0;
+        let misLigasMes = 0, misNacMes = 0, misContMes = 0, misClubesMes = 0, misMundialMes = 0;
         const misLigasDetalle = {};
 
         misCopas.forEach(c => {
             const tier = c.tier || '';
-            if (tier === 'nacional') misNac++;
-            else if (tier === 'continental') misCont++;
-            else if (tier === 'mundial_clubes') misClubes++;
-            else if (tier === 'mundial') misMundial++;
+            let esMes = false;
+            if (c.fecha) {
+                const fc = new Date(c.fecha);
+                if (fc.getMonth() === mesActual && fc.getFullYear() === anioActual) {
+                    esMes = true;
+                }
+            }
+
+            if (tier === 'nacional') { misNac++; if (esMes) misNacMes++; }
+            else if (tier === 'continental') { misCont++; if (esMes) misContMes++; }
+            else if (tier === 'mundial_clubes') { misClubes++; if (esMes) misClubesMes++; }
+            else if (tier === 'mundial') { misMundial++; if (esMes) misMundialMes++; }
             else if (tier.startsWith('liga_')) {
                 const lKey = tier.replace(/^liga_/, '');
                 misLigasDetalle[lKey] = (misLigasDetalle[lKey] || 0) + 1;
                 misLigas++;
+                if (esMes) misLigasMes++;
             } else {
                 misLigas++;
+                if (esMes) misLigasMes++;
             }
         });
         const misCopasTotal = misNac + misCont + misClubes + misMundial;
+        const misCopasMesTotal = misNacMes + misContMes + misClubesMes + misMundialMes;
 
         let miOvrLive = typeof calcularOvrEquipoOnce === 'function' ? calcularOvrEquipoOnce() : 0;
         if (miOvrLive === 0) {
@@ -5647,23 +5699,35 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
 
             const copas = esMio ? misCopas : (dj.copasGanadas || []);
             let ligasTot = 0, nac = 0, cont = 0, clubes = 0, mundial = 0;
+            let ligasMes = 0, nacMes = 0, contMes = 0, clubesMes = 0, mundialMes = 0;
             const ligasDet = {};
 
             copas.forEach(c => {
                 const tier = c.tier || '';
-                if (tier === 'nacional') nac++;
-                else if (tier === 'continental') cont++;
-                else if (tier === 'mundial_clubes') clubes++;
-                else if (tier === 'mundial') mundial++;
+                let esMes = false;
+                if (c.fecha) {
+                    const fc = new Date(c.fecha);
+                    if (fc.getMonth() === mesActual && fc.getFullYear() === anioActual) {
+                        esMes = true;
+                    }
+                }
+
+                if (tier === 'nacional') { nac++; if (esMes) nacMes++; }
+                else if (tier === 'continental') { cont++; if (esMes) contMes++; }
+                else if (tier === 'mundial_clubes') { clubes++; if (esMes) clubesMes++; }
+                else if (tier === 'mundial') { mundial++; if (esMes) mundialMes++; }
                 else if (tier.startsWith('liga_')) {
                     const lKey = tier.replace(/^liga_/, '');
                     ligasDet[lKey] = (ligasDet[lKey] || 0) + 1;
                     ligasTot++;
+                    if (esMes) ligasMes++;
                 } else {
                     ligasTot++;
+                    if (esMes) ligasMes++;
                 }
             });
             const copasTot = nac + cont + clubes + mundial;
+            const copasMesTot = nacMes + contMes + clubesMes + mundialMes;
 
             // OVR real del Once Inicial
             let ovr = esMio ? miOvrLive : 0;
@@ -5735,11 +5799,17 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
                     cont: cont,
                     clubes: clubes,
                     mundial: mundial,
-                    total: copasTot
+                    total: copasTot,
+                    mesNac: nacMes,
+                    mesCont: contMes,
+                    mesClubes: clubesMes,
+                    mesMundial: mundialMes,
+                    mesTotal: copasMesTot
                 },
                 ligas: {
                     total: ligasTot,
-                    detalle: ligasDet
+                    detalle: ligasDet,
+                    mesTotal: ligasMes
                 },
                 versus: {
                     ganados: dGanados,
@@ -5761,11 +5831,17 @@ window.abrirModalRankingCarrera = async function(tabInicial = 'copas') {
                     cont: misCont,
                     clubes: misClubes,
                     mundial: misMundial,
-                    total: misCopasTotal
+                    total: misCopasTotal,
+                    mesNac: misNacMes,
+                    mesCont: misContMes,
+                    mesClubes: misClubesMes,
+                    mesMundial: misMundialMes,
+                    mesTotal: misCopasMesTotal
                 },
                 ligas: {
                     total: misLigas,
-                    detalle: misLigasDetalle
+                    detalle: misLigasDetalle,
+                    mesTotal: misLigasMes
                 },
                 versus: {
                     ganados: misDuelosGanados,
@@ -5796,34 +5872,57 @@ window.renderizarRankingCarrera = function() {
 
     const tabActiva = window.rankingCarreraTabActiva || 'copas';
     const filtroLiga = window.rankingCarreraFiltroLiga || 'todas';
+    const periodoActivo = window.rankingCarreraPeriodo || 'mensual'; // 🗓️ 'mensual' o 'historico'
+    const infoMes = (typeof obtenerInfoTemporadaMensual === 'function') 
+        ? obtenerInfoTemporadaMensual() 
+        : { mesNombre: 'Noviembre', anio: 2026, etiquetaCierre: 'Fin de mes' };
+
     const lista = [...window.rankingCarreraListaCache];
     const san = (s) => (typeof sanitizarHTML === 'function' ? sanitizarHTML(s) : String(s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'));
 
-    // 🎯 Orden de mérito según la pestaña activa
+    // 🎯 Orden de mérito según la pestaña activa y el periodo (Mensual vs Histórico)
     if (tabActiva === 'copas') {
         lista.sort((a, b) => {
-            if (b.copas.total !== a.copas.total) return b.copas.total - a.copas.total;
-            if (b.copas.mundial !== a.copas.mundial) return b.copas.mundial - a.copas.mundial;
-            if (b.copas.clubes !== a.copas.clubes) return b.copas.clubes - a.copas.clubes;
-            if (b.copas.cont !== a.copas.cont) return b.copas.cont - a.copas.cont;
-            if (b.copas.nac !== a.copas.nac) return b.copas.nac - a.copas.nac;
-            return b.ovr - a.ovr;
+            if (periodoActivo === 'mensual') {
+                if (b.copas.mesTotal !== a.copas.mesTotal) return b.copas.mesTotal - a.copas.mesTotal;
+                if (b.copas.mesMundial !== a.copas.mesMundial) return b.copas.mesMundial - a.copas.mesMundial;
+                if (b.copas.mesClubes !== a.copas.mesClubes) return b.copas.mesClubes - a.copas.mesClubes;
+                if (b.copas.mesCont !== a.copas.mesCont) return b.copas.mesCont - a.copas.mesCont;
+                if (b.copas.mesNac !== a.copas.mesNac) return b.copas.mesNac - a.copas.mesNac;
+                if (b.copas.total !== a.copas.total) return b.copas.total - a.copas.total;
+                return b.ovr - a.ovr;
+            } else {
+                if (b.copas.total !== a.copas.total) return b.copas.total - a.copas.total;
+                if (b.copas.mundial !== a.copas.mundial) return b.copas.mundial - a.copas.mundial;
+                if (b.copas.clubes !== a.copas.clubes) return b.copas.clubes - a.copas.clubes;
+                if (b.copas.cont !== a.copas.cont) return b.copas.cont - a.copas.cont;
+                if (b.copas.nac !== a.copas.nac) return b.copas.nac - a.copas.nac;
+                return b.ovr - a.ovr;
+            }
         });
     } else if (tabActiva === 'ligas') {
-        if (filtroLiga === 'todas') {
+        if (periodoActivo === 'mensual') {
             lista.sort((a, b) => {
+                if (b.ligas.mesTotal !== a.ligas.mesTotal) return b.ligas.mesTotal - a.ligas.mesTotal;
                 if (b.ligas.total !== a.ligas.total) return b.ligas.total - a.ligas.total;
-                if (b.copas.total !== a.copas.total) return b.copas.total - a.copas.total;
                 return b.ovr - a.ovr;
             });
         } else {
-            lista.sort((a, b) => {
-                const bEsta = b.ligas.detalle[filtroLiga] || 0;
-                const aEsta = a.ligas.detalle[filtroLiga] || 0;
-                if (bEsta !== aEsta) return bEsta - aEsta;
-                if (b.ligas.total !== a.ligas.total) return b.ligas.total - a.ligas.total;
-                return b.ovr - a.ovr;
-            });
+            if (filtroLiga === 'todas') {
+                lista.sort((a, b) => {
+                    if (b.ligas.total !== a.ligas.total) return b.ligas.total - a.ligas.total;
+                    if (b.copas.total !== a.copas.total) return b.copas.total - a.copas.total;
+                    return b.ovr - a.ovr;
+                });
+            } else {
+                lista.sort((a, b) => {
+                    const bEsta = b.ligas.detalle[filtroLiga] || 0;
+                    const aEsta = a.ligas.detalle[filtroLiga] || 0;
+                    if (bEsta !== aEsta) return bEsta - aEsta;
+                    if (b.ligas.total !== a.ligas.total) return b.ligas.total - a.ligas.total;
+                    return b.ovr - a.ovr;
+                });
+            }
         }
     } else if (tabActiva === 'versus') {
         lista.sort((a, b) => {
@@ -5843,23 +5942,28 @@ window.renderizarRankingCarrera = function() {
 
     if (tabActiva === 'copas') {
         const lider = lista[0];
-        const liderTxt = lider ? `${san(lider.nombre)} (${lider.copas.total})` : 'N/A';
+        const liderCant = lider ? (periodoActivo === 'mensual' ? lider.copas.mesTotal : lider.copas.total) : 0;
+        const liderTxt = lider ? `${san(lider.nombre)} (${liderCant})` : 'N/A';
+        const subTitulo = periodoActivo === 'mensual' 
+            ? `Temporada ${infoMes.mesNombre}` 
+            : 'Vitrina Histórica';
+
         headerConfig = {
             img: 'trofeo.webp',
             glowClass: 'glow-gold',
             badgeImg: 'trofeo.webp',
-            badgeTitle: 'Top 50 Global',
-            badgeSub: 'Vitrina de Copas',
+            badgeTitle: periodoActivo === 'mensual' ? `Top 50 ${infoMes.mesNombre}` : 'Top 50 Global',
+            badgeSub: subTitulo,
             badgeColor: '#ffd700',
-            pill1Label: 'TU TOTAL COPAS',
-            pill1Val: `${miItem ? miItem.copas.total : 0} Copas`,
+            pill1Label: periodoActivo === 'mensual' ? `TUS COPAS (${infoMes.mesNombre.toUpperCase()})` : 'TU TOTAL COPAS',
+            pill1Val: `${miItem ? (periodoActivo === 'mensual' ? miItem.copas.mesTotal : miItem.copas.total) : 0} Copas`,
             pill1Icon: 'ph-trophy',
-            pill2Label: 'TU PUESTO',
+            pill2Label: periodoActivo === 'mensual' ? 'TU PUESTO DEL MES' : 'TU PUESTO',
             pill2Val: miPuesto,
             pill2Icon: 'ph-hash',
-            pill3Label: 'REY DE COPAS',
-            pill3Val: liderTxt,
-            pill3Icon: 'ph-crown'
+            pill3Label: periodoActivo === 'mensual' ? 'CIERRE TEMPORADA' : 'REY DE COPAS',
+            pill3Val: periodoActivo === 'mensual' ? infoMes.etiquetaCierre : liderTxt,
+            pill3Icon: periodoActivo === 'mensual' ? 'ph-hourglass-high' : 'ph-crown'
         };
     } else if (tabActiva === 'ligas') {
         const nombreLigaFiltro = filtroLiga === 'todas'
@@ -5871,8 +5975,9 @@ window.renderizarRankingCarrera = function() {
         let pill1Val = '0 Ligas';
 
         if (filtroLiga === 'todas') {
-            liderTxt = lider ? `${san(lider.nombre)} (${lider.ligas.total})` : 'N/A';
-            pill1Val = `${miItem ? miItem.ligas.total : 0} Ligas`;
+            const cant = lider ? (periodoActivo === 'mensual' ? lider.ligas.mesTotal : lider.ligas.total) : 0;
+            liderTxt = lider ? `${san(lider.nombre)} (${cant})` : 'N/A';
+            pill1Val = `${miItem ? (periodoActivo === 'mensual' ? miItem.ligas.mesTotal : miItem.ligas.total) : 0} Ligas`;
         } else {
             const cantLider = lider ? (lider.ligas.detalle[filtroLiga] || 0) : 0;
             liderTxt = lider ? `${san(lider.nombre)} (${cantLider})` : 'N/A';
@@ -5883,18 +5988,18 @@ window.renderizarRankingCarrera = function() {
             img: 'catador.webp',
             glowClass: 'glow-green',
             badgeImg: 'catador.webp',
-            badgeTitle: 'Top 50 Global',
+            badgeTitle: periodoActivo === 'mensual' ? `Ligas ${infoMes.mesNombre}` : 'Top 50 Global',
             badgeSub: nombreLigaFiltro,
             badgeColor: '#00ff77',
-            pill1Label: filtroLiga === 'todas' ? 'TU TOTAL LIGAS' : 'TUS TÍTULOS',
+            pill1Label: periodoActivo === 'mensual' ? `LIGAS EN ${infoMes.mesNombre.toUpperCase()}` : (filtroLiga === 'todas' ? 'TU TOTAL LIGAS' : 'TUS TÍTULOS'),
             pill1Val: pill1Val,
             pill1Icon: 'ph-shield-star',
-            pill2Label: 'TU PUESTO',
+            pill2Label: periodoActivo === 'mensual' ? 'TU PUESTO DEL MES' : 'TU PUESTO',
             pill2Val: miPuesto,
             pill2Icon: 'ph-hash',
-            pill3Label: filtroLiga === 'todas' ? 'LÍDER EN LIGAS' : 'CAMPEÓN RECORD',
-            pill3Val: liderTxt,
-            pill3Icon: 'ph-crown'
+            pill3Label: periodoActivo === 'mensual' ? 'CIERRE TEMPORADA' : (filtroLiga === 'todas' ? 'LÍDER EN LIGAS' : 'CAMPEÓN RECORD'),
+            pill3Val: periodoActivo === 'mensual' ? infoMes.etiquetaCierre : liderTxt,
+            pill3Icon: periodoActivo === 'mensual' ? 'ph-hourglass-high' : 'ph-crown'
         };
     } else if (tabActiva === 'versus') {
         headerConfig = {
@@ -5931,23 +6036,30 @@ window.renderizarRankingCarrera = function() {
         let columnasCentroHTML = '';
 
         if (tabActiva === 'copas') {
+            const valMundial = periodoActivo === 'mensual' ? item.copas.mesMundial : item.copas.mundial;
+            const valClubes = periodoActivo === 'mensual' ? item.copas.mesClubes : item.copas.clubes;
+            const valCont = periodoActivo === 'mensual' ? item.copas.mesCont : item.copas.cont;
+            const valNac = periodoActivo === 'mensual' ? item.copas.mesNac : item.copas.nac;
+            const valTotal = periodoActivo === 'mensual' ? item.copas.mesTotal : item.copas.total;
+
             columnasCentroHTML = `
-                <div class="carrera-col-detail desktop-only">${item.copas.mundial > 0 ? `<b class="tag-gold">${item.copas.mundial}</b>` : '<span class="dash-empty">-</span>'}</div>
-                <div class="carrera-col-detail desktop-only">${item.copas.clubes > 0 ? `<b class="tag-blue">${item.copas.clubes}</b>` : '<span class="dash-empty">-</span>'}</div>
-                <div class="carrera-col-detail desktop-only">${item.copas.cont > 0 ? `<b class="tag-purple">${item.copas.cont}</b>` : '<span class="dash-empty">-</span>'}</div>
-                <div class="carrera-col-detail desktop-only">${item.copas.nac > 0 ? `<b class="tag-cyan">${item.copas.nac}</b>` : '<span class="dash-empty">-</span>'}</div>
+                <div class="carrera-col-detail desktop-only">${valMundial > 0 ? `<b class="tag-gold">${valMundial}</b>` : '<span class="dash-empty">-</span>'}</div>
+                <div class="carrera-col-detail desktop-only">${valClubes > 0 ? `<b class="tag-blue">${valClubes}</b>` : '<span class="dash-empty">-</span>'}</div>
+                <div class="carrera-col-detail desktop-only">${valCont > 0 ? `<b class="tag-purple">${valCont}</b>` : '<span class="dash-empty">-</span>'}</div>
+                <div class="carrera-col-detail desktop-only">${valNac > 0 ? `<b class="tag-cyan">${valNac}</b>` : '<span class="dash-empty">-</span>'}</div>
                 <div class="carrera-col-metric">
-                    <span class="total-cups-badge">
-                        <b class="total-num">${item.copas.total}</b>
+                    <span class="total-cups-badge ${periodoActivo === 'mensual' ? 'badge-mensual' : ''}">
+                        <b class="total-num">${valTotal}</b>
                     </span>
                 </div>
             `;
         } else if (tabActiva === 'ligas') {
             if (filtroLiga === 'todas') {
+                const totalLigas = periodoActivo === 'mensual' ? item.ligas.mesTotal : item.ligas.total;
                 columnasCentroHTML = `
                     <div class="carrera-col-metric">
-                        <span class="total-leagues-badge">
-                            <b class="total-num">${item.ligas.total}</b>
+                        <span class="total-leagues-badge ${periodoActivo === 'mensual' ? 'badge-mensual' : ''}">
+                            <b class="total-num">${totalLigas}</b>
                         </span>
                     </div>
                 `;
@@ -6045,7 +6157,7 @@ window.renderizarRankingCarrera = function() {
             <span class="carrera-col-detail desktop-only" title="Mundial de Clubes">CLUBES</span>
             <span class="carrera-col-detail desktop-only" title="Copa Continental">CONTINENTAL</span>
             <span class="carrera-col-detail desktop-only" title="Copa Desafío">DESAFÍO</span>
-            <span class="carrera-col-metric">TOTAL</span>
+            <span class="carrera-col-metric">${periodoActivo === 'mensual' ? 'MES' : 'TOTAL'}</span>
             <span class="carrera-col-action"></span>
         `;
     } else if (tabActiva === 'ligas') {
@@ -6053,7 +6165,7 @@ window.renderizarRankingCarrera = function() {
             tableHeaderCols = `
                 <span class="carrera-col-pos">#</span>
                 <span class="carrera-col-dt">DT / CLUB</span>
-                <span class="carrera-col-metric">LIGAS</span>
+                <span class="carrera-col-metric">${periodoActivo === 'mensual' ? 'MES' : 'LIGAS'}</span>
                 <span class="carrera-col-action"></span>
             `;
         } else {
@@ -6076,16 +6188,40 @@ window.renderizarRankingCarrera = function() {
         `;
     }
 
+    // 🕹️ BOTONES REDISEÑADOS DE LOS 3 RANKINGS (CALIDAD AAA)
     const subMenuHTML = `
-        <div class="liga-tabs-row ranking-tabs-row tabs-3">
-            <button class="liga-tab-btn tab-btn-copas ${tabActiva === 'copas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('copas')">
-                <img src="trofeo.webp" alt="Copas" class="ranking-tab-img"> <span>Copas</span>
+        <div class="carrera-tabs-v2">
+            <button type="button" class="carrera-v2-tab-btn tab-copas ${tabActiva === 'copas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('copas')">
+                <div class="v2-tab-icon-wrap">
+                    <img src="trofeo.webp" alt="Copas" class="v2-tab-img">
+                </div>
+                <div class="v2-tab-info">
+                    <strong class="v2-tab-title">Copas</strong>
+                    <span class="v2-tab-sub">Torneos & Vitrina</span>
+                </div>
+                <i class="ph-bold ph-caret-right v2-tab-chevron"></i>
             </button>
-            <button class="liga-tab-btn tab-btn-ligas ${tabActiva === 'ligas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('ligas')">
-                <img src="catador.webp" alt="Ligas" class="ranking-tab-img"> <span>Ligas</span>
+
+            <button type="button" class="carrera-v2-tab-btn tab-ligas ${tabActiva === 'ligas' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('ligas')">
+                <div class="v2-tab-icon-wrap">
+                    <img src="catador.webp" alt="Ligas" class="v2-tab-img">
+                </div>
+                <div class="v2-tab-info">
+                    <strong class="v2-tab-title">Ligas</strong>
+                    <span class="v2-tab-sub">Temporadas Nacionales</span>
+                </div>
+                <i class="ph-bold ph-caret-right v2-tab-chevron"></i>
             </button>
-            <button class="liga-tab-btn tab-btn-versus-carrera ${tabActiva === 'versus' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('versus')">
-                <img src="ranking-icon-1v1.webp" alt="1 vs 1" class="ranking-tab-img"> <span>1 vs 1 Hist.</span>
+
+            <button type="button" class="carrera-v2-tab-btn tab-versus ${tabActiva === 'versus' ? 'active' : ''}" onclick="cambiarTabRankingCarrera('versus')">
+                <div class="v2-tab-icon-wrap">
+                    <img src="ranking-icon-1v1.webp" alt="1 vs 1" class="v2-tab-img">
+                </div>
+                <div class="v2-tab-info">
+                    <strong class="v2-tab-title">1 vs 1 Hist.</strong>
+                    <span class="v2-tab-sub">Duelos Directos</span>
+                </div>
+                <i class="ph-bold ph-caret-right v2-tab-chevron"></i>
             </button>
         </div>
     `;
@@ -6164,6 +6300,23 @@ window.renderizarRankingCarrera = function() {
                         <span class="badge-sep">·</span>
                         <span class="badge-sub-pill" style="color:${headerConfig.badgeColor};">${headerConfig.badgeSub}</span>
                     </div>
+
+                    <!-- ⏱️ SELECTOR DE TEMPORADA MENSUAL VS HISTÓRICO CON CONTEO EN VIVO -->
+                    ${tabActiva !== 'versus' ? `
+                        <div class="carrera-period-toggle">
+                            <button type="button" class="btn-carrera-period ${periodoActivo === 'mensual' ? 'active' : ''}" onclick="cambiarPeriodoRankingCarrera('mensual')" title="Ranking competitivo del mes actual">
+                                <i class="ph-fill ph-calendar-check"></i>
+                                <span class="period-txt-desktop">Mes de ${infoMes.mesNombre}</span>
+                                <span class="period-txt-mobile">${infoMes.mesNombre}</span>
+                                <span class="period-timer-pill"><i class="ph-bold ph-hourglass-high"></i> ${infoMes.etiquetaCierre}</span>
+                            </button>
+                            <button type="button" class="btn-carrera-period ${periodoActivo === 'historico' ? 'active' : ''}" onclick="cambiarPeriodoRankingCarrera('historico')" title="Vitrina acumulada de todos los tiempos">
+                                <i class="ph-bold ph-trophy"></i>
+                                <span class="period-txt-desktop">Histórico Global</span>
+                                <span class="period-txt-mobile">Histórico</span>
+                            </button>
+                        </div>
+                    ` : ''}
 
                     ${tabActiva === 'ligas' ? `
                         <div class="carrera-filter-wrapper" id="carrera-filter-dropdown-wrap">
