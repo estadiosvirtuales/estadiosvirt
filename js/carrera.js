@@ -6320,13 +6320,17 @@ window.renderizarRankingCarrera = function() {
                     <!-- ⏱️ SELECTOR DE TEMPORADA MENSUAL VS HISTÓRICO CON CONTEO EN VIVO -->
                     ${tabActiva !== 'versus' ? `
                         <div class="carrera-period-toggle">
-                            <button type="button" class="btn-carrera-period ${periodoActivo === 'mensual' ? 'active' : ''}" onclick="cambiarPeriodoRankingCarrera('mensual')" title="Ranking competitivo del mes actual">
+                            <button type="button" class="btn-carrera-period btn-period-mensual ${periodoActivo === 'mensual' ? 'active' : ''}" onclick="cambiarPeriodoRankingCarrera('mensual')" title="Ranking competitivo del mes actual">
                                 <i class="ph-fill ph-calendar-check"></i>
                                 <span class="period-txt-desktop">Mes de ${infoMes.mesNombre}</span>
                                 <span class="period-txt-mobile">${infoMes.mesNombre}</span>
-                                <span class="period-timer-pill"><i class="ph-bold ph-hourglass-high"></i> ${infoMes.etiquetaCierre}</span>
+                                <span class="period-timer-pill">
+                                    <i class="ph-bold ph-hourglass-high"></i>
+                                    <span class="period-timer-txt-desktop">${infoMes.etiquetaCierre}</span>
+                                    <span class="period-timer-txt-mobile">${infoMes.timerCorto}</span>
+                                </span>
                             </button>
-                            <button type="button" class="btn-carrera-period ${periodoActivo === 'historico' ? 'active' : ''}" onclick="cambiarPeriodoRankingCarrera('historico')" title="Vitrina acumulada de todos los tiempos">
+                            <button type="button" class="btn-carrera-period btn-period-historico ${periodoActivo === 'historico' ? 'active' : ''}" onclick="cambiarPeriodoRankingCarrera('historico')" title="Vitrina acumulada de todos los tiempos">
                                 <i class="ph-bold ph-trophy"></i>
                                 <span class="period-txt-desktop">Histórico Global</span>
                                 <span class="period-txt-mobile">Histórico</span>
