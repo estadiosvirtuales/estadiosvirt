@@ -610,28 +610,69 @@
 
 /* 📱 AJUSTES CELULAR */
 @media (max-width: 768px) {
+    .ev-pack-overlay {
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        align-items: flex-start;
+        padding: 14px 14px calc(28px + env(safe-area-inset-bottom, 0px));
+    }
+    .ev-pack-container,
+    .ev-reward-container {
+        margin: auto 0;
+        padding: 4px 0 12px;
+    }
+    .ev-pack-reveal-box {
+        padding-bottom: 10px;
+    }
+    .ev-reveal-title {
+        font-size: 1.25rem;
+        margin-top: 0;
+        margin-bottom: 4px;
+    }
+    .ev-reveal-sub {
+        font-size: 0.78rem;
+        line-height: 1.3;
+        margin-bottom: 12px;
+    }
     .ev-pack-card {
         width: 260px;
         padding: 22px 18px 18px;
     }
     .ev-pack-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
     }
     .ev-card-pick {
-        height: 160px;
-        min-height: 160px;
+        height: 138px;
+        min-height: 138px;
+    }
+    .ev-card-pick-front {
+        padding: 8px 6px;
     }
     .ev-card-pick-avatar-wrap {
-        width: 62px;
-        height: 62px;
+        width: 56px;
+        height: 56px;
         padding: 1.2px;
+        margin-bottom: 4px;
         box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+    }
+    .ev-card-pick-name {
+        font-size: 0.76rem;
+        margin-bottom: 4px;
+    }
+    .ev-btn-elegir-luego {
+        margin-top: 14px;
+        margin-bottom: 8px;
+        padding: 10px 26px;
     }
     /* 📱 [CELULAR] TAMAÑO DEL LOGO EN EL DORSO */
     .ev-card-back-logo {
-        width: 130px;
-        height: 130px;
+        width: 96px;
+        height: 96px;
     }
     /* 📱 [CELULAR] POSICIÓN DEL BOTÓN TOCÁ (NO SE MUEVE AL CAMBIAR EL LOGO) */
     .ev-card-back-text {

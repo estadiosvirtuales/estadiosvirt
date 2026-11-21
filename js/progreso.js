@@ -144,6 +144,19 @@ if(userStats.partidasVersus===undefined) {
 if(userStats.puntosHabilidad===undefined) userStats.puntosHabilidad = 0;
 if(!userStats.mejorasJugadores || typeof userStats.mejorasJugadores !== 'object') userStats.mejorasJugadores = {};
 userStats.nivelActual=calcularNivelIdx(userStats.xpTotal);
+// 🛡️ Blindaje de recompensas de nivel ya vistas (evita reabrir sobres desde Nivel 1 tras actualizaciones o cambio de dispositivo)
+if (userStats.nivelRecompensaVisto === undefined || userStats.nivelRecompensaVisto === null) {
+    userStats.nivelRecompensaVisto = userStats.nivelActual;
+}
+try {
+    const vistasLocal = JSON.parse(localStorage.getItem('ev_recompensas_vistas_' + id) || '[]');
+    const vistasStats = Array.isArray(userStats.recompensasVistas) ? userStats.recompensasVistas : [];
+    const merged = Array.from(new Set([...vistasLocal, ...vistasStats].map(x => String(x || '').replace(/\.png$/i, '.webp')).filter(Boolean)));
+    userStats.recompensasVistas = merged;
+    if (merged.length > 0) localStorage.setItem('ev_recompensas_vistas_' + id, JSON.stringify(merged));
+} catch (e) {
+    if (!Array.isArray(userStats.recompensasVistas)) userStats.recompensasVistas = [];
+}
 userStats.sesionesTotal=(userStats.sesionesTotal||0)+1;
 procesarRachaDiaria();
 }
@@ -176,7 +189,14 @@ const nivelDespues=calcularNivelIdx(userStats.xpTotal);
 userStats.nivelActual=nivelDespues;
 guardarStats();
 ancestralHeaderNivel();
-if(nivelDespues>nivelAntes)setTimeout(()=>mostrarLevelUp(NIVELES[nivelDespues]),800);
+if(nivelDespues>nivelAntes){
+    if(!window._ultimoSaltoNivel){
+        window._ultimoSaltoNivel={desde:nivelAntes,hasta:nivelDespues};
+    } else {
+        window._ultimoSaltoNivel.hasta=Math.max(window._ultimoSaltoNivel.hasta,nivelDespues);
+    }
+    setTimeout(()=>mostrarLevelUp(NIVELES[nivelDespues]),800);
+}
 }
 
 function ancestralHeaderNivel(){
@@ -275,9 +295,13 @@ setTimeout(() => { if (typeof lanzarConfetti === 'function') lanzarConfetti('oro
 function cerrarLevelUp(){
     if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     document.getElementById('levelup-overlay').classList.remove('active');
+    const salto = window._ultimoSaltoNivel;
+    window._ultimoSaltoNivel = null;
     setTimeout(() => {
         if (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) {
-            comprobarRecompensaNivel(userStats.nivelActual);
+            const desde = salto ? salto.desde : Math.max(0, userStats.nivelActual - 1);
+            const hasta = salto ? salto.hasta : userStats.nivelActual;
+            comprobarRecompensaNivel(hasta, desde);
         }
     }, 350);
 }

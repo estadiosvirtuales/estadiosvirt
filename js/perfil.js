@@ -834,8 +834,10 @@ function reproducirSonidoApertura() {
 // 📦 1. Verificación tras completar o abandonar la primera partida al volver a la pantalla principal
 function verificarSobreBienvenidaPostPartida() {
     const id = getUserId();
-    // Candado estricto: si ya se abrió en esta cuenta O en este navegador, queda bloqueado para siempre
-    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto_' + id) || localStorage.getItem('ev_pack_bienvenida_abierto_global');
+    // Candado estricto: si ya se abrió en esta cuenta (local o nube) O en este navegador, queda bloqueado para siempre
+    const sobreYaAbierto = localStorage.getItem('ev_pack_bienvenida_abierto_' + id) ||
+                           localStorage.getItem('ev_pack_bienvenida_abierto_global') ||
+                           (typeof userStats !== 'undefined' && (userStats.packBienvenidaAbierto === true || (userStats.nivelActual || 0) >= 1));
     
     // Detecta si completó la partida O si la abandonó antes de terminar
     const jugoOAbandono = localStorage.getItem('ev_primera_partida_finalizada_' + id) || 
@@ -859,7 +861,10 @@ function verificarSobreBienvenidaPostPartida() {
 
             if (!algunModalAbierto) {
                 const modal = document.getElementById('modal-pack-bienvenida');
-                if (modal) modal.style.display = 'flex';
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.scrollTop = 0;
+                }
             }
         }, 350);
     }
@@ -919,6 +924,8 @@ function animarAperturaSobre() {
         });
 
         document.getElementById('ev-pack-revelado').style.display = 'block';
+        const modalPack = document.getElementById('modal-pack-bienvenida');
+        if (modalPack) modalPack.scrollTop = 0;
     }, 1100);
 }
 
@@ -929,6 +936,7 @@ function seleccionarCapitanInicial(avatarId) {
     localStorage.setItem('ev_avatar_seleccionado_' + id, avatarId);
     localStorage.setItem('ev_pack_bienvenida_abierto_' + id, 'true');
     localStorage.setItem('ev_pack_bienvenida_abierto_global', 'true'); // Candado definitivo: nunca más vuelve a abrirse
+    if (typeof userStats !== 'undefined') userStats.packBienvenidaAbierto = true;
     setPref('ev_avatar_hair', avatarId);
 
     // 2. Sincronizar el input de personalización del perfil si está en pantalla
@@ -973,19 +981,76 @@ window.voltearCartaPremio = function(el) {
     }
 };
 
-// 🏆 4. Verificador de Recompensa al Subir de Nivel
-function comprobarRecompensaNivel(nivelActual) {
+// 🏆 4. Verificador de Recompensa al Subir de Nivel (solo niveles recién desbloqueados + sincronizado en nube)
+function comprobarRecompensaNivel(nivelActual, nivelAnterior = null) {
     const id = getUserId();
     const nivelNum = Number(nivelActual);
-    const recompensasVistas = JSON.parse(localStorage.getItem('ev_recompensas_vistas_' + id) || '[]');
+    if (!Number.isFinite(nivelNum) || nivelNum <= 0) return;
 
-    // Buscar el primer avatar desbloqueado que aún no se le haya presentado en pantalla
-    const nuevoFichaje = AVATARES_LISTA.find(a => a.nivel > 0 && a.nivel <= nivelNum && !recompensasVistas.includes(a.id));
-    if (!nuevoFichaje) return;
+    const normId = (v) => String(v || '').replace(/\.png$/i, '.webp').trim();
 
-    // Registrar como visto para este usuario para no repetir alerta
-    recompensasVistas.push(nuevoFichaje.id);
-    localStorage.setItem('ev_recompensas_vistas_' + id, JSON.stringify(recompensasVistas));
+    let vistasLocal = [];
+    try { vistasLocal = JSON.parse(localStorage.getItem('ev_recompensas_vistas_' + id) || '[]'); } catch (e) {}
+    const vistasStats = (typeof userStats !== 'undefined' && Array.isArray(userStats.recompensasVistas))
+        ? userStats.recompensasVistas
+        : [];
+    const recompensasVistasSet = new Set([...vistasLocal, ...vistasStats].map(normId).filter(Boolean));
+
+    // Piso estricto: nunca mostrar recompensas de niveles ya superados anteriormente
+    const pisoGuardado = (typeof userStats !== 'undefined' && userStats.nivelRecompensaVisto !== undefined)
+        ? Number(userStats.nivelRecompensaVisto) || 0
+        : 0;
+    const pisoSalto = (nivelAnterior !== null && nivelAnterior !== undefined)
+        ? Number(nivelAnterior)
+        : (window._rangoRecompensaActivo ? Number(window._rangoRecompensaActivo.desde) : Math.max(0, nivelNum - 1));
+    const pisoFinal = Math.max(pisoGuardado, pisoSalto);
+
+    // Marcamos automáticamente como vistos todos los avatares de niveles <= pisoFinal
+    AVATARES_LISTA.forEach(a => {
+        if (a.nivel > 0 && a.nivel <= pisoFinal) {
+            recompensasVistasSet.add(normId(a.id));
+        }
+    });
+
+    // Buscar ÚNICAMENTE avatares recién desbloqueados en el rango (pisoFinal, nivelNum]
+    const nuevoFichaje = AVATARES_LISTA.find(a =>
+        a.nivel > pisoFinal &&
+        a.nivel <= nivelNum &&
+        !recompensasVistasSet.has(normId(a.id))
+    );
+
+    if (!nuevoFichaje) {
+        // Ya no quedan premios pendientes en este salto de nivel -> fijamos el tope visto en local y nube
+        window._rangoRecompensaActivo = null;
+        const arrFinal = Array.from(recompensasVistasSet);
+        localStorage.setItem('ev_recompensas_vistas_' + id, JSON.stringify(arrFinal));
+        if (typeof userStats !== 'undefined') {
+            userStats.recompensasVistas = arrFinal;
+            userStats.nivelRecompensaVisto = Math.max(pisoFinal, nivelNum);
+            if (typeof guardarStats === 'function') guardarStats();
+        }
+        return;
+    }
+
+    // Preservar el rango activo mientras queden fichajes del mismo salto de nivel
+    window._rangoRecompensaActivo = { desde: pisoFinal, hasta: nivelNum };
+
+    // Registrar como visto en localStorage + userStats + Supabase
+    recompensasVistasSet.add(normId(nuevoFichaje.id));
+    const arrActualizado = Array.from(recompensasVistasSet);
+    localStorage.setItem('ev_recompensas_vistas_' + id, JSON.stringify(arrActualizado));
+    if (typeof userStats !== 'undefined') {
+        userStats.recompensasVistas = arrActualizado;
+        const quedanEnEsteNivel = AVATARES_LISTA.some(a =>
+            a.nivel > pisoFinal &&
+            a.nivel <= nuevoFichaje.nivel &&
+            !recompensasVistasSet.has(normId(a.id))
+        );
+        if (!quedanEnEsteNivel) {
+            userStats.nivelRecompensaVisto = Math.max(pisoGuardado, nuevoFichaje.nivel);
+        }
+        if (typeof guardarStats === 'function') guardarStats();
+    }
 
     const cardBox = document.getElementById('ev-reward-card-box');
     if (cardBox) cardBox.classList.remove('is-flipped');
@@ -1003,7 +1068,11 @@ function comprobarRecompensaNivel(nivelActual) {
         cerrarModalRecompensa();
     };
 
-    document.getElementById('modal-recompensa-avatar').style.display = 'flex';
+    const modalPremio = document.getElementById('modal-recompensa-avatar');
+    if (modalPremio) {
+        modalPremio.style.display = 'flex';
+        modalPremio.scrollTop = 0;
+    }
     dispararEfectoPackOpening();
 }
 
@@ -1011,10 +1080,10 @@ function cerrarModalRecompensa() {
     if (typeof window.detenerConfetti === 'function') window.detenerConfetti();
     document.getElementById('modal-recompensa-avatar').style.display = 'none';
 
-    // Si hubo más de un fichaje desbloqueado en la misma subida de nivel, abre el siguiente
+    // Si hubo más de un fichaje desbloqueado en la misma subida de nivel, abre SOLO el siguiente del mismo salto
     setTimeout(() => {
-        if (typeof userStats !== 'undefined' && userStats.nivelActual !== undefined) {
-            comprobarRecompensaNivel(userStats.nivelActual);
+        if (window._rangoRecompensaActivo) {
+            comprobarRecompensaNivel(window._rangoRecompensaActivo.hasta, window._rangoRecompensaActivo.desde);
         }
     }, 350);
 }

@@ -50,12 +50,28 @@ async function sincronizarPerfilSupabase(idUsuario, exp, stats) {
         const customNick = getPref('ev_custom_nick', '') || (typeof obtenerNombreDisplay === 'function' ? obtenerNombreDisplay() : '') || 'Jugador';
 
         // Armamos el paquete masivo con estadísticas y toda la personalización de la carta
+        const localId = typeof getUserId === 'function' ? getUserId() : idFinal;
+        let vistasLocalSync = [];
+        try { vistasLocalSync = JSON.parse(localStorage.getItem('ev_recompensas_vistas_' + localId) || '[]'); } catch (e) {}
+        const vistasUnificadas = Array.from(new Set([
+            ...(Array.isArray(stats.recompensasVistas) ? stats.recompensasVistas : []),
+            ...vistasLocalSync
+        ].map(x => String(x || '').replace(/\.png$/i, '.webp')).filter(Boolean)));
+        const packBienvenidaSync = Boolean(
+            stats.packBienvenidaAbierto ||
+            localStorage.getItem('ev_pack_bienvenida_abierto_' + localId) ||
+            localStorage.getItem('ev_pack_bienvenida_abierto_global')
+        );
+
         const datosParaNube = {
             ...stats,
             ligas5: [...(stats.ligas5 || [])],
             triviasDescubiertas: [...(stats.triviasDescubiertas || [])],
             ligasExploradas: [...(stats.ligasExploradas || [])],
             activeDates: stats.activeDates || [],
+            recompensasVistas: vistasUnificadas,
+            nivelRecompensaVisto: Math.max(Number(stats.nivelRecompensaVisto || 0), 0),
+            packBienvenidaAbierto: packBienvenidaSync,
             
             // Guardamos toda tu identidad estética en la base de datos
             preferencias: {
@@ -136,6 +152,31 @@ async function cargarProgresoDesdeSupabase() {
                     if (dj.onceInicial) localStorage.setItem('ev_once_inicial_' + id, JSON.stringify(dj.onceInicial));
                     if (dj.onceCapitan) localStorage.setItem('ev_once_capitan_' + id, dj.onceCapitan);
                     if (dj.onceEscudo) localStorage.setItem('ev_once_escudo_' + id, dj.onceEscudo);
+
+                    // 🛡️ Sincronizar recompensas ya vistas y sobre de bienvenida desde la nube (nunca reabrir desde Nivel 1)
+                    const localKeyId = typeof getUserId === 'function' ? getUserId() : id;
+                    const nivelRestaurado = calcularNivelIdx(userStats.xpTotal || 0);
+                    userStats.nivelActual = nivelRestaurado;
+                    userStats.nivelRecompensaVisto = Math.max(
+                        Number(dj.nivelRecompensaVisto || 0),
+                        Number(userStats.nivelRecompensaVisto || 0),
+                        nivelRestaurado
+                    );
+                    let vistasLocal = [];
+                    try { vistasLocal = JSON.parse(localStorage.getItem('ev_recompensas_vistas_' + localKeyId) || '[]'); } catch (e) {}
+                    const vistasNube = Array.isArray(dj.recompensasVistas) ? dj.recompensasVistas : [];
+                    const vistasAuto = (typeof AVATARES_LISTA !== 'undefined')
+                        ? AVATARES_LISTA.filter(a => a.nivel > 0 && a.nivel <= userStats.nivelRecompensaVisto).map(a => a.id)
+                        : [];
+                    const vistasMerged = Array.from(new Set([...vistasLocal, ...vistasNube, ...vistasAuto].map(x => String(x || '').replace(/\.png$/i, '.webp')).filter(Boolean)));
+                    userStats.recompensasVistas = vistasMerged;
+                    localStorage.setItem('ev_recompensas_vistas_' + localKeyId, JSON.stringify(vistasMerged));
+
+                    if (dj.packBienvenidaAbierto || nivelRestaurado >= 1 || (dj.preferencias && dj.preferencias.avatar_hair && dj.preferencias.avatar_hair !== 'short')) {
+                        userStats.packBienvenidaAbierto = true;
+                        localStorage.setItem('ev_pack_bienvenida_abierto_' + localKeyId, 'true');
+                        localStorage.setItem('ev_pack_bienvenida_abierto_global', 'true');
+                    }
                     procesarRachaDiaria();
 
                 // 2. Restauramos toda tu personalización visual en el dispositivo
